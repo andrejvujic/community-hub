@@ -36,14 +36,15 @@ public partial class LogInForm : Window
             return;
         }
 
-
         switch (role)
         {
             case Role.BuildingManager:
-                var window = new BuildingManager.HomeWindow();
-                window.Show();
+                var buildingManagerHomeWindow = new BuildingManager.HomeWindow();
+                buildingManagerHomeWindow.Show();
                 break;
             case Role.BuildingResident:
+                var buildingResidentHomeWindow = new BuildingResident.HomeWindow();
+                buildingResidentHomeWindow.Show();
                 break;
             case Role.NeighborhoodCoordinator:
                 break;
