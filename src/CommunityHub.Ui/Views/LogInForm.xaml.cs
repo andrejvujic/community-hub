@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Ui.Views;
 
 namespace CommunityHub.Ui.Views;
 
@@ -39,6 +40,8 @@ public partial class LogInForm : Window
         switch (role)
         {
             case Role.BuildingManager:
+                var window = new BuildingManager.HomeWindow();
+                window.Show();
                 break;
             case Role.BuildingResident:
                 break;

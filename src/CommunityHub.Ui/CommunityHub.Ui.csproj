@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\BuildingManager\" />
     <Folder Include="Views\BuildingResident\" />
     <Folder Include="Views\NeighborhoodCoordinator\" />
     <Folder Include="Views\Citizen\" />
