@@ -1,6 +1,7 @@
+using CommunityHub.Application.Domain;
+using Npgsql;
 using System.Data;
 using System.Text.Json;
-using Npgsql;
 
 namespace CommunityHub.Application.Database;
 
@@ -10,9 +11,10 @@ public static class PostgresConnection
 
     public static IDbConnection CreateConnection()
     {
-        var connection = new NpgsqlConnection(ConnectionString);
-        connection.Open();
-        return connection;
+        var builder = new NpgsqlDataSourceBuilder(ConnectionString);
+        builder.MapEnum<Role>("roles");
+        var dataSource = builder.Build();
+        return dataSource.OpenConnection();
     }
 
     private static string LoadConnectionString()
