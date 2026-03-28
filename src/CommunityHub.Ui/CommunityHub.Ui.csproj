@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CommunityHub.Ui.csproj.Backup.tmp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CommunityHub.Application\CommunityHub.Application.csproj" />
   </ItemGroup>
 
