@@ -48,12 +48,6 @@ public class UserDbRepository
         idParam.Value = id;
         command.Parameters.Add(idParam);
 
-        object? result = command.ExecuteScalar();
-
-        if (result == null) return null;
-
-        Debug.WriteLine(result);
-
-        return null;
+        return (Role?)command.ExecuteScalar();
     }
 }
