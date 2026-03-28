@@ -12,4 +12,11 @@
     <ProjectReference Include="..\CommunityHub.Application\CommunityHub.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\BuildingManager\" />
+    <Folder Include="Views\BuildingResident\" />
+    <Folder Include="Views\NeighborhoodCoordinator\" />
+    <Folder Include="Views\Citizen\" />
+  </ItemGroup>
+
 </Project>
