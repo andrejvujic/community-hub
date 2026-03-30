@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Views\NeighborhoodCoordinator\" />
-    <Folder Include="Views\Citizen\" />
   </ItemGroup>
 
 </Project>
