@@ -1,0 +1,1 @@
+﻿CREATE TYPE resources AS ENUM ('buildings', 'neighborhoods');
