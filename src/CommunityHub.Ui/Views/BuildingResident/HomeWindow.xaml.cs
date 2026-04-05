@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void BottomBar_RequestsItemClick(object sender, MouseButtonEventArgs e)
         {
-            MainFrame.Navigate(new AppartmentAccessRequestsPage(_userId));
+            MainFrame.Navigate(new ApartmentAccessRequestsPage(_userId));
         }
 
         private void BottomBar_BuildingsItemClick(object sender, MouseButtonEventArgs e)

@@ -6,20 +6,20 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    public partial class AppartmentAccessRequestsPage : Page
+    public partial class ApartmentAccessRequestsPage : Page
     {
 
         private readonly long _userId;
-        private readonly AppartmentAccessRequestDbRepository _repository;
-        public ObservableCollection<AppartmentAccessRequest> Requests { get; private set; } = new ObservableCollection<AppartmentAccessRequest>();
+        private readonly ApartmentAccessRequestDbRepository _repository;
+        public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new ObservableCollection<ApartmentAccessRequest>();
 
-        public AppartmentAccessRequestsPage(long userId)
+        public ApartmentAccessRequestsPage(long userId)
         {
             InitializeComponent();
             DataContext = this;
 
             _userId = userId;
-            _repository = new AppartmentAccessRequestDbRepository();
+            _repository = new ApartmentAccessRequestDbRepository();
 
             GetRequests();
         }

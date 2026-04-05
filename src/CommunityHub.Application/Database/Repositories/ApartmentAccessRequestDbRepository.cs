@@ -3,9 +3,9 @@ using System.Data;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class AppartmentAccessRequestDbRepository
+    public class ApartmentAccessRequestDbRepository
     {
-        public List<AppartmentAccessRequest> GetByUserId(long id)
+        public List<ApartmentAccessRequest> GetByUserId(long id)
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
 
@@ -13,10 +13,10 @@ namespace CommunityHub.Application.Database.Repositories
             command.CommandText = @"SELECT
                     r.id, r.status, r.comment, r.creation_date,
                     u.id, u.username, u.password, u.name, u.surname, u.user_role,
-                    a.id, a.appartment_number, a.floor_number
-                    FROM appartment_access_requests r
+                    a.id, a.apartment_number, a.floor_number
+                    FROM apartment_access_requests r
                     INNER JOIN users u ON r.applicant_id = u.id
-                    INNER JOIN appartments a ON r.appartment_id = a.id
+                    INNER JOIN apartments a ON r.apartment_id = a.id
                     WHERE u.id = @id";
 
             // TODO: Join with buildings table and streets table to get building address.
@@ -28,7 +28,7 @@ namespace CommunityHub.Application.Database.Repositories
 
             using IDataReader reader = command.ExecuteReader();
 
-            List<AppartmentAccessRequest> requests = new List<AppartmentAccessRequest>();
+            List<ApartmentAccessRequest> requests = new List<ApartmentAccessRequest>();
             User? applicant = null;
 
             while (reader.Read())
@@ -49,16 +49,16 @@ namespace CommunityHub.Application.Database.Repositories
                     applicant = new User(userId, username, password, name, surname, role);
                 }
 
-                long appartmentId = reader.GetInt64(10);
+                long apartmentId = reader.GetInt64(10);
                 int number = reader.GetInt32(11);
                 int floorNumber = reader.GetInt32(12);
 
                 requests.Add(
-                    new AppartmentAccessRequest(
+                    new ApartmentAccessRequest(
                         requestId,
                         applicant,
-                        new Appartment(
-                            appartmentId,
+                        new Apartment(
+                            apartmentId,
                             number,
                             floorNumber
                         ),

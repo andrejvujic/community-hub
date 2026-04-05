@@ -73,21 +73,21 @@ INSERT INTO buildings (id, floor_count, building_manager_id, address_id) VALUES
 (4, 4, 4, 4),
 (5, 7, 5, 5);
 
-INSERT INTO appartments (id, appartment_number, floor_number, building_id) VALUES
+INSERT INTO apartments (id, apartment_number, floor_number, building_id) VALUES
 (1, 12, 1, 1),
 (2, 27, 2, 2),
 (3, 15, 1, 3),
 (4, 8,  2, 4),
 (5, 34, 3, 5);
 
-INSERT INTO appartment_memberships (acceptance_date, appartment_id, building_resident_id) VALUES
+INSERT INTO apartment_memberships (acceptance_date, apartment_id, building_resident_id) VALUES
 ('2025-09-01', 1, 6),
 ('2025-09-03', 2, 7),
 ('2025-09-05', 3, 8),
 ('2025-09-10', 4, 9),
 ('2025-09-12', 5, 10);
 
-INSERT INTO appartment_access_requests (creation_date, status, comment, appartment_id, building_resident_id) VALUES
+INSERT INTO apartment_access_requests (creation_date, status, comment, apartment_id, applicant_id) VALUES
 ('2026-02-03', 'waiting',  'Podnet zahtev za pristup zbog promene prebivališta.', 2, 6),
 ('2026-02-05', 'accepted', 'Dostavljen ugovor o zakupu i potvrda upravnika.',    3, 7),
 ('2026-02-08', 'rejected', 'Priložena dokumentacija nije bila potpuna.',         4, 8),
