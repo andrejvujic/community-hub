@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <None Remove="CommunityHub.Ui.csproj.Backup.tmp" />
+    <None Remove="Resources\Fonts\GoogleSans.ttf" />
+    <None Remove="Resources\Fonts\Icons.otf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +20,15 @@
 
   <ItemGroup>
     <Folder Include="Views\NeighborhoodCoordinator\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\GoogleSans.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Icons.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
