@@ -17,9 +17,8 @@ namespace CommunityHub.Application.Database.Repositories
                     FROM apartment_access_requests r
                     INNER JOIN users u ON r.applicant_id = u.id
                     INNER JOIN apartments a ON r.apartment_id = a.id
+                    INNER JOIN buildings b ON a.building_id = b.id
                     WHERE u.id = @id";
-
-            // TODO: Join with buildings table and streets table to get building address.
 
             IDbDataParameter applicantIdParameter = command.CreateParameter();
             applicantIdParameter.ParameterName = "@id";
