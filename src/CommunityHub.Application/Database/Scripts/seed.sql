@@ -35,13 +35,36 @@ INSERT INTO cities (id, name, country_id) VALUES
 (4, 'Kragujevac', 1),
 (5, 'Subotica', 1);
 
+INSERT INTO neighborhoods (id, name, description, budget, city_id, coordinator_id) VALUES
+(1, 'Vračar', 'Gradsko naselje sa pretežno stambenim zgradama, razvijenom infrastrukturom i aktivnim učešćem stanara u lokalnim inicijativama.', 850000, 1, 11),
+(2, 'Novi Beograd - Blok 45', 'Veliko urbano naselje sa višespratnicama, uređenim zelenim površinama i izraženim potrebama za komunalnom koordinacijom.', 1200000, 1, 12),
+(3, 'Grbavica', 'Gusto naseljeni deo Novog Sada sa kombinacijom porodičnih i kolektivnih stambenih objekata.', 640000, 2, 13),
+(4, 'Centar', 'Centralna gradska zona sa velikim brojem stanara, poslovnih objekata i intenzivnim komunalnim aktivnostima.', 710000, 3, 14),
+(5, 'Aerodrom', 'Savremeno gradsko naselje sa višeporodičnim zgradama i stalnim ulaganjima u saobraćajnu i komunalnu infrastrukturu.', 930000, 4, 15);
 
-INSERT INTO addresses (id, street_name, street_number, neighborhood, city_id) VALUES
-(1, 'Bulevar kralja Aleksandra', '243', 'Vračar', 1),
-(2, 'Jurija Gagarina', '128', 'Novi Beograd', 1),
-(3, 'Bulevar oslobođenja', '97', 'Grbavica', 2),
-(4, 'Dušanova', '14', 'Centar', 3),
-(5, 'Lepenički bulevar', '32A', 'Aerodrom', 4);
+INSERT INTO streets (id, name, city_id) VALUES
+(1, 'Njegoševa', 1),
+(2, 'Jurija Gagarina', 1),
+(3, 'Bulevar oslobođenja', 2),
+(4, 'Vožda Karađorđa', 3),
+(5, 'Grada Sirena', 4),
+(6, 'Bulevar kralja Aleksandra', 1),
+(7, 'Dušanova', 3),
+(8, 'Lepenički bulevar', 4);
+
+INSERT INTO street_sections (id, start_number, end_number, street_id, neighborhood_id, side) VALUES
+(1, 1, 58, 1, 1, 'both'),
+(2, 1, 241, 2, 2, 'both'),
+(3, 1, 126, 3, 3, 'both'),
+(4, 1, 48, 4, 4, 'both'),
+(5, 1, 92, 5, 5, 'both');
+
+INSERT INTO addresses (id, street_number, neighborhood, city_id, street_id) VALUES
+(1, '243', 'Vračar', 1, 6),
+(2, '128', 'Novi Beograd', 1, 2),
+(3, '97', 'Grbavica', 2, 3),
+(4, '14', 'Centar', 3, 7),
+(5, '32A', 'Aerodrom', 4, 8);
 
 INSERT INTO buildings (id, floor_count, building_manager_id, address_id) VALUES
 (1, 6, 1, 1),
@@ -70,20 +93,6 @@ INSERT INTO appartment_access_requests (creation_date, status, comment, appartme
 ('2026-02-08', 'rejected', 'Priložena dokumentacija nije bila potpuna.',         4, 8),
 ('2026-02-11', 'waiting',  'Stanar je u postupku prijave boravišta.',            5, 9),
 ('2026-02-14', 'accepted', 'Nakon provere vlasništva zahtev je odobren.',        1, 10);
-
-INSERT INTO neighborhoods (id, name, description, budget, city_id, coordinator_id) VALUES
-(1, 'Vračar', 'Gradsko naselje sa pretežno stambenim zgradama, razvijenom infrastrukturom i aktivnim učešćem stanara u lokalnim inicijativama.', 850000, 1, 11),
-(2, 'Novi Beograd - Blok 45', 'Veliko urbano naselje sa višespratnicama, uređenim zelenim površinama i izraženim potrebama za komunalnom koordinacijom.', 1200000, 1, 12),
-(3, 'Grbavica', 'Gusto naseljeni deo Novog Sada sa kombinacijom porodičnih i kolektivnih stambenih objekata.', 640000, 2, 13),
-(4, 'Centar', 'Centralna gradska zona sa velikim brojem stanara, poslovnih objekata i intenzivnim komunalnim aktivnostima.', 710000, 3, 14),
-(5, 'Aerodrom', 'Savremeno gradsko naselje sa višeporodičnim zgradama i stalnim ulaganjima u saobraćajnu i komunalnu infrastrukturu.', 930000, 4, 15);
-
-INSERT INTO streets (id, name, start_number, end_number, neighborhood_id) VALUES
-(1, 'Njegoševa', 1, 58, 1),
-(2, 'Jurija Gagarina', 1, 241, 2),
-(3, 'Bulevar oslobođenja', 1, 126, 3),
-(4, 'Vožda Karađorđa', 1, 48, 4),
-(5, 'Grada Sirena', 1, 92, 5);
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (1, '2025-08-20', 1),
