@@ -50,13 +50,6 @@ INSERT INTO buildings (id, floor_count, building_manager_id, address_id) VALUES
 (4, 4, 4, 4),
 (5, 7, 5, 5);
 
-INSERT INTO images (id, path, resource_type, owner_id) VALUES
-(1, '/uploads/zgrade/zgrada-vracar-243.jpg', 'buildings', 1),
-(2, '/uploads/zgrade/zgrada-nbg-128.jpg', 'buildings', 2),
-(3, '/uploads/zgrade/zgrada-grbavica-97.jpg', 'buildings', 3),
-(4, '/uploads/naselja/vracar.jpg', 'neighborhoods', 1),
-(5, '/uploads/naselja/novi-beograd.jpg', 'neighborhoods', 2);
-
 INSERT INTO appartments (id, appartment_number, floor_number, building_id) VALUES
 (1, 12, 1, 1),
 (2, 27, 2, 2),
