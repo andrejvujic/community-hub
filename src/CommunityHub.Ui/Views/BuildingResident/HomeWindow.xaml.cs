@@ -1,16 +1,26 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    /// <summary>
-    /// Interaction logic for HomeWindow.xaml
-    /// </summary>
     public partial class HomeWindow : Window
     {
-        public HomeWindow()
+        private readonly long _userId;
+        public HomeWindow(long userId)
         {
             InitializeComponent();
+            _userId = userId;
+        }
+
+        private void BottomBar_RequestsItemClick(object sender, MouseButtonEventArgs e)
+        {
+            MainFrame.Navigate(new AppartmentAccessRequestsPage(_userId));
+        }
+
+        private void BottomBar_BuildingsItemClick(object sender, MouseButtonEventArgs e)
+        {
+            MainFrame.Navigate(new BuildingsPage());
         }
     }
 }

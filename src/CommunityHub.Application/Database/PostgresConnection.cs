@@ -13,6 +13,7 @@ public static class PostgresConnection
     {
         var builder = new NpgsqlDataSourceBuilder(ConnectionString);
         builder.MapEnum<Role>("roles");
+        builder.MapEnum<Status>("statuses");
         var dataSource = builder.Build();
         return dataSource.OpenConnection();
     }

@@ -13,6 +13,9 @@ public partial class LogInForm : Window
     {
         InitializeComponent();
         _userRepository = new UserDbRepository();
+        
+        // Uncomment for auto login:
+        // HandleLogin("ana.ivanovic", "123");
     }
 
     private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -20,16 +23,21 @@ public partial class LogInForm : Window
         string username = UsernameTextBox.Text;
         string password = PasswordBox.Password;
 
-        long? id = _userRepository.GetIdByCredentials(username, password);
-        
-        if (id == null)
+        HandleLogin(username, password);
+    }
+
+    private void HandleLogin(string username, string password)
+    {
+        long? userId = _userRepository.GetIdByCredentials(username, password);
+
+        if (userId == null)
         {
             ErrorMessageTextBlock.Text = "Neispravno korisničko ime ili lozinka.";
             ErrorMessageTextBlock.Visibility = Visibility.Visible;
             return;
         }
 
-        Role? role = _userRepository.GetRoleById(id.Value);
+        Role? role = _userRepository.GetRoleById(userId.Value);
         if (role == null)
         {
             Close();
@@ -43,7 +51,7 @@ public partial class LogInForm : Window
                 buildingManagerHomeWindow.Show();
                 break;
             case Role.BuildingResident:
-                var buildingResidentHomeWindow = new BuildingResident.HomeWindow();
+                var buildingResidentHomeWindow = new BuildingResident.HomeWindow(userId.Value);
                 buildingResidentHomeWindow.Show();
                 break;
             case Role.NeighborhoodCoordinator:
