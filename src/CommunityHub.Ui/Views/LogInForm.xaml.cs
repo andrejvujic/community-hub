@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
-using CommunityHub.Ui.Views;
 
 namespace CommunityHub.Ui.Views;
 
@@ -15,7 +14,7 @@ public partial class LogInForm : Window
         _userRepository = new UserDbRepository();
         
         // Uncomment for auto login:
-        // HandleLogin("setfan.matic", "123");
+        // HandleLogin("stefan.matic", "123");
     }
 
     private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -51,8 +50,8 @@ public partial class LogInForm : Window
                 buildingManagerHomeWindow.Show();
                 break;
             case Role.BuildingResident:
-                var buildingResidentHomeWindow = new BuildingResident.HomeWindow(userId.Value);
-                buildingResidentHomeWindow.Show();
+                var buildingResidentMainWindow = new BuildingResident.MainWindow(userId.Value);
+                buildingResidentMainWindow.Show();
                 break;
             case Role.NeighborhoodCoordinator:
                 break;
