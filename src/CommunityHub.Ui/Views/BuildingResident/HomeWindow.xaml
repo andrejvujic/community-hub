@@ -5,10 +5,101 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
         mc:Ignorable="d"
-        Title="Building Resident"
+        Title="Aplikacija"
         Height="750" Width="430"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        FontFamily="{StaticResource AppFontFamily}">
     <Grid>
-        
+        <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#dedede">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="64"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Grid.Column="1"
+                Content="&#xf0f3;"
+                FontSize="24"
+                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+
+            <Label
+                Grid.Column="2"
+                Content="&#xf059;"
+                FontSize="24"
+                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+
+        </Grid>
+
+        <Frame Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden" Source="BuildingsPage.xaml"/>
+
+        <Grid Grid.Row="2" Background="#dedede">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"  MouseLeftButtonDown="BottomBar_BuildingsItemClick" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Content="&#xf1ad;"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,8,0,0"
+                    FontSize="24"/>
+
+                <Label
+                    Grid.Row="1"
+                    Content="Zgrade"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,4,0,8"
+                    FontSize="14"/>
+            </Grid>
+
+            <Grid Grid.Column="1" MouseLeftButtonDown="BottomBar_RequestsItemClick" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Content="&#xe494;"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,8,0,0"
+                    FontSize="24"/>
+
+                <Label
+                    Grid.Row="1"
+                    Content="Zahtjevi"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,4,0,8"
+                    FontSize="14"/>
+
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
