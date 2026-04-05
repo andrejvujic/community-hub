@@ -15,7 +15,7 @@ public partial class LogInForm : Window
         _userRepository = new UserDbRepository();
         
         // Uncomment for auto login:
-        // HandleLogin("ana.ivanovic", "123");
+        // HandleLogin("setfan.matic", "123");
     }
 
     private void LoginButton_Click(object sender, RoutedEventArgs e)
