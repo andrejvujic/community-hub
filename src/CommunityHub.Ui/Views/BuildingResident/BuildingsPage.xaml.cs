@@ -1,15 +1,20 @@
-﻿using System.Windows.Controls;
+﻿using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    /// <summary>
-    /// Interaction logic for BuildingsPage.xaml
-    /// </summary>
-    public partial class BuildingsPage : Page
+    public partial class BuildingsPage : MainNavigatorConsumerPage
     {
-        public BuildingsPage()
+        private readonly long _userId;
+        public BuildingsPage(long userId)
         {
             InitializeComponent();
+            Console.WriteLine(userId);
+            _userId = userId;
+        }
+
+        private void CreateAppartmentAccessRequestButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Push(new SearchBuildingsPage(_userId));
         }
     }
 }
