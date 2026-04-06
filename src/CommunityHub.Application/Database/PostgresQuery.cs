@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mappers;
 using System.Data;
-using System.Data.SqlTypes;
 
 namespace CommunityHub.Application.Database
 {
@@ -39,7 +38,6 @@ namespace CommunityHub.Application.Database
 
         public List<T> ExecuteVector<T>(Mapper<T> mapper) where T : class
         {
-
             using IDbConnection connection = PostgresConnection.CreateConnection();
             IDbCommand command = CreateCommand(connection);
             IDataReader reader = command.ExecuteReader();

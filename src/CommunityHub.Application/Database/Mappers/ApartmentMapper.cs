@@ -1,8 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace CommunityHub.Application.Database.Mappers
 {
