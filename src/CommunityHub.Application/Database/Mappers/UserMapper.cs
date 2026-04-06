@@ -23,7 +23,6 @@ namespace CommunityHub.Application.Database.Mappers
         {
             return new Dictionary<string, object?>
             {
-                { "id", entity.Id  },
                 { "username", entity.Username },
                 { "password", entity.Password },
                 { "name", entity.Name },
