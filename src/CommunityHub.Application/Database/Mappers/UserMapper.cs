@@ -18,5 +18,18 @@ namespace CommunityHub.Application.Database.Mappers
             Role role = (Role)reader.GetValue(reader.GetOrdinal("user_role"));
             return new User(id, username, password, name, surname, role);
         }
+
+        public override Dictionary<string, object?> ConvertToDictionary(User entity)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "id", entity.Id  },
+                { "username", entity.Username },
+                { "password", entity.Password },
+                { "name", entity.Name },
+                { "surname", entity.Surname },
+                { "user_role", entity.Role }
+            };
+        }
     }
 }

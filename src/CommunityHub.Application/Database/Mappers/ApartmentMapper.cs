@@ -16,5 +16,17 @@ namespace CommunityHub.Application.Database.Mappers
             int floorNumber = reader.GetInt32(reader.GetOrdinal("floor_number"));
             return new Apartment(id, number, floorNumber);
         }
+
+        public override Dictionary<string, object?> ConvertToDictionary(Apartment entity)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "id", entity.Id  },
+                { "apartment_number", entity.Number },
+                { "floor_number", entity.FloorNumber }
+                // TODO: Add building_id when Building is implemented
+            };
+        }
+
     }
 }

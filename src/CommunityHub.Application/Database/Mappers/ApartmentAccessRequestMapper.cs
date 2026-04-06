@@ -1,5 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
+using System.Security.Principal;
+using System.Xml.Linq;
 
 namespace CommunityHub.Application.Database.Mappers
 {
@@ -32,6 +34,19 @@ namespace CommunityHub.Application.Database.Mappers
                 status,
                 creationDate
             );
+        }
+
+        public override Dictionary<string, object?> ConvertToDictionary(ApartmentAccessRequest entity)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "id", entity.Id },
+                { "applicant_id", entity.Applicant.Id },
+                { "apartment_id", entity.Apartment.Id },
+                { "comment", entity.Comment },
+                { "status", entity.Status },
+                { "creation_date", entity.CreationDate }
+            };
         }
     }
 }
