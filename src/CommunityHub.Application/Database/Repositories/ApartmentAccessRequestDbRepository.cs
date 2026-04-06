@@ -7,7 +7,7 @@ namespace CommunityHub.Application.Database.Repositories
     {
         public List<ApartmentAccessRequest> GetByApplicantId(long id)
         {
-            var query = Query.Create(
+            var query = PostgresQuery.Create(
                 @"SELECT
                 r.id as request_id, r.status, r.comment, r.creation_date,
                 u.id as user_id, u.username, u.password, u.name, u.surname, u.user_role,

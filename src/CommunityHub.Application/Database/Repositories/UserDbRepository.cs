@@ -6,7 +6,7 @@ public class UserDbRepository
 {
     public long? GetIdByCredentials(string username, string password)
     {
-        var query = Query.Create(
+        var query = PostgresQuery.Create(
             "SELECT id FROM users WHERE username = @username AND password = @password"
         )
         .AddParameter("username", username)
@@ -16,7 +16,7 @@ public class UserDbRepository
 
     public Role? GetRoleById(long id)
     {
-        var query = Query.Create(
+        var query = PostgresQuery.Create(
             "SELECT user_role FROM users WHERE id = @id"
         )
         .AddParameter("id", id);
