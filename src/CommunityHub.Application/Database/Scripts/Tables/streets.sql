@@ -11,5 +11,5 @@ CREATE TABLE street_sections(
 	end_number INT NOT NULL,
 	street_id BIGINT REFERENCES streets(id) NOT NULL,
 	neighborhood_id BIGINT REFERENCES neighborhoods(id) NOT NULL,
-	side parity_type NOT NULL DEFAULT 'both'
+	side parity_types NOT NULL DEFAULT 'both'
 );

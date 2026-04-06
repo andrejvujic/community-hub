@@ -14,6 +14,7 @@ public static class PostgresConnection
         var builder = new NpgsqlDataSourceBuilder(ConnectionString);
         builder.MapEnum<Role>("roles");
         builder.MapEnum<Status>("statuses");
+        builder.MapEnum<ParityType>("parity_types");
         var dataSource = builder.Build();
         return dataSource.OpenConnection();
     }
