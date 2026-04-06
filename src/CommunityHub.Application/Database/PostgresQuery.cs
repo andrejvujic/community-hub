@@ -52,6 +52,16 @@ namespace CommunityHub.Application.Database
             return entities;
         }
 
+        public void ExecuteVector(Action<IDataReader> callback)
+        {
+            using IDbConnection connection = PostgresConnection.CreateConnection();
+            IDbCommand command = CreateCommand(connection);
+            IDataReader reader = command.ExecuteReader();;
+
+            while (reader.Read())
+                callback.Invoke(reader);
+        }
+
         public List<T> ExecuteVector<T>(Func<IDataReader, T> convert) where T : class
         {
 
