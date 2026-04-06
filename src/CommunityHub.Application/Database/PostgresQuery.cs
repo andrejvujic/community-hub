@@ -36,14 +36,14 @@ namespace CommunityHub.Application.Database
             return command;
         }
 
-        public List<T> ExecuteVector<T>(Mapper<T> mapper) where T : class
+        public List<T> ExecuteReader<T>(Mapper<T> mapper) where T : class
         {
             List<T> entities = new List<T>();
-            ExecuteVector(reader => entities.Add(mapper.ToModel(reader)));
+            ExecuteReader(reader => entities.Add(mapper.ToModel(reader)));
             return entities;
         }
 
-        public void ExecuteVector(Action<IDataReader> callback)
+        public void ExecuteReader(Action<IDataReader> callback)
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
             IDbCommand command = CreateCommand(connection);
