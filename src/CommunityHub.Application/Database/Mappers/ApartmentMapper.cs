@@ -9,7 +9,7 @@ namespace CommunityHub.Application.Database.Mappers
         
         public static ApartmentMapper Instance { get => new ApartmentMapper(); }
 
-        public override Apartment ToModel(IDataReader reader)
+        public override Apartment ConvertToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("apartment_id"));
             int number = reader.GetInt32(reader.GetOrdinal("apartment_number"));

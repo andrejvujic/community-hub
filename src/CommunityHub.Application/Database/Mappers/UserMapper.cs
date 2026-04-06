@@ -8,7 +8,7 @@ namespace CommunityHub.Application.Database.Mappers
         private UserMapper() { }
         public static UserMapper Instance => new UserMapper();
 
-        public override User ToModel(IDataReader reader)
+        public override User ConvertToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("user_id"));
             string username = reader.GetString(reader.GetOrdinal("username"));

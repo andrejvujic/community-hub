@@ -11,10 +11,10 @@ namespace CommunityHub.Application.Database.Mappers
         private readonly UserMapper _userMapper = UserMapper.Instance;
         private readonly ApartmentMapper _apartmentMapper = ApartmentMapper.Instance;
 
-        public override ApartmentAccessRequest ToModel(IDataReader reader)
+        public override ApartmentAccessRequest ConvertToEntity(IDataReader reader)
         {
-            User applicant = _userMapper.ToModel(reader);
-            Apartment apartment = _apartmentMapper.ToModel(reader);
+            User applicant = _userMapper.ConvertToEntity(reader);
+            Apartment apartment = _apartmentMapper.ConvertToEntity(reader);
 
             long id = reader.GetInt64(reader.GetOrdinal("request_id"));
             Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
