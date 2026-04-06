@@ -6,7 +6,7 @@ namespace CommunityHub.Application.Database
     public class PostgresQuery
     {
         private readonly string _sql;
-        private readonly Dictionary<string, object?> _parmaters = new Dictionary<string, object?>();
+        private readonly Dictionary<string, object?> _paramaters = new Dictionary<string, object?>();
         private PostgresQuery(string sql)
         {
             _sql = sql;
@@ -16,7 +16,7 @@ namespace CommunityHub.Application.Database
 
         public PostgresQuery AddParameter(string name, object? value)
         {
-            _parmaters.Add(name, value);
+            _paramaters.Add(name, value);
             return this;
         }
 
@@ -25,7 +25,7 @@ namespace CommunityHub.Application.Database
             IDbCommand command = connection.CreateCommand();
             command.CommandText = _sql;
 
-            foreach (var parameter in _parmaters)
+            foreach (var parameter in _paramaters)
             {
                 IDbDataParameter dbParameter = command.CreateParameter();
                 dbParameter.ParameterName = parameter.Key;
