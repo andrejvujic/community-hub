@@ -55,7 +55,6 @@ namespace CommunityHub.Application.Database
 
         public object? ExecuteScalar()
         {
-
             using IDbConnection connection = PostgresConnection.CreateConnection();
             using IDbCommand command = CreateCommand(connection);
             return command.ExecuteScalar();
