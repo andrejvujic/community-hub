@@ -18,7 +18,10 @@ namespace CommunityHub.Application.Database.Mappers
 
             long id = reader.GetInt64(reader.GetOrdinal("request_id"));
             Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
-            string? comment = reader.IsDBNull(reader.GetOrdinal("comment")) ? null : reader.GetString(reader.GetOrdinal("comment"));
+            
+            int commentColumnIndex = reader.GetOrdinal("comment");
+            string? comment = reader.IsDBNull(commentColumnIndex) ? null : reader.GetString(commentColumnIndex);
+            
             DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
 
             return new ApartmentAccessRequest(
