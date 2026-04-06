@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mappers;
 using System.Data;
+using System.Xml.Linq;
 
 namespace CommunityHub.Application.Database
 {
@@ -17,6 +18,13 @@ namespace CommunityHub.Application.Database
         public PostgresQuery AddParameter(string name, object? value)
         {
             _parameters.Add(name, value);
+            return this;
+        }
+
+        public PostgresQuery ExtendParameters(Dictionary<string, object?> newParameters)
+        {
+            foreach (var parameter in newParameters)
+                _parameters.Add(parameter.Key, parameter.Value);
             return this;
         }
 
