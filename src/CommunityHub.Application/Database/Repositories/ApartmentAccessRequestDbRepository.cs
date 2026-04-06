@@ -1,74 +1,25 @@
-﻿using CommunityHub.Application.Domain;
-using System.Data;
+﻿using CommunityHub.Application.Database.Mappers;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
 {
     public class ApartmentAccessRequestDbRepository
     {
-        public List<ApartmentAccessRequest> GetByUserId(long id)
+        public List<ApartmentAccessRequest> GetByApplicantId(long id)
         {
-            using IDbConnection connection = PostgresConnection.CreateConnection();
-
-            IDbCommand command = connection.CreateCommand();
-            command.CommandText = @"SELECT
-                    r.id, r.status, r.comment, r.creation_date,
-                    u.id, u.username, u.password, u.name, u.surname, u.user_role,
-                    a.id, a.apartment_number, a.floor_number
-                    FROM apartment_access_requests r
-                    INNER JOIN users u ON r.applicant_id = u.id
-                    INNER JOIN apartments a ON r.apartment_id = a.id
-                    INNER JOIN buildings b ON a.building_id = b.id
-                    WHERE u.id = @id";
-
-            IDbDataParameter applicantIdParameter = command.CreateParameter();
-            applicantIdParameter.ParameterName = "@id";
-            applicantIdParameter.Value = id;
-            command.Parameters.Add(applicantIdParameter);
-
-            using IDataReader reader = command.ExecuteReader();
-
-            List<ApartmentAccessRequest> requests = new List<ApartmentAccessRequest>();
-            User? applicant = null;
-
-            while (reader.Read())
-            {
-                long requestId = reader.GetInt64(0);
-                Status status = (Status)reader.GetValue(1);
-                string? comment = reader.IsDBNull(2) ? null : reader.GetString(2);
-                DateTime creationDate = reader.GetDateTime(3);
-
-                if (applicant == null)
-                {
-                    long userId = reader.GetInt64(4);
-                    string username = reader.GetString(5);
-                    string password = reader.GetString(6);
-                    string name = reader.GetString(7);
-                    string surname = reader.GetString(8);
-                    Role role = (Role)reader.GetValue(9);
-                    applicant = new User(userId, username, password, name, surname, role);
-                }
-
-                long apartmentId = reader.GetInt64(10);
-                int number = reader.GetInt32(11);
-                int floorNumber = reader.GetInt32(12);
-
-                requests.Add(
-                    new ApartmentAccessRequest(
-                        requestId,
-                        applicant,
-                        new Apartment(
-                            apartmentId,
-                            number,
-                            floorNumber
-                        ),
-                        comment,
-                        status,
-                        creationDate
-                    )
-                );
-            }
-
-            return requests;
+            var query = Query.Create(
+                @"SELECT
+                r.id as request_id, r.status, r.comment, r.creation_date,
+                u.id as user_id, u.username, u.password, u.name, u.surname, u.user_role,
+                a.id as apartment_id, a.apartment_number, a.floor_number
+                FROM apartment_access_requests r
+                INNER JOIN users u ON r.applicant_id = u.id
+                INNER JOIN apartments a ON r.apartment_id = a.id
+                INNER JOIN buildings b ON a.building_id = b.id
+                WHERE r.applicant_id = @id"
+            )
+            .AddParameter("id", id);
+            return query.ExecuteVector(ApartmentAccessRequestMapper.Instance);
         }
     }
 }
