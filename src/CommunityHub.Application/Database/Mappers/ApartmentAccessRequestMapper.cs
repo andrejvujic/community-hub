@@ -15,7 +15,7 @@ namespace CommunityHub.Application.Database.Mappers
 
         public override ApartmentAccessRequest MapToEntity(IDataReader reader)
         {
-            User applicant = _userMapper.ConvertToEntity(reader);
+            User applicant = _userMapper.MapToEntity(reader);
             Apartment apartment = _apartmentMapper.MapToEntity(reader);
 
             long id = reader.GetInt64(reader.GetOrdinal("request_id"));
