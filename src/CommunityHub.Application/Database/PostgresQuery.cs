@@ -6,7 +6,7 @@ namespace CommunityHub.Application.Database
     public class PostgresQuery
     {
         private readonly string _sql;
-        private readonly Dictionary<string, object?> _paramaters = new Dictionary<string, object?>();
+        private readonly Dictionary<string, object?> _parameters = new Dictionary<string, object?>();
         private PostgresQuery(string sql)
         {
             _sql = sql;
@@ -16,7 +16,7 @@ namespace CommunityHub.Application.Database
 
         public PostgresQuery AddParameter(string name, object? value)
         {
-            _paramaters.Add(name, value);
+            _parameters.Add(name, value);
             return this;
         }
 
@@ -25,7 +25,7 @@ namespace CommunityHub.Application.Database
             IDbCommand command = connection.CreateCommand();
             command.CommandText = _sql;
 
-            foreach (var parameter in _paramaters)
+            foreach (var parameter in _parameters)
             {
                 IDbDataParameter dbParameter = command.CreateParameter();
                 dbParameter.ParameterName = parameter.Key;
@@ -46,40 +46,25 @@ namespace CommunityHub.Application.Database
         public void ExecuteReader(Action<IDataReader> callback)
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
-            IDbCommand command = CreateCommand(connection);
-            IDataReader reader = command.ExecuteReader();;
+            using IDbCommand command = CreateCommand(connection);
+            using IDataReader reader = command.ExecuteReader();;
 
             while (reader.Read())
                 callback.Invoke(reader);
-        }
-
-        public List<T> ExecuteVector<T>(Func<IDataReader, T> convert) where T : class
-        {
-
-            using IDbConnection connection = PostgresConnection.CreateConnection();
-            IDbCommand command = CreateCommand(connection);
-            using IDataReader reader = command.ExecuteReader();
-
-            List<T> entities = new List<T>();
-
-            while (reader.Read())
-                entities.Add(convert(reader));
-
-            return entities;
         }
 
         public object? ExecuteScalar()
         {
 
             using IDbConnection connection = PostgresConnection.CreateConnection();
-            IDbCommand command = CreateCommand(connection);
+            using IDbCommand command = CreateCommand(connection);
             return command.ExecuteScalar();
         }
 
         public T ExecuteScalar<T>(Func<object?, T> convert)
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
-            IDbCommand command = CreateCommand(connection);
+            using IDbCommand command = CreateCommand(connection);
             object? value = command.ExecuteScalar();
             if (value == null) return default!;
             return convert(value);
@@ -88,7 +73,7 @@ namespace CommunityHub.Application.Database
         public int GetRowsAffectedCount()
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
-            IDbCommand command = CreateCommand(connection);
+            using IDbCommand command = CreateCommand(connection);
             return command.ExecuteNonQuery();
         }
     }
