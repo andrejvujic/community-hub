@@ -39,7 +39,7 @@ namespace CommunityHub.Application.Database
         public List<T> ExecuteReader<T>(Mapper<T> mapper) where T : class
         {
             List<T> entities = new List<T>();
-            ExecuteReader(reader => entities.Add(mapper.ConvertToEntity(reader)));
+            ExecuteReader(reader => entities.Add(mapper.MapToEntity(reader)));
             return entities;
         }
 

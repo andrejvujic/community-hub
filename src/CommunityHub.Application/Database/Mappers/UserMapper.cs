@@ -8,7 +8,7 @@ namespace CommunityHub.Application.Database.Mappers
         private UserMapper() { }
         public static UserMapper Instance => new UserMapper();
 
-        public override User ConvertToEntity(IDataReader reader)
+        public override User MapToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("user_id"));
             string username = reader.GetString(reader.GetOrdinal("username"));
@@ -19,7 +19,7 @@ namespace CommunityHub.Application.Database.Mappers
             return new User(id, username, password, name, surname, role);
         }
 
-        public override Dictionary<string, object?> ConvertToDictionary(User entity)
+        public override Dictionary<string, object?> MapToDictionary(User entity)
         {
             return new Dictionary<string, object?>
             {

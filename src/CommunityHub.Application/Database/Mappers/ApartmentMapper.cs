@@ -9,7 +9,7 @@ namespace CommunityHub.Application.Database.Mappers
         
         public static ApartmentMapper Instance { get => new ApartmentMapper(); }
 
-        public override Apartment ConvertToEntity(IDataReader reader)
+        public override Apartment MapToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("apartment_id"));
             int number = reader.GetInt32(reader.GetOrdinal("apartment_number"));
@@ -17,7 +17,7 @@ namespace CommunityHub.Application.Database.Mappers
             return new Apartment(id, number, floorNumber);
         }
 
-        public override Dictionary<string, object?> ConvertToDictionary(Apartment entity)
+        public override Dictionary<string, object?> MapToDictionary(Apartment entity)
         {
             return new Dictionary<string, object?>
             {
