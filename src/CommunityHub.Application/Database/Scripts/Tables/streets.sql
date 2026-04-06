@@ -11,5 +11,5 @@ CREATE TABLE street_sections(
 	end_number INT NOT NULL,
 	street_id BIGINT REFERENCES streets(id) NOT NULL,
 	neighborhood_id BIGINT REFERENCES neighborhoods(id) NOT NULL,
-	side VARCHAR(10) NOT NULL DEFAULT 'both' CHECK (side IN ('even', 'odd', 'both'))
+	side parity_type NOT NULL DEFAULT 'both'
 );
