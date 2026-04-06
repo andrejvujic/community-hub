@@ -19,7 +19,7 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE r.applicant_id = @id"
             )
             .AddParameter("id", id);
-            return query.ExecuteVector(ApartmentAccessRequestMapper.Instance);
+            return query.ExecuteReader(ApartmentAccessRequestMapper.Instance);
         }
     }
 }
