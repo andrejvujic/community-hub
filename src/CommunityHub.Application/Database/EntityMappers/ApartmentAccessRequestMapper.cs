@@ -11,18 +11,18 @@ namespace CommunityHub.Application.Database.EntityMappers
         private readonly UserMapper _userMapper = new UserMapper();
         private readonly ApartmentMapper _apartmentMapper = new ApartmentMapper();
 
-        public override ApartmentAccessRequest MapToEntity(IDataReader reader)
+        public override ApartmentAccessRequest MapToEntity(IDataReader reader, string? columnPrefix = null)
         {
-            User applicant = _userMapper.MapToEntity(reader);
+            User applicant = _userMapper.MapToEntity(reader, columnPrefix: "applicant");
             Apartment apartment = _apartmentMapper.MapToEntity(reader);
 
-            long id = reader.GetInt64(reader.GetOrdinal("request_id"));
+            long id = reader.GetInt64(reader.GetOrdinalPrefixed("request_id", columnPrefix));
             Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
             
-            int commentColumnIndex = reader.GetOrdinal("comment");
+            int commentColumnIndex = reader.GetOrdinalPrefixed("comment", columnPrefix);
             string? comment = reader.IsDBNull(commentColumnIndex) ? null : reader.GetString(commentColumnIndex);
             
-            DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+            DateTime creationDate = reader.GetDateTime(reader.GetOrdinalPrefixed("creation_date", columnPrefix));
 
             return new ApartmentAccessRequest(
                 id,

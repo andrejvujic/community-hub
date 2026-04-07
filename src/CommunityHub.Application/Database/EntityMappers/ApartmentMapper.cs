@@ -5,11 +5,11 @@ namespace CommunityHub.Application.Database.EntityMappers
 {
     public class ApartmentMapper : EntityMapper<Apartment>
     {
-        public override Apartment MapToEntity(IDataReader reader)
+        public override Apartment MapToEntity(IDataReader reader, string? columnPrefix = null)
         {
-            long id = reader.GetInt64(reader.GetOrdinal("apartment_id"));
-            int number = reader.GetInt32(reader.GetOrdinal("apartment_number"));
-            int floorNumber = reader.GetInt32(reader.GetOrdinal("floor_number"));
+            long id = reader.GetInt64(reader.GetOrdinalPrefixed("apartment_id", columnPrefix));
+            int number = reader.GetInt32(reader.GetOrdinalPrefixed("apartment_number", columnPrefix));
+            int floorNumber = reader.GetInt32(reader.GetOrdinalPrefixed("floor_number", columnPrefix));
             return new Apartment(id, number, floorNumber);
         }
 
