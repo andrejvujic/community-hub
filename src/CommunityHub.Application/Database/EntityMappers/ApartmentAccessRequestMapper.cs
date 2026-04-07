@@ -11,18 +11,21 @@ namespace CommunityHub.Application.Database.EntityMappers
         private readonly UserMapper _userMapper = new UserMapper();
         private readonly ApartmentMapper _apartmentMapper = new ApartmentMapper();
 
-        public override ApartmentAccessRequest MapToEntity(IDataReader reader, string? columnPrefix = null)
+        public override ApartmentAccessRequest MapToEntity(IDataReader reader, string? columnNamePrefix = null)
         {
-            User applicant = _userMapper.MapToEntity(reader, columnPrefix: "applicant");
-            Apartment apartment = _apartmentMapper.MapToEntity(reader);
+            User applicant = _userMapper.MapToEntity(
+                reader,
+                columnNamePrefix: columnNamePrefix == null ? "applicant" : $"{columnNamePrefix}_applicant"
+            );
+            Apartment apartment = _apartmentMapper.MapToEntity(reader, columnNamePrefix);
 
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("request_id", columnPrefix));
-            Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
+            long id = reader.GetInt64(reader.GetOrdinalPrefixed("request_id", columnNamePrefix));
+            Status status = (Status)reader.GetValue(reader.GetOrdinalPrefixed("status", columnNamePrefix));
             
-            int commentColumnIndex = reader.GetOrdinalPrefixed("comment", columnPrefix);
+            int commentColumnIndex = reader.GetOrdinalPrefixed("comment", columnNamePrefix);
             string? comment = reader.IsDBNull(commentColumnIndex) ? null : reader.GetString(commentColumnIndex);
             
-            DateTime creationDate = reader.GetDateTime(reader.GetOrdinalPrefixed("creation_date", columnPrefix));
+            DateTime creationDate = reader.GetDateTime(reader.GetOrdinalPrefixed("creation_date", columnNamePrefix));
 
             return new ApartmentAccessRequest(
                 id,
