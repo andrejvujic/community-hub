@@ -28,7 +28,7 @@
             Budget = budget;
             City = city;
             Coordinator = coordinator;
-            streetSections = streetSections ?? new List<StreetSection>();
+            StreetSections = streetSections ?? new List<StreetSection>();
             Images = images ?? new List<Image>();
         }
 
