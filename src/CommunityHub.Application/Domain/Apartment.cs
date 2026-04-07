@@ -4,13 +4,13 @@
     {
         public long Id { get; private set; }
         public int Number { get; private set; }
-        public int Floor { get; private set; }
+        public int FloorNumber { get; private set; }
 
-        public Apartment(long id, int number, int floor)
+        public Apartment(long id, int number, int floorNumber)
         {
             Id = id;
             Number = number;
-            Floor = floor;
+            FloorNumber = floorNumber;
         }
     }
 }

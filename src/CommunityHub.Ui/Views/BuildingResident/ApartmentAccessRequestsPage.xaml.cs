@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         public void GetRequests()
         {
-            var requests = _repository.GetByUserId(_userId);
+            var requests = _repository.GetByApplicantId(_userId);
             foreach (var request in requests)
                 Requests.Add(request);
 
