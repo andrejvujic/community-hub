@@ -10,7 +10,10 @@ namespace CommunityHub.Application.Database.EntityMappers
         public override Building MapToEntity(IDataReader reader, string? columnNamePrefix = null)
         {
             Address address = _addressMapper.MapToEntity(reader);
-            User manager = _userMapper.MapToEntity(reader, columnNamePrefix: columnNamePrefix == null ? $"{columnNamePrefix}_building_manager" : "building_manager");
+            User manager = _userMapper.MapToEntity(
+                reader,
+                columnNamePrefix: columnNamePrefix == null ? $"{columnNamePrefix}_building_manager" : "building_manager"
+            );
 
             long id = reader.GetInt64(reader.GetOrdinalPrefixed("address_id", columnNamePrefix));
             int floorCount = reader.GetInt32(reader.GetOrdinalPrefixed("floor_count", columnNamePrefix));
