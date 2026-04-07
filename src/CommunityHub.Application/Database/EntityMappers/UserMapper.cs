@@ -1,9 +1,9 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
 
-namespace CommunityHub.Application.Database.Mappers
+namespace CommunityHub.Application.Database.EntityMappers
 {
-    public class UserMapper : DatabaseEntityMapper<User>
+    public class UserMapper : EntityMapper<User>
     {
         public override User MapToEntity(IDataReader reader)
         {
