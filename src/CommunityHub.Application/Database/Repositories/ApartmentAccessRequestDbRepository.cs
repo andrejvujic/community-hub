@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Database.Mappers;
+﻿using CommunityHub.Application.Database.EntityMappers;
 using CommunityHub.Application.Domain;
 using System.Data;
 

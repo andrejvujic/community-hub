@@ -1,9 +1,9 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
 
-namespace CommunityHub.Application.Database.Mappers
+namespace CommunityHub.Application.Database.EntityMappers
 {
-    public class ApartmentMapper : DatabaseEntityMapper<Apartment>
+    public class ApartmentMapper : EntityMapper<Apartment>
     {
         public override Apartment MapToEntity(IDataReader reader)
         {

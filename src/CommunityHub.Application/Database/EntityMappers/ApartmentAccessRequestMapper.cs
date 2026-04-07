@@ -3,9 +3,9 @@ using System.Data;
 using System.Security.Principal;
 using System.Xml.Linq;
 
-namespace CommunityHub.Application.Database.Mappers
+namespace CommunityHub.Application.Database.EntityMappers
 {
-    public class ApartmentAccessRequestMapper : DatabaseEntityMapper<ApartmentAccessRequest>
+    public class ApartmentAccessRequestMapper : EntityMapper<ApartmentAccessRequest>
     {
 
         private readonly UserMapper _userMapper = new UserMapper();
