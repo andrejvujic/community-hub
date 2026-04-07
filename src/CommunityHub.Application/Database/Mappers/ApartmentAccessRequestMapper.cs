@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace CommunityHub.Application.Database.Mappers
 {
-    public class ApartmentAccessRequestMapper : Mapper<ApartmentAccessRequest>
+    public class ApartmentAccessRequestMapper : DatabaseEntityMapper<ApartmentAccessRequest>
     {
 
         private readonly UserMapper _userMapper = new UserMapper();
@@ -34,7 +34,7 @@ namespace CommunityHub.Application.Database.Mappers
             );
         }
 
-        public override Dictionary<string, object?> MapToDictionary(ApartmentAccessRequest entity)
+        public override Dictionary<string, object?> MapToQueryParameters(ApartmentAccessRequest entity)
         {
             return new Dictionary<string, object?>
             {

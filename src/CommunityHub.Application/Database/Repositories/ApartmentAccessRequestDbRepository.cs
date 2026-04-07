@@ -5,7 +5,7 @@ namespace CommunityHub.Application.Database.Repositories
 {
     public class ApartmentAccessRequestDbRepository
     {
-        private readonly ApartmentAccessRequestMapper _mapper = new ApartmentAccessRequestMapper();
+        private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new ApartmentAccessRequestMapper();
         public List<ApartmentAccessRequest> GetByApplicantId(long id)
         {
             var query = PostgresQuery.Create(
@@ -20,7 +20,7 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE r.applicant_id = @id"
             )
             .AddParameter("id", id);
-            return query.ExecuteReader(_mapper);
+            return query.ExecuteReader(_apartmentAccessRequestMapper);
         }
     }
 }

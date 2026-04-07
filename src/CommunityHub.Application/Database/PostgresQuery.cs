@@ -44,7 +44,7 @@ namespace CommunityHub.Application.Database
             return command;
         }
 
-        public List<T> ExecuteReader<T>(Mapper<T> mapper) where T : class
+        public List<T> ExecuteReader<T>(DatabaseEntityMapper<T> mapper) where T : class
         {
             List<T> entities = new List<T>();
             ExecuteReader(reader => entities.Add(mapper.MapToEntity(reader)));

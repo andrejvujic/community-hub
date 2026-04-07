@@ -3,7 +3,7 @@ using System.Data;
 
 namespace CommunityHub.Application.Database.Mappers
 {
-    public class ApartmentMapper : Mapper<Apartment>
+    public class ApartmentMapper : DatabaseEntityMapper<Apartment>
     {
         public override Apartment MapToEntity(IDataReader reader)
         {
@@ -13,7 +13,7 @@ namespace CommunityHub.Application.Database.Mappers
             return new Apartment(id, number, floorNumber);
         }
 
-        public override Dictionary<string, object?> MapToDictionary(Apartment entity)
+        public override Dictionary<string, object?> MapToQueryParameters(Apartment entity)
         {
             return new Dictionary<string, object?>
             {

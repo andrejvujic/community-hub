@@ -3,7 +3,7 @@ using System.Data;
 
 namespace CommunityHub.Application.Database.Mappers
 {
-    public class UserMapper : Mapper<User>
+    public class UserMapper : DatabaseEntityMapper<User>
     {
         public override User MapToEntity(IDataReader reader)
         {
@@ -16,7 +16,7 @@ namespace CommunityHub.Application.Database.Mappers
             return new User(id, username, password, name, surname, role);
         }
 
-        public override Dictionary<string, object?> MapToDictionary(User entity)
+        public override Dictionary<string, object?> MapToQueryParameters(User entity)
         {
             return new Dictionary<string, object?>
             {
