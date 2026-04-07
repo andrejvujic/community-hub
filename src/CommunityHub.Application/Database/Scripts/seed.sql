@@ -75,7 +75,7 @@ INSERT INTO neighborhoods (id, name, description, budget, city_id, coordinator_i
 INSERT INTO streets (id, name, city_id) VALUES
 (1,  'Njegoševa',                    1),
 (2,  'Jurija Gagarina',              1),
-(3,  'Bulevar oslobođenja',          2),
+(3,  'Bulevar Oslobođenja',          2),
 (4,  'Vožda Karađorđa',              3),
 (5,  'Grada Sirena',                 4),
 (6,  'Bulevar kralja Aleksandra',    1),
