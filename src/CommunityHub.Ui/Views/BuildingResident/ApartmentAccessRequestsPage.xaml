@@ -34,9 +34,16 @@
 
                                     <StackPanel Grid.Column="0">
                                         <TextBlock
-                                            Text="Kornelija Stankovića 36"
                                             FontSize="18"
-                                            FontWeight="Bold"/>
+                                            FontWeight="Bold">
+
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Apartment.Building.Address.Street.Name"/>
+                                                    <Binding Path="Apartment.Building.Address.StreetNumber"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
 
                                         <Separator Opacity="0" Height="2"/>
 
@@ -111,7 +118,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="Moji zahtjevi" FontSize="18"/>
+                    <Label Grid.Row="0" Content="Moji zahtjevi" FontSize="20"/>
                     <Separator Grid.Row="1"/>
                 </Grid>
                 
