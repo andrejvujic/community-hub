@@ -9,11 +9,10 @@
         public List<Image> Images { get; private set; } = new List<Image>();
 
         public Building(
-            long id,
             int floorCount,
             User manager,
-            Address address
-
+            Address address,
+            long id = 0
         )
         {
             Id = id;
@@ -22,15 +21,23 @@
             Address = address;
         }
 
-        public Building(
-            int floorCount,
-            User manager,
-            Address address
+        public Building CopyWith(
+            long? id = null,
+            int? floorCount = null,
+            User? manager = null,
+            Address? address = null,
+            List<Image>? images = null
         )
         {
-            FloorCount = floorCount;
-            Manager = manager;
-            Address = address;
+            return new Building(
+                floorCount ?? FloorCount,
+                manager ?? Manager,
+                address ?? Address,
+                id ?? Id
+            )
+            {
+                Images = images ?? Images
+            };
         }
     }
 }

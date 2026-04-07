@@ -4,11 +4,20 @@
     {
         public long Id { get; private set; }
         public string Name { get; private set; }
-
         public City(long id, string name)
         {
             Id = id;
             Name = name;
+        }
+        public City CopyWith(
+            long? id = null,
+            string? name = null
+        )
+        {
+            return new City(
+                id ?? Id,
+                name ?? Name
+            );
         }
     }
 }
