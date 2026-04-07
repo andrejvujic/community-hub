@@ -16,5 +16,22 @@
             Side = side;
             Street = street;
         }
+
+        public StreetSection CopyWith(
+            long? id = null,
+            int? startNumber = null,
+            int? endNumber = null,
+            ParityType? side = null,
+            Street? street = null
+        )
+        {
+            return new StreetSection(
+                startNumber ?? StartNumber,
+                endNumber ?? EndNumber,
+                side ?? Side,
+                street ?? Street,
+                id ?? Id
+            );
+        }
     }
 }
