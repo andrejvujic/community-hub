@@ -9,5 +9,16 @@
             Id = id;
             Name = name;
         }
+
+        public Street CopyWith(
+            long? id = null,
+            string? name = null
+        )
+        {
+            return new Street(
+                id ?? Id,
+                name ?? Name
+            );
+        }
     }
 }

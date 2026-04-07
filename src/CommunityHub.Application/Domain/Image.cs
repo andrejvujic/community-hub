@@ -9,5 +9,16 @@
             Id = id;
             Path = path;
         }
+
+        public Image CopyWith(
+            long? id = null,
+            string? path = null
+        )
+        {
+            return new Image(
+                id ?? Id,
+                path ?? Path
+            );
+        }
     }
 }

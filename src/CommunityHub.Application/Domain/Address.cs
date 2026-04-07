@@ -17,6 +17,25 @@
             Neighborhood = neighborhood;
             City = city;
             Country = country;
-        }   
+        }
+
+        public Address CopyWith(
+            long? id = null,
+            Street? street = null,
+            string? streetNumber = null,
+            string? neighborhood = null,
+            City? city = null,
+            Country? country = null
+        )
+        {
+            return new Address(
+                id ?? Id,
+                street ?? Street,
+                streetNumber ?? StreetNumber,
+                neighborhood ?? Neighborhood,
+                city ?? City,
+                country ?? Country
+            );
+        }
     }
 }
