@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Database.EntityMappers;
 using CommunityHub.Application.Domain;
 using System.Data;
+using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories
 {
@@ -12,7 +13,7 @@ namespace CommunityHub.Application.Database.Repositories
             var query = PostgresQuery.Create(
                 @"SELECT
                 r.id as request_id, r.status, r.comment, r.creation_date,
-                u.id as user_id, u.username, u.password, u.name, u.surname, u.user_role,
+                u.id as applicant_user_id, u.username as applicant_username, u.password as applicant_password, u.name as applicant_name, u.surname as applicant_surname, u.user_role as applicant_user_role,
                 a.id as apartment_id, a.apartment_number, a.floor_number
                 FROM apartment_access_requests r
                 INNER JOIN users u ON r.applicant_id = u.id
