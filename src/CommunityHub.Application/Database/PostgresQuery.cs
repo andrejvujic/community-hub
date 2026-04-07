@@ -1,6 +1,4 @@
-﻿using CommunityHub.Application.Database.Mappers;
-using System.Data;
-using System.Xml.Linq;
+﻿using System.Data;
 
 namespace CommunityHub.Application.Database
 {
@@ -42,13 +40,6 @@ namespace CommunityHub.Application.Database
             }
 
             return command;
-        }
-
-        public List<T> ExecuteReader<T>(DatabaseEntityMapper<T> mapper) where T : class
-        {
-            List<T> entities = new List<T>();
-            ExecuteReader(reader => entities.Add(mapper.MapToEntity(reader)));
-            return entities;
         }
 
         public void ExecuteReader(Action<IDataReader> callback)

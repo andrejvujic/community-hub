@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mappers;
 using CommunityHub.Application.Domain;
+using System.Data;
 
 namespace CommunityHub.Application.Database.Repositories
 {
@@ -20,7 +21,14 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE r.applicant_id = @id"
             )
             .AddParameter("id", id);
-            return query.ExecuteReader(_apartmentAccessRequestMapper);
+
+            List<ApartmentAccessRequest> requests = new List<ApartmentAccessRequest>();
+            query.ExecuteReader(
+                    reader => requests.Add(
+                        _apartmentAccessRequestMapper.MapToEntity(reader)
+                    )
+            );
+            return requests;
         }
     }
 }
