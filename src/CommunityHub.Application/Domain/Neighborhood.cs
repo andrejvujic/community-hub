@@ -31,5 +31,28 @@
             streetSections = streetSections ?? new List<StreetSection>();
             Images = images ?? new List<Image>();
         }
+
+        public Neighborhood CopyWith(
+            long? id = null,
+            string? name = null,
+            string? description = null,
+            int? budget = null,
+            City? city = null,
+            User? coordinator = null,
+            List<StreetSection>? streetSections = null,
+            List<Image>? images = null
+        )
+        {
+            return new Neighborhood(
+                name ?? Name,
+                description ?? Description,
+                budget ?? Budget,
+                city ?? City,
+                coordinator ?? Coordinator,
+                id ?? Id,
+                streetSections ?? StreetSections,
+                images ?? Images
+            );
+        }
     }
 }
