@@ -5,9 +5,6 @@ namespace CommunityHub.Application.Database.Mappers
 {
     public class UserMapper : Mapper<User>
     {
-        private UserMapper() { }
-        public static UserMapper Instance => new UserMapper();
-
         public override User MapToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("user_id"));

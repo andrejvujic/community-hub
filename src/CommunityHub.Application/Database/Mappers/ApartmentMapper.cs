@@ -5,10 +5,6 @@ namespace CommunityHub.Application.Database.Mappers
 {
     public class ApartmentMapper : Mapper<Apartment>
     {
-        private ApartmentMapper() { }
-        
-        public static ApartmentMapper Instance { get => new ApartmentMapper(); }
-
         public override Apartment MapToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("apartment_id"));

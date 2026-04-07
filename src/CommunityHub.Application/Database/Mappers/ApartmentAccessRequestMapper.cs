@@ -7,11 +7,9 @@ namespace CommunityHub.Application.Database.Mappers
 {
     public class ApartmentAccessRequestMapper : Mapper<ApartmentAccessRequest>
     {
-        private ApartmentAccessRequestMapper() { }
-        public static ApartmentAccessRequestMapper Instance => new ApartmentAccessRequestMapper();
 
-        private readonly UserMapper _userMapper = UserMapper.Instance;
-        private readonly ApartmentMapper _apartmentMapper = ApartmentMapper.Instance;
+        private readonly UserMapper _userMapper = new UserMapper();
+        private readonly ApartmentMapper _apartmentMapper = new ApartmentMapper();
 
         public override ApartmentAccessRequest MapToEntity(IDataReader reader)
         {
