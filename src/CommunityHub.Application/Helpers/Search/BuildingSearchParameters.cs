@@ -23,6 +23,8 @@ namespace CommunityHub.Application.Helpers.Search
             Neighborhood = neighborhood ?? string.Empty;
         }
 
+        public static BuildingSearchParameters Empty() => new BuildingSearchParameters();
+
         public Dictionary<string, object?> ToQueryParameters()
         {
             return new Dictionary<string, object?>

@@ -10,6 +10,8 @@
             Name = name ?? string.Empty;
         }
 
+        public static CountrySearchParameters Empty() => new CountrySearchParameters();
+
         public Dictionary<string, object?> ToQueryParameters()
         {
             return new Dictionary<string, object?>
