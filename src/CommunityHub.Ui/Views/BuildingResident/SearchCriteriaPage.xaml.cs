@@ -10,22 +10,22 @@ namespace CommunityHub.Ui.Views.BuildingResident
 {
     public partial class SearchCriteriaPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
-        private readonly Action<BuildingSearchParameters> _onSearchParametersChanged;
+        private readonly Action<BuildingSearchParameters> _onSearchParametersApplied;
         public Country? Country { get; private set; }
         public City? City { get; private set; }
 
-        public string StreetText { get; set; } = string.Empty;
-        public string NeighborhoodText { get; set; } = string.Empty;
+        public string StreetName { get; set; } = string.Empty;
+        public string Neighborhood { get; set; } = string.Empty;
 
         public SearchCriteriaPage(
-            Action<BuildingSearchParameters> onSearchParametersChanged,
+            Action<BuildingSearchParameters> onSearchParametersApplied,
             BuildingSearchParameters? initialSearchParameters = null
         )
         {
             InitializeComponent();
             DataContext = this;
 
-            _onSearchParametersChanged = onSearchParametersChanged;
+            _onSearchParametersApplied = onSearchParametersApplied;
             ApplyInitialSearchParameters(initialSearchParameters);
             UpdateCityFieldOverlayVisibility();
         }
@@ -35,8 +35,8 @@ namespace CommunityHub.Ui.Views.BuildingResident
             if (initialSearchParameters == null) return;
             City = initialSearchParameters.City;
             Country = initialSearchParameters.Country;
-            StreetText = initialSearchParameters.StreetText;
-            NeighborhoodText = initialSearchParameters.NeighborhoodText;
+            StreetName = initialSearchParameters.StreetName;
+            Neighborhood = initialSearchParameters.Neighborhood;
         } 
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -78,14 +78,14 @@ namespace CommunityHub.Ui.Views.BuildingResident
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void PerformSearchButton_Click(object sender, RoutedEventArgs e)
+        private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            _onSearchParametersChanged.Invoke(
+            _onSearchParametersApplied.Invoke(
                 new BuildingSearchParameters(
                     country: Country,
                     city: City,
-                    streetText: StreetText,
-                    neighborhoodText: NeighborhoodText
+                    streetName: StreetName,
+                    neighborhood: Neighborhood
                 )
             );
             Pop();

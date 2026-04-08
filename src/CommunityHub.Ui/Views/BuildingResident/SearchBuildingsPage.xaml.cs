@@ -32,12 +32,12 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void SearchButton_Click(object sender, MouseButtonEventArgs e)
             => Push(
                 new SearchCriteriaPage(
-                        OnSearchParametersChanged,
+                        OnSearchParametersApplied,
                         initialSearchParameters: _searchParameters
                     )
                );
         
-        private void OnSearchParametersChanged(BuildingSearchParameters searchParameters)
+        private void OnSearchParametersApplied(BuildingSearchParameters searchParameters)
         {
             _searchParameters = searchParameters;
             UpdateSearchResults();
