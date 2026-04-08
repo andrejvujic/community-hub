@@ -15,7 +15,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="Moje zgrade" FontSize="18"/>
+            <Label Grid.Row="0" Content="Moje zgrade" FontSize="20"/>
             <Separator Grid.Row="1"/>
         </Grid>
 

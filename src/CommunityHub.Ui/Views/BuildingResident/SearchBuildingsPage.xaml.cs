@@ -23,7 +23,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             _userId = userId;
             _repository = new BuildingRepository();
-            UpdateSearchResults();
+            RefreshSearchResults();
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -39,10 +39,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void OnSearchParametersChanged(BuildingSearchParameters searchParameters)
         {
             _currentSearchParameters = searchParameters;
-            UpdateSearchResults();
+            RefreshSearchResults();
         }
 
-        private void UpdateSearchResults()
+        private void RefreshSearchResults()
         {
             MainContent.Visibility = Visibility.Hidden;
             EmptyContent.Visibility = Visibility.Hidden;
