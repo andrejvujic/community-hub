@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories;
 
@@ -20,5 +21,21 @@ public class CityDbRepository
         List<City> cities = new List<City>();
         query.ExecuteReader(reader => cities.Add(_cityMapper.MapToEntity(reader)));
         return cities;
+    }
+
+    public List<City> Search(CountrySearchParameters searchParameters)
+    {
+        var query = PostgresQuery.Create(
+            @"SELECT
+            id AS city_id,
+            name AS city_name
+            FROM cities
+            WHERE name ILIKE '%' || @city_name || '%'"
+        )
+        .ExtendParameters(searchParameters.ToQueryParameters());
+
+        List<City> results = new List<City>();
+        query.ExecuteReader((reader) => results.Add(_cityMapper.MapToEntity(reader)));
+        return results;
     }
 }
