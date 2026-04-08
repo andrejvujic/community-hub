@@ -22,5 +22,22 @@ namespace CommunityHub.Application.Domain
             CreationDate = creationDate;
             Comment = comment;
         }
+
+        public NeighborhoodAccessRequest CopyWith(
+            Citizen? citizen = null,
+            Neighborhood? neighborhood = null,
+            Status? status = null,
+            DateTime? creationDate = null,
+            string? comment = null
+        )
+        {
+            return new NeighborhoodAccessRequest(
+                citizen ?? Citizen,
+                neighborhood ?? Neighborhood,
+                status ?? Status,
+                creationDate ?? CreationDate,
+                comment ?? Comment
+            );
+        }
     }
 }
