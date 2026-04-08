@@ -12,7 +12,7 @@ namespace CommunityHub.Application.Database.EntityMappers
             Address address = _addressMapper.MapToEntity(reader);
             User manager = _userMapper.MapToEntity(
                 reader,
-                columnNamePrefix: columnNamePrefix == null ? $"{columnNamePrefix}_building_manager" : "building_manager"
+                columnNamePrefix: columnNamePrefix == null ? "building_manager" : $"{columnNamePrefix}_building_manager"
             );
 
             long id = reader.GetInt64(reader.GetOrdinalPrefixed("address_id", columnNamePrefix));
