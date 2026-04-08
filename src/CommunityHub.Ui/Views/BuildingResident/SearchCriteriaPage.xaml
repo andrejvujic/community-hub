@@ -84,28 +84,31 @@
 
                 <Label Content="Grad" FontSize="18" Grid.Row="3"/>
 
-                <Border
-                    Grid.Row="4" 
-                    Background="#dedede"
-                    BorderBrush="Gray"
-                    BorderThickness="1">
-                    <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCityButton_Click">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                <Grid Grid.Row="4">
+                    <Border
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCityButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Label VerticalContentAlignment="Center" Content="{Binding SelectedCityText}" FontSize="18" Grid.Column="0" Padding="4"/>
-                        <TextBlock
-                        Grid.Column="1"
-                        Text="&#xf178;"
-                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                        VerticalAlignment="Center"
-                        FontSize="24"
-                        Margin="4,4,8,4"
-                        Padding="0"/>
-                    </Grid>
-                </Border>
+                            <Label VerticalContentAlignment="Center" Content="{Binding SelectedCityText}" FontSize="18" Grid.Column="0" Padding="4"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid x:Name="CityFieldOverlay" Background="#dedede" Opacity="0.7"/>
+                </Grid>
 
                 <Label Content="Ulica" FontSize="18" Grid.Row="6"/>
                 <TextBox Height="48" FontSize="16" Text="{Binding StreetText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalContentAlignment="Center" Padding="4" Grid.Row="7"/>

@@ -27,6 +27,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             _onSearchParametersChanged = onSearchParametersChanged;
             ApplyInitialSearchParameters(initialSearchParameters);
+            UpdateCityFieldOverlayVisibility();
         }
 
         private void ApplyInitialSearchParameters(BuildingSearchParameters? initialSearchParameters)
@@ -48,6 +49,8 @@ namespace CommunityHub.Ui.Views.BuildingResident
             Country = country;
             OnPropertyChanged(nameof(Country));
             OnPropertyChanged(nameof(SelectedCountryText));
+
+            UpdateCityFieldOverlayVisibility();
         }
 
         public string SelectedCountryText { get => Country == null ? "Izaberite..." : Country.Name; }
@@ -83,5 +86,8 @@ namespace CommunityHub.Ui.Views.BuildingResident
             );
             Pop();
         }
+
+        private void UpdateCityFieldOverlayVisibility()
+            => CityFieldOverlay.Visibility = Country == null ? Visibility.Visible : Visibility.Hidden;
     }
 }
