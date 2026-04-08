@@ -1,8 +1,6 @@
 ﻿using CommunityHub.Application.Database.EntityMappers;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
-using System.Data;
-using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories
 {

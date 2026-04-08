@@ -1,7 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
-using System.Security.Principal;
-using System.Xml.Linq;
 
 namespace CommunityHub.Application.Database.EntityMappers
 {

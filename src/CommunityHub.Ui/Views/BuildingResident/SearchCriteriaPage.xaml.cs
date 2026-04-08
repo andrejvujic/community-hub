@@ -2,7 +2,6 @@
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 

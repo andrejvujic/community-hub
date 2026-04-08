@@ -9,9 +9,6 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    /// <summary>
-    /// Interaction logic for PickCountry.xaml
-    /// </summary>
     public partial class SelectCountryPage : MainNavigatorConsumerPage
     {
         private readonly CountryDbRepository _repository;
@@ -51,9 +48,9 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void LoadSearchResults()
         {
-            var searchResultCountries = _repository.Search(GetSearchParameters());
+            var countries = _repository.Search(GetSearchParameters());
             Countries.Clear();
-            foreach (var country in searchResultCountries)
+            foreach (var country in countries)
                 Countries.Add(country);
         }
 

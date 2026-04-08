@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-
 namespace CommunityHub.Ui.Views.BuildingResident
 {
     public partial class MainWindow : Window, IMainNavigatorHost
