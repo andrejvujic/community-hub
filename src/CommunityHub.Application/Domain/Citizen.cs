@@ -19,5 +19,28 @@ namespace CommunityHub.Application.Domain
             Address = address;
             Membership = membership;
         }
+
+        public Citizen CopyWith(
+            long? id = null,
+            string? username = null,
+            string? password = null,
+            string? name = null,
+            string? surname = null,
+            Role? role = null,
+            Address? address = null,
+            NeighborhoodMembership? membership = null
+        )
+        {
+            return new Citizen(
+                id ?? Id,
+                username ?? Username,
+                password ?? Password,
+                name ?? Name,
+                surname ?? Surname,
+                role ?? Role,
+                address ?? Address,
+                membership ?? Membership
+            );
+        }
     }
 }
