@@ -46,8 +46,8 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE
                 (country.id = @country_id OR @country_id = 0) AND
                 (city.id = @city_id OR @city_id = 0) AND
-                (street.name ILIKE '%' || @street_text || '%') AND
-                (address.neighborhood ILIKE '%' || @neighborhood_text || '%')
+                (street.name ILIKE '%' || @street_name || '%') AND
+                (address.neighborhood ILIKE '%' || @neighborhood || '%')
                 "
             ) 
             .ExtendParameters(searchParameters.ToQueryParameters());

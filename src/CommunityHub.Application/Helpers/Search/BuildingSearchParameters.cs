@@ -7,23 +7,21 @@ namespace CommunityHub.Application.Helpers.Search
     {
         public Country? Country { get; }
         public City? City { get; }
-        public string StreetText { get; } = string.Empty;
-        public string NeighborhoodText { get; } = string.Empty;
+        public string StreetName { get; } = string.Empty;
+        public string Neighborhood { get; } = string.Empty;
 
         public BuildingSearchParameters(
             Country? country = null,
             City? city = null,
-            string? streetText = null,
-            string? neighborhoodText = null
+            string? streetName = null,
+            string? neighborhood = null
         )
         {
             Country = country;
             City = city;
-            StreetText = streetText ?? string.Empty;
-            NeighborhoodText = neighborhoodText ?? string.Empty;
+            StreetName = streetName ?? string.Empty;
+            Neighborhood = neighborhood ?? string.Empty;
         }
-
-        public static BuildingSearchParameters Default() => new BuildingSearchParameters();
 
         public Dictionary<string, object?> ToQueryParameters()
         {
@@ -31,8 +29,8 @@ namespace CommunityHub.Application.Helpers.Search
             {
                 { "country_id", Country == null ? 0 : Country.Id },
                 { "city_id", City == null ? 0 : City.Id },
-                { "street_text", StreetText },
-                { "neighborhood_text", NeighborhoodText }
+                { "street_name", StreetName },
+                { "neighborhood", Neighborhood }
             };
         }
     }
