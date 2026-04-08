@@ -51,14 +51,40 @@
             <Grid x:Name="MainContent" Visibility="Hidden" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Content="Rezultati pretrage" FontSize="20"/>
-                <Separator Grid.Row="1"/>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,8,0,0">
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" Content="{Binding Buildings.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
+                        <Button
+                            x:Name="ResetSearchButton"
+                            Content="Poništi pretragu"
+                            Height="48"
+                            Padding="8"
+                            Grid.Column="2"
+                            FontSize="18"
+                            Click="ResetSearchButton_Click"
+                        />
+                    </Grid>
+                    
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <ScrollViewer x:Name="BuildingsScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     <ItemsControl x:Name="BuildingsItemsControl" ItemsSource="{Binding Buildings}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

@@ -42,16 +42,25 @@ namespace CommunityHub.Ui.Views.BuildingResident
             RefreshSearchResults();
         }
 
+        private void FetchSearchResults()
+        {
+            var searchResultBuildings = _repository.Search(_currentSearchParameters ?? BuildingSearchParameters.Default());
+            Buildings.Clear();
+            foreach (var building in searchResultBuildings)
+                Buildings.Add(building);
+        }   
+
         private void RefreshSearchResults()
         {
+            BuildingsScrollViewer.ScrollToTop();
+            ResetSearchButton.Visibility = Visibility.Visible;
             MainContent.Visibility = Visibility.Hidden;
             EmptyContent.Visibility = Visibility.Hidden;
 
-            Buildings.Clear();
-            var searchResultBuildings = _repository.Search(_currentSearchParameters ?? BuildingSearchParameters.Default());
+            FetchSearchResults();
 
-            foreach (var building in searchResultBuildings)
-                Buildings.Add(building);
+            if (_currentSearchParameters == null)
+                ResetSearchButton.Visibility = Visibility.Hidden;
 
             if (Buildings.Count > 0) {
                 MainContent.Visibility = Visibility.Visible;
@@ -59,6 +68,12 @@ namespace CommunityHub.Ui.Views.BuildingResident
             }
 
             EmptyContent.Visibility = Visibility.Visible;
+        }
+
+        private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            _currentSearchParameters = null;
+            RefreshSearchResults();
         }
     }
 }
