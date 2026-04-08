@@ -50,6 +50,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
             OnPropertyChanged(nameof(Country));
             OnPropertyChanged(nameof(SelectedCountryText));
 
+            City = null; // Reset city selection when country selection changes.
+            OnPropertyChanged(nameof(City));
+            OnPropertyChanged(nameof(SelectedCityText));
+
             UpdateCityFieldOverlayVisibility();
         }
 
@@ -87,6 +91,9 @@ namespace CommunityHub.Ui.Views.BuildingResident
             Pop();
         }
 
+        // City selection should only be possible after selecting a country.
+        // If no country is selected, an overlay is shown over the city selection field
+        // which makes it unclickable.
         private void UpdateCityFieldOverlayVisibility()
             => CityFieldOverlay.Visibility = Country == null ? Visibility.Visible : Visibility.Hidden;
     }
