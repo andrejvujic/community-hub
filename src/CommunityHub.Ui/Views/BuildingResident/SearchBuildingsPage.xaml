@@ -33,6 +33,13 @@
                     VerticalAlignment="Center"/>
             </Grid>
 
+            <Grid Grid.Column="1">
+                <TextBlock
+                    Text="Pretraživanje zgrada"
+                    FontSize="20"
+                    VerticalAlignment="Center"/>
+            </Grid>
+
             <Grid
                 Grid.Column="2"
                 MouseLeftButtonDown="SearchButton_Click"
@@ -76,7 +83,7 @@
                             Height="48"
                             Padding="8"
                             Grid.Column="2"
-                            FontSize="18"
+                            FontSize="16"
                             Click="ResetSearchButton_Click"
                         />
                     </Grid>
@@ -166,8 +173,8 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="0" FontSize="14" Content="Prikaži detalje"/>
-                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="2" FontSize="14" Content="Pridruži se"/>
+                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="0" FontSize="16" Content="Prikaži detalje"/>
+                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="2" FontSize="16" Content="Pridruži se"/>
                                         </Grid>
 
                                     </Grid>
@@ -186,11 +193,36 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="0" Content="Rezultati pretrage" FontSize="20"/>
-                        <Separator Grid.Row="1"/>
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Content="{Binding Buildings.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
+                                <Button
+                                    Content="Poništi pretragu"
+                                    Height="48"
+                                    Padding="8"
+                                    Grid.Column="2"
+                                    FontSize="16"
+                                    Click="ResetSearchButton_Click"
+                                />
+                            </Grid>
+
+                            <Separator Grid.Row="2"/>
+                        </Grid>
                     </Grid>
 
-                    <StackPanel Margin="32, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label Content="Nema rezultata" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                              Text="Ne postoji nijedna zgrada koja odgovara zadanom kriterijumu pretrage. Provjerite zadani kriterijum i pokušajte ponovo."
