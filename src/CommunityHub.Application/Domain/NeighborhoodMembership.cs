@@ -12,5 +12,18 @@ namespace CommunityHub.Application.Domain
             AcceptanceDate = acceptanceDate;
             Neighborhood = neighborhood;
         }
+
+        public NeighborhoodMembership CopyWith(
+            long? id = null,
+            DateTime? acceptanceDate = null,
+            Neighborhood? neighborhood = null
+        )
+        {
+            return new NeighborhoodMembership(
+                id ?? Id,
+                acceptanceDate ?? AcceptanceDate,
+                neighborhood ?? Neighborhood
+            );
+        }
     }
 }
