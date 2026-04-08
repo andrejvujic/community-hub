@@ -13,7 +13,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
     {
         private readonly long _userId;
         private readonly BuildingRepository _repository;
-        private BuildingSearchParameters? _currentSearchParameters;
+        private BuildingSearchParameters? _searchParameters;
         public ObservableCollection<Building> Buildings { get; } = new ObservableCollection<Building>();
 
         public SearchBuildingsPage(long userId)
@@ -23,7 +23,8 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             _userId = userId;
             _repository = new BuildingRepository();
-            RefreshSearchResults();
+
+            UpdateSearchResults();
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -32,35 +33,33 @@ namespace CommunityHub.Ui.Views.BuildingResident
             => Push(
                 new SearchCriteriaPage(
                         OnSearchParametersChanged,
-                        initialSearchParameters: _currentSearchParameters
+                        initialSearchParameters: _searchParameters
                     )
                );
         
         private void OnSearchParametersChanged(BuildingSearchParameters searchParameters)
         {
-            _currentSearchParameters = searchParameters;
-            RefreshSearchResults();
+            _searchParameters = searchParameters;
+            UpdateSearchResults();
         }
 
-        private void FetchSearchResults()
+        private void LoadSearchResults()
         {
-            var searchResultBuildings = _repository.Search(_currentSearchParameters ?? BuildingSearchParameters.Default());
+            var buildings = _repository.Search(_searchParameters ?? BuildingSearchParameters.Empty());
             Buildings.Clear();
-            foreach (var building in searchResultBuildings)
+            foreach (var building in buildings)
                 Buildings.Add(building);
         }   
 
-        private void RefreshSearchResults()
+        private void UpdateSearchResults()
         {
             BuildingsScrollViewer.ScrollToTop();
-            ResetSearchButton.Visibility = Visibility.Visible;
+            ResetSearchButton.Visibility = _searchParameters == null ? Visibility.Hidden : Visibility.Visible;
+
             MainContent.Visibility = Visibility.Hidden;
             EmptyContent.Visibility = Visibility.Hidden;
 
-            FetchSearchResults();
-
-            if (_currentSearchParameters == null)
-                ResetSearchButton.Visibility = Visibility.Hidden;
+            LoadSearchResults();
 
             if (Buildings.Count > 0) {
                 MainContent.Visibility = Visibility.Visible;
@@ -72,8 +71,8 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            _currentSearchParameters = null;
-            RefreshSearchResults();
+            _searchParameters = null;
+            UpdateSearchResults();
         }
     }
 }
