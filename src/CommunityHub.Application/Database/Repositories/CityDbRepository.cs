@@ -23,7 +23,7 @@ public class CityDbRepository
         return cities;
     }
 
-    public List<City> Search(CountrySearchParameters searchParameters)
+    public List<City> Search(CitySearchParameters searchParameters)
     {
         var query = PostgresQuery.Create(
             @"SELECT
