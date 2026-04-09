@@ -184,8 +184,22 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="0" FontSize="16" Content="Prikaži detalje"/>
-                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="2" FontSize="16" Content="Pridruži se"/>
+                                            <Button
+                                                Background="#ffffff"
+                                                Height="48"
+                                                Padding="8"
+                                                Grid.Column="0" 
+                                                FontSize="16"
+                                                Content="Prikaži detalje"
+                                                Click="ShowBuildingDetails_Click"/>
+
+                                            <Button
+                                                Background="#ffffff"
+                                                Height="48"
+                                                Padding="8"
+                                                Grid.Column="2"
+                                                FontSize="16"
+                                                Content="Pridruži se"/>
                                         </Grid>
 
                                     </Grid>
