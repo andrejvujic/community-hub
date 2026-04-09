@@ -82,6 +82,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             if (city == SelectedCity)
             {
+                // If the selected city is clicked again, it should be deselcted.
                 SelectedCity = null;
                 OnPropertyChanged(nameof(SelectedCity));
 
