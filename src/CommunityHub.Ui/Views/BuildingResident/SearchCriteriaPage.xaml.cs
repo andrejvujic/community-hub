@@ -61,10 +61,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void SelectCityButton_Click(object sender, MouseButtonEventArgs e)
         {
             if (Country == null) return;
-            Push(new SelectCityPage(Country, OnCitySelected));
+            Push(new SelectCityPage(Country, OnCitySelected, initiallySelectedCity: City));
         }
 
-        private void OnCitySelected(City city)
+        private void OnCitySelected(City? city)
         {
             City = city;
             OnPropertyChanged(nameof(City));
@@ -72,10 +72,6 @@ namespace CommunityHub.Ui.Views.BuildingResident
         }
 
         public string SelectedCityText { get => City == null ? "Izaberite..." : City.Name; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
@@ -95,5 +91,9 @@ namespace CommunityHub.Ui.Views.BuildingResident
         // which makes it unclickable.
         private void UpdateCityFieldOverlayVisibility()
             => CityFieldOverlay.Visibility = Country == null ? Visibility.Visible : Visibility.Hidden;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

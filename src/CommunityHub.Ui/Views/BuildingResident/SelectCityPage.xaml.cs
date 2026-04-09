@@ -3,23 +3,29 @@ using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    public partial class SelectCityPage : MainNavigatorConsumerPage
+    public partial class SelectCityPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly CityDbRepository _repository;
         private readonly Country _selectedCountry;
-        private readonly Action<City> _onCitySelected;
+        private readonly Action<City?> _onCitySelected;
+        public City? SelectedCity { get; private set; }
 
         public ObservableCollection<City> Cities { get; } = new ObservableCollection<City>();
 
         public string SearchText { get; set; } = string.Empty;
         private CitySearchParameters GetSearchParameters() => new CitySearchParameters(SearchText);
 
-        public SelectCityPage(Country selectedCountry, Action<City> onCitySelected)
+        public SelectCityPage(
+            Country selectedCountry,
+            Action<City?> onCitySelected,
+            City? initiallySelectedCity = null
+        )
         {
             InitializeComponent();
             DataContext = this;
@@ -27,6 +33,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             _repository = new CityDbRepository();
             _selectedCountry = selectedCountry;
             _onCitySelected = onCitySelected;
+            SelectedCity = initiallySelectedCity;
 
             UpdateSearchResults();
         }
@@ -70,11 +77,24 @@ namespace CommunityHub.Ui.Views.BuildingResident
             var grid = sender as Grid;
             if (grid == null) return;
 
-            var selectedCity = grid.DataContext as City;
-            if (selectedCity == null) return;
+            var city = grid.DataContext as City;
+            if (city == null) return;
 
-            _onCitySelected.Invoke(selectedCity);
+            if (city == SelectedCity)
+            {
+                SelectedCity = null;
+                OnPropertyChanged(nameof(SelectedCity));
+
+                _onCitySelected.Invoke(null);
+                return;
+            }
+
+            _onCitySelected.Invoke(city);
             Pop();
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
