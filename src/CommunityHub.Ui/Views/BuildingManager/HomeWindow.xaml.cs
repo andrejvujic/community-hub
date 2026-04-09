@@ -12,14 +12,65 @@ using System.Windows.Shapes;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
-    /// <summary>
-    /// Interaction logic for HomeWindow.xaml
-    /// </summary>
     public partial class HomeWindow : Window
     {
-        public HomeWindow()
+        private readonly long _userId;
+        private Grid? _selected = null;
+        public HomeWindow(long userId)
         {
             InitializeComponent();
+            _userId = userId;
+            HomeFrame.Navigate(new HomePage(_userId));
+        }
+        private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            var clicked = sender as Grid;
+            if (clicked == null)
+                return;
+
+            if (!string.IsNullOrEmpty(clicked.Name) && clicked.Name.StartsWith("NavBar_"))
+            {
+                SetNavBarItemBackground(clicked);
+            }
+
+            string? tag = clicked.Tag?.ToString();
+            switch (tag)
+            {
+                case "Home":
+                    HomeFrame.Navigate(new HomePage(_userId));
+                    break;
+                case "Assembly":
+                    break;
+                case "MyBuildings":
+                    break;
+                case "Registration":
+                    HomeFrame.Navigate(new RegistrationPage(_userId));
+                    break;
+                case "Help":
+                    break;
+                case "LogOut":
+                    LogOutMessageBox();
+                    break;
+            }
+        }
+        private void LogOutMessageBox()
+        {
+            MessageBoxResult result = MessageBox.Show("Da li ste sigurni da želite da se odjavite?", "Pažnja", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                LogInForm logInForm = new LogInForm();
+                logInForm.Show();
+                this.Close();
+            }
+        }
+
+        private void SetNavBarItemBackground(Grid item)
+        {
+            if (_selected != null)
+                _selected.ClearValue(BackgroundProperty);
+            _selected = item;
+            _selected.Background = Brushes.LightGray;
         }
     }
 }
