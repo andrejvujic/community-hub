@@ -60,7 +60,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             // After a country is selected the state of the city selection
             // changes from disabled to enabled.
-            OnPropertyChanged(nameof(CitySelectionDisabled));
+            OnPropertyChanged(nameof(IsCitySelectionDisabled));
         }
 
         public string SelectedCountryText { get => Country == null ? "Izaberite..." : Country.Name; }
@@ -102,7 +102,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
         // City selection should only be possible after selecting a country.
         // If no country is selected, an overlay is shown over the city selection field
         // which makes it unclickable.
-        public bool CitySelectionDisabled => Country == null;
+        public bool IsCitySelectionDisabled => Country == null;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
