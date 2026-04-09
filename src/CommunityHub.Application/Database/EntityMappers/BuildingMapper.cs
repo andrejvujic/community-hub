@@ -7,20 +7,17 @@ namespace CommunityHub.Application.Database.EntityMappers
     {
         private readonly AddressMapper _addressMapper = new AddressMapper();
         private readonly UserMapper _userMapper = new UserMapper();
-        public override Building MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override Building MapToEntity(IDataReader reader)
         {
-            Address address = _addressMapper.MapToEntity(reader, columnNamePrefix: columnNamePrefix);
-            User manager = _userMapper.MapToEntity(
-                reader,
-                columnNamePrefix: columnNamePrefix == null ? "building_manager" : $"{columnNamePrefix}_building_manager"
-            );
+            Address address = _addressMapper.MapToEntity(reader);
+            User manager = _userMapper.MapToEntity(reader.WithPrefix("building_manager"));
 
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("building_id", columnNamePrefix));
-            int floorCount = reader.GetInt32(reader.GetOrdinalPrefixed("floor_count", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinal("building_id"));
+            int floorCount = reader.GetInt32(reader.GetOrdinal("floor_count"));
 
             int? apartmentCount = null;
-            if (reader.HasColumn("apartment_count", columnNamePrefix: columnNamePrefix))
-                apartmentCount = reader.GetInt32(reader.GetOrdinalPrefixed("apartment_count", columnNamePrefix));
+            if (reader.HasColumn("apartment_count"))
+                apartmentCount = reader.GetInt32(reader.GetOrdinal("apartment_count"));
 
             return new Building(floorCount, apartmentCount, manager, address, id: id);
         }

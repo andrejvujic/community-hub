@@ -5,10 +5,10 @@ namespace CommunityHub.Application.Database.EntityMappers
 {
     public class CountryMapper : EntityMapper<Country>
     {
-        public override Country MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override Country MapToEntity(IDataReader reader)
         {
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("country_id", columnNamePrefix));
-            string name = reader.GetString(reader.GetOrdinalPrefixed("country_name", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinal("country_id"));
+            string name = reader.GetString(reader.GetOrdinal("country_name"));
             return new Country(id, name);
         }
 

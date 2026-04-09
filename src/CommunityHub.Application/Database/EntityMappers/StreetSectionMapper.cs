@@ -7,14 +7,14 @@ namespace CommunityHub.Application.Database.EntityMappers
     {
         private readonly StreetMapper _streetMapper = new StreetMapper();
 
-        public override StreetSection MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override StreetSection MapToEntity(IDataReader reader)
         {
-            Street street = _streetMapper.MapToEntity(reader, columnNamePrefix: "section_street");
+            Street street = _streetMapper.MapToEntity(reader.WithPrefix("section_street"));
 
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("street_section_id", columnNamePrefix));
-            int startNumber = reader.GetInt32(reader.GetOrdinalPrefixed("start_number", columnNamePrefix));
-            int endNumber = reader.GetInt32(reader.GetOrdinalPrefixed("end_number", columnNamePrefix));         
-            ParityType side = (ParityType)reader.GetValue(reader.GetOrdinalPrefixed("side", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinal("street_section_id"));
+            int startNumber = reader.GetInt32(reader.GetOrdinal("start_number"));
+            int endNumber = reader.GetInt32(reader.GetOrdinal("end_number"));         
+            ParityType side = (ParityType)reader.GetValue(reader.GetOrdinal("side"));
 
             return new StreetSection(startNumber, endNumber, side, street, id: id);
         }

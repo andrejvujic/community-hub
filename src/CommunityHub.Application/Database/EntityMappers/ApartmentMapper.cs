@@ -6,13 +6,13 @@ namespace CommunityHub.Application.Database.EntityMappers
     public class ApartmentMapper : EntityMapper<Apartment>
     {
         private readonly BuildingMapper _buildingMapper = new BuildingMapper();
-        public override Apartment MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override Apartment MapToEntity(IDataReader reader)
         {
-            Building building = _buildingMapper.MapToEntity(reader, columnNamePrefix);
+            Building building = _buildingMapper.MapToEntity(reader);
 
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("apartment_id", columnNamePrefix));
-            int number = reader.GetInt32(reader.GetOrdinalPrefixed("apartment_number", columnNamePrefix));
-            int floorNumber = reader.GetInt32(reader.GetOrdinalPrefixed("floor_number", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinal("apartment_id"));
+            int number = reader.GetInt32(reader.GetOrdinal("apartment_number"));
+            int floorNumber = reader.GetInt32(reader.GetOrdinal("floor_number"));
 
             return new Apartment(id, number, floorNumber, building);
         }

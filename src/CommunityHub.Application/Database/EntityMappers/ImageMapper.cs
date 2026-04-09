@@ -5,20 +5,20 @@ namespace CommunityHub.Application.Database.EntityMappers
 {
     public class ImageMapper : EntityMapper<Image>
     {
-        public override Image? MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override Image? MapToEntity(IDataReader reader)
         {
-            int idColumnIndex = reader.GetOrdinalPrefixed("image_id", columnNamePrefix);
+            int idColumnIndex = reader.GetOrdinal("image_id");
             if (reader.IsDBNull(idColumnIndex))
                 return null;
 
             long id = reader.GetInt64(idColumnIndex);
 
-            string path = reader.GetString(reader.GetOrdinalPrefixed("path", columnNamePrefix));
+            string path = reader.GetString(reader.GetOrdinal("path"));
 
-            int buildingIdColumnIndex = reader.GetOrdinalPrefixed("image_building_id", columnNamePrefix);
+            int buildingIdColumnIndex = reader.GetOrdinal("image_building_id");
             long? buildingId = reader.IsDBNull(buildingIdColumnIndex) ? null : reader.GetInt64(buildingIdColumnIndex);
 
-            int neighborhoodIdColumnIndex = reader.GetOrdinalPrefixed("image_neighborhood_id", columnNamePrefix);
+            int neighborhoodIdColumnIndex = reader.GetOrdinal("image_neighborhood_id");
             long? neighborhoodId = reader.IsDBNull(neighborhoodIdColumnIndex) ? null : reader.GetInt64(neighborhoodIdColumnIndex);
 
             return new Image(id, path, buildingId, neighborhoodId);
