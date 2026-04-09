@@ -43,13 +43,14 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void SelectCountryButton_Click(object sender, MouseButtonEventArgs e)
             => Push(new SelectCountryPage(OnCountrySelected));
 
-        private void OnCountrySelected(Country country)
+        private void OnCountrySelected(Country? country)
         {
             Country = country;
             OnPropertyChanged(nameof(Country));
             OnPropertyChanged(nameof(SelectedCountryText));
 
-            City = null; // Reset city selection when country selection changes.
+            // Reset city selection when country selection changes.
+            City = null;
             OnPropertyChanged(nameof(City));
             OnPropertyChanged(nameof(SelectedCityText));
 

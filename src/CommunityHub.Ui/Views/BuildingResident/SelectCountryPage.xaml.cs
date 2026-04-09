@@ -3,29 +3,31 @@ using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    public partial class SelectCountryPage : MainNavigatorConsumerPage
+    public partial class SelectCountryPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly CountryDbRepository _repository;
-        private readonly Action<Country> _onCountrySelected;
-
+        private readonly Action<Country?> _onCountrySelected;
+        public Country? SelectedCountry { get; private set; }
         public ObservableCollection<Country> Countries { get; } = new ObservableCollection<Country>();
 
         public string SearchText { get; set; } = string.Empty;
-        private CountrySearchParameters GetSearchParameters() => new CountrySearchParameters(SearchText);
+        private CountrySearchParameters GetSearchParameters() => new CountrySearchParameters(name: SearchText);
 
-        public SelectCountryPage(Action<Country> onCountrySelected)
+        public SelectCountryPage(Action<Country?> onCountrySelected, Country? selectedCountry = null)
         {
             InitializeComponent();
             DataContext = this;
 
             _repository = new CountryDbRepository();
             _onCountrySelected = onCountrySelected;
+            SelectedCountry = selectedCountry;
 
             UpdateSearchResults();
         }
@@ -69,11 +71,24 @@ namespace CommunityHub.Ui.Views.BuildingResident
             var grid = sender as Grid;
             if (grid == null) return;
 
-            var selectedCountry = grid.DataContext as Country;
-            if (selectedCountry == null) return;
+            var country = grid.DataContext as Country;
+            if (country == null) return;
 
-            _onCountrySelected.Invoke(selectedCountry);
+            if (country == SelectedCountry)
+            {
+                // If the selected city is clicked again, it should be deselcted.
+                SelectedCountry = null;
+                OnPropertyChanged(nameof(SelectedCountry));
+                _onCountrySelected.Invoke(null);
+                return;
+            }
+
+            _onCountrySelected.Invoke(country);
             Pop();
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
