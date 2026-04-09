@@ -68,10 +68,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void CountryItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null) return;
+            var element = sender as Grid;
+            if (element == null) return;
 
-            var country = grid.DataContext as Country;
+            var country = element.DataContext as Country;
             if (country == null) return;
 
             if (country == SelectedCountry)

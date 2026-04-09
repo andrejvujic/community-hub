@@ -77,10 +77,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void CityItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid == null) return;
+            var element = sender as FrameworkElement;
+            if (element == null) return;
 
-            var city = grid.DataContext as City;
+            var city = element.DataContext as City;
             if (city == null) return;
 
             if (city == SelectedCity)
