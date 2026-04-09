@@ -11,28 +11,28 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                building.id as building_id,
+                building.id AS building_id,
                 building.floor_count,
                 
-                building_manager.id as building_manager_user_id,
-                building_manager.username as building_manager_username,
-                building_manager.password as building_manager_password,
-                building_manager.name as building_manager_name,
-                building_manager.surname as building_manager_surname,
-                building_manager.user_role as building_manager_user_role,
+                building_manager.id AS building_manager_user_id,
+                building_manager.username AS building_manager_username,
+                building_manager.pASsword AS building_manager_pASsword,
+                building_manager.name AS building_manager_name,
+                building_manager.surname AS building_manager_surname,
+                building_manager.user_role AS building_manager_user_role,
                 
-                address.id as address_id,
+                address.id AS address_id,
                 address.street_number,
                 address.neighborhood,
                 
-                street.id as street_id,
-                street.name as street_name,
+                street.id AS street_id,
+                street.name AS street_name,
 
-                city.id as city_id,
-                city.name as city_name,
+                city.id AS city_id,
+                city.name AS city_name,
 
-                country.id as country_id,
-                country.name as country_name
+                country.id AS country_id,
+                country.name AS country_name
 
                 FROM buildings building
                 INNER JOIN users building_manager ON building.building_manager_id = building_manager.id
@@ -42,8 +42,8 @@ namespace CommunityHub.Application.Database.Repositories
                 INNER JOIN countries country ON city.country_id = country.id
 
                 WHERE
-                (country.id = @country_id OR @country_id = 0) AND
-                (city.id = @city_id OR @city_id = 0) AND
+                (country.id = @country_id OR @country_id IS NULL) AND
+                (city.id = @city_id OR @city_id IS NULL) AND
                 (street.name ILIKE '%' || @street_name || '%') AND
                 (address.neighborhood ILIKE '%' || @neighborhood || '%')
                 "

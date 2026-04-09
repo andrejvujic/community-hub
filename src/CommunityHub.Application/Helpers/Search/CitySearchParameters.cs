@@ -20,7 +20,7 @@ namespace CommunityHub.Application.Helpers.Search
         {
             return new Dictionary<string, object?>
             {
-                { "country_id", Country == null ? 0 : Country.Id },
+                { "country_id", Country?.Id },
                 { "city_name", Name},
             };
         }
