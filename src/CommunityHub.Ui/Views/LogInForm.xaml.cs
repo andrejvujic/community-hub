@@ -46,7 +46,7 @@ public partial class LogInForm : Window
         switch (role)
         {
             case Role.BuildingManager:
-                var buildingManagerHomeWindow = new BuildingManager.HomeWindow();
+                var buildingManagerHomeWindow = new BuildingManager.HomeWindow(userId.Value);
                 buildingManagerHomeWindow.Show();
                 break;
             case Role.BuildingResident:
