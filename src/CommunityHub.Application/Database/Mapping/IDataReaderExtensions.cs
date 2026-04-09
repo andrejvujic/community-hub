@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace CommunityHub.Application.Database
+namespace CommunityHub.Application.Database.Mapping
 {
     public static class IDataReaderExtensions
     {

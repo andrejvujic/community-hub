@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace CommunityHub.Application.Database.EntityMappers
+namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public abstract class EntityMapper<T> where T : class
     {

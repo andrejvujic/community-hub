@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using CommunityHub.Application.Domain;
 
-namespace CommunityHub.Application.Database.EntityMappers
+namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class StreetSectionMapper : EntityMapper<StreetSection>
     {

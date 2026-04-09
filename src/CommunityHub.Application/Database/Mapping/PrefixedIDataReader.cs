@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CommunityHub.Application.Database
+namespace CommunityHub.Application.Database.Mapping
 {
     public class PrefixedIDataReader : IDataReader
     {

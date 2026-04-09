@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
 
-namespace CommunityHub.Application.Database.EntityMappers
+namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class AddressMapper : EntityMapper<Address>
     {
