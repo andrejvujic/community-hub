@@ -15,7 +15,7 @@ namespace CommunityHub.Application.Database.EntityMappers
                 columnNamePrefix: columnNamePrefix == null ? "building_manager" : $"{columnNamePrefix}_building_manager"
             );
 
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("address_id", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinalPrefixed("building_id", columnNamePrefix));
             int floorCount = reader.GetInt32(reader.GetOrdinalPrefixed("floor_count", columnNamePrefix));
 
             int? apartmentCount = null;
