@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Diagnostics;
 
 namespace CommunityHub.Application.Database
 {
@@ -11,6 +10,17 @@ namespace CommunityHub.Application.Database
                 return reader.GetOrdinal(columnName);
 
             return reader.GetOrdinal($"{columnNamePrefix}_{columnName}");
+        }
+
+        public static bool HasColumn(this IDataReader reader, string columnName, string? columnNamePrefix)
+        {
+            string columnNameWithPrefix = columnNamePrefix == null ? columnName : $"{columnNamePrefix}_{columnName}";
+
+            for (int i = 0; i < reader.FieldCount; i++)
+                if (reader.GetName(i).Equals(columnNameWithPrefix, StringComparison.OrdinalIgnoreCase))
+                    return true;
+                
+            return false;
         }
     }
 }
