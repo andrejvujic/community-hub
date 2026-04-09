@@ -143,7 +143,24 @@
                                             VerticalAlignment="Center"
                                             FontSize="24"
                                             Margin="0,0,8,0"
-                                            Padding="0"/>
+                                            Padding="0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                                    <Binding />
+                                                                    <Binding Path="SelectedCity" RelativeSource="{RelativeSource AncestorType=Page}" />
+                                                                </MultiBinding>
+                                                            </DataTrigger.Binding>
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
