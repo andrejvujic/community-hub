@@ -17,7 +17,10 @@ namespace CommunityHub.Application.Database.EntityMappers
 
             long id = reader.GetInt64(reader.GetOrdinalPrefixed("address_id", columnNamePrefix));
             int floorCount = reader.GetInt32(reader.GetOrdinalPrefixed("floor_count", columnNamePrefix));
-            int apartmentCount = reader.GetInt32(reader.GetOrdinalPrefixed("apartment_count", columnNamePrefix));
+
+            int? apartmentCount = null;
+            if (reader.HasColumn("apartment_count", columnNamePrefix))
+                apartmentCount = reader.GetInt32(reader.GetOrdinalPrefixed("apartment_count", columnNamePrefix));
 
             return new Building(floorCount, apartmentCount, manager, address, id: id);
         }
