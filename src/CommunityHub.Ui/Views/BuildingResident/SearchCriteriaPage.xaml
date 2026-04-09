@@ -110,7 +110,7 @@
                         </Grid>
                     </Border>
 
-                    <Grid Visibility="{Binding CitySelectionDisabled, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#dedede" Opacity="0.7"/>
+                    <Grid Visibility="{Binding IsCitySelectionDisabled, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#dedede" Opacity="0.7"/>
                 </Grid>
 
                 <Label Content="Ulica" FontSize="18" Grid.Row="6"/>
