@@ -70,7 +70,7 @@ namespace CommunityHub.Application.Database.Repositories
             
             Dictionary<long, Building> buildings = new Dictionary<long, Building>();
             
-            query.ExecuteReader((reader) => {
+            query.ExecuteReader(reader => {
                 Building newBuilding = _buildingMapper.MapToEntity(reader);
                 
                 if (!buildings.TryGetValue(newBuilding.Id, out Building? existingBuilding))

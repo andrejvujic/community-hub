@@ -37,7 +37,7 @@ public class CityDbRepository
         .ExtendParameters(searchParameters.ToQueryParameters());
 
         List<City> results = new List<City>();
-        query.ExecuteReader((reader) => results.Add(_cityMapper.MapToEntity(reader)));
+        query.ExecuteReader(reader => results.Add(_cityMapper.MapToEntity(reader)));
         return results;
     }
 }
