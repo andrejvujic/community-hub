@@ -110,7 +110,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
                                             <TextBlock
                                                 Text="&#xf00c;"
                                                 FontSize="20"

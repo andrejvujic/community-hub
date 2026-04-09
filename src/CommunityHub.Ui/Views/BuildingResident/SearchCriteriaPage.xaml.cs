@@ -41,7 +41,12 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
         private void SelectCountryButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(new SelectCountryPage(OnCountrySelected));
+            => Push(
+                    new SelectCountryPage(
+                        OnCountrySelected,
+                        selectedCountry: Country
+                    )
+                );
 
         private void OnCountrySelected(Country? country)
         {
@@ -62,7 +67,13 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void SelectCityButton_Click(object sender, MouseButtonEventArgs e)
         {
             if (Country == null) return;
-            Push(new SelectCityPage(OnCitySelected, Country, selectedCity: City));
+            Push(
+                new SelectCityPage(
+                        OnCitySelected,
+                        Country,
+                        selectedCity: City
+                    )
+                );
         }
 
         private void OnCitySelected(City? city)
