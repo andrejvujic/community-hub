@@ -39,7 +39,9 @@ namespace CommunityHub.Application.Database.Repositories
                 image.id AS image_id,
                 image.building_id AS image_building_id,
                 image.neighborhood_id AS image_neighborhood_id,
-                image.path AS path
+                image.path AS path,
+
+                COUNT(DISTINCT apartment.id) AS apartment_count
 
                 FROM buildings building
                 INNER JOIN users building_manager ON building.building_manager_id = building_manager.id
@@ -47,6 +49,7 @@ namespace CommunityHub.Application.Database.Repositories
                 INNER JOIN streets street ON address.street_id = street.id
                 INNER JOIN cities city ON address.city_id = city.id
                 INNER JOIN countries country ON city.country_id = country.id
+                INNER JOIN apartments apartment ON apartment.building_id = building.id
                 LEFT JOIN images image ON image.building_id = building.id
 
                 WHERE
@@ -54,10 +57,17 @@ namespace CommunityHub.Application.Database.Repositories
                 (city.id = @city_id OR @city_id IS NULL) AND
                 (street.name ILIKE '%' || @street_name || '%') AND
                 (address.neighborhood ILIKE '%' || @neighborhood || '%')
-                "
+
+                GROUP BY 
+                building.id, building.floor_count, building_manager.id, building_manager.username, building_manager.password, building_manager.name, building_manager.surname, building_manager.user_role,
+                address.id, address.street_number, address.neighborhood,
+                street.id, street.name,
+                city.id, city.name,
+                country.id, country.name,
+                image.id, image.building_id, image.neighborhood_id, image.path"
             ) 
             .ExtendParameters(searchParameters.ToQueryParameters());
-
+            
             Dictionary<long, Building> buildings = new Dictionary<long, Building>();
             
             query.ExecuteReader((reader) => {
