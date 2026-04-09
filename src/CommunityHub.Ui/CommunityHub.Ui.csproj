@@ -12,6 +12,9 @@
     <None Remove="CommunityHub.Ui.csproj.Backup.tmp" />
     <None Remove="Resources\Fonts\GoogleSans.ttf" />
     <None Remove="Resources\Fonts\Icons.otf" />
+    <None Remove="Resources\Images\building_0.jpg" />
+    <None Remove="Resources\Images\building_1.jpg" />
+    <None Remove="Resources\Images\building_2.jpg" />
   </ItemGroup>
 
   <ItemGroup>
