@@ -24,18 +24,19 @@ namespace CommunityHub.Ui.Views.BuildingResident
         );
 
         public SelectCityPage(
-            Country selectedCountry,
             Action<City?> onCitySelected,
-            City? initiallySelectedCity = null
+            Country selectedCountry,
+            City? selectedCity = null
         )
         {
             InitializeComponent();
             DataContext = this;
 
             _repository = new CityDbRepository();
-            _selectedCountry = selectedCountry;
+
             _onCitySelected = onCitySelected;
-            SelectedCity = initiallySelectedCity;
+            _selectedCountry = selectedCountry;
+            SelectedCity = selectedCity;
 
             UpdateSearchResults();
         }

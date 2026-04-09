@@ -61,7 +61,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
         private void SelectCityButton_Click(object sender, MouseButtonEventArgs e)
         {
             if (Country == null) return;
-            Push(new SelectCityPage(Country, OnCitySelected, initiallySelectedCity: City));
+            Push(new SelectCityPage(OnCitySelected, Country, selectedCity: City));
         }
 
         private void OnCitySelected(City? city)
