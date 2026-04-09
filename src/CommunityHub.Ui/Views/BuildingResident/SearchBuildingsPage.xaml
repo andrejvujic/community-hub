@@ -8,6 +8,9 @@
       mc:Ignorable="d" 
       Title="Pretraživanje zgrada"
       FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
@@ -103,12 +106,20 @@
                                      BorderThickness="1">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="128"/>
+                                            <RowDefinition Height="Auto"/> <!-- size of cover image: 144 -->
                                             <RowDefinition Height="8"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="8"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
+
+                                        <Image
+                                            Grid.Row="0"
+                                            Source="{Binding CoverImage.Path}"
+                                            Height="144"
+                                            Stretch="UniformToFill"
+                                            Visibility="{Binding HasImages, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        />
 
                                         <StackPanel Grid.Row="2">
                                             <TextBlock
