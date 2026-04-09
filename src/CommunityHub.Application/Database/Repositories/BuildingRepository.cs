@@ -70,15 +70,18 @@ namespace CommunityHub.Application.Database.Repositories
             
             Dictionary<long, Building> buildings = new Dictionary<long, Building>();
             
-            query.ExecuteReader((reader) => {
-                Building building = _buildingMapper.MapToEntity(reader); 
-                if (!buildings.ContainsKey(building.Id)) 
-                    buildings.Add(building.Id, building);
+            query.ExecuteReader(reader => {
+                Building newBuilding = _buildingMapper.MapToEntity(reader);
+                
+                if (!buildings.TryGetValue(newBuilding.Id, out Building? existingBuilding))
+                {
+                    buildings.Add(newBuilding.Id, newBuilding);
+                    existingBuilding = newBuilding;
+                }
 
                 Image? image = _imageMapper.MapToEntity(reader);
                 if (image == null) return;
-
-                buildings[building.Id].Images.Add(image);
+                existingBuilding.Images.Add(image);
             });
 
 
