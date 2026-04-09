@@ -5,10 +5,10 @@ namespace CommunityHub.Application.Database.EntityMappers
 {
     public class CityMapper : EntityMapper<City>
     {
-        public override City MapToEntity(IDataReader reader, string? columnPrefix = null)
+        public override City MapToEntity(IDataReader reader, string? columnNamePrefix = null)
         {
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("city_id", columnPrefix));
-            string name = reader.GetString(reader.GetOrdinalPrefixed("city_name", columnPrefix));
+            long id = reader.GetInt64(reader.GetOrdinalPrefixed("city_id", columnNamePrefix));
+            string name = reader.GetString(reader.GetOrdinalPrefixed("city_name", columnNamePrefix));
             return new City(id, name);
         }
 

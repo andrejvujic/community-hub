@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
       mc:Ignorable="d" 
-      Title="Zgrade">
+      Title="Zgrade"
+      FontFamily="{StaticResource AppFontFamily}">
     <Grid>
         <Grid Margin="8">
             <Grid.RowDefinitions>
@@ -15,7 +16,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="Moje zgrade" FontSize="18"/>
+            <Label Grid.Row="0" Content="Moje zgrade" FontSize="20"/>
             <Separator Grid.Row="1"/>
         </Grid>
 

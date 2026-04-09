@@ -21,11 +21,11 @@ namespace CommunityHub.Ui.Views.BuildingResident
             _userId = userId;
             _repository = new ApartmentAccessRequestDbRepository();
 
-            GetRequests();
+            LoadRequests();
         }
 
 
-        public void GetRequests()
+        public void LoadRequests()
         {
             var requests = _repository.GetByApplicantId(_userId);
             foreach (var request in requests)

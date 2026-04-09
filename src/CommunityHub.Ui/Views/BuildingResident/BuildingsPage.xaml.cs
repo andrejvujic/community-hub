@@ -13,8 +13,6 @@ namespace CommunityHub.Ui.Views.BuildingResident
         }
 
         private void CreateAppartmentAccessRequestButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Push(new SearchBuildingsPage(_userId));
-        }
+            => Push(new SearchBuildingsPage(_userId));
     }
 }

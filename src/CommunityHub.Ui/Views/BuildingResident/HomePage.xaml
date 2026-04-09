@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
         mc:Ignorable="d"
-        Title="Pocetna"
+        Title="Početna"
         FontFamily="{StaticResource AppFontFamily}">
     <Grid>
         <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
