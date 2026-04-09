@@ -26,7 +26,6 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             _onSearchParametersApplied = onSearchParametersApplied;
             ApplyInitialSearchParameters(initialSearchParameters);
-            UpdateCityFieldOverlayVisibility();
         }
 
         private void ApplyInitialSearchParameters(BuildingSearchParameters? initialSearchParameters)
@@ -59,7 +58,9 @@ namespace CommunityHub.Ui.Views.BuildingResident
             OnPropertyChanged(nameof(City));
             OnPropertyChanged(nameof(SelectedCityText));
 
-            UpdateCityFieldOverlayVisibility();
+            // After a country is selected the state of the city selection
+            // changes from disabled to enabled.
+            OnPropertyChanged(nameof(CitySelectionDisabled));
         }
 
         public string SelectedCountryText { get => Country == null ? "Izaberite..." : Country.Name; }
@@ -101,8 +102,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
         // City selection should only be possible after selecting a country.
         // If no country is selected, an overlay is shown over the city selection field
         // which makes it unclickable.
-        private void UpdateCityFieldOverlayVisibility()
-            => CityFieldOverlay.Visibility = Country == null ? Visibility.Visible : Visibility.Hidden;
+        public bool CitySelectionDisabled => Country == null;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

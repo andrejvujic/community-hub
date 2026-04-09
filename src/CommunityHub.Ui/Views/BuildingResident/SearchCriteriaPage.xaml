@@ -8,6 +8,9 @@
       mc:Ignorable="d" 
       Title="Kriterijum za pretraživanje"
       FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -107,7 +110,7 @@
                         </Grid>
                     </Border>
 
-                    <Grid x:Name="CityFieldOverlay" Background="#dedede" Opacity="0.7"/>
+                    <Grid Visibility="{Binding CitySelectionDisabled, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#dedede" Opacity="0.7"/>
                 </Grid>
 
                 <Label Content="Ulica" FontSize="18" Grid.Row="6"/>
