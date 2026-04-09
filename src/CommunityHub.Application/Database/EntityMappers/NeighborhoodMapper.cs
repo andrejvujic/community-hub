@@ -8,15 +8,15 @@ namespace CommunityHub.Application.Database.EntityMappers
         private readonly CityMapper _cityMapper = new CityMapper();
         private readonly UserMapper _userMapper = new UserMapper();
 
-        public override Neighborhood MapToEntity(IDataReader reader, string? columnPrefix = null)
+        public override Neighborhood MapToEntity(IDataReader reader, string? columnNamePrefix = null)
         {
             City city = _cityMapper.MapToEntity(reader);
-            User coordinator = _userMapper.MapToEntity(reader, columnPrefix: "coordinator");
+            User coordinator = _userMapper.MapToEntity(reader, columnNamePrefix: "coordinator");
 
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("neighborhood_id", columnPrefix));
-            string name = reader.GetString(reader.GetOrdinalPrefixed("neighborhood_name", columnPrefix));
-            string description = reader.GetString(reader.GetOrdinalPrefixed("description", columnPrefix));
-            int budget = reader.GetInt32(reader.GetOrdinalPrefixed("budget", columnPrefix));
+            long id = reader.GetInt64(reader.GetOrdinalPrefixed("neighborhood_id", columnNamePrefix));
+            string name = reader.GetString(reader.GetOrdinalPrefixed("neighborhood_name", columnNamePrefix));
+            string description = reader.GetString(reader.GetOrdinalPrefixed("description", columnNamePrefix));
+            int budget = reader.GetInt32(reader.GetOrdinalPrefixed("budget", columnNamePrefix));
 
             return new Neighborhood(name, description, budget, city, coordinator, id: id);
         }
