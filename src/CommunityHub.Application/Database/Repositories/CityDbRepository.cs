@@ -30,7 +30,9 @@ public class CityDbRepository
             id AS city_id,
             name AS city_name
             FROM cities
-            WHERE name ILIKE '%' || @city_name || '%'"
+            WHERE
+            name ILIKE '%' || @city_name || '%' AND
+            (country_id = @country_id OR @country_id = 0)"
         )
         .ExtendParameters(searchParameters.ToQueryParameters());
 

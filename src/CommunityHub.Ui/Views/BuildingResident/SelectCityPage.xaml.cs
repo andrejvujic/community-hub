@@ -12,14 +12,16 @@ namespace CommunityHub.Ui.Views.BuildingResident
     public partial class SelectCityPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly CityDbRepository _repository;
-        private readonly Country _selectedCountry;
         private readonly Action<City?> _onCitySelected;
+        private readonly Country _selectedCountry;
         public City? SelectedCity { get; private set; }
-
         public ObservableCollection<City> Cities { get; } = new ObservableCollection<City>();
 
         public string SearchText { get; set; } = string.Empty;
-        private CitySearchParameters GetSearchParameters() => new CitySearchParameters(SearchText);
+        private CitySearchParameters GetSearchParameters() => new CitySearchParameters(
+            country: _selectedCountry,
+            name: SearchText
+        );
 
         public SelectCityPage(
             Country selectedCountry,
