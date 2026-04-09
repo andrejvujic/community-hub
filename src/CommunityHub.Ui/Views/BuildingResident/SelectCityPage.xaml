@@ -141,9 +141,7 @@
                                             Text="&#xf178;"
                                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                             VerticalAlignment="Center"
-                                            FontSize="24"
-                                            Margin="0,0,8,0"
-                                            Padding="0">
+                                            FontSize="24">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Visible"/>
