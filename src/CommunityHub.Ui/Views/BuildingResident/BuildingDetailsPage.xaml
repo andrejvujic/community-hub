@@ -77,7 +77,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="8"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="36"/>
                 </Grid.RowDefinitions>
 
                 <Image
@@ -215,7 +215,7 @@
                     Background="#dedede"
                     Height="48">
                     <TextBlock
-                        Text="{Binding Building.FloorCount, StringFormat='{}{0} spratova'}"     
+                        Text="{Binding Building.FloorCount, StringFormat='Broj spratova — {0}'}"     
                         TextAlignment="Center"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
@@ -227,7 +227,7 @@
                     Background="#dedede"
                     Height="48">
                     <TextBlock
-                        Text="{Binding Building.ApartmentCount, StringFormat='{}{0} stanova'}"     
+                        Text="{Binding Building.ApartmentCount, StringFormat='Broj stanova — {0}'}"     
                         TextAlignment="Center"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
