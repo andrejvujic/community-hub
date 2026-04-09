@@ -9,7 +9,7 @@ namespace CommunityHub.Application.Database.EntityMappers
         private readonly UserMapper _userMapper = new UserMapper();
         public override Building MapToEntity(IDataReader reader, string? columnNamePrefix = null)
         {
-            Address address = _addressMapper.MapToEntity(reader);
+            Address address = _addressMapper.MapToEntity(reader, columnNamePrefix: columnNamePrefix);
             User manager = _userMapper.MapToEntity(
                 reader,
                 columnNamePrefix: columnNamePrefix == null ? "building_manager" : $"{columnNamePrefix}_building_manager"
@@ -19,7 +19,7 @@ namespace CommunityHub.Application.Database.EntityMappers
             int floorCount = reader.GetInt32(reader.GetOrdinalPrefixed("floor_count", columnNamePrefix));
 
             int? apartmentCount = null;
-            if (reader.HasColumn("apartment_count", columnNamePrefix))
+            if (reader.HasColumn("apartment_count", columnNamePrefix: columnNamePrefix))
                 apartmentCount = reader.GetInt32(reader.GetOrdinalPrefixed("apartment_count", columnNamePrefix));
 
             return new Building(floorCount, apartmentCount, manager, address, id: id);
