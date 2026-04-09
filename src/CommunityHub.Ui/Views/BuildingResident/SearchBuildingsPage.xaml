@@ -106,8 +106,7 @@
                                      BorderThickness="1">
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/> <!-- size of cover image: 144 -->
-                                            <RowDefinition Height="8"/>
+                                            <RowDefinition Height="Auto"/> <!-- size of cover image: 144 -->                     
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="8"/>
                                             <RowDefinition Height="Auto"/>
@@ -118,10 +117,11 @@
                                             Source="{Binding CoverImage.Path}"
                                             Height="144"
                                             Stretch="UniformToFill"
+                                            Margin="0,0,0,8"
                                             Visibility="{Binding HasImages, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         />
 
-                                        <StackPanel Grid.Row="2">
+                                        <StackPanel Grid.Row="1">
                                             <TextBlock
                                                  FontSize="18"
                                                  FontWeight="Bold">
@@ -177,15 +177,29 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <Grid Grid.Row="4">
+                                        <Grid Grid.Row="3">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="8"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="0" FontSize="16" Content="Prikaži detalje"/>
-                                            <Button Background="#ffffff" Height="48" Padding="8" Grid.Column="2" FontSize="16" Content="Pridruži se"/>
+                                            <Button
+                                                Background="#ffffff"
+                                                Height="48"
+                                                Padding="8"
+                                                Grid.Column="0" 
+                                                FontSize="16"
+                                                Content="Prikaži detalje"
+                                                Click="ShowBuildingDetails_Click"/>
+
+                                            <Button
+                                                Background="#ffffff"
+                                                Height="48"
+                                                Padding="8"
+                                                Grid.Column="2"
+                                                FontSize="16"
+                                                Content="Pridruži se"/>
                                         </Grid>
 
                                     </Grid>

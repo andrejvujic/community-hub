@@ -4,6 +4,7 @@
     {
         public long Id { get;  private set; }
         public int FloorCount { get; private set; }
+        public int ApartmentCount { get; private set; }
         public User Manager {  get; private set; }
         public Address Address { get; private set; }
 
@@ -13,6 +14,7 @@
 
         public Building(
             int floorCount,
+            int apartmentCount,
             User manager,
             Address address,
             long id = 0
@@ -20,6 +22,7 @@
         {
             Id = id;
             FloorCount = floorCount;
+            ApartmentCount = apartmentCount;
             Manager = manager;
             Address = address;
         }
@@ -27,6 +30,7 @@
         public Building CopyWith(
             long? id = null,
             int? floorCount = null,
+            int? apartmentCount = null,
             User? manager = null,
             Address? address = null,
             List<Image>? images = null
@@ -34,6 +38,7 @@
         {
             return new Building(
                 floorCount ?? FloorCount,
+                apartmentCount ?? ApartmentCount,
                 manager ?? Manager,
                 address ?? Address,
                 id ?? Id

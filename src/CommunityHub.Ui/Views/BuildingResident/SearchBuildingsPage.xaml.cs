@@ -73,5 +73,16 @@ namespace CommunityHub.Ui.Views.BuildingResident
             _searchParameters = null;
             UpdateSearchResults();
         }
+
+        private void ShowBuildingDetails_Click(object sender, RoutedEventArgs e)
+        {
+            var element = sender as FrameworkElement;
+            if (element == null) return;
+
+            var building = element.DataContext as Building;
+            if (building == null) return;
+
+            Push(new BuildingDetailsPage(building));
+        }
     }
 }
