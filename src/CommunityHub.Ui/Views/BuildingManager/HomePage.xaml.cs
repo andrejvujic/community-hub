@@ -13,9 +13,6 @@ using System.Windows.Shapes;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
-    /// <summary>
-    /// Interaction logic for HomePage.xaml
-    /// </summary>
     public partial class HomePage : Page
     {
         private readonly long _userId;
