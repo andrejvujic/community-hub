@@ -6,6 +6,7 @@ namespace CommunityHub.Application.Database.Repositories;
 public class UserDbRepository
 {
     private readonly UserMapper _userMapper = new UserMapper();
+    
     public long? GetIdByCredentials(string username, string password)
     {
         var query = PostgresQuery.Create(

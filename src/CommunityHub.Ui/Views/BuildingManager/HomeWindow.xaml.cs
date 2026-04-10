@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityHub.Application.Database.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
@@ -16,6 +18,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
     {
         private readonly long _userId;
         private Grid? _selected = null;
+        private readonly UserDbRepository _userRepository = new UserDbRepository();
         public HomeWindow(long userId)
         {
             InitializeComponent();
@@ -42,6 +45,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 case "Assembly":
                     break;
                 case "MyBuildings":
+                    HomeFrame.Navigate(new MyBuildingsPage(_userId));
                     break;
                 case "Registration":
                     HomeFrame.Navigate(new RegistrationPage(_userId));
@@ -52,6 +56,15 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     LogOutMessageBox();
                     break;
             }
+        }
+        private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
+        private void SetUserName()
+        {
+            User? user = _userRepository.GetUserById(_userId);
+            if (user == null)
+                return;
+
+            userNameTextBlock.Text = $"{user.Name}";
         }
         private void LogOutMessageBox()
         {
@@ -64,13 +77,12 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 this.Close();
             }
         }
-
         private void SetNavBarItemBackground(Grid item)
         {
             if (_selected != null)
                 _selected.ClearValue(BackgroundProperty);
             _selected = item;
             _selected.Background = Brushes.LightGray;
-        }
+        }    
     }
 }

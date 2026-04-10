@@ -10,12 +10,12 @@
         public DateTime CreationDate { get; private set; }
 
         public ApartmentAccessRequest(
-            long id,
             User applicant,
             Apartment apartment,
-            string? comment,
             Status status,
-            DateTime creationDate
+            DateTime creationDate,
+            long id = 0,
+            string? comment = null
         )
         {
             Id = id;
@@ -26,5 +26,23 @@
             CreationDate = creationDate;
         }
 
+        public ApartmentAccessRequest CopyWith(
+            long? id = null,
+            User? applicant = null,
+            Apartment? apartment = null,
+            Status? status = null,
+            DateTime? creationDate = null,
+            string? comment = null
+        )
+        {
+            return new ApartmentAccessRequest(
+                applicant ?? Applicant,
+                apartment ?? Apartment,
+                status ?? Status,
+                creationDate ?? CreationDate,
+                id ?? Id,
+                comment ?? Comment
+            );
+        }
     }
 }

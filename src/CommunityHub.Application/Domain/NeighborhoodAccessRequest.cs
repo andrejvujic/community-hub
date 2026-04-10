@@ -39,5 +39,15 @@ namespace CommunityHub.Application.Domain
                 comment ?? Comment
             );
         }
+
+        public NeighborhoodAccessRequest Accept()
+        {
+            return CopyWith(status: Status.Accepted);
+        }
+
+        public NeighborhoodAccessRequest Reject()
+        {
+            return CopyWith(status: Status.Rejected);
+        }
     }
 }

@@ -70,5 +70,21 @@ namespace CommunityHub.Application.Database.Repositories
             );
             return requests;
         }
+
+        public ApartmentAccessRequest Create(ApartmentAccessRequest request)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO apartment_access_requests
+                (applicant_id, apartment_id, comment, status, creation_date)
+                VALUES
+                (@applicant_id, @apartment_id, @comment, @status, @creation_date)
+                RETURNING id"
+                ).ExtendParameters(
+                    _apartmentAccessRequestMapper.MapToQueryParameters(request)
+                );
+
+            long id = query.ExecuteScalar(value => Convert.ToInt64(value));
+            return request.CopyWith(id: id);
+        }
     }
 }

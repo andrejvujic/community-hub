@@ -8,10 +8,11 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
+
     public partial class SearchBuildingsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
-        private readonly BuildingRepository _repository;
+        private readonly BuildingDbRepository _repository;
         private BuildingSearchParameters? _searchParameters;
         public ObservableCollection<Building> Buildings { get; } = new ObservableCollection<Building>();
 
@@ -21,7 +22,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             DataContext = this;
 
             _userId = userId;
-            _repository = new BuildingRepository();
+            _repository = new BuildingDbRepository();
 
             UpdateSearchResults();
         }
@@ -74,7 +75,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             UpdateSearchResults();
         }
 
-        private void ShowBuildingDetails_Click(object sender, RoutedEventArgs e)
+        private void OpenBuildingDetailsPageButton_Click(object sender, RoutedEventArgs e)
         {
             var element = sender as FrameworkElement;
             if (element == null) return;
@@ -83,6 +84,17 @@ namespace CommunityHub.Ui.Views.BuildingResident
             if (building == null) return;
 
             Push(new BuildingDetailsPage(building));
+        }
+
+        private void OpenRequestApartmentAccessPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            var element = sender as FrameworkElement;
+            if (element == null) return;
+
+            var building = element.DataContext as Building;
+            if (building == null) return;
+
+            Push(new RequestApartmentAccessPage(_userId, building));
         }
     }
 }
