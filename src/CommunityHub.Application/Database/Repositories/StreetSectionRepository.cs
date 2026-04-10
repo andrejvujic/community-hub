@@ -24,7 +24,7 @@ namespace CommunityHub.Application.Database.Repositories
             return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
         }
 
-        public long Create(StreetSection section, long neighborhoodId)
+        public StreetSection Create(StreetSection section, long neighborhoodId)
         {
             var query = PostgresQuery.Create(
                 @"INSERT INTO street_sections 
@@ -36,7 +36,9 @@ namespace CommunityHub.Application.Database.Repositories
             .ExtendParameters(_streetSectionMapper.MapToQueryParameters(section))
             .AddParameter("neighborhood_id", neighborhoodId);
 
-            return query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            return section.CopyWith(id: generatedId);
         }
     }
 }
