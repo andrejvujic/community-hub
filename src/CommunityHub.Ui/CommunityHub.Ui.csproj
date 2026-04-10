@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Converters\**" />
+    <EmbeddedResource Remove="Converters\**" />
+    <None Remove="Converters\**" />
+    <Page Remove="Converters\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="CommunityHub.Ui.csproj.Backup.tmp" />
     <None Remove="Resources\Fonts\GoogleSans.ttf" />
     <None Remove="Resources\Fonts\Icons.otf" />
