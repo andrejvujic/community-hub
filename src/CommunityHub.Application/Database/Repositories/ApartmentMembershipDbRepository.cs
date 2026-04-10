@@ -1,21 +1,41 @@
-﻿namespace CommunityHub.Application.Database.Repositories
+﻿using CommunityHub.Application.Domain;
+
+namespace CommunityHub.Application.Database.Repositories
 {
     public class ApartmentMembershipDbRepository
     {
-        public bool IsApartmentOccupied(long buildingId, int apartmentNumber)
+        public bool IsApartmentOccupied(long apartmentId)
         {
             var query = PostgresQuery.Create(
             @"SELECT
-                membership.id AS membership_id
+                membership.id
             FROM apartment_memberships membership
             INNER JOIN apartments apartment
             ON membership.apartment_id = apartment.id
             WHERE
-                apartment.building_id = @building_id AND
-                apartment.apartment_number = @apartment_number"
+                apartment.id = @apartment_id"
             )
-            .AddParameter("building_id", buildingId)
-            .AddParameter("apartment_number", apartmentNumber);
+            .AddParameter("apartment_id", apartmentId);
+
+            return query.ExecuteScalar<bool>(membershipId => membershipId != null);
+        }
+
+        public bool IsResidentOfApartment(long residentId, long apartmentId)
+        {
+            var query = PostgresQuery.Create(
+            @"SELECT
+                membership.id
+            FROM apartment_memberships membership
+            INNER JOIN apartments apartment
+            ON membership.apartment_id = apartment.id
+            INNER JOIN users resident
+            ON membership.building_resident_id = resident.id
+            WHERE
+                apartment.id = @apartment_id AND
+                resident.id = @resident_id"
+            )
+            .AddParameter("apartment_id", apartmentId)
+            .AddParameter("resident_id", residentId);
 
             return query.ExecuteScalar<bool>(membershipId => membershipId != null);
         }
