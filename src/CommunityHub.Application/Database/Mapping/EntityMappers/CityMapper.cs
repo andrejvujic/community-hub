@@ -1,14 +1,14 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
 
-namespace CommunityHub.Application.Database.EntityMappers
+namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class CityMapper : EntityMapper<City>
     {
-        public override City MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override City MapToEntity(IDataReader reader)
         {
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("city_id", columnNamePrefix));
-            string name = reader.GetString(reader.GetOrdinalPrefixed("city_name", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinal("city_id"));
+            string name = reader.GetString(reader.GetOrdinal("city_name"));
             return new City(id, name);
         }
 

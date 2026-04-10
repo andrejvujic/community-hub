@@ -1,14 +1,14 @@
 ﻿using CommunityHub.Application.Domain;
 using System.Data;
 
-namespace CommunityHub.Application.Database.EntityMappers
+namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class StreetMapper : EntityMapper<Street>
     {
-        public override Street MapToEntity(IDataReader reader, string? columnNamePrefix = null)
+        public override Street MapToEntity(IDataReader reader)
         {
-            long id = reader.GetInt64(reader.GetOrdinalPrefixed("street_id", columnNamePrefix));
-            string name = reader.GetString(reader.GetOrdinalPrefixed("street_name", columnNamePrefix));
+            long id = reader.GetInt64(reader.GetOrdinal("street_id"));
+            string name = reader.GetString(reader.GetOrdinal("street_name"));
             return new Street(id, name);
         }
 
