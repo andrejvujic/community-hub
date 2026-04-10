@@ -22,8 +22,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             return new Dictionary<string, object?>
             {
                 { "apartment_number", entity.Number },
-                { "floor_number", entity.FloorNumber }
-                // TODO: Add building_id when Building is implemented
+                { "floor_number", entity.FloorNumber },
+                { "building_id", entity.Building.Id }
             };
         }
 

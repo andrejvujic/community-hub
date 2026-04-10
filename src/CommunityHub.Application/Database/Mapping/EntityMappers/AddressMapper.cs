@@ -25,6 +25,10 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
+                { "street_number", entity.StreetNumber },
+                { "neighborhood", entity.Neighborhood },
+                { "city_id", entity.City.Id },
+                { "street_id", entity.Street.Id }
             };
         }
     }
