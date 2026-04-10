@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
+
     public partial class SearchBuildingsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
@@ -74,7 +75,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             UpdateSearchResults();
         }
 
-        private void ShowBuildingDetailsButton_Click(object sender, RoutedEventArgs e)
+        private void OpenBuildingDetailsPageButton_Click(object sender, RoutedEventArgs e)
         {
             var element = sender as FrameworkElement;
             if (element == null) return;
@@ -85,7 +86,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             Push(new BuildingDetailsPage(building));
         }
 
-        private void CreateApartmentAccessRequestsButton_Click(object sender, RoutedEventArgs e)
+        private void OpenRequestApartmentAccessPageButton_Click(object sender, RoutedEventArgs e)
         {
             var element = sender as FrameworkElement;
             if (element == null) return;
@@ -93,7 +94,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             var building = element.DataContext as Building;
             if (building == null) return;
 
-            Push(new CreateApartmentAccessRequestPage(building));
+            Push(new RequestApartmentAccessPage(_userId, building));
         }
     }
 }

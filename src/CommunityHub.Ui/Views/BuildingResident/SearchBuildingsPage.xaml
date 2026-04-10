@@ -191,7 +191,7 @@
                                                 Grid.Column="0" 
                                                 FontSize="16"
                                                 Content="Prikaži detalje"
-                                                Click="ShowBuildingDetailsButton_Click"/>
+                                                Click="OpenBuildingDetailsPageButton_Click"/>
 
                                             <Button
                                                 Background="#ffffff"
@@ -200,7 +200,7 @@
                                                 Grid.Column="2"
                                                 FontSize="16"
                                                 Content="Pridruži se"
-                                                Click="CreateApartmentAccessRequestsButton_Click"/>
+                                                Click="OpenRequestApartmentAccessPageButton_Click"/>
                                         </Grid>
 
                                     </Grid>
