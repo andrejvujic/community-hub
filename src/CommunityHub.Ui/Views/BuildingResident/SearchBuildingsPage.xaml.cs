@@ -74,7 +74,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             UpdateSearchResults();
         }
 
-        private void ShowBuildingDetails_Click(object sender, RoutedEventArgs e)
+        private void ShowBuildingDetailsButton_Click(object sender, RoutedEventArgs e)
         {
             var element = sender as FrameworkElement;
             if (element == null) return;
@@ -83,6 +83,17 @@ namespace CommunityHub.Ui.Views.BuildingResident
             if (building == null) return;
 
             Push(new BuildingDetailsPage(building));
+        }
+
+        private void CreateApartmentAccessRequestsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var element = sender as FrameworkElement;
+            if (element == null) return;
+
+            var building = element.DataContext as Building;
+            if (building == null) return;
+
+            Push(new CreateApartmentAccessRequestPage(building));
         }
     }
 }

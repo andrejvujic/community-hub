@@ -191,7 +191,7 @@
                                                 Grid.Column="0" 
                                                 FontSize="16"
                                                 Content="Prikaži detalje"
-                                                Click="ShowBuildingDetails_Click"/>
+                                                Click="ShowBuildingDetailsButton_Click"/>
 
                                             <Button
                                                 Background="#ffffff"
@@ -199,7 +199,8 @@
                                                 Padding="8"
                                                 Grid.Column="2"
                                                 FontSize="16"
-                                                Content="Pridruži se"/>
+                                                Content="Pridruži se"
+                                                Click="CreateApartmentAccessRequestsButton_Click"/>
                                         </Grid>
 
                                     </Grid>
