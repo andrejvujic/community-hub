@@ -11,7 +11,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
     public partial class SearchBuildingsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
-        private readonly BuildingRepository _repository;
+        private readonly BuildingDbRepository _repository;
         private BuildingSearchParameters? _searchParameters;
         public ObservableCollection<Building> Buildings { get; } = new ObservableCollection<Building>();
 
@@ -21,7 +21,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             DataContext = this;
 
             _userId = userId;
-            _repository = new BuildingRepository();
+            _repository = new BuildingDbRepository();
 
             UpdateSearchResults();
         }
