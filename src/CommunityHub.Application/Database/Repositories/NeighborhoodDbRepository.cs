@@ -6,6 +6,9 @@ namespace CommunityHub.Application.Database.Repositories
     public class NeighborhoodDbRepository
     {
         private readonly NeighborhoodMapper _neighborhoodMapper = new NeighborhoodMapper();
+        private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
+        private readonly ImageDbRepository _imageRepository = new ImageDbRepository();
+
         public List<Neighborhood> GetByCoordinatorId(long id)
         {
             var query = PostgresQuery.Create(
@@ -39,6 +42,40 @@ namespace CommunityHub.Application.Database.Repositories
             query.ExecuteReader(reader => neighborhoods.Add(_neighborhoodMapper.MapToEntity(reader)));
 
             return neighborhoods;
+        }
+
+        public Neighborhood Create(Neighborhood neighborhood)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO neighborhoods 
+                (name, description, budget, city_id, coordinator_id) 
+                VALUES 
+                (@name, @description, @budget, @city_id, @coordinator_id) 
+                RETURNING id"
+            )
+            .ExtendParameters(_neighborhoodMapper.MapToQueryParameters(neighborhood));
+
+            long neighborhoodId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            List<StreetSection> savedSections = new List<StreetSection>();
+            foreach (var section in neighborhood.StreetSections)
+            {
+                var savedSection = _streetSectionRepository.Create(section, neighborhoodId);
+                savedSections.Add(savedSection);
+            }
+
+            List<Image> savedImages = new List<Image>();
+            foreach (var image in neighborhood.Images)
+            {
+                var savedImage = _imageRepository.Create(image, neighborhoodId: neighborhoodId);
+                savedImages.Add(savedImage);
+            }
+
+            return neighborhood.CopyWith(
+                id: neighborhoodId,
+                streetSections: savedSections,
+                images: savedImages
+            );
         }
     }
 }
