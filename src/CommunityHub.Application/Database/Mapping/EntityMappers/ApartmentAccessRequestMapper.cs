@@ -11,8 +11,11 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override ApartmentAccessRequest MapToEntity(IDataReader reader)
         {
-            User applicant = _userMapper.MapToEntity(reader.WithPrefix("applicant"));
-            Apartment apartment = _apartmentMapper.MapToEntity(reader);
+            User? applicant = _userMapper.MapToEntity(reader.WithPrefix("applicant"));
+            Apartment? apartment = _apartmentMapper.MapToEntity(reader);
+
+            if (applicant == null || apartment == null)
+                throw new Exception("Couldn't read ApartmentAccessRequest from database because of missing data");
 
             long id = reader.GetInt64(reader.GetOrdinal("request_id"));
             Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
@@ -23,13 +26,13 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
 
             return new ApartmentAccessRequest(
-                id,
                 applicant,
                 apartment,
-                comment,
                 status,
-                creationDate
-            );
+                creationDate,
+                id: id,
+                comment: comment
+            ); 
         }
 
         public override Dictionary<string, object?> MapToQueryParameters(ApartmentAccessRequest entity)

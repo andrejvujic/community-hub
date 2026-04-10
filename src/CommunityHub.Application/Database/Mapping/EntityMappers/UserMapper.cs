@@ -5,9 +5,12 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class UserMapper : EntityMapper<User>
     {
-        public override User MapToEntity(IDataReader reader)
+        public override User? MapToEntity(IDataReader reader)
         {
-            long id = reader.GetInt64(reader.GetOrdinal("user_id"));
+            int idColumnIndex = reader.GetOrdinal("user_id");
+            if (reader.IsDBNull(idColumnIndex)) return null;
+            long id = reader.GetInt64(idColumnIndex);
+
             string username = reader.GetString(reader.GetOrdinal("username"));
             string password = reader.GetString(reader.GetOrdinal("password"));
             string name = reader.GetString(reader.GetOrdinal("name"));
