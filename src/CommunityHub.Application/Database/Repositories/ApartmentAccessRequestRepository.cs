@@ -86,5 +86,20 @@ namespace CommunityHub.Application.Database.Repositories
             long id = query.ExecuteScalar(value => Convert.ToInt64(value));
             return request.CopyWith(id: id);
         }
+
+        public bool HasPendingRequest(long userId, long apartmentId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT request.id
+                FROM apartment_access_requests request
+                WHERE
+                    request.applicant_id = @user_id AND
+                    request.apartment_id = @apartment_id AND
+                    request.status = 'waiting'"
+            )
+            .AddParameter("user_id", userId)
+            .AddParameter("apartment_id", apartmentId);
+            return query.ExecuteScalar(requestId => requestId != null);
+        }
     }
 }
