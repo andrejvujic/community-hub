@@ -131,21 +131,7 @@
                 </CheckBox>
             </StackPanel>
 
-            <Grid Grid.Row="2" Margin="40,20,40,40">
-                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock x:Name="WelcomeTextBlock" Text="Welcome back, Hana!" FontSize="48" Margin="0,0,0,40"/>
-
-                <TextBlock x:Name="AddressTextBlock" Text="Address: Ulica Breza 27" FontSize="20" Margin="0,0,0,5"/>
-
-                <TextBlock x:Name="MembershipTextBlock" Text="Neighborhood: Liman 1&#x0a;Member since 5/4/2026" FontSize="20" />
-                <TextBlock x:Name="NoMembershipTextBlock" Text="No registered neighborhood memberships" FontSize="20" Visibility="Collapsed" />
-            </StackPanel>
-
-            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                <TextBlock x:Name="DateTextBlock" Text="Friday, 18/4/2026" FontSize="20"/>
-                <TextBlock x:Name="TimeTextBlock" Text="17:47" FontSize="20"/>
-            </StackPanel>
-        </Grid>
+            <Frame x:Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden" Margin="0" />
 
         <Border Grid.Row="3" BorderBrush="Black" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="White">
             <Grid>
@@ -155,7 +141,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="User: Hana" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusBarUserTextBlock" Grid.Column="0" Text="{Binding Name, StringFormat='User: {0}'}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="1" Text="Tab: Main Menu" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
