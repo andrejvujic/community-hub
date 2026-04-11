@@ -92,7 +92,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             if (_apartmentAccessRequestRepository.HasPendingRequest(_userId, ApartmentId.Value))
                 return AccessRequestValidationResult.PendingRequestExists;
 
-            if (_apartmentMembershipRepository.HasMembership(_userId, ApartmentId.Value))
+            if (_apartmentMembershipRepository.IsMember(_userId, ApartmentId.Value))
                 return AccessRequestValidationResult.AlreadyMember;
 
             if (_apartmentMembershipRepository.IsApartmentOccupied(ApartmentId.Value))
