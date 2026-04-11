@@ -166,6 +166,7 @@
                                                 VerticalAlignment="Bottom"
                                                 Cursor="Hand"
                                                 FontSize="16"
+                                                MouseLeftButtonDown="Details_Click"
                                                 Text="Detalji  →">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">

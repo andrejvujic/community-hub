@@ -36,5 +36,19 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 Buildings.Add(building);
             }
         }
+        private void Details_Click(object sender, MouseButtonEventArgs e)
+        {
+            var tb = sender as TextBlock;
+            if (tb == null) return;
+
+            var building = tb.DataContext as Building;
+            if (building == null) return;
+
+            var window = Window.GetWindow(this) as HomeWindow;
+            if (window != null)
+            {
+                window.HomeFrame.Navigate(new BuildingDetailsPage(_userId, building));
+            }
+        }
     }
 }

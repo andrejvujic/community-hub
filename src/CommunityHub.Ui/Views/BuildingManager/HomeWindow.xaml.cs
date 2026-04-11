@@ -43,6 +43,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     HomeFrame.Navigate(new HomePage(_userId));
                     break;
                 case "Assembly":
+                    HomeFrame.Navigate(new AssemblyPage(_userId));
                     break;
                 case "MyBuildings":
                     HomeFrame.Navigate(new MyBuildingsPage(_userId));
