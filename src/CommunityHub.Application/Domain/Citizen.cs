@@ -42,5 +42,10 @@ namespace CommunityHub.Application.Domain
                 membership ?? Membership
             );
         }
+
+        public Citizen AssignMembership(NeighborhoodMembership membership)
+        {
+            return CopyWith(membership: membership);
+        }
     }
 }
