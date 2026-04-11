@@ -24,7 +24,7 @@
                 FROM apartment_memberships membership
                 WHERE
                     membership.apartment_id = @apartment_id AND
-                    membership.building_resident_id = @user_id"
+                    membership.member_id = @user_id"
             )
             .AddParameter("apartment_id", apartmentId)
             .AddParameter("user_id", userId);
