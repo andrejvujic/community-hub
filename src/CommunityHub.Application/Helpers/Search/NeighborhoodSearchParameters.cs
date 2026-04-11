@@ -23,5 +23,34 @@ namespace CommunityHub.Application.Helpers.Search
         }
 
         public static NeighborhoodSearchParameters Empty() => new NeighborhoodSearchParameters();
+
+        public Dictionary<string, object?> ToQueryParameters()
+        {
+            var (streetName, streetNumber) = ParseAddress();
+
+            return new Dictionary<string, object?>
+            {
+                { "country_id", Country?.Id },
+                { "city_id", City?.Id },
+                { "name", Name },
+                { "street_name", streetName },
+                { "street_number", streetNumber }
+            };
+        }
+
+        private (string? StreetName, int? StreetNumber) ParseAddress()
+        {
+            if (string.IsNullOrWhiteSpace(Address))
+                return (null, null);
+
+            var parts = Address.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length > 1 && int.TryParse(parts[^1], out int parsedNumber))
+            {
+                return (string.Join(" ", parts[..^1]), parsedNumber);
+            }
+
+            return (Address.Trim(), null);
+        }
     }
 }
