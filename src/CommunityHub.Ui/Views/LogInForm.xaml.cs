@@ -54,6 +54,8 @@ public partial class LogInForm : Window
                 buildingResidentMainWindow.Show();
                 break;
             case Role.NeighborhoodCoordinator:
+                var neighborhoodCoordinatorHomeWindow = new NeighborhoodCoordinator.HomeWindow(userId.Value);
+                neighborhoodCoordinatorHomeWindow.Show();
                 break;
             case Role.Citizen:
                 var citizenHomeWindow = new Citizen.HomeWindow();
