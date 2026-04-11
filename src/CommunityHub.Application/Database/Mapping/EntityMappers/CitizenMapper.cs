@@ -13,7 +13,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             User baseUser = _userMapper.MapToEntity(reader);
             Address address = _addressMapper.MapToEntity(reader);
-            NeighborhoodMembership membership = _membershipMapper.MapToEntity(reader);
+
+            int membershipIdOrdinal = reader.GetOrdinal("membership_id");
+            NeighborhoodMembership? membership = reader.IsDBNull(membershipIdOrdinal) ? null : _membershipMapper.MapToEntity(reader);
 
             return new Citizen(
                 baseUser.Id,
@@ -32,7 +34,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             var parameters = _userMapper.MapToQueryParameters(entity);
 
             parameters.Add("address_id", entity.Address.Id);
-            parameters.Add("membership_id", entity.Membership.Id);
+            parameters.Add("membership_id", entity.Membership?.Id);
 
             return parameters;
         }

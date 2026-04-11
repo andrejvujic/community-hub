@@ -3,7 +3,7 @@ namespace CommunityHub.Application.Domain
     public class Citizen : User
     {
         public Address Address { get; private set; }
-        public NeighborhoodMembership Membership { get; private set; }
+        public NeighborhoodMembership? Membership { get; private set; }
 
         public Citizen(
             long id,
@@ -13,7 +13,7 @@ namespace CommunityHub.Application.Domain
             string surname,
             Role role,
             Address address,
-            NeighborhoodMembership membership
+            NeighborhoodMembership? membership
         ) : base(id, username, password, name, surname, role)
         {
             Address = address;
