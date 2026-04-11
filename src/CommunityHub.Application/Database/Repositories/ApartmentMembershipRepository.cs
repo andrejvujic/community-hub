@@ -18,7 +18,7 @@
             return query.ExecuteScalar<bool>(membershipId => membershipId != null);
         }
 
-        public bool IsResidentOfApartment(long residentId, long apartmentId)
+        public bool HasMembership(long userId, long apartmentId)
         {
             var query = PostgresQuery.Create(
             @"SELECT
@@ -30,10 +30,10 @@
             ON membership.building_resident_id = resident.id
             WHERE
                 apartment.id = @apartment_id AND
-                resident.id = @resident_id"
+                resident.id = @user_id"
             )
             .AddParameter("apartment_id", apartmentId)
-            .AddParameter("resident_id", residentId);
+            .AddParameter("user_id", userId);
 
             return query.ExecuteScalar<bool>(membershipId => membershipId != null);
         }
