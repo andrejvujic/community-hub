@@ -28,6 +28,19 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             InitializeComponent();
             _userRepository = new UserRepository();
             _userId = userId;
+            LoadUser();
+        }
+
+        private void LoadUser()
+        {
+            User? user = _userRepository.GetById(_userId);
+            if (user == null)
+            {
+                MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+                return;
+            }
+            _user = user;
         }
     }
 }
