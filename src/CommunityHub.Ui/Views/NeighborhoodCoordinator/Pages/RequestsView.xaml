@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages.RequestsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+        mc:Ignorable="d">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Zahtevi:" 
+                   FontSize="25" 
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Left"/>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,10" HorizontalAlignment="Right">
+            <TextBlock  Margin="10,0,10,0"
+                        VerticalAlignment="Center"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        FontSize="30"
+                        Text="&#xf002;"/>
+            <ComboBox Width="180">
+                <ComboBoxItem Content="Svi" IsSelected="True"/>
+                <ComboBoxItem Content="Prihvaćen"/>
+                <ComboBoxItem Content="Čeka odobrenje"/>
+                <ComboBoxItem Content="Odbijen"/>
+            </ComboBox>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  CanUserSortColumns="False"
+                  IsReadOnly="True">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ime" Width="*" />
+                <DataGridTextColumn Header="Prezime" Width="*" />
+                <DataGridTextColumn Header="Adresa" Width="*" />
+                <DataGridTextColumn Header="Kvart" Width="*" />
+
+                <DataGridTextColumn Header="Datum" 
+                                    Width="*"
+                                    CanUserSort="True"
+                                    SortMemberPath="Datum"/>
+
+                <DataGridTextColumn Header="Status" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+
+            <Button Margin="0,0,10,0" Padding="10,5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xf00d;"
+                               FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               Margin="0,0,5,0"/>
+                    <TextBlock Text="Odbij zahtev"/>
+                </StackPanel>
+            </Button>
+
+            <Button Padding="10,5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xf00c;"
+                               FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               Margin="0,0,5,0"/>
+                    <TextBlock Text="Prihvati zahtev"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
