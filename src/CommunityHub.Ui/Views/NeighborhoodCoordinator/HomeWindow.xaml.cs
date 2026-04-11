@@ -41,6 +41,22 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
                 return;
             }
             _user = user;
+            UserInfoTextBlock.Text = $"{_user.Name} {_user.Surname} - Koordinator kvarta";
+        }
+
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
+
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogInForm loginForm = new LogInForm();
+            loginForm.Show();
+            this.Close();
         }
     }
 }

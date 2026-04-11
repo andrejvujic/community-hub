@@ -9,6 +9,73 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
     <Grid>
+        <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
         
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="#F5F5F5"   
+                BorderBrush="#D0D0D0"
+                BorderThickness="0,0,0,2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock  Margin="10,0,10,0"
+                                VerticalAlignment="Center"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="40"
+                                Text="&#xf2bd;"/>
+                    <TextBlock x:Name="UserInfoTextBlock"
+                               Margin="10,0,10,0"
+                               Foreground="Black"
+                               FontSize="30"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>    
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <Label Content="Jezik: (Ctrl + L)" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="20"/>
+
+                    <ComboBox x:Name="LanguageComboBox"
+                              Width="70"
+                              Height="30"
+                              SelectedIndex="0"
+                              SelectionChanged="LanguageComboBox_SelectionChanged"
+                              Margin="0,0,15,0"
+                              FontSize="20">    
+                        <ComboBoxItem Content="SRP" Tag="sr"/>
+                        <ComboBoxItem Content="ENG" Tag="en"/>
+                    </ComboBox>
+
+                    <Label Content="Tema: (Ctrl + T)" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
+
+                    <ComboBox x:Name="ThemeComboBox"
+                              Width="80"
+                              Height="30"
+                              SelectedIndex="0"
+                              SelectionChanged="ThemeComboBox_SelectionChanged"
+                              FontSize="20"
+                              Margin="0,0,20,0">
+                        <ComboBoxItem Content="Svetla"/>
+                        <ComboBoxItem Content="Tamna"/>
+                    </ComboBox>
+
+                    <Button Content="Odjavi se (Ctrl + Q)"
+                            Click="LogoutButton_Click"
+                            Margin="20,0,20,0"
+                            Height="30"
+                            Width="200"
+                            FontSize="20"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
