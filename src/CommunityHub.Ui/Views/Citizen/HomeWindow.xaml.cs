@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 
@@ -11,14 +12,18 @@ namespace CommunityHub.Ui.Views.Citizen
     /// </summary>
     public partial class HomeWindow : Window
     {
-        private readonly CitizenRepository _citizenRepository;
+        private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly long _userId;
+        private System.Windows.Controls.Border _selectedTab;
+        private readonly SolidColorBrush _activeTabColor;
 
         public HomeWindow(long userId)
         {
             InitializeComponent();
-            _citizenRepository = new CitizenRepository();
             _userId = userId;
+
+            var converter = new BrushConverter();
+            _activeTabColor = (SolidColorBrush)converter.ConvertFromString("#99C2FF")!;
 
             Loaded += HomeWindow_Loaded;
             
@@ -31,6 +36,61 @@ namespace CommunityHub.Ui.Views.Citizen
             if (citizen != null)
             {
                 DataContext = citizen;
+            }
+            _selectedTab = TabMainMenu;
+        }
+
+        private void Tab_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Border clickedTab)
+            {
+                ActivateTab(clickedTab);
+            }
+        }
+
+        private void ActivateTab(System.Windows.Controls.Border newTab)
+        {
+            if (newTab == null || _selectedTab == newTab) 
+                return;
+
+            ChangeTabColorAndSelection(newTab);
+            UpdateStatusBarForTab(newTab);
+            NavigateToTab(newTab);
+        }
+
+        private void ChangeTabColorAndSelection(System.Windows.Controls.Border newTab)
+        {
+            if (_selectedTab != null)
+            {
+                _selectedTab.Background = Brushes.White;
+            }
+
+            _selectedTab = newTab;
+            _selectedTab.Background = _activeTabColor;
+        }
+
+        private void UpdateStatusBarForTab(System.Windows.Controls.Border tab)
+        {
+            string tag = tab.Tag?.ToString() ?? "";
+
+            if (StatusBarTabTextBlock != null)
+            {
+                StatusBarTabTextBlock.Text = $"Tab: {tag}";
+            }
+        }
+
+        private void NavigateToTab(System.Windows.Controls.Border tab)
+        {
+            string tag = tab.Tag?.ToString() ?? "";
+
+            switch (tag)
+            {
+                case "Main Menu":
+                    MainFrame.Navigate(new HomePage(_userId));
+                    break;
+                default:
+                    MainFrame.Content = null; 
+                    break;
             }
         }
     }
