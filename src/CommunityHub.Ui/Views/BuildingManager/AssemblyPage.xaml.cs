@@ -1,14 +1,16 @@
 ﻿using System.Windows.Controls;
+using CommunityHub.Application.Domain;
+
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class AssemblyPage : Page
     {
-        private readonly long _userId;
-        public AssemblyPage(long userId)
+        private readonly User _user;
+        public AssemblyPage(User user)
         {
             InitializeComponent();
-            _userId = userId;
+            _user = user;
         }
     }
 }

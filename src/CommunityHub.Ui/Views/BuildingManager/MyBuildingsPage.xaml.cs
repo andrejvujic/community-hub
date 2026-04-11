@@ -14,22 +14,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class MyBuildingsPage : Page
     {
-        private readonly long _userId;
+        private readonly User _user;
         private readonly BuildingRepository _buildingRepository = new BuildingRepository();
         public ObservableCollection<Building> Buildings { get; } = new ObservableCollection<Building>();
-        public MyBuildingsPage(long userId)
+        public MyBuildingsPage(User user)
         {
             InitializeComponent();
             DataContext = this;
-            _userId = userId;
+            _user = user;
         }
         private void MyBuildingsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var buildings = _buildingRepository.GetByManagerId(_userId);
+            var buildings = _buildingRepository.GetByManagerId(_user.Id);
             Buildings.Clear();
             foreach (var building in buildings)
             {
@@ -47,7 +48,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             var window = Window.GetWindow(this) as HomeWindow;
             if (window != null)
             {
-                window.HomeFrame.Navigate(new BuildingDetailsPage(_userId, building));
+                window.HomeFrame.Navigate(new BuildingDetailsPage(_user, building));
             }
         }
     }

@@ -16,14 +16,14 @@ namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class HomeWindow : Window
     {
-        private readonly long _userId;
+        private readonly User _user;
         private Grid? _selected = null;
         private readonly UserRepository _userRepository = new UserRepository();
-        public HomeWindow(long userId)
+        public HomeWindow(User user)
         {
             InitializeComponent();
-            _userId = userId;
-            HomeFrame.Navigate(new HomePage(_userId));
+            _user = user;
+            HomeFrame.Navigate(new HomePage(user));
         }
         private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -40,16 +40,16 @@ namespace CommunityHub.Ui.Views.BuildingManager
             switch (tag)
             {
                 case "Home":
-                    HomeFrame.Navigate(new HomePage(_userId));
+                    HomeFrame.Navigate(new HomePage(_user));
                     break;
                 case "Assembly":
-                    HomeFrame.Navigate(new AssemblyPage(_userId));
+                    HomeFrame.Navigate(new AssemblyPage(_user));
                     break;
                 case "MyBuildings":
-                    HomeFrame.Navigate(new MyBuildingsPage(_userId));
+                    HomeFrame.Navigate(new MyBuildingsPage(_user));
                     break;
                 case "Registration":
-                    HomeFrame.Navigate(new RegistrationPage(_userId));
+                    HomeFrame.Navigate(new RegistrationPage(_user));
                     break;
                 case "Help":
                     break;
@@ -61,11 +61,10 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
         private void SetUserName()
         {
-            User? user = _userRepository.GetById(_userId);
-            if (user == null)
+            if (_user == null)
                 return;
 
-            userNameTextBlock.Text = $"{user.Name}";
+            userNameTextBlock.Text = $"{_user.Name}";
         }
         private void LogOutMessageBox()
         {

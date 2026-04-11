@@ -17,15 +17,15 @@ namespace CommunityHub.Ui.Views.BuildingManager
     public partial class BuildingDetailsPage : Page
     {
         private readonly Building _building;
-        private readonly long _userId;
+        private readonly User _user;
         private Grid? _selected = null;
 
-        public BuildingDetailsPage(long userId, Building building)
+        public BuildingDetailsPage(User user, Building building)
         {
             InitializeComponent();
             _building = building;
-            _userId = userId;
-            BuildingFrame.Navigate(new GeneralInfoPage(_userId, _building));
+            _user = user;
+            BuildingFrame.Navigate(new GeneralInfoPage(_user, _building));
         }
         private void SideBarItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -43,7 +43,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             switch (tag)
             {
                 case "Info":
-                    BuildingFrame.Navigate(new GeneralInfoPage(_userId, _building));
+                BuildingFrame.Navigate(new GeneralInfoPage(_user, _building));
                     break;
                 case "ApartmentAccessRequest":
                     break;

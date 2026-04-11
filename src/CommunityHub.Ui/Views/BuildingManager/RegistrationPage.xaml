@@ -129,16 +129,24 @@
 
                                 <Grid Grid.Column="0">
                                     <ComboBox
+                                        x:Name="countryComboBox"
                                         Width="250"
                                         HorizontalAlignment="Left"
-                                        IsEnabled="True" />
+                                        DisplayMemberPath="Name"
+                                        IsEnabled="True"
+                                        SelectedValuePath="Id"
+                                        SelectionChanged="CountryComboBox_SelectionChanged" />
                                 </Grid>
 
                                 <Grid Grid.Column="1">
                                     <ComboBox
+                                        x:Name="cityComboBox"
                                         Width="250"
                                         HorizontalAlignment="Left"
-                                        IsEnabled="False" />
+                                        DisplayMemberPath="Name"
+                                        IsEnabled="False"
+                                        SelectedValuePath="Id"
+                                        SelectionChanged="CityComboBox_SelectionChanged" />
                                 </Grid>
                             </Grid>
 
@@ -181,14 +189,19 @@
                                     <Grid Grid.Column="0">
 
                                         <ComboBox
+                                            x:Name="streetComboBox"
                                             Width="250"
                                             HorizontalAlignment="Left"
-                                            HorizontalContentAlignment="Center"
+                                            HorizontalContentAlignment="Left"
                                             VerticalContentAlignment="Center"
-                                            IsEnabled="False" />
+                                            DisplayMemberPath="Name"
+                                            IsEnabled="False"
+                                            SelectedValuePath="Id"
+                                            SelectionChanged="StreetComboBox_SelectionChanged" />
                                     </Grid>
                                     <Grid Grid.Column="1">
                                         <TextBox
+                                            x:Name="streetNumberTextBox"
                                             Width="60"
                                             VerticalContentAlignment="Center"
                                             TextAlignment="Center" />
@@ -197,6 +210,7 @@
 
                                 <Grid Grid.Column="1">
                                     <TextBox
+                                        x:Name="neighborhoodTextBox"
                                         Width="250"
                                         Height="30"
                                         HorizontalAlignment="Left"
@@ -273,8 +287,19 @@
                                 <Grid Grid.Column="2" Margin="15,0,0,0">
                                     <TextBlock
                                         FontSize="22"
-                                        Text="Morate odabrati barem jednu sliku!"
-                                        Visibility="Visible" />
+                                        Foreground="Red"
+                                        Text="{Binding ImageErrorMessage}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="Text" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </Grid>
                             </Grid>
 
@@ -289,7 +314,47 @@
                                     Width="600"
                                     HorizontalScrollBarVisibility="Visible"
                                     VerticalScrollBarVisibility="Disabled">
-                                    <Grid Grid.Row="7" Height="200" />
+                                    <Grid Grid.Row="7" Height="200">
+                                        <ItemsControl ItemsSource="{Binding SelectedImagePaths}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Margin="10,10,10,10" Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid
+                                                        Width="90"
+                                                        Height="90"
+                                                        Margin="0,0,10,0">
+                                                        <Border
+                                                            Background="White"
+                                                            BorderBrush="Gray"
+                                                            BorderThickness="1">
+                                                            <Image Source="{Binding}" Stretch="UniformToFill" />
+                                                        </Border>
+
+                                                        <Button
+                                                            Width="22"
+                                                            Height="22"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Background="White"
+                                                            BorderBrush="Transparent"
+                                                            Click="RemoveImage_Click"
+                                                            Cursor="Hand"
+                                                            Tag="{Binding}">
+                                                            <TextBlock
+                                                                FontSize="14"
+                                                                FontWeight="Bold"
+                                                                Text="X" />
+                                                        </Button>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
                                 </ScrollViewer>
                             </Border>
 
@@ -300,24 +365,24 @@
                                 VerticalAlignment="Center">
                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                     <Button
-                                        Width="100"
-                                        Margin="0,0,15,0"
-                                        Cursor="Hand">
-                                        Otkaži
-                                    </Button>
-                                    <Button
+                                        x:Name="cancelButton"
                                         Width="100"
                                         Margin="0,0,15,0"
                                         Cursor="Hand"
-                                        IsEnabled="False">
+                                        Click="cancelButton_Click">
+                                        Otkaži
+                                    </Button>
+                                    <Button
+                                        x:Name="confirmButton"
+                                        Width="100"
+                                        Margin="0,0,15,0"
+                                        Click="ConfirmButton_Click"
+                                        Cursor="Hand"
+                                        IsEnabled="True">
                                         Potvrdi
                                     </Button>
-
                                 </StackPanel>
-
                             </Grid>
-
-
                         </Grid>
                     </GroupBox>
                 </Grid>
