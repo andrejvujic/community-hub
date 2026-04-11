@@ -16,7 +16,7 @@
             return query.ExecuteScalar<bool>(membershipId => membershipId != null);
         }
 
-        public bool IsMember(long userId, long apartmentId)
+        public bool HasMembership(long userId, long apartmentId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
