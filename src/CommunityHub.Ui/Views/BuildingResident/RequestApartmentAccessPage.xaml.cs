@@ -13,8 +13,9 @@ namespace CommunityHub.Ui.Views.BuildingResident
     {
         Valid,
         ApartmentNotFound,
-        AlreadyResident,
-        ApartmentOccupied
+        ApartmentOccupied,
+        AlreadyMember,
+        PendingRequestExists
     }
 
     public partial class RequestApartmentAccessPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
@@ -88,8 +89,11 @@ namespace CommunityHub.Ui.Views.BuildingResident
             if (ApartmentId == null)
                 return AccessRequestValidationResult.ApartmentNotFound;
 
-            if (_apartmentMembershipRepository.IsResidentOfApartment(_userId, ApartmentId.Value))
-                return AccessRequestValidationResult.AlreadyResident;
+            if (_apartmentAccessRequestRepository.HasPendingRequest(_userId, ApartmentId.Value))
+                return AccessRequestValidationResult.PendingRequestExists;
+
+            if (_apartmentMembershipRepository.HasMembership(_userId, ApartmentId.Value))
+                return AccessRequestValidationResult.AlreadyMember;
 
             if (_apartmentMembershipRepository.IsApartmentOccupied(ApartmentId.Value))
                 return AccessRequestValidationResult.ApartmentOccupied;
@@ -123,11 +127,21 @@ namespace CommunityHub.Ui.Views.BuildingResident
                             .AddOption("Nastavi", () => CreateAccessRequest())
                         );
                     break;
-                case AccessRequestValidationResult.AlreadyResident:
+                case AccessRequestValidationResult.AlreadyMember:
                     consumer.ShowAlert(
                           Alert.Create(
                               "Greška",
-                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {ApartmentNumber} u zgradi {Building.Address.Street.Name} {Building.Address.StreetNumber} zato što ste već učlanjeni u navedeni stan.",
+                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {ApartmentNumber} u zgradi {Building.Address.Street.Name} {Building.Address.StreetNumber} zato što ste već učlanjeni u ovaj stan.",
+                              AlertType.Error
+                          )
+                          .AddOption("U redu")
+                      );
+                    break;
+                case AccessRequestValidationResult.PendingRequestExists:
+                    consumer.ShowAlert(
+                          Alert.Create(
+                              "Greška",
+                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {ApartmentNumber} u zgradi {Building.Address.Street.Name} {Building.Address.StreetNumber} zato što ste već imate zahtjev za ovaj stan koji je još uvijek u fazi obrade.",
                               AlertType.Error
                           )
                           .AddOption("U redu")
