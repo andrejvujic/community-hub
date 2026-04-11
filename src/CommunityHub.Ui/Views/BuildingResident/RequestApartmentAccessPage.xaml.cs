@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
         ApartmentOccupied
     }
 
-    public partial class RequestApartmentAccessPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class RequestApartmentAccessPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
     {
         private readonly long _userId;
 
@@ -67,6 +68,8 @@ namespace CommunityHub.Ui.Views.BuildingResident
             }
         }
 
+        public long? ApartmentId { get; private set; }
+
         private void ApartmentNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(ApartmentNumberText))
@@ -80,15 +83,15 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
-        private AccessRequestValidationResult ValidateAccessRequest(long? apartmentId)
+        private AccessRequestValidationResult ValidateAccessRequest()
         {
-            if (apartmentId == null)
+            if (ApartmentId == null)
                 return AccessRequestValidationResult.ApartmentNotFound;
 
-            if (_apartmentMembershipRepository.IsResidentOfApartment(_userId, apartmentId.Value))
+            if (_apartmentMembershipRepository.IsResidentOfApartment(_userId, ApartmentId.Value))
                 return AccessRequestValidationResult.AlreadyResident;
 
-            if (_apartmentMembershipRepository.IsApartmentOccupied(apartmentId.Value))
+            if (_apartmentMembershipRepository.IsApartmentOccupied(ApartmentId.Value))
                 return AccessRequestValidationResult.ApartmentOccupied;
 
             return AccessRequestValidationResult.Valid;
@@ -96,24 +99,47 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void ShowAccessRequestValidationResult(AccessRequestValidationResult result)
         {
+            if (this is not IAlertConsumer consumer) return;
             switch (result)
             {
                 case AccessRequestValidationResult.ApartmentNotFound:
-                    ApartmentNotFoundAlert.Visibility = Visibility.Visible;
+                    consumer.ShowAlert(
+                        Alert.Create(
+                            "Greška",
+                            $"Stan broj {ApartmentNumber} ne postoji u zgradi {Building.Address.Street.Name} {Building.Address.StreetNumber}. Provjerite uneseni broj stana i pokušajte ponovo.",
+                            AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
                     break;
                 case AccessRequestValidationResult.ApartmentOccupied:
-                    ApartmentOccupiedAlert.Visibility = Visibility.Visible;
+                        consumer.ShowAlert(
+                            Alert.Create(
+                                "Upozorenje",
+                                $"Da li ste sigurni da ste unijeli ispravan broj stana? Već postoji član koji je pridružen stanu broj {ApartmentNumber} u zgradi {Building.Address.Street.Name} {Building.Address.StreetNumber}.",
+                                AlertType.Warning
+                            )
+                            .AddOption("Otkaži")
+                            .AddOption("Nastavi", () => CreateAccessRequest())
+                        );
                     break;
                 case AccessRequestValidationResult.AlreadyResident:
-                    AlreadyResidentAlert.Visibility = Visibility.Visible;
+                    consumer.ShowAlert(
+                          Alert.Create(
+                              "Greška",
+                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {ApartmentNumber} u zgradi {Building.Address.Street.Name} {Building.Address.StreetNumber} zato što ste već učlanjeni u navedeni stan.",
+                              AlertType.Error
+                          )
+                          .AddOption("U redu")
+                      );
                     break;
             }
         }
 
-        private void CreateAccessRequest(long? apartmentId) {
-            if (apartmentId == null) return;
+        private void CreateAccessRequest() {
+            if (ApartmentId == null) return;
 
-            var apartment = _apartmentRepository.GetById(apartmentId.Value);
+            var apartment = _apartmentRepository.GetById(ApartmentId.Value);
             var applicant = _userRepository.GetById(_userId);
             if (apartment == null || applicant == null) return;
 
@@ -125,41 +151,31 @@ namespace CommunityHub.Ui.Views.BuildingResident
             );
 
             _apartmentAccessRequestRepository.Create(request);
-            PopAll();   
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Informacija",
+                        "Vaš zahtjev je uspješno podnesen. Sve svoje zahtjeve možete pogledati na početnom ekranu.",
+                        AlertType.Info
+                    )
+                    .AddOption("U redu", () => PopAll())
+                );
         }
 
         private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            long? apartmentId = _apartmentRepository.FindIdByBuildingAndNumber(Building.Id, ApartmentNumber);
+            ApartmentId = _apartmentRepository.FindIdByBuildingAndNumber(Building.Id, ApartmentNumber);
 
-            AccessRequestValidationResult result = ValidateAccessRequest(apartmentId);
+            AccessRequestValidationResult result = ValidateAccessRequest();
 
             if (result == AccessRequestValidationResult.Valid)
             {
-                CreateAccessRequest(apartmentId);
+                CreateAccessRequest();
                 return;
             }
 
             ShowAccessRequestValidationResult(result);
         }
-
-        private void CreateAccessRequestAlthoughOccupiedButton_Click(object sender, RoutedEventArgs e)
-        {
-            ApartmentOccupiedAlert.Visibility= Visibility.Collapsed;
-
-            long? apartmentId = _apartmentRepository.FindIdByBuildingAndNumber(Building.Id, ApartmentNumber);
-            CreateAccessRequest(apartmentId);
-        }
-
-        private void CloseAparmentNotFoundAlertButton_Click(object sender, RoutedEventArgs e)
-            => ApartmentNotFoundAlert.Visibility = Visibility.Collapsed;
-
-        private void CloseApartmentOccupiedAlertButton_Click(object sender, RoutedEventArgs e)
-            => ApartmentOccupiedAlert.Visibility = Visibility.Collapsed;
-
-        private void CloseAlreadyResidentAlertButton_Click(object sender, RoutedEventArgs e)
-            => AlreadyResidentAlert.Visibility = Visibility.Collapsed;
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
