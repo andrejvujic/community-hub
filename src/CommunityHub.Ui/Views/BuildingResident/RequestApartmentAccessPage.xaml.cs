@@ -154,7 +154,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
-                        "Informacija",
+                        "Zahtjev podnesen",
                         "Vaš zahtjev je uspješno podnesen. Sve svoje zahtjeve možete pogledati na početnom ekranu.",
                         AlertType.Info
                     )
