@@ -9,6 +9,6 @@
 
 CREATE TABLE citizens (
     address_id BIGINT REFERENCES addresses(id) NOT NULL,
-    membership_id BIGINT REFERENCES neighborhood_memberships(id) NOT NULL,
+    membership_id BIGINT REFERENCES neighborhood_memberships(id),
     PRIMARY KEY (id)
 ) INHERITS (users);

@@ -1,4 +1,5 @@
 
+
 INSERT INTO users (id, username, user_role, password, name, surname) VALUES
 (1,  'milan.jovanovic',    'building_manager',         '123', 'Milan',      'Jovanović'),
 (2,  'dragan.petrovic',    'building_manager',         '123', 'Dragan',     'Petrović'),
@@ -293,11 +294,11 @@ INSERT INTO citizens (id, username, user_role, password, name, surname, address_
 (108, 'luka.savic',        'citizen', '123', 'Luka',    'Savić',       8,  8),
 (109, 'mina.stojic',       'citizen', '123', 'Mina',    'Stojić',      9,  9),
 (110, 'nikola.kostic',     'citizen', '123', 'Nikola',  'Kostić',      10, 10),
-(111, 'sara.vasic',        'citizen', '123', 'Sara',    'Vasić',       11, 11),
-(112, 'ognjen.mitrovic',   'citizen', '123', 'Ognjen',  'Mitrović',    12, 12),
-(113, 'maja.jaksic',       'citizen', '123', 'Maja',    'Jaksić',      13, 13),
-(114, 'filip.atanasov',    'citizen', '123', 'Filip',   'Atanasov',    14, 14),
-(115, 'jana.popovic',      'citizen', '123', 'Jana',    'Popović',     15, 15);
+(111, 'sara.vasic',        'citizen', '123', 'Sara',    'Vasić',       11, NULL),
+(112, 'ognjen.mitrovic',   'citizen', '123', 'Ognjen',  'Mitrović',    12, NULL),
+(113, 'maja.jaksic',       'citizen', '123', 'Maja',    'Jaksić',      13, NULL),
+(114, 'filip.atanasov',    'citizen', '123', 'Filip',   'Atanasov',    14, NULL),
+(115, 'jana.popovic',      'citizen', '123', 'Jana',    'Popović',     15, NULL);
 
 INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date, comment) VALUES
 (101, 2,  'waiting',  '2026-03-01', NULL),
