@@ -93,6 +93,7 @@
             </TabItem>
 
             <TabItem Header="Zahtevi za pristup (F3)">
+                <pages:RequestsView x:Name="RequestsTab" />
             </TabItem>
 
             <TabItem Header="Statistika i sastanci (F4)">
