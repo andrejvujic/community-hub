@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 {
     public partial class SelectCountryPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
-        private readonly CountryDbRepository _repository;
+        private readonly CountryRepository _repository;
         private readonly Action<Country?> _onCountrySelected;
         public Country? SelectedCountry { get; private set; }
         public ObservableCollection<Country> Countries { get; } = new ObservableCollection<Country>();
@@ -25,7 +25,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             InitializeComponent();
             DataContext = this;
 
-            _repository = new CountryDbRepository();
+            _repository = new CountryRepository();
             _onCountrySelected = onCountrySelected;
             SelectedCountry = selectedCountry;
 

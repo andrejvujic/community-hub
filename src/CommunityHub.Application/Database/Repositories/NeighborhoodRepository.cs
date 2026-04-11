@@ -3,11 +3,11 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class NeighborhoodDbRepository
+    public class NeighborhoodRepository
     {
         private readonly NeighborhoodMapper _neighborhoodMapper = new NeighborhoodMapper();
         private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
-        private readonly ImageDbRepository _imageRepository = new ImageDbRepository();
+        private readonly ImageRepository _imageRepository = new ImageRepository();
 
         public List<Neighborhood> GetByCoordinatorId(long id)
         {

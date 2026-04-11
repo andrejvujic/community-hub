@@ -3,8 +3,7 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-
-    public class NeighborhoodMembershipDbRepository
+    public class NeighborhoodMembershipRepository
     {
         private readonly NeighborhoodMembershipMapper _neighborhoodMembershipMapper = new NeighborhoodMembershipMapper();
 

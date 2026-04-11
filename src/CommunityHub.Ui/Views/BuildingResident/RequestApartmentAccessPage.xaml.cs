@@ -22,10 +22,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         public Building Building { get; }
 
-        private readonly UserDbRepository _userRepository;
-        private readonly ApartmentDbRepository _apartmentRepository;
-        private readonly ApartmentAccessRequestDbRepository _apartmentAccessRequestRepository;
-        private readonly ApartmentMembershipDbRepository _apartmentMembershipRepository;
+        private readonly UserRepository _userRepository;
+        private readonly ApartmentRepository _apartmentRepository;
+        private readonly ApartmentAccessRequestRepository _apartmentAccessRequestRepository;
+        private readonly ApartmentMembershipRepository _apartmentMembershipRepository;
 
         public RequestApartmentAccessPage(long userId, Building building)
         {
@@ -35,10 +35,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
             _userId = userId;
             Building = building;
 
-            _userRepository = new UserDbRepository();
-            _apartmentRepository = new ApartmentDbRepository();
-            _apartmentAccessRequestRepository = new ApartmentAccessRequestDbRepository();
-            _apartmentMembershipRepository = new ApartmentMembershipDbRepository();
+            _userRepository = new UserRepository();
+            _apartmentRepository = new ApartmentRepository();
+            _apartmentAccessRequestRepository = new ApartmentAccessRequestRepository();
+            _apartmentMembershipRepository = new ApartmentMembershipRepository();
         }
 
         public int ApartmentNumber

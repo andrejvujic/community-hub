@@ -19,7 +19,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
     public partial class MyBuildingsPage : Page
     {
         private readonly long _userId;
-        private readonly BuildingDbRepository _buildingRepository = new BuildingDbRepository();
+        private readonly BuildingRepository _buildingRepository = new BuildingRepository();
         public ObservableCollection<Building> Buildings { get; } = new ObservableCollection<Building>();
         public MyBuildingsPage(long userId)
         {

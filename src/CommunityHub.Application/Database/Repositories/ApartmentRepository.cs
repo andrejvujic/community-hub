@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class ApartmentDbRepository
+public class ApartmentRepository
 {
     private readonly ApartmentMapper _apartmentMapper = new ApartmentMapper();
 

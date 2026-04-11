@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
-using System.Collections.Generic;
 
 namespace CommunityHub.Application.Database.Repositories
 {

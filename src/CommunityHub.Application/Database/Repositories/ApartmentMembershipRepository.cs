@@ -1,8 +1,6 @@
-﻿using CommunityHub.Application.Domain;
-
-namespace CommunityHub.Application.Database.Repositories
+﻿namespace CommunityHub.Application.Database.Repositories
 {
-    public class ApartmentMembershipDbRepository
+    public class ApartmentMembershipRepository
     {
         public bool IsApartmentOccupied(long apartmentId)
         {

@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class NeighborhoodAccessRequestDbRepository
+    public class NeighborhoodAccessRequestRepository
     {
         private readonly NeighborhoodAccessRequestMapper _neighborhoodAccessRequestMapper = new NeighborhoodAccessRequestMapper();
 

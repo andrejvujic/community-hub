@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class UserDbRepository
+public class UserRepository
 {
     private readonly UserMapper _userMapper = new UserMapper();
     public User? GetById(long id)

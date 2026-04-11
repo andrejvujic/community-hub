@@ -4,7 +4,7 @@ using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class BuildingDbRepository
+    public class BuildingRepository
     {
         private readonly BuildingMapper _buildingMapper = new BuildingMapper();
         private readonly ImageMapper _imageMapper = new ImageMapper();

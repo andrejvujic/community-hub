@@ -4,7 +4,7 @@ using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class CityDbRepository
+public class CityRepository
 {
     private readonly CityMapper _cityMapper = new CityMapper();
 

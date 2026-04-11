@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class ApartmentAccessRequestDbRepository
+    public class ApartmentAccessRequestRepository
     {
         private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new ApartmentAccessRequestMapper();
         public List<ApartmentAccessRequest> GetByApplicantId(long id)

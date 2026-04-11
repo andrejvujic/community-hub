@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class ImageDbRepository
+    public class ImageRepository
     {
         private readonly ImageMapper _imageMapper = new ImageMapper();
         public Image Create(Image image, long? neighborhoodId = null, long? buildingId = null)

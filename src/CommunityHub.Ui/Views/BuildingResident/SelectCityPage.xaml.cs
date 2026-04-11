@@ -11,7 +11,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 {
     public partial class SelectCityPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
-        private readonly CityDbRepository _repository;
+        private readonly CityRepository _repository;
         private readonly Action<City?> _onCitySelected;
         private readonly Country _selectedCountry;
         public City? SelectedCity { get; private set; }
@@ -32,7 +32,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             InitializeComponent();
             DataContext = this;
 
-            _repository = new CityDbRepository();
+            _repository = new CityRepository();
 
             _onCitySelected = onCitySelected;
             _selectedCountry = selectedCountry;

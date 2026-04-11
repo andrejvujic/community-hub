@@ -6,12 +6,12 @@ namespace CommunityHub.Ui.Views;
 
 public partial class LogInForm : Window
 {
-    private readonly UserDbRepository _userRepository;
+    private readonly UserRepository _userRepository;
 
     public LogInForm()
     {
         InitializeComponent();
-        _userRepository = new UserDbRepository();
+        _userRepository = new UserRepository();
         
         // Uncomment for auto login:
         // HandleLogin("stefan.matic", "123");

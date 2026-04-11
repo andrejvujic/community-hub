@@ -4,7 +4,7 @@ using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class CountryDbRepository
+public class CountryRepository
 {
     private readonly CountryMapper _countryMapper = new CountryMapper();
 

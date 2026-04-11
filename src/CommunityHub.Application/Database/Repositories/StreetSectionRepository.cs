@@ -7,7 +7,7 @@ namespace CommunityHub.Application.Database.Repositories
     public class StreetSectionRepository
     {
         private readonly StreetSectionMapper _streetSectionMapper = new StreetSectionMapper();
-        public int GetStartNumberByStreetId(long streetId)
+        public int GetStartNumber(long streetId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT start_number FROM street_sections WHERE street_id = @streetId"
@@ -15,7 +15,8 @@ namespace CommunityHub.Application.Database.Repositories
 
             return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
         }
-        public int GetEndNumberByStreetId(long streetId)
+
+        public int GetEndNumber(long streetId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT end_number FROM street_sections WHERE street_id = @streetId"

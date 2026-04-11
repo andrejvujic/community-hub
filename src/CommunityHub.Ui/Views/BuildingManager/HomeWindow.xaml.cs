@@ -18,7 +18,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
     {
         private readonly long _userId;
         private Grid? _selected = null;
-        private readonly UserDbRepository _userRepository = new UserDbRepository();
+        private readonly UserRepository _userRepository = new UserRepository();
         public HomeWindow(long userId)
         {
             InitializeComponent();

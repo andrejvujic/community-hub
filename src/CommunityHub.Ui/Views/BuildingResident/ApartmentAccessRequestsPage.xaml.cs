@@ -10,7 +10,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
     {
 
         private readonly long _userId;
-        private readonly ApartmentAccessRequestDbRepository _repository;
+        private readonly ApartmentAccessRequestRepository _repository;
         public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new ObservableCollection<ApartmentAccessRequest>();
 
         public ApartmentAccessRequestsPage(long userId)
@@ -19,7 +19,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             DataContext = this;
 
             _userId = userId;
-            _repository = new ApartmentAccessRequestDbRepository();
+            _repository = new ApartmentAccessRequestRepository();
 
             LoadRequests();
         }
