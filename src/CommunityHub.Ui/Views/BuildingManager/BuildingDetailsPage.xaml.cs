@@ -43,9 +43,10 @@ namespace CommunityHub.Ui.Views.BuildingManager
             switch (tag)
             {
                 case "Info":
-                BuildingFrame.Navigate(new GeneralInfoPage(_user, _building));
+                    BuildingFrame.Navigate(new GeneralInfoPage(_user, _building));
                     break;
                 case "ApartmentAccessRequest":
+                    BuildingFrame.Navigate(new ApartmentAccessRequestsPage(_user, _building));
                     break;
                 case "ApartmentMembership":
                     break;
