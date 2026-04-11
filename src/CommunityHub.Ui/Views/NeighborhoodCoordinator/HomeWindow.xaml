@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator"
+        xmlns:pages="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
         mc:Ignorable="d"
         Title="Neighborhood Coordinator App"
         WindowStartupLocation="CenterScreen"
@@ -77,5 +78,39 @@
                 </StackPanel>
             </Grid>
         </Border>
+
+        <TabControl Grid.Row="1" 
+                    TabStripPlacement="Left"
+                    Margin="10" 
+                    Background="Transparent" 
+                    BorderThickness="4"
+                    FontSize="20">
+
+            <TabItem Header="Početna (F1)">
+            </TabItem>
+
+            <TabItem Header="Kvartovi i članstva (F2)">
+            </TabItem>
+
+            <TabItem Header="Zahtevi za pristup (F3)">
+            </TabItem>
+
+            <TabItem Header="Statistika i sastanci (F4)">
+            </TabItem>
+
+            <TabItem Header="Servisni centar (F5)">
+            </TabItem>
+
+            <TabItem Header="Gradski objekti (F6)">
+            </TabItem>
+
+            <TabItem Header="Budžet (F7)">
+            </TabItem>
+
+            <TabItem Header="Profil (F8)">
+            </TabItem>
+
+        </TabControl>
+
     </Grid>
 </Window>
