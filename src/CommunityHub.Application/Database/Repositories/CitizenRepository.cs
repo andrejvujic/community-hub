@@ -1,6 +1,6 @@
 ﻿namespace CommunityHub.Application.Database.Repositories
 {
-    public class CitizenDbRepository
+    public class CitizenRepository
     {
         public void UpdateMembership(long citizenId, long membershipId)
         {
