@@ -61,7 +61,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
         private void SetUserName()
         {
-            User? user = _userRepository.GetUserById(_userId);
+            User? user = _userRepository.GetById(_userId);
             if (user == null)
                 return;
 
