@@ -1,10 +1,9 @@
 ﻿using CommunityHub.Ui.Helpers.Navigation;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
-    public partial class MainWindow : Window, IMainNavigatorHost
+    public partial class MainWindow : MainNavigatorHostWindow
     {
         private readonly long _userId;
         public MainWindow(long userId)
@@ -14,6 +13,6 @@ namespace CommunityHub.Ui.Views.BuildingResident
             MainFrame.Navigate(new HomePage(_userId));
         }
 
-        public Frame HostFrame { get => MainFrame; }
+        public override Frame Frame => MainFrame;
     }
 }
