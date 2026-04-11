@@ -1,9 +1,10 @@
-﻿<Window x:Class="CommunityHub.Ui.Views.BuildingResident.MainWindow"
+﻿<navigation:MainNavigatorHostWindow x:Class="CommunityHub.Ui.Views.BuildingResident.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
+        xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
         mc:Ignorable="d"
         Height="750" Width="430"
         Title="Community Hub"
@@ -12,4 +13,4 @@
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
-</Window>
+</navigation:MainNavigatorHostWindow>

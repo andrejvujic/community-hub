@@ -125,6 +125,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             );
 
             _apartmentAccessRequestRepository.Create(request);
+            PopAll();   
         }
 
         private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
