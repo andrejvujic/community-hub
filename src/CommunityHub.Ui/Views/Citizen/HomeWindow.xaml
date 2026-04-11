@@ -8,6 +8,163 @@
         Title="Citizen" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="10,10,10,0">
+            <UniformGrid Columns="7" Height="80">
+                <Border BorderBrush="Black" BorderThickness="2,2,1,2" Background="#99C2FF">
+                    <Grid>
+                        <TextBlock Text="F1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Main Menu" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="30" Height="30" Margin="0,5,0,0">
+                                <Path Data="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                    <Grid>
+                        <TextBlock Text="F2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Neighborhoods" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="30" Height="30" Margin="0,5,0,0">
+                                <Path Data="M246.125,195.063v-82.688h-63v82.688h-7.875V17.823h-23.625V2.125h-47.25v15.698H80.75v177.24h-7.875V80.875h-63v114.188H2v11.813h252v-11.813H246.125z
+                                      M47.281,177.344H35.469v-11.813h11.813V177.344z M47.281,145.844H35.469v-11.813h11.813V145.844zM47.281,114.344H35.469v-11.813h11.813V114.344z
+                                      M119.141,174.391h-11.813v-11.813h11.813V174.391z M119.141,142.891h-11.813 v-11.813h11.813V142.891z M119.141,111.391h-11.813V99.578h11.813V111.391z M119.141,
+                                      79.891h-11.813V68.078h11.813V79.891zM150.641,174.391h-11.813v-11.813h11.813V174.391z M150.641,142.891h-11.813v-11.813h11.813V142.891z M150.641,111.391h-11.813 V99.578h11.813V111.391z
+                                      M150.641,79.891h-11.813V68.078h11.813V79.891z M220.531,177.344h-11.813v-11.813h11.813V177.344z M220.531,145.844h-11.813v-11.813h11.813V145.844z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                    <Grid>
+                        <TextBlock Text="F3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Events" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="30" Height="30" Margin="0,5,0,0">
+                                <Path Data="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                    <Grid>
+                        <TextBlock Text="F4" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Trust Records" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="25" Height="25" Margin="0,10,0,0">
+                                <Path Data="M0 1.5C0 0.671573 0.671574 0 1.5 0H13.5C14.3284 0 15 0.671529 15 1.49992L15.0007 5.50118L14.2001 4.89975C13.448 4.33466 12.5138 4 11.5 4C9.01472 4 7 6.01472
+                                      7 8.5C7 9.51382 7.33466 10.448 7.89975 11.2001L8 11.3336V15H1.5C0.671573 15 0 14.3284 0 13.5V1.5ZM8 5H3V4H8V5ZM3 8H6V7H3V8Z M11.5 5C9.567 5 8 6.567 8 8.5C8 9.45365
+                                      8.38141 10.3182 9 10.9495V14.5C9 14.6894 9.107 14.8625 9.27639 14.9472C9.44579 15.0319 9.64849 15.0136 9.8 14.9L11.5 13.625L13.2 14.9C13.3515 15.0136 13.5542 15.0319
+                                      13.7236 14.9472C13.893 14.8625 14 14.6894 14 14.5V10.9495C14.6186 10.3182 15 9.45365 15 8.5C15 6.567 13.433 5 11.5 5ZM10 13.5V11.6632C10.4546 11.8792 10.9632 12 11.5
+                                      12C12.0368 12 12.5454 11.8792 13 11.6632V13.5L11.8 12.6C11.6222 12.4667 11.3778 12.4667 11.2 12.6L10 13.5Z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                    <Grid>
+                        <TextBlock Text="F5" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Meetings" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="30" Height="30" Margin="0,5,0,0">
+                                <Path Data="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                    <Grid>
+                        <TextBlock Text="F6" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Local Facilities" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="30" Height="30" Margin="0,5,0,0">
+                                <Path Data="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1,2,2,2" Background="White">
+                    <Grid>
+                        <TextBlock Text="F7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" Foreground="Gray"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="Donations" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                            <Viewbox Width="30" Height="30" Margin="0,5,0,0">
+                                <Path Data="M12,21.35l-1.45-1.32C5.4,15.36 2,12.28 2,8.5 C2,5.42 4.42,3 7.5,3c1.74,0 3.41,0.81 4.5,2.09C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.42 22,8.5c0,3.78-3.4,6.86-8.55,11.54 L12,21.35z" Fill="Black"/>
+                            </Viewbox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </UniformGrid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,10">
+            <TextBlock Text="Show Tooltips (Ctrl + T):" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
+            <CheckBox VerticalAlignment="Center" IsChecked="True" Cursor="Hand">
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="CheckBox">
+                                    <Border x:Name="Track" Width="50" Height="26" CornerRadius="13" BorderBrush="Black" BorderThickness="2" Background="White">
+                                        <Ellipse x:Name="Thumb" Width="18" Height="18" Fill="White" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Left" Margin="2,0,0,0"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter TargetName="Track" Property="Background" Value="#3388FF"/>
+                                            <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter TargetName="Thumb" Property="Margin" Value="0,0,2,0"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </CheckBox.Style>
+                </CheckBox>
+            </StackPanel>
+
+            <Grid Grid.Row="2" Margin="40,20,40,40">
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock x:Name="WelcomeTextBlock" Text="Welcome back, Hana!" FontSize="48" Margin="0,0,0,40"/>
+
+                <TextBlock x:Name="AddressTextBlock" Text="Address: Ulica Breza 27" FontSize="20" Margin="0,0,0,5"/>
+
+                <TextBlock x:Name="MembershipTextBlock" Text="Neighborhood: Liman 1&#x0a;Member since 5/4/2026" FontSize="20" />
+                <TextBlock x:Name="NoMembershipTextBlock" Text="No registered neighborhood memberships" FontSize="20" Visibility="Collapsed" />
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <TextBlock x:Name="DateTextBlock" Text="Friday, 18/4/2026" FontSize="20"/>
+                <TextBlock x:Name="TimeTextBlock" Text="17:47" FontSize="20"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="White">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="User: Hana" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="Tab: Main Menu" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="Press Ctrl+H for help" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                        <Path Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" Fill="Black"/>
+                    </Viewbox>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
