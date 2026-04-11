@@ -16,12 +16,12 @@ namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class GeneralInfoPage : Page
     {
-        private readonly long _userId;
+        private readonly User _user;
         private readonly Building _building;
-        public GeneralInfoPage(long userId, Building building)
+        public GeneralInfoPage(User user, Building building)
         {
             InitializeComponent();
-            _userId = userId;
+            _user = user;
             _building = building;
         }
     }

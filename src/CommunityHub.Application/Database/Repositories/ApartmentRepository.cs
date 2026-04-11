@@ -133,4 +133,17 @@ public class ApartmentRepository
 
         return query.ExecuteScalar<bool>(apartmentId => apartmentId != null);
     }
+
+    public Apartment Create(Apartment apartment)
+    {
+        var query = PostgresQuery.Create(
+            @"INSERT INTO apartments (apartment_number, floor_number, building_id) 
+                VALUES (@apartment_number, @floor_number, @building_id) 
+                RETURNING id"
+        )
+        .ExtendParameters(_apartmentMapper.MapToQueryParameters(apartment));
+        long generatedId = query.ExecuteScalar<long>(result => Convert.ToInt64(result));
+
+        return apartment.CopyWith(id: generatedId);
+    }
 }

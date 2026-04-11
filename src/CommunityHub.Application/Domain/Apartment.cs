@@ -14,5 +14,20 @@
             FloorNumber = floorNumber;
             Building = building;
         }
+
+        public Apartment CopyWith(
+            long? id = null,
+            int? number = null,
+            int? floorNumber = null,
+            Building? building = null
+        )
+        {
+            return new Apartment(
+                id ?? Id,
+                number ?? Number,
+                floorNumber ?? FloorNumber,
+                building ?? Building
+            );
+        }
     }
 }

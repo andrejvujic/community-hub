@@ -10,16 +10,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class HomePage : Page
     {
-        private readonly long _userId;
-        public HomePage(long userId)
+        private readonly User _user;
+        public HomePage(User user)
         {
             InitializeComponent();
-            _userId = userId;
+            _user = user;
         }
     }
 }

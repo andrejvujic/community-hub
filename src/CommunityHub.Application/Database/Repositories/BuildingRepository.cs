@@ -161,5 +161,19 @@ namespace CommunityHub.Application.Database.Repositories
 
             return buildings.Values.ToList();
         }
+
+        public Building Create(Building building)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO buildings (floor_count, building_manager_id, address_id) 
+                VALUES (@floor_count, @building_manager_id, @address_id)
+                RETURNING id"
+            )
+            .ExtendParameters(_buildingMapper.MapToQueryParameters(building));
+
+            long generatedId = query.ExecuteScalar<long>(result => Convert.ToInt64(result));
+
+            return building.CopyWith(id: generatedId);
+        }
     }
 }

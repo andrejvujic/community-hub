@@ -43,10 +43,12 @@ public partial class LogInForm : Window
             return;
         }
 
+        User user = (_userRepository.GetById(userId.Value))!;
+
         switch (role)
         {
             case Role.BuildingManager:
-                var buildingManagerHomeWindow = new BuildingManager.HomeWindow(userId.Value);
+                var buildingManagerHomeWindow = new BuildingManager.HomeWindow(user);
                 buildingManagerHomeWindow.Show();
                 break;
             case Role.BuildingResident:

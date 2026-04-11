@@ -1,8 +1,12 @@
-﻿namespace CommunityHub.Application.Database.Repositories
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Domain;
+
+namespace CommunityHub.Application.Database.Repositories
 {
     public class AddressRepository
     {
-        public List<int> GetOccupiedStreetNumbers(long streetId, long cityId)
+        private readonly AddressMapper _addressMapper = new AddressMapper();
+        public List<int> GetOccupiedStreetNumbers(long? streetId, long? cityId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT street_number FROM
@@ -23,6 +27,20 @@
             });
 
             return occupiedStreetNumbers;
+        }
+
+        public Address Create(Address address)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO addresses 
+                (street_number, neighborhood, street_id, city_id) 
+                VALUES 
+                (@street_number, @neighborhood, @street_id, @city_id)
+                RETURNING id"
+            )
+            .ExtendParameters(_addressMapper.MapToQueryParameters(address));
+            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            return address.CopyWith(id: generatedId);
         }
     }
 }
