@@ -26,6 +26,7 @@ namespace CommunityHub.Ui.Views.Citizen
             _activeTabColor = (SolidColorBrush)converter.ConvertFromString("#99C2FF")!;
 
             Loaded += HomeWindow_Loaded;
+            KeyDown += Window_KeyDown;
             
             MainFrame.Navigate(new HomePage(_userId));
         }
@@ -38,6 +39,37 @@ namespace CommunityHub.Ui.Views.Citizen
                 DataContext = citizen;
             }
             _selectedTab = TabMainMenu;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.T)
+            {
+                if (TooltipToggleCheckBox != null)
+                {
+                    TooltipToggleCheckBox.IsChecked = !TooltipToggleCheckBox.IsChecked;
+                }
+                e.Handled = true;
+                return;
+            }
+
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.H)
+            {
+                // TODO: implement help system
+                e.Handled = true;
+                return;
+            }
+
+            switch (e.Key)
+            {
+                case Key.F1: ActivateTab(TabMainMenu); break;
+                case Key.F2: ActivateTab(TabNeighborhoods); break;
+                case Key.F3: ActivateTab(TabEvents); break;
+                case Key.F4: ActivateTab(TabTrustRecords); break;
+                case Key.F5: ActivateTab(TabMeetings); break;
+                case Key.F6: ActivateTab(TabLocalFacilities); break;
+                case Key.F7: ActivateTab(TabDonations); break;
+            }
         }
 
         private void Tab_Click(object sender, MouseButtonEventArgs e)

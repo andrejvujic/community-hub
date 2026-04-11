@@ -107,7 +107,7 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,10">
             <TextBlock Text="Show Tooltips (Ctrl + T):" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
-            <CheckBox VerticalAlignment="Center" IsChecked="True" Cursor="Hand">
+            <CheckBox x:Name="TooltipToggleCheckBox" VerticalAlignment="Center" IsChecked="True" Cursor="Hand">
                 <CheckBox.Style>
                     <Style TargetType="CheckBox">
                         <Setter Property="Template">
