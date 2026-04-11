@@ -7,6 +7,65 @@ namespace CommunityHub.Application.Database.Repositories
     {
         private readonly NeighborhoodAccessRequestMapper _neighborhoodAccessRequestMapper = new NeighborhoodAccessRequestMapper();
 
+        public List<NeighborhoodAccessRequest> GetWaitingByNeighborhoodId(long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT 
+                neighborhood_access_requests.status, 
+                neighborhood_access_requests.creation_date, 
+                neighborhood_access_requests.comment,
+
+                citizens.id AS user_id, 
+                citizens.username, 
+                citizens.password, 
+                citizens.name, 
+                citizens.surname, 
+                citizens.user_role,
+
+                addresses.id AS address_id, 
+                addresses.street_number, 
+                addresses.neighborhood,
+
+                streets.id AS street_id, 
+                streets.name AS street_name,
+
+                address_city.id AS city_id, 
+                address_city.name AS city_name,
+
+                neighborhood_memberships.id AS membership_id, 
+                neighborhood_memberships.acceptance_date,
+
+                neighborhoods.id AS neighborhood_id, 
+                neighborhoods.name AS neighborhood_name, 
+                neighborhoods.description, 
+                neighborhoods.budget,
+
+                neighborhood_city.id AS city_id, 
+                neighborhood_city.name AS city_name
+
+                FROM neighborhood_access_requests
+                INNER JOIN citizens ON neighborhood_access_requests.citizen_id = citizens.id
+                INNER JOIN neighborhoods ON neighborhood_access_requests.neighborhood_id = neighborhoods.id
+        
+                INNER JOIN cities AS neighborhood_city ON neighborhoods.city_id = neighborhood_city.id
+        
+                LEFT JOIN addresses ON citizens.address_id = addresses.id
+                LEFT JOIN streets ON addresses.street_id = streets.id
+        
+                LEFT JOIN cities AS address_city ON addresses.city_id = address_city.id
+        
+                LEFT JOIN neighborhood_memberships ON citizens.membership_id = neighborhood_memberships.id
+
+                WHERE neighborhood_access_requests.neighborhood_id = @neighborhoodId 
+                AND neighborhood_access_requests.status = 'waiting'"
+            ).AddParameter("neighborhoodId", neighborhoodId);
+
+            List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
+            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+
+            return requests;
+        }
+
         public void Update(NeighborhoodAccessRequest request)
         {
             var query = PostgresQuery.Create(
