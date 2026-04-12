@@ -9,6 +9,9 @@
         public Status Status { get; private set; }
         public DateTime CreationDate { get; private set; }
 
+        public bool IsCancellable => Status == Status.Waiting;
+        public bool HasComment => Comment != null;
+
         public ApartmentAccessRequest(
             User applicant,
             Apartment apartment,
