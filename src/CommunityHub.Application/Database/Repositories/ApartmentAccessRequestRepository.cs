@@ -79,12 +79,21 @@ namespace CommunityHub.Application.Database.Repositories
                 VALUES
                 (@applicant_id, @apartment_id, @comment, @status, @creation_date)
                 RETURNING id"
-                ).ExtendParameters(
-                    _apartmentAccessRequestMapper.MapToQueryParameters(request)
-                );
+            ).ExtendParameters(
+                _apartmentAccessRequestMapper.MapToQueryParameters(request)
+            );
 
             long id = query.ExecuteScalar(value => Convert.ToInt64(value));
             return request.CopyWith(id: id);
+        }
+
+        public void Cancel(long requestId)
+        {
+            PostgresQuery.Create(
+                "DELETE FROM apartment_access_requests WHERE id = @request_id"
+            )
+            .AddParameter("request_id", requestId)
+            .ExecuteScalar();
         }
 
         public bool HasPendingRequest(long userId, long apartmentId)
