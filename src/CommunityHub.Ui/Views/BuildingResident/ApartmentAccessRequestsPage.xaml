@@ -5,11 +5,16 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Zahtjevi"
       FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
-        <Grid x:Name="MainContent" Visibility="Hidden" Margin="8">
+        <Grid x:Name="MainContent" Visibility="{Binding HasRequests, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -112,7 +117,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Grid x:Name="EmptyContent" Visibility="Hidden" Margin="8">
+        <Grid x:Name="EmptyContent" Visibility="{Binding HasRequests, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
             <DockPanel>
                 <Grid DockPanel.Dock="Top">
                     <Grid.RowDefinitions>
