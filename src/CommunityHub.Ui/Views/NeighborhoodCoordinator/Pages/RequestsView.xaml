@@ -31,23 +31,42 @@
             </ComboBox>
         </StackPanel>
 
-        <DataGrid Grid.Row="1"
+        <DataGrid x:Name="RequestsDataGrid"
+                  Grid.Row="1"
                   AutoGenerateColumns="False"
-                  CanUserSortColumns="False"
-                  IsReadOnly="True">
+                  CanUserResizeColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Ime" Width="*" />
-                <DataGridTextColumn Header="Prezime" Width="*" />
-                <DataGridTextColumn Header="Adresa" Width="*" />
-                <DataGridTextColumn Header="Kvart" Width="*" />
+                <DataGridTextColumn Header="Ime" Binding="{Binding Ime}" CanUserSort="False" Width="*" />
+                <DataGridTextColumn Header="Prezime" Binding="{Binding Prezime}" CanUserSort="False" Width="*" />
+                <DataGridTextColumn Header="Adresa" Binding="{Binding Adresa}" CanUserSort="False" Width="2*" />
+                <DataGridTextColumn Header="Kvart" Binding="{Binding Kvart}" CanUserSort="False" Width="*" />
 
                 <DataGridTextColumn Header="Datum" 
-                                    Width="*"
+                                    Binding="{Binding Datum, StringFormat=\{0:dd.MM.yyyy.\}}"
+                                    Width="150"
                                     CanUserSort="True"
                                     SortMemberPath="Datum"/>
 
-                <DataGridTextColumn Header="Status" Width="*" />
+                <DataGridTemplateColumn Header="Status" CanUserSort="False" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
+                                <TextBlock Text="{Binding StatusIcon}" 
+                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
+                                           FontSize="14"
+                                           Width="20"
+                                           VerticalAlignment="Center"/>
+
+                                <TextBlock Text="{Binding StatusText}" 
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
