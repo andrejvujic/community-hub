@@ -123,6 +123,9 @@ namespace CommunityHub.Ui.Views.Citizen
                 case "Neighborhoods":
                     MainFrame.Navigate(new NeighborhoodsPage(_userId));
                     break;
+                case "Events":
+                    MainFrame.Navigate(new EventsPage(_userId));
+                    break;
                 default:
                     MainFrame.Content = null; 
                     break;
