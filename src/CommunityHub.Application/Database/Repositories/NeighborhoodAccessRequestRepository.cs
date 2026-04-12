@@ -66,6 +66,69 @@ namespace CommunityHub.Application.Database.Repositories
             return requests;
         }
 
+        public List<NeighborhoodAccessRequest> GetByCoordinatorId(long coordinatorId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT 
+                neighborhood_access_requests.status, 
+                neighborhood_access_requests.creation_date, 
+                neighborhood_access_requests.comment,
+        
+                citizens.id AS user_id, 
+                citizens.username, 
+                citizens.password, 
+                citizens.name, 
+                citizens.surname, 
+                citizens.user_role,
+        
+                addresses.id AS address_id, 
+                addresses.street_number, 
+                addresses.neighborhood, 
+        
+                streets.id AS street_id, 
+                streets.name AS street_name,
+        
+                cities.id AS city_id, 
+                cities.name AS city_name,
+        
+                countries.id AS country_id,
+                countries.name AS country_name,
+        
+                neighborhood_memberships.id AS membership_id, 
+                neighborhood_memberships.acceptance_date,
+        
+                neighborhoods.id AS neighborhood_id, 
+                neighborhoods.name AS neighborhood_name, 
+                neighborhoods.description, 
+                neighborhoods.budget,
+        
+                coordinator_users.id AS coordinator_user_id,
+                coordinator_users.username AS coordinator_username,
+                coordinator_users.password AS coordinator_password,
+                coordinator_users.name AS coordinator_name,
+                coordinator_users.surname AS coordinator_surname,
+                coordinator_users.user_role AS coordinator_user_role
+
+                FROM neighborhood_access_requests
+                INNER JOIN citizens ON neighborhood_access_requests.citizen_id = citizens.id
+                INNER JOIN neighborhoods ON neighborhood_access_requests.neighborhood_id = neighborhoods.id
+                INNER JOIN users AS coordinator_users ON neighborhoods.coordinator_id = coordinator_users.id
+                INNER JOIN cities ON neighborhoods.city_id = cities.id
+                INNER JOIN countries ON cities.country_id = countries.id
+    
+                LEFT JOIN addresses ON citizens.address_id = addresses.id
+                LEFT JOIN streets ON addresses.street_id = streets.id
+                LEFT JOIN neighborhood_memberships ON citizens.membership_id = neighborhood_memberships.id
+    
+                WHERE neighborhoods.coordinator_id = @coordinatorId"
+            ).AddParameter("coordinatorId", coordinatorId);
+
+            List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
+            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+
+            return requests;
+        }
+
         public void Update(NeighborhoodAccessRequest request)
         {
             var query = PostgresQuery.Create(
