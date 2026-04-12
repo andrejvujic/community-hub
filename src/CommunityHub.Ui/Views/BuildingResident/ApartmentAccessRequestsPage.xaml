@@ -1,14 +1,20 @@
-﻿<Page x:Class="CommunityHub.Ui.Views.BuildingResident.ApartmentAccessRequestsPage"
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.BuildingResident.ApartmentAccessRequestsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Zahtjevi"
       FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
-        <Grid x:Name="MainContent" Visibility="Hidden" Margin="8">
+        <Grid x:Name="MainContent" Visibility="{Binding HasRequests, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -27,7 +33,7 @@
                                 Background="#dedede"
                                 BorderBrush="Gray"
                                 BorderThickness="1">
-                                <Grid>
+                                <Grid Background="Transparent" MouseLeftButtonDown="OpenRequestDetailsPageButton_Click"> 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
@@ -111,7 +117,7 @@
             </ScrollViewer>
         </Grid>
 
-        <Grid x:Name="EmptyContent" Visibility="Hidden" Margin="8">
+        <Grid x:Name="EmptyContent" Visibility="{Binding HasRequests, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
             <DockPanel>
                 <Grid DockPanel.Dock="Top">
                     <Grid.RowDefinitions>
@@ -135,4 +141,4 @@
             </DockPanel>
         </Grid>
     </Grid>
-</Page>
+</navigation:MainNavigatorConsumerPage>
