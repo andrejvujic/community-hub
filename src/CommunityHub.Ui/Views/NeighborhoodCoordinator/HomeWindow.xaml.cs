@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
@@ -29,6 +30,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             _userRepository = new UserRepository();
             _userId = userId;
             LoadUser();
+
+            RequestsTab.Initialize(_userId);
         }
 
         private void LoadUser()
