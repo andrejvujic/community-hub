@@ -87,7 +87,7 @@ namespace CommunityHub.Application.Database.Repositories
             return request.CopyWith(id: id);
         }
 
-        public void Cancel(long requestId)
+        public void Delete(long requestId)
         {
             PostgresQuery.Create(
                 "DELETE FROM apartment_access_requests WHERE id = @request_id"

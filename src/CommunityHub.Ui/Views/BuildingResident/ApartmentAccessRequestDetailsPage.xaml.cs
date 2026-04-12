@@ -26,7 +26,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         private void CancelRequest()
         {
-            _apartmentAccessRepository.Cancel(Request.Id);
+            _apartmentAccessRepository.Delete(Request.Id);
             Pop();
         }
 
