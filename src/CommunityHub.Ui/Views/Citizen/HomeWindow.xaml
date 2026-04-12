@@ -18,7 +18,7 @@
 
         <Border Grid.Row="0" Margin="10,10,10,0">
             <UniformGrid Columns="7" Height="80">
-                <Border x:Name="TabMainMenu" Tag="Main Menu" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="2,2,1,2" Background="#99C2FF">
+                <Border x:Name="TabMainMenu" Tag="Main Menu" Uid="Glavni meni" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="2,2,1,2" Background="#99C2FF">
                     <Grid>
                         <TextBlock Text="F1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -29,7 +29,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabNeighborhoods" Tag="Neighborhoods" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                <Border x:Name="TabNeighborhoods" Tag="Neighborhoods" Uid="Kvartovi" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
                     <Grid>
                         <TextBlock Text="F2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -44,7 +44,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabEvents" Tag="Events" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                <Border x:Name="TabEvents" Tag="Events" Uid="Događaji" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
                     <Grid>
                         <TextBlock Text="F3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -55,7 +55,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabTrustRecords" Tag="Trust Records" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                <Border x:Name="TabTrustRecords" Tag="Trust Records" Uid="Evidencije poverenja" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
                     <Grid>
                         <TextBlock Text="F4" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -70,7 +70,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabMeetings" Tag="Meetings" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                <Border x:Name="TabMeetings" Tag="Meetings" Uid="Sastanci" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
                     <Grid>
                         <TextBlock Text="F5" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -81,7 +81,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabLocalFacilities" Tag="Local Facilities" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
+                <Border x:Name="TabLocalFacilities" Tag="Local Facilities" Uid="Lokalni objekti" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,1,2" Background="White">
                     <Grid>
                         <TextBlock Text="F6" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -92,7 +92,7 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabDonations" Tag="Donations" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,2,2" Background="White">
+                <Border x:Name="TabDonations" Tag="Donations" Uid="Donacije" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="1,2,2,2" Background="White">
                     <Grid>
                         <TextBlock Text="F7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -150,7 +150,7 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <TextBlock x:Name="StatusBarTabTextBlock" Grid.Column="1" Text="Kartica: Main Menu" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusBarTabTextBlock" Grid.Column="1" Text="Kartica: Glavni meni" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock Text="Pritisnite Ctrl+H za pomoć" VerticalAlignment="Center" Margin="0,0,10,0"/>

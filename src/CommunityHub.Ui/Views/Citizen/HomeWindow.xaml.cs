@@ -103,11 +103,11 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void UpdateStatusBarForTab(System.Windows.Controls.Border tab)
         {
-            string tag = tab.Tag?.ToString() ?? "";
+            string displayName = tab.Uid ?? tab.Tag?.ToString() ?? "";
 
             if (StatusBarTabTextBlock != null)
             {
-                StatusBarTabTextBlock.Text = $"Kartica: {tag}";
+                StatusBarTabTextBlock.Text = $"Kartica: {displayName}";
             }
         }
 
