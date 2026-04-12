@@ -46,7 +46,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
             if (_citizen == null)
             {
-                MessageBox.Show("User not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -56,8 +56,9 @@ namespace CommunityHub.Ui.Views.Citizen
         private void UpdateDateTime()
         {
             DateTime now = DateTime.Now;
-            DateTextBlock.Text = now.ToString("dddd, dd/MM/yyyy");
-            TimeTextBlock.Text = now.ToString("HH:mm");
+            var culture = new System.Globalization.CultureInfo("sr-Latn-RS");
+            DateTextBlock.Text = now.ToString("dddd, d.M.yyyy.", culture);
+            TimeTextBlock.Text = now.ToString("HH:mm", culture);
         }
     }
 }
