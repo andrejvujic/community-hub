@@ -107,7 +107,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
             if (StatusBarTabTextBlock != null)
             {
-                StatusBarTabTextBlock.Text = $"Tab: {tag}";
+                StatusBarTabTextBlock.Text = $"Kartica: {tag}";
             }
         }
 
