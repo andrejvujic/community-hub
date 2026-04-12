@@ -135,6 +135,9 @@ namespace CommunityHub.Ui.Views.Citizen
                 case "Local Facilities":
                     MainFrame.Navigate(new LocalFacilitiesPage(_userId));
                     break;
+                case "Donations":
+                    MainFrame.Navigate(new DonationsPage(_userId));
+                    break;
                 default:
                     MainFrame.Content = null; 
                     break;
