@@ -212,6 +212,7 @@
 
         <Button
             Visibility="{Binding Request.IsCancellable, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Click="CancelRequestButton_Click"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
