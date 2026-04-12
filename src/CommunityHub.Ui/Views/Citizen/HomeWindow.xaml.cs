@@ -132,6 +132,9 @@ namespace CommunityHub.Ui.Views.Citizen
                 case "Meetings":
                     MainFrame.Navigate(new MeetingsPage(_userId));
                     break;
+                case "Local Facilities":
+                    MainFrame.Navigate(new LocalFacilitiesPage(_userId));
+                    break;
                 default:
                     MainFrame.Content = null; 
                     break;
