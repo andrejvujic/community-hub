@@ -15,9 +15,6 @@ namespace CommunityHub.Ui.Views.BuildingResident
             DataContext = this;
             Request = request;
         }
-        
-        public bool HasComment => Request.Comment != null;
-        public bool CanCancelRequest => Request.Status == Status.Waiting;
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
     }

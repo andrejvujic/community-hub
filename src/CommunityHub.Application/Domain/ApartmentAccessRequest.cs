@@ -10,7 +10,7 @@
         public DateTime CreationDate { get; private set; }
 
         public bool IsCancellable => Status == Status.Waiting;
-        public bool HasComment => Comment != null;
+        public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
 
         public ApartmentAccessRequest(
             User applicant,
