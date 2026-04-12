@@ -12,6 +12,7 @@
     <navigation:MainNavigatorConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:StatusToIconCodeConverter x:Key="StatusToIconCodeConverter"/>
         <converters:StatusToStringConverter x:Key="StatusToStringConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
@@ -91,7 +92,7 @@
 
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
-                                                 Text="&#xf017;"
+                                                 Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}"
                                                  FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                  VerticalAlignment="Center"
                                                  FontSize="16"
