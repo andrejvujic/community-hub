@@ -7,20 +7,20 @@ using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
-    public partial class HomePage : Page
+    public partial class MainMenuPage : Page
     {
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly long _userId;
         private CommunityHub.Application.Domain.Citizen _citizen;
         private DispatcherTimer _timer;
 
-        public HomePage(long userId)
+        public MainMenuPage(long userId)
         {
             InitializeComponent();
             _userId = userId;
 
-            Loaded += HomePage_Loaded;
-            Unloaded += HomePage_Unloaded;
+            Loaded += MainMenuPage_Loaded;
+            Unloaded += MainMenuPage_Unloaded;
 
             _timer = new DispatcherTimer(
                 TimeSpan.FromSeconds(1),
@@ -29,13 +29,13 @@ namespace CommunityHub.Ui.Views.Citizen
                 Dispatcher.CurrentDispatcher);
         }
 
-        private void HomePage_Loaded(object sender, RoutedEventArgs e)
+        private void MainMenuPage_Loaded(object sender, RoutedEventArgs e)
         {
             LoadUser();
             UpdateDateTime();
         }
 
-        private void HomePage_Unloaded(object sender, RoutedEventArgs e)
+        private void MainMenuPage_Unloaded(object sender, RoutedEventArgs e)
         {
             _timer?.Stop();
         }

@@ -27,8 +27,8 @@ namespace CommunityHub.Ui.Views.Citizen
 
             Loaded += HomeWindow_Loaded;
             KeyDown += Window_KeyDown;
-            
-            MainFrame.Navigate(new HomePage(_userId));
+
+            MainFrame.Navigate(new MainMenuPage(_userId));
         }
 
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e)
@@ -118,7 +118,7 @@ namespace CommunityHub.Ui.Views.Citizen
             switch (tag)
             {
                 case "Main Menu":
-                    MainFrame.Navigate(new HomePage(_userId));
+                    MainFrame.Navigate(new MainMenuPage(_userId));
                     break;
                 case "Neighborhoods":
                     MainFrame.Navigate(new NeighborhoodsPage(_userId));
