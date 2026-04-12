@@ -129,6 +129,9 @@ namespace CommunityHub.Ui.Views.Citizen
                 case "Trust Records":
                     MainFrame.Navigate(new TrustRecordsPage(_userId));
                     break;
+                case "Meetings":
+                    MainFrame.Navigate(new MeetingsPage(_userId));
+                    break;
                 default:
                     MainFrame.Content = null; 
                     break;
