@@ -70,10 +70,53 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                     StatusIcon = statusIcon,
                     StatusText = statusText
                 };
-                }).ToList();
+            }).ToList();
 
 
             RequestsDataGrid.ItemsSource = displayData;
+        }
+
+        private void RequestsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RequestsDataGrid.SelectedItem == null)
+            {
+                AcceptButton.IsEnabled = false;
+                RejectButton.IsEnabled = false;
+                return;
+            }
+
+            dynamic selected = RequestsDataGrid.SelectedItem;
+            NeighborhoodAccessRequest request = selected.OriginalRequest;
+
+            bool isWaiting = request.Status == Status.Waiting;
+
+            AcceptButton.IsEnabled = isWaiting;
+            RejectButton.IsEnabled = isWaiting;
+        }
+
+        private void RejectButton_Click(object sender, RoutedEventArgs e)
+        {
+            dynamic selected = RequestsDataGrid.SelectedItem;
+            if (selected == null) return;
+
+            NeighborhoodAccessRequest request = selected.OriginalRequest;
+
+            var dialog = new RejectDialog(selected.Ime, selected.Prezime, selected.Kvart);
+            dialog.Owner = Window.GetWindow(this);
+
+            if (dialog.ShowDialog() == true)
+            {
+                var updatedRequest = request.Reject(dialog.Comment);
+
+                _repository.Update(updatedRequest);
+
+                LoadData();
+                MessageBox.Show($"Korisniku {selected.Ime} {selected.Prezime} je odbijen zahtev za pristup kvartu {selected.Kvart}.", "Odbijen zahtev");
+            }
+        }
+
+        private void AcceptButton_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
