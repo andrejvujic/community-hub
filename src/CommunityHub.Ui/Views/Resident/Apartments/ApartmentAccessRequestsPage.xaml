@@ -180,7 +180,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="Moji zahtjevi" FontSize="20"/>
+                    <TextBlock Grid.Row="0" Text="Moji zahtjevi" FontSize="20"/>
 
                     <Separator Grid.Row="2"/>
 
