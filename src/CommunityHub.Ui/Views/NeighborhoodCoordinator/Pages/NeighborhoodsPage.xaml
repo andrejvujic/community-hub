@@ -5,7 +5,110 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
         mc:Ignorable="d">
-    <Grid>
-        
+    <Grid Background="#F5F6FA">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="20,20,20,10">
+            <TextBlock Text="Moji kvartovi" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"/>
+
+            <Button Content="Registruj novi kvart (Ctrl + N)" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center"
+                    Padding="15,8"
+                    FontWeight="SemiBold"
+                    FontSize="20"
+                    Cursor="Hand">
+            </Button>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+
+            <ItemsControl x:Name="NeighborhoodsItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White"
+                                    Margin="0,0,0,8" 
+                                    Padding="10">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="0.7*" />
+                                    <ColumnDefinition Width="1.1*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                        <TextBlock Text="Grad: " FontSize="18"/>
+                                        <TextBlock Text="{Binding City.Name}" FontSize="18" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                        <TextBlock Text="Država: " FontSize="18"/>
+                                        <TextBlock Text="{Binding Country.Name}" FontSize="18" FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                                <Image Grid.Column="1" 
+                                       Source="{Binding}" 
+                                       Width="110" 
+                                       Height="10" 
+                                       Stretch="UniformToFill"
+                                       VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center" Margin="20,0,20,0">
+                                    <Border Padding="0,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Broj ulica: " FontSize="14" />
+                                            <TextBlock Text="" FontSize="14" FontWeight="Bold" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Padding="0,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Broj članova: " FontSize="14" />
+                                            <TextBlock Text="" FontSize="14" FontWeight="Bold" />
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Padding="0,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Broj zahteva na čekanju: " FontSize="14" />
+                                            <TextBlock Text="" FontSize="14" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="3" 
+                                                Orientation="Horizontal" 
+                                                VerticalAlignment="Center" 
+                                                Margin="15,0,5,0">
+                                    <Button Content="Informacije" 
+                                                Click="InfoButton_Click"
+                                                Padding="12,6"
+                                                Margin="0,0,8,0"
+                                                Width="150"
+                                                FontSize="20"
+                                                Cursor="Hand"/>
+
+                                    <Button Content="Članstva" 
+                                                Click="MembershipsButton_Click"
+                                                Padding="12,6"
+                                                Width="150"
+                                                FontSize="20"
+                                                Cursor="Hand"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>
