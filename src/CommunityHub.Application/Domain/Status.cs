@@ -11,4 +11,16 @@ namespace CommunityHub.Application.Domain
         [EnumMember(Value = "waiting")]
         Waiting
     }
+
+    public class StatusOption
+    {
+        public Status? Value { get; set; }
+        public string Text { get; set; } = "";
+
+        public StatusOption(string text, Status? value = null)
+        {
+            Text = text;
+            Value = value;
+        }
+    }
 }

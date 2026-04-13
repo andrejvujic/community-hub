@@ -1,15 +1,39 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace CommunityHub.Application.Database.Repositories
 {
+    public enum RequestOrder
+    {
+        Unspecified,
+        CreationDateAscending,
+        CreationDateDescending,
+    }
+
     public class ApartmentAccessRequestRepository
     {
         private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new ApartmentAccessRequestMapper();
-        public List<ApartmentAccessRequest> GetByApplicantId(long id)
+
+        private static string GetOrderByClause(RequestOrder order)
+        {
+            return order switch
+            {
+                RequestOrder.CreationDateAscending => "ORDER BY request.creation_date ASC",
+                RequestOrder.CreationDateDescending => "ORDER BY request.creation_date DESC",
+                _ => string.Empty
+            };
+        }
+
+        public List<ApartmentAccessRequest> GetByApplicantId(
+            long id,
+            Status? status = null,
+            RequestOrder order = RequestOrder.Unspecified
+        )
         {
             var query = PostgresQuery.Create(
-                @"SELECT
+                $@"SELECT
                 request.id as request_id,
                 request.status,
                 request.comment,
@@ -58,9 +82,13 @@ namespace CommunityHub.Application.Database.Repositories
                 INNER JOIN streets street ON address.street_id = street.id
                 INNER JOIN cities city ON address.city_id = city.id
                 INNER JOIN countries country ON city.country_id = country.id
-                WHERE request.applicant_id = @id"
+                WHERE
+                    request.applicant_id = @id AND
+                    (request.status = @status OR @status IS NULL)
+                {GetOrderByClause(order)}"
             )
-            .AddParameter("id", id);
+            .AddParameter("id", id)
+            .AddParameter("status", status);
 
             List<ApartmentAccessRequest> requests = new List<ApartmentAccessRequest>();
             query.ExecuteReader(
@@ -203,9 +231,6 @@ namespace CommunityHub.Application.Database.Repositories
             );
             return requests;
         }
-
-
-
 
         public ApartmentAccessRequest Create(ApartmentAccessRequest request)
         {
