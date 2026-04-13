@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Apartments
 {
     public enum AccessRequestValidationResult
     {

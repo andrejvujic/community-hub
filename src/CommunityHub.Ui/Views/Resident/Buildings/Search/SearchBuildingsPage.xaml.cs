@@ -2,11 +2,12 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Apartments;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
 
     public partial class SearchBuildingsPage : MainNavigatorConsumerPage

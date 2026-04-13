@@ -1,7 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using CommunityHub.Ui.Views.Resident.Apartments;
+using CommunityHub.Ui.Views.Resident.Buildings;
+using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident
 {
     public partial class HomePage : Page
     {

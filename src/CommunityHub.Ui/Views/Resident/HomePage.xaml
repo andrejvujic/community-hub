@@ -1,9 +1,9 @@
-﻿<Page x:Class="CommunityHub.Ui.Views.BuildingResident.HomePage"
+﻿<Page x:Class="CommunityHub.Ui.Views.Resident.HomePage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
+        xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident"
         mc:Ignorable="d"
         Title="Početna"
         FontFamily="{StaticResource AppFontFamily}">

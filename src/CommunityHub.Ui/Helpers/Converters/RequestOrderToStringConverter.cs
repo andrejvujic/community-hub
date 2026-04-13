@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Helpers.Query;
 using System.Globalization;
 using System.Windows.Data;
 

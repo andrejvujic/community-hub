@@ -1,17 +1,14 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Helpers.Query;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Apartments
 {
-    public static class RequestOrderValues
-    {
-        public static Array All => Enum.GetValues(typeof(RequestOrder));
-    }
 
     public partial class ApartmentAccessRequestsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {

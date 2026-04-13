@@ -5,7 +5,7 @@ using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Apartments
 {
     public partial class ApartmentAccessRequestDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
     {

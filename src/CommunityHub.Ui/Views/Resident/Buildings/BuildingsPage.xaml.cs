@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Search;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Buildings
 {
     public partial class BuildingsPage : MainNavigatorConsumerPage
     {

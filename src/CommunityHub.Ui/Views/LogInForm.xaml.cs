@@ -52,7 +52,7 @@ public partial class LogInForm : Window
                 buildingManagerHomeWindow.Show();
                 break;
             case Role.BuildingResident:
-                var buildingResidentMainWindow = new BuildingResident.MainWindow(userId.Value);
+                var buildingResidentMainWindow = new Resident.MainWindow(userId.Value);
                 buildingResidentMainWindow.Show();
                 break;
             case Role.NeighborhoodCoordinator:

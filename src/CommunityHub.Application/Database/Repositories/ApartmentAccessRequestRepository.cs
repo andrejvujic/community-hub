@@ -1,17 +1,9 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
-using System.Diagnostics;
-using System.Runtime.Serialization;
+using CommunityHub.Application.Helpers.Query;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public enum RequestOrder
-    {
-        Unspecified,
-        CreationDateAscending,
-        CreationDateDescending,
-    }
-
     public class ApartmentAccessRequestRepository
     {
         private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new ApartmentAccessRequestMapper();
