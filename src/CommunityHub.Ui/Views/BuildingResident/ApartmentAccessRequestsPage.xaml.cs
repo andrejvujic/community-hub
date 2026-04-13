@@ -86,7 +86,17 @@ namespace CommunityHub.Ui.Views.BuildingResident
         }
 
         private void OpenSortAndFilterMenu_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
-            => SortAndFilterOverlay.Visibility = Visibility.Visible;
+        {
+            StatusComboBox
+                .GetBindingExpression(ComboBox.SelectedValueProperty)?
+                .UpdateTarget();
+
+            OrderComboBox
+                .GetBindingExpression(ComboBox.SelectedItemProperty)?
+                .UpdateTarget();
+
+            SortAndFilterOverlay.Visibility = Visibility.Visible;
+        }
 
         private void CancelSortAndFilterButton_Click(object sender, RoutedEventArgs e)
             => SortAndFilterOverlay.Visibility = Visibility.Collapsed;
