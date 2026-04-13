@@ -14,40 +14,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20" Height="34">
-            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Width="300" Height="34" Background="White" Margin="0,0,10,0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Margin="0,0,0,20" Height="34">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="SearchTextBox" Grid.Column="0" BorderThickness="0" VerticalContentAlignment="Center" Padding="10,0" 
-                             Foreground="Black" Background="Transparent"/>
-
-                    <TextBlock Grid.Column="0" Text="Pretraži kvartove" Foreground="Gray" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=SearchTextBox}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                    <Button Grid.Column="1" Width="34" Height="34" ToolTip="Pretraži" Cursor="Hand" Background="Transparent" BorderThickness="0">
-                        <Viewbox Width="16" Height="16">
-                            <Path Data="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" Fill="Gray"/>
-                        </Viewbox>
-                    </Button>
-                </Grid>
-            </Border>
-
-            <Button Content="Napredna pretraga (Ctrl+A)" Width="190" Height="34" FontWeight="Bold" Padding="10,0" Background="#F0F0F0" BorderBrush="Gray" BorderThickness="1"/>
-        </StackPanel>
+            <Button Grid.Column="0" Content="Parametri pretrage (Ctrl+S)" Width="190" Height="34" FontWeight="Bold" Padding="10,0" Background="#F0F0F0" BorderBrush="Gray" BorderThickness="1" Click="SearchButton_Click" HorizontalAlignment="Left"/>
+        </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -57,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      BorderBrush="Black" BorderThickness="2" RowHeight="30">
+                      BorderBrush="Black" BorderThickness="2" RowHeight="30" ItemsSource="{Binding Neighborhoods}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Naziv kvarta" Binding="{Binding Name}" Width="*"/>
                     <DataGridTextColumn Header="Grad" Binding="{Binding City.Name}" Width="*"/>
