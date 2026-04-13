@@ -21,11 +21,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     {
         private long _coordinatorId;
         private readonly NeighborhoodRepository _neighborhoodRepository;
+        private readonly StreetSectionRepository _streetSectionRepository;
+        private readonly NeighborhoodMembershipRepository _membershipRepository;
 
         public NeighborhoodsPage()
         {
             InitializeComponent();
             _neighborhoodRepository = new NeighborhoodRepository();
+            _streetSectionRepository = new StreetSectionRepository();
+            _membershipRepository = new NeighborhoodMembershipRepository();
         }
 
         public void Initialize(long coordinatorId)
@@ -37,17 +41,27 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadNeighborhoods()
         {
             List<Neighborhood> neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
-            NeighborhoodsItemsControl.ItemsSource = neighborhoods;
+            NeighborhoodsListBox.ItemsSource = neighborhoods;
         }
 
-        public void InfoButton_Click(object sender, RoutedEventArgs e)
+        private void NeighborhoodsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (NeighborhoodsListBox.SelectedItem is Neighborhood selected)
+            {
+                DetailsScrollViewer.DataContext = selected;
+                SelectedNeighborhoodTitle.Text = selected.Name;
+                SelectedNeighborhoodLocation.Text = $"{selected.City.Name}, {selected.Country.Name}";
+
+                //StreetsDataGrid.ItemsSource = _streetSectionRepository.GetByNeighborhoodId(selected.Id);
+                //MembershipsDataGrid.ItemsSource = _membershipRepository.GetCitizensByNeighborhoodId(selected.Id);
+
+                DetailsScrollViewer.Visibility = Visibility.Visible;
+            }
         }
 
-        public void MembershipsButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
     }
 }
