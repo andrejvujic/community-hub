@@ -119,8 +119,8 @@ namespace CommunityHub.Application.Database.Repositories
                 (country.id = @country_id OR @country_id IS NULL) AND
                 (city.id = @city_id OR @city_id IS NULL) AND
                 (neighborhood.name ILIKE '%' || @name || '%') AND
-                (@street_name IS NULL OR @street_name = '' OR street.name ILIKE '%' || @street_name || '%') AND 
-                (@street_number IS NULL OR @street_number BETWEEN section.start_number AND section.end_number)
+                (CAST(@street_name AS text) IS NULL OR CAST(@street_name AS text) = '' OR street.name ILIKE '%' || CAST(@street_name AS text) || '%') AND 
+                (CAST(@street_number AS int) IS NULL OR CAST(@street_number AS int) BETWEEN section.start_number AND section.end_number)
 
                 GROUP BY 
                 neighborhood.id, neighborhood.name, neighborhood.description, neighborhood.budget,
@@ -143,8 +143,10 @@ namespace CommunityHub.Application.Database.Repositories
                 }
 
                 Image? image = _imageMapper.MapToEntity(reader);
-                if (image == null) return;
-                existingNeighborhood.Images.Add(image);
+                if (image != null)
+                {
+                    existingNeighborhood.Images.Add(image);
+                }
             });
 
             return neighborhoods.Values.ToList();

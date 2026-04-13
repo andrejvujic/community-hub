@@ -59,9 +59,9 @@
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
                       BorderBrush="Black" BorderThickness="2" RowHeight="30">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Naziv kvarta" Width="*"/>
-                    <DataGridTextColumn Header="Grad" Width="*"/>
-                    <DataGridTextColumn Header="Država" Width="*"/>
+                    <DataGridTextColumn Header="Naziv kvarta" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Grad" Binding="{Binding City.Name}" Width="*"/>
+                    <DataGridTextColumn Header="Država" Binding="{Binding Country.Name}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
