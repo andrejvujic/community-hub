@@ -16,5 +16,11 @@ namespace CommunityHub.Application.Domain
     {
         public Status? Value { get; set; }
         public string Text { get; set; } = "";
+
+        public StatusOption(string text, Status? value = null)
+        {
+            Text = text;
+            Value = value;
+        }
     }
 }
