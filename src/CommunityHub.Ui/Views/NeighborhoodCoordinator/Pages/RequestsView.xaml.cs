@@ -20,12 +20,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     public partial class RequestsView : UserControl
     {
         private long _coordinatorId;
-        private readonly NeighborhoodAccessRequestRepository _repository;
-
+        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository;
+        private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository;
+        private readonly CitizenRepository _citizenRepository;
         public RequestsView()
         {
             InitializeComponent();
-            _repository = new NeighborhoodAccessRequestRepository();
+            _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
+            _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
+            _citizenRepository = new CitizenRepository();
         }
 
         public void Initialize(long coordinatorId)
@@ -36,7 +39,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void LoadData()
         {
-            var requests = _repository.GetByCoordinatorId(_coordinatorId);
+            var requests = _neighborhoodAccessRequestRepository.GetByCoordinatorId(_coordinatorId);
 
             var displayData = requests.Select(r =>
             {
@@ -108,7 +111,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             {
                 var updatedRequest = request.Reject(dialog.Comment);
 
-                _repository.Update(updatedRequest);
+                _neighborhoodAccessRequestRepository.Update(updatedRequest);
 
                 LoadData();
                 MessageBox.Show($"Korisniku {selected.Ime} {selected.Prezime} je odbijen zahtev za pristup kvartu {selected.Kvart}.", "Odbijen zahtev");
@@ -117,6 +120,29 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
+            dynamic selected = RequestsDataGrid.SelectedItem;
+            if (selected == null) return;
+
+            MessageBoxResult result = MessageBox.Show(
+                $"Da li ste sigurni da želite da prihvatite zahtev korisnika {selected.Ime} {selected.Prezime} za pristup kvartu {selected.Kvart}?",
+                "Potvrda prihvatanja",
+                MessageBoxButton.YesNo);
+
+            if (result != MessageBoxResult.Yes) return;
+
+            NeighborhoodAccessRequest request = selected.OriginalRequest;
+
+            var updatedRequest = request.Accept();
+            _neighborhoodAccessRequestRepository.Update(updatedRequest);
+
+            var newMembership = new NeighborhoodMembership(0, DateTime.Now, request.Neighborhood);
+            newMembership = _neighborhoodMembershipRepository.Create(newMembership);
+
+            _citizenRepository.UpdateMembership(request.Citizen.Id, newMembership.Id);
+            
+
+            LoadData();
+            MessageBox.Show($"Korisnik {selected.Ime} {selected.Prezime} je postao novi član kvarta {selected.Kvart}.", "Prihvaćen zahtev");
         }
     }
 }
