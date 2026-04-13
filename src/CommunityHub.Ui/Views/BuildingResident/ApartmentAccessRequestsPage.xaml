@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      xmlns:domain="clr-namespace:CommunityHub.Application.Domain;assembly=CommunityHub.Application"
       mc:Ignorable="d" 
       Title="Zahtjevi"
       FontFamily="{StaticResource AppFontFamily}">
@@ -14,18 +15,64 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <converters:StatusToIconCodeConverter x:Key="StatusToIconCodeConverter"/>
         <converters:StatusToStringConverter x:Key="StatusToStringConverter"/>
+        <converters:RequestOrderToStringConverter x:Key="RequestOrderToStringConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid x:Name="MainContent" Visibility="{Binding HasRequests, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="Moji zahtjevi" FontSize="20"/>
-            <Separator Grid.Row="1"/>
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,8,0,0">
+            <TextBlock Grid.Row="0" Text="Moji zahtjevi" FontSize="20"/>
+
+            <Separator Grid.Row="2"/>
+
+            <Border
+                Grid.Row="4"
+                Padding="8"
+                BorderBrush="Gray"
+                BorderThickness="1">
+                <Grid Height="36" Background="Transparent" MouseLeftButtonDown="OpenSortAndFilterMenu_Click"> 
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        Text="&#xf160;"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Padding="0"/>
+
+                    <TextBlock
+                        Grid.Column="2"
+                        Text="Uređivanje..."
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        Padding="0"/>
+
+                    <TextBlock
+                        Grid.Column="3"
+                        Text="&#xf178;"
+                        Margin="0,0,8,0"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        Padding="0"/>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="6" VerticalScrollBarVisibility="Auto">
                 <ItemsControl x:Name="RequestsItemsControl" ItemsSource="{Binding Requests}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -127,14 +174,57 @@
                 <Grid DockPanel.Dock="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Content="Moji zahtjevi" FontSize="20"/>
-                    <Separator Grid.Row="1"/>
+
+                    <Separator Grid.Row="2"/>
+
+                    <Border
+                        Grid.Row="4"
+                        Padding="8"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Height="36" Background="Transparent" MouseLeftButtonDown="OpenSortAndFilterMenu_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf160;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Padding="0"/>
+
+                            <TextBlock
+                                Grid.Column="2"
+                                Text="Uređivanje..."
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                Padding="0"/>
+
+                            <TextBlock
+                                Grid.Column="3"
+                                Text="&#xf178;"
+                                Margin="0,0,8,0"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
                 </Grid>
                 
-                <StackPanel Margin="32, 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Nemate nijedan zahtjev" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock
                         Text="Još uvijek niste podnijeli zahtjev za pridruživanje nekoj zgradi."
@@ -144,6 +234,130 @@
                         HorizontalAlignment="Center"/>
                 </StackPanel>
             </DockPanel>
+        </Grid>
+
+        <Grid
+            x:Name="SortAndFilterOverlay"
+            Background="#99000000"
+            Visibility="Collapsed">
+            <Grid
+                Background="White"
+                Margin="16"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="8,8,8,0">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="&#xf0b0;"
+                        FontSize="18"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"/>
+
+                    <Separator Width="8" Opacity="0"/>
+
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        TextWrapping="Wrap"
+                        Text="Filtriranje — Status"/>
+                </StackPanel>
+
+                <ComboBox
+                    Grid.Row="2"
+                    x:Name="StatusComboBox"
+                    ItemsSource="{Binding StatusOptions}"
+                    SelectedValue="{Binding SelectedStatus, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                    SelectedValuePath="Value"
+                    VerticalContentAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Height="48"
+                    Margin="8,0"
+                    FontSize="18">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="36">
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="8,0">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="&#xf0dc;"
+                        FontSize="18"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"/>
+
+                    <Separator Width="8" Opacity="0"/>
+
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        TextWrapping="Wrap"
+                        Text="Sortiranje — Datum"/>
+                </StackPanel>
+
+                <ComboBox
+                    Grid.Row="6"
+                    x:Name="OrderComboBox"
+                    ItemsSource="{Binding Source={x:Static local:RequestOrderValues.All}}"
+                    SelectedItem="{Binding SelectedOrder, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                    VerticalContentAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Height="48"
+                    Margin="8,0"
+                    FontSize="18">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="36">
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource RequestOrderToStringConverter}}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Separator Grid.Row="7" Margin="8,0"/>
+
+                <Grid Grid.Row="8" Margin="8,0,8,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Height="48"
+                        FontSize="18"
+                        Content="Otkaži"
+                        Click="CancelSortAndFilterButton_Click"
+                    />
+
+                    <Button
+                        Grid.Column="2"
+                        Height="48"
+                        FontSize="18"
+                        Content="Potvrdi"
+                        Click="ApplySortAndFilterButton_Click"
+                    />
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </navigation:MainNavigatorConsumerPage>

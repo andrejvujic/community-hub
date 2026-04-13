@@ -8,6 +8,11 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.BuildingResident
 {
+    public static class RequestOrderValues
+    {
+        public static Array All => Enum.GetValues(typeof(RequestOrder));
+    }
+
     public partial class ApartmentAccessRequestsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
 
@@ -17,6 +22,28 @@ namespace CommunityHub.Ui.Views.BuildingResident
         public bool HasRequests { get => Requests.Count > 0; }
         public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new ObservableCollection<ApartmentAccessRequest>();
 
+        public RequestOrder SelectedOrder { get; set; } = RequestOrder.Unspecified;
+
+        public List<StatusOption> StatusOptions { get; } = new()
+        {
+            new StatusOption { Value = null, Text = "Svi" },
+            new StatusOption { Value = Status.Accepted, Text = "Prihvaćen" },
+            new StatusOption { Value = Status.Rejected, Text = "Odbijen" },
+            new StatusOption { Value = Status.Waiting, Text = "Na čekanju" }
+        };
+
+        private Status? _selectedStatus;
+        public Status? SelectedStatus
+        {
+            get => _selectedStatus;
+            set
+            {
+                if (_selectedStatus == value) return;
+                _selectedStatus = value;
+                OnPropertyChanged(nameof(SelectedStatus));
+            }
+        }
+
         public ApartmentAccessRequestsPage(long userId)
         {
             InitializeComponent();
@@ -25,13 +52,18 @@ namespace CommunityHub.Ui.Views.BuildingResident
             _userId = userId;
             _repository = new ApartmentAccessRequestRepository();
 
-            LoadRequests();
+            UpdateRequests();
         }
 
 
-        public void LoadRequests()
+        public void UpdateRequests()
         {
-            var requests = _repository.GetByApplicantId(_userId);
+            var requests = _repository.GetByApplicantId(
+                _userId,
+                status: SelectedStatus,
+                order: SelectedOrder
+            );
+
             Requests.Clear();
             foreach (var request in requests)
                 Requests.Add(request);
@@ -49,12 +81,32 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
             Push(
                 new ApartmentAccessRequestDetailsPage(request),
-                onPop: (object? _) => LoadRequests()
+                onPop: (object? _) => UpdateRequests()
             );
+        }
+
+        private void OpenSortAndFilterMenu_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+            => SortAndFilterOverlay.Visibility = Visibility.Visible;
+
+        private void CancelSortAndFilterButton_Click(object sender, RoutedEventArgs e)
+            => SortAndFilterOverlay.Visibility = Visibility.Collapsed;
+
+        private void ApplySortAndFilterButton_Click(object sender, RoutedEventArgs e)
+        {
+            var statusBinding = StatusComboBox.GetBindingExpression(ComboBox.SelectedValueProperty);
+            statusBinding?.UpdateSource();
+
+            var orderBinding = OrderComboBox.GetBindingExpression(ComboBox.SelectedItemProperty);
+            orderBinding?.UpdateSource();
+
+            UpdateRequests();
+
+            SortAndFilterOverlay.Visibility = Visibility.Collapsed;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
     }
 }
