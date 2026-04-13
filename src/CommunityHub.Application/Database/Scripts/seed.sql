@@ -317,6 +317,8 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (114, 9,  'rejected', '2026-03-23', 'Nepotpuna prijava.'),
 (115, 10, 'rejected', '2026-03-24', 'Neusaglašeni podaci o prebivalištu.');
 
+SELECT setval(pg_get_serial_sequence('neighborhood_memberships', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhood_memberships;
+
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
 ('/Resources/Images/building_1.jpg', 1),
