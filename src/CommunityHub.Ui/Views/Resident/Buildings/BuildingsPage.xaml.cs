@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
         private readonly long _userId;
         private readonly ApartmentMembershipRepository _apartmentMembershipRepository;
 
-        public ObservableCollection<BuildingMembershipGroup> MembershipGroups { get; set; } = new();
+        public ObservableCollection<BuildingMembershipGroup> MembershipGroups { get; set; } = [];
         public bool HasMemberships { get => MembershipGroups.Count > 0; }
 
         public BuildingsPage(long userId)
@@ -37,7 +37,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
                             memberships.First().Resident
                         )
                         {
-                            Memberships = memberships.ToList()
+                            Memberships = [..memberships]
                         })
                     .ToList();
         }

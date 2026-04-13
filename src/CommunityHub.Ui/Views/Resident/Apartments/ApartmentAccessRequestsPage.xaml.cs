@@ -17,7 +17,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         private readonly ApartmentAccessRequestRepository _repository;
 
         public bool HasRequests { get => Requests.Count > 0; }
-        public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new ObservableCollection<ApartmentAccessRequest>();
+        public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = [];
 
         private RequestOrder _selectedOrder = RequestOrder.Unspecified;
         public RequestOrder SelectedOrder
@@ -31,13 +31,13 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
             }
         }
 
-        public List<StatusOption> StatusOptions { get; } = new()
-        {
+        public List<StatusOption> StatusOptions { get; } =
+        [
             new StatusOption("Svi", value: null),
             new StatusOption("Prihvaćen", value: Status.Accepted),
             new StatusOption("Odbijen", value: Status.Rejected),
             new StatusOption("Čeka odobrenje", value: Status.Waiting)
-        };
+        ];
 
         private Status? _selectedStatus;
         public Status? SelectedStatus
@@ -80,15 +80,13 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         private void OpenRequestDetailsPageButton_Click(object sender, RoutedEventArgs e)
         {
-            var element = sender as FrameworkElement;
-            if (element == null) return;
+            if (sender is not FrameworkElement element) return;
 
-            var request = element.DataContext as ApartmentAccessRequest;
-            if (request == null) return;
+            if (element.DataContext is not ApartmentAccessRequest request) return;
 
             Push(
                 new ApartmentAccessRequestDetailsPage(request),
-                onPop: (object? _) => UpdateRequests()
+                onPop: _ => UpdateRequests()
             );
         }
 

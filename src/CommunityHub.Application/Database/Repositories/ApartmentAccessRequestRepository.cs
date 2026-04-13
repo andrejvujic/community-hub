@@ -6,7 +6,7 @@ namespace CommunityHub.Application.Database.Repositories
 {
     public class ApartmentAccessRequestRepository
     {
-        private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new ApartmentAccessRequestMapper();
+        private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new();
 
         private static string GetOrderByClause(RequestOrder order)
         {
@@ -82,7 +82,7 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("id", id)
             .AddParameter("status", status);
 
-            List<ApartmentAccessRequest> requests = new List<ApartmentAccessRequest>();
+            List<ApartmentAccessRequest> requests = [];
             query.ExecuteReader(
                     reader => requests.Add(
                         _apartmentAccessRequestMapper.MapToEntity(reader)
@@ -150,7 +150,7 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("buildingId", buildingId)
             .AddParameter("status", status);
 
-            List<ApartmentAccessRequest> requests = new List<ApartmentAccessRequest>();
+            List<ApartmentAccessRequest> requests = [];
             query.ExecuteReader(
                     reader => requests.Add(
                         _apartmentAccessRequestMapper.MapToEntity(reader)

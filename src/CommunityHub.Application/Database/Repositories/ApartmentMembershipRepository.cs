@@ -5,7 +5,7 @@ namespace CommunityHub.Application.Database.Repositories
 {
     public class ApartmentMembershipRepository
     {
-        private readonly ApartmentMembershipMapper _apartmentMembershipMapper = new ApartmentMembershipMapper();
+        private readonly ApartmentMembershipMapper _apartmentMembershipMapper = new();
         public bool IsApartmentOccupied(long apartmentId)
         {
             var query = PostgresQuery.Create(
@@ -90,7 +90,7 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE resident.id = @id"
             ).AddParameter("id", id);
 
-            List<ApartmentMembership> memberships = new List<ApartmentMembership>();
+            List<ApartmentMembership> memberships = [];
             query.ExecuteReader(reader => memberships.Add(
                     _apartmentMembershipMapper.MapToEntity(reader)
                 )
@@ -152,9 +152,9 @@ namespace CommunityHub.Application.Database.Repositories
             )
             .AddParameter("userId", userId)
             .AddParameter("buildingId", buildingId);
-            
 
-            List<ApartmentMembership> memberships = new List<ApartmentMembership>();
+
+            List<ApartmentMembership> memberships = [];
             query.ExecuteReader(
                     reader => memberships.Add(
                         _apartmentMembershipMapper.MapToEntity(reader)

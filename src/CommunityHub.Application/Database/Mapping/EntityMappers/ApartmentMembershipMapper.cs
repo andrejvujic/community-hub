@@ -5,8 +5,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class ApartmentMembershipMapper: EntityMapper<ApartmentMembership>
     {
-        private readonly UserMapper _userMapper = new UserMapper();
-        private readonly ApartmentMapper _apartmentMapper = new ApartmentMapper();
+        private readonly UserMapper _userMapper = new();
+        private readonly ApartmentMapper _apartmentMapper = new();
 
         public override ApartmentMembership MapToEntity(IDataReader reader)
         {
