@@ -225,9 +225,9 @@
                 </Grid>
                 
                 <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Label Content="Nemate nijedan zahtjev" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <Label Content="Nema zahtjeva" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock
-                        Text="Još uvijek niste podnijeli zahtjev za pridruživanje nekoj zgradi."
+                        Text="Nema zahtjeva za prikazivanje. Provjerite da li ste predali zahtjev ili uklonite filter ukoliko ste ga postavili i pokušajte ponovo."
                         TextWrapping="Wrap" 
                         TextAlignment="Center"
                         FontSize="16"
@@ -238,7 +238,7 @@
 
         <Grid
             x:Name="SortAndFilterOverlay"
-            Background="#99000000"
+            Background="#55000000"
             Visibility="Collapsed">
             <Grid
                 Background="White"

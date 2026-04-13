@@ -26,10 +26,10 @@ namespace CommunityHub.Ui.Views.BuildingResident
 
         public List<StatusOption> StatusOptions { get; } = new()
         {
-            new StatusOption { Value = null, Text = "Svi" },
-            new StatusOption { Value = Status.Accepted, Text = "Prihvaćen" },
-            new StatusOption { Value = Status.Rejected, Text = "Odbijen" },
-            new StatusOption { Value = Status.Waiting, Text = "Na čekanju" }
+            new StatusOption("Svi", value: null),
+            new StatusOption("Prihvaćen", value: Status.Accepted),
+            new StatusOption("Odbijen", value: Status.Rejected),
+            new StatusOption("Na čekanju", value: Status.Waiting)
         };
 
         private Status? _selectedStatus;
