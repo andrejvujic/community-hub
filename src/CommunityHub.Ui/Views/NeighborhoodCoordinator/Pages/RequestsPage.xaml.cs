@@ -15,15 +15,15 @@ using CommunityHub.Application.Domain;
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
     /// <summary>
-    /// Interaction logic for RequestsView.xaml
+    /// Interaction logic for RequestsPage.xaml
     /// </summary>
-    public partial class RequestsView : UserControl
+    public partial class RequestsPage : UserControl
     {
         private long _coordinatorId;
         private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository;
         private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository;
         private readonly CitizenRepository _citizenRepository;
-        public RequestsView()
+        public RequestsPage()
         {
             InitializeComponent();
             _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
