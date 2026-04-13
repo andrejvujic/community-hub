@@ -21,6 +21,37 @@ namespace CommunityHub.Application.Database.Repositories
 
             return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
         }
+
+        public List<StreetSection> GetByNeighborhoodId(long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    section.id AS street_section_id,
+                    section.start_number,
+                    section.end_number,
+                    section.side,
+                    street.id AS street_id,
+                    street.name AS street_name
+                  FROM street_sections section
+                  INNER JOIN streets street ON section.street_id = street.id
+                  WHERE section.neighborhood_id = @neighborhoodId"
+            ).AddParameter("neighborhoodId", neighborhoodId);
+
+            List<StreetSection> sections = new List<StreetSection>();
+            query.ExecuteReader(reader => {
+                long id = reader.GetInt64(reader.GetOrdinal("street_section_id"));
+                int start = reader.GetInt32(reader.GetOrdinal("start_number"));
+                int end = reader.GetInt32(reader.GetOrdinal("end_number"));
+                ParityType side = (ParityType)reader.GetValue(reader.GetOrdinal("side"));
+                long streetId = reader.GetInt64(reader.GetOrdinal("street_id"));
+                string streetName = reader.GetString(reader.GetOrdinal("street_name"));
+
+                var street = new Street(streetId, streetName);
+                sections.Add(new StreetSection(start, end, side, street, id: id));
+            });
+
+            return sections;
+        }
         public int GetEndNumber(long? streetId, long? cityId)
         {
             var query = PostgresQuery.Create(
