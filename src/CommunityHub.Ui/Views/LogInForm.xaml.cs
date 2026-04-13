@@ -60,7 +60,7 @@ public partial class LogInForm : Window
                 neighborhoodCoordinatorHomeWindow.Show();
                 break;
             case Role.Citizen:
-                var citizenHomeWindow = new Citizen.HomeWindow();
+                var citizenHomeWindow = new Citizen.HomeWindow(userId.Value);
                 citizenHomeWindow.Show();
                 break;
         }
