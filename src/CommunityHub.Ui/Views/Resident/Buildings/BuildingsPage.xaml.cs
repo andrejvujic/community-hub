@@ -27,19 +27,18 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             UpdateMemberships();
         }
 
-        public List<BuildingMembershipGroup> GroupMembershipsByBuildingId(List<ApartmentMembership> memberships)
+        public static List<BuildingMembershipGroup> GroupMembershipsByBuildingId(List<ApartmentMembership> memberships)
         {
-            return memberships
-                    .GroupBy(membership => membership.Apartment.Building.Id)
-                    .Select(memberships =>
-                        new BuildingMembershipGroup(
-                            memberships.First().Apartment.Building,
-                            memberships.First().Resident
-                        )
-                        {
-                            Memberships = [..memberships]
-                        })
-                    .ToList();
+            var groups = memberships.GroupBy(membership => membership.Apartment.Building.Id);
+            return groups.Select(memberships =>
+                new BuildingMembershipGroup(
+                    memberships.First().Apartment.Building,
+                    memberships.First().Resident
+                )
+                {
+                    Memberships = [..memberships]
+                })
+                .ToList();
         }
 
         void UpdateMemberships()
