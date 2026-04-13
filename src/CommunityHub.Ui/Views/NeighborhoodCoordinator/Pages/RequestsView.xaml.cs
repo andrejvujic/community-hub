@@ -39,7 +39,18 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void LoadData()
         {
-            var requests = _neighborhoodAccessRequestRepository.GetByCoordinatorId(_coordinatorId);
+            var selectedItem = StatusFilterComboBox.SelectedItem as ComboBoxItem;
+            string filterText = selectedItem?.Content.ToString() ?? "Svi";
+
+            Status? selectedStatus = filterText switch
+            {
+                "Čeka odobrenje" => Status.Waiting,
+                "Prihvaćen" => Status.Accepted,
+                "Odbijen" => Status.Rejected,
+                _ => null
+            };
+
+            var requests = _neighborhoodAccessRequestRepository.GetByCoordinatorIdAndStatus(_coordinatorId, selectedStatus);
 
             var displayData = requests.Select(r =>
             {
@@ -95,6 +106,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             AcceptButton.IsEnabled = isWaiting;
             RejectButton.IsEnabled = isWaiting;
+        }
+
+        private void StatusFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_neighborhoodAccessRequestRepository != null)
+            {
+                LoadData();
+            }
         }
 
         private void RejectButton_Click(object sender, RoutedEventArgs e)

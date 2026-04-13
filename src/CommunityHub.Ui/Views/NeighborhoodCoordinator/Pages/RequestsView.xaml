@@ -23,7 +23,7 @@
                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                         FontSize="30"
                         Text="&#xf002;"/>
-            <ComboBox Width="180">
+            <ComboBox x:Name="StatusFilterComboBox" Width="180" SelectionChanged="StatusFilterComboBox_SelectionChanged">
                 <ComboBoxItem Content="Svi" IsSelected="True"/>
                 <ComboBoxItem Content="Prihvaćen"/>
                 <ComboBoxItem Content="Čeka odobrenje"/>
