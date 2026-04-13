@@ -14,7 +14,9 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private readonly User _user;
         private readonly Building _building;
         private readonly ApartmentAccessRequestRepository _apartmentAccessRequestRepository = new ApartmentAccessRequestRepository();
+        private readonly ApartmentMembershipRepository _apartmentMembershipRepository = new ApartmentMembershipRepository();
         public ObservableCollection<ApartmentAccessRequest> ApartmentAccessRequests { get; set; } = new ObservableCollection<ApartmentAccessRequest>();
+
         public ApartmentAccessRequestsPage(User user, Building building)
         {
             _user = user;
@@ -96,7 +98,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 gridChangeStatus.IsEnabled = true;
             }
         }
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Da li ste sigurni da želite otkazati promenu statusa zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -114,7 +116,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             gridChangeStatus.IsEnabled = false;
             borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.LightGray);
         }
-        private void confirmButton_Click(object sender, RoutedEventArgs e)
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             if (statusComboBox.SelectedIndex == 0)
             {
@@ -132,11 +134,22 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     string comment = commentTextBox.Text;
                     int rowsAffected = _apartmentAccessRequestRepository.UpdateStatus(selectedRequest.Id, newStatus, comment);
 
-                    if (rowsAffected == 1)
+                    if (rowsAffected != 0)
                     {
                         LoadApartmentAccessRequests();
                         MessageBox.Show("Status zahteva je uspešno promenjen.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
                         ResetAll(); 
+                    }
+
+                    if(newStatus == Status.Accepted)
+                    {
+                        ApartmentMembership membership = new ApartmentMembership(
+                            resident: selectedRequest.Applicant,
+                            apartment: selectedRequest.Apartment,
+                            acceptanceDate: DateTime.Now
+                        );
+
+                        _apartmentMembershipRepository.Create(membership);
                     }
                 }
             }

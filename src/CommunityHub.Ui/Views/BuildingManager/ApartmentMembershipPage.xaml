@@ -9,6 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontFamily="{StaticResource AppFontFamily}"
+    Loaded="LoadApartmentMemberships"
     mc:Ignorable="d">
 
     <Grid Margin="10,25,40,0">
@@ -48,7 +49,7 @@
         <Grid Grid.Row="2" Margin="50,0,40,0">
             <DataGrid
                 x:Name="membershipsDataGrid"
-                MaxHeight="292"
+                MaxHeight="400"
                 Margin="0,15,0,0"
                 VerticalAlignment="Top"
                 AutoGenerateColumns="False"
@@ -72,18 +73,15 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"
-                        Binding="{Binding Applicant.Name}"
-                        CanUserSort="False"
+                        Binding="{Binding Resident.Name}"
                         Header="Ime stanara" />
                     <DataGridTextColumn
                         Width="*"
                         Binding="{Binding Resident.Surname}"
-                        CanUserSort="False"
                         Header="Prezime stanara" />
                     <DataGridTextColumn
                         Width="Auto"
-                        Binding="{Binding Resident.FloorNumber}"
-                        CanUserSort="False"
+                        Binding="{Binding Apartment.FloorNumber}"
                         Header="Broj sprata">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -94,7 +92,6 @@
                     <DataGridTextColumn
                         Width="Auto"
                         Binding="{Binding Apartment.Number}"
-                        CanUserSort="False"
                         Header="Broj stana">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">

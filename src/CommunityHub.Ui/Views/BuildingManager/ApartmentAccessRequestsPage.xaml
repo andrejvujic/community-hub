@@ -245,7 +245,7 @@
                             x:Name="cancelButton"
                             Width="100"
                             Margin="0,0,15,0"
-                            Click="cancelButton_Click"
+                            Click="CancelButton_Click"
                             Cursor="Hand"
                             FontSize="20">
                             Otkaži
@@ -254,7 +254,7 @@
                             x:Name="confirmButton"
                             Width="100"
                             Margin="0,0,15,0"
-                            Click="confirmButton_Click"
+                            Click="ConfirmButton_Click"
                             Cursor="Hand"
                             FontSize="20"
                             IsEnabled="True">
