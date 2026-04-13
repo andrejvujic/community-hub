@@ -288,7 +288,10 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Height="36">
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{Binding Text}"/>
                             </Grid>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -324,7 +327,10 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Height="36">
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource RequestOrderToStringConverter}}"/>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{Binding Converter={StaticResource RequestOrderToStringConverter}}"/>
                             </Grid>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
