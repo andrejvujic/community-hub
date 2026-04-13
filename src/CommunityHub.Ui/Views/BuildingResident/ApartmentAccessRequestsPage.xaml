@@ -269,7 +269,6 @@
 
                     <TextBlock
                         FontSize="18"
-                        FontWeight="Bold"
                         TextWrapping="Wrap"
                         Text="Filtriranje — Status"/>
                 </StackPanel>
@@ -307,7 +306,6 @@
 
                     <TextBlock
                         FontSize="18"
-                        FontWeight="Bold"
                         TextWrapping="Wrap"
                         Text="Sortiranje — Datum"/>
                 </StackPanel>
