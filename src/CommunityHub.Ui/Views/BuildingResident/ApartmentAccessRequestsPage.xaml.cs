@@ -22,7 +22,17 @@ namespace CommunityHub.Ui.Views.BuildingResident
         public bool HasRequests { get => Requests.Count > 0; }
         public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new ObservableCollection<ApartmentAccessRequest>();
 
-        public RequestOrder SelectedOrder { get; set; } = RequestOrder.Unspecified;
+        private RequestOrder _selectedOrder = RequestOrder.Unspecified;
+        public RequestOrder SelectedOrder
+        {
+            get => _selectedOrder;
+            set
+            {
+                if (_selectedOrder == value) return;
+                _selectedOrder = value;
+                OnPropertyChanged(nameof(SelectedOrder));
+            }
+        }
 
         public List<StatusOption> StatusOptions { get; } = new()
         {
