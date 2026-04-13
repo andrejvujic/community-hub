@@ -52,5 +52,28 @@ namespace CommunityHub.Application.Database.Repositories
 
             return section.CopyWith(id: generatedId);
         }
+        public List<StreetSection> GetByNeighborhoodId(long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT 
+                street_sections.id AS street_section_id, 
+                street_sections.start_number, 
+                street_sections.end_number, 
+                street_sections.side, 
+                street_sections.street_id AS section_street_id,
+                streets.id AS section_street_street_id,
+                streets.name AS section_street_street_name,
+                streets.city_id AS section_street_city_id
+                FROM street_sections
+                INNER JOIN streets ON street_sections.street_id = streets.id
+                WHERE street_sections.neighborhood_id = @id"
+            ).AddParameter("id", neighborhoodId);
+
+            List<StreetSection> sections = new List<StreetSection>();
+            query.ExecuteReader(reader => {
+                sections.Add(_streetSectionMapper.MapToEntity(reader));
+            });
+            return sections;
+        }
     }
 }
