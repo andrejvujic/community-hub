@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.Application.Helpers.Query
+﻿namespace CommunityHub.Application.Helpers.Sorting
 {
     public enum RequestOrder
     {

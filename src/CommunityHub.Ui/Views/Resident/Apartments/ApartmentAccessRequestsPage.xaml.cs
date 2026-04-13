@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Query;
+using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

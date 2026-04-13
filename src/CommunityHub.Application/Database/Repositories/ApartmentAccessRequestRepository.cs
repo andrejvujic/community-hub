@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Query;
+using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories
 {

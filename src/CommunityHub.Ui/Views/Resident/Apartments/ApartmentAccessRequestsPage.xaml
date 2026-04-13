@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Apartments"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
-      xmlns:query="clr-namespace:CommunityHub.Application.Helpers.Query;assembly=CommunityHub.Application"
+      xmlns:query="clr-namespace:CommunityHub.Application.Helpers.Sorting;assembly=CommunityHub.Application"
       mc:Ignorable="d" 
       Title="Zahtjevi"
       FontFamily="{StaticResource AppFontFamily}">
