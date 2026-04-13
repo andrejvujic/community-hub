@@ -238,7 +238,7 @@
 
         <Grid
             x:Name="SortAndFilterOverlay"
-            Background="#55000000"
+            Background="#85000000"
             Visibility="Collapsed">
             <Grid
                 Background="White"
