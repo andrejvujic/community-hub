@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.Views.BuildingResident
             new StatusOption("Svi", value: null),
             new StatusOption("Prihvaćen", value: Status.Accepted),
             new StatusOption("Odbijen", value: Status.Rejected),
-            new StatusOption("Na čekanju", value: Status.Waiting)
+            new StatusOption("Čeka odobrenje", value: Status.Waiting)
         };
 
         private Status? _selectedStatus;
