@@ -11,7 +11,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -106,7 +105,9 @@
             </UniformGrid>
         </Border>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,10">
+        <Frame x:Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden" Margin="0" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,30,0" Panel.ZIndex="1">
             <TextBlock Text="Prikaži objašnjenja (Ctrl + T):" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0"/>
             <CheckBox x:Name="TooltipToggleCheckBox" VerticalAlignment="Center" IsChecked="True" Cursor="Hand">
                 <CheckBox.Style>
@@ -129,12 +130,10 @@
                         </Setter>
                     </Style>
                 </CheckBox.Style>
-                </CheckBox>
-            </StackPanel>
+            </CheckBox>
+        </StackPanel>
 
-            <Frame x:Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden" Margin="0" />
-
-        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="White">
+        <Border Grid.Row="2" BorderBrush="Black" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="White">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
