@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace CommunityHub.Application.Domain
+﻿namespace CommunityHub.Application.Domain
 {
     public class City : IEquatable<City>
     {

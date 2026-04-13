@@ -1,9 +1,15 @@
 ﻿namespace CommunityHub.Application.Domain
 {
-    public class BuildingMembershipGroup(Building building, User resident)
+    public class BuildingMembershipGroup
     {
-        public User Resident = resident;
-        public Building Building { get; set; } = building;
+        public User Resident;
+        public Building Building { get; set; }
         public List<ApartmentMembership> Memberships { get; set; } = [];
+
+        public BuildingMembershipGroup(Building building, User resident)
+        {
+            Resident = resident;
+            Building = building;
+        }
     }
 }
