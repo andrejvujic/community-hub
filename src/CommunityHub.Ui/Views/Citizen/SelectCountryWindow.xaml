@@ -10,10 +10,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBox x:Name="SearchTextBox" Width="220" Height="26" VerticalContentAlignment="Center"/>
-            <Button Content="Pretraži" Width="80" Height="26" Margin="8,0,0,0" Click="SearchButton_Click"/>
-        </StackPanel>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="SearchTextBox" Grid.Column="0" Height="26" VerticalContentAlignment="Center" />
+            <Button Grid.Column="1" Content="Pretraži" Width="80" Height="26" Margin="8,0,0,0" Click="SearchButton_Click"/>
+        </Grid>
 
         <ListBox x:Name="CountriesList" Grid.Row="2" DisplayMemberPath="Name" />
 
