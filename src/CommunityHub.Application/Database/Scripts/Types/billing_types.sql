@@ -1,0 +1,1 @@
+CREATE TYPE billing_types AS ENUM ('per_hour', 'per_job');
