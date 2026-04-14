@@ -31,6 +31,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             _userId = userId;
             LoadUser();
 
+            NeighborhoodsTab.Initialize(_userId);
             RequestsTab.Initialize(_userId);
         }
 

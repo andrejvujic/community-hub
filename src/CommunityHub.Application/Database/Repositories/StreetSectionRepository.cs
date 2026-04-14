@@ -25,33 +25,27 @@ namespace CommunityHub.Application.Database.Repositories
         public List<StreetSection> GetByNeighborhoodId(long neighborhoodId)
         {
             var query = PostgresQuery.Create(
-                @"SELECT
-                    section.id AS street_section_id,
-                    section.start_number,
-                    section.end_number,
-                    section.side,
-                    street.id AS street_id,
-                    street.name AS street_name
-                  FROM street_sections section
-                  INNER JOIN streets street ON section.street_id = street.id
-                  WHERE section.neighborhood_id = @neighborhoodId"
-            ).AddParameter("neighborhoodId", neighborhoodId);
+                @"SELECT 
+                street_sections.id AS street_section_id, 
+                street_sections.start_number, 
+                street_sections.end_number, 
+                street_sections.side, 
+                street_sections.street_id AS section_street_id,
+                streets.id AS section_street_street_id,
+                streets.name AS section_street_street_name,
+                streets.city_id AS section_street_city_id
+                FROM street_sections
+                INNER JOIN streets ON street_sections.street_id = streets.id
+                WHERE street_sections.neighborhood_id = @id"
+            ).AddParameter("id", neighborhoodId);
 
             List<StreetSection> sections = new List<StreetSection>();
             query.ExecuteReader(reader => {
-                long id = reader.GetInt64(reader.GetOrdinal("street_section_id"));
-                int start = reader.GetInt32(reader.GetOrdinal("start_number"));
-                int end = reader.GetInt32(reader.GetOrdinal("end_number"));
-                ParityType side = (ParityType)reader.GetValue(reader.GetOrdinal("side"));
-                long streetId = reader.GetInt64(reader.GetOrdinal("street_id"));
-                string streetName = reader.GetString(reader.GetOrdinal("street_name"));
-
-                var street = new Street(streetId, streetName);
-                sections.Add(new StreetSection(start, end, side, street, id: id));
+                sections.Add(_streetSectionMapper.MapToEntity(reader));
             });
-
             return sections;
         }
+
         public int GetEndNumber(long? streetId, long? cityId)
         {
             var query = PostgresQuery.Create(

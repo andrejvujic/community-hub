@@ -31,20 +31,41 @@ namespace CommunityHub.Application.Database.Repositories
                 coordinator.password AS coordinator_password,
                 coordinator.name AS coordinator_name,
                 coordinator.surname AS coordinator_surname,
-                coordinator.user_role AS coordinator_user_role
+                coordinator.user_role AS coordinator_user_role,
+
+                image.id AS image_id,
+                image.building_id AS image_building_id,
+                image.neighborhood_id AS image_neighborhood_id,
+                image.path AS path
 
                 FROM neighborhoods neighborhood
                 INNER JOIN cities city ON neighborhood.city_id = city.id
                 INNER JOIN countries country ON city.country_id = country.id
                 INNER JOIN users coordinator ON neighborhood.coordinator_id = coordinator.id
+                LEFT JOIN images image ON image.neighborhood_id = neighborhood.id
                 WHERE neighborhood.coordinator_id = @id"
             ).AddParameter("id", id);
 
-            List<Neighborhood> neighborhoods = new List<Neighborhood>();
-            query.ExecuteReader(reader => neighborhoods.Add(_neighborhoodMapper.MapToEntity(reader)));
 
-            return neighborhoods;
+
+            Dictionary<long, Neighborhood> neighborhoods = new Dictionary<long, Neighborhood>();
+
+            query.ExecuteReader(reader => {
+                Neighborhood newNeighborhood = _neighborhoodMapper.MapToEntity(reader);
+                if (!neighborhoods.TryGetValue(newNeighborhood.Id, out Neighborhood? existingNeighborhood))
+                {
+                    neighborhoods.Add(newNeighborhood.Id, newNeighborhood);
+                    existingNeighborhood = newNeighborhood;
+                }
+
+                Image? image = _imageMapper.MapToEntity(reader);
+                if (image == null) return;
+                existingNeighborhood.Images.Add(image);
+            });
+
+            return neighborhoods.Values.ToList();
         }
+
 
         public Neighborhood Create(Neighborhood neighborhood)
         {

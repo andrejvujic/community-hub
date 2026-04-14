@@ -22,6 +22,7 @@
     <None Remove="Resources\Images\building_0.jpg" />
     <None Remove="Resources\Images\building_1.jpg" />
     <None Remove="Resources\Images\building_2.jpg" />
+    <None Remove="Resources\Images\neighborhood_1.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +49,9 @@
     <Resource Include="Resources\Images\building_2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\neighborhood_1.jpg" />
+    <Resource Include="Resources\Images\neighborhood_2.jpg" />
+    <Resource Include="Resources\Images\neighborhood_0.jpg" />
   </ItemGroup>
 
 </Project>
