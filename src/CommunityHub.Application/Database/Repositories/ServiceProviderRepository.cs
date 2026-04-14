@@ -18,10 +18,13 @@ public class ServiceProviderRepository
                 u.surname,
                 u.user_role,
                 c.id AS provider_city_id,
-                c.name AS provider_city_name
+                c.name AS provider_city_name,
+                co.id AS provider_country_id,
+                co.name AS provider_country_name
             FROM service_providers sp
             INNER JOIN users u ON u.id = sp.id
             INNER JOIN cities c ON c.id = sp.city_id
+            INNER JOIN countries co ON co.id = sp.country_id
             WHERE sp.id = @id"
         ).AddParameter("id", id);
 
