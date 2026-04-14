@@ -101,7 +101,9 @@
             </GroupBox>
 
             <GroupBox Grid.Row="4" Header="Dodate ulice" Margin="0,15,0,0" Padding="5" Height="150">
-                <ListBox x:Name="StreetSectionsListBox" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ListBox x:Name="StreetSectionsListBox" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                         Height="110">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2">

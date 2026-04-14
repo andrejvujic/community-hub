@@ -23,6 +23,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     {     
         private readonly long _coordinatorId;
         private readonly User _user;
+        private City _selectedCity;
 
         private readonly UserRepository _userRepository = new UserRepository();
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
@@ -104,7 +105,34 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void CityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadStreets();
+            var newCity = CityComboBox.SelectedItem as City;
+
+            if (AddedStreetSections.Count > 0 && newCity != _selectedCity)
+            {
+                var result = MessageBox.Show(
+                    "Promenom grada obrisaćete sve trenutno dodate ulice sa spiska. Da li ste sigurni da želite da promenite grad?",
+                    "Potvrda promene lokacije",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    AddedStreetSections.Clear();
+                    _selectedCity = newCity;
+                    LoadStreets();
+                }
+                else
+                {
+                    CityComboBox.SelectionChanged -= CityComboBox_SelectionChanged;
+                    CityComboBox.SelectedItem = _selectedCity;
+                    CityComboBox.SelectionChanged += CityComboBox_SelectionChanged;
+                }
+            }
+            else
+            {
+                _selectedCity = newCity;
+                LoadStreets();
+            }
         }
 
         private void LoadStreets()
@@ -132,6 +160,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void AddStreetSection_Click(object sender, RoutedEventArgs e)
         {
             if (!(StreetComboBox.SelectedItem is Street street)) return;
+            
+            var selectedCity = CityComboBox.SelectedItem as City;
+
             if (!int.TryParse(StartNumberTextBox.Text, out int start) || !int.TryParse(EndNumberTextBox.Text, out int end))
             {
                 MessageBox.Show("Unesite ispravne brojeve.");
