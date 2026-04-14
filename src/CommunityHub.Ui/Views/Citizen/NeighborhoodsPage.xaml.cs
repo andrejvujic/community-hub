@@ -22,7 +22,6 @@ namespace CommunityHub.Ui.Views.Citizen
         public NeighborhoodsPage(long userId)
         {
             InitializeComponent();
-            DataContext = this;
             _userId = userId;
             _neighborhoodRepository = new NeighborhoodRepository();
 

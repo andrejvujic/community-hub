@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      BorderBrush="Black" BorderThickness="2" RowHeight="30" ItemsSource="{Binding Neighborhoods}" IsReadOnly="True">
+                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Naziv kvarta" Binding="{Binding Name, Mode=OneWay}" Width="*"/>
                     <DataGridTextColumn Header="Grad" Binding="{Binding City.Name, Mode=OneWay}" Width="*"/>
@@ -102,9 +102,31 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">
-                            Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)
-                        </TextBlock>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Membership}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
+                    </Button>
+
+                    <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Membership}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
                     <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">
