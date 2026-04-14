@@ -78,10 +78,11 @@
                     <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}" 
-                                               FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
-                                               Margin="5,0"/>
-                                    <TextBlock Text="{Binding Status, Converter={StaticResource StatusToStringConverter}}"/>
+                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}" 
+                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
+                                           VerticalAlignment="Center"
+                                           Margin="5,0"/>
+                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusToStringConverter}}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
