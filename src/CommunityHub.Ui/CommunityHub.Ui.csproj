@@ -9,7 +9,49 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Converters\**" />
+    <EmbeddedResource Remove="Converters\**" />
+    <None Remove="Converters\**" />
+    <Page Remove="Converters\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="CommunityHub.Ui.csproj.Backup.tmp" />
+    <None Remove="Resources\Fonts\GoogleSans.ttf" />
+    <None Remove="Resources\Fonts\Icons.otf" />
+    <None Remove="Resources\Images\building_0.jpg" />
+    <None Remove="Resources\Images\building_1.jpg" />
+    <None Remove="Resources\Images\building_2.jpg" />
+    <None Remove="Resources\Images\neighborhood_1.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CommunityHub.Application\CommunityHub.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\GoogleSans.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Fonts\Icons.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\building_0.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\building_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\building_2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\neighborhood_1.jpg" />
+    <Resource Include="Resources\Images\neighborhood_2.jpg" />
+    <Resource Include="Resources\Images\neighborhood_0.jpg" />
   </ItemGroup>
 
 </Project>

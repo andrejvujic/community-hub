@@ -1,0 +1,19 @@
+﻿using System.Runtime.Serialization;
+
+namespace CommunityHub.Application.Domain
+{
+    public enum Role
+    {
+        [EnumMember(Value = "building_manager")]
+        BuildingManager,
+
+        [EnumMember(Value = "building_resident")]
+        BuildingResident,
+
+        [EnumMember(Value = "neighborhood_coordinator")]
+        NeighborhoodCoordinator,
+
+        [EnumMember(Value = "citizen")]
+        Citizen
+    }
+}
