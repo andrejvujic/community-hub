@@ -3,6 +3,7 @@
     public class ServiceProvider : User
     {
         public City City { get; private set; }
+        public Country Country { get; private set; }
 
         public ServiceProvider(
             long id,
@@ -11,10 +12,12 @@
             string name,
             string surname,
             Role role,
-            City city
+            City city,
+            Country country
         ) : base(id, username, password, name, surname, role)
         {
             City = city;
+            Country = country;
         }
 
         public ServiceProvider CopyWith(
@@ -24,7 +27,8 @@
             string? name = null,
             string? surname = null,
             Role? role = null,
-            City? city = null
+            City? city = null,
+            Country? country = null
         )
         {
             return new ServiceProvider(
@@ -34,7 +38,8 @@
                 name ?? Name,
                 surname ?? Surname,
                 role ?? Role,
-                city ?? City
+                city ?? City,
+                country ?? Country
             );
         }
     }
