@@ -5,13 +5,12 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class BuildingMapper : EntityMapper<Building>
     {
-        private readonly AddressMapper _addressMapper = new AddressMapper();
-        private readonly UserMapper _userMapper = new UserMapper();
+        private readonly AddressMapper _addressMapper = new();
+        private readonly UserMapper? _userMapper = new();
         public override Building MapToEntity(IDataReader reader)
         {
             Address address = _addressMapper.MapToEntity(reader);
-            User manager = _userMapper.MapToEntity(reader.WithPrefix("building_manager"));
-
+            User? manager = (_userMapper?.MapToEntity(reader.WithPrefix("building_manager"))) ?? throw new Exception("Couldn't read Building from database because of missing data");
             long id = reader.GetInt64(reader.GetOrdinal("building_id"));
             int floorCount = reader.GetInt32(reader.GetOrdinal("floor_count"));
 

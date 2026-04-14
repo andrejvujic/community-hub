@@ -5,9 +5,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class AddressMapper : EntityMapper<Address>
     {
-        private readonly CountryMapper _countryMapper = new CountryMapper();
-        private readonly CityMapper _cityMapper = new CityMapper();
-        private readonly StreetMapper _streetMapper = new StreetMapper();
+        private readonly CountryMapper _countryMapper = new();
+        private readonly CityMapper _cityMapper = new();
+        private readonly StreetMapper _streetMapper = new();
         public override Address MapToEntity(IDataReader reader)
         {
             Country country = _countryMapper.MapToEntity(reader);
