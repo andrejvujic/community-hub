@@ -14,6 +14,9 @@ namespace CommunityHub.Application.Domain
         NeighborhoodCoordinator,
 
         [EnumMember(Value = "citizen")]
-        Citizen
+        Citizen,
+
+        [EnumMember(Value = "neighborhood_service_provider")]
+        NeighborhoodServiceProvider
     }
 }
