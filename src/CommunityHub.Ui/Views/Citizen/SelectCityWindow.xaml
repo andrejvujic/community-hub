@@ -23,8 +23,8 @@
         <ListBox x:Name="CitiesList" Grid.Row="2" DisplayMemberPath="Name" />
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-            <Button Content="Potvrdi" Width="100" Margin="0,0,8,0" Click="Confirm_Click"/>
             <Button Content="Otkaži" Width="100" Click="Cancel_Click"/>
+            <Button Content="Potvrdi" Width="100" Margin="8,0,0,0" Click="Confirm_Click"/>
         </StackPanel>
     </Grid>
 </Window>
