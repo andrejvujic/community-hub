@@ -6,8 +6,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
     public class ApartmentAccessRequestMapper : EntityMapper<ApartmentAccessRequest>
     {
 
-        private readonly UserMapper _userMapper = new UserMapper();
-        private readonly ApartmentMapper _apartmentMapper = new ApartmentMapper();
+        private readonly UserMapper _userMapper = new();
+        private readonly ApartmentMapper _apartmentMapper = new();
 
         public override ApartmentAccessRequest MapToEntity(IDataReader reader)
         {
