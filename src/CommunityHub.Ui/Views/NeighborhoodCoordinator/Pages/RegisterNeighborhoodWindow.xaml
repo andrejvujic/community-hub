@@ -43,8 +43,10 @@
                     <StackPanel Margin="5,0,0,0">
                         <TextBlock Text="Grad:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CityComboBox" 
+                                  DisplayMemberPath="Name"
                                   IsEnabled="False" 
-                                  Padding="5"/>
+                                  Padding="5"
+                                  SelectionChanged="CityComboBox_SelectionChanged"/>
                     </StackPanel>
                 </UniformGrid>
             </GroupBox>
@@ -52,7 +54,11 @@
             <GroupBox Grid.Row="3" Header="Ulice" Padding="10">
                 <StackPanel>
                     <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
-                    <ComboBox x:Name="StreetComboBox" IsEnabled="False" Padding="5" Margin="0,0,0,10"/>
+                    <ComboBox x:Name="StreetComboBox" 
+                              DisplayMemberPath="Name"
+                              IsEnabled="False" 
+                              Padding="5" 
+                              Margin="0,0,0,10"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>

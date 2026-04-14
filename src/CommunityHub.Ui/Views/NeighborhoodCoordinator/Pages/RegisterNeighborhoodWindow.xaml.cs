@@ -25,9 +25,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private readonly CountryRepository _countryRepository = new CountryRepository();
         private readonly CityRepository _cityRepository = new CityRepository();
+        private readonly StreetRepository _streetRepository = new StreetRepository();
 
         public ObservableCollection<Country> Countries { get; }
         public ObservableCollection<City> Cities { get; }
+        public ObservableCollection<Street> Streets { get; }
 
         public RegisterNeighborhoodWindow(long coordinatorId)
         {
@@ -36,6 +38,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             Countries = new ObservableCollection<Country>();
             Cities = new ObservableCollection<City>();
+            Streets = new ObservableCollection<Street>();
 
             LoadCountries();
         }
@@ -76,6 +79,33 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             CityComboBox.ItemsSource = Cities;
             CityComboBox.IsEnabled = Cities.Count > 0;
+        }
+
+        private void CityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadStreets();
+        }
+
+        private void LoadStreets()
+        {
+            Streets.Clear();
+
+            var selectedCity = CityComboBox.SelectedItem as City;
+            if (selectedCity == null)
+            {
+                StreetComboBox.ItemsSource = null;
+                StreetComboBox.IsEnabled = false;
+                return;
+            }
+
+            var streets = _streetRepository.GetByCityId(selectedCity.Id);
+            foreach (var street in streets)
+            {
+                Streets.Add(street);
+            }
+
+            StreetComboBox.ItemsSource = Streets;
+            StreetComboBox.IsEnabled = Streets.Count > 0;
         }
 
     }
