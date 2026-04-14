@@ -22,11 +22,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     public partial class RegisterNeighborhoodWindow : Window
     {     
         private readonly long _coordinatorId;
+        private readonly User _user;
 
-
+        private readonly UserRepository _userRepository = new UserRepository();
+        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly CountryRepository _countryRepository = new CountryRepository();
         private readonly CityRepository _cityRepository = new CityRepository();
         private readonly StreetRepository _streetRepository = new StreetRepository();
+        private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
+        private readonly ImageRepository _imageRepository = new ImageRepository();
 
         public ObservableCollection<Country> Countries { get; }
         public ObservableCollection<City> Cities { get; }
@@ -39,6 +43,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             InitializeComponent();
             _coordinatorId = coordinatorId;
+            User? user = _userRepository.GetById(coordinatorId);
+            if (user == null)
+            {
+                MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+                return;
+            }
+            _user = user;
 
             Countries = new ObservableCollection<Country>();
             Cities = new ObservableCollection<City>();
@@ -179,5 +191,69 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             }
         }
 
+        private string ValidateInput(string name, string description, City city, Country country)
+        {
+            StringBuilder validationReport = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(name))
+                validationReport.AppendLine("- Naziv kvarta nije unet.");
+
+            if (string.IsNullOrWhiteSpace(description))
+                validationReport.AppendLine("- Opis kvarta nije unet.");
+
+            if (country == null)
+                validationReport.AppendLine("- Država nije izabrana.");
+
+            if (city == null)
+                validationReport.AppendLine("- Grad nije izabran.");
+
+            if (AddedStreetSections.Count == 0)
+                validationReport.AppendLine("- Morate dodati bar jednu ulicu.");
+
+            if (SelectedImagePaths.Count == 0)
+                validationReport.AppendLine("- Morate dodati bar jednu sliku.");
+
+            return validationReport.ToString();
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            string name = NameTextBox.Text.Trim();
+            string description = DescriptionTextBox.Text.Trim();
+            var selectedCity = CityComboBox.SelectedItem as City;
+            var selectedCountry = CountryComboBox.SelectedItem as Country;
+
+            string validationErrors = ValidateInput(name, description, selectedCity, selectedCountry);
+
+            if (!string.IsNullOrEmpty(validationErrors))
+            {
+                MessageBox.Show("Molimo popunite sledeće nedostatke:\n\n" + validationErrors, 
+                    "Validacija", MessageBoxButton.OK);
+                return;
+            }
+
+            Neighborhood neighborhood = new Neighborhood(name, description, 0, selectedCity, selectedCountry, _user);
+
+            Neighborhood savedNeighborhood = _neighborhoodRepository.Create(neighborhood);
+            
+            foreach (var section in AddedStreetSections)
+            {
+                _streetSectionRepository.Create(section, savedNeighborhood.Id);
+            }
+            
+            foreach (string path in SelectedImagePaths)
+            {
+                var image = new CommunityHub.Application.Domain.Image(0, path, null, savedNeighborhood.Id);
+                _imageRepository.Create(image, savedNeighborhood.Id, null);
+            }
+
+            MessageBox.Show($"Kvart '{name}' je uspešno registrovan!", "Uspeh");
+            this.Close();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
