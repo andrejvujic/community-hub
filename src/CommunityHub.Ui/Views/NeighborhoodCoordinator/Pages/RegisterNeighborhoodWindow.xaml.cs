@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using Microsoft.Win32;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
@@ -32,6 +33,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         public ObservableCollection<Street> Streets { get; }
 
         public ObservableCollection<StreetSection> AddedStreetSections { get; }
+        public ObservableCollection<string> SelectedImagePaths { get; set; }
 
         public RegisterNeighborhoodWindow(long coordinatorId)
         {
@@ -43,8 +45,10 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             Streets = new ObservableCollection<Street>();
 
             AddedStreetSections = new ObservableCollection<StreetSection>();
+            SelectedImagePaths = new ObservableCollection<string>();
 
             StreetSectionsListBox.ItemsSource = AddedStreetSections;
+            ImagesListBox.ItemsSource = SelectedImagePaths;
             LoadCountries();
         }
 
@@ -146,6 +150,32 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (sectionToRemove != null)
             {
                 AddedStreetSections.Remove(sectionToRemove);
+            }
+        }
+
+        private void SelectImages_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog 
+            { 
+                Multiselect = true, 
+                Filter = "Images|*.jpg;*.jpeg;*.png",
+                Title = "Izaberite slike kvarta"
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                foreach (string path in openFileDialog.FileNames)
+                    SelectedImagePaths.Add(path);
+            }
+        }
+
+        private void RemoveImage_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var pathToRemove = button?.Tag as string;
+
+            if (pathToRemove != null)
+            {
+                SelectedImagePaths.Remove(pathToRemove);
             }
         }
 

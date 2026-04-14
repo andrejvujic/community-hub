@@ -127,17 +127,59 @@
                 </ListBox>
             </GroupBox>
 
-            <StackPanel Grid.Row="5" Margin="0,20,0,10">
-                <TextBlock Text="Slike kvarta:" FontWeight="Bold" Margin="0,0,0,5"/>
-                <Button Content="Odaberi slike..." HorizontalAlignment="Left" Padding="15,5" Margin="0,0,0,10"/>
-                <ListBox x:Name="ImagesListBox" Height="100">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-            </StackPanel>
+            <GroupBox Grid.Row="5" Header="Slike kvarta" Margin="0,20,0,10" Padding="10">
+                <StackPanel>
+                    <Button Content="Odaberi slike..." 
+                            HorizontalAlignment="Left" 
+                            Padding="15,5" 
+                            Margin="0,0,0,10" 
+                            Click="SelectImages_Click" 
+                            Cursor="Hand"/>
+
+                    <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="3" Background="#F9F9F9">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Padding="5">
+                            <ListBox x:Name="ImagesListBox" 
+                                     ItemsSource="{Binding SelectedImagePaths}"
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     MinHeight="160">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="8" 
+                                                BorderBrush="#BDC3C7" 
+                                                BorderThickness="1" 
+                                                CornerRadius="5" 
+                                                Background="White"
+                                                Width="140">
+                                            <StackPanel Margin="5">
+                                                <Border CornerRadius="3" ClipToBounds="True" Margin="0,0,0,5">
+                                                    <Image Source="{Binding}" 
+                                                           Width="125" 
+                                                           Height="125" 
+                                                           Stretch="UniformToFill" />
+                                                </Border>
+
+                                                <Button Content="Ukloni" 
+                                                        Click="RemoveImage_Click" 
+                                                        Tag="{Binding}"
+                                                        FontSize="11"
+                                                        Padding="0,3"
+                                                        Cursor="Hand">
+                                                </Button>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
 
             <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                 <Button Content="Odustani" Margin="0,0,10,0" Padding="20,10" Cursor="Hand"/>
