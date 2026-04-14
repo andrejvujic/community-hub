@@ -31,6 +31,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         public ObservableCollection<City> Cities { get; }
         public ObservableCollection<Street> Streets { get; }
 
+        public ObservableCollection<StreetSection> AddedStreetSections { get; }
+
         public RegisterNeighborhoodWindow(long coordinatorId)
         {
             InitializeComponent();
@@ -40,6 +42,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             Cities = new ObservableCollection<City>();
             Streets = new ObservableCollection<Street>();
 
+            AddedStreetSections = new ObservableCollection<StreetSection>();
+
+            StreetSectionsListBox.ItemsSource = AddedStreetSections;
             LoadCountries();
         }
 
@@ -106,6 +111,42 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             StreetComboBox.ItemsSource = Streets;
             StreetComboBox.IsEnabled = Streets.Count > 0;
+        }
+
+        private void AddStreetSection_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(StreetComboBox.SelectedItem is Street street)) return;
+            if (!int.TryParse(StartNumberTextBox.Text, out int start) || !int.TryParse(EndNumberTextBox.Text, out int end))
+            {
+                MessageBox.Show("Unesite ispravne brojeve.");
+                return;
+            }
+
+            if (start >= end)
+            {
+                MessageBox.Show("Početni broj mora biti manji od krajnjeg.");
+                return;
+            }
+
+            ParityType? side = (SideComboBox.SelectedItem as ComboBoxItem)?.Tag as ParityType?;
+
+            var section = new StreetSection(start, end, side ?? ParityType.Both, street);
+
+            AddedStreetSections.Add(section);
+
+            StartNumberTextBox.Clear();
+            EndNumberTextBox.Clear();
+        }
+
+        private void RemoveStreetSection_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var sectionToRemove = button?.Tag as StreetSection;
+
+            if (sectionToRemove != null)
+            {
+                AddedStreetSections.Remove(sectionToRemove);
+            }
         }
 
     }

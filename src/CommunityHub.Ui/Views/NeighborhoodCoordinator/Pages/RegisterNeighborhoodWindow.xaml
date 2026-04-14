@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+        xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+        xmlns:domain="clr-namespace:CommunityHub.Application.Domain;assembly=CommunityHub.Application"
         mc:Ignorable="d"
         Title="Registracija kvarta" Height="800" Width="600"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <conv:ParityToStringConverter x:Key="ParityConverter" />
+    </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Margin="25">
@@ -28,7 +34,7 @@
 
             <StackPanel Grid.Row="1" Margin="0,0,0,15">
                 <TextBlock Text="Opis kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
-                <TextBox x:Name="DescriptionTextBox" Padding="5" Height="40" AcceptsReturn="True" TextWrapping="Wrap" />
+                <TextBox x:Name="DescriptionTextBox" Padding="5" AcceptsReturn="True" TextWrapping="Wrap" />
             </StackPanel>
 
             <GroupBox Grid.Row="2" Header="Lokacija" Margin="0,0,0,10" Padding="10">
@@ -51,7 +57,7 @@
                 </UniformGrid>
             </GroupBox>
 
-            <GroupBox Grid.Row="3" Header="Ulice" Padding="10">
+            <GroupBox Grid.Row="3" Header="Dodavanje ulica" Padding="10">
                 <StackPanel>
                     <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
                     <ComboBox x:Name="StreetComboBox" 
@@ -70,28 +76,32 @@
 
                         <StackPanel Grid.Column="0" Margin="0,0,5,0">
                             <TextBlock Text="Od:" Margin="0,0,0,3"/>
-                            <TextBox x:Name="StartNumTextBox" Padding="5"/>
+                            <TextBox x:Name="StartNumberTextBox" Padding="5"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="5,0,5,0">
                             <TextBlock Text="Do:" Margin="0,0,0,3"/>
-                            <TextBox x:Name="EndNumTextBox" Padding="5"/>
+                            <TextBox x:Name="EndNumberTextBox" Padding="5"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Margin="5,0,5,0">
                             <TextBlock Text="Strana:" Margin="0,0,0,3"/>
-                            <ComboBox x:Name="SideComboBox" Padding="4">
-                                <ComboBoxItem Content="Svi brojevi" IsSelected="True"/>
-                                <ComboBoxItem Content="Parni brojevi"/>
-                                <ComboBoxItem Content="Neparni brojevi"/>
+                            <ComboBox x:Name="SideComboBox" 
+                                      Padding="4"
+                                      SelectedIndex="0">
+                                <ComboBoxItem Tag="{x:Static domain:ParityType.Both}" 
+                                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
+                                <ComboBoxItem Tag="{x:Static domain:ParityType.Even}" 
+                                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
+                                <ComboBoxItem Tag="{x:Static domain:ParityType.Odd}" 
+                                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
                             </ComboBox>
                         </StackPanel>
-
-                        <Button Content="Dodaj deo ulice" Grid.Column="3" VerticalAlignment="Bottom" Padding="15,7" Margin="5,0,0,0" Cursor="Hand"/>
+                        <Button Content="Dodaj ulicu" Grid.Column="3" VerticalAlignment="Bottom" Padding="15,7" Margin="5,0,0,0" Cursor="Hand" Click="AddStreetSection_Click"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Row="4" Header="Obuhvaćene ulice u kvartu" Margin="0,15,0,0" Padding="5">
-                <ListBox x:Name="SectionsListBox" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <GroupBox Grid.Row="4" Header="Dodate ulice" Margin="0,15,0,0" Padding="5" Height="150">
+                <ListBox x:Name="StreetSectionsListBox" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2">
@@ -100,13 +110,17 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="Primer Ulice" FontWeight="Bold" Width="150"/>
-                                    <TextBlock Text="br. 1 - 10" Margin="10,0"/>
-                                    <TextBlock Text="(Svi brojevi)" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Street.Name}" FontWeight="Bold" Width="200"/>
+                                    <TextBlock Text=" br. "/>
+                                    <TextBlock Text="{Binding StartNumber}"/>
+                                    <TextBlock Text=" - "/>
+                                    <TextBlock Text="{Binding EndNumber}"/>
+                                    <TextBlock Text=" ("/>
+                                    <TextBlock Text="{Binding Side, Converter={StaticResource ParityConverter}}"/>
+                                    <TextBlock Text=")"/>
                                 </StackPanel>
-
-                                <Button Grid.Column="1" Content="Ukloni" Margin="5,0" Cursor="Hand"/>
+                                <Button Grid.Column="1" Content="Ukloni" Click="RemoveStreetSection_Click" Tag="{Binding}" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
