@@ -10,7 +10,7 @@
 
     <Grid Margin="40,20,40,40">
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBlock Text="Dobrodošli nazad!" FontSize="48" Margin="0,0,0,40"/>
+            <TextBlock Text="Dobrodošli nazad!" FontSize="48" Margin="0,50,0,40"/>
 
             <TextBlock FontSize="20" Margin="0,0,0,5">
                 <TextBlock.Text>

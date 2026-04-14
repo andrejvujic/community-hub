@@ -56,30 +56,35 @@
                         </StackPanel>
 
                         <StackPanel x:Name="DetailsPanel" Visibility="Collapsed">
-                            <TextBlock x:Name="DetailsName" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
-                            <TextBlock x:Name="DetailsLocation" FontSize="14" Foreground="#666" Margin="0,0,0,8" />
-                            <TextBlock x:Name="DetailsDescription" FontSize="13" TextWrapping="Wrap" MinHeight="60" Margin="0,0,0,12" VerticalAlignment="Top" />
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="12" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="260" />
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0" VerticalAlignment="Stretch">
+                                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                    <TextBlock x:Name="DetailsName" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+                                    <TextBlock x:Name="DetailsLocation" FontSize="14" Foreground="#666" Margin="0,0,0,8" />
+                                    <TextBlock x:Name="DetailsDescription" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
+
                                     <TextBlock Text="Ulice:" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <ListBox x:Name="StreetsList" MinHeight="300" VerticalAlignment="Stretch"/>
+                                    <ListBox x:Name="StreetsList" MinHeight="275" />
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="2" VerticalAlignment="Stretch">
-                                    <TextBlock Text="Slike:" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <ItemsControl x:Name="ImagesList" MaxHeight="300">
+                                <StackPanel Grid.Column="1">
+                                    <ItemsControl x:Name="ImagesList">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,6" Padding="4">
-                                                    <TextBlock Text="{Binding Path=Path}"/>
-                                                </Border>
+                                                <Image Source="{Binding Path}" Width="240" Height="140" Margin="0,0,0,12" Stretch="UniformToFill">
+                                                    <Image.Clip>
+                                                        <RectangleGeometry Rect="0,0,240,140" RadiusX="8" RadiusY="8" />
+                                                    </Image.Clip>
+                                                </Image>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

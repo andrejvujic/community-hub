@@ -84,10 +84,10 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private string FormatLocation(Neighborhood neighborhood)
         {
-            var city = neighborhood.City?.Name ?? string.Empty;
-            var country = neighborhood.Country?.Name ?? string.Empty;
-            var separator = string.IsNullOrEmpty(city) ? string.Empty : ", ";
-            return $"{city}{separator}{country}".Trim(',', ' ');
+            var locationParts = new[] { neighborhood.City?.Name, neighborhood.Country?.Name }
+                .Where(part => !string.IsNullOrWhiteSpace(part));
+
+            return string.Join(", ", locationParts);
         }
 
         private void PopulateStreets(Neighborhood neighborhood)
@@ -103,7 +103,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void PopulateImages(Neighborhood neighborhood)
         {
-            ImagesList.ItemsSource = neighborhood.Images.Select(i => i.Path).ToList();
+            ImagesList.ItemsSource = neighborhood.Images;
         }
 
         private void UpdateSearchResults()
