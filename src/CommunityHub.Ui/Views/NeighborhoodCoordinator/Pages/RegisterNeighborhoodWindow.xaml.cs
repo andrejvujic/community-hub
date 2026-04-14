@@ -17,9 +17,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     /// </summary>
     public partial class RegisterNeighborhoodWindow : Window
     {
-        public RegisterNeighborhoodWindow()
+        private readonly long _coordinatorId;
+        public RegisterNeighborhoodWindow(long coordinatorId)
         {
             InitializeComponent();
+            _coordinatorId = coordinatorId;
         }
     }
 }

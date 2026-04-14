@@ -5,8 +5,119 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
         mc:Ignorable="d"
-        Title="Registracija kvarta" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Registracija kvarta" Height="800" Width="600"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                <TextBlock Text="Naziv kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
+                <TextBox x:Name="NameTextBox" Padding="8" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                <TextBlock Text="Opis kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
+                <TextBox x:Name="DescriptionTextBox" Padding="5" Height="40" AcceptsReturn="True" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <GroupBox Grid.Row="2" Header="Lokacija" Margin="0,0,0,10" Padding="10">
+                <UniformGrid Columns="2">
+                    <StackPanel Margin="0,0,5,0">
+                        <TextBlock Text="Država:" Margin="0,0,0,3"/>
+                        <ComboBox x:Name="CountryComboBox" Padding="5"/>
+                    </StackPanel>
+                    <StackPanel Margin="5,0,0,0">
+                        <TextBlock Text="Grad:" Margin="0,0,0,3"/>
+                        <ComboBox x:Name="CityComboBox" IsEnabled="False" Padding="5"/>
+                    </StackPanel>
+                </UniformGrid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="3" Header="Ulice" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
+                    <ComboBox x:Name="StreetComboBox" IsEnabled="False" Padding="5" Margin="0,0,0,10"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                            <TextBlock Text="Od:" Margin="0,0,0,3"/>
+                            <TextBox x:Name="StartNumTextBox" Padding="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                            <TextBlock Text="Do:" Margin="0,0,0,3"/>
+                            <TextBox x:Name="EndNumTextBox" Padding="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Margin="5,0,5,0">
+                            <TextBlock Text="Strana:" Margin="0,0,0,3"/>
+                            <ComboBox x:Name="SideComboBox" Padding="4">
+                                <ComboBoxItem Content="Svi brojevi" IsSelected="True"/>
+                                <ComboBoxItem Content="Parni brojevi"/>
+                                <ComboBoxItem Content="Neparni brojevi"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Button Content="Dodaj deo ulice" Grid.Column="3" VerticalAlignment="Bottom" Padding="15,7" Margin="5,0,0,0" Cursor="Hand"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Row="4" Header="Obuhvaćene ulice u kvartu" Margin="0,15,0,0" Padding="5">
+                <ListBox x:Name="SectionsListBox" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Primer Ulice" FontWeight="Bold" Width="150"/>
+                                    <TextBlock Text="br. 1 - 10" Margin="10,0"/>
+                                    <TextBlock Text="(Svi brojevi)" />
+                                </StackPanel>
+
+                                <Button Grid.Column="1" Content="Ukloni" Margin="5,0" Cursor="Hand"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+
+            <StackPanel Grid.Row="5" Margin="0,20,0,10">
+                <TextBlock Text="Slike kvarta:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Button Content="Odaberi slike..." HorizontalAlignment="Left" Padding="15,5" Margin="0,0,0,10"/>
+                <ListBox x:Name="ImagesListBox" Height="100">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="Odustani" Margin="0,0,10,0" Padding="20,10" Cursor="Hand"/>
+                <Button Content="Registruj Kvart" Padding="25,10" FontWeight="Bold" Cursor="Hand"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>

@@ -61,7 +61,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-
+            RegisterNeighborhoodWindow registerNeighborhoodWindow = new RegisterNeighborhoodWindow(_coordinatorId);
+            registerNeighborhoodWindow.Owner = Window.GetWindow(this);
+            registerNeighborhoodWindow.ShowDialog();
         }
     }
 }
