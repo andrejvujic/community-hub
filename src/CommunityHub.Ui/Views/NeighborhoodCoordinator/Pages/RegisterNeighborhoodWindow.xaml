@@ -37,11 +37,14 @@
                         <TextBlock Text="Država:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CountryComboBox" 
                                   DisplayMemberPath="Name"
-                                  Padding="5"/>
+                                  Padding="5"
+                                  SelectionChanged="CountryComboBox_SelectionChanged" />
                     </StackPanel>
                     <StackPanel Margin="5,0,0,0">
                         <TextBlock Text="Grad:" Margin="0,0,0,3"/>
-                        <ComboBox x:Name="CityComboBox" IsEnabled="False" Padding="5"/>
+                        <ComboBox x:Name="CityComboBox" 
+                                  IsEnabled="False" 
+                                  Padding="5"/>
                     </StackPanel>
                 </UniformGrid>
             </GroupBox>

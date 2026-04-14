@@ -22,16 +22,20 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     {     
         private readonly long _coordinatorId;
 
+
         private readonly CountryRepository _countryRepository = new CountryRepository();
+        private readonly CityRepository _cityRepository = new CityRepository();
 
         public ObservableCollection<Country> Countries { get; }
-        
+        public ObservableCollection<City> Cities { get; }
+
         public RegisterNeighborhoodWindow(long coordinatorId)
         {
             InitializeComponent();
             _coordinatorId = coordinatorId;
 
             Countries = new ObservableCollection<Country>();
+            Cities = new ObservableCollection<City>();
 
             LoadCountries();
         }
@@ -47,6 +51,31 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             }
 
             CountryComboBox.ItemsSource = Countries;
+        }
+
+        private void CountryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadCities();
+        }
+
+        private void LoadCities()
+        {
+            Cities.Clear();
+
+            var selectedCountry = CountryComboBox.SelectedItem as Country;
+            if (selectedCountry == null)
+            {
+                CityComboBox.ItemsSource = null;
+                CityComboBox.IsEnabled = false;
+                return;
+            }
+
+            var cities = _cityRepository.GetByCountryId(selectedCountry.Id);
+            foreach (var city in cities)
+                Cities.Add(city);
+
+            CityComboBox.ItemsSource = Cities;
+            CityComboBox.IsEnabled = Cities.Count > 0;
         }
 
     }
