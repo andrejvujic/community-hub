@@ -58,6 +58,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show(
+                "Da li ste sigurni da želite da se odjavite?",
+                "Potvrda odjave",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes) return;
+
             LogInForm loginForm = new LogInForm();
             loginForm.Show();
             this.Close();
