@@ -3,7 +3,7 @@ using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Buildings
 {
     public partial class BuildingDetailsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {

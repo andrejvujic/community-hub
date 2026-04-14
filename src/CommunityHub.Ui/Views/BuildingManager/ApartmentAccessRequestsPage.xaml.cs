@@ -1,9 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Database.Repositories;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
@@ -12,7 +14,9 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private readonly User _user;
         private readonly Building _building;
         private readonly ApartmentAccessRequestRepository _apartmentAccessRequestRepository = new ApartmentAccessRequestRepository();
+        private readonly ApartmentMembershipRepository _apartmentMembershipRepository = new ApartmentMembershipRepository();
         public ObservableCollection<ApartmentAccessRequest> ApartmentAccessRequests { get; set; } = new ObservableCollection<ApartmentAccessRequest>();
+
         public ApartmentAccessRequestsPage(User user, Building building)
         {
             _user = user;
@@ -22,7 +26,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             SetStreetInfo();
             LoadApartmentAccessRequests();
         }
-        
+
         public void LoadApartmentAccessRequests()
         {
             ApartmentAccessRequests.Clear();
@@ -31,6 +35,8 @@ namespace CommunityHub.Ui.Views.BuildingManager
             {
                 ApartmentAccessRequests.Add(request);
             }
+
+            borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.LightGray);
         }
 
         private void LeftArrow_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -64,21 +70,104 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     break;
 
                 case "Prihvaćen":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuildingFiltered(_user.Id, _building.Id, "accepted");
+                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: Status.Accepted);
                     break;
 
                 case "Čeka odobrenje":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuildingFiltered(_user.Id, _building.Id, "waiting");
+                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: Status.Waiting);
                     break;
 
                 case "Odbijen":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuildingFiltered(_user.Id, _building.Id, "rejected");
+                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: Status.Rejected);
                     break;
             }
 
             foreach (var request in requests)
             {
                 ApartmentAccessRequests.Add(request);
+            }
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedRow = requestsDataGrid.SelectedItem;
+
+            if (selectedRow != null)
+            {
+                borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.Black);
+                gridChangeStatus.IsEnabled = true;
+            }
+        }
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Da li ste sigurni da želite otkazati promenu statusa zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                ResetAll();
+            }
+        }
+
+        private void ResetAll()
+        {
+            statusComboBox.SelectedIndex = 0;
+            commentTextBox.Text = string.Empty;
+            requestsDataGrid.UnselectAll();
+            gridChangeStatus.IsEnabled = false;
+            borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.LightGray);
+        }
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (statusComboBox.SelectedIndex == 0)
+            {
+                MessageBox.Show("Molimo odaberite status zahteva.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var result = MessageBox.Show("Da li ste sigurni da želite promeniti status zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var selectedRequest = requestsDataGrid.SelectedItem as ApartmentAccessRequest;
+                if (selectedRequest != null)
+                {
+                    Status newStatus = statusComboBox.SelectedIndex == 1 ? Status.Accepted : Status.Rejected;
+                    string comment = commentTextBox.Text;
+                    int rowsAffected = _apartmentAccessRequestRepository.UpdateStatus(selectedRequest.Id, newStatus, comment);
+
+                    if (rowsAffected != 0)
+                    {
+                        LoadApartmentAccessRequests();
+                        MessageBox.Show("Status zahteva je uspešno promenjen.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+                        ResetAll(); 
+                    }
+
+                    if(newStatus == Status.Accepted)
+                    {
+                        ApartmentMembership membership = new ApartmentMembership(
+                            resident: selectedRequest.Applicant,
+                            apartment: selectedRequest.Apartment,
+                            acceptanceDate: DateTime.Now
+                        );
+
+                        _apartmentMembershipRepository.Create(membership);
+                    }
+                }
+            }
+        }
+
+        private void statusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(commentTextBox == null) return;
+            
+
+            if (statusComboBox.SelectedIndex == 2)
+            {
+                commentTextBox.IsEnabled = true;
+            }
+            else
+            {
+                commentTextBox.IsEnabled = false;
+                commentTextBox.Text = string.Empty;
             }
         }
     }

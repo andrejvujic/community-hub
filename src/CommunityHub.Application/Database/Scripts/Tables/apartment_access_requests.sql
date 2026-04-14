@@ -4,6 +4,6 @@
 	status statuses NOT NULL,
 	comment VARCHAR(300),
 	apartment_id BIGINT REFERENCES apartments(id) NOT NULL,
-	applicant_id BIGINT REFERENCES users(id) NOT NULL,
-	CONSTRAINT unique_apartment_access_request UNIQUE(apartment_id, applicant_id)
+	applicant_id BIGINT REFERENCES users(id) NOT NULL
+	-- CONSTRAINT unique_apartment_access_request UNIQUE(apartment_id, applicant_id)
 );

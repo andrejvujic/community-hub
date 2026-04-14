@@ -1,0 +1,45 @@
+<Window x:Class="CommunityHub.Ui.Views.Citizen.NeighborhoodSearchParametersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Parametri pretrage" Height="360" Width="480"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow" Background="#F0F0F0">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Naziv kvarta:" VerticalAlignment="Center" FontSize="14"/>
+        <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" VerticalContentAlignment="Center"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Adresa:" VerticalAlignment="Center" FontSize="14"/>
+        <TextBox x:Name="AddressTextBox" Grid.Row="2" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" VerticalContentAlignment="Center"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Država:" VerticalAlignment="Center" FontSize="14"/>
+        <Button x:Name="SelectCountryButton" Grid.Row="4" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" Click="SelectCountryButton_Click">Izaberite državu</Button>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Grad:" VerticalAlignment="Center" FontSize="14"/>
+        <Button x:Name="SelectCityButton" Grid.Row="6" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" Click="SelectCityButton_Click">Izaberite grad</Button>
+
+        <StackPanel Grid.Row="8" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+            <Button Content="Potvrdi" Width="120" Height="34" Click="ConfirmButton_Click" IsDefault="True" Margin="0,0,8,0"/>
+            <Button Content="Očisti" Width="120" Height="34" Click="ClearButton_Click" Margin="0,0,8,0"/>
+            <Button Content="Otkaži" Width="120" Height="34" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

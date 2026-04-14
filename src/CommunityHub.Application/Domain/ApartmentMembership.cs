@@ -7,7 +7,7 @@ namespace CommunityHub.Application.Domain
         public User Resident {  get; private set; }
         public Apartment Apartment { get; private set; }
         public DateTime AcceptanceDate { get; private set; }
-        public ApartmentMembership(long id, User resident, Apartment apartment, DateTime acceptanceDate)
+        public ApartmentMembership(User resident, Apartment apartment, DateTime acceptanceDate, long id = 0)
         {
             Id = id;
             Resident = resident;
@@ -23,10 +23,10 @@ namespace CommunityHub.Application.Domain
         )
         {
             return new ApartmentMembership(
-                id ?? Id,
                 resident ?? Resident,
                 apartment ?? Apartment,
-                acceptanceDate ?? AcceptanceDate
+                acceptanceDate ?? AcceptanceDate,
+                id ?? Id
             );
         }
     }

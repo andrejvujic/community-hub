@@ -3,7 +3,7 @@ using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident
 {
     public partial class MainWindow : MainNavigatorHostWindow, IAlertHost
     {

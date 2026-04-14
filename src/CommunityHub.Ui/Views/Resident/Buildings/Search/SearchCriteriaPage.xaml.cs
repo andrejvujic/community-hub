@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
     public partial class SearchCriteriaPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {

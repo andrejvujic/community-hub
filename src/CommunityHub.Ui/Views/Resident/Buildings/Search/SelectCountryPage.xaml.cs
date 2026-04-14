@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 
-namespace CommunityHub.Ui.Views.BuildingResident
+namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
     public partial class SelectCountryPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {

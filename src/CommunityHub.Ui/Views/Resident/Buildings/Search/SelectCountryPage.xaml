@@ -1,13 +1,13 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.BuildingResident.SelectCityPage"
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Search.SelectCountryPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingResident"
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Search"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
-      Title="Izaberite grad"
+      Title="Izabrite državu"
       FontFamily="{StaticResource AppFontFamily}">
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:EqualityConverter x:Key="EqualityConverter"/>
@@ -36,13 +36,15 @@
                      VerticalAlignment="Center"/>
             </Grid>
 
-            <Grid Grid.Column="1">
+            <Grid
+                Grid.Column="1">
                 <TextBlock
-                     Text="Biranje grada"
+                     Text="Biranje države"
                      FontSize="20"
                      VerticalAlignment="Center"/>
             </Grid>
         </Grid>
+
 
         <Grid Grid.Row="1" Margin="8">
             <Grid.RowDefinitions>
@@ -59,7 +61,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Content="Pretraži gradove..." FontSize="18"/>
+                <Label Grid.Row="0" Content="Pretraži države..." FontSize="18"/>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -72,7 +74,7 @@
                         Padding="4"
                         FontSize="16"
                         Text="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                        TextChanged="CitySearchTextBox_TextChanged"
+                        TextChanged="CountrySearchTextBox_TextChanged"   
                         VerticalContentAlignment="Center"/>
 
                     <Grid
@@ -93,7 +95,7 @@
 
             <Grid Grid.Row="4">
                 <ScrollViewer x:Name="MainContent" Visibility="Hidden" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl x:Name="CitiesItemsControl" ItemsSource="{Binding Cities}">
+                    <ItemsControl ItemsSource="{Binding Countries}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border
@@ -102,7 +104,7 @@
                                     BorderBrush="Gray"
                                     BorderThickness="1"
                                     Margin="0,0,0,8">
-                                    <Grid Height="48" MouseLeftButtonDown="CityItem_Click" Background="Transparent">
+                                    <Grid Height="48" MouseLeftButtonDown="CountryItem_Click" Background="Transparent">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
@@ -123,7 +125,7 @@
                                                                 <DataTrigger.Binding>
                                                                     <MultiBinding Converter="{StaticResource EqualityConverter}">
                                                                         <Binding />
-                                                                        <Binding Path="SelectedCity" RelativeSource="{RelativeSource AncestorType=Page}" />
+                                                                        <Binding Path="SelectedCountry" RelativeSource="{RelativeSource AncestorType=Page}" />
                                                                     </MultiBinding>
                                                                 </DataTrigger.Binding>
                                                                 <Setter Property="Visibility" Value="Visible"/>
@@ -150,7 +152,7 @@
                                                             <DataTrigger.Binding>
                                                                 <MultiBinding Converter="{StaticResource EqualityConverter}">
                                                                     <Binding />
-                                                                    <Binding Path="SelectedCity" RelativeSource="{RelativeSource AncestorType=Page}" />
+                                                                    <Binding Path="SelectedCountry" RelativeSource="{RelativeSource AncestorType=Page}" />
                                                                 </MultiBinding>
                                                             </DataTrigger.Binding>
                                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -170,8 +172,8 @@
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label Content="Nema rezultata" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
-                            Text="Ne postoji nijedan grad koji odgovara zadanom kriterijumu pretrage. Provjerite zadani kriterijum i pokušajte ponovo."
-                            TextWrapping="Wrap"
+                            Text="Ne postoji nijedna država koja odgovara zadanom kriterijumu pretrage. Provjerite zadani kriterijum i pokušajte ponovo."
+                            TextWrapping="Wrap" 
                             TextAlignment="Center"
                             FontSize="16"
                             HorizontalAlignment="Center"/>

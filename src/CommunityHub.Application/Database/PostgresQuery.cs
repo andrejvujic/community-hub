@@ -5,13 +5,13 @@ namespace CommunityHub.Application.Database
     public class PostgresQuery
     {
         private readonly string _sql;
-        private readonly Dictionary<string, object?> _parameters = new Dictionary<string, object?>();
+        private readonly Dictionary<string, object?> _parameters = [];
         private PostgresQuery(string sql)
         {
             _sql = sql;
         }
 
-        public static PostgresQuery Create(string sql) => new PostgresQuery(sql);
+        public static PostgresQuery Create(string sql) => new(sql);
 
         public PostgresQuery AddParameter(string name, object? value)
         {
