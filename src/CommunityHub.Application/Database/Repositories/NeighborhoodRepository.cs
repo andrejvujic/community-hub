@@ -80,25 +80,7 @@ namespace CommunityHub.Application.Database.Repositories
 
             long neighborhoodId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
 
-            List<StreetSection> savedSections = new List<StreetSection>();
-            foreach (var section in neighborhood.StreetSections)
-            {
-                var savedSection = _streetSectionRepository.Create(section, neighborhoodId);
-                savedSections.Add(savedSection);
-            }
-
-            List<Image> savedImages = new List<Image>();
-            foreach (var image in neighborhood.Images)
-            {
-                var savedImage = _imageRepository.Create(image, neighborhoodId: neighborhoodId);
-                savedImages.Add(savedImage);
-            }
-
-            return neighborhood.CopyWith(
-                id: neighborhoodId,
-                streetSections: savedSections,
-                images: savedImages
-            );
+            return neighborhood.CopyWith(id: neighborhoodId);
         }
 
         public List<Neighborhood> Search(NeighborhoodSearchParameters searchParameters)
