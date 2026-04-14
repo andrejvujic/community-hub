@@ -3,7 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1100">
+
+    <UserControl.Resources>
+        <conv:ParityToStringConverter x:Key="ParityConverter" />
+    </UserControl.Resources>
 
     <Grid Background="#F5F6FA">
         <Grid.ColumnDefinitions>
@@ -99,7 +104,7 @@
                                 <DataGridTextColumn Header="Naziv ulice" Binding="{Binding Street.Name}" Width="*"/>
                                 <DataGridTextColumn Header="Početni broj" Binding="{Binding StartNumber}" Width="120"/>
                                 <DataGridTextColumn Header="Krajnji broj" Binding="{Binding EndNumber}" Width="120"/>
-                                <DataGridTextColumn Header="Strana" Binding="{Binding Side}" Width="100"/>
+                                <DataGridTextColumn Header="Strana" Binding="{Binding Side, Converter={StaticResource ParityConverter}}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
 

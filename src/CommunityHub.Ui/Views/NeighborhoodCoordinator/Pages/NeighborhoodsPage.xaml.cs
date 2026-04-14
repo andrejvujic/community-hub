@@ -52,7 +52,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 SelectedNeighborhoodTitle.Text = selected.Name;
                 SelectedNeighborhoodLocation.Text = $"{selected.City.Name}, {selected.Country.Name}";
 
-               StreetsDataGrid.ItemsSource = _streetSectionRepository.GetByNeighborhoodId(selected.Id);
+                StreetsDataGrid.ItemsSource = _streetSectionRepository.GetByNeighborhoodId(selected.Id);
                 MembershipsDataGrid.ItemsSource = _membershipRepository.GetCitizensByNeighborhoodId(selected.Id);
 
                 DetailsScrollViewer.Visibility = Visibility.Visible;

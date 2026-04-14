@@ -7,8 +7,8 @@ namespace CommunityHub.Ui.Helpers.Converters
 {
     public class ParityToStringConverter : IValueConverter
     {
-        private const string _evenText = "Parni";
-        private const string _oddText = "Neparni";
+        private const string _evenText = "Parni brojevi";
+        private const string _oddText = "Neparni brojevi";
         private const string _bothText = "Svi brojevi";
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
