@@ -103,7 +103,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void PopulateImages(Neighborhood neighborhood)
         {
-            ImagesList.ItemsSource = neighborhood.Images.Select(i => i.Path).ToList();
+            ImagesList.ItemsSource = neighborhood.Images;
         }
 
         private void UpdateSearchResults()
