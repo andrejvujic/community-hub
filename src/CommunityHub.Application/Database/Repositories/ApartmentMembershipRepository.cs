@@ -28,7 +28,7 @@ namespace CommunityHub.Application.Database.Repositories
                 FROM apartment_memberships membership
                 WHERE
                     membership.apartment_id = @apartment_id AND
-                    membership.member_id = @user_id"
+                    membership.building_resident_id = @user_id"
             )
             .AddParameter("apartment_id", apartmentId)
             .AddParameter("user_id", userId);
