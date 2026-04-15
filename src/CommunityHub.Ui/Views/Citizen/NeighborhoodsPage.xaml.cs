@@ -175,9 +175,21 @@ namespace CommunityHub.Ui.Views.Citizen
             var createdMembership = _neighborhoodMembershipRepository.Create(membership);
             _citizenRepository.UpdateMembership(citizen.Id, createdMembership.Id);
 
+            AutoRejectPendingRequests(citizen, neighborhood.Id);
+
             MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
 
             RefreshCitizenDataContext();
+        }
+
+        private void AutoRejectPendingRequests(CommunityHub.Application.Domain.Citizen citizen, long approvedNeighborhoodId)
+        {
+            var pending = _neighborhoodAccessRequestRepository.GetWaitingByCitizenId(citizen.Id);
+            foreach (var r in pending.Where(r => r.Neighborhood.Id != approvedNeighborhoodId))
+            {
+                var updated = r.CopyWith(status: Status.Rejected, comment: "Automatski odbijen: građanin je pridružen drugom kvartu.");
+                _neighborhoodAccessRequestRepository.Update(updated);
+            }
         }
 
         private void RefreshCitizenDataContext()
