@@ -9,9 +9,9 @@ namespace CommunityHub.Ui.Views.Citizen
 
         public RequestNeighborhoodAccessWindow(string neighborhoodName)
         {
-            InitializeComponent();
             NeighborhoodName = neighborhoodName;
             DataContext = this;
+            InitializeComponent();
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)

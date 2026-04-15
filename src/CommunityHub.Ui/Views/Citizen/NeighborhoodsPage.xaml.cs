@@ -120,5 +120,18 @@ namespace CommunityHub.Ui.Views.Citizen
                 UpdateSearchResults();
             }
         }
+
+        private void RequestAccessButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedNeighborhood == null)
+            {
+                MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var dlg = new RequestNeighborhoodAccessWindow(_selectedNeighborhood.Name ?? "");
+            dlg.Owner = Window.GetWindow(this);
+            dlg.ShowDialog();
+        }
     }
 }

@@ -101,7 +101,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
+                    <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="RequestAccessButton_Click">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Visibility" Value="Collapsed" />
