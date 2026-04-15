@@ -23,7 +23,7 @@ public class WorkSampleRepository
     {
         var query = PostgresQuery.Create(
             @"SELECT
-                ws.id   AS work_sample_id,
+                ws.id AS work_sample_id,
                 ws.path AS work_sample_path,
                 ws.job_listing_id AS work_sample_listing_id
               FROM work_samples ws
