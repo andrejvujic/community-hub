@@ -9,6 +9,7 @@
         public string Description { get; private set; }
         public BillingType BillingType { get; private set; }
         public City City { get; private set; }
+        public Country Country { get; private set; }
         public ServiceProvider Provider { get; private set; }
         public List<PriceEntry> PriceList { get; private set; } = new List<PriceEntry>();
         public List<WorkSample> WorkSamples { get; private set; } = new List<WorkSample>();
@@ -21,6 +22,7 @@
             string description,
             BillingType billingType,
             City city,
+            Country country,
             ServiceProvider provider,
             long id = 0,
             List<PriceEntry>? priceList = null,
@@ -32,6 +34,7 @@
             Description = description;
             BillingType = billingType;
             City = city;
+            Country = country;
             Provider = provider;
             PriceList = priceList ?? new List<PriceEntry>();
             WorkSamples = workSamples ?? new List<WorkSample>();
@@ -43,6 +46,7 @@
             string? description = null,
             BillingType? billingType = null,
             City? city = null,
+            Country? country = null,
             ServiceProvider? provider = null,
             List<PriceEntry>? priceList = null,
             List<WorkSample>? workSamples = null
@@ -53,6 +57,7 @@
                 description ?? Description,
                 billingType ?? BillingType,
                 city ?? City,
+                country ?? Country,
                 provider ?? Provider,
                 id ?? Id,
                 priceList ?? PriceList,
