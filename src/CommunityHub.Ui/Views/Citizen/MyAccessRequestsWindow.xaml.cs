@@ -1,11 +1,16 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
     public partial class MyAccessRequestsWindow : Window
     {
         public long CitizenId { get; }
+        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
+        public ObservableCollection<NeighborhoodAccessRequest> Requests { get; } = new ObservableCollection<NeighborhoodAccessRequest>();
 
         public MyAccessRequestsWindow(long citizenId)
         {
@@ -13,6 +18,7 @@ namespace CommunityHub.Ui.Views.Citizen
             DataContext = this;
             InitializeComponent();
             KeyDown += MyAccessRequestsWindow_KeyDown;
+            Loaded += MyAccessRequestsWindow_Loaded;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -22,6 +28,23 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void DeleteRequest_Click(object sender, RoutedEventArgs e)
         {
+            if (RequestsList.SelectedItem is NeighborhoodAccessRequest request)
+            {
+                _neighborhoodAccessRequestRepository.Delete(request.Citizen.Id, request.Neighborhood.Id);
+                Requests.Remove(request);
+            }
+        }
+
+        private void MyAccessRequestsWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadRequests();
+        }
+
+        private void LoadRequests()
+        {
+            Requests.Clear();
+            var items = _neighborhoodAccessRequestRepository.GetByCitizenId(CitizenId);
+            foreach (var r in items) Requests.Add(r);
         }
 
         private void MyAccessRequestsWindow_KeyDown(object sender, KeyEventArgs e)
