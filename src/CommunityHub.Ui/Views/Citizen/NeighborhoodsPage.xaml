@@ -128,7 +128,7 @@
                         </Button.Style>
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
-                    <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
+                    <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="MyAccessRequestsButton_Click">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">
                             Moji zahtevi za pristup<LineBreak/>(Ctrl + 2)
                         </TextBlock>

@@ -220,5 +220,12 @@ namespace CommunityHub.Ui.Views.Citizen
                 MessageBox.Show("Došlo je do greške pri kreiranju zahteva.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void MyAccessRequestsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var wnd = new MyAccessRequestsWindow(_userId);
+            wnd.Owner = Window.GetWindow(this);
+            wnd.ShowDialog();
+        }
     }
 }
