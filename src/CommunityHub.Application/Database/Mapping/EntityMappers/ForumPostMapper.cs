@@ -25,6 +25,10 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             string authorCityName = reader.GetString(reader.GetOrdinal("post_city_name"));
             City authorCity = new City(authorCityId, authorCityName);
 
+            long authorCountryId = reader.GetInt64(reader.GetOrdinal("post_country_id"));
+            string authorCountryName = reader.GetString(reader.GetOrdinal("post_country_name"));
+            Country authorCountry = new Country(authorCountryId, authorCountryName);
+
             int upvoteOrdinal = reader.GetOrdinal("upvote_count");
             int downvoteOrdinal = reader.GetOrdinal("downvote_count");
             int upvoteCount = reader.IsDBNull(upvoteOrdinal) ? 0 : reader.GetInt32(upvoteOrdinal);
@@ -38,8 +42,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             {
                 bool isUpvote = reader.GetBoolean(reactionOrdinal);
                 currentUserReaction = new PostReaction(
-                    post: null!,   
-                    reactor: author,  
+                    post: null!,
+                    reactor: author,
                     isUpvote: isUpvote
                 );
             }
@@ -49,6 +53,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 author,
                 content,
                 authorCity,
+                authorCountry,
                 postedAt,
                 id: id,
                 upvoteCount: upvoteCount,

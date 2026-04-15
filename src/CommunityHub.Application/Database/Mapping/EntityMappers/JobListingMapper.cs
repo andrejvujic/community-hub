@@ -23,6 +23,10 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             string listingCityName = reader.GetString(reader.GetOrdinal("listing_city_name"));
             City listingCity = new City(listingCityId, listingCityName);
 
+            long listingCountryId = reader.GetInt64(reader.GetOrdinal("listing_country_id"));
+            string listingCountryName = reader.GetString(reader.GetOrdinal("listing_country_name"));
+            Country listingCountry = new Country(listingCountryId, listingCountryName);
+
             ServiceName serviceName = ServiceName.FromValue(
                 reader.GetString(reader.GetOrdinal("service_name")));
             string description = reader.GetString(reader.GetOrdinal("description"));
@@ -48,6 +52,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 description,
                 billingType,
                 listingCity,
+                listingCountry,
                 provider,
                 id: id,
                 priceList: priceEntries,
