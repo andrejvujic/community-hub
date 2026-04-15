@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
+using CommunityHub.Application.Helpers.Matching;
+using CommunityHub.Application.Helpers.Search;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Linq;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Search;
-using CommunityHub.Application.Helpers.Matching;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
@@ -17,6 +14,8 @@ namespace CommunityHub.Ui.Views.Citizen
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
         private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
+        private readonly CitizenRepository _citizenRepository = new CitizenRepository();
+        private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
 
         private NeighborhoodSearchParameters? _searchParameters;
         public ObservableCollection<Neighborhood> Neighborhoods { get; } = new ObservableCollection<Neighborhood>();
@@ -134,7 +133,6 @@ namespace CommunityHub.Ui.Views.Citizen
             if (HasPendingRequest()) return;
             if (!ShowConfirmDialog()) return;
 
-            CitizenRepository _citizenRepository = new CitizenRepository();
             var citizen = _citizenRepository.GetById(_userId)!;
 
             if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, _selectedNeighborhood.StreetSections))
@@ -167,6 +165,25 @@ namespace CommunityHub.Ui.Views.Citizen
         private void CreateNeighborhoodMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
         {
             MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            var membership = new NeighborhoodMembership(
+                0,
+                DateTime.Now,
+                neighborhood
+            );
+
+            var createdMembership = _neighborhoodMembershipRepository.Create(membership);
+            _citizenRepository.UpdateMembership(citizen.Id, createdMembership.Id);
+
+            MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            RefreshCitizenDataContext();
+        }
+
+        private void RefreshCitizenDataContext()
+        {
+            var refreshedCitizen = _citizenRepository.GetById(_userId);
+            this.DataContext = refreshedCitizen;
         }
 
         private void CreateNeighborhoodAccessRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
