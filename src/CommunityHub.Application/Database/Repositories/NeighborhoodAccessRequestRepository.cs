@@ -217,10 +217,34 @@ namespace CommunityHub.Application.Database.Repositories
             query.GetRowsAffectedCount();
         }
 
+        public bool Create(NeighborhoodAccessRequest request)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO neighborhood_access_requests
+                (citizen_id, neighborhood_id, comment, status, creation_date)
+                VALUES
+                (@citizen_id, @neighborhood_id, @comment, @status, @creation_date)"
+            )
+            .ExtendParameters(_neighborhoodAccessRequestMapper.MapToQueryParameters(request));
+
+            int affected = query.GetRowsAffectedCount();
+            return affected > 0;
+        }
+
+        public void Delete(long citizenId, long neighborhoodId)
+        {
+            PostgresQuery.Create(
+                "DELETE FROM neighborhood_access_requests WHERE citizen_id = @citizen_id AND neighborhood_id = @neighborhood_id"
+            )
+            .AddParameter("citizen_id", citizenId)
+            .AddParameter("neighborhood_id", neighborhoodId)
+            .GetRowsAffectedCount();
+        }
+
         public bool HasPendingRequest(long userId, long neighborhoodId)
         {
             var query = PostgresQuery.Create(
-                @"SELECT request.id
+                @"SELECT request.citizen_id
                 FROM neighborhood_access_requests request
                 WHERE
                     request.citizen_id = @user_id AND
@@ -230,7 +254,7 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("user_id", userId)
             .AddParameter("neighborhood_id", neighborhoodId);
 
-            return query.ExecuteScalar(requestId => requestId != null);
+            return query.ExecuteScalar(val => val != null);
         }
     }
 }
