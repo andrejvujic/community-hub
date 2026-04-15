@@ -155,7 +155,7 @@
                                 </StackPanel>
 
                                 <Button Grid.Row="1" Width="36" Height="36" Margin="0,8,0,0" HorizontalAlignment="Right" Click="DeleteRequest_Click"
-                                        Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}" ToolTip="Obrisi zahtev">
+                                        Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}" ToolTip="Brisanje zahteva">
                                     <TextBlock Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Button>
                             </Grid>

@@ -30,6 +30,9 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             if (RequestsList.SelectedItem is NeighborhoodAccessRequest request)
             {
+                var result = MessageBox.Show("Da li ste sigurni da želite da obrišete ovaj zahtev?", "Potvrda brisanja", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result != MessageBoxResult.Yes) return;
+
                 _neighborhoodAccessRequestRepository.Delete(request.Citizen.Id, request.Neighborhood.Id);
                 Requests.Remove(request);
             }
