@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
@@ -13,8 +14,9 @@ namespace CommunityHub.Ui.Views.Citizen
     public partial class NeighborhoodsPage : Page
     {
         private readonly long _userId;
-        private readonly NeighborhoodRepository _neighborhoodRepository;
+        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
+        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
 
         private NeighborhoodSearchParameters? _searchParameters;
         public ObservableCollection<Neighborhood> Neighborhoods { get; } = new ObservableCollection<Neighborhood>();
@@ -24,7 +26,6 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             InitializeComponent();
             _userId = userId;
-            _neighborhoodRepository = new NeighborhoodRepository();
 
             UpdateSearchResults();
 
@@ -138,18 +139,17 @@ namespace CommunityHub.Ui.Views.Citizen
 
             if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, _selectedNeighborhood.StreetSections))
             {
-                CreateMembership(citizen, _selectedNeighborhood);
+                CreateNeighborhoodMembership(citizen, _selectedNeighborhood);
             }
             else
             {
-                CreateRequest(citizen, _selectedNeighborhood);
+                CreateNeighborhoodAccessRequest(citizen, _selectedNeighborhood);
             }
         }
 
         private bool HasPendingRequest()
         {
-            var requestRepo = new NeighborhoodAccessRequestRepository();
-            if (requestRepo.HasPendingRequest(_userId, _selectedNeighborhood!.Id))
+            if (_neighborhoodAccessRequestRepository.HasPendingRequest(_userId, _selectedNeighborhood!.Id))
             {
                 MessageBox.Show("Već postoji zahtev za pristup ovom kvartu.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return true;
@@ -164,14 +164,32 @@ namespace CommunityHub.Ui.Views.Citizen
             return dlg.ShowDialog() == true && dlg.Confirmed;
         }
 
-        private void CreateMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        private void CreateNeighborhoodMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
         {
             MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void CreateRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        private void CreateNeighborhoodAccessRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
         {
             MessageBox.Show("Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            var request = new NeighborhoodAccessRequest(
+                citizen,
+                neighborhood,
+                Status.Waiting,
+                DateTime.Now,
+                null
+            );
+
+            bool created = _neighborhoodAccessRequestRepository.Create(request);
+            if (created)
+            {
+                MessageBox.Show("Zahtev za pristup kvartu je uspešno kreiran.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Došlo je do greške pri kreiranju zahteva.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
