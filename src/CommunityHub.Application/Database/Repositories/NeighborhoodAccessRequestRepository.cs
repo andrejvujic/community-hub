@@ -216,5 +216,21 @@ namespace CommunityHub.Application.Database.Repositories
 
             query.GetRowsAffectedCount();
         }
+
+        public bool HasPendingRequest(long userId, long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT request.id
+                FROM neighborhood_access_requests request
+                WHERE
+                    request.citizen_id = @user_id AND
+                    request.neighborhood_id = @neighborhood_id AND
+                    request.status = 'waiting'"
+            )
+            .AddParameter("user_id", userId)
+            .AddParameter("neighborhood_id", neighborhoodId);
+
+            return query.ExecuteScalar(requestId => requestId != null);
+        }
     }
 }
