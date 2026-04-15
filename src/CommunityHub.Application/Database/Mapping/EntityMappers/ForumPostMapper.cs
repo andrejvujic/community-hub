@@ -70,7 +70,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "posted_at", entity.PostedAt },
                 { "forum_id", entity.ForumId },
                 { "author_id", entity.Author.Id },
-                { "author_city_id", entity.AuthorCity.Id }
+                { "author_city_id", entity.AuthorCity.Id },
+                { "author_country_id", entity.AuthorCountry.Id }
             };
         }
     }

@@ -4,5 +4,6 @@ CREATE TABLE forum_posts (
     posted_at TIMESTAMP NOT NULL DEFAULT NOW(),
     forum_id BIGINT REFERENCES provider_forums(id) NOT NULL,
     author_id BIGINT REFERENCES service_providers(id) NOT NULL,
-    author_city_id BIGINT REFERENCES cities(id) NOT NULL
+    author_city_id BIGINT REFERENCES cities(id) NOT NULL,
+    author_country_id BIGINT REFERENCES countries(id) NOT NULL
 );

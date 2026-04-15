@@ -42,7 +42,7 @@ public class JobListingRepository
             INNER JOIN countries lco ON lco.id = lc.country_id
             INNER JOIN cities pc ON pc.id = sp.city_id
             INNER JOIN countries co ON co.id = sp.country_id
-            LEFT  JOIN price_entries pe ON pe.job_listing_id = jl.id
+            LEFT JOIN price_entries pe ON pe.job_listing_id = jl.id
             WHERE jl.provider_id = @provider_id
             ORDER BY jl.id, pe.valid_from"
         ).AddParameter("provider_id", providerId);
@@ -74,8 +74,8 @@ public class JobListingRepository
     public JobListing Create(JobListing listing)
     {
         var query = PostgresQuery.Create(
-            @"INSERT INTO job_listings (service_name, description, billing_type, city_id, provider_id)
-              VALUES (@service_name, @description, @billing_type, @city_id, @provider_id)
+            @"INSERT INTO job_listings (service_name, description, billing_type, city_id, country_id, provider_id)
+              VALUES (@service_name, @description, @billing_type, @city_id, @country_id, @provider_id)
               RETURNING id"
         ).ExtendParameters(_mapper.MapToQueryParameters(listing));
 

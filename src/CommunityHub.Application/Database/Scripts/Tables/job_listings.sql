@@ -4,5 +4,6 @@ CREATE TABLE job_listings (
     description VARCHAR(500) NOT NULL,
     billing_type billing_types NOT NULL,
     city_id BIGINT REFERENCES cities(id) NOT NULL,
+    country_id BIGINT REFERENCES countries(id) NOT NULL,
     provider_id BIGINT REFERENCES service_providers(id) NOT NULL
 );

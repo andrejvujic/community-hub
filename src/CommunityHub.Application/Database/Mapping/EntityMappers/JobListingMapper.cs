@@ -3,7 +3,6 @@ using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
-
     public class JobListingMapper : EntityMapper<JobListing>
     {
         private readonly ServiceProviderMapper _providerMapper = new ServiceProviderMapper();
@@ -68,6 +67,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "description", entity.Description },
                 { "billing_type", entity.BillingType },
                 { "city_id", entity.City.Id },
+                { "country_id", entity.Country.Id },
                 { "provider_id", entity.Provider.Id }
             };
         }
