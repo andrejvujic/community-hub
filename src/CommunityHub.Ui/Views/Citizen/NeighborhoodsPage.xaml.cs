@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
@@ -125,7 +125,14 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             if (_selectedNeighborhood == null)
             {
-                MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obave�tenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            NeighborhoodAccessRequestRepository _neigborhoodAccessRequestRepository = new CommunityHub.Application.Database.Repositories.NeighborhoodAccessRequestRepository();
+            if (_neigborhoodAccessRequestRepository.HasPendingRequest(_userId, _selectedNeighborhood.Id))
+            {
+                MessageBox.Show("Već postoji zahtev za pristup ovom kvartu.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
