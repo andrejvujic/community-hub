@@ -6,6 +6,7 @@ using System.Linq;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
+using CommunityHub.Application.Helpers.Matching;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
@@ -129,16 +130,48 @@ namespace CommunityHub.Ui.Views.Citizen
                 return;
             }
 
-            NeighborhoodAccessRequestRepository _neigborhoodAccessRequestRepository = new CommunityHub.Application.Database.Repositories.NeighborhoodAccessRequestRepository();
-            if (_neigborhoodAccessRequestRepository.HasPendingRequest(_userId, _selectedNeighborhood.Id))
+            if (HasPendingRequest()) return;
+            if (!ShowConfirmDialog()) return;
+
+            CitizenRepository _citizenRepository = new CitizenRepository();
+            var citizen = _citizenRepository.GetById(_userId)!;
+
+            if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, _selectedNeighborhood.StreetSections))
+            {
+                CreateMembership(citizen, _selectedNeighborhood);
+            }
+            else
+            {
+                CreateRequest(citizen, _selectedNeighborhood);
+            }
+        }
+
+        private bool HasPendingRequest()
+        {
+            var requestRepo = new NeighborhoodAccessRequestRepository();
+            if (requestRepo.HasPendingRequest(_userId, _selectedNeighborhood!.Id))
             {
                 MessageBox.Show("Već postoji zahtev za pristup ovom kvartu.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
+                return true;
             }
+            return false;
+        }
 
-            var dlg = new RequestNeighborhoodAccessWindow(_selectedNeighborhood.Name ?? "");
+        private bool ShowConfirmDialog()
+        {
+            var dlg = new RequestNeighborhoodAccessWindow(_selectedNeighborhood!.Name ?? string.Empty);
             dlg.Owner = Window.GetWindow(this);
-            dlg.ShowDialog();
+            return dlg.ShowDialog() == true && dlg.Confirmed;
+        }
+
+        private void CreateMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        {
+            MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void CreateRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        {
+            MessageBox.Show("Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
