@@ -18,6 +18,8 @@ public class JobListingRepository
                 jl.billing_type,
                 lc.id AS listing_city_id,
                 lc.name AS listing_city_name,
+                lco.id AS listing_country_id,
+                lco.name AS listing_country_name,
                 u.id AS user_id,
                 u.username,
                 u.password,
@@ -37,6 +39,7 @@ public class JobListingRepository
             INNER JOIN service_providers sp ON sp.id = jl.provider_id
             INNER JOIN users u ON u.id  = sp.id
             INNER JOIN cities lc ON lc.id = jl.city_id
+            INNER JOIN countries lco ON lco.id = lc.country_id
             INNER JOIN cities pc ON pc.id = sp.city_id
             INNER JOIN countries co ON co.id = sp.country_id
             LEFT  JOIN price_entries pe ON pe.job_listing_id = jl.id
