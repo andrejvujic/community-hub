@@ -44,7 +44,6 @@ namespace CommunityHub.Ui.Views.Citizen
                 ShowPlaceholder();
                 return;
             }
-
             ShowDetails(_selectedNeighborhood);
         }
 
@@ -61,11 +60,6 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             PlaceholderPanel.Visibility = Visibility.Visible;
             DetailsPanel.Visibility = Visibility.Collapsed;
-            StreetsList.ItemsSource = null;
-            ImagesList.ItemsSource = null;
-            DetailsName.Text = string.Empty;
-            DetailsLocation.Text = string.Empty;
-            DetailsDescription.Text = string.Empty;
         }
 
         private void ShowDetails(Neighborhood neighborhood)
@@ -73,37 +67,7 @@ namespace CommunityHub.Ui.Views.Citizen
             PlaceholderPanel.Visibility = Visibility.Collapsed;
             DetailsPanel.Visibility = Visibility.Visible;
 
-            DetailsName.Text = neighborhood.Name ?? string.Empty;
-            DetailsLocation.Text = FormatLocation(neighborhood);
-            DetailsDescription.Text = neighborhood.Description ?? string.Empty;
-
             LoadStreetSections(neighborhood);
-            PopulateStreets(neighborhood);
-            PopulateImages(neighborhood);
-        }
-
-        private string FormatLocation(Neighborhood neighborhood)
-        {
-            var locationParts = new[] { neighborhood.City?.Name, neighborhood.Country?.Name }
-                .Where(part => !string.IsNullOrWhiteSpace(part));
-
-            return string.Join(", ", locationParts);
-        }
-
-        private void PopulateStreets(Neighborhood neighborhood)
-        {
-            var streetStrings = neighborhood.StreetSections
-                .OrderBy(s => s.Street.Name)
-                .ThenBy(s => s.StartNumber)
-                .Select(s => $"{s.Street.Name} {s.StartNumber}-{s.EndNumber}")
-                .ToList();
-
-            StreetsList.ItemsSource = streetStrings;
-        }
-
-        private void PopulateImages(Neighborhood neighborhood)
-        {
-            ImagesList.ItemsSource = neighborhood.Images;
         }
 
         private void UpdateSearchResults()

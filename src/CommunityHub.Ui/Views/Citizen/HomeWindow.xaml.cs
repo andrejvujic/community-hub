@@ -113,7 +113,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void NavigateToTab(System.Windows.Controls.Border tab)
         {
-            var tag = tab.Tag?.ToString() ?? string.Empty;
+            string tag = tab.Tag?.ToString() ?? string.Empty;
 
             System.Windows.Controls.Page? page = tag switch
             {

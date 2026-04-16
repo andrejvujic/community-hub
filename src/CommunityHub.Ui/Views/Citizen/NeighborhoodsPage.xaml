@@ -63,16 +63,37 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                    <TextBlock x:Name="DetailsName" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
-                                    <TextBlock x:Name="DetailsLocation" FontSize="14" Foreground="#666" Margin="0,0,0,8" />
-                                    <TextBlock x:Name="DetailsDescription" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
+                                    <TextBlock Text="{Binding SelectedItem.Name, ElementName=NeighborhoodsGrid, TargetNullValue=''}" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+                                    <TextBlock FontSize="14" Foreground="#666" Margin="0,0,0,8">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}, {1}">
+                                                <Binding ElementName="NeighborhoodsGrid" Path="SelectedItem.City.Name" TargetNullValue="" />
+                                                <Binding ElementName="NeighborhoodsGrid" Path="SelectedItem.Country.Name" TargetNullValue="" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding SelectedItem.Description, ElementName=NeighborhoodsGrid, TargetNullValue=''}" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
 
                                     <TextBlock Text="Ulice:" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <ListBox x:Name="StreetsList" MinHeight="275" />
+                                    <ListBox ItemsSource="{Binding SelectedItem.StreetSections, ElementName=NeighborhoodsGrid}" MinHeight="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} {1}-{2}">
+                                                            <Binding Path="Street.Name" />
+                                                            <Binding Path="StartNumber" />
+                                                            <Binding Path="EndNumber" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1">
-                                    <ItemsControl x:Name="ImagesList">
+                                    <ItemsControl ItemsSource="{Binding SelectedItem.Images, ElementName=NeighborhoodsGrid}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Vertical" />
@@ -106,7 +127,7 @@
                             <Style TargetType="Button">
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Membership}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding SelectedItem.Membership, ElementName=NeighborhoodsGrid}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Visible" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -120,7 +141,7 @@
                             <Style TargetType="Button">
                                 <Setter Property="Visibility" Value="Visible" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Membership}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding SelectedItem.Membership, ElementName=NeighborhoodsGrid}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
