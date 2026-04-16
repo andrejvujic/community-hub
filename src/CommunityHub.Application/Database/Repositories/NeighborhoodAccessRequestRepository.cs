@@ -66,6 +66,154 @@ namespace CommunityHub.Application.Database.Repositories
             return requests;
         }
 
+        public List<NeighborhoodAccessRequest> GetByCitizenId(long citizenId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    citizen_id,
+                    neighborhood_id,
+                    status,
+                    creation_date,
+                    comment
+                FROM neighborhood_access_requests
+                WHERE citizen_id = @citizenId"
+            ).AddParameter("citizenId", citizenId);
+
+            var requests = new List<NeighborhoodAccessRequest>();
+
+            var citizenRepo = new CitizenRepository();
+            var neighborhoodMapper = new CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodMapper();
+            var neighborhoodCache = new Dictionary<long, Neighborhood>();
+
+            query.ExecuteReader(reader => {
+                long cId = reader.GetInt64(reader.GetOrdinal("citizen_id"));
+                long nId = reader.GetInt64(reader.GetOrdinal("neighborhood_id"));
+
+                Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
+                DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+
+                int commentIdx = reader.GetOrdinal("comment");
+                string? comment = reader.IsDBNull(commentIdx) ? null : reader.GetString(commentIdx);
+
+                Citizen? citizen = citizenRepo.GetById(cId);
+                if (citizen == null) return;
+
+                if (!neighborhoodCache.TryGetValue(nId, out Neighborhood? neighborhood))
+                {
+                    var nQuery = PostgresQuery.Create(
+                        @"SELECT
+                            neighborhood.id AS neighborhood_id,
+                            neighborhood.name AS neighborhood_name,
+                            neighborhood.description,
+                            neighborhood.budget,
+
+                            city.id AS city_id,
+                            city.name AS city_name,
+
+                            country.id AS country_id,
+                            country.name AS country_name,
+
+                            coordinator.id AS coordinator_user_id,
+                            coordinator.username AS coordinator_username,
+                            coordinator.password AS coordinator_password,
+                            coordinator.name AS coordinator_name,
+                            coordinator.surname AS coordinator_surname,
+                            coordinator.user_role AS coordinator_user_role
+                        FROM neighborhoods neighborhood
+                        INNER JOIN cities city ON neighborhood.city_id = city.id
+                        INNER JOIN countries country ON city.country_id = country.id
+                        INNER JOIN users coordinator ON neighborhood.coordinator_id = coordinator.id
+                        WHERE neighborhood.id = @id"
+                    ).AddParameter("id", nId);
+
+                    Neighborhood? fetched = null;
+                    nQuery.ExecuteReader(r => fetched = neighborhoodMapper.MapToEntity(r));
+                    if (fetched == null) return;
+
+                    neighborhoodCache[nId] = fetched;
+                    neighborhood = fetched;
+                }
+
+                requests.Add(new NeighborhoodAccessRequest(citizen, neighborhood, status, creationDate, comment));
+            });
+
+            return requests;
+        }
+
+        public List<NeighborhoodAccessRequest> GetWaitingByCitizenId(long citizenId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    citizen_id,
+                    neighborhood_id,
+                    status,
+                    creation_date,
+                    comment
+                FROM neighborhood_access_requests
+                WHERE citizen_id = @citizenId AND status = 'waiting'"
+            ).AddParameter("citizenId", citizenId);
+
+            var requests = new List<NeighborhoodAccessRequest>();
+
+            var citizenRepo = new CitizenRepository();
+            var neighborhoodMapper = new CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodMapper();
+            var neighborhoodCache = new Dictionary<long, Neighborhood>();
+
+            query.ExecuteReader(reader => {
+                long cId = reader.GetInt64(reader.GetOrdinal("citizen_id"));
+                long nId = reader.GetInt64(reader.GetOrdinal("neighborhood_id"));
+
+                Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
+                DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+
+                int commentIdx = reader.GetOrdinal("comment");
+                string? comment = reader.IsDBNull(commentIdx) ? null : reader.GetString(commentIdx);
+
+                Citizen? citizen = citizenRepo.GetById(cId);
+                if (citizen == null) return;
+
+                if (!neighborhoodCache.TryGetValue(nId, out Neighborhood? neighborhood))
+                {
+                    var nQuery = PostgresQuery.Create(
+                        @"SELECT
+                            neighborhood.id AS neighborhood_id,
+                            neighborhood.name AS neighborhood_name,
+                            neighborhood.description,
+                            neighborhood.budget,
+
+                            city.id AS city_id,
+                            city.name AS city_name,
+
+                            country.id AS country_id,
+                            country.name AS country_name,
+
+                            coordinator.id AS coordinator_user_id,
+                            coordinator.username AS coordinator_username,
+                            coordinator.password AS coordinator_password,
+                            coordinator.name AS coordinator_name,
+                            coordinator.surname AS coordinator_surname,
+                            coordinator.user_role AS coordinator_user_role
+                        FROM neighborhoods neighborhood
+                        INNER JOIN cities city ON neighborhood.city_id = city.id
+                        INNER JOIN countries country ON city.country_id = country.id
+                        INNER JOIN users coordinator ON neighborhood.coordinator_id = coordinator.id
+                        WHERE neighborhood.id = @id"
+                    ).AddParameter("id", nId);
+
+                    Neighborhood? fetched = null;
+                    nQuery.ExecuteReader(r => fetched = neighborhoodMapper.MapToEntity(r));
+                    if (fetched == null) return;
+
+                    neighborhoodCache[nId] = fetched;
+                    neighborhood = fetched;
+                }
+
+                requests.Add(new NeighborhoodAccessRequest(citizen, neighborhood, status, creationDate, comment));
+            });
+
+            return requests;
+        }
+
         public List<NeighborhoodAccessRequest> GetByCoordinatorId(long coordinatorId)
         {
             var query = PostgresQuery.Create(
@@ -215,6 +363,46 @@ namespace CommunityHub.Application.Database.Repositories
             .ExtendParameters(_neighborhoodAccessRequestMapper.MapToQueryParameters(request));
 
             query.GetRowsAffectedCount();
+        }
+
+        public bool Create(NeighborhoodAccessRequest request)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO neighborhood_access_requests
+                (citizen_id, neighborhood_id, comment, status, creation_date)
+                VALUES
+                (@citizen_id, @neighborhood_id, @comment, @status, @creation_date)"
+            )
+            .ExtendParameters(_neighborhoodAccessRequestMapper.MapToQueryParameters(request));
+
+            int affected = query.GetRowsAffectedCount();
+            return affected > 0;
+        }
+
+        public void Delete(long citizenId, long neighborhoodId)
+        {
+            PostgresQuery.Create(
+                "DELETE FROM neighborhood_access_requests WHERE citizen_id = @citizen_id AND neighborhood_id = @neighborhood_id"
+            )
+            .AddParameter("citizen_id", citizenId)
+            .AddParameter("neighborhood_id", neighborhoodId)
+            .GetRowsAffectedCount();
+        }
+
+        public bool HasPendingRequest(long userId, long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT request.citizen_id
+                FROM neighborhood_access_requests request
+                WHERE
+                    request.citizen_id = @user_id AND
+                    request.neighborhood_id = @neighborhood_id AND
+                    request.status = 'waiting'"
+            )
+            .AddParameter("user_id", userId)
+            .AddParameter("neighborhood_id", neighborhoodId);
+
+            return query.ExecuteScalar(val => val != null);
         }
     }
 }

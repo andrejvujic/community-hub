@@ -1,19 +1,21 @@
-using System.Collections.Generic;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
+using CommunityHub.Application.Helpers.Matching;
+using CommunityHub.Application.Helpers.Search;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
-using System.Linq;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
     public partial class NeighborhoodsPage : Page
     {
         private readonly long _userId;
-        private readonly NeighborhoodRepository _neighborhoodRepository;
+        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
+        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
+        private readonly CitizenRepository _citizenRepository = new CitizenRepository();
+        private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
 
         private NeighborhoodSearchParameters? _searchParameters;
         public ObservableCollection<Neighborhood> Neighborhoods { get; } = new ObservableCollection<Neighborhood>();
@@ -22,9 +24,7 @@ namespace CommunityHub.Ui.Views.Citizen
         public NeighborhoodsPage(long userId)
         {
             InitializeComponent();
-            DataContext = this;
             _userId = userId;
-            _neighborhoodRepository = new NeighborhoodRepository();
 
             UpdateSearchResults();
 
@@ -44,7 +44,6 @@ namespace CommunityHub.Ui.Views.Citizen
                 ShowPlaceholder();
                 return;
             }
-
             ShowDetails(_selectedNeighborhood);
         }
 
@@ -61,11 +60,6 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             PlaceholderPanel.Visibility = Visibility.Visible;
             DetailsPanel.Visibility = Visibility.Collapsed;
-            StreetsList.ItemsSource = null;
-            ImagesList.ItemsSource = null;
-            DetailsName.Text = string.Empty;
-            DetailsLocation.Text = string.Empty;
-            DetailsDescription.Text = string.Empty;
         }
 
         private void ShowDetails(Neighborhood neighborhood)
@@ -73,37 +67,7 @@ namespace CommunityHub.Ui.Views.Citizen
             PlaceholderPanel.Visibility = Visibility.Collapsed;
             DetailsPanel.Visibility = Visibility.Visible;
 
-            DetailsName.Text = neighborhood.Name ?? string.Empty;
-            DetailsLocation.Text = FormatLocation(neighborhood);
-            DetailsDescription.Text = neighborhood.Description ?? string.Empty;
-
             LoadStreetSections(neighborhood);
-            PopulateStreets(neighborhood);
-            PopulateImages(neighborhood);
-        }
-
-        private string FormatLocation(Neighborhood neighborhood)
-        {
-            var locationParts = new[] { neighborhood.City?.Name, neighborhood.Country?.Name }
-                .Where(part => !string.IsNullOrWhiteSpace(part));
-
-            return string.Join(", ", locationParts);
-        }
-
-        private void PopulateStreets(Neighborhood neighborhood)
-        {
-            var streetStrings = neighborhood.StreetSections
-                .OrderBy(s => s.Street.Name)
-                .ThenBy(s => s.StartNumber)
-                .Select(s => $"{s.Street.Name} {s.StartNumber}-{s.EndNumber}")
-                .ToList();
-
-            StreetsList.ItemsSource = streetStrings;
-        }
-
-        private void PopulateImages(Neighborhood neighborhood)
-        {
-            ImagesList.ItemsSource = neighborhood.Images;
         }
 
         private void UpdateSearchResults()
@@ -120,6 +84,112 @@ namespace CommunityHub.Ui.Views.Citizen
                 _searchParameters = window.Result;
                 UpdateSearchResults();
             }
+        }
+
+        private void RequestAccessButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedNeighborhood == null)
+            {
+                MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (HasPendingRequest()) return;
+            if (!ShowConfirmDialog()) return;
+
+            var citizen = _citizenRepository.GetById(_userId)!;
+
+            if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, _selectedNeighborhood.StreetSections))
+            {
+                CreateNeighborhoodMembership(citizen, _selectedNeighborhood);
+            }
+            else
+            {
+                CreateNeighborhoodAccessRequest(citizen, _selectedNeighborhood);
+            }
+        }
+
+        private bool HasPendingRequest()
+        {
+            if (_neighborhoodAccessRequestRepository.HasPendingRequest(_userId, _selectedNeighborhood!.Id))
+            {
+                MessageBox.Show("Već postoji zahtev za pristup ovom kvartu.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
+            }
+            return false;
+        }
+
+        private bool ShowConfirmDialog()
+        {
+            var dlg = new RequestNeighborhoodAccessWindow(_selectedNeighborhood!.Name ?? string.Empty);
+            dlg.Owner = Window.GetWindow(this);
+            return dlg.ShowDialog() == true && dlg.Confirmed;
+        }
+
+        private void CreateNeighborhoodMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        {
+            MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            var membership = new NeighborhoodMembership(
+                0,
+                DateTime.Now,
+                neighborhood
+            );
+
+            var createdMembership = _neighborhoodMembershipRepository.Create(membership);
+            _citizenRepository.UpdateMembership(citizen.Id, createdMembership.Id);
+
+            AutoRejectPendingRequests(citizen, neighborhood.Id);
+
+            MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            RefreshCitizenDataContext();
+        }
+
+        private void AutoRejectPendingRequests(CommunityHub.Application.Domain.Citizen citizen, long approvedNeighborhoodId)
+        {
+            var pending = _neighborhoodAccessRequestRepository.GetWaitingByCitizenId(citizen.Id);
+            foreach (var r in pending.Where(r => r.Neighborhood.Id != approvedNeighborhoodId))
+            {
+                var updated = r.CopyWith(status: Status.Rejected, comment: "Automatski odbijen: građanin je pridružen drugom kvartu.");
+                _neighborhoodAccessRequestRepository.Update(updated);
+            }
+        }
+
+        private void RefreshCitizenDataContext()
+        {
+            var refreshedCitizen = _citizenRepository.GetById(_userId);
+            this.DataContext = refreshedCitizen;
+        }
+
+        private void CreateNeighborhoodAccessRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        {
+            MessageBox.Show("Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            var request = new NeighborhoodAccessRequest(
+                citizen,
+                neighborhood,
+                Status.Waiting,
+                DateTime.Now,
+                null
+            );
+
+            bool created = _neighborhoodAccessRequestRepository.Create(request);
+            if (created)
+            {
+                MessageBox.Show("Zahtev za pristup kvartu je uspešno kreiran.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Došlo je do greške pri kreiranju zahteva.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MyAccessRequestsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var wnd = new MyAccessRequestsWindow(_userId);
+            wnd.Owner = Window.GetWindow(this);
+            wnd.ShowDialog();
         }
     }
 }
