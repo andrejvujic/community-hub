@@ -143,7 +143,7 @@ namespace CommunityHub.Application.Database.Repositories
            )
            .AddParameter("building_manager_id", managerId);
 
-            Dictionary<long, Building> buildings = new Dictionary<long, Building>();
+            Dictionary<long, Building> buildings = new();
 
             query.ExecuteReader(reader => {
                 Building newBuilding = _buildingMapper.MapToEntity(reader);
