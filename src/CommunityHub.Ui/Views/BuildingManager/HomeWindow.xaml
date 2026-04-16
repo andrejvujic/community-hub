@@ -8,12 +8,13 @@
     Title="Building Manager"
     Margin="0,0,0,0"
     FontFamily="{StaticResource AppFontFamily}"
-    Loaded="HomeWindow_Loaded"
+    Loaded="Window_Loaded"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
 
     <Grid>
+
         <!--  Icons: https://fontawesome.com/search?ip=classic&ic=free-collection  -->
 
         <Grid.RowDefinitions>
@@ -77,7 +78,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="NavBar_HomeItem"
+                        x:Name="navBarHomeItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Home">
@@ -120,7 +121,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="NavBar_AssemblyItem"
+                        x:Name="navBarAssemblyItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Assembly">
@@ -163,7 +164,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="NavBar_MyBuildingsItem"
+                        x:Name="navBarMyBuildingsItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="NavBarItem_Click"
                         Tag="MyBuildings">
@@ -206,7 +207,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="NavBar_RegistrationItem"
+                        x:Name="navBarRegistrationItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Registration">
@@ -249,7 +250,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="NavBar_HelpItem"
+                        x:Name="navBarHelpItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Help">
@@ -288,7 +289,7 @@
                 </Border>
 
                 <Grid
-                    x:Name="NavBar_LogOutItem"
+                    x:Name="navBarLogOutItem"
                     Grid.Column="6"
                     Cursor="Hand"
                     MouseLeftButtonDown="NavBarItem_Click"

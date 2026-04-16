@@ -1,15 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.BuildingManager
@@ -17,26 +9,37 @@ namespace CommunityHub.Ui.Views.BuildingManager
     public partial class HomeWindow : Window
     {
         private readonly User _user;
-        private Grid? _selected = null;
-        private readonly UserRepository _userRepository = new UserRepository();
+        private Grid? _selectedNavBarItem = null;
         public HomeWindow(User user)
         {
             InitializeComponent();
             _user = user;
             HomeFrame.Navigate(new HomePage(user));
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e) => SetUserName();
+        private void SetUserName() => userNameTextBlock.Text = _user.Name;
         private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
         {
             var clicked = sender as Grid;
             if (clicked == null)
                 return;
 
-            if (!string.IsNullOrEmpty(clicked.Name) && clicked.Name.StartsWith("NavBar_"))
-            {
+            if (!string.IsNullOrEmpty(clicked.Name) && clicked.Name.StartsWith("navBar"))
                 SetNavBarItemBackground(clicked);
-            }
-
+            
             string? tag = clicked.Tag?.ToString();
+            NavigateTo(tag);
+        }
+        private void SetNavBarItemBackground(Grid item)
+        {
+            if (_selectedNavBarItem != null)
+                _selectedNavBarItem.ClearValue(BackgroundProperty);
+
+            _selectedNavBarItem = item;
+            _selectedNavBarItem.Background = Brushes.LightGray;
+        }
+        private void NavigateTo(string? tag)
+        {
             switch (tag)
             {
                 case "Home":
@@ -52,37 +55,23 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     HomeFrame.Navigate(new RegistrationPage(_user));
                     break;
                 case "Help":
+                    //TODO: Implementirati Help Page
                     break;
                 case "LogOut":
-                    LogOutMessageBox();
+                    HandleLogOut();
                     break;
             }
         }
-        private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
-        private void SetUserName()
+        private void HandleLogOut()
         {
-            if (_user == null)
-                return;
+            MessageBoxResult dialogResult = MessageBox.Show("Da li ste sigurni da želite da se odjavite?", "Pažnja", MessageBoxButton.YesNo);
 
-            userNameTextBlock.Text = $"{_user.Name}";
-        }
-        private void LogOutMessageBox()
-        {
-            MessageBoxResult result = MessageBox.Show("Da li ste sigurni da želite da se odjavite?", "Pažnja", MessageBoxButton.YesNo);
-
-            if (result == MessageBoxResult.Yes)
+            if (dialogResult == MessageBoxResult.Yes)
             {
                 LogInForm logInForm = new LogInForm();
                 logInForm.Show();
                 this.Close();
             }
         }
-        private void SetNavBarItemBackground(Grid item)
-        {
-            if (_selected != null)
-                _selected.ClearValue(BackgroundProperty);
-            _selected = item;
-            _selected.Background = Brushes.LightGray;
-        }    
     }
 }
