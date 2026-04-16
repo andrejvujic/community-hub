@@ -16,7 +16,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             _user = user;
             HomeFrame.Navigate(new HomePage(user));
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e) => SetUserName();
+        private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
         private void SetUserName() => userNameTextBlock.Text = _user.Name;
         private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
         {
