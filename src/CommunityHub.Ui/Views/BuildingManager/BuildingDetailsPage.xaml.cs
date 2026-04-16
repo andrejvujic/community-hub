@@ -25,7 +25,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             InitializeComponent();
             _building = building;
             _user = user;
-            BuildingFrame.Navigate(new GeneralInfoPage(_user, _building));
+            BuildingFrame.Navigate(new BuildingInfoPage(_user, _building));
         }
         private void SideBarItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -43,7 +43,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             switch (tag)
             {
                 case "Info":
-                    BuildingFrame.Navigate(new GeneralInfoPage(_user, _building));
+                    BuildingFrame.Navigate(new BuildingInfoPage(_user, _building));
                     break;
                 case "ApartmentAccessRequest":
                     BuildingFrame.Navigate(new ApartmentAccessRequestsPage(_user, _building));
