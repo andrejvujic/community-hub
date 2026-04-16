@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         xmlns:domain="clr-namespace:CommunityHub.Application.Domain;assembly=CommunityHub.Application"
-        Title="Moji zahtevi za pristup" Height="560" Width="720" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" WindowStyle="SingleBorderWindow">
+        Title="Moji zahtevi za pristup" Height="560" Width="720" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
+        Language="sr-Latn-RS">
 
     <Window.Resources>
         <conv:StatusToStringConverter x:Key="StatusToStringConverter" />
@@ -26,7 +27,7 @@
 
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Sortiraj po (Ctrl + 1):</TextBlock>
-                <RadioButton x:Name="NewestToggle" Content="Najnovije" IsChecked="True" GroupName="SortGroup" Width="96" Margin="0,0,6,0">
+                <RadioButton x:Name="NewestToggle" Content="Najnovije" IsChecked="True" GroupName="SortGroup" Width="96" Margin="0,0,6,0" Checked="NewestToggle_Checked">
                     <RadioButton.Style>
                         <Style TargetType="RadioButton">
                             <Setter Property="Template">
@@ -51,7 +52,7 @@
                     </RadioButton.Style>
                 </RadioButton>
 
-                <RadioButton x:Name="OldestToggle" Content="Najstarije" GroupName="SortGroup" Width="96">
+                <RadioButton x:Name="OldestToggle" Content="Najstarije" GroupName="SortGroup" Width="96" Checked="OldestToggle_Checked">
                     <RadioButton.Style>
                         <Style TargetType="RadioButton">
                             <Setter Property="Template">
@@ -79,7 +80,7 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Filtriraj po statusu (Ctrl + 2):</TextBlock>
-                <CheckBox x:Name="GroupByStatusToggle" VerticalAlignment="Center" IsChecked="False" Cursor="Hand">
+                <CheckBox x:Name="GroupByStatusToggle" VerticalAlignment="Center" IsChecked="False" Cursor="Hand" Checked="GroupByStatusToggle_Checked" Unchecked="GroupByStatusToggle_Unchecked">
                     <CheckBox.Style>
                         <Style TargetType="CheckBox">
                             <Setter Property="Template">
@@ -110,6 +111,17 @@
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                 </Style>
             </ListBox.ItemContainerStyle>
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Border Background="#F3F6FA" Padding="6" Margin="0,0,0,6" CornerRadius="4">
+                                <TextBlock Text="{Binding Name, Converter={StaticResource StatusToStringConverter}}" FontWeight="Bold" />
+                            </Border>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListBox.GroupStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,8" Background="White" HorizontalAlignment="Stretch" MinHeight="80">
