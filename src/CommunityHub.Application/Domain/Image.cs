@@ -17,7 +17,6 @@
             BuildingId = buildingId;
             NeighborhoodId = neighborhoodId;
         }
-
         public Image CopyWith(
             long? id = null,
             string? path = null,
