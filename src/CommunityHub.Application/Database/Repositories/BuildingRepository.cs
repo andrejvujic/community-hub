@@ -87,6 +87,7 @@ namespace CommunityHub.Application.Database.Repositories
 
             return buildings.Values.ToList();
         }
+
         public List<Building> GetByManagerId(long managerId)
         {
             var query = PostgresQuery.Create(
