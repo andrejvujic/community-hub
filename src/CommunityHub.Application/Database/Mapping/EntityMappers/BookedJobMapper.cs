@@ -3,30 +3,6 @@ using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
-    /// <summary>
-    /// Maps a single <see cref="BookedJob"/> row.
-    /// <para>
-    /// Expected column aliases in the query:
-    /// <list type="bullet">
-    ///   <item><description>
-    ///     All <see cref="JobListing"/> columns as documented in <see cref="JobListingMapper"/>.
-    ///   </description></item>
-    ///   <item><description>
-    ///     All <see cref="Neighborhood"/> columns as documented in <see cref="NeighborhoodMapper"/>.
-    ///   </description></item>
-    ///   <item><description>
-    ///     <c>booked_job_id</c>, <c>scheduled_date</c>, <c>scheduled_time</c>,
-    ///     <c>duration_hours</c>, <c>unit_price</c>, <c>is_substitution</c>.
-    ///   </description></item>
-    ///   <item><description>
-    ///     Optional LEFT JOIN for the substituting provider, with all user and city
-    ///     columns prefixed <c>sub_provider_</c>
-    ///     (e.g. <c>sub_provider_user_id</c>, <c>sub_provider_username</c>, …,
-    ///     <c>sub_provider_provider_city_id</c>, <c>sub_provider_provider_city_name</c>).
-    ///   </description></item>
-    /// </list>
-    /// </para>
-    /// </summary>
     public class BookedJobMapper : EntityMapper<BookedJob>
     {
         private readonly JobListingMapper _listingMapper = new JobListingMapper();
@@ -49,7 +25,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             int timeOrdinal = reader.GetOrdinal("scheduled_time");
             TimeOnly? scheduledTime = reader.IsDBNull(timeOrdinal)
                 ? null
-                : TimeOnly.FromTimeSpan(reader.GetDateTime(timeOrdinal).TimeOfDay);
+                : TimeOnly.FromTimeSpan((TimeSpan)reader.GetValue(timeOrdinal));
 
             int durationOrdinal = reader.GetOrdinal("duration_hours");
             int? durationHours = reader.IsDBNull(durationOrdinal)
@@ -59,8 +35,6 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             decimal unitPrice = reader.GetDecimal(reader.GetOrdinal("unit_price"));
             bool isSubstitution = reader.GetBoolean(reader.GetOrdinal("is_substitution"));
 
-            // The substituting provider's columns are prefixed "sub_provider_" in the query
-            // so they don't collide with the original provider's columns from the listing join.
             ServiceProvider? substitutingProvider = null;
             if (isSubstitution && reader.HasColumn("sub_provider_user_id"))
             {

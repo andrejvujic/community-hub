@@ -26,6 +26,8 @@ public class JobListingRepository
                 u.user_role,
                 pc.id AS provider_city_id,
                 pc.name AS provider_city_name,
+                co.id AS provider_country_id,
+                co.name AS provider_country_name,
                 pe.id AS price_entry_id,
                 pe.amount,
                 pe.valid_from,
@@ -36,6 +38,7 @@ public class JobListingRepository
             INNER JOIN users u ON u.id  = sp.id
             INNER JOIN cities lc ON lc.id = jl.city_id
             INNER JOIN cities pc ON pc.id = sp.city_id
+            INNER JOIN countries co ON co.id = sp.country_id
             LEFT  JOIN price_entries pe ON pe.job_listing_id = jl.id
             WHERE jl.provider_id = @provider_id
             ORDER BY jl.id, pe.valid_from"
