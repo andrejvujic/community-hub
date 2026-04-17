@@ -276,12 +276,7 @@ INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALU
 (7,  '2025-09-02', 7),
 (8,  '2025-09-03', 8),
 (9,  '2025-09-04', 9),
-(10, '2025-09-05', 10),
-(11, '2025-09-06', 11),
-(12, '2025-09-07', 12),
-(13, '2025-09-08', 13),
-(14, '2025-09-09', 14),
-(15, '2025-09-10', 15);
+(10, '2025-09-05', 10);
 
 INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
 (101, 'petar.simic',       'citizen', '123', 'Petar',   'Simić',       1,  1),

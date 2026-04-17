@@ -8,7 +8,6 @@
         public string? Comment { get; private set; }
         public Status Status { get; private set; }
         public DateTime CreationDate { get; private set; }
-
         public bool IsCancellable => Status == Status.Waiting;
         public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
 
@@ -28,7 +27,6 @@
             Status = status;
             CreationDate = creationDate;
         }
-
         public ApartmentAccessRequest CopyWith(
             long? id = null,
             User? applicant = null,

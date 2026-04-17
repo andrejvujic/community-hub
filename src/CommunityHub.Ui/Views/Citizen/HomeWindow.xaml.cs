@@ -113,35 +113,24 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void NavigateToTab(System.Windows.Controls.Border tab)
         {
-            string tag = tab.Tag?.ToString() ?? "";
+            string tag = tab.Tag?.ToString() ?? string.Empty;
 
-            switch (tag)
+            System.Windows.Controls.Page? page = tag switch
             {
-                case "Main Menu":
-                    MainFrame.Navigate(new MainMenuPage(_userId));
-                    break;
-                case "Neighborhoods":
-                    MainFrame.Navigate(new NeighborhoodsPage(_userId));
-                    break;
-                case "Events":
-                    MainFrame.Navigate(new EventsPage(_userId));
-                    break;
-                case "Trust Records":
-                    MainFrame.Navigate(new TrustRecordsPage(_userId));
-                    break;
-                case "Meetings":
-                    MainFrame.Navigate(new MeetingsPage(_userId));
-                    break;
-                case "Local Facilities":
-                    MainFrame.Navigate(new LocalFacilitiesPage(_userId));
-                    break;
-                case "Donations":
-                    MainFrame.Navigate(new DonationsPage(_userId));
-                    break;
-                default:
-                    MainFrame.Content = null; 
-                    break;
-            }
+                "Main Menu" => new MainMenuPage(_userId),
+                "Neighborhoods" => new NeighborhoodsPage(_userId),
+                "Events" => new EventsPage(_userId),
+                "Trust Records" => new TrustRecordsPage(_userId),
+                "Meetings" => new MeetingsPage(_userId),
+                "Local Facilities" => new LocalFacilitiesPage(_userId),
+                "Donations" => new DonationsPage(_userId),
+                _ => null,
+            };
+
+            if (page is null)
+                MainFrame.Content = null;
+            else
+                MainFrame.Navigate(page);
         }
     }
 }

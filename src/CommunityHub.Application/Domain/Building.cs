@@ -7,7 +7,6 @@
         public int? ApartmentCount { get; private set; }
         public User Manager {  get; private set; }
         public Address Address { get; private set; }
-
         public List<Image> Images { get; private set; } = new List<Image>();
         public bool HasImages { get => Images.Count > 0; }
         public Image? CoverImage { get => HasImages ? Images.First() : null; }
@@ -26,7 +25,6 @@
             Manager = manager;
             Address = address;
         }
-
         public Building CopyWith(
             long? id = null,
             int? floorCount = null,

@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      BorderBrush="Black" BorderThickness="2" RowHeight="30" ItemsSource="{Binding Neighborhoods}" IsReadOnly="True">
+                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Naziv kvarta" Binding="{Binding Name, Mode=OneWay}" Width="*"/>
                     <DataGridTextColumn Header="Grad" Binding="{Binding City.Name, Mode=OneWay}" Width="*"/>
@@ -63,16 +63,37 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                    <TextBlock x:Name="DetailsName" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
-                                    <TextBlock x:Name="DetailsLocation" FontSize="14" Foreground="#666" Margin="0,0,0,8" />
-                                    <TextBlock x:Name="DetailsDescription" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
+                                    <TextBlock Text="{Binding SelectedItem.Name, ElementName=NeighborhoodsGrid, TargetNullValue=''}" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+                                    <TextBlock FontSize="14" Foreground="#666" Margin="0,0,0,8">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}, {1}">
+                                                <Binding ElementName="NeighborhoodsGrid" Path="SelectedItem.City.Name" TargetNullValue="" />
+                                                <Binding ElementName="NeighborhoodsGrid" Path="SelectedItem.Country.Name" TargetNullValue="" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding SelectedItem.Description, ElementName=NeighborhoodsGrid, TargetNullValue=''}" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
 
                                     <TextBlock Text="Ulice:" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <ListBox x:Name="StreetsList" MinHeight="275" />
+                                    <ListBox ItemsSource="{Binding SelectedItem.StreetSections, ElementName=NeighborhoodsGrid}" MinHeight="275">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} {1}-{2}">
+                                                            <Binding Path="Street.Name" />
+                                                            <Binding Path="StartNumber" />
+                                                            <Binding Path="EndNumber" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1">
-                                    <ItemsControl x:Name="ImagesList">
+                                    <ItemsControl ItemsSource="{Binding SelectedItem.Images, ElementName=NeighborhoodsGrid}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Vertical" />
@@ -101,12 +122,34 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">
-                            Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)
-                        </TextBlock>
+                    <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="RequestAccessButton_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedItem.Membership, ElementName=NeighborhoodsGrid}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
-                    <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
+
+                    <Button Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedItem.Membership, ElementName=NeighborhoodsGrid}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
+                    </Button>
+                    <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="MyAccessRequestsButton_Click">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">
                             Moji zahtevi za pristup<LineBreak/>(Ctrl + 2)
                         </TextBlock>

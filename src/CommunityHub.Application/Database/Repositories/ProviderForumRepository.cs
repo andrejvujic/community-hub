@@ -23,11 +23,14 @@ public class ProviderForumRepository
                 u.surname,
                 u.user_role,
                 pc.id AS provider_city_id,
-                pc.name AS provider_city_name
+                pc.name AS provider_city_name,
+                co.id AS provider_country_id,
+                co.name AS provider_country_name
             FROM provider_forums pf
             INNER JOIN service_providers sp ON sp.id = pf.created_by_id
             INNER JOIN users u ON u.id  = sp.id
             INNER JOIN cities pc ON pc.id = sp.city_id
+            INNER JOIN countries co ON co.id = sp.country_id
             WHERE pf.is_closed = FALSE
                OR pf.created_by_id = @provider_id
             ORDER BY pf.created_at DESC"
@@ -70,11 +73,14 @@ public class ProviderForumRepository
                 u.surname,
                 u.user_role,
                 pc.id AS provider_city_id,
-                pc.name AS provider_city_name
+                pc.name AS provider_city_name,
+                co.id AS provider_country_id,
+                co.name AS provider_country_name
             FROM provider_forums pf
             INNER JOIN service_providers sp ON sp.id = pf.created_by_id
             INNER JOIN users u ON u.id = sp.id
             INNER JOIN cities pc ON pc.id = sp.city_id
+            INNER JOIN countries co ON co.id = sp.country_id
             WHERE (pf.is_closed = FALSE OR pf.created_by_id = @provider_id)
               AND (pf.title ILIKE '%' || @search || '%'
                 OR pf.description ILIKE '%' || @search || '%')
