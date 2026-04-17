@@ -9,7 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontFamily="{StaticResource AppFontFamily}"
-    Loaded="LoadApartmentMemberships"
+    Loaded="ApartmentMembershipPage_Loaded"
     mc:Ignorable="d">
 
     <Grid Margin="10,25,40,0">
@@ -32,7 +32,7 @@
                     Cursor="Hand"
                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                     FontSize="28"
-                    MouseLeftButtonDown="LeftArrow_MouseLeftButtonDown"
+                    MouseLeftButtonDown="LeftArrow_Click"
                     Text="&#xf060;" />
             </Grid>
 
