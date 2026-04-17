@@ -42,16 +42,18 @@
                     <StackPanel Margin="0,0,5,0">
                         <TextBlock Text="Država:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CountryComboBox" 
-                                  ToolTipService.ShowOnDisabled="True"
+                                  ItemsSource="{Binding Countries}"
                                   DisplayMemberPath="Name"
+                                  ToolTipService.ShowOnDisabled="True"
                                   Padding="5"
                                   SelectionChanged="CountryComboBox_SelectionChanged" />
                     </StackPanel>
                     <StackPanel Margin="5,0,0,0">
                         <TextBlock Text="Grad:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CityComboBox" 
-                                  ToolTipService.ShowOnDisabled="True"
+                                  ItemsSource="{Binding Cities}"
                                   DisplayMemberPath="Name"
+                                  ToolTipService.ShowOnDisabled="True"
                                   IsEnabled="False" 
                                   Padding="5"
                                   SelectionChanged="CityComboBox_SelectionChanged"/>
@@ -63,6 +65,7 @@
                 <StackPanel>
                     <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
                     <ComboBox x:Name="StreetComboBox" 
+                              ItemsSource="{Binding Streets}"
                               DisplayMemberPath="Name"
                               IsEnabled="False" 
                               Padding="5" 
@@ -104,6 +107,7 @@
 
             <GroupBox Grid.Row="4" Header="Dodate ulice" Margin="0,15,0,0" Padding="5" Height="150">
                 <ListBox x:Name="StreetSectionsListBox" 
+                         ItemsSource="{Binding AddedStreetSections}"
                          ScrollViewer.VerticalScrollBarVisibility="Auto" 
                          Height="110">
                     <ListBox.ItemTemplate>
@@ -115,14 +119,16 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Street.Name}" FontWeight="Bold" Width="200"/>
-                                    <TextBlock Text=" br. "/>
-                                    <TextBlock Text="{Binding StartNumber}"/>
-                                    <TextBlock Text=" - "/>
-                                    <TextBlock Text="{Binding EndNumber}"/>
-                                    <TextBlock Text=" ("/>
-                                    <TextBlock Text="{Binding Side, Converter={StaticResource ParityConverter}}"/>
-                                    <TextBlock Text=")"/>
+                                    <TextBlock Margin="5,0,0,0">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}, br. {1} - {2} ({3})">
+                                                <Binding Path="Street.Name" />
+                                                <Binding Path="StartNumber" />
+                                                <Binding Path="EndNumber" />
+                                                <Binding Path="Side" Converter="{StaticResource ParityConverter}" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                 </StackPanel>
                                 <Button Grid.Column="1" Content="Ukloni" Click="RemoveStreetSection_Click" Tag="{Binding}" />
                             </Grid>

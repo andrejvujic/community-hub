@@ -33,16 +33,16 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
         private readonly ImageRepository _imageRepository = new ImageRepository();
 
-        public ObservableCollection<Country> Countries { get; }
-        public ObservableCollection<City> Cities { get; }
-        public ObservableCollection<Street> Streets { get; }
-
-        public ObservableCollection<StreetSection> AddedStreetSections { get; }
-        public ObservableCollection<string> SelectedImagePaths { get; set; }
+        public ObservableCollection<Country> Countries { get; } = new ObservableCollection<Country>();
+        public ObservableCollection<City> Cities { get; } = new ObservableCollection<City>();
+        public ObservableCollection<Street> Streets { get; } = new ObservableCollection<Street>();
+        public ObservableCollection<StreetSection> AddedStreetSections { get; } = new ObservableCollection<StreetSection>();
+        public ObservableCollection<string> SelectedImagePaths { get; } = new ObservableCollection<string>();
 
         public RegisterNeighborhoodWindow(long coordinatorId)
         {
             InitializeComponent();
+            DataContext = this;
             _coordinatorId = coordinatorId;
             User? user = _userRepository.GetById(coordinatorId);
             if (user == null)
@@ -53,29 +53,17 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             }
             _user = user;
 
-            Countries = new ObservableCollection<Country>();
-            Cities = new ObservableCollection<City>();
-            Streets = new ObservableCollection<Street>();
-
-            AddedStreetSections = new ObservableCollection<StreetSection>();
-            SelectedImagePaths = new ObservableCollection<string>();
-
-            StreetSectionsListBox.ItemsSource = AddedStreetSections;
-            ImagesListBox.ItemsSource = SelectedImagePaths;
             LoadCountries();
         }
 
         private void LoadCountries()
         {
-            var countries = _countryRepository.GetAll();
             Countries.Clear();
-
+            var countries = _countryRepository.GetAll();
             foreach (var country in countries)
             {
                 Countries.Add(country);
             }
-
-            CountryComboBox.ItemsSource = Countries;
         }
 
         private void CountryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,20 +74,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadCities()
         {
             Cities.Clear();
-
-            var selectedCountry = CountryComboBox.SelectedItem as Country;
-            if (selectedCountry == null)
+            if (CountryComboBox.SelectedItem is Country selectedCountry)
             {
-                CityComboBox.ItemsSource = null;
-                CityComboBox.IsEnabled = false;
-                return;
+                var cities = _cityRepository.GetByCountryId(selectedCountry.Id);
+                foreach (var city in cities) Cities.Add(city);
             }
-
-            var cities = _cityRepository.GetByCountryId(selectedCountry.Id);
-            foreach (var city in cities)
-                Cities.Add(city);
-
-            CityComboBox.ItemsSource = Cities;
             CityComboBox.IsEnabled = Cities.Count > 0;
         }
 
@@ -111,22 +90,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadStreets()
         {
             Streets.Clear();
-
-            var selectedCity = CityComboBox.SelectedItem as City;
-            if (selectedCity == null)
+            if (CityComboBox.SelectedItem is City selectedCity)
             {
-                StreetComboBox.ItemsSource = null;
-                StreetComboBox.IsEnabled = false;
-                return;
+                var streets = _streetRepository.GetByCityId(selectedCity.Id);
+                foreach (var street in streets) Streets.Add(street);
             }
-
-            var streets = _streetRepository.GetByCityId(selectedCity.Id);
-            foreach (var street in streets)
-            {
-                Streets.Add(street);
-            }
-
-            StreetComboBox.ItemsSource = Streets;
             StreetComboBox.IsEnabled = Streets.Count > 0;
         }
 
@@ -142,7 +110,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             AddedStreetSections.Add(new StreetSection(start, end, side, street));
 
-            ClearStreetInputs();
+            StartNumberTextBox.Clear();
+            EndNumberTextBox.Clear();
             UpdateComboBoxState();
         }
 
@@ -163,12 +132,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             MessageBox.Show("Početni broj mora biti manji od krajnjeg.");
             return false;
-        }
-
-        private void ClearStreetInputs()
-        {
-            StartNumberTextBox.Clear();
-            EndNumberTextBox.Clear();
         }
 
         private void RemoveStreetSection_Click(object sender, RoutedEventArgs e)

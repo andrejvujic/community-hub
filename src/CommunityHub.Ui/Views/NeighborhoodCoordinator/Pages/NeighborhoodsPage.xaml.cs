@@ -43,8 +43,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadNeighborhoods()
         {
             Neighborhoods.Clear();
-            List<Neighborhood> neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
-
+            var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
             foreach (var n in neighborhoods)
             {
                 Neighborhoods.Add(n);
