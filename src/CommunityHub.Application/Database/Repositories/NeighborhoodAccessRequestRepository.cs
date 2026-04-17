@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories
 {
@@ -66,10 +67,30 @@ namespace CommunityHub.Application.Database.Repositories
             return requests;
         }
 
-        public List<NeighborhoodAccessRequest> GetByCitizenId(long citizenId)
+        private static string GetOrderByClause(RequestOrder order, bool filterByStatus)
+        {
+            if (filterByStatus)
+            {
+                return order switch
+                {
+                    RequestOrder.CreationDateAscending => "ORDER BY neighborhood_access_requests.status ASC, neighborhood_access_requests.creation_date ASC",
+                    RequestOrder.CreationDateDescending => "ORDER BY neighborhood_access_requests.status ASC, neighborhood_access_requests.creation_date DESC",
+                    _ => "ORDER BY neighborhood_access_requests.status ASC"
+                };
+            }
+
+            return order switch
+            {
+                RequestOrder.CreationDateAscending => "ORDER BY neighborhood_access_requests.creation_date ASC",
+                RequestOrder.CreationDateDescending => "ORDER BY neighborhood_access_requests.creation_date DESC",
+                _ => string.Empty
+            };
+        }
+
+        public List<NeighborhoodAccessRequest> GetByCitizenId(long citizenId, RequestOrder order = RequestOrder.Unspecified, bool filterByStatus = false)
         {
             var query = PostgresQuery.Create(
-                @"SELECT 
+                $@"SELECT 
                 neighborhood_access_requests.status, 
                 neighborhood_access_requests.creation_date, 
                 neighborhood_access_requests.comment,
@@ -120,8 +141,12 @@ namespace CommunityHub.Application.Database.Repositories
                 LEFT JOIN streets ON addresses.street_id = streets.id
                 LEFT JOIN neighborhood_memberships ON citizens.membership_id = neighborhood_memberships.id
 
-                WHERE neighborhood_access_requests.citizen_id = @citizenId"
-            ).AddParameter("citizenId", citizenId);
+                WHERE
+                    neighborhood_access_requests.citizen_id = @citizenId
+                {GetOrderByClause(order, filterByStatus)}"
+            )
+            .AddParameter("citizenId", citizenId)
+            ;
 
             List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
             query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));

@@ -50,45 +50,37 @@ namespace CommunityHub.Ui.Views.Citizen
         private void LoadRequests()
         {
             Requests.Clear();
-            var items = _neighborhoodAccessRequestRepository.GetByCitizenId(CitizenId);
+            var order = NewestToggle?.IsChecked == true ? RequestOrder.CreationDateDescending : RequestOrder.CreationDateAscending;
+            bool filterByStatus = GroupByStatusToggle?.IsChecked == true;
+            var items = _neighborhoodAccessRequestRepository.GetByCitizenId(CitizenId, order, filterByStatus);
             foreach (var r in items) Requests.Add(r);
-            ApplySort(RequestOrder.CreationDateDescending);
+            ApplyGrouping();
         }
 
         private void NewestToggle_Checked(object sender, RoutedEventArgs e)
         {
-            ApplySort(RequestOrder.CreationDateDescending);
+            LoadRequests();
         }
 
         private void OldestToggle_Checked(object sender, RoutedEventArgs e)
         {
-            ApplySort(RequestOrder.CreationDateAscending);
+            LoadRequests();
         }
 
         private void GroupByStatusToggle_Checked(object sender, RoutedEventArgs e)
         {
-            var order = NewestToggle?.IsChecked == true
-                ? RequestOrder.CreationDateDescending
-                : RequestOrder.CreationDateAscending;
-            ApplySort(order);
+            LoadRequests();
         }
 
         private void GroupByStatusToggle_Unchecked(object sender, RoutedEventArgs e)
         {
-            var order = NewestToggle?.IsChecked == true
-                ? RequestOrder.CreationDateDescending
-                : RequestOrder.CreationDateAscending;
-            ApplySort(order);
+            LoadRequests();
         }
 
-        private void ApplySort(RequestOrder order)
+        private void ApplyGrouping()
         {
             var view = CollectionViewSource.GetDefaultView(Requests);
             if (view == null) return;
-
-            view.SortDescriptions.Clear();
-            var direction = order == RequestOrder.CreationDateAscending ? ListSortDirection.Ascending : ListSortDirection.Descending;
-            view.SortDescriptions.Add(new SortDescription(nameof(NeighborhoodAccessRequest.CreationDate), direction));
 
             view.GroupDescriptions.Clear();
             if (GroupByStatusToggle?.IsChecked == true)
