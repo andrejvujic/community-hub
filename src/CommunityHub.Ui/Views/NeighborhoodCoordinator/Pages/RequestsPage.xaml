@@ -47,6 +47,7 @@
         </StackPanel>
 
         <DataGrid x:Name="RequestsDataGrid"
+                  ItemsSource="{Binding Requests}"
                   Grid.Row="1"
                   AutoGenerateColumns="False"
                   CanUserResizeColumns="False"
@@ -57,7 +58,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Ime" Binding="{Binding Citizen.Name}" CanUserSort="False" Width="*" />
                 <DataGridTextColumn Header="Prezime" Binding="{Binding Citizen.Surname}" CanUserSort="False" Width="*" />
-                <DataGridTextColumn Header="Adresa" Width="2*">
+                <DataGridTextColumn Header="Adresa" CanUserSort="False" Width="2*">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}, {2}">
                             <Binding Path="Citizen.Address.Street.Name" />
@@ -72,7 +73,7 @@
                                     Binding="{Binding CreationDate, StringFormat=\{0:dd.MM.yyyy.\}}"
                                     Width="150"
                                     CanUserSort="True"
-                                    SortMemberPath="Datum"/>
+                                    SortMemberPath="CreationDate"/>
 
                 <DataGridTemplateColumn Header="Status" CanUserSort="False" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
