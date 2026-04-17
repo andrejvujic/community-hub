@@ -26,6 +26,8 @@ namespace CommunityHub.Ui.Views.Citizen
             InitializeComponent();
             _userId = userId;
 
+            this.DataContext = _citizenRepository.GetById(_userId);
+
             UpdateSearchResults();
 
             NeighborhoodsGrid.SelectionChanged += NeighborhoodsGrid_SelectionChanged;
@@ -143,7 +145,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
             MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            RefreshCitizenDataContext();
+            this.DataContext = _citizenRepository.GetById(_userId);
         }
 
         private void AutoRejectPendingRequests(CommunityHub.Application.Domain.Citizen citizen, long approvedNeighborhoodId)
@@ -154,12 +156,6 @@ namespace CommunityHub.Ui.Views.Citizen
                 var updated = r.CopyWith(status: Status.Rejected, comment: "Automatski odbijen: građanin je pridružen drugom kvartu.");
                 _neighborhoodAccessRequestRepository.Update(updated);
             }
-        }
-
-        private void RefreshCitizenDataContext()
-        {
-            var refreshedCitizen = _citizenRepository.GetById(_userId);
-            this.DataContext = refreshedCitizen;
         }
 
         private void CreateNeighborhoodAccessRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
