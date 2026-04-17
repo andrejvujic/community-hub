@@ -313,6 +313,9 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (115, 10, 'rejected', '2026-03-24', 'Neusaglašeni podaci o prebivalištu.');
 
 SELECT setval(pg_get_serial_sequence('neighborhood_memberships', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhood_memberships;
+SELECT setval(pg_get_serial_sequence('neighborhoods', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhoods;
+SELECT setval(pg_get_serial_sequence('images', 'id'), coalesce(max(id), 0) + 1, false) FROM images;
+SELECT setval(pg_get_serial_sequence('street_sections', 'id'), coalesce(max(id), 0) + 1, false) FROM street_sections;
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),

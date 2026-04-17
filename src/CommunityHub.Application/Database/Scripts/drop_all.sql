@@ -35,4 +35,4 @@ DROP TYPE IF EXISTS statuses;
 DROP TYPE IF EXISTS roles;
 DROP TYPE IF EXISTS parity_types;
 DROP TYPE IF EXISTS billing_types;
-DROP TYPE IF EXISTS leave_request_types;
+DROP TYPE IF EXISTS leave_request_statuses;
