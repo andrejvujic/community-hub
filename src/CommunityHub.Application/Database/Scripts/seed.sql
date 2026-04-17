@@ -268,14 +268,14 @@ INSERT INTO apartment_access_requests (creation_date, status, comment, apartment
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (1,  '2025-08-20', 1),
-(2,  '2025-08-22', 2),
+(2,  '2025-08-22', 3),
 (3,  '2025-08-25', 3),
 (4,  '2025-08-28', 4),
-(5,  '2025-08-30', 5),
+(5,  '2025-08-30', 1),
 (6,  '2025-09-01', 6),
-(7,  '2025-09-02', 7),
+(7,  '2025-09-02', 2),
 (8,  '2025-09-03', 8),
-(9,  '2025-09-04', 9),
+(9,  '2025-09-04', 4),
 (10, '2025-09-05', 10);
 
 INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
@@ -306,9 +306,9 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (108, 3,  'waiting',  '2026-03-12', NULL),
 (109, 4,  'accepted', '2026-03-13', NULL),
 (110, 5,  'waiting',  '2026-03-14', NULL),
-(111, 6,  'accepted', '2026-03-20', NULL),
+(111, 6,  'waiting',  '2026-03-20', NULL),
 (112, 7,  'waiting',  '2026-03-21', NULL),
-(113, 8,  'accepted', '2026-03-22', NULL),
+(113, 8,  'rejected', '2026-03-22', 'Nepotpuna prijava'),
 (114, 9,  'rejected', '2026-03-23', 'Nepotpuna prijava.'),
 (115, 10, 'rejected', '2026-03-24', 'Neusaglašeni podaci o prebivalištu.');
 
