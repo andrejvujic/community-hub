@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -254,35 +255,45 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             string name = NameTextBox.Text.Trim();
             string description = DescriptionTextBox.Text.Trim();
-            var selectedCity = CityComboBox.SelectedItem as City;
-            var selectedCountry = CountryComboBox.SelectedItem as Country;
+            var city = CityComboBox.SelectedItem as City;
+            var country = CountryComboBox.SelectedItem as Country;
 
-            string validationErrors = ValidateInput(name, description, selectedCity, selectedCountry);
-
+            string validationErrors = ValidateInput(name, description, city, country);
             if (!string.IsNullOrEmpty(validationErrors))
             {
-                MessageBox.Show("Molimo popunite sledeće nedostatke:\n\n" + validationErrors, 
-                    "Validacija", MessageBoxButton.OK);
+                MessageBox.Show("Molimo popunite sledeće nedostatke:\n\n" + validationErrors, "Validacija", MessageBoxButton.OK);
                 return;
             }
-
-            Neighborhood neighborhood = new Neighborhood(name, description, 0, selectedCity, selectedCountry, _user);
-
-            Neighborhood savedNeighborhood = _neighborhoodRepository.Create(neighborhood);
             
-            foreach (var section in AddedStreetSections)
-            {
-                _streetSectionRepository.Create(section, savedNeighborhood.Id);
-            }
+            Neighborhood neighborhood = RegisterNeighborhood(name, description, city, country);
+            RegisterStreetSections(neighborhood.Id);
+            RegisterImages(neighborhood.Id);
             
-            foreach (string path in SelectedImagePaths)
-            {
-                var image = new CommunityHub.Application.Domain.Image(0, path, null, savedNeighborhood.Id);
-                _imageRepository.Create(image, savedNeighborhood.Id, null);
-            }
-
             MessageBox.Show($"Kvart '{name}' je uspešno registrovan!", "Uspeh");
             this.Close();
+        }
+
+        private Neighborhood RegisterNeighborhood(string name, string description, City city, Country country)
+        {
+            var neighborhood = new Neighborhood(name, description, 0, city, country, _user);
+            return _neighborhoodRepository.Create(neighborhood);
+        }
+
+        private void RegisterStreetSections(long neighborhoodId)
+        {
+            foreach (var streetSection in AddedStreetSections)
+            {
+                _streetSectionRepository.Create(streetSection, neighborhoodId);
+            }
+        }
+
+        private void RegisterImages(long neighborhoodId)
+        {
+            foreach (var imagePath in SelectedImagePaths)
+            {
+                var image = new CommunityHub.Application.Domain.Image(0, imagePath, null, neighborhoodId);
+                _imageRepository.Create(image, neighborhoodId, null);
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
