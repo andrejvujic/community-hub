@@ -1,8 +1,9 @@
 using System.Windows;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class SelectCountryWindow : Window
     {
@@ -19,7 +20,9 @@ namespace CommunityHub.Ui.Views.Citizen
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             var q = SearchTextBox.Text?.Trim();
-            var results = string.IsNullOrWhiteSpace(q) ? _countryRepository.GetAll() : _countryRepository.Search(new CommunityHub.Application.Helpers.Search.CountrySearchParameters(q));
+            var results = string.IsNullOrWhiteSpace(q)
+                ? _countryRepository.GetAll()
+                : _countryRepository.Search(new CountrySearchParameters(q));
             CountriesList.ItemsSource = results;
         }
 
@@ -27,13 +30,11 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             SelectedCountry = CountriesList.SelectedItem as Country;
             DialogResult = true;
-            Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
-            Close();
         }
     }
 }

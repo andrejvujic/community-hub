@@ -1,4 +1,4 @@
-<Window x:Class="CommunityHub.Ui.Views.Citizen.RequestNeighborhoodAccessWindow"
+<Window x:Class="CommunityHub.Ui.Views.Citizen.Neighborhoods.RequestNeighborhoodAccessWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Zahtev za pristup kvartu" Height="220" Width="520" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="SingleBorderWindow">

@@ -1,12 +1,11 @@
-﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Matching;
 using CommunityHub.Application.Helpers.Search;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class NeighborhoodsPage : Page
     {
@@ -18,56 +17,33 @@ namespace CommunityHub.Ui.Views.Citizen
         private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
 
         private NeighborhoodSearchParameters? _searchParameters;
-        public ObservableCollection<Neighborhood> Neighborhoods { get; } = new ObservableCollection<Neighborhood>();
-        private Neighborhood? _selectedNeighborhood;
 
         public NeighborhoodsPage(long userId)
         {
             InitializeComponent();
             _userId = userId;
 
-            UpdateSearchResults();
+            this.DataContext = _citizenRepository.GetById(_userId);
 
-            NeighborhoodsGrid.SelectionChanged += NeighborhoodsGrid_SelectionChanged;
+            UpdateSearchResults();
         }
 
         private void NeighborhoodsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedNeighborhood = NeighborhoodsGrid.SelectedItem as Neighborhood;
-            UpdateRightPanel();
-        }
-
-        private void UpdateRightPanel()
-        {
-            if (_selectedNeighborhood == null)
+            var selected = NeighborhoodsGrid.SelectedItem as Neighborhood;
+            if (selected != null)
             {
-                ShowPlaceholder();
-                return;
+                LoadStreetSections(selected);
             }
-            ShowDetails(_selectedNeighborhood);
         }
 
         private void LoadStreetSections(Neighborhood neighborhood)
         {
-            if (neighborhood == null || neighborhood.StreetSections.Any() || neighborhood.Id == 0) return;
+            if (neighborhood.StreetSections.Any() || neighborhood.Id == 0) return;
 
             var loaded = _streetSectionRepository.GetByNeighborhoodId(neighborhood.Id);
             neighborhood.StreetSections.Clear();
             foreach (var s in loaded) neighborhood.StreetSections.Add(s);
-        }
-
-        private void ShowPlaceholder()
-        {
-            PlaceholderPanel.Visibility = Visibility.Visible;
-            DetailsPanel.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowDetails(Neighborhood neighborhood)
-        {
-            PlaceholderPanel.Visibility = Visibility.Collapsed;
-            DetailsPanel.Visibility = Visibility.Visible;
-
-            LoadStreetSections(neighborhood);
         }
 
         private void UpdateSearchResults()
@@ -78,7 +54,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void SearchButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var window = new NeighborhoodSearchParametersWindow(_searchParameters);
+            var window = new SearchCriteriaWindow(_searchParameters);
             if (window.ShowDialog() == true)
             {
                 _searchParameters = window.Result;
@@ -88,43 +64,36 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void RequestAccessButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedNeighborhood == null)
+            var selected = NeighborhoodsGrid.SelectedItem as Neighborhood;
+            if (selected == null)
             {
                 MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            if (HasPendingRequest()) return;
-            if (!ShowConfirmDialog()) return;
+            if (_neighborhoodAccessRequestRepository.HasPendingRequest(_userId, selected.Id))
+            {
+                MessageBox.Show("Već postoji zahtev za pristup ovom kvartu.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var dlg = new RequestNeighborhoodAccessWindow(selected.Name ?? string.Empty);
+            dlg.Owner = Window.GetWindow(this);
+            if (!(dlg.ShowDialog() == true && dlg.Confirmed)) return;
 
             var citizen = _citizenRepository.GetById(_userId)!;
 
-            if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, _selectedNeighborhood.StreetSections))
+            if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, selected.StreetSections))
             {
-                CreateNeighborhoodMembership(citizen, _selectedNeighborhood);
+                CreateNeighborhoodMembership(citizen, selected);
             }
             else
             {
-                CreateNeighborhoodAccessRequest(citizen, _selectedNeighborhood);
+                CreateNeighborhoodAccessRequest(citizen, selected);
             }
         }
 
-        private bool HasPendingRequest()
-        {
-            if (_neighborhoodAccessRequestRepository.HasPendingRequest(_userId, _selectedNeighborhood!.Id))
-            {
-                MessageBox.Show("Već postoji zahtev za pristup ovom kvartu.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
-                return true;
-            }
-            return false;
-        }
 
-        private bool ShowConfirmDialog()
-        {
-            var dlg = new RequestNeighborhoodAccessWindow(_selectedNeighborhood!.Name ?? string.Empty);
-            dlg.Owner = Window.GetWindow(this);
-            return dlg.ShowDialog() == true && dlg.Confirmed;
-        }
 
         private void CreateNeighborhoodMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
         {
@@ -143,7 +112,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
             MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            RefreshCitizenDataContext();
+            this.DataContext = _citizenRepository.GetById(_userId);
         }
 
         private void AutoRejectPendingRequests(CommunityHub.Application.Domain.Citizen citizen, long approvedNeighborhoodId)
@@ -154,12 +123,6 @@ namespace CommunityHub.Ui.Views.Citizen
                 var updated = r.CopyWith(status: Status.Rejected, comment: "Automatski odbijen: građanin je pridružen drugom kvartu.");
                 _neighborhoodAccessRequestRepository.Update(updated);
             }
-        }
-
-        private void RefreshCitizenDataContext()
-        {
-            var refreshedCitizen = _citizenRepository.GetById(_userId);
-            this.DataContext = refreshedCitizen;
         }
 
         private void CreateNeighborhoodAccessRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)

@@ -1,12 +1,12 @@
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Donations
 {
-    public partial class EventsPage : Page
+    public partial class DonationsPage : Page
     {
         private readonly long _userId;
 
-        public EventsPage(long userId)
+        public DonationsPage(long userId)
         {
             InitializeComponent();
             _userId = userId;

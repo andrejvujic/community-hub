@@ -1,4 +1,4 @@
-<Window x:Class="CommunityHub.Ui.Views.Citizen.SelectCityWindow"
+<Window x:Class="CommunityHub.Ui.Views.Citizen.Neighborhoods.SelectCityWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Izaberite grad" Height="420" Width="360" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">

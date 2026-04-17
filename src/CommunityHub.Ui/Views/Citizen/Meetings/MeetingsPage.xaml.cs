@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Meetings
 {
     public partial class MeetingsPage : Page
     {

@@ -1,8 +1,9 @@
 using System.Windows;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class SelectCityWindow : Window
     {
@@ -13,16 +14,19 @@ namespace CommunityHub.Ui.Views.Citizen
         public SelectCityWindow(Country? selectedCountry = null)
         {
             InitializeComponent();
-            CitiesList.ItemsSource = selectedCountry == null ? _cityRepository.Search(new CommunityHub.Application.Helpers.Search.CitySearchParameters()) : _cityRepository.GetByCountryId(selectedCountry.Id);
             _selectedCountry = selectedCountry;
+            CitiesList.ItemsSource = _selectedCountry == null
+                ? _cityRepository.Search(new CitySearchParameters())
+                : _cityRepository.GetByCountryId(_selectedCountry.Id);
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             var q = SearchTextBox.Text?.Trim();
             var results = string.IsNullOrWhiteSpace(q)
-                ? (_selectedCountry == null ? _cityRepository.Search(new CommunityHub.Application.Helpers.Search.CitySearchParameters()) : _cityRepository.GetByCountryId(_selectedCountry.Id))
-                : _cityRepository.Search(new CommunityHub.Application.Helpers.Search.CitySearchParameters(_selectedCountry, q));
+                ? (_selectedCountry == null ? _cityRepository.Search(new CitySearchParameters()) : _cityRepository.GetByCountryId(_selectedCountry.Id))
+                : _cityRepository.Search(new CitySearchParameters(_selectedCountry, q));
+
             CitiesList.ItemsSource = results;
         }
 
@@ -30,13 +34,11 @@ namespace CommunityHub.Ui.Views.Citizen
         {
             SelectedCity = CitiesList.SelectedItem as City;
             DialogResult = true;
-            Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
-            Close();
         }
     }
 }
