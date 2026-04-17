@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Sorting;
-using System.Linq;
-using System.ComponentModel;
 using System.Windows.Data;
 
 namespace CommunityHub.Ui.Views.Citizen
@@ -19,8 +17,8 @@ namespace CommunityHub.Ui.Views.Citizen
         public MyAccessRequestsWindow(long citizenId)
         {
             CitizenId = citizenId;
-            DataContext = this;
             InitializeComponent();
+            DataContext = this;
             KeyDown += MyAccessRequestsWindow_KeyDown;
             Loaded += MyAccessRequestsWindow_Loaded;
         }
@@ -57,26 +55,6 @@ namespace CommunityHub.Ui.Views.Citizen
             ApplyGrouping();
         }
 
-        private void NewestToggle_Checked(object sender, RoutedEventArgs e)
-        {
-            LoadRequests();
-        }
-
-        private void OldestToggle_Checked(object sender, RoutedEventArgs e)
-        {
-            LoadRequests();
-        }
-
-        private void GroupByStatusToggle_Checked(object sender, RoutedEventArgs e)
-        {
-            LoadRequests();
-        }
-
-        private void GroupByStatusToggle_Unchecked(object sender, RoutedEventArgs e)
-        {
-            LoadRequests();
-        }
-
         private void ApplyGrouping()
         {
             var view = CollectionViewSource.GetDefaultView(Requests);
@@ -87,32 +65,36 @@ namespace CommunityHub.Ui.Views.Citizen
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(NeighborhoodAccessRequest.Status)));
         }
 
+        private void Toggle_Changed(object sender, RoutedEventArgs e)
+        {
+            LoadRequests();
+        }
+
         private void MyAccessRequestsWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control) return;
+
+            if (e.Key == Key.D1 || e.Key == Key.NumPad1)
             {
-                if (e.Key == Key.D1 || e.Key == Key.NumPad1)
+                if (NewestToggle is { } && OldestToggle is { })
                 {
-                    if (NewestToggle != null && OldestToggle != null)
-                    {
-                        if (NewestToggle.IsChecked == true)
-                            OldestToggle.IsChecked = true;
-                        else
-                            NewestToggle.IsChecked = true;
-                    }
-                    e.Handled = true;
-                    return;
+                    if (NewestToggle.IsChecked == true)
+                        OldestToggle.IsChecked = true;
+                    else
+                        NewestToggle.IsChecked = true;
                 }
 
-                if (e.Key == Key.D2 || e.Key == Key.NumPad2)
-                {
-                    if (GroupByStatusToggle != null)
-                    {
-                        GroupByStatusToggle.IsChecked = !(GroupByStatusToggle.IsChecked == true);
-                    }
-                    e.Handled = true;
-                    return;
-                }
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.D2 || e.Key == Key.NumPad2)
+            {
+                if (GroupByStatusToggle is { })
+                    GroupByStatusToggle.IsChecked = !(GroupByStatusToggle.IsChecked == true);
+
+                e.Handled = true;
+                return;
             }
         }
 

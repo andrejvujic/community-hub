@@ -27,7 +27,7 @@
 
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Sortiraj po (Ctrl + 1):</TextBlock>
-                <RadioButton x:Name="NewestToggle" Content="Najnovije" IsChecked="True" GroupName="SortGroup" Width="96" Margin="0,0,6,0" Checked="NewestToggle_Checked">
+                <RadioButton x:Name="NewestToggle" Content="Najnovije" IsChecked="True" GroupName="SortGroup" Width="96" Margin="0,0,6,0" Checked="Toggle_Changed">
                     <RadioButton.Style>
                         <Style TargetType="RadioButton">
                             <Setter Property="Template">
@@ -52,7 +52,7 @@
                     </RadioButton.Style>
                 </RadioButton>
 
-                <RadioButton x:Name="OldestToggle" Content="Najstarije" GroupName="SortGroup" Width="96" Checked="OldestToggle_Checked">
+                <RadioButton x:Name="OldestToggle" Content="Najstarije" GroupName="SortGroup" Width="96" Checked="Toggle_Changed">
                     <RadioButton.Style>
                         <Style TargetType="RadioButton">
                             <Setter Property="Template">
@@ -80,7 +80,7 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Filtriraj po statusu (Ctrl + 2):</TextBlock>
-                <CheckBox x:Name="GroupByStatusToggle" VerticalAlignment="Center" IsChecked="False" Cursor="Hand" Checked="GroupByStatusToggle_Checked" Unchecked="GroupByStatusToggle_Unchecked">
+                <CheckBox x:Name="GroupByStatusToggle" VerticalAlignment="Center" IsChecked="False" Cursor="Hand" Checked="Toggle_Changed" Unchecked="Toggle_Changed">
                     <CheckBox.Style>
                         <Style TargetType="CheckBox">
                             <Setter Property="Template">
