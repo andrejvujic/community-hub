@@ -1,8 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -24,143 +22,67 @@ namespace CommunityHub.Ui.Views.BuildingManager
             InitializeComponent();
             DataContext = this;
             SetStreetInfo();
-            LoadApartmentAccessRequests();
+            RefreshApartmentAccessRequests();
         }
 
-        public void LoadApartmentAccessRequests()
+        public void RefreshApartmentAccessRequests()
         {
             ApartmentAccessRequests.Clear();
             var requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id);
-            foreach (var request in requests)
-            {
-                ApartmentAccessRequests.Add(request);
-            }
 
-            borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.LightGray);
+            foreach (var request in requests)
+                ApartmentAccessRequests.Add(request);
+
+            changeStatusBorder.BorderBrush = new SolidColorBrush(Colors.LightGray);
         }
 
-        private void LeftArrow_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void LeftArrow_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var homeWindow = Window.GetWindow(this) as HomeWindow;
+
             if (homeWindow != null)
-            {
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_user));
-            }
         }
-        private void SetStreetInfo()
+        private void SetStreetInfo() => streetInfo.Text = $"{_building.Address.Street.Name} {_building.Address.StreetNumber}";
+        private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            streetInfo.Text = $"{_building.Address.Street.Name} {_building.Address.StreetNumber}";
-        }
-
-        private void StatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ComboBox statusFilter = (sender as ComboBox)!;
-            ComboBoxItem selectedItem = (statusFilter.SelectedItem as ComboBoxItem)!;
-
+            ApartmentAccessRequests.Clear();
+            ComboBoxItem selectedItem = (statusComboBox.SelectedItem as ComboBoxItem)!;
             string filter = selectedItem.Content.ToString()!;
 
-            ApartmentAccessRequests.Clear();
-
-            IEnumerable<ApartmentAccessRequest> requests = Enumerable.Empty<ApartmentAccessRequest>();
-
-            switch (filter)
+            Status? status = filter switch
             {
-                case "Svi":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id);
-                    break;
+                "Prihvaćen" => Status.Accepted,
+                "Čeka odobrenje" => Status.Waiting,
+                "Odbijen" => Status.Rejected,
+                _ => null
+            };
 
-                case "Prihvaćen":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: Status.Accepted);
-                    break;
-
-                case "Čeka odobrenje":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: Status.Waiting);
-                    break;
-
-                case "Odbijen":
-                    requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: Status.Rejected);
-                    break;
-            }
+            var requests = _apartmentAccessRequestRepository.GetByUserAndBuilding(_user.Id, _building.Id, status: status);
 
             foreach (var request in requests)
-            {
                 ApartmentAccessRequests.Add(request);
-            }
         }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RequestsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedRow = requestsDataGrid.SelectedItem;
 
             if (selectedRow != null)
             {
-                borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.Black);
-                gridChangeStatus.IsEnabled = true;
+                changeStatusBorder.BorderBrush = new SolidColorBrush(Colors.Black);
+                changeStatusGrid.IsEnabled = true;
+                commentTextBox.Text = string.Empty;
+                changeStatusComboBox.SelectedIndex = 0;
             }
         }
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void ChangeStatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var result = MessageBox.Show("Da li ste sigurni da želite otkazati promenu statusa zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (commentTextBox == null) return;
 
-            if (result == MessageBoxResult.Yes)
-            {
-                ResetAll();
-            }
-        }
+            var selectedItem = (changeStatusComboBox.SelectedItem as ComboBoxItem)!;
+            bool isRejected = selectedItem.Content.ToString() == "Odbijen";
 
-        private void ResetAll()
-        {
-            statusComboBox.SelectedIndex = 0;
-            commentTextBox.Text = string.Empty;
-            requestsDataGrid.UnselectAll();
-            gridChangeStatus.IsEnabled = false;
-            borderChangeStatus.BorderBrush = new SolidColorBrush(Colors.LightGray);
-        }
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (statusComboBox.SelectedIndex == 0)
-            {
-                MessageBox.Show("Molimo odaberite status zahteva.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            var result = MessageBox.Show("Da li ste sigurni da želite promeniti status zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                var selectedRequest = requestsDataGrid.SelectedItem as ApartmentAccessRequest;
-                if (selectedRequest != null)
-                {
-                    Status newStatus = statusComboBox.SelectedIndex == 1 ? Status.Accepted : Status.Rejected;
-                    string comment = commentTextBox.Text;
-                    int rowsAffected = _apartmentAccessRequestRepository.UpdateStatus(selectedRequest.Id, newStatus, comment);
-
-                    if (rowsAffected != 0)
-                    {
-                        LoadApartmentAccessRequests();
-                        MessageBox.Show("Status zahteva je uspešno promenjen.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
-                        ResetAll(); 
-                    }
-
-                    if(newStatus == Status.Accepted)
-                    {
-                        ApartmentMembership membership = new ApartmentMembership(
-                            resident: selectedRequest.Applicant,
-                            apartment: selectedRequest.Apartment,
-                            acceptanceDate: DateTime.Now
-                        );
-
-                        _apartmentMembershipRepository.Create(membership);
-                    }
-                }
-            }
-        }
-
-        private void statusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if(commentTextBox == null) return;
-            
-
-            if (statusComboBox.SelectedIndex == 2)
+            if (isRejected)
             {
                 commentTextBox.IsEnabled = true;
             }
@@ -169,6 +91,67 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 commentTextBox.IsEnabled = false;
                 commentTextBox.Text = string.Empty;
             }
+        }
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Da li ste sigurni da želite otkazati promenu statusa zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+                ResetSelectionAndForm();
+        }
+        private void ResetSelectionAndForm()
+        {
+            changeStatusComboBox.SelectedIndex = 0;
+            statusComboBox.SelectedIndex = 0;
+            commentTextBox.Text = string.Empty;
+            requestsDataGrid.UnselectAll();
+            changeStatusGrid.IsEnabled = false;
+            changeStatusBorder.BorderBrush = new SolidColorBrush(Colors.LightGray);
+        }
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (changeStatusComboBox.SelectedIndex == 0)
+            {
+                MessageBox.Show("Molimo odaberite status zahteva.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var result = MessageBox.Show("Da li ste sigurni da želite promeniti status zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No) return;
+
+            var request = requestsDataGrid.SelectedItem as ApartmentAccessRequest;
+            if (request == null) return;
+
+            Status newStatus = GetSelectedStatus();
+            bool successUpdate = UpdateRequestStatus(request, newStatus);
+
+            if (newStatus == Status.Accepted && successUpdate)
+                CreateApartmentMembership(request);
+        }
+
+        private Status GetSelectedStatus()
+        {
+            return changeStatusComboBox.SelectedIndex == 1 ? Status.Accepted : Status.Rejected;
+        }
+        private bool UpdateRequestStatus(ApartmentAccessRequest request, Status newStatus)
+        {
+            int rowsAffected = _apartmentAccessRequestRepository.UpdateStatus(request.Id, newStatus, commentTextBox.Text);
+            if (rowsAffected == 0) return false;
+
+            RefreshApartmentAccessRequests();
+            MessageBox.Show("Status zahteva je uspešno promenjen.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+            ResetSelectionAndForm();
+            return true;
+        }
+        private void CreateApartmentMembership(ApartmentAccessRequest request)
+        {
+            ApartmentMembership membership = new ApartmentMembership(
+                resident: request.Applicant,
+                apartment: request.Apartment,
+                acceptanceDate: DateTime.Now
+            );
+
+            _apartmentMembershipRepository.Create(membership);
         }
     }
 }

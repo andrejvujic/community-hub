@@ -6,13 +6,13 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
-    public partial class ApartmentMembershipPage : Page
+    public partial class ApartmentMembershipsPage : Page
     {
         private readonly Building _building;
         private readonly User _user;
         private readonly ApartmentMembershipRepository _apartmentMembershipRepository = new();
         public ObservableCollection<ApartmentMembership> ApartmentMemberships { get; set; } = new();
-        public ApartmentMembershipPage(User user, Building building)
+        public ApartmentMembershipsPage(User user, Building building)
         {
             InitializeComponent();
             _user = user;
@@ -20,7 +20,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             SetStreetInfo();
             DataContext = this;
         }
-        private void ApartmentMembershipPage_Loaded(object sender, RoutedEventArgs e)
+        private void ApartmentMembershipsPage_Loaded(object sender, RoutedEventArgs e)
         {
             ApartmentMemberships.Clear();
 

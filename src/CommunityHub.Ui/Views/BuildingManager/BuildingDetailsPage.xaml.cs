@@ -50,7 +50,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     BuildingFrame.Navigate(new ApartmentAccessRequestsPage(_user, _building));
                     break;
                 case "ApartmentMembership":
-                    BuildingFrame.Navigate(new ApartmentMembershipPage(_user, _building));
+                    BuildingFrame.Navigate(new ApartmentMembershipsPage(_user, _building));
                     break;
                 case "CommonRoom":
                     break;
