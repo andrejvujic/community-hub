@@ -37,7 +37,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_InfoItem"
+                        x:Name="sideBarInfoItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="Info">
@@ -80,7 +80,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_ApartmentAccessRequestItem"
+                        x:Name="sideBarApartmentAccessRequestItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="ApartmentAccessRequest">
@@ -123,7 +123,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_ApartmentMembershipItem"
+                        x:Name="sideBarApartmentMembershipItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="ApartmentMembership">
@@ -166,7 +166,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_CommonRoomItem"
+                        x:Name="sideBarCommonRoomItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="CommonRoom">
@@ -209,7 +209,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_RentingRoomItem"
+                        x:Name="sideBarRentingRoomItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="RentingRoom">
@@ -252,7 +252,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_NoticeBoardItem"
+                        x:Name="sideBarNoticeBoardItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="NoticeBoard">
@@ -295,7 +295,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_SchedulingAssemblyItem"
+                        x:Name="sideBarSchedulingAssemblyItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="SchedulingAssembly">
@@ -339,7 +339,7 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="SideBar_ProblemOverviewItem"
+                        x:Name="sideBarProblemOverviewItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
                         Tag="ProblemOverview">

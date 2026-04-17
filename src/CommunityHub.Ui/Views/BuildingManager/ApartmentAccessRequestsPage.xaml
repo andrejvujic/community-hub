@@ -38,7 +38,7 @@
                     Cursor="Hand"
                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                     FontSize="28"
-                    MouseLeftButtonDown="LeftArrow_MouseLeftButtonDown"
+                    MouseLeftButtonDown="LeftArrow_Click"
                     Text="&#xf060;" />
             </Grid>
 
@@ -54,13 +54,14 @@
 
         <Grid Grid.Row="1" Margin="0,0,40,0">
             <ComboBox
+                x:Name="statusComboBox"
                 Width="180"
                 HorizontalAlignment="Right"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Cursor="Hand"
                 FontSize="20"
-                SelectionChanged="StatusFilter_SelectionChanged">
+                SelectionChanged="StatusComboBox_SelectionChanged">
                 <ComboBoxItem Content="Svi" IsSelected="True" />
                 <ComboBoxItem Content="Čeka odobrenje" />
                 <ComboBoxItem Content="Prihvaćen" />
@@ -83,7 +84,7 @@
                 RowHeight="40"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SelectionChanged="DataGrid_SelectionChanged"
+                SelectionChanged="RequestsDataGrid_SelectionChanged"
                 SelectionMode="Single"
                 SelectionUnit="FullRow">
 
@@ -148,7 +149,7 @@
         </Grid>
 
         <Border
-            x:Name="borderChangeStatus"
+            x:Name="changeStatusBorder"
             Grid.Row="3"
             Height="220"
             Margin="50,20,40,20"
@@ -157,7 +158,7 @@
             BorderThickness="2"
             CornerRadius="4">
             <Grid
-                x:Name="gridChangeStatus"
+                x:Name="changeStatusGrid"
                 Margin="20,0,0,0"
                 IsEnabled="False">
                 <Grid.RowDefinitions>
@@ -185,11 +186,11 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center">
                         <ComboBox
-                            x:Name="statusComboBox"
+                            x:Name="changeStatusComboBox"
                             Width="200"
                             Cursor="Hand"
                             FontSize="19"
-                            SelectionChanged="statusComboBox_SelectionChanged">
+                            SelectionChanged="ChangeStatusComboBox_SelectionChanged">
                             <ComboBoxItem Content="Čeka odobrenje" IsSelected="True" />
                             <ComboBoxItem Content="Prihvaćen" />
                             <ComboBoxItem Content="Odbijen" />

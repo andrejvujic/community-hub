@@ -10,7 +10,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontFamily="{StaticResource AppFontFamily}"
-    Loaded="Page_Loaded"
+    Loaded="RegistrationPage_Loaded"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -99,7 +99,7 @@
 
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="400" />
+                                    <ColumnDefinition Width="450" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
@@ -123,14 +123,14 @@
 
                             <Grid Grid.Row="1" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="400" />
+                                    <ColumnDefinition Width="450" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Grid.Column="0">
                                     <ComboBox
                                         x:Name="countryComboBox"
-                                        Width="250"
+                                        Width="320"
                                         HorizontalAlignment="Left"
                                         DisplayMemberPath="Name"
                                         IsEnabled="True"
@@ -141,7 +141,7 @@
                                 <Grid Grid.Column="1">
                                     <ComboBox
                                         x:Name="cityComboBox"
-                                        Width="250"
+                                        Width="300"
                                         HorizontalAlignment="Left"
                                         DisplayMemberPath="Name"
                                         IsEnabled="False"
@@ -152,7 +152,7 @@
 
                             <Grid Grid.Row="2" Margin="0,20,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="400" />
+                                    <ColumnDefinition Width="450" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
@@ -176,13 +176,13 @@
 
                             <Grid Grid.Row="3" Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="400" />
+                                    <ColumnDefinition Width="450" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Grid.Column="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="280" />
+                                        <ColumnDefinition Width="320" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
@@ -190,7 +190,7 @@
 
                                         <ComboBox
                                             x:Name="streetComboBox"
-                                            Width="250"
+                                            Width="320"
                                             HorizontalAlignment="Left"
                                             HorizontalContentAlignment="Left"
                                             VerticalContentAlignment="Center"
@@ -203,7 +203,9 @@
                                         <TextBox
                                             x:Name="streetNumberTextBox"
                                             Width="60"
+                                            Margin="20,0,0,0"
                                             VerticalContentAlignment="Center"
+                                            IsEnabled="False"
                                             TextAlignment="Center" />
                                     </Grid>
                                 </Grid>
@@ -234,7 +236,7 @@
 
                                 <Grid Grid.Column="1" HorizontalAlignment="Left">
                                     <xctk:IntegerUpDown
-                                        x:Name="stepperFloorsUpDown"
+                                        x:Name="floorsUpDown"
                                         Width="70"
                                         Increment="1"
                                         Maximum="20"
@@ -368,8 +370,8 @@
                                         x:Name="cancelButton"
                                         Width="100"
                                         Margin="0,0,15,0"
-                                        Cursor="Hand"
-                                        Click="cancelButton_Click">
+                                        Click="CancelButton_Click"
+                                        Cursor="Hand">
                                         Otkaži
                                     </Button>
                                     <Button
