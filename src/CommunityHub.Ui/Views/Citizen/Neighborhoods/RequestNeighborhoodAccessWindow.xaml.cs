@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class RequestNeighborhoodAccessWindow : Window
     {

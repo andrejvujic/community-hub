@@ -2,7 +2,7 @@ using System.Windows;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class SearchCriteriaWindow : Window
     {

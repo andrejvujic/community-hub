@@ -1,12 +1,12 @@
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.TrustRecords
 {
-    public partial class LocalFacilitiesPage : Page
+    public partial class TrustRecordsPage : Page
     {
         private readonly long _userId;
 
-        public LocalFacilitiesPage(long userId)
+        public TrustRecordsPage(long userId)
         {
             InitializeComponent();
             _userId = userId;

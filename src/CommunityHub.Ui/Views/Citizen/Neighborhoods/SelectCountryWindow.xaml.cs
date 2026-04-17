@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class SelectCountryWindow : Window
     {

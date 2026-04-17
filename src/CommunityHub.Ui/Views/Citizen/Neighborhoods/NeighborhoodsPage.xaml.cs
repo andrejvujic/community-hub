@@ -1,11 +1,11 @@
-﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Matching;
 using CommunityHub.Application.Helpers.Search;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class NeighborhoodsPage : Page
     {

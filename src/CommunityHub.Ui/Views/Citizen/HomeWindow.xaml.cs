@@ -3,6 +3,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Ui.Views.Citizen.Neighborhoods;
+using CommunityHub.Ui.Views.Citizen.Donations;
+using CommunityHub.Ui.Views.Citizen.TrustRecords;
+using CommunityHub.Ui.Views.Citizen.Meetings;
+using CommunityHub.Ui.Views.Citizen.LocalFacilities;
+using CommunityHub.Ui.Views.Citizen.Events;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
@@ -10,7 +16,7 @@ namespace CommunityHub.Ui.Views.Citizen
     {
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly long _userId;
-        private Border _selectedTab;
+        private Border? _selectedTab;
         private readonly SolidColorBrush _activeTabColor;
 
         public HomeWindow(long userId)

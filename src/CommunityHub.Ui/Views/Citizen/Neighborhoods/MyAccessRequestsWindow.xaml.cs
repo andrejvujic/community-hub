@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using CommunityHub.Application.Database.Repositories;
@@ -6,7 +6,7 @@ using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Sorting;
 using System.Windows.Data;
 
-namespace CommunityHub.Ui.Views.Citizen
+namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class MyAccessRequestsWindow : Window
     {
