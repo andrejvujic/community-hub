@@ -10,7 +10,7 @@
       Title="Kvartovi">
 
     <Page.Resources>
-        <converters:MembershipToVisibilityConverter x:Key="MembershipToVisibility" />
+        <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
     </Page.Resources>
 
     <Grid Margin="30,15,30,25">
@@ -36,7 +36,7 @@
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True">
+                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True" SelectionChanged="NeighborhoodsGrid_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Naziv kvarta" Binding="{Binding Name, Mode=OneWay}" Width="*"/>
                     <DataGridTextColumn Header="Grad" Binding="{Binding City.Name, Mode=OneWay}" Width="*"/>
@@ -52,7 +52,8 @@
 
                 <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
                     <Grid>
-                        <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center">
+                        <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center"
+                                    Visibility="{Binding SelectedItem, ElementName=NeighborhoodsGrid, Converter={StaticResource NullToVisibility}}">
                             <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
                                 Pritisnite Ctrl+S da pretražite kvartove. Izaberite željeni kvart klikom miša ili koristeći strelice gore/dole.
 
@@ -60,7 +61,8 @@
                             </TextBlock>
                         </StackPanel>
 
-                        <StackPanel x:Name="DetailsPanel" Visibility="Collapsed">
+                        <StackPanel x:Name="DetailsPanel"
+                                    Visibility="{Binding SelectedItem, ElementName=NeighborhoodsGrid, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -128,12 +130,12 @@
                     </Grid.ColumnDefinitions>
 
                     <Button x:Name="RequestAccessButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="RequestAccessButton_Click"
-                            Visibility="{Binding Membership, Converter={StaticResource MembershipToVisibility}, ConverterParameter=Inverse}">
+                            Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
 
                     <Button x:Name="CoordinatorButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2"
-                            Visibility="{Binding Membership, Converter={StaticResource MembershipToVisibility}}">
+                            Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
                     <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="MyAccessRequestsButton_Click">
