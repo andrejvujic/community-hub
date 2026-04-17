@@ -23,7 +23,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     {     
         private readonly long _coordinatorId;
         private readonly User _user;
-        private City _selectedCity;
 
         private readonly UserRepository _userRepository = new UserRepository();
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
@@ -105,34 +104,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void CityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var newCity = CityComboBox.SelectedItem as City;
-
-            if (AddedStreetSections.Count > 0 && newCity != _selectedCity)
-            {
-                var result = MessageBox.Show(
-                    "Promenom grada obrisaćete sve trenutno dodate ulice sa spiska. Da li ste sigurni da želite da promenite grad?",
-                    "Potvrda promene lokacije",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    AddedStreetSections.Clear();
-                    _selectedCity = newCity;
-                    LoadStreets();
-                }
-                else
-                {
-                    CityComboBox.SelectionChanged -= CityComboBox_SelectionChanged;
-                    CityComboBox.SelectedItem = _selectedCity;
-                    CityComboBox.SelectionChanged += CityComboBox_SelectionChanged;
-                }
-            }
-            else
-            {
-                _selectedCity = newCity;
-                LoadStreets();
-            }
+            LoadStreets();
         }
 
         private void LoadStreets()
@@ -160,27 +132,40 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void AddStreetSection_Click(object sender, RoutedEventArgs e)
         {
             if (!(StreetComboBox.SelectedItem is Street street)) return;
-            
-            var selectedCity = CityComboBox.SelectedItem as City;
 
-            if (!int.TryParse(StartNumberTextBox.Text, out int start) || !int.TryParse(EndNumberTextBox.Text, out int end))
-            {
-                MessageBox.Show("Unesite ispravne brojeve.");
-                return;
-            }
+            if (!TryParseNumbers(out int start, out int end)) return;
 
-            if (start >= end)
-            {
-                MessageBox.Show("Početni broj mora biti manji od krajnjeg.");
-                return;
-            }
+            if (!IsRangeValid(start, end)) return;
 
-            ParityType? side = (SideComboBox.SelectedItem as ComboBoxItem)?.Tag as ParityType?;
+            ParityType side = (SideComboBox.SelectedItem as ComboBoxItem)?.Tag as ParityType? ?? ParityType.Both;
 
-            var section = new StreetSection(start, end, side ?? ParityType.Both, street);
+            AddedStreetSections.Add(new StreetSection(start, end, side, street));
 
-            AddedStreetSections.Add(section);
+            ClearStreetInputs();
+            UpdateComboBoxState();
+        }
 
+        private bool TryParseNumbers(out int start, out int end)
+        {
+            bool isStartValid = int.TryParse(StartNumberTextBox.Text, out start);
+            bool isEndValid = int.TryParse(EndNumberTextBox.Text, out end);
+
+            if (isStartValid && isEndValid) return true;
+
+            MessageBox.Show("Unesite ispravne brojeve.");
+            return false;
+        }
+
+        private bool IsRangeValid(int start, int end)
+        {
+            if (start < end) return true;
+
+            MessageBox.Show("Početni broj mora biti manji od krajnjeg.");
+            return false;
+        }
+
+        private void ClearStreetInputs()
+        {
             StartNumberTextBox.Clear();
             EndNumberTextBox.Clear();
         }
@@ -193,6 +178,24 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (sectionToRemove != null)
             {
                 AddedStreetSections.Remove(sectionToRemove);
+            }
+
+            UpdateComboBoxState();
+        }
+
+        private void UpdateComboBoxState()
+        {
+            bool hasStreets = AddedStreetSections.Count > 0;
+            CountryComboBox.IsEnabled = !hasStreets;
+            CityComboBox.IsEnabled = !hasStreets;
+            if (hasStreets)
+            {
+                CountryComboBox.ToolTip = "Ne možete menjati lokaciju dok ne obrišete sve dodate ulice.";
+                CityComboBox.ToolTip = "Ne možete menjati lokaciju dok ne obrišete sve dodate ulice.";
+            }
+            else
+            {
+                CountryComboBox.ToolTip = null;
             }
         }
 

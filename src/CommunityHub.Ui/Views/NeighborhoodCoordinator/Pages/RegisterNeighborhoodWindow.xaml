@@ -42,6 +42,7 @@
                     <StackPanel Margin="0,0,5,0">
                         <TextBlock Text="Država:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CountryComboBox" 
+                                  ToolTipService.ShowOnDisabled="True"
                                   DisplayMemberPath="Name"
                                   Padding="5"
                                   SelectionChanged="CountryComboBox_SelectionChanged" />
@@ -49,6 +50,7 @@
                     <StackPanel Margin="5,0,0,0">
                         <TextBlock Text="Grad:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CityComboBox" 
+                                  ToolTipService.ShowOnDisabled="True"
                                   DisplayMemberPath="Name"
                                   IsEnabled="False" 
                                   Padding="5"
@@ -75,11 +77,11 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                            <TextBlock Text="Od:" Margin="0,0,0,3"/>
+                            <TextBlock Text="Od broja:" Margin="0,0,0,3"/>
                             <TextBox x:Name="StartNumberTextBox" Padding="5"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="5,0,5,0">
-                            <TextBlock Text="Do:" Margin="0,0,0,3"/>
+                            <TextBlock Text="Do broja:" Margin="0,0,0,3"/>
                             <TextBox x:Name="EndNumberTextBox" Padding="5"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Margin="5,0,5,0">
