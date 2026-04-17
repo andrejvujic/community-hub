@@ -47,7 +47,27 @@
                          BorderThickness="0"
                          Background="Transparent"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         SelectionChanged="NeighborhoodsListBox_SelectionChanged">
+                         SelectionChanged="NeighborhoodsListBox_SelectionChanged"
+                         Cursor="Hand">
+                    <ListBox.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border BorderBrush="#DDD"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Background="White"
+                                                Padding="10">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.Resources>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Padding="10" Margin="3">
