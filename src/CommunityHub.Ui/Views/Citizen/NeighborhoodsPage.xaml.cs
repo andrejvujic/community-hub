@@ -54,7 +54,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void SearchButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var window = new NeighborhoodSearchParametersWindow(_searchParameters);
+            var window = new SearchCriteriaWindow(_searchParameters);
             if (window.ShowDialog() == true)
             {
                 _searchParameters = window.Result;
