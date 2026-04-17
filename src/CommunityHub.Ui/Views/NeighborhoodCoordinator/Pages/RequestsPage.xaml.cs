@@ -24,7 +24,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
         private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
+        
         public ObservableCollection<NeighborhoodAccessRequest> Requests { get; set; } = new ObservableCollection<NeighborhoodAccessRequest>();
+
         public RequestsPage()
         {
             InitializeComponent();

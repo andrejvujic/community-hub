@@ -270,6 +270,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             RegisterImages(neighborhood.Id);
             
             MessageBox.Show($"Kvart '{name}' je uspešno registrovan!", "Uspeh");
+            this.DialogResult = true;
             this.Close();
         }
 
