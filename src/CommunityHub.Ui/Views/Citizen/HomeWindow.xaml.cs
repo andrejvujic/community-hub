@@ -1,20 +1,16 @@
-using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
-    /// <summary>
-    /// Interaction logic for HomeWindow.xaml
-    /// </summary>
     public partial class HomeWindow : Window
     {
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly long _userId;
-        private System.Windows.Controls.Border _selectedTab;
+        private Border _selectedTab;
         private readonly SolidColorBrush _activeTabColor;
 
         public HomeWindow(long userId)
@@ -22,8 +18,7 @@ namespace CommunityHub.Ui.Views.Citizen
             InitializeComponent();
             _userId = userId;
 
-            var converter = new BrushConverter();
-            _activeTabColor = (SolidColorBrush)converter.ConvertFromString("#99C2FF")!;
+            _activeTabColor = (SolidColorBrush)FindResource("ActiveTabBrush");
 
             Loaded += HomeWindow_Loaded;
             KeyDown += Window_KeyDown;
@@ -74,13 +69,13 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void Tab_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is System.Windows.Controls.Border clickedTab)
+            if (sender is Border clickedTab)
             {
                 ActivateTab(clickedTab);
             }
         }
 
-        private void ActivateTab(System.Windows.Controls.Border newTab)
+        private void ActivateTab(Border newTab)
         {
             if (newTab == null || _selectedTab == newTab) 
                 return;
@@ -90,7 +85,7 @@ namespace CommunityHub.Ui.Views.Citizen
             NavigateToTab(newTab);
         }
 
-        private void ChangeTabColorAndSelection(System.Windows.Controls.Border newTab)
+        private void ChangeTabColorAndSelection(Border newTab)
         {
             if (_selectedTab != null)
             {
@@ -101,7 +96,7 @@ namespace CommunityHub.Ui.Views.Citizen
             _selectedTab.Background = _activeTabColor;
         }
 
-        private void UpdateStatusBarForTab(System.Windows.Controls.Border tab)
+        private void UpdateStatusBarForTab(Border tab)
         {
             string displayName = tab.Uid ?? tab.Tag?.ToString() ?? "";
 
@@ -111,11 +106,11 @@ namespace CommunityHub.Ui.Views.Citizen
             }
         }
 
-        private void NavigateToTab(System.Windows.Controls.Border tab)
+        private void NavigateToTab(Border tab)
         {
             string tag = tab.Tag?.ToString() ?? string.Empty;
 
-            System.Windows.Controls.Page? page = tag switch
+            Page? page = tag switch
             {
                 "Main Menu" => new MainMenuPage(_userId),
                 "Neighborhoods" => new NeighborhoodsPage(_userId),
