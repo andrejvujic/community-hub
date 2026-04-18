@@ -232,56 +232,49 @@ INSERT INTO apartments (apartment_number, floor_number, building_id) VALUES
 (801,8,15),(802,8,15),(803,8,15),(804,8,15),(805,8,15),(806,8,15),
 (901,9,15),(902,9,15),(903,9,15),(904,9,15),(905,9,15),(906,9,15);
 
-INSERT INTO apartment_memberships (acceptance_date, apartment_id, building_resident_id) VALUES
-('2025-09-01', 1,  6),
-('2025-09-03', 2,  7),
-('2025-09-05', 3,  8),
-('2025-09-10', 4,  9),
-('2025-09-12', 5,  10),
-('2025-09-15', 6,  16),
-('2025-09-16', 7,  17),
-('2025-09-17', 8,  18),
-('2025-09-18', 9,  19),
-('2025-09-19', 10, 20),
-('2025-09-20', 11, 6),
-('2025-09-21', 12, 7),
-('2025-09-22', 13, 8),
-('2025-09-23', 14, 9),
-('2025-09-24', 15, 10);
-
 INSERT INTO apartment_access_requests (creation_date, status, comment, apartment_id, applicant_id) VALUES
-('2026-02-03', 'waiting',  NULL, 2, 6),
-('2026-02-05', 'accepted', NULL, 3, 7),
-('2026-02-08', 'rejected', 'Priložena dokumentacija nije bila potpuna.', 4, 8),
-('2026-02-11', 'waiting',  NULL, 5, 9),
-('2026-02-14', 'accepted', NULL, 1, 10),
-('2026-02-15', 'waiting',  NULL, 6, 16),
-('2026-02-16', 'accepted', NULL, 7, 17),
-('2026-02-17', 'waiting',  NULL, 8, 18),
-('2026-02-18', 'accepted', NULL, 9, 19),
-('2026-02-19', 'waiting',  NULL, 10, 20),
-('2026-02-20', 'accepted', NULL, 11, 6),
-('2026-02-21', 'waiting',  NULL, 12, 7),
-('2026-02-22', 'accepted', NULL, 13, 8),
-('2026-02-23', 'rejected', 'Nepotpuna dokumentacija.', 14, 9),
-('2026-02-24', 'rejected', 'Pogrešna adresa.', 15, 10);
+('2026-03-01', 'accepted', NULL,                                  16,  6),
+('2026-03-02', 'waiting',  NULL,                                  17,  7),
+('2026-03-03', 'rejected', 'Dokumentacija nije kompletna.',       18,  8),
+('2026-03-04', 'accepted', NULL,                                  19,  9),
+('2026-03-05', 'waiting',  NULL,                                  20,  10),
+('2026-03-06', 'rejected', 'Podnosilac ne ispunjava uslove.',     21,  16),
+('2026-03-07', 'accepted', NULL,                                  22,  17),
+('2026-03-08', 'waiting',  NULL,                                  23,  18),
+('2026-03-09', 'accepted', NULL,                                  125, 19),
+('2026-03-10', 'waiting',  NULL,                                  126, 20),
+('2026-03-11', 'rejected', 'Neusaglašeni podaci.',               127,  6),
+('2026-03-12', 'accepted', NULL,                                  128,  7),
+('2026-03-13', 'waiting',  NULL,                                  129,  8),
+('2026-03-14', 'accepted', NULL,                                  210,  9),
+('2026-03-15', 'waiting',  NULL,                                  211,  10),
+('2026-03-16', 'rejected', 'Stan već ima aktivnog stanara.',      212,  16),
+('2026-03-17', 'accepted', NULL,                                  213,  17),
+('2026-03-18', 'waiting',  NULL,                                  214,  18),
+('2026-03-19', 'accepted', NULL,                                  215,  19),
+('2026-03-20', 'rejected', 'Zahtev nije potpisan.',               216,  20);
+
+INSERT INTO apartment_memberships (acceptance_date, apartment_id, building_resident_id) VALUES
+('2026-03-01', 16,  6),
+('2026-03-04', 19,  9),
+('2026-03-07', 22,  17),
+('2026-03-09', 125, 19),
+('2026-03-12', 128, 7),
+('2026-03-14', 210, 9),
+('2026-03-17', 213, 17),
+('2026-03-19', 215, 19);
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (1,  '2025-08-20', 1),
-(2,  '2025-08-22', 2),
+(2,  '2025-08-22', 3),
 (3,  '2025-08-25', 3),
 (4,  '2025-08-28', 4),
-(5,  '2025-08-30', 5),
+(5,  '2025-08-30', 1),
 (6,  '2025-09-01', 6),
-(7,  '2025-09-02', 7),
+(7,  '2025-09-02', 2),
 (8,  '2025-09-03', 8),
-(9,  '2025-09-04', 9),
-(10, '2025-09-05', 10),
-(11, '2025-09-06', 11),
-(12, '2025-09-07', 12),
-(13, '2025-09-08', 13),
-(14, '2025-09-09', 14),
-(15, '2025-09-10', 15);
+(9,  '2025-09-04', 4),
+(10, '2025-09-05', 10);
 
 INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
 (101, 'petar.simic',       'citizen', '123', 'Petar',   'Simić',       1,  1),
@@ -311,13 +304,16 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (108, 3,  'waiting',  '2026-03-12', NULL),
 (109, 4,  'accepted', '2026-03-13', NULL),
 (110, 5,  'waiting',  '2026-03-14', NULL),
-(111, 6,  'accepted', '2026-03-20', NULL),
+(111, 6,  'waiting',  '2026-03-20', NULL),
 (112, 7,  'waiting',  '2026-03-21', NULL),
-(113, 8,  'accepted', '2026-03-22', NULL),
+(113, 8,  'rejected', '2026-03-22', 'Nepotpuna prijava'),
 (114, 9,  'rejected', '2026-03-23', 'Nepotpuna prijava.'),
 (115, 10, 'rejected', '2026-03-24', 'Neusaglašeni podaci o prebivalištu.');
 
 SELECT setval(pg_get_serial_sequence('neighborhood_memberships', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhood_memberships;
+SELECT setval(pg_get_serial_sequence('neighborhoods', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhoods;
+SELECT setval(pg_get_serial_sequence('images', 'id'), coalesce(max(id), 0) + 1, false) FROM images;
+SELECT setval(pg_get_serial_sequence('street_sections', 'id'), coalesce(max(id), 0) + 1, false) FROM street_sections;
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),

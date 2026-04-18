@@ -8,6 +8,10 @@
         Language="sr-Latn-RS"
         Title="Citizen" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <SolidColorBrush x:Key="ActiveTabBrush" Color="#99C2FF" />
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,7 +21,7 @@
 
         <Border Grid.Row="0" Margin="10,10,10,0">
             <UniformGrid Columns="7" Height="80">
-                <Border x:Name="TabMainMenu" Tag="Main Menu" Uid="Glavni meni" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="2,2,1,2" Background="#99C2FF">
+                <Border x:Name="TabMainMenu" Tag="Main Menu" Uid="Glavni meni" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="Black" BorderThickness="2,2,1,2" Background="{StaticResource ActiveTabBrush}">
                     <Grid>
                         <TextBlock Text="F1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,2,5,0" Foreground="Gray"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">

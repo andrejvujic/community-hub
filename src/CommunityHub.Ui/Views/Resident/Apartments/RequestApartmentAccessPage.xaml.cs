@@ -104,6 +104,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         private void ShowAccessRequestValidationResult(AccessRequestValidationResult result)
         {
             if (this is not IAlertConsumer consumer) return;
+
             switch (result)
             {
                 case AccessRequestValidationResult.ApartmentNotFound:
@@ -116,6 +117,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                         .AddOption("U redu")
                     );
                     break;
+
                 case AccessRequestValidationResult.ApartmentOccupied:
                         consumer.ShowAlert(
                             Alert.Create(
@@ -127,6 +129,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                             .AddOption("Nastavi", () => CreateAccessRequest())
                         );
                     break;
+
                 case AccessRequestValidationResult.AlreadyMember:
                     consumer.ShowAlert(
                           Alert.Create(
@@ -137,6 +140,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                           .AddOption("U redu")
                       );
                     break;
+
                 case AccessRequestValidationResult.PendingRequestExists:
                     consumer.ShowAlert(
                           Alert.Create(
@@ -148,6 +152,19 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                       );
                     break;
             }
+        }
+
+        private void ShowSuccessAlert()
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Zahtjev podnesen",
+                        "Vaš zahtjev je uspješno podnesen. Sve svoje zahtjeve možete pogledati na početnom ekranu.",
+                        AlertType.Info
+                    )
+                    .AddOption("U redu", () => PopAll())
+                );
         }
 
         private void CreateAccessRequest() {
@@ -165,15 +182,8 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
             );
 
             _apartmentAccessRequestRepository.Create(request);
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Zahtjev podnesen",
-                        "Vaš zahtjev je uspješno podnesen. Sve svoje zahtjeve možete pogledati na početnom ekranu.",
-                        AlertType.Info
-                    )
-                    .AddOption("U redu", () => PopAll())
-                );
+
+            ShowSuccessAlert();
         }
 
         private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
