@@ -12,7 +12,7 @@ CREATE TABLE booked_jobs (
         (is_substitution = TRUE  AND substituting_provider_id IS NOT NULL) OR
         (is_substitution = FALSE AND substituting_provider_id IS NULL)
     ),
-    CONSTRAINT hourly_requires_time CHECK (
+    CONSTRAINT time_and_duration_paired CHECK (
         (scheduled_time IS NULL) = (duration_hours IS NULL)
     )
 );

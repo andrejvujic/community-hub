@@ -7,7 +7,5 @@ CREATE TABLE provider_reviews (
     updated_at TIMESTAMP,
     booked_job_id BIGINT REFERENCES booked_jobs(id) NOT NULL UNIQUE,
     coordinator_id BIGINT REFERENCES users(id) NOT NULL,
-    CONSTRAINT coordinator_must_have_correct_role CHECK (
-        TRUE
-    )
+    CONSTRAINT updated_after_created CHECK (updated_at IS NULL OR updated_at >= created_at)
 );

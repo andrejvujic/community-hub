@@ -54,4 +54,9 @@
     <Resource Include="Resources\Images\neighborhood_0.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\ServiceProvider\Pages\Forums\" />
+    <Folder Include="Views\ServiceProvider\Pages\JobListings\" />
+  </ItemGroup>
+
 </Project>

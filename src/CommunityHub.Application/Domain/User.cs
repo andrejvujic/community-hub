@@ -11,6 +11,18 @@ public class User
 
     public User(long id, string username, string password, string name, string surname, Role role)
     {
+        if (string.IsNullOrWhiteSpace(username))
+            throw new ArgumentException("Korisničko ime ne sme biti prazno.", nameof(username));
+
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("Lozinka ne sme biti prazna.", nameof(password));
+
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Ime ne sme biti prazno.", nameof(name));
+
+        if (string.IsNullOrWhiteSpace(surname))
+            throw new ArgumentException("Prezime ne sme biti prazno.", nameof(surname));
+
         Id = id;
         Username = username;
         Password = password;
