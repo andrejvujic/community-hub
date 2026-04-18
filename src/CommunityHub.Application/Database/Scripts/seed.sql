@@ -363,3 +363,114 @@ INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 15),
 ('/Resources/Images/building_1.jpg', 15),
 ('/Resources/Images/building_2.jpg', 15);
+
+INSERT INTO users (id, username, user_role, password, name, surname) VALUES
+(21, 'zoran.milanovic',   'neighborhood_service_provider', '123', 'Zoran',   'Milanović'),
+(22, 'ana.djordjevic',   'neighborhood_service_provider', '123', 'Ana',    'Đorđević'),
+(23, 'una.jacimovic',    'neighborhood_service_provider', '123', 'Una',   'Jaćimović'),
+(24, 'nina.petrovic',     'neighborhood_service_provider', '123', 'Nina',    'Petrović'),
+(25, 'boris.todorovic',   'neighborhood_service_provider', '123', 'Boris',   'Todorović');
+ 
+INSERT INTO service_providers (id, city_id, country_id) VALUES
+(21, 1, 1),
+(22, 1, 1),
+(23, 2, 1),
+(24, 3, 1),
+(25, 4, 1);
+ 
+INSERT INTO job_listings (id, service_name, description, billing_type, city_id, country_id, provider_id) VALUES
+(1,  'Održavanje lifta',          'Redovno servisiranje i popravka liftova u stambenim zgradama.',                          'per_job',  1, 1, 21),
+(2,  'Košenje trave',             'Košenje i uređenje travnatih površina u dvorištima i parkovima.',                        'per_hour', 1, 1, 21),
+(3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
+ 
+INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
+-- Održavanje lifta (per_job)
+(1,  15000.00, '2025-01-01', '2025-06-30', 1),
+(2,  16500.00, '2025-07-01', '2026-12-31', 1),
+-- Košenje trave (per_hour)
+(3,   1200.00, '2025-01-01', '2025-05-31', 2),
+(4,   1400.00, '2025-06-01', '2026-12-31', 2),
+-- Popravka igrališta (per_job)
+(5,  12000.00, '2025-01-01', '2025-12-31', 3),
+(6, 13500.00, '2026-01-01', '2026-12-31', 3);
+ 
+INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
+-- Zoran: održavanje lifta (per_job, nema sate)
+(1,  '2026-02-10', NULL,    NULL, 16500.00, FALSE, 1,  1,  NULL),
+(2,  '2026-03-05', NULL,    NULL, 16500.00, FALSE, 1,  2,  NULL),
+-- Zoran: košenje trave (per_hour)
+(3,  '2026-03-20', '09:00', 3,    1400.00,  FALSE, 2,  1,  NULL),
+(4,  '2026-04-10', '08:00', 4,    1400.00,  FALSE, 2,  2,  NULL),
+-- Goran: popravka igrališta (per_job)
+(8,  '2026-02-20', NULL,    NULL, 13500.00, FALSE, 3,  3,  NULL),
+(9,  '2026-04-01', NULL,    NULL, 13500.00, FALSE, 3,  4,  NULL);
+ 
+INSERT INTO leave_requests (id, start_date, end_date, status, created_at, provider_id) VALUES
+(1, '2026-04-20', '2026-04-27', 'accepted', '2026-04-05 10:00:00', 21),
+(2, '2026-05-05', '2026-05-09', 'waiting',  '2026-04-15 09:30:00', 22),
+(3, '2026-04-28', '2026-05-02', 'rejected', '2026-04-12 14:00:00', 23);
+ 
+INSERT INTO coverage_offers (id, status, leave_request_id, booked_job_id, covering_provider_id) VALUES
+(1, 'accepted', 1, 3, 22),
+(2, 'waiting',  2, 5, 21),
+(3, 'rejected', 3, 8, 25);
+ 
+INSERT INTO provider_forums (id, title, description, is_closed, created_at, created_by_id) VALUES
+(1, 'Iskustva sa održavanjem liftova',
+   'Delim iskustvo sa ugovaranjem servisa liftova u višespratnicama — šta je važno proveriti pre potpisivanja ugovora sa kvartalnom koordinacijom.',
+   FALSE, '2026-01-15 10:30:00', 21),
+(2, 'Pitanje oko cenovnika za 2026.',
+   'Kako se nosite sa rastom cena materijala? Da li ste povećali cene usluga klijentima za ovu godinu?',
+   FALSE, '2026-02-03 09:15:00', 23),
+(3, 'Arhiva: Zimske intervencije',
+   'Forum o iskustvima iz zimskog perioda — tema je zatvorena jer je sezona prošla.',
+   TRUE,  '2025-12-01 08:00:00', 21),
+(4, 'Kako se organizujete za zamenu kolega?',
+   'Zanima me kako ostali rešavaju situacije kada moraju da pokriju kolegu na odmoru. Tražim savete za organizaciju.',
+   FALSE, '2026-02-20 11:00:00', 24);
+ 
+INSERT INTO forum_posts (id, content, posted_at, forum_id, author_id) VALUES
+-- Forum 1: Iskustva sa liftovima
+(1,  'Uvek tražim pisanu specifikaciju rezervnih delova pre potpisivanja. Koordinatori cene transparentnost.',
+     '2026-01-16 09:00:00', 1, 22),
+(2,  'Slažem se. Kod mene su ključni rokovi odaziva — zapisujem u ugovor max 4 sata za hitne kvarove.',
+     '2026-01-17 11:30:00', 1, 23),
+(3,  'Koristim foto-dokumentaciju pre i posle svakog servisa. Izbegavam sporove sa koordinatorima.',
+     '2026-01-18 15:00:00', 1, 24),
+-- Forum 2: Cenovnik
+(4,  'Povećao sam cene za 15% od januara. Objasnio koordinatorima rast cena energenata i materijala.',
+     '2026-02-04 09:30:00', 2, 21),
+(5,  'Ja sam zadržao iste cene ali uveo minimalnu naknadu za izlazak — 30 minuta uvek se naplaćuje.',
+     '2026-02-05 12:00:00', 2, 22),
+(6,  'Slično kao Boris — uveo sam putni trošak za kvartove van centra grada.',
+     '2026-02-06 16:00:00', 2, 25),
+-- Forum 5: Zamena kolega
+(7,  'Trudim se da imam uvek slobodan dan rezervisan kada znam da kolega planira odmor. Komunikacija je ključ.',
+     '2026-02-21 10:00:00', 4, 22),
+(8, 'Napravio sam grupni chat sa kolegama na istoj lokaciji. Brže se reaguje nego čekanjem sistema.',
+     '2026-02-22 14:00:00', 4, 23);
+ 
+INSERT INTO post_reactions (id, is_upvote, post_id, reactor_id) VALUES
+(1,  TRUE,  1,  21),
+(2,  TRUE,  1,  23),
+(3,  TRUE,  2,  21),
+(4,  FALSE, 2,  25),
+(5,  TRUE,  3,  22),
+(6,  TRUE,  3,  25),
+(7,  TRUE,  4,  22),
+(8,  TRUE,  4,  23),
+(9,  FALSE, 5,  21),
+(10, TRUE,  6,  24),
+(11, TRUE,  6,  25),
+(12, TRUE,  7,  21),
+(13, TRUE,  7,  24),
+(14, FALSE, 8,  22);
+ 
+INSERT INTO provider_reviews (id, quality_rating, communication_rating, comment, created_at, updated_at, booked_job_id, coordinator_id) VALUES
+(1,  5, 5, 'Odličan servis lifta, stigli tačno na vreme i sve popravili u jednoj poseti.',
+    '2026-02-15 12:00:00', NULL, 1, 11),
+(2,  4, 5, 'Brzo i uredno košenje. Malo skuplje nego prošle godine, ali kvalitet je tu.',
+    '2026-03-28 10:30:00', NULL, 3, 12),
+(3,  5, 5, 'Fantastičan posao na igralištu. Deca su oduševljena novom opremom.',
+    '2026-03-02 11:00:00', NULL, 8, 13);
+ 

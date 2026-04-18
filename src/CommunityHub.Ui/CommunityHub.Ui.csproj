@@ -50,4 +50,9 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\ServiceProvider\Pages\Forums\" />
+    <Folder Include="Views\ServiceProvider\Pages\JobListings\" />
+  </ItemGroup>
+
 </Project>

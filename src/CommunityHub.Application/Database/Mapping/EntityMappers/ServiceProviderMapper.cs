@@ -23,17 +23,41 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 baseUser.Password,
                 baseUser.Name,
                 baseUser.Surname,
-                baseUser.Role,
                 city,
                 country
             );
         }
 
+        // Parametri za INSERT/UPDATE u tabelu users
+        public Dictionary<string, object?> MapToUserParameters(ServiceProvider entity)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "username", entity.Username },
+                { "password", entity.Password },
+                { "name", entity.Name },
+                { "surname", entity.Surname },
+                { "user_role", entity.Role }
+            };
+        }
+
+        // Parametri za INSERT/UPDATE u tabelu service_providers
+        public Dictionary<string, object?> MapToProviderParameters(ServiceProvider entity)
+        {
+            return new Dictionary<string, object?>
+            {
+                { "id", entity.Id },
+                { "city_id", entity.City.Id },
+                { "country_id", entity.Country.Id }
+            };
+        }
+
+        // Implementacija kombinovanja oba skupa parametara
         public override Dictionary<string, object?> MapToQueryParameters(ServiceProvider entity)
         {
-            var parameters = _userMapper.MapToQueryParameters(entity);
-            parameters.Add("city_id", entity.City.Id);
-            parameters.Add("country_id", entity.Country.Id);
+            var parameters = MapToUserParameters(entity);
+            foreach (var kvp in MapToProviderParameters(entity))
+                parameters[kvp.Key] = kvp.Value;
             return parameters;
         }
     }

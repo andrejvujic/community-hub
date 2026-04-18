@@ -14,6 +14,9 @@
             long id = 0
         )
         {
+            ArgumentNullException.ThrowIfNull(post);
+            ArgumentNullException.ThrowIfNull(reactor);
+
             Id = id;
             Post = post;
             Reactor = reactor;

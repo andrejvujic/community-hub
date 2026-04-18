@@ -63,6 +63,12 @@ public partial class LogInForm : Window
                 var citizenHomeWindow = new Citizen.HomeWindow(userId.Value);
                 citizenHomeWindow.Show();
                 break;
+            /*
+            case Role.NeighborhoodServiceProvider:
+                var serviceProviderHomeWindow = new ServiceProvider.HomeWindow(userId.Value);
+                serviceProviderHomeWindow.Show();
+                break;
+            */
         }
 
         Close();

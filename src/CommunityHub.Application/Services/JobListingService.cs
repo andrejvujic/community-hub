@@ -8,49 +8,41 @@ public class JobListingService
     private const decimal MinimumAllowedAverageRating = 2m;
 
     private readonly JobListingRepository _jobListingRepository;
-    private readonly WorkSampleRepository _workSampleRepository;
-    private readonly ProviderReviewRepository _providerReviewRepository;
+    private readonly ProviderReviewRepository _reviewRepository;
+    private readonly ImageRepository _imageRepository;
 
     public JobListingService(
         JobListingRepository jobListingRepository,
-        WorkSampleRepository workSampleRepository,
-        ProviderReviewRepository providerReviewRepository
-    )
+        ProviderReviewRepository reviewRepository,
+        ImageRepository imageRepository)
     {
         _jobListingRepository = jobListingRepository;
-        _workSampleRepository = workSampleRepository;
-        _providerReviewRepository = providerReviewRepository;
+        _reviewRepository = reviewRepository;
+        _imageRepository = imageRepository;
     }
 
+    // Vraća sve usluge koje serviser pruža
     public List<JobListing> GetListingsForProvider(long providerId)
-    {
-        var listings = _jobListingRepository.GetByProviderId(providerId);
+        => _jobListingRepository.GetByProviderId(providerId);
 
-        foreach (var listing in listings)
-        {
-            var workSamples = _workSampleRepository.GetByJobListingId(listing.Id);
-            listing.WorkSamples.Clear();
-            listing.WorkSamples.AddRange(workSamples);
-        }
-
-        return listings;
-    }
-
+    // Registruje novu uslugu. Serviser čija prosečna ocena je ispod 2 ne može registrovati nove usluge
     public JobListing RegisterListing(
         ServiceProvider provider,
-        ServiceName serviceName,
+        string serviceName,
         string description,
         BillingType billingType,
         City city,
         Country country,
         List<PriceEntry> priceEntries,
-        List<string> workSamplePaths
-    )
+        List<string> workSamplePaths)
     {
         ValidateProviderRating(provider.Id);
-        ValidateDescription(description);
         ValidatePriceEntries(priceEntries);
         ValidateWorkSamplePaths(workSamplePaths);
+
+        var workSamples = workSamplePaths
+            .Select(path => Image.ForJobListing(id: 0, path: path, jobListingId: 0))
+            .ToList();
 
         var listing = new JobListing(
             serviceName,
@@ -58,35 +50,49 @@ public class JobListingService
             billingType,
             city,
             country,
-            provider
+            provider,
+            priceList: priceEntries,
+            workSamples: workSamples
         );
 
-        var savedListing = _jobListingRepository.Create(listing);
+        return _jobListingRepository.Create(listing);
+    }
 
-        var savedPriceEntries = SavePriceEntries(priceEntries, savedListing.Id);
-        var savedWorkSamples = SaveWorkSamples(workSamplePaths, savedListing.Id);
+    // Dodaje novu cenu u cenovnik postojeće usluge
+    public PriceEntry AddPriceEntry(long jobListingId, PriceEntry entry)
+    {
+        var entryForListing = entry.CopyWith(jobListingId: jobListingId);
+        return _jobListingRepository.AddPriceEntry(entryForListing);
+    }
 
-        return savedListing.CopyWith(
-            priceList: savedPriceEntries,
-            workSamples: savedWorkSamples
-        );
+    // Ažurira slike prethodnih radova za postojeću uslugu; briše sve stare slike i upisuje nove putanje.
+    public List<Image> UpdateWorkSamples(long jobListingId, List<string> newPaths)
+    {
+        ValidateWorkSamplePaths(newPaths);
+
+        _imageRepository.DeleteByJobListingId(jobListingId);
+
+        var saved = new List<Image>();
+        foreach (var path in newPaths)
+        {
+            var placeholder = Image.ForJobListing(id: 0, path: path, jobListingId: jobListingId);
+            var created = _imageRepository.CreateForJobListing(placeholder, jobListingId);
+            saved.Add(created);
+        }
+        return saved;
     }
 
     private void ValidateProviderRating(long providerId)
     {
-        decimal? averageRating = _providerReviewRepository.GetAverageRatingForProvider(providerId);
+        decimal? avg = _reviewRepository.GetAverageRatingForProvider(providerId);
 
-        if (averageRating.HasValue && averageRating.Value < MinimumAllowedAverageRating)
+        // Ako serviser nema nijednu recenziju, prosečna ocena ne postoji, ograničenje se ne primenjuje...
+        if (avg is null) return;
+
+        if (avg < MinimumAllowedAverageRating)
             throw new InvalidOperationException(
-                $"Nije moguće registrovati novu uslugu. Prosečna ocena servisera ({averageRating.Value:F2}) " +
-                $"je ispod dozvoljenog minimuma od {MinimumAllowedAverageRating:F0}."
-            );
-    }
-
-    private static void ValidateDescription(string description)
-    {
-        if (string.IsNullOrWhiteSpace(description))
-            throw new ArgumentException("Opis usluge ne sme biti prazan.", nameof(description));
+                $"Serviser ne može registrovati nove usluge dok mu je prosečna ocena " +
+                $"({avg:F2}) ispod {MinimumAllowedAverageRating}.");
     }
 
     private static void ValidatePriceEntries(List<PriceEntry> priceEntries)
@@ -94,18 +100,6 @@ public class JobListingService
         if (priceEntries.Count == 0)
             throw new ArgumentException(
                 "Usluga mora imati bar jednu cenu u cenovniku.", nameof(priceEntries));
-
-        foreach (var entry in priceEntries)
-        {
-            if (entry.Amount <= 0)
-                throw new ArgumentException(
-                    "Cena mora biti veća od nule.", nameof(priceEntries));
-
-            if (entry.ValidTo < entry.ValidFrom)
-                throw new ArgumentException(
-                    "Datum kraja važenja cene ne sme biti pre datuma početka važenja.",
-                    nameof(priceEntries));
-        }
     }
 
     private static void ValidateWorkSamplePaths(List<string> paths)
@@ -117,31 +111,5 @@ public class JobListingService
         if (paths.Any(string.IsNullOrWhiteSpace))
             throw new ArgumentException(
                 "Putanja slike ne sme biti prazna.", nameof(paths));
-    }
-
-    private List<PriceEntry> SavePriceEntries(List<PriceEntry> priceEntries, long listingId)
-    {
-        var saved = new List<PriceEntry>(priceEntries.Count);
-
-        foreach (var entry in priceEntries)
-        {
-            var entryForListing = entry.CopyWith(jobListingId: listingId);
-            saved.Add(_jobListingRepository.AddPriceEntry(entryForListing));
-        }
-
-        return saved;
-    }
-
-    private List<WorkSample> SaveWorkSamples(List<string> paths, long listingId)
-    {
-        var saved = new List<WorkSample>(paths.Count);
-
-        foreach (var path in paths)
-        {
-            var sample = new WorkSample(id: 0, path: path, jobListingId: listingId);
-            saved.Add(_workSampleRepository.Create(sample));
-        }
-
-        return saved;
     }
 }

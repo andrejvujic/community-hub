@@ -20,6 +20,12 @@
             List<ForumPost>? posts = null
         )
         {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Naslov foruma ne sme biti prazan.", nameof(title));
+
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException("Opis foruma ne sme biti prazan.", nameof(description));
+
             Id = id;
             CreatedBy = createdBy;
             Title = title;

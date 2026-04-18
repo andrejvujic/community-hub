@@ -6,8 +6,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
     public class JobListingMapper : EntityMapper<JobListing>
     {
         private readonly ServiceProviderMapper _providerMapper = new ServiceProviderMapper();
-        private readonly PriceEntryMapper _priceMapper = new PriceEntryMapper();
-        private readonly WorkSampleMapper _sampleMapper = new WorkSampleMapper();
+        private readonly CityMapper _cityMapper = new CityMapper();
+        private readonly CountryMapper _countryMapper = new CountryMapper();
 
         public override JobListing? MapToEntity(IDataReader reader)
         {
@@ -18,33 +18,12 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             ServiceProvider? provider = _providerMapper.MapToEntity(reader);
             if (provider is null) return null;
 
-            long listingCityId = reader.GetInt64(reader.GetOrdinal("listing_city_id"));
-            string listingCityName = reader.GetString(reader.GetOrdinal("listing_city_name"));
-            City listingCity = new City(listingCityId, listingCityName);
+            City listingCity = _cityMapper.MapToEntity(reader.WithPrefix("listing_city"));
+            Country listingCountry = _countryMapper.MapToEntity(reader.WithPrefix("listing_country"));
 
-            long listingCountryId = reader.GetInt64(reader.GetOrdinal("listing_country_id"));
-            string listingCountryName = reader.GetString(reader.GetOrdinal("listing_country_name"));
-            Country listingCountry = new Country(listingCountryId, listingCountryName);
-
-            ServiceName serviceName = ServiceName.FromValue(
-                reader.GetString(reader.GetOrdinal("service_name")));
+            string serviceName = reader.GetString(reader.GetOrdinal("service_name"));
             string description = reader.GetString(reader.GetOrdinal("description"));
             BillingType billingType = (BillingType)reader.GetValue(reader.GetOrdinal("billing_type"));
-
-            var priceEntries = new List<PriceEntry>();
-            var workSamples = new List<WorkSample>();
-
-            if (reader.HasColumn("price_entry_id"))
-            {
-                PriceEntry? entry = _priceMapper.MapToEntity(reader);
-                if (entry is not null) priceEntries.Add(entry);
-            }
-
-            if (reader.HasColumn("work_sample_id"))
-            {
-                WorkSample? sample = _sampleMapper.MapToEntity(reader);
-                if (sample is not null) workSamples.Add(sample);
-            }
 
             return new JobListing(
                 serviceName,
@@ -53,9 +32,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 listingCity,
                 listingCountry,
                 provider,
-                id: id,
-                priceList: priceEntries,
-                workSamples: workSamples
+                id: id
             );
         }
 
@@ -63,7 +40,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
-                { "service_name", entity.ServiceName.Value },
+                { "service_name", entity.ServiceName },
                 { "description", entity.Description },
                 { "billing_type", entity.BillingType },
                 { "city_id", entity.City.Id },

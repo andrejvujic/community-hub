@@ -23,17 +23,14 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 _providerMapper.MapToEntity(reader.WithPrefix("covering"));
             if (coveringProvider is null) return null;
 
-            int isAcceptedOrdinal = reader.GetOrdinal("is_accepted");
-            bool? isAccepted = reader.IsDBNull(isAcceptedOrdinal)
-                ? null
-                : reader.GetBoolean(isAcceptedOrdinal);
+            Status status = (Status)reader.GetValue(reader.GetOrdinal("coverage_offer_status"));
 
             return new CoverageOffer(
                 leaveRequest,
                 jobToCover,
                 coveringProvider,
                 id: id,
-                isAccepted: isAccepted
+                status: status
             );
         }
 
@@ -41,7 +38,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
-                { "is_accepted", entity.IsAccepted },
+                { "status", entity.Status },
                 { "leave_request_id", entity.LeaveRequest.Id },
                 { "booked_job_id", entity.JobToCover.Id },
                 { "covering_provider_id", entity.CoveringProvider.Id }

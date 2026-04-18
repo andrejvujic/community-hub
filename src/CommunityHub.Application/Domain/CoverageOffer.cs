@@ -7,23 +7,28 @@
         public BookedJob JobToCover { get; private set; }
         public ServiceProvider CoveringProvider { get; private set; }
 
-        public bool? IsAccepted { get; private set; }
+        public Status Status { get; private set; }
 
-        public bool IsPending => IsAccepted == null;
+        public bool IsPending => Status == Status.Waiting;
 
         public CoverageOffer(
             LeaveRequest leaveRequest,
             BookedJob jobToCover,
             ServiceProvider coveringProvider,
             long id = 0,
-            bool? isAccepted = null
+            Status status = Status.Waiting
         )
         {
+            if (coveringProvider.Id == jobToCover.Listing.Provider.Id)
+                throw new ArgumentException(
+                    "Serviser zamene ne sme biti isti kao originalni pružalac usluge.",
+                    nameof(coveringProvider));
+
             Id = id;
             LeaveRequest = leaveRequest;
             JobToCover = jobToCover;
             CoveringProvider = coveringProvider;
-            IsAccepted = isAccepted;
+            Status = status;
         }
 
         public CoverageOffer CopyWith(
@@ -31,8 +36,7 @@
             LeaveRequest? leaveRequest = null,
             BookedJob? jobToCover = null,
             ServiceProvider? coveringProvider = null,
-            bool? isAccepted = null,
-            bool clearIsAccepted = false
+            Status? status = null
         )
         {
             return new CoverageOffer(
@@ -40,7 +44,7 @@
                 jobToCover ?? JobToCover,
                 coveringProvider ?? CoveringProvider,
                 id ?? Id,
-                clearIsAccepted ? null : (isAccepted ?? IsAccepted)
+                status ?? Status
             );
         }
     }

@@ -53,7 +53,6 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "quality_rating", entity.QualityRating },
                 { "communication_rating", entity.CommunicationRating },
                 { "comment", entity.Comment },
-                { "created_at", entity.CreatedAt },
                 { "updated_at", entity.UpdatedAt },
                 { "booked_job_id", entity.BookedJob.Id },
                 { "coordinator_id", entity.Coordinator.Id }
