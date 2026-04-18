@@ -16,6 +16,17 @@
             long id = 0
         )
         {
+            if (amount <= 0)
+                throw new ArgumentOutOfRangeException(
+                    nameof(amount),
+                    amount,
+                    "Cena mora biti veća od nule.");
+
+            if (validTo < validFrom)
+                throw new ArgumentException(
+                    $"Datum kraja važenja ({validTo}) ne sme biti pre datuma početka ({validFrom}).",
+                    nameof(validTo));
+
             Id = id;
             Amount = amount;
             ValidFrom = validFrom;

@@ -21,17 +21,26 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             int neighborhoodIdColumnIndex = reader.GetOrdinal("image_neighborhood_id");
             long? neighborhoodId = reader.IsDBNull(neighborhoodIdColumnIndex) ? null : reader.GetInt64(neighborhoodIdColumnIndex);
 
-            return new Image(id, path, buildingId, neighborhoodId);
+            int jobListingIdColumnIndex = reader.GetOrdinal("image_job_listing_id");
+            long? jobListingId = reader.IsDBNull(jobListingIdColumnIndex) ? null : reader.GetInt64(jobListingIdColumnIndex);
+
+            if (buildingId != null) return Image.ForBuilding(id, path, buildingId.Value);
+            if (neighborhoodId != null) return Image.ForNeighborhood(id, path, neighborhoodId.Value);
+            if (jobListingId != null) return Image.ForJobListing(id, path, jobListingId.Value);
+
+            throw new InvalidOperationException(
+                $"Slika sa id={id} nema nijednog vlasnika (building_id, neighborhood_id i job_listing_id su svi NULL). " +
+                "Ovo narušava single_owner constraint i ukazuje na korumpiran zapis u bazi.");
         }
 
         public override Dictionary<string, object?> MapToQueryParameters(Image entity)
         {
             return new Dictionary<string, object?>
             {
-                { "image_id", entity.Id },
-                { "path", entity.Path  },
-                { "image_building_id", entity.BuildingId },
-                { "image_neighborhood_id", entity.NeighborhoodId }
+                { "path", entity.Path },
+                { "building_id", entity.BuildingId },
+                { "neighborhood_id", entity.NeighborhoodId },
+                { "job_listing_id", entity.JobListingId }
             };
         }
     }

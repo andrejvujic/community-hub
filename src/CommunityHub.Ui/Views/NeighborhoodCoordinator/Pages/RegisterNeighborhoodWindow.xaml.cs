@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +24,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     {     
         private readonly long _coordinatorId;
         private readonly User _user;
-        private City _selectedCity;
 
         private readonly UserRepository _userRepository = new UserRepository();
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
@@ -33,16 +33,16 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
         private readonly ImageRepository _imageRepository = new ImageRepository();
 
-        public ObservableCollection<Country> Countries { get; }
-        public ObservableCollection<City> Cities { get; }
-        public ObservableCollection<Street> Streets { get; }
-
-        public ObservableCollection<StreetSection> AddedStreetSections { get; }
-        public ObservableCollection<string> SelectedImagePaths { get; set; }
+        public ObservableCollection<Country> Countries { get; } = new ObservableCollection<Country>();
+        public ObservableCollection<City> Cities { get; } = new ObservableCollection<City>();
+        public ObservableCollection<Street> Streets { get; } = new ObservableCollection<Street>();
+        public ObservableCollection<StreetSection> AddedStreetSections { get; } = new ObservableCollection<StreetSection>();
+        public ObservableCollection<string> SelectedImagePaths { get; } = new ObservableCollection<string>();
 
         public RegisterNeighborhoodWindow(long coordinatorId)
         {
             InitializeComponent();
+            DataContext = this;
             _coordinatorId = coordinatorId;
             User? user = _userRepository.GetById(coordinatorId);
             if (user == null)
@@ -53,29 +53,17 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             }
             _user = user;
 
-            Countries = new ObservableCollection<Country>();
-            Cities = new ObservableCollection<City>();
-            Streets = new ObservableCollection<Street>();
-
-            AddedStreetSections = new ObservableCollection<StreetSection>();
-            SelectedImagePaths = new ObservableCollection<string>();
-
-            StreetSectionsListBox.ItemsSource = AddedStreetSections;
-            ImagesListBox.ItemsSource = SelectedImagePaths;
             LoadCountries();
         }
 
         private void LoadCountries()
         {
-            var countries = _countryRepository.GetAll();
             Countries.Clear();
-
+            var countries = _countryRepository.GetAll();
             foreach (var country in countries)
             {
                 Countries.Add(country);
             }
-
-            CountryComboBox.ItemsSource = Countries;
         }
 
         private void CountryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,103 +74,64 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadCities()
         {
             Cities.Clear();
-
-            var selectedCountry = CountryComboBox.SelectedItem as Country;
-            if (selectedCountry == null)
+            if (CountryComboBox.SelectedItem is Country selectedCountry)
             {
-                CityComboBox.ItemsSource = null;
-                CityComboBox.IsEnabled = false;
-                return;
+                var cities = _cityRepository.GetByCountryId(selectedCountry.Id);
+                foreach (var city in cities) Cities.Add(city);
             }
-
-            var cities = _cityRepository.GetByCountryId(selectedCountry.Id);
-            foreach (var city in cities)
-                Cities.Add(city);
-
-            CityComboBox.ItemsSource = Cities;
             CityComboBox.IsEnabled = Cities.Count > 0;
         }
 
         private void CityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var newCity = CityComboBox.SelectedItem as City;
-
-            if (AddedStreetSections.Count > 0 && newCity != _selectedCity)
-            {
-                var result = MessageBox.Show(
-                    "Promenom grada obrisaćete sve trenutno dodate ulice sa spiska. Da li ste sigurni da želite da promenite grad?",
-                    "Potvrda promene lokacije",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    AddedStreetSections.Clear();
-                    _selectedCity = newCity;
-                    LoadStreets();
-                }
-                else
-                {
-                    CityComboBox.SelectionChanged -= CityComboBox_SelectionChanged;
-                    CityComboBox.SelectedItem = _selectedCity;
-                    CityComboBox.SelectionChanged += CityComboBox_SelectionChanged;
-                }
-            }
-            else
-            {
-                _selectedCity = newCity;
-                LoadStreets();
-            }
+            LoadStreets();
         }
 
         private void LoadStreets()
         {
             Streets.Clear();
-
-            var selectedCity = CityComboBox.SelectedItem as City;
-            if (selectedCity == null)
+            if (CityComboBox.SelectedItem is City selectedCity)
             {
-                StreetComboBox.ItemsSource = null;
-                StreetComboBox.IsEnabled = false;
-                return;
+                var streets = _streetRepository.GetByCityId(selectedCity.Id);
+                foreach (var street in streets) Streets.Add(street);
             }
-
-            var streets = _streetRepository.GetByCityId(selectedCity.Id);
-            foreach (var street in streets)
-            {
-                Streets.Add(street);
-            }
-
-            StreetComboBox.ItemsSource = Streets;
             StreetComboBox.IsEnabled = Streets.Count > 0;
         }
 
         private void AddStreetSection_Click(object sender, RoutedEventArgs e)
         {
             if (!(StreetComboBox.SelectedItem is Street street)) return;
-            
-            var selectedCity = CityComboBox.SelectedItem as City;
 
-            if (!int.TryParse(StartNumberTextBox.Text, out int start) || !int.TryParse(EndNumberTextBox.Text, out int end))
-            {
-                MessageBox.Show("Unesite ispravne brojeve.");
-                return;
-            }
+            if (!TryParseNumbers(out int start, out int end)) return;
 
-            if (start >= end)
-            {
-                MessageBox.Show("Početni broj mora biti manji od krajnjeg.");
-                return;
-            }
+            if (!IsRangeValid(start, end)) return;
 
-            ParityType? side = (SideComboBox.SelectedItem as ComboBoxItem)?.Tag as ParityType?;
+            ParityType side = (SideComboBox.SelectedItem as ComboBoxItem)?.Tag as ParityType? ?? ParityType.Both;
 
-            var section = new StreetSection(start, end, side ?? ParityType.Both, street);
-
-            AddedStreetSections.Add(section);
+            AddedStreetSections.Add(new StreetSection(start, end, side, street));
 
             StartNumberTextBox.Clear();
             EndNumberTextBox.Clear();
+            UpdateComboBoxState();
+        }
+
+        private bool TryParseNumbers(out int start, out int end)
+        {
+            bool isStartValid = int.TryParse(StartNumberTextBox.Text, out start);
+            bool isEndValid = int.TryParse(EndNumberTextBox.Text, out end);
+
+            if (isStartValid && isEndValid) return true;
+
+            MessageBox.Show("Unesite ispravne brojeve.");
+            return false;
+        }
+
+        private bool IsRangeValid(int start, int end)
+        {
+            if (start < end) return true;
+
+            MessageBox.Show("Početni broj mora biti manji od krajnjeg.");
+            return false;
         }
 
         private void RemoveStreetSection_Click(object sender, RoutedEventArgs e)
@@ -193,6 +142,24 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (sectionToRemove != null)
             {
                 AddedStreetSections.Remove(sectionToRemove);
+            }
+
+            UpdateComboBoxState();
+        }
+
+        private void UpdateComboBoxState()
+        {
+            bool hasStreets = AddedStreetSections.Count > 0;
+            CountryComboBox.IsEnabled = !hasStreets;
+            CityComboBox.IsEnabled = !hasStreets;
+            if (hasStreets)
+            {
+                CountryComboBox.ToolTip = "Ne možete menjati lokaciju dok ne obrišete sve dodate ulice.";
+                CityComboBox.ToolTip = "Ne možete menjati lokaciju dok ne obrišete sve dodate ulice.";
+            }
+            else
+            {
+                CountryComboBox.ToolTip = null;
             }
         }
 
@@ -251,35 +218,46 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             string name = NameTextBox.Text.Trim();
             string description = DescriptionTextBox.Text.Trim();
-            var selectedCity = CityComboBox.SelectedItem as City;
-            var selectedCountry = CountryComboBox.SelectedItem as Country;
+            var city = CityComboBox.SelectedItem as City;
+            var country = CountryComboBox.SelectedItem as Country;
 
-            string validationErrors = ValidateInput(name, description, selectedCity, selectedCountry);
-
+            string validationErrors = ValidateInput(name, description, city, country);
             if (!string.IsNullOrEmpty(validationErrors))
             {
-                MessageBox.Show("Molimo popunite sledeće nedostatke:\n\n" + validationErrors, 
-                    "Validacija", MessageBoxButton.OK);
+                MessageBox.Show("Molimo popunite sledeće nedostatke:\n\n" + validationErrors, "Validacija", MessageBoxButton.OK);
                 return;
             }
-
-            Neighborhood neighborhood = new Neighborhood(name, description, 0, selectedCity, selectedCountry, _user);
-
-            Neighborhood savedNeighborhood = _neighborhoodRepository.Create(neighborhood);
             
-            foreach (var section in AddedStreetSections)
-            {
-                _streetSectionRepository.Create(section, savedNeighborhood.Id);
-            }
+            Neighborhood neighborhood = RegisterNeighborhood(name, description, city, country);
+            RegisterStreetSections(neighborhood.Id);
+            RegisterImages(neighborhood.Id);
             
-            foreach (string path in SelectedImagePaths)
-            {
-                var image = new CommunityHub.Application.Domain.Image(0, path, null, savedNeighborhood.Id);
-                _imageRepository.Create(image, savedNeighborhood.Id, null);
-            }
-
             MessageBox.Show($"Kvart '{name}' je uspešno registrovan!", "Uspeh");
+            this.DialogResult = true;
             this.Close();
+        }
+
+        private Neighborhood RegisterNeighborhood(string name, string description, City city, Country country)
+        {
+            var neighborhood = new Neighborhood(name, description, 0, city, country, _user);
+            return _neighborhoodRepository.Create(neighborhood);
+        }
+
+        private void RegisterStreetSections(long neighborhoodId)
+        {
+            foreach (var streetSection in AddedStreetSections)
+            {
+                _streetSectionRepository.Create(streetSection, neighborhoodId);
+            }
+        }
+
+        private void RegisterImages(long neighborhoodId)
+        {
+            foreach (var imagePath in SelectedImagePaths)
+            {
+                var image = new CommunityHub.Application.Domain.Image(0, imagePath, null, neighborhoodId);
+                _imageRepository.Create(image, neighborhoodId, null);
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

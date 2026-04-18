@@ -15,7 +15,24 @@
 
         public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
 
-        public bool IsEditable => (DateTime.Now - CreatedAt).TotalDays <= 3;
+        public bool IsEditable(DateTime now) => (now - CreatedAt).TotalDays <= 3;
+
+        public static bool CanBeCreatedFor(BookedJob bookedJob, DateTime now) =>
+            (now - CompletionDateTime(bookedJob)).TotalDays <= 10;
+
+        private static DateTime CompletionDateTime(BookedJob bookedJob)
+        {
+            if (bookedJob.Listing.BillingType == BillingType.PerHour
+                && bookedJob.ScheduledTime.HasValue
+                && bookedJob.DurationHours.HasValue)
+            {
+                return bookedJob.ScheduledDate
+                    .ToDateTime(bookedJob.ScheduledTime.Value)
+                    .AddHours(bookedJob.DurationHours.Value);
+            }
+
+            return bookedJob.ScheduledDate.ToDateTime(TimeOnly.MaxValue);
+        }
 
         public ProviderReview(
             BookedJob bookedJob,
@@ -30,8 +47,20 @@
         {
             if (coordinator.Role != Role.NeighborhoodCoordinator)
                 throw new ArgumentException(
-                    $"Only a NeighborhoodCoordinator may review a service provider, but got role '{coordinator.Role}'.",
+                    $"Recenziju može ostaviti samo koordinator kvarta, ali je prosleđena uloga '{coordinator.Role}'.",
                     nameof(coordinator));
+
+            if (qualityRating < 1 || qualityRating > 5)
+                throw new ArgumentOutOfRangeException(
+                    nameof(qualityRating),
+                    qualityRating,
+                    "Ocena kvaliteta mora biti između 1 i 5.");
+
+            if (communicationRating < 1 || communicationRating > 5)
+                throw new ArgumentOutOfRangeException(
+                    nameof(communicationRating),
+                    communicationRating,
+                    "Ocena komunikacije mora biti između 1 i 5.");
 
             Id = id;
             BookedJob = bookedJob;

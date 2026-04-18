@@ -1,1 +1,0 @@
-CREATE TYPE leave_request_statuses AS ENUM ('pending_approval', 'approved', 'auto_approved', 'rejected');

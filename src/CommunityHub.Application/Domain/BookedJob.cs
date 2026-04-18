@@ -6,21 +6,17 @@
         public JobListing Listing { get; private set; }
         public Neighborhood Neighborhood { get; private set; }
         public DateOnly ScheduledDate { get; private set; }
-
         public TimeOnly? ScheduledTime { get; private set; }
         public int? DurationHours { get; private set; }
-
         public decimal UnitPrice { get; private set; }
+        public bool IsSubstitution { get; private set; }
+        public ServiceProvider? SubstitutingProvider { get; private set; }
 
         public decimal TotalPrice => DurationHours.HasValue
             ? UnitPrice * DurationHours.Value
             : UnitPrice;
 
-        public bool IsHourlyBilling => Listing.BillingType == BillingType.PerHour;
-
-        public bool IsSubstitution { get; private set; }
-
-        public ServiceProvider? SubstitutingProvider { get; private set; }
+        public ServiceProvider ActualProvider => SubstitutingProvider ?? Listing.Provider;
 
         public BookedJob(
             JobListing listing,
@@ -34,17 +30,8 @@
             ServiceProvider? substitutingProvider = null
         )
         {
-            if (listing.BillingType == BillingType.PerHour && durationHours == null)
-                throw new ArgumentException("PerHour billing requires DurationHours.");
-
-            if (listing.BillingType == BillingType.PerJob && (scheduledTime != null || durationHours != null))
-                throw new ArgumentException("PerJob billing must not have ScheduledTime or DurationHours.");
-
-            if (isSubstitution && substitutingProvider == null)
-                throw new ArgumentException("A substitution BookedJob must specify the SubstitutingProvider.");
-
-            if (!isSubstitution && substitutingProvider != null)
-                throw new ArgumentException("SubstitutingProvider must be null when IsSubstitution is false.");
+            ValidateBillingConsistency(listing, scheduledTime, durationHours);
+            ValidateSubstitution(isSubstitution, substitutingProvider);
 
             Id = id;
             Listing = listing;
@@ -56,8 +43,6 @@
             IsSubstitution = isSubstitution;
             SubstitutingProvider = substitutingProvider;
         }
-
-        public ServiceProvider ActualProvider => SubstitutingProvider ?? Listing.Provider;
 
         public BookedJob CopyWith(
             long? id = null,
@@ -71,6 +56,9 @@
             ServiceProvider? substitutingProvider = null
         )
         {
+            var newIsSubstitution = isSubstitution ?? IsSubstitution;
+            var newSubstitutingProvider = DetermineSubstitutingProvider(newIsSubstitution, substitutingProvider);
+
             return new BookedJob(
                 listing ?? Listing,
                 neighborhood ?? Neighborhood,
@@ -79,9 +67,30 @@
                 id ?? Id,
                 scheduledTime ?? ScheduledTime,
                 durationHours ?? DurationHours,
-                isSubstitution ?? IsSubstitution,
-                substitutingProvider ?? SubstitutingProvider
+                newIsSubstitution,
+                newSubstitutingProvider
             );
+        }
+
+        private ServiceProvider? DetermineSubstitutingProvider(bool isSubstitution, ServiceProvider? incomingProvider) =>
+            incomingProvider ?? (isSubstitution ? SubstitutingProvider : null);
+
+        private static void ValidateBillingConsistency(
+            JobListing listing,
+            TimeOnly? scheduledTime,
+            int? durationHours)
+        {
+            if (listing.BillingType == BillingType.PerHour && (durationHours == null || scheduledTime == null))
+                throw new ArgumentException("Usluga koja se naplaćuje po satu mora imati naveden broj sati trajanja i vreme početka.");
+        }
+
+        private static void ValidateSubstitution(bool isSubstitution, ServiceProvider? substitutingProvider)
+        {
+            if (isSubstitution && substitutingProvider == null)
+                throw new ArgumentException("Zakazana usluga označena kao zamena mora imati navedenog servisera zamene.");
+
+            if (!isSubstitution && substitutingProvider != null)
+                throw new ArgumentException("Serviser zamene mora biti null kada zakazana usluga nije zamena.");
         }
     }
 }

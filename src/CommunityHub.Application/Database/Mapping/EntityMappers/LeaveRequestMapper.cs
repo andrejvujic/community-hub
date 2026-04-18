@@ -21,16 +21,17 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             DateOnly endDate = DateOnly.FromDateTime(
                 reader.GetDateTime(reader.GetOrdinal("end_date")));
 
-            LeaveRequestStatus status = (LeaveRequestStatus)reader.GetValue(
-                reader.GetOrdinal("leave_request_status"));
-            bool isEmergency = reader.GetBoolean(reader.GetOrdinal("is_emergency"));
+            Status status = (Status)reader.GetValue(reader.GetOrdinal("leave_request_status"));
+            DateTime createdAt = reader.GetDateTime(reader.GetOrdinal("leave_request_created_at"));
 
+            // AffectedJobIds se ne učitava ovde, jer zahteva poseban upit nad coverage_offers...
+            // Repozitorijum je odgovoran za popunjavanje ove liste nakon mapiranja.
             return new LeaveRequest(
                 provider,
                 startDate,
                 endDate,
                 status,
-                isEmergency,
+                createdAt,
                 id: id
             );
         }
@@ -42,7 +43,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "start_date", entity.StartDate.ToDateTime(TimeOnly.MinValue) },
                 { "end_date", entity.EndDate.ToDateTime(TimeOnly.MinValue) },
                 { "status", entity.Status },
-                { "is_emergency", entity.IsEmergency },
+                { "created_at", entity.CreatedAt },
                 { "provider_id", entity.Provider.Id }
             };
         }
