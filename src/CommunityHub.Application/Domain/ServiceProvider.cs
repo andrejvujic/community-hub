@@ -5,19 +5,25 @@
         public City City { get; private set; }
         public Country Country { get; private set; }
 
+        public List<JobListing> JobListings { get; private set; } = new List<JobListing>();
+        public List<LeaveRequest> LeaveRequests { get; private set; } = new List<LeaveRequest>();
+
         public ServiceProvider(
             long id,
             string username,
             string password,
             string name,
             string surname,
-            Role role,
             City city,
-            Country country
-        ) : base(id, username, password, name, surname, role)
+            Country country,
+            List<JobListing>? jobListings = null,
+            List<LeaveRequest>? leaveRequests = null
+        ) : base(id, username, password, name, surname, Role.NeighborhoodServiceProvider)
         {
             City = city;
             Country = country;
+            JobListings = jobListings ?? new List<JobListing>();
+            LeaveRequests = leaveRequests ?? new List<LeaveRequest>();
         }
 
         public ServiceProvider CopyWith(
@@ -26,9 +32,10 @@
             string? password = null,
             string? name = null,
             string? surname = null,
-            Role? role = null,
             City? city = null,
-            Country? country = null
+            Country? country = null,
+            List<JobListing>? jobListings = null,
+            List<LeaveRequest>? leaveRequests = null
         )
         {
             return new ServiceProvider(
@@ -37,9 +44,10 @@
                 password ?? Password,
                 name ?? Name,
                 surname ?? Surname,
-                role ?? Role,
                 city ?? City,
-                country ?? Country
+                country ?? Country,
+                jobListings ?? JobListings,
+                leaveRequests ?? LeaveRequests
             );
         }
     }

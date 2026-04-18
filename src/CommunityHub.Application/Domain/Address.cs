@@ -3,7 +3,7 @@
     public class Address
     {
         public long Id { get; private set; }
-        public Street Street { get; private set; }  
+        public Street Street { get; private set; }
         public string StreetNumber { get; private set; }
         public string Neighborhood { get; private set; }
         public City City { get; private set; }
@@ -18,7 +18,6 @@
             City = city;
             Country = country;
         }
-
         public Address CopyWith(
             long? id = null,
             Street? street = null,

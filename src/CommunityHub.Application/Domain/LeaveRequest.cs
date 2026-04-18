@@ -2,31 +2,41 @@
 {
     public class LeaveRequest
     {
+        private static readonly TimeSpan EmergencyThreshold = TimeSpan.FromHours(48);
+
         public long Id { get; private set; }
         public ServiceProvider Provider { get; private set; }
         public DateOnly StartDate { get; private set; }
         public DateOnly EndDate { get; private set; }
-        public LeaveRequestStatus Status { get; private set; }
-        public bool IsEmergency { get; private set; }
-        public List<BookedJob> AffectedJobs { get; private set; } = new List<BookedJob>();
+        public Status Status { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public List<long> AffectedJobIds { get; private set; } = new List<long>();
+
+        public bool IsEmergency() =>
+            StartDate.ToDateTime(TimeOnly.MinValue) - CreatedAt < EmergencyThreshold;
 
         public LeaveRequest(
             ServiceProvider provider,
             DateOnly startDate,
             DateOnly endDate,
-            LeaveRequestStatus status,
-            bool isEmergency,
+            Status status,
+            DateTime createdAt,
             long id = 0,
-            List<BookedJob>? affectedJobs = null
+            List<long>? affectedJobIds = null
         )
         {
+            if (endDate < startDate)
+                throw new ArgumentException(
+                    $"Datum završetka ({endDate}) ne sme biti pre datuma početka ({startDate}).",
+                    nameof(endDate));
+
             Id = id;
             Provider = provider;
             StartDate = startDate;
             EndDate = endDate;
             Status = status;
-            IsEmergency = isEmergency;
-            AffectedJobs = affectedJobs ?? new List<BookedJob>();
+            CreatedAt = createdAt;
+            AffectedJobIds = affectedJobIds ?? new List<long>();
         }
 
         public LeaveRequest CopyWith(
@@ -34,9 +44,9 @@
             ServiceProvider? provider = null,
             DateOnly? startDate = null,
             DateOnly? endDate = null,
-            LeaveRequestStatus? status = null,
-            bool? isEmergency = null,
-            List<BookedJob>? affectedJobs = null
+            Status? status = null,
+            DateTime? createdAt = null,
+            List<long>? affectedJobIds = null
         )
         {
             return new LeaveRequest(
@@ -44,9 +54,9 @@
                 startDate ?? StartDate,
                 endDate ?? EndDate,
                 status ?? Status,
-                isEmergency ?? IsEmergency,
+                createdAt ?? CreatedAt,
                 id ?? Id,
-                affectedJobs ?? AffectedJobs
+                affectedJobIds ?? AffectedJobIds
             );
         }
     }

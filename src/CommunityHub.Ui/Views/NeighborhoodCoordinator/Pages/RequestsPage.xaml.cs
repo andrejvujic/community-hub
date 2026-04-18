@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,15 +21,16 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     public partial class RequestsPage : UserControl
     {
         private long _coordinatorId;
-        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository;
-        private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository;
-        private readonly CitizenRepository _citizenRepository;
+        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
+        private readonly NeighborhoodMembershipRepository _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
+        private readonly CitizenRepository _citizenRepository = new CitizenRepository();
+        
+        public ObservableCollection<NeighborhoodAccessRequest> Requests { get; set; } = new ObservableCollection<NeighborhoodAccessRequest>();
+
         public RequestsPage()
         {
             InitializeComponent();
-            _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
-            _neighborhoodMembershipRepository = new NeighborhoodMembershipRepository();
-            _citizenRepository = new CitizenRepository();
+            DataContext = this;
         }
 
         public void Initialize(long coordinatorId)
@@ -41,8 +43,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             Status? selectedStatus = (StatusFilterComboBox.SelectedItem as ComboBoxItem)?.Tag as Status?;
 
+            Requests.Clear();
             var requests = _neighborhoodAccessRequestRepository.GetByCoordinatorIdAndStatus(_coordinatorId, selectedStatus);
-            RequestsDataGrid.ItemsSource = requests;
+            foreach (var req in requests)
+            {
+                Requests.Add(req);
+            }
         }
 
         private void RequestsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -79,7 +85,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                     var updatedRequest = request.Reject(dialog.Comment);
                     _neighborhoodAccessRequestRepository.Update(updatedRequest);
 
-                    LoadData();
+                    int index = Requests.IndexOf(request);
+                    Requests[index] = updatedRequest;
                     MessageBox.Show($"Korisniku {request.Citizen.Name} {request.Citizen.Surname} je odbijen zahtev za pristup kvartu {request.Neighborhood.Name}.", "Odbijen zahtev");
                 }
             }
@@ -104,7 +111,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
                 _citizenRepository.UpdateMembership(request.Citizen.Id, newMembership.Id);
 
-                LoadData();
+                int index = Requests.IndexOf(request);
+                Requests[index] = updatedRequest;
+
                 MessageBox.Show($"Korisnik {request.Citizen.Name} {request.Citizen.Surname} je postao novi član kvarta {request.Neighborhood.Name}.", "Prihvaćen zahtev");
             }
         }

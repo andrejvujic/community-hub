@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,16 +21,17 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     public partial class NeighborhoodsPage : UserControl
     {
         private long _coordinatorId;
-        private readonly NeighborhoodRepository _neighborhoodRepository;
-        private readonly StreetSectionRepository _streetSectionRepository;
-        private readonly NeighborhoodMembershipRepository _membershipRepository;
+        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
+        private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
+        private readonly NeighborhoodMembershipRepository _membershipRepository = new NeighborhoodMembershipRepository();
+
+        public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
 
         public NeighborhoodsPage()
         {
             InitializeComponent();
-            _neighborhoodRepository = new NeighborhoodRepository();
-            _streetSectionRepository = new StreetSectionRepository();
-            _membershipRepository = new NeighborhoodMembershipRepository();
+            DataContext = this;
+            this.IsVisibleChanged += NeighborhoodsPage_IsVisibleChanged;
         }
 
         public void Initialize(long coordinatorId)
@@ -40,8 +42,29 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void LoadNeighborhoods()
         {
-            List<Neighborhood> neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
-            NeighborhoodsListBox.ItemsSource = neighborhoods;
+            Neighborhoods.Clear();
+            var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
+            foreach (var n in neighborhoods)
+            {
+                Neighborhoods.Add(n);
+            }
+        }
+
+        private void NeighborhoodsPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                RefreshCurrentSelection();
+            }
+        }
+
+        private void RefreshCurrentSelection()
+        {
+            if (NeighborhoodsListBox.SelectedItem is Neighborhood selected)
+            {
+                StreetsDataGrid.ItemsSource = _streetSectionRepository.GetByNeighborhoodId(selected.Id);
+                MembershipsDataGrid.ItemsSource = _membershipRepository.GetCitizensByNeighborhoodId(selected.Id);
+            }
         }
 
         private void NeighborhoodsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -49,12 +72,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (NeighborhoodsListBox.SelectedItem is Neighborhood selected)
             {
                 DetailsScrollViewer.DataContext = selected;
-                SelectedNeighborhoodTitle.Text = selected.Name;
-                SelectedNeighborhoodLocation.Text = $"{selected.City.Name}, {selected.Country.Name}";
-
-                StreetsDataGrid.ItemsSource = _streetSectionRepository.GetByNeighborhoodId(selected.Id);
-                MembershipsDataGrid.ItemsSource = _membershipRepository.GetCitizensByNeighborhoodId(selected.Id);
-
+                RefreshCurrentSelection();
                 DetailsScrollViewer.Visibility = Visibility.Visible;
             }
         }
@@ -63,9 +81,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             RegisterNeighborhoodWindow registerNeighborhoodWindow = new RegisterNeighborhoodWindow(_coordinatorId);
             registerNeighborhoodWindow.Owner = Window.GetWindow(this);
-            registerNeighborhoodWindow.ShowDialog();
-
-            LoadNeighborhoods();
+            
+            if (registerNeighborhoodWindow.ShowDialog() == true)
+            {
+                LoadNeighborhoods();
+            }
         }
     }
 }

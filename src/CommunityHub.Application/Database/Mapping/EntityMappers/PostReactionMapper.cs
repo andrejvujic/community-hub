@@ -29,8 +29,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
-                { "is_upvote",  entity.IsUpvote },
-                { "post_id",    entity.Post.Id },
+                { "is_upvote", entity.IsUpvote },
+                { "post_id", entity.Post.Id },
                 { "reactor_id", entity.Reactor.Id }
             };
         }
