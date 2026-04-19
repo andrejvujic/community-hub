@@ -37,7 +37,7 @@
                                     Margin="0,0,0,8"
                                     BorderBrush="Gray"
                                     BorderThickness="1">
-                                    <Grid Background="Transparent">
+                                    <Grid Background="Transparent" MouseLeftButtonDown="OpenBuildingOptionsPageButton_Click">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
