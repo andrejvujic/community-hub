@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings
@@ -17,5 +16,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
+
+        private void OpenBuildingDetailsPageButton_Click(object sender, MouseButtonEventArgs e)
+            => Push(new BuildingDetailsPage(Building));
     }
 }

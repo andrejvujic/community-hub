@@ -255,8 +255,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             foreach (var imagePath in SelectedImagePaths)
             {
-                var image = new CommunityHub.Application.Domain.Image(0, imagePath, null, neighborhoodId);
-                _imageRepository.Create(image, neighborhoodId, null);
+                var image = CommunityHub.Application.Domain.Image.ForNeighborhood(0, imagePath, neighborhoodId);
+                _imageRepository.Create(image);
             }
         }
 

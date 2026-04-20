@@ -76,7 +76,7 @@ public class JobListingService
         foreach (var path in newPaths)
         {
             var placeholder = Image.ForJobListing(id: 0, path: path, jobListingId: jobListingId);
-            var created = _imageRepository.CreateForJobListing(placeholder, jobListingId);
+            var created = _imageRepository.Create(placeholder);
             saved.Add(created);
         }
         return saved;

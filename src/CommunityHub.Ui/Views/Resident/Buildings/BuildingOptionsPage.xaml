@@ -48,6 +48,9 @@
         <Grid Grid.Row="1" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0"/> 
+                <!-- <RowDefinition Height="12"/> -->
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="12"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="12"/>
@@ -58,8 +61,44 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!--
             <Border
                 Grid.Row="0"
+                Padding="16,24"
+                BorderBrush="Gray"
+                BorderThickness="1">
+                <Grid Background="Transparent" MouseLeftButtonDown="OpenBuildingDetailsPageButton_Click">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        Text="&#xf1ad;"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        VerticalAlignment="Center"
+                        FontSize="24"/>
+
+                    <TextBlock
+                        Grid.Column="2"
+                        Text="Informacije"
+                        FontSize="20"/>
+
+                    <TextBlock
+                        Grid.Column="3"
+                        Text="&#xf178;"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        VerticalAlignment="Center"
+                        FontSize="24"/>
+                </Grid>
+            </Border>
+            -->
+
+            <Border
+                Grid.Row="2"
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
@@ -93,7 +132,7 @@
             </Border>
 
             <Border
-                Grid.Row="2"
+                Grid.Row="4"
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
@@ -107,7 +146,7 @@
 
                     <TextBlock
                         Grid.Column="0"
-                        Text="&#xe4da;"
+                        Text="&#xf47f;"
                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                         VerticalAlignment="Center"
                         FontSize="24"/>
@@ -127,7 +166,7 @@
             </Border>
 
             <Border
-                Grid.Row="4"
+                Grid.Row="6"
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
@@ -161,7 +200,7 @@
             </Border>
 
             <Border
-                Grid.Row="6"
+                Grid.Row="8"
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
@@ -195,7 +234,7 @@
             </Border>
 
             <Border
-                Grid.Row="8"
+                Grid.Row="10"
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
