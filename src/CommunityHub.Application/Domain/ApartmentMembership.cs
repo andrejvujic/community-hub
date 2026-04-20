@@ -1,5 +1,4 @@
-﻿
-namespace CommunityHub.Application.Domain
+﻿namespace CommunityHub.Application.Domain
 {
     public class ApartmentMembership
     {
@@ -14,7 +13,6 @@ namespace CommunityHub.Application.Domain
             Apartment = apartment;
             AcceptanceDate = acceptanceDate;
         }
-
         public ApartmentMembership CopyWith(
             long? id = null,
             User? resident = null,

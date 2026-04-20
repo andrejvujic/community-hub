@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Converters\**" />
-    <EmbeddedResource Remove="Converters\**" />
-    <None Remove="Converters\**" />
-    <Page Remove="Converters\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="CommunityHub.Ui.csproj.Backup.tmp" />
     <None Remove="Resources\Fonts\GoogleSans.ttf" />
     <None Remove="Resources\Fonts\Icons.otf" />
@@ -52,6 +45,11 @@
     <Resource Include="Resources\Images\neighborhood_1.jpg" />
     <Resource Include="Resources\Images\neighborhood_2.jpg" />
     <Resource Include="Resources\Images\neighborhood_0.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\ServiceProvider\Pages\Forums\" />
+    <Folder Include="Views\ServiceProvider\Pages\JobListings\" />
   </ItemGroup>
 
 </Project>

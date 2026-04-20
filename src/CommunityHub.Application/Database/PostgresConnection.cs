@@ -16,7 +16,6 @@ public static class PostgresConnection
         builder.MapEnum<Status>("statuses");
         builder.MapEnum<ParityType>("parity_types");
         builder.MapEnum<BillingType>("billing_types");
-        builder.MapEnum<LeaveRequestStatus>("leave_request_statuses");
         var dataSource = builder.Build();
         return dataSource.OpenConnection();
     }

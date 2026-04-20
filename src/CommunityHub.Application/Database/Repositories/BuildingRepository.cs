@@ -94,6 +94,7 @@ namespace CommunityHub.Application.Database.Repositories
                @"SELECT
                 building.id AS building_id,
                 building.floor_count,
+				building.apartment_count,
                 
                 building_manager.id AS building_manager_user_id,
                 building_manager.username AS building_manager_username,
@@ -118,9 +119,7 @@ namespace CommunityHub.Application.Database.Repositories
                 image.id AS image_id,
                 image.building_id AS image_building_id,
                 image.neighborhood_id AS image_neighborhood_id,
-                image.path AS path,
-
-                COUNT(DISTINCT apartment.id) AS apartment_count
+                image.path AS path
 
                 FROM buildings building
                 INNER JOIN users building_manager ON building.building_manager_id = building_manager.id
@@ -135,7 +134,7 @@ namespace CommunityHub.Application.Database.Repositories
                 building_manager.id = @building_manager_id
 
                 GROUP BY 
-                building.id, building.floor_count, building_manager.id, building_manager.username, building_manager.password, building_manager.name, building_manager.surname, building_manager.user_role,
+                building.id, building.floor_count, building.apartment_count, building_manager.id, building_manager.username, building_manager.password, building_manager.name, building_manager.surname, building_manager.user_role,
                 address.id, address.street_number, address.neighborhood,
                 street.id, street.name,
                 city.id, city.name,
@@ -166,8 +165,8 @@ namespace CommunityHub.Application.Database.Repositories
         public Building Create(Building building)
         {
             var query = PostgresQuery.Create(
-                @"INSERT INTO buildings (floor_count, building_manager_id, address_id) 
-                VALUES (@floor_count, @building_manager_id, @address_id)
+                @"INSERT INTO buildings (floor_count, apartment_count, building_manager_id, address_id) 
+                VALUES (@floor_count, @apartment_count, @building_manager_id, @address_id)
                 RETURNING id"
             )
             .ExtendParameters(_buildingMapper.MapToQueryParameters(building));

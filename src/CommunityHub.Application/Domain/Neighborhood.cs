@@ -59,5 +59,25 @@
                 images ?? Images
             );
         }
+
+        public bool Contains(Address? address)
+        {
+            if (address == null || address.Street == null) return false;
+            if (!int.TryParse(address.StreetNumber, out int streetNumber)) return false;
+
+            foreach (var s in StreetSections)
+            {
+                if (s.Street == null) continue;
+                if (s.Street.Id != address.Street.Id) continue;
+                if (streetNumber < s.StartNumber || streetNumber > s.EndNumber) continue;
+
+                var side = s.Side;
+                if (side == ParityType.Both) return true;
+                if (side == ParityType.Even && (streetNumber % 2) == 0) return true;
+                if (side == ParityType.Odd && (streetNumber % 2) != 0) return true;
+            }
+
+            return false;
+        }
     }
 }
