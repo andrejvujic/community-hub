@@ -36,6 +36,7 @@ namespace CommunityHub.Application.Database.Repositories
                 image.id AS image_id,
                 image.building_id AS image_building_id,
                 image.neighborhood_id AS image_neighborhood_id,
+                image.job_listing_id AS image_job_listing_id,
                 image.path AS path
 
                 FROM neighborhoods neighborhood
@@ -108,6 +109,7 @@ namespace CommunityHub.Application.Database.Repositories
                 image.id AS image_id,
                 image.building_id AS image_building_id,
                 image.neighborhood_id AS image_neighborhood_id,
+                image.job_listing_id AS image_job_listing_id,
                 image.path AS path
 
                 FROM neighborhoods neighborhood
