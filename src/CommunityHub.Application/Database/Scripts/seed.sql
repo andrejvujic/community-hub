@@ -124,22 +124,22 @@ INSERT INTO addresses (id, street_number, neighborhood, city_id, street_id) VALU
 (14, '63',  'Rasadnik',      13, 7),
 (15, '41',  'Trkalište',     14, 8);
 
-INSERT INTO buildings (id, floor_count, building_manager_id, address_id) VALUES
-(1,  6,  1,  1),
-(2,  9,  2,  2),
-(3,  5,  3,  3),
-(4,  4,  4,  4),
-(5,  7,  5,  5),
-(6,  3,  1,  6),
-(7,  8,  2,  7),
-(8,  5,  3,  8),
-(9,  6,  4,  9),
-(10, 4,  5,  10),
-(11, 7,  1,  11),
-(12, 5,  2,  12),
-(13, 6,  3,  13),
-(14, 4,  4,  14),
-(15, 9,  5,  15);
+INSERT INTO buildings (id, floor_count, apartment_count, building_manager_id, address_id) VALUES
+(1,  6,  24, 1,  1),
+(2,  9,  45, 2,  2),
+(3,  5,  15, 3,  3),
+(4,  4,  12, 4,  4),
+(5,  7,  28, 5,  5),
+(6,  3,  6,  1,  6),
+(7,  8,  32, 2,  7),
+(8,  5,  15, 3,  8),
+(9,  6,  24, 4,  9),
+(10, 4,  8,  5,  10),
+(11, 7,  35, 1,  11),
+(12, 5,  15, 2,  12),
+(13, 6,  18, 3,  13),
+(14, 4,  8,  4,  14),
+(15, 9,  54, 5,  15);
 
 
 INSERT INTO apartments (apartment_number, floor_number, building_id) VALUES

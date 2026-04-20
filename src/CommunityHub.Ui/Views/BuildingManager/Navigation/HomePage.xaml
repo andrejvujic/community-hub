@@ -24,7 +24,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="32"
-                Text="Dobrodošli nazad!" />
+                Text="Dobro došli nazad!" />
         </Grid>
 
         <Grid Grid.Row="1">
