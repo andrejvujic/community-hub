@@ -1,6 +1,5 @@
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Matching;
 using CommunityHub.Application.Helpers.Search;
 using System.Windows;
 using System.Windows.Controls;
@@ -83,9 +82,10 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
             var citizen = _citizenRepository.GetById(_userId)!;
 
-            if (NeighborhoodAddressMatcher.AddressBelongsToNeighborhood(citizen.Address, selected.StreetSections))
+            if (selected.Contains(citizen.Address))
             {
                 CreateNeighborhoodMembership(citizen, selected);
+                AutoRejectPendingRequests(citizen, selected.Id);
             }
             else
             {
@@ -107,8 +107,6 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
             var createdMembership = _neighborhoodMembershipRepository.Create(membership);
             _citizenRepository.UpdateMembership(citizen.Id, createdMembership.Id);
-
-            AutoRejectPendingRequests(citizen, neighborhood.Id);
 
             MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
 
