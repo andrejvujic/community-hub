@@ -16,15 +16,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             DataContext = this;
 
             Building = building;
-            GetBuildingImages();
-        }
-
-        void GetBuildingImages()
-        {
-            if (Building.HasImages) return;
-            List<Image> images = _imageRepository.GetByBuildingId(Building.Id);
-            foreach (var image in images)
-                Building.Images.Add(image);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
