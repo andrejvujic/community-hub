@@ -429,11 +429,10 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             foreach (string imagePath in SelectedImagePaths)
             {
-                DomainImage image = new DomainImage(
+                DomainImage image = DomainImage.ForBuilding(
                     id: 0,
                     path: imagePath,
-                    buildingId: building.Id,
-                    neighborhoodId: null
+                    buildingId: building.Id
                 );
 
                 _imageRepository.Create(image);

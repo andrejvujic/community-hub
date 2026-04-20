@@ -15,22 +15,43 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
             string path = reader.GetString(reader.GetOrdinal("path"));
 
-            int buildingIdColumnIndex = reader.GetOrdinal("image_building_id");
-            long? buildingId = reader.IsDBNull(buildingIdColumnIndex) ? null : reader.GetInt64(buildingIdColumnIndex);
+            if (reader.HasColumn("image_building_id"))
+            {
+                int columnIndex = reader.GetOrdinal("image_building_id");
+                long? buildingId = reader.IsDBNull(columnIndex) ? null : reader.GetInt64(columnIndex);
 
-            int neighborhoodIdColumnIndex = reader.GetOrdinal("image_neighborhood_id");
-            long? neighborhoodId = reader.IsDBNull(neighborhoodIdColumnIndex) ? null : reader.GetInt64(neighborhoodIdColumnIndex);
+                if (buildingId != null) return Image.ForBuilding(
+                    id,
+                    path,
+                    buildingId: buildingId.Value
+                );
+            }
 
-            int jobListingIdColumnIndex = reader.GetOrdinal("image_job_listing_id");
-            long? jobListingId = reader.IsDBNull(jobListingIdColumnIndex) ? null : reader.GetInt64(jobListingIdColumnIndex);
+            if (reader.HasColumn("image_building_id"))
+            {
+                int columnIndex = reader.GetOrdinal("image_neighborhood_id");
+                long? neighborhoodId = reader.IsDBNull(columnIndex) ? null : reader.GetInt64(columnIndex);
 
-            if (buildingId != null) return Image.ForBuilding(id, path, buildingId.Value);
-            if (neighborhoodId != null) return Image.ForNeighborhood(id, path, neighborhoodId.Value);
-            if (jobListingId != null) return Image.ForJobListing(id, path, jobListingId.Value);
+                if (neighborhoodId != null) return Image.ForNeighborhood(
+                    id,
+                    path,
+                    neighborhoodId: neighborhoodId.Value
+                );
+            }
 
-            throw new InvalidOperationException(
-                $"Slika sa id={id} nema nijednog vlasnika (building_id, neighborhood_id i job_listing_id su svi NULL). " +
-                "Ovo narušava single_owner constraint i ukazuje na korumpiran zapis u bazi.");
+            if (reader.HasColumn("image_job_listing_id"))
+            {
+                int columnIndex = reader.GetOrdinal("image_job_listing_id");
+                long? jobListingId = reader.IsDBNull(columnIndex) ? null : reader.GetInt64(columnIndex);
+
+                if (jobListingId != null) return Image.ForJobListing(
+                    id,
+                    path,
+                    jobListingId: jobListingId.Value
+                );
+            }
+
+            throw new Exception($"Couldn't read image '{id}' because building_id = neighborhood_id = image_job_listing_id = NULL");
         }
 
         public override Dictionary<string, object?> MapToQueryParameters(Image entity)

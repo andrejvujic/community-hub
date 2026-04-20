@@ -4,6 +4,8 @@ using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Search;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings
 {
@@ -53,11 +55,20 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             OnPropertyChanged(nameof(HasMemberships));
         }
 
-        private void CreateAppartmentAccessRequestButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void CreateAppartmentAccessRequestButton_Click(object sender, RoutedEventArgs e)
             => Push(new SearchBuildingsPage(_userId));
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private void OpenBuildingOptionsPageButton_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not BuildingMembershipGroup group) return;
+
+            Push(new BuildingOptionsPage(group.Building));
+        }
     }
 }

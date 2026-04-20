@@ -7,63 +7,13 @@ namespace CommunityHub.Application.Database.Repositories
     {
         private readonly ImageMapper _imageMapper = new ImageMapper();
 
-        public Image CreateForBuilding(Image image, long buildingId)
-        {
-            var prepared = Image.ForBuilding(0, image.Path, buildingId);
-
-            var query = PostgresQuery.Create(
-                @"INSERT INTO images (path, building_id, neighborhood_id, job_listing_id)
-                  VALUES (@path, @building_id, @neighborhood_id, @job_listing_id)
-                  RETURNING id"
-            )
-            .ExtendParameters(_imageMapper.MapToQueryParameters(prepared));
-
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
-
-            return Image.ForBuilding(generatedId, prepared.Path, buildingId);
-        }
-
-        public Image CreateForNeighborhood(Image image, long neighborhoodId)
-        {
-            var prepared = Image.ForNeighborhood(0, image.Path, neighborhoodId);
-
-            var query = PostgresQuery.Create(
-                @"INSERT INTO images (path, building_id, neighborhood_id, job_listing_id)
-                  VALUES (@path, @building_id, @neighborhood_id, @job_listing_id)
-                  RETURNING id"
-            )
-            .ExtendParameters(_imageMapper.MapToQueryParameters(prepared));
-
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
-
-            return Image.ForNeighborhood(generatedId, prepared.Path, neighborhoodId);
-        }
-
-        public Image CreateForJobListing(Image image, long jobListingId)
-        {
-            var prepared = Image.ForJobListing(0, image.Path, jobListingId);
-
-            var query = PostgresQuery.Create(
-                @"INSERT INTO images (path, building_id, neighborhood_id, job_listing_id)
-                  VALUES (@path, @building_id, @neighborhood_id, @job_listing_id)
-                  RETURNING id"
-            )
-            .ExtendParameters(_imageMapper.MapToQueryParameters(prepared));
-
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
-
-            return Image.ForJobListing(generatedId, prepared.Path, jobListingId);
-        }
-
         public List<Image> GetByBuildingId(long buildingId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
                     image.id AS image_id,
                     image.path AS path,
-                    image.building_id AS image_building_id,
-                    image.neighborhood_id AS image_neighborhood_id,
-                    image.job_listing_id AS image_job_listing_id
+                    image.building_id AS image_building_id
                   FROM images image
                   WHERE image.building_id = @building_id"
             )
@@ -85,9 +35,7 @@ namespace CommunityHub.Application.Database.Repositories
                 @"SELECT
                     image.id AS image_id,
                     image.path AS path,
-                    image.building_id AS image_building_id,
-                    image.neighborhood_id AS image_neighborhood_id,
-                    image.job_listing_id AS image_job_listing_id
+                    image.neighborhood_id AS image_neighborhood_id
                   FROM images image
                   WHERE image.neighborhood_id = @neighborhood_id"
             )
@@ -109,8 +57,6 @@ namespace CommunityHub.Application.Database.Repositories
                 @"SELECT
                     image.id AS image_id,
                     image.path AS path,
-                    image.building_id AS image_building_id,
-                    image.neighborhood_id AS image_neighborhood_id,
                     image.job_listing_id AS image_job_listing_id
                   FROM images image
                   WHERE image.job_listing_id = @job_listing_id"
@@ -154,21 +100,18 @@ namespace CommunityHub.Application.Database.Repositories
             .GetRowsAffectedCount();
         }
 
-        // "Stari" kod:
-        public Image Create(Image image, long? neighborhoodId = null, long? buildingId = null)
+        public Image Create(Image image)
         {
-            var preparedImage = image.CopyWith(neighborhoodId: neighborhoodId, buildingId: buildingId);
-
             var query = PostgresQuery.Create(
                 @"INSERT INTO images (path, building_id, neighborhood_id) 
                 VALUES (@path, @image_building_id, @image_neighborhood_id) 
                 RETURNING id"
             )
-            .ExtendParameters(_imageMapper.MapToQueryParameters(preparedImage));
+            .ExtendParameters(_imageMapper.MapToQueryParameters(image));
 
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
 
-            return preparedImage.CopyWith(id: generatedId);
+            return image.CopyWith(id: id);
         }
     }
 }

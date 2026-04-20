@@ -44,7 +44,8 @@ namespace CommunityHub.Application.Database.Repositories
                 
                 building.id as building_id,
                 building.floor_count,
-                
+                building.apartment_count,
+
                 building_manager.id as building_manager_user_id,
                 building_manager.username as building_manager_username,
                 building_manager.password as building_manager_password,

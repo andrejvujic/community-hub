@@ -17,6 +17,7 @@ public class ApartmentRepository
                 
                 building.id as building_id,
                 building.floor_count,
+                building.apartment_count,
                 
                 building_manager.id as building_manager_user_id,
                 building_manager.username as building_manager_username,
@@ -80,7 +81,8 @@ public class ApartmentRepository
                 
                 building.id AS building_id,
                 building.floor_count,
-                
+                building.apartment_count,
+
                 building_manager.id AS building_manager_user_id,
                 building_manager.username AS building_manager_username,
                 building_manager.password AS building_manager_password,
