@@ -11,7 +11,9 @@ namespace CommunityHub.Ui.Helpers.Converters
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not AdType type) return null;
+            string? defaultText = parameter is string parameterValue ? parameterValue : null;
+
+            if (value is not AdType type) return defaultText;
 
             switch (type)
             {
@@ -21,7 +23,7 @@ namespace CommunityHub.Ui.Helpers.Converters
                     return _requestText;
             }
 
-            return null;
+            return defaultText;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
