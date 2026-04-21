@@ -14,138 +14,175 @@
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter"/>
         <converters:AdStatusToStringConverter x:Key="AdStatusToStringConverter"/>
         <converters:AdStatusToIconCodeConverter x:Key="AdStatusToIconCodeConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid Visibility="{Binding HasAds, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="#dedede">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Background="#dedede">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="64"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Grid
-                 Grid.Column="0"
-                 MouseLeftButtonDown="BackButton_Click"
-                 Background="Transparent">
+                <Grid
+                     Grid.Column="0"
+                     MouseLeftButtonDown="BackButton_Click"
+                     Background="Transparent">
+                    <TextBlock
+                         Text="&#xf177;"
+                         FontSize="24"
+                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+                </Grid>
+
                 <TextBlock
-                     Text="&#xf177;"
-                     FontSize="24"
-                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"/>
+                     Grid.Column="1"
+                     Text="Moji oglasi"
+                     FontSize="20"
+                     VerticalAlignment="Center">
+                </TextBlock>
             </Grid>
 
-            <TextBlock
-                 Grid.Column="1"
-                 Text="Moji oglasi"
-                 FontSize="20"
-                 VerticalAlignment="Center">
-            </TextBlock>
-        </Grid>
+            <Grid Grid.Row="1" Margin="8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="AdsItemsControl" ItemsSource="{Binding Ads}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Padding="8"
+                                    Margin="0,0,0,8"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <Binding Path="IsOffer"/>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Background" Value="#dedede"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
 
-        <Grid Grid.Row="1" Margin="8">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="AdsItemsControl" ItemsSource="{Binding Ads}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border
-                                Padding="8"
-                                Margin="0,0,0,8"
-                                BorderBrush="Gray"
-                                BorderThickness="1">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Value="True">
-                                                <DataTrigger.Binding>
-                                                    <Binding Path="IsOffer"/>
-                                                </DataTrigger.Binding>
-                                                <Setter Property="Background" Value="#dedede"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                                    <Grid Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                <Grid Background="Transparent">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <StackPanel Grid.Column="0">
-                                        <TextBlock FontSize="18" FontWeight="Bold">
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0} — {1}">
-                                                    <Binding Path="Type" Converter="{StaticResource AdTypeToStringConverter}"/>
-                                                    <Binding Path="Category" Converter="{StaticResource AdCategoryToStringConverter}"/>
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-
-                                        <Separator Height="2" Opacity="0"/>
-
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Text="&#xf073;"
-                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                VerticalAlignment="Center"
-                                                FontSize="16"
-                                                Padding="0"/>
-
-                                            <Separator Width="8" Opacity="0"/>
-
-                                            <TextBlock FontSize="14">
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock FontSize="18" FontWeight="Bold">
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
-                                                        <Binding
-                                                            Path="StartDate"/>
-                                                        <Binding
-                                                            Path="EndDate"/>
+                                                    <MultiBinding StringFormat="{}{0} — {1}">
+                                                        <Binding Path="Type" Converter="{StaticResource AdTypeToStringConverter}"/>
+                                                        <Binding Path="Category" Converter="{StaticResource AdCategoryToStringConverter}"/>
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
+
+                                            <Separator Height="2" Opacity="0"/>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Text="&#xf073;"
+                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    Padding="0"/>
+
+                                                <Separator Width="8" Opacity="0"/>
+
+                                                <TextBlock FontSize="14">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                                            <Binding
+                                                    Path="StartDate"/>
+                                                            <Binding
+                                                    Path="EndDate"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+
+                                            <Separator Height="2" Opacity="0"/>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Text="{Binding Status, Converter={StaticResource AdStatusToIconCodeConverter}}"
+                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    Padding="0"/>
+
+                                                <Separator Width="8" Opacity="0"/>
+
+                                                <TextBlock
+                                                    FontSize="14"
+                                                    Text="{Binding Status, Converter={StaticResource AdStatusToStringConverter}}"/>
+                                            </StackPanel>
+
                                         </StackPanel>
 
-                                        <Separator Height="2" Opacity="0"/>
-
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Text="{Binding Status, Converter={StaticResource AdStatusToIconCodeConverter}}"
-                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                VerticalAlignment="Center"
-                                                FontSize="16"
-                                                Padding="0"/>
-
-                                            <Separator Width="8" Opacity="0"/>
-
-                                            <TextBlock
-                                                FontSize="14"
-                                                Text="{Binding Status, Converter={StaticResource AdStatusToStringConverter}}"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Text="&#xf178;"
-                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                        VerticalAlignment="Center"
-                                        FontSize="24"
-                                        Margin="0,0,8,0"
-                                        Padding="0"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Text="&#xf178;"
+                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                            VerticalAlignment="Center"
+                                            FontSize="24"
+                                            Margin="0,0,8,0"
+                                            Padding="0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
         </Grid>
+
+        <Grid Visibility="{Binding HasAds, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
+            <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Nema oglasa" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock
+                        Text="Nema oglasa za prikazivanje. Još uvijek niste naparvili nijedan oglas na oglasnoj tabli ove zgrade. Svoj prvi oglas možete napraviti klikom na dugme ispod."
+                        TextWrapping="Wrap" 
+                        TextAlignment="Center"
+                        FontSize="16"
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+
+        <Button
+            Content="&#x2b;"
+            Foreground="White"
+            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+            FontSize="24"
+            Margin="16"
+            BorderThickness="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Click="CreateAdButton_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse Width="64" Height="64" Fill="Black"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </navigation:MainNavigatorConsumerPage>
