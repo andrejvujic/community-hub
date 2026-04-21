@@ -823,6 +823,18 @@ INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, da
 (9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
 (10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
 
+INSERT INTO city_facilities (id, name, description, city_id) VALUES
+(1,  'Bioskop Fontana',         'Gradski bioskop sa 3 sale i najnovijim filmovima.',                          1),
+(2,  'Gradski bazen Tašmajdan', 'Olimpijski bazen sa zatvorenim i otvorenim delom.',                          1),
+(3,  'Luna park Ušće',          'Sezonski luna park na obali reke sa raznim atrakcijama.',                    1),
+(4,  'Gradska biblioteka NS',   'Najveća biblioteka u Novom Sadu sa čitaonicom i dečjim odeljanjem.',         2),
+(5,  'Sportski centar Vojvodina','Višenamenska sportska hala sa teretanom i sportskim terenima.',             2),
+(6,  'Zoološki vrt Niš',        'Gradski zoološki vrt sa domaćim i egzotičnim životinjama.',                  3),
+(7,  'Aqua park Kragujevac',    'Vodeni park sa toboganima i bazenima za sve uzraste.',                       4),
+(8,  'Planetarijum Subotica',   'Edukativni centar sa projekcijama o svemiru.',                               5),
+(9,  'Gradski park Pančevo',    'Uređeni gradski park sa pozornicom i dečjim igralištem.',                    6),
+(10, 'Kulturni centar Čačak',   'Višenamenska kulturna ustanova sa koncertnom salom i izložbenim prostorom.', 7);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
