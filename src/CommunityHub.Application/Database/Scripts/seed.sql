@@ -835,6 +835,20 @@ INSERT INTO city_facilities (id, name, description, city_id) VALUES
 (9,  'Gradski park Pančevo',    'Uređeni gradski park sa pozornicom i dečjim igralištem.',                    6),
 (10, 'Kulturni centar Čačak',   'Višenamenska kulturna ustanova sa koncertnom salom i izložbenim prostorom.', 7);
 
+INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id, neighborhood_id) VALUES
+(1,  '2026-03-05 10:00:00', '2026-03-05 13:00:00', 1,  1),
+(2,  '2026-03-12 14:00:00', '2026-03-12 17:00:00', 2,  2),
+(3,  '2026-03-20 09:00:00', '2026-03-20 12:00:00', 3,  3),
+(4,  '2026-04-02 11:00:00', '2026-04-02 14:00:00', 4,  4),
+(5,  '2026-04-10 15:00:00', '2026-04-10 18:00:00', 5,  5),
+(6,  '2026-04-18 10:00:00', '2026-04-18 12:00:00', 1,  6),
+(7,  '2026-04-25 13:00:00', '2026-04-25 16:00:00', 6,  7),
+(8,  '2026-05-03 09:00:00', '2026-05-03 11:00:00', 7,  8),
+(9,  '2026-05-14 14:00:00', '2026-05-14 17:00:00', 8,  9),
+(10, '2026-05-22 10:00:00', '2026-05-22 13:00:00', 9,  10),
+(11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
+(12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
