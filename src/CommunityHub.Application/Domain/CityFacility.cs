@@ -16,5 +16,18 @@
             City = city;
             Name = name;
         }
+
+        public CityFacility CopyWith(
+            long? id = null,
+            City? city = null,
+            string? name = null
+        )
+        {
+            return new CityFacility(
+                city ?? City,
+                name ?? Name,
+                id ?? Id
+            );
+        }
     }
 }
