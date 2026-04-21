@@ -1,0 +1,1 @@
+CREATE TYPE meeting_themes  AS ENUM ('welcome', 'motivation');

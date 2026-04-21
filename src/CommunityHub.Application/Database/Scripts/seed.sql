@@ -811,6 +811,83 @@ INSERT INTO images (path, neighborhood_id) VALUES
 ('/Resources/Images/neighborhood_1.jpg', 15),
 ('/Resources/Images/neighborhood_2.jpg', 15);
 
+INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
+(1,  'welcome',    '19:00', '2026-05-01', '2026-05-05', '2026-05-03', 'scheduled',      1),
+(2,  'motivation', '18:00', '2026-05-10', '2026-05-14', '2026-05-12', 'scheduled',      2),
+(3,  'welcome',    '20:00', '2026-05-15', '2026-05-19', NULL,         'in_preparation', 3),
+(4,  'motivation', '17:00', '2026-05-20', '2026-05-24', NULL,         'in_preparation', 4),
+(5,  'welcome',    '19:00', '2026-04-01', '2026-04-05', '2026-04-02', 'scheduled',      5),
+(6,  'motivation', '18:00', '2026-03-10', '2026-03-14', NULL,         'cancelled',      6),
+(7,  'welcome',    '20:00', '2026-05-22', '2026-05-26', NULL,         'in_preparation', 7),
+(8,  'motivation', '19:00', '2026-05-01', '2026-05-05', '2026-05-04', 'scheduled',      8),
+(9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
+(10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
+
+INSERT INTO city_facilities (id, name, description, city_id) VALUES
+(1,  'Bioskop Fontana',         'Gradski bioskop sa 3 sale i najnovijim filmovima.',                          1),
+(2,  'Gradski bazen Tašmajdan', 'Olimpijski bazen sa zatvorenim i otvorenim delom.',                          1),
+(3,  'Luna park Ušće',          'Sezonski luna park na obali reke sa raznim atrakcijama.',                    1),
+(4,  'Gradska biblioteka NS',   'Najveća biblioteka u Novom Sadu sa čitaonicom i dečjim odeljanjem.',         2),
+(5,  'Sportski centar Vojvodina','Višenamenska sportska hala sa teretanom i sportskim terenima.',             2),
+(6,  'Zoološki vrt Niš',        'Gradski zoološki vrt sa domaćim i egzotičnim životinjama.',                  3),
+(7,  'Aqua park Kragujevac',    'Vodeni park sa toboganima i bazenima za sve uzraste.',                       4),
+(8,  'Planetarijum Subotica',   'Edukativni centar sa projekcijama o svemiru.',                               5),
+(9,  'Gradski park Pančevo',    'Uređeni gradski park sa pozornicom i dečjim igralištem.',                    6),
+(10, 'Kulturni centar Čačak',   'Višenamenska kulturna ustanova sa koncertnom salom i izložbenim prostorom.', 7);
+
+INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id, neighborhood_id) VALUES
+(1,  '2026-03-05 10:00:00', '2026-03-05 13:00:00', 1,  1),
+(2,  '2026-03-12 14:00:00', '2026-03-12 17:00:00', 2,  2),
+(3,  '2026-03-20 09:00:00', '2026-03-20 12:00:00', 3,  3),
+(4,  '2026-04-02 11:00:00', '2026-04-02 14:00:00', 4,  4),
+(5,  '2026-04-10 15:00:00', '2026-04-10 18:00:00', 5,  5),
+(6,  '2026-04-18 10:00:00', '2026-04-18 12:00:00', 1,  6),
+(7,  '2026-04-25 13:00:00', '2026-04-25 16:00:00', 6,  7),
+(8,  '2026-05-03 09:00:00', '2026-05-03 11:00:00', 7,  8),
+(9,  '2026-05-14 14:00:00', '2026-05-14 17:00:00', 8,  9),
+(10, '2026-05-22 10:00:00', '2026-05-22 13:00:00', 9,  10),
+(11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
+(12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
+
+INSERT INTO budget_category_balances (id, category, neighborhood_id, total_amount) VALUES
+(1,  'street_maintenance', 1,  120000.00),
+(2,  'park_maintenance',   1,  95000.00),
+(3,  'lighting',           1,  60000.00),
+(4,  'cleanliness',        1,  45000.00),
+(5,  'greenery',           1,  80000.00),
+(6,  'emergency_repairs',  1,  50000.00),
+(7,  'street_maintenance', 2,  200000.00),
+(8,  'park_maintenance',   2,  150000.00),
+(9,  'lighting',           2,  90000.00),
+(10, 'cleanliness',        2,  70000.00),
+(11, 'greenery',           2,  110000.00),
+(12, 'emergency_repairs',  2,  80000.00),
+(13, 'street_maintenance', 3,  100000.00),
+(14, 'park_maintenance',   3,  75000.00),
+(15, 'lighting',           3,  50000.00),
+(16, 'cleanliness',        4,  55000.00),
+(17, 'greenery',           4,  40000.00),
+(18, 'street_maintenance', 5,  160000.00),
+(19, 'park_maintenance',   5,  130000.00),
+(20, 'emergency_repairs',  5,  90000.00);
+
+INSERT INTO budget_expenses (id, amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
+(1,  15000.00, 'Krpljenje rupa na Njegoševoj ulici.',                    '2026-02-10', 1,  11),
+(2,  22000.00, 'Košenje trave i uređenje drvoreda u parku.',             '2026-02-15', 2,  11),
+(3,  8000.00,  'Zamena 10 uličnih svetiljki na Vračaru.',                '2026-03-01', 3,  11),
+(4,  5000.00,  'Nabavka kanti za otpad i postavljanje.',                 '2026-03-05', 4,  11),
+(5,  12000.00, 'Sadnja novih stabala duž bulevara.',                     '2026-03-20', 5,  11),
+(6,  30000.00, 'Hitna popravka vodovodne cevi u Bloku 45.',              '2026-02-08', 12, 12),
+(7,  45000.00, 'Asfaltiranje dela ulice Jurija Gagarina.',               '2026-03-12', 7,  12),
+(8,  18000.00, 'Postavljanje klupa i stolova u parku.',                  '2026-03-25', 8,  12),
+(9,  25000.00, 'Čišćenje i sanacija fasada zgrada u Grbavici.',          '2026-02-20', 14, 13),
+(10, 10000.00, 'Popravka javne rasvete na Bulevaru oslobođenja.',        '2026-04-01', 15, 13),
+(11, 35000.00, 'Izgradnja dečjeg igrališta u centru grada.',             '2026-03-15', 17, 14),
+(12, 20000.00, 'Čišćenje i održavanje centralnog trga.',                 '2026-04-05', 16, 14),
+(13, 50000.00, 'Rekonstrukcija trotoara u Aerodromskom naselju.',        '2026-02-25', 18, 15),
+(14, 28000.00, 'Uređenje parka kod sportskog centra.',                   '2026-03-30', 19, 15),
+(15, 15000.00, 'Hitna popravka kanalizacije u Aerodromskom naselju.',    '2026-04-10', 20, 15);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
