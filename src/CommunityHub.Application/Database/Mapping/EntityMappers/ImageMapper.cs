@@ -27,7 +27,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 );
             }
 
-            if (reader.HasColumn("image_building_id"))
+            if (reader.HasColumn("image_neighborhood_id"))
             {
                 int columnIndex = reader.GetOrdinal("image_neighborhood_id");
                 long? neighborhoodId = reader.IsDBNull(columnIndex) ? null : reader.GetInt64(columnIndex);
@@ -59,9 +59,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             return new Dictionary<string, object?>
             {
                 { "path", entity.Path },
-                { "building_id", entity.BuildingId },
-                { "neighborhood_id", entity.NeighborhoodId },
-                { "job_listing_id", entity.JobListingId }
+                { "image_building_id", entity.BuildingId },
+                { "image_neighborhood_id", entity.NeighborhoodId },
+                { "image_job_listing_id", entity.JobListingId }
             };
         }
     }
