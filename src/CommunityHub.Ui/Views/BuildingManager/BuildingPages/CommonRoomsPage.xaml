@@ -237,8 +237,38 @@
                 <Grid Grid.Row="0">
                     <TextBlock FontSize="25" Text="Pregled zajedničkih prostorija" />
                 </Grid>
-            </Grid>
 
+                <Grid Grid.Row="1" Margin="0,20,0,0">
+                    <DataGrid>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Header="Naziv prostorije" />
+
+                            <DataGridTextColumn Width="*" Header="Sprat" />
+
+                            <DataGridTextColumn Width="*" Header="Način iznajmljivanja" />
+
+                            <DataGridTemplateColumn Width="*" Header="Akcija">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                            FontSize="25"
+                                            Text="&#xf133;" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
