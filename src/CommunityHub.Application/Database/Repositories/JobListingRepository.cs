@@ -100,7 +100,7 @@ public class JobListingRepository
         var savedImages = new List<Image>();
         foreach (var image in listing.WorkSamples)
         {
-            var savedImage = _imageRepository.CreateForJobListing(image, newId);
+            var savedImage = _imageRepository.Create(image);
             savedImages.Add(savedImage);
         }
 
