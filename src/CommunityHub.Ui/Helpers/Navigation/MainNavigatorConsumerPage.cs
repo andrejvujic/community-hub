@@ -19,10 +19,12 @@ namespace CommunityHub.Ui.Helpers.Navigation
                 window.PushReplacement(page);
         }
 
-        protected void Pop()
+        protected void Pop(object? returnValue = null)
         {
             if (Window.GetWindow(this) is MainNavigatorHostWindow window)
-                window.Pop();
+                window.Pop(
+                    returnValue: returnValue
+                );
         }
 
         protected void PopAll()
