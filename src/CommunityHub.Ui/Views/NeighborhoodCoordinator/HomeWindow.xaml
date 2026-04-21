@@ -59,7 +59,7 @@
                     <Label Content="Tema: (Ctrl + T)" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
 
                     <ComboBox x:Name="ThemeComboBox"
-                              Width="80"
+                              Width="85"
                               Height="30"
                               SelectedIndex="0"
                               SelectionChanged="ThemeComboBox_SelectionChanged"

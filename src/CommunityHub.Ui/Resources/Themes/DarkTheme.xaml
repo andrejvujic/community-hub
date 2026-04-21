@@ -8,4 +8,5 @@
     <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B0B3B8"/>
 
     <SolidColorBrush x:Key="BorderBrush" Color="#3E4042"/>
+    <SolidColorBrush x:Key="ItemBorderBrush" Color="#4E4F50"/>
 </ResourceDictionary>
