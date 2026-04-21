@@ -42,13 +42,13 @@
                 </Grid>
 
                 <ListBox x:Name="NeighborhoodsListBox" 
-         Grid.Row="1" 
-         Margin="10,0,10,10"
-         ItemsSource="{Binding Neighborhoods}"
-         SelectionChanged="NeighborhoodsListBox_SelectionChanged"
-         Style="{StaticResource NeighborhoodListBoxStyle}"
-         ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                         Grid.Row="1" 
+                         Margin="10,0,10,10"
+                         ItemsSource="{Binding Neighborhoods}"
+                         SelectionChanged="NeighborhoodsListBox_SelectionChanged"
+                         Style="{StaticResource NeighborhoodListBoxStyle}"
+                         ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
                 </ListBox>
             </Grid>
         </Border>
