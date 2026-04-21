@@ -871,6 +871,23 @@ INSERT INTO budget_category_balances (id, category, neighborhood_id, total_amoun
 (19, 'park_maintenance',   5,  130000.00),
 (20, 'emergency_repairs',  5,  90000.00);
 
+INSERT INTO budget_expenses (id, amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
+(1,  15000.00, 'Krpljenje rupa na Njegoševoj ulici.',                    '2026-02-10', 1,  11),
+(2,  22000.00, 'Košenje trave i uređenje drvoreda u parku.',             '2026-02-15', 2,  11),
+(3,  8000.00,  'Zamena 10 uličnih svetiljki na Vračaru.',                '2026-03-01', 3,  11),
+(4,  5000.00,  'Nabavka kanti za otpad i postavljanje.',                 '2026-03-05', 4,  11),
+(5,  12000.00, 'Sadnja novih stabala duž bulevara.',                     '2026-03-20', 5,  11),
+(6,  30000.00, 'Hitna popravka vodovodne cevi u Bloku 45.',              '2026-02-08', 12, 12),
+(7,  45000.00, 'Asfaltiranje dela ulice Jurija Gagarina.',               '2026-03-12', 7,  12),
+(8,  18000.00, 'Postavljanje klupa i stolova u parku.',                  '2026-03-25', 8,  12),
+(9,  25000.00, 'Čišćenje i sanacija fasada zgrada u Grbavici.',          '2026-02-20', 14, 13),
+(10, 10000.00, 'Popravka javne rasvete na Bulevaru oslobođenja.',        '2026-04-01', 15, 13),
+(11, 35000.00, 'Izgradnja dečjeg igrališta u centru grada.',             '2026-03-15', 17, 14),
+(12, 20000.00, 'Čišćenje i održavanje centralnog trga.',                 '2026-04-05', 16, 14),
+(13, 50000.00, 'Rekonstrukcija trotoara u Aerodromskom naselju.',        '2026-02-25', 18, 15),
+(14, 28000.00, 'Uređenje parka kod sportskog centra.',                   '2026-03-30', 19, 15),
+(15, 15000.00, 'Hitna popravka kanalizacije u Aerodromskom naselju.',    '2026-04-10', 20, 15);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
