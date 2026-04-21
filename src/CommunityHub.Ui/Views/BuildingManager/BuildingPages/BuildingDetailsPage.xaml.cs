@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommunityHub.Application.Domain;
+using CommunityHub.Ui.Views.BuildingManager.BuildingPages;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
@@ -53,6 +54,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     BuildingFrame.Navigate(new ApartmentMembershipsPage(_user, _building));
                     break;
                 case "CommonRoom":
+                    BuildingFrame.Navigate(new CommonRoomsPage(_user, _building));
                     break;
                 case "RentingRoom":
                     break;
