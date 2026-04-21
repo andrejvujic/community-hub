@@ -133,7 +133,7 @@
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
-                <Grid Background="Transparent">
+                <Grid Background="Transparent" MouseLeftButtonDown="OpenPersonalAdsPageButton_Click">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="12"/>

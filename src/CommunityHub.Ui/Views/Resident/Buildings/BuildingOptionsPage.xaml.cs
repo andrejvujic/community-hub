@@ -8,14 +8,16 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
 {
     public partial class BuildingOptionsPage : MainNavigatorConsumerPage
     {
+        private readonly long _userId;
         private readonly ImageRepository _imageRepository = new();
 
         public Building Building { get; }
-        public BuildingOptionsPage(Building building)
+        public BuildingOptionsPage(long userId, Building building)
         {
             InitializeComponent();
             DataContext = this;
 
+            _userId = userId;
             Building = building;
         }
 
@@ -25,6 +27,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             => Push(new BuildingDetailsPage(Building));
 
         private void OpenNoticeBoardPageButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(new NoticeBoardPage(Building.Id));
+            => Push(new NoticeBoardPage(
+                userId: _userId,
+                buildingId: Building.Id
+            ));
+
+        private void OpenPersonalAdsPageButton_Click(object sender, MouseButtonEventArgs e)
+            => Push(new PersonalAdsPage(userId: _userId));
     }
 }
