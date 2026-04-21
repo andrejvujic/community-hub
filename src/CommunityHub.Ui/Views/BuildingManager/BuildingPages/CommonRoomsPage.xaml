@@ -1,0 +1,296 @@
+﻿<Page
+    x:Class="CommunityHub.Ui.Views.BuildingManager.BuildingPages.CommonRoomsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="CommonRoomsPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="{StaticResource AppFontFamily}"
+    Loaded="CommonRoomsPage_Loaded"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter" />
+    </Page.Resources>
+
+    <Grid Margin="10,25,40,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBlock
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Cursor="Hand"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    FontSize="28"
+                    MouseLeftButtonDown="LeftArrow_Click"
+                    Text="&#xf060;" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <TextBlock
+                    x:Name="streetInfo"
+                    Margin="15,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="21" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20,25,20,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <TextBlock FontSize="25" Text="Kreiraj zajedničku prostoriju" />
+                </Grid>
+
+                <Grid
+                    Grid.Row="1"
+                    Margin="0,15,0,0"
+                    HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <TextBlock
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="28"
+                            Text="&#xe4eb;" />
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <TextBlock
+                            Margin="15,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            xml:space="preserve"
+                            FontSize="18"
+                            Text="Uneti podatke vezane za kreiranje zajedničke prostorije.&#10;Svako polje je obavezno uneti!"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <GroupBox
+                        Margin="0,20,20,0"
+                        Background="White"
+                        BorderBrush="Black"
+                        BorderThickness="2"
+                        FontSize="19"
+                        Header="Podaci">
+                        <Grid Margin="15,25,15,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid
+                                Grid.Row="0"
+                                Margin="0,0,0,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBlock Text="Naziv prostorije:" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBox x:Name="nameTextBox" Width="400" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="2"
+                                Margin="0,15,0,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBlock Text="Opis prostorije:" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="3"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBox
+                                    x:Name="descriptionTextBox"
+                                    Width="400"
+                                    Height="60"
+                                    AcceptsReturn="True"
+                                    FontSize="15"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="4"
+                                Margin="0,15,0,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBlock Text="Sprat:" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <xctk:IntegerUpDown
+                                    x:Name="floorsUpDown"
+                                    Width="70"
+                                    Increment="1"
+                                    Maximum="20"
+                                    Minimum="1"
+                                    TextAlignment="Center"
+                                    Value="1" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="6"
+                                Margin="0,15,0,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBlock Text="Način iznajmljivanja:" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="7"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <ComboBox Padding="10,4,10,4" Cursor="Hand">
+                                    <ComboBoxItem Content="jedan dan" IsSelected="True" />
+                                    <ComboBoxItem Content="više dana" />
+                                </ComboBox>
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="9"
+                                Margin="0,30,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <Button
+                                        x:Name="cancelButton"
+                                        Width="100"
+                                        Margin="0,0,15,0"
+                                        Padding="0,8,0,8"
+                                        Cursor="Hand">
+                                        Otkaži
+                                    </Button>
+                                    <Button
+                                        x:Name="confirmButton"
+                                        Width="100"
+                                        Margin="0,0,15,0"
+                                        Padding="0,8,0,8"
+                                        Cursor="Hand"
+                                        IsEnabled="True">
+                                        Potvrdi
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+
+            <Border
+                Grid.Column="1"
+                BorderBrush="Black"
+                BorderThickness="1" />
+
+            <Grid Grid.Column="2" Margin="20,0,20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <TextBlock FontSize="25" Text="Pregled zajedničkih prostorija" />
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="0,20,0,0">
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        HeadersVisibility="Column"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding CommonRooms}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Name}"
+                                Header="Naziv prostorije" />
+
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding FloorNumber}"
+                                Header="Sprat" />
+
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Type, Converter={StaticResource RentalTypeToStringConverter}}"
+                                Header="Način iznajmljivanja" />
+
+                            <DataGridTemplateColumn Width="*" Header="Akcija">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                            FontSize="25"
+                                            Text="&#xf133;" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
