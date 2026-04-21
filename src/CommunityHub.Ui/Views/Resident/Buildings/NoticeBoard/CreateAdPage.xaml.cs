@@ -55,7 +55,33 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }
         }
 
-        public DateTime? SelectedStartDate { get; set; }
+        // The start date can't be in the past.
+        public DateTime MinStartDate => DateTime.Now; 
+
+        // The start date can't be after the end date.
+        public DateTime? MaxStartDate => SelectedEndDate; 
+
+        // The end date can't be before the start date
+        // (or in the past if the start date hasn't been
+        // selected yet).
+        public DateTime MinEndDate => SelectedStartDate ?? DateTime.Now; 
+
+
+        private DateTime? _selectedStartDate;
+        public DateTime? SelectedStartDate
+        {
+            get => _selectedStartDate;
+            set
+            {
+                if (_selectedStartDate == value) return;
+                _selectedStartDate = value;
+                OnPropertyChanged(nameof(SelectedStartDate));
+                OnPropertyChanged(nameof(SelectedStartDateText));
+                OnPropertyChanged(nameof(SelectedDateRangeText));
+                OnPropertyChanged(nameof(MinEndDate));
+                OnPropertyChanged(nameof(IsDateRangeSelected));
+            }
+        }
         public string SelectedStartDateText {
             get
             {
@@ -64,7 +90,22 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }
         }
 
-        public DateTime? SelectedEndDate { get; set; }
+        private DateTime? _selectedEndDate;
+        public DateTime? SelectedEndDate
+        {
+            get => _selectedEndDate;
+            set
+            {
+                if (_selectedEndDate == value) return;
+                _selectedEndDate = value;
+                OnPropertyChanged(nameof(SelectedEndDate));
+                OnPropertyChanged(nameof(SelectedEndDateText));
+                OnPropertyChanged(nameof(SelectedDateRangeText));
+                OnPropertyChanged(nameof(MaxStartDate));
+                OnPropertyChanged(nameof(IsDateRangeSelected));
+            }
+        }
+
         public string SelectedEndDateText
         {
             get
@@ -82,6 +123,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 return $"{SelectedStartDateText} — {SelectedEndDateText}";
             }
         }
+
+        public bool IsDateRangeSelected => SelectedStartDate is not null && SelectedEndDate is not null;
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
@@ -113,6 +156,19 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             => SelectDateRangeOverlay.Visibility = Visibility.Collapsed;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OpenStartDatePickerButton_Click(object sender, MouseButtonEventArgs e)
+            => StartDatePicker.Visibility = Visibility.Visible;
+
+        private void CloseStartDatePickerButton_Click(object sender, RoutedEventArgs e)
+            => StartDatePicker.Visibility = Visibility.Collapsed;
+
+        private void OpenEndDatePickerButton_Click(object sender, MouseButtonEventArgs e)
+            => EndDatePicker.Visibility = Visibility.Visible;
+        private void CloseEndDatePickerButton_Click(object sender, RoutedEventArgs e)
+            => EndDatePicker.Visibility = Visibility.Collapsed;
+
+
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

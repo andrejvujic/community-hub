@@ -8,7 +8,8 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Objavljivanje oglasa"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      xml:lang="sr-Latn-RS">
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
@@ -178,6 +179,7 @@
                 Width="192"
                 Height="72"/>
 
+            <!-- Overlay za biranje opsega datuma u kojem oglas vazi. -->
             <Grid
                 x:Name="SelectDateRangeOverlay"
                 Visibility="Collapsed"
@@ -222,7 +224,7 @@
                             Background="#dedede"
                             BorderBrush="Gray"
                             BorderThickness="1">
-                            <Grid Background="#dedede" Height="48">
+                            <Grid Background="#dedede" Height="48" MouseLeftButtonDown="OpenStartDatePickerButton_Click">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -256,7 +258,7 @@
                             Background="#dedede"
                             BorderBrush="Gray"
                             BorderThickness="1">
-                            <Grid Background="#dedede" Height="48">
+                            <Grid Background="#dedede" Height="48"  MouseLeftButtonDown="OpenEndDatePickerButton_Click">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -287,7 +289,79 @@
                             FontSize="18"
                             HorizontalAlignment="Stretch"
                             Click="CloseSelectDateRangeMenuButton_Click"
-                            Content="Zatvori"/>
+                            IsEnabled="{Binding IsDateRangeSelected}"
+                            Content="Potvrdi"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Kalendar za biranje pocetnog datuma. -->
+            <Grid
+                x:Name="StartDatePicker"
+                Visibility="Collapsed"
+                Background="#33000000">
+                <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                            <Viewbox  Stretch="Uniform">
+                                <Calendar
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    DisplayDateStart="{Binding MinStartDate, Mode=OneWay}"
+                                    DisplayDateEnd="{Binding MaxStartDate, Mode=OneWay}"
+                                    SelectedDate="{Binding SelectedStartDate}"/>
+                            </Viewbox>
+                        </Border>
+
+                        <Button
+                            Grid.Row="2"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="CloseStartDatePickerButton_Click"
+                            Content="Potvrdi"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Kalendar za biranje krajnjeg datuma. -->
+            <Grid
+                x:Name="EndDatePicker"
+                Visibility="Collapsed"
+                Background="#33000000">
+                <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                            <Viewbox  Stretch="Uniform">
+                                <Calendar
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    DisplayDateStart="{Binding MinEndDate, Mode=OneWay}"
+                                    SelectedDate="{Binding SelectedEndDate}"/>
+                            </Viewbox>
+                        </Border>
+
+                        <Button
+                            Grid.Row="2"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="CloseEndDatePickerButton_Click"
+                            Content="Potvrdi"/>
                     </Grid>
                 </Border>
             </Grid>
