@@ -849,6 +849,28 @@ INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id
 (11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
 (12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
 
+INSERT INTO budget_category_balances (id, category, neighborhood_id, total_amount) VALUES
+(1,  'street_maintenance', 1,  120000.00),
+(2,  'park_maintenance',   1,  95000.00),
+(3,  'lighting',           1,  60000.00),
+(4,  'cleanliness',        1,  45000.00),
+(5,  'greenery',           1,  80000.00),
+(6,  'emergency_repairs',  1,  50000.00),
+(7,  'street_maintenance', 2,  200000.00),
+(8,  'park_maintenance',   2,  150000.00),
+(9,  'lighting',           2,  90000.00),
+(10, 'cleanliness',        2,  70000.00),
+(11, 'greenery',           2,  110000.00),
+(12, 'emergency_repairs',  2,  80000.00),
+(13, 'street_maintenance', 3,  100000.00),
+(14, 'park_maintenance',   3,  75000.00),
+(15, 'lighting',           3,  50000.00),
+(16, 'cleanliness',        4,  55000.00),
+(17, 'greenery',           4,  40000.00),
+(18, 'street_maintenance', 5,  160000.00),
+(19, 'park_maintenance',   5,  130000.00),
+(20, 'emergency_repairs',  5,  90000.00);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
