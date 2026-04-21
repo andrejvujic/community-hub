@@ -20,9 +20,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not AdType selectedType) return;
+            if (element.DataContext is not AdType type) return;
+            if (type == SelectedType) return;
 
-            Pop(selectedType);
+            Pop(type);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();

@@ -21,9 +21,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not AdCategory selectedCategory) return;
+            if (element.DataContext is not AdCategory category) return;
+            if (category == SelectedCategory) return;
 
-            Pop(selectedCategory);
+            Pop(category);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
