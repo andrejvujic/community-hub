@@ -11,6 +11,7 @@
       FontFamily="{StaticResource AppFontFamily}">
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter"/>
+        <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -78,7 +79,7 @@
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} — {1}">
                                                     <Binding Path="Type" Converter="{StaticResource AdTypeToStringConverter}"/>
-                                                    <Binding Path="Category"/>
+                                                    <Binding Path="Category" Converter="{StaticResource AdCategoryToStringConverter}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
