@@ -25,5 +25,24 @@
             Description = description;
             ExpenseDate = expenseDate;
         }
+
+        public BudgetExpense CopyWith(
+            long? id = null,
+            BudgetCategoryBalance? budgetCategoryBalance = null,
+            User? coordinator = null,
+            decimal? amount = null,
+            string? description = null,
+            DateOnly? expenseDate = null
+        )
+        {
+            return new BudgetExpense(
+                budgetCategoryBalance ?? BudgetCategoryBalance,
+                coordinator ?? Coordinator,
+                amount ?? Amount,
+                description ?? Description,
+                expenseDate ?? ExpenseDate,
+                id ?? Id
+            );
+        }
     }
 }
