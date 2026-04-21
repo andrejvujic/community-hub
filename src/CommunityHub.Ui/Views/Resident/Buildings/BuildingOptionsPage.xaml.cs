@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings
@@ -22,5 +23,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
 
         private void OpenBuildingDetailsPageButton_Click(object sender, MouseButtonEventArgs e)
             => Push(new BuildingDetailsPage(Building));
+
+        private void OpenNoticeBoardPageButton_Click(object sender, MouseButtonEventArgs e)
+            => Push(new NoticeBoardPage(Building.Id));
     }
 }
