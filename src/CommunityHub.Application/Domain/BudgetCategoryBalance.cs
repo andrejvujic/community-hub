@@ -19,5 +19,20 @@
             Category = category;
             TotalAmount = totalAmount;
         }
+
+        public BudgetCategoryBalance CopyWith(
+            long? id = null,
+            Neighborhood? neighborhood = null,
+            BudgetCategory? category = null,
+            decimal? totalAmount = null
+        )
+        {
+            return new BudgetCategoryBalance(
+                neighborhood ?? Neighborhood,
+                category ?? Category,
+                totalAmount ?? TotalAmount,
+                id ?? Id
+            );
+        }
     }
 }
