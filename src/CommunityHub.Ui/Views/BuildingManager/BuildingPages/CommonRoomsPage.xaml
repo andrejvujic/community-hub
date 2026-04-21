@@ -2,6 +2,7 @@
     x:Class="CommunityHub.Ui.Views.BuildingManager.BuildingPages.CommonRoomsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,7 +11,12 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontFamily="{StaticResource AppFontFamily}"
+    Loaded="CommonRoomsPage_Loaded"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter" />
+    </Page.Resources>
 
     <Grid Margin="10,25,40,0">
         <Grid.RowDefinitions>
@@ -239,7 +245,14 @@
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="0,20,0,0">
-                    <DataGrid>
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        HeadersVisibility="Column"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding CommonRooms}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -247,11 +260,20 @@
                         </DataGrid.CellStyle>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="Naziv prostorije" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Name}"
+                                Header="Naziv prostorije" />
 
-                            <DataGridTextColumn Width="*" Header="Sprat" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding FloorNumber}"
+                                Header="Sprat" />
 
-                            <DataGridTextColumn Width="*" Header="Način iznajmljivanja" />
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding Type, Converter={StaticResource RentalTypeToStringConverter}}"
+                                Header="Način iznajmljivanja" />
 
                             <DataGridTemplateColumn Width="*" Header="Akcija">
                                 <DataGridTemplateColumn.CellTemplate>

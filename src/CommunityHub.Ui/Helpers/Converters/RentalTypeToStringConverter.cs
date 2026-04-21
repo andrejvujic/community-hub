@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace CommunityHub.Ui.Helpers.Converters
 {
-    internal class RentalTypeToStringConverter : IValueConverter
+    public class RentalTypeToStringConverter : IValueConverter
     {
         private readonly string _oneDayText = "Jednodnevno";
         private readonly string _multiDayText = "Višednevno";
