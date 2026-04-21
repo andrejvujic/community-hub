@@ -811,6 +811,18 @@ INSERT INTO images (path, neighborhood_id) VALUES
 ('/Resources/Images/neighborhood_1.jpg', 15),
 ('/Resources/Images/neighborhood_2.jpg', 15);
 
+INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
+(1,  'welcome',    '19:00', '2026-05-01', '2026-05-05', '2026-05-03', 'scheduled',      1),
+(2,  'motivation', '18:00', '2026-05-10', '2026-05-14', '2026-05-12', 'scheduled',      2),
+(3,  'welcome',    '20:00', '2026-05-15', '2026-05-19', NULL,         'in_preparation', 3),
+(4,  'motivation', '17:00', '2026-05-20', '2026-05-24', NULL,         'in_preparation', 4),
+(5,  'welcome',    '19:00', '2026-04-01', '2026-04-05', '2026-04-02', 'scheduled',      5),
+(6,  'motivation', '18:00', '2026-03-10', '2026-03-14', NULL,         'cancelled',      6),
+(7,  'welcome',    '20:00', '2026-05-22', '2026-05-26', NULL,         'in_preparation', 7),
+(8,  'motivation', '19:00', '2026-05-01', '2026-05-05', '2026-05-04', 'scheduled',      8),
+(9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
+(10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
