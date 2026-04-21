@@ -1,1 +1,1 @@
-CREATE TYPE budget_categories AS ENUM ('street_maintenance', 'park_maintenance', 'lighting', 'cleanliness', 'greenery', 'emergency_repairs');
+CREATE TYPE budget_categories AS ENUM ('street_maintenance', 'park_maintenance', 'lighting', 'cleanliness', 'greenery', 'emergency_repairs', 'playgrounds', 'sports_facilities');
