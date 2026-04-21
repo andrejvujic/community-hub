@@ -811,4 +811,160 @@ INSERT INTO images (path, neighborhood_id) VALUES
 ('/Resources/Images/neighborhood_1.jpg', 15),
 ('/Resources/Images/neighborhood_2.jpg', 15);
 
+SELECT setval(
+    pg_get_serial_sequence('public.users', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.users), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.countries', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.countries), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.cities', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.cities), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhoods', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhoods), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.streets', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.streets), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.street_sections', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.street_sections), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.addresses', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.addresses), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.buildings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.buildings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhood_memberships', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhood_memberships), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.citizens', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.citizens), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.service_providers', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.service_providers), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.job_listings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.job_listings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.price_entries', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.price_entries), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.booked_jobs', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.booked_jobs), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.leave_requests', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.leave_requests), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.coverage_offers', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.coverage_offers), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.provider_forums', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.provider_forums), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.forum_posts', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.forum_posts), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.post_reactions', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.post_reactions), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.provider_reviews', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.provider_reviews), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.common_rooms', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.common_rooms), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.common_room_rental_requests', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.common_room_rental_requests), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.ads', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.ads), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.ad_time_slots', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.ad_time_slots), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.ad_time_slot_reservations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.ad_time_slot_reservations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.images', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.images), 0),
+    true
+);
+
 COMMIT;

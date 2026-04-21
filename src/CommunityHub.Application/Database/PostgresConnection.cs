@@ -1,4 +1,5 @@
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.NoticeBoard;
 using Npgsql;
 using System.Data;
 using System.Text.Json;
@@ -16,6 +17,9 @@ public static class PostgresConnection
         builder.MapEnum<Status>("statuses");
         builder.MapEnum<ParityType>("parity_types");
         builder.MapEnum<BillingType>("billing_types");
+        builder.MapEnum<AdCategory>("ad_categories");
+        builder.MapEnum<AdStatus>("ad_statuses");
+        builder.MapEnum<AdType>("ad_types");
         var dataSource = builder.Build();
         return dataSource.OpenConnection();
     }
