@@ -20,6 +20,7 @@ public static class PostgresConnection
         builder.MapEnum<AdCategory>("ad_categories");
         builder.MapEnum<AdStatus>("ad_statuses");
         builder.MapEnum<AdType>("ad_types");
+        builder.MapEnum<MeetingTheme>("meeting_themes");
         var dataSource = builder.Build();
         return dataSource.OpenConnection();
     }
