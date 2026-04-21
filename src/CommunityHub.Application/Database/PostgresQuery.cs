@@ -46,7 +46,7 @@ namespace CommunityHub.Application.Database
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
             using IDbCommand command = CreateCommand(connection);
-            using IDataReader reader = command.ExecuteReader();;
+            using IDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
                 callback.Invoke(reader);
