@@ -12,7 +12,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
     public partial class BuildingsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId;
-        private readonly ApartmentMembershipRepository _apartmentMembershipRepository;
+        private readonly ApartmentMembershipRepository _apartmentMembershipRepository = new();
+        private readonly ImageRepository _imageRepository = new();
 
         public ObservableCollection<BuildingMembershipGroup> MembershipGroups { get; set; } = [];
         public bool HasMemberships { get => MembershipGroups.Count > 0; }
@@ -24,9 +25,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
 
             _userId = userId;
 
-            _apartmentMembershipRepository = new ApartmentMembershipRepository();
-
             UpdateMemberships();
+        }
+
+        public void LoadBuildingImages()
+        {
+            foreach (var building in MembershipGroups.Select(group => group.Building))
+            {
+                List<Image> images = _imageRepository.GetByBuildingId(building.Id);
+                foreach (var image in images)
+                    building.Images.Add(image);
+            }
         }
 
         public static List<BuildingMembershipGroup> GroupMembershipsByBuildingId(List<ApartmentMembership> memberships)
@@ -51,6 +60,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             MembershipGroups.Clear();
             foreach (var group in groups)
                 MembershipGroups.Add(group);
+
+            LoadBuildingImages();
 
             OnPropertyChanged(nameof(HasMemberships));
         }

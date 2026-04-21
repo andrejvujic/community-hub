@@ -8,8 +8,8 @@ CREATE TYPE parity_types AS ENUM ('even', 'odd', 'both');
 CREATE TYPE billing_types AS ENUM ('per_hour', 'per_job');
 CREATE TYPE rental_types AS ENUM ('one_day','multi_day');
 CREATE TYPE common_room_rental_statuses AS ENUM ('waiting', 'waiting_date_change', 'rejected', 'approved');
-CREATE TYPE ad_types AS ENUM('offer','request');
-CREATE TYPE ad_categories AS ENUM('moving', 'cleaning', 'repairs', 'maintenance', 'borrowing', 'lending', 'delivery', 'shopping', 'tech_support', 'pet_care', 'child_care', 'elderly_care', 'gardening', 'tutoring', 'transport');
+CREATE TYPE ad_types AS ENUM ('offer','request');
+CREATE TYPE ad_categories AS ENUM ('moving', 'cleaning', 'repairs', 'maintenance', 'borrowing', 'lending', 'delivery', 'shopping', 'tech_support', 'pet_care', 'child_care', 'elderly_care', 'gardening', 'tutoring', 'transport');
 CREATE TYPE ad_statuses AS ENUM ('active','archived');
 
 CREATE TABLE users (
