@@ -33,6 +33,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
             NeighborhoodsTab.Initialize(_userId);
             RequestsTab.Initialize(_userId);
+            ServiceCenterTab.Initialize(_userId);
         }
 
         private void LoadUser()
@@ -54,6 +55,20 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
         private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ThemeComboBox.SelectedItem is not ComboBoxItem selected) return;
+
+            string themePath = selected.Content.ToString() == "Tamna"
+                ? "/Resources/Themes/DarkTheme.xaml"
+                : "/Resources/Themes/LightTheme.xaml";
+
+            var themeDict = new ResourceDictionary
+            {
+                Source = new Uri(themePath, UriKind.Relative)
+            };
+
+            var mergedDicts = System.Windows.Application.Current.Resources.MergedDictionaries;
+
+            mergedDicts[0] = themeDict;
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
