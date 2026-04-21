@@ -8,15 +8,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 {
     public partial class NoticeBoardPage : MainNavigatorConsumerPage
     {
+        private readonly long _userId;
         private readonly long _buildingId;
         private readonly AdRepository _repository = new();
         public ObservableCollection<Ad> Ads { get; } = new();
 
-        public NoticeBoardPage(long buildingId)
+        public NoticeBoardPage(long userId, long buildingId)
         {
             InitializeComponent();
             DataContext = this;
 
+            _userId = userId;
             _buildingId = buildingId;
 
             UpdateAds();

@@ -69,17 +69,21 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
         private void CreateAppartmentAccessRequestButton_Click(object sender, RoutedEventArgs e)
             => Push(new SearchBuildingsPage(_userId));
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
         private void OpenBuildingOptionsPageButton_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is not FrameworkElement element) return;
 
             if (element.DataContext is not BuildingMembershipGroup group) return;
 
-            Push(new BuildingOptionsPage(group.Building));
+            Push(new BuildingOptionsPage(
+                userId: _userId,
+                building: group.Building
+            ));
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
     }
 }
