@@ -29,7 +29,16 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }
         }
 
-        public AdCategory? SelectedCategory { get; set; }
+        private AdCategory? _selectedCategory;
+        public AdCategory? SelectedCategory {
+            get => _selectedCategory;
+            set
+            {
+                if (_selectedCategory == value) return; 
+                _selectedCategory = value;
+                OnPropertyChanged(nameof(SelectedCategory));
+            }
+        }
 
         private string _description = string.Empty;
         public string Description
@@ -70,6 +79,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 onPop: (object? value) => {
                     if (value is not AdType type) return;
                     SelectedType = type;
+                }
+            );
+        }
+
+        private void SelectCategoryButton_Click(object sender, MouseButtonEventArgs e)
+        {
+            Push(
+                new SelectAdCategoryPage(selectedCategory: SelectedCategory),
+                onPop: (object? value) => {
+                    if (value is not AdCategory category) return;
+                    SelectedCategory = category;
                 }
             );
         }
