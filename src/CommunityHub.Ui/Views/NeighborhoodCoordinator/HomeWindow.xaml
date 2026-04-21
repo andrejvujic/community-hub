@@ -101,7 +101,7 @@
             </TabItem>
 
             <TabItem Header="Servisni centar (F5)">
-                <pages:RequestsPage x:Name="ServiceCenterTab" />
+                <pages:ServiceCenterTab x:Name="ServiceCenterTab" />
             </TabItem>
 
             <TabItem Header="Gradski objekti (F6)">

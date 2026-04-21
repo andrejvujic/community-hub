@@ -33,6 +33,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
             NeighborhoodsTab.Initialize(_userId);
             RequestsTab.Initialize(_userId);
+            ServiceCenterTab.Initialize(_userId);
         }
 
         private void LoadUser()
