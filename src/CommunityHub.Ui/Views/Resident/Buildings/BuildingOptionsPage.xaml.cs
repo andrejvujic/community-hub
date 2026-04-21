@@ -33,6 +33,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             ));
 
         private void OpenPersonalAdsPageButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(new PersonalAdsPage(userId: _userId));
+            => Push(new PersonalAdsPage(
+                userId: _userId,
+                buildingId: Building.Id
+            ));
     }
 }
