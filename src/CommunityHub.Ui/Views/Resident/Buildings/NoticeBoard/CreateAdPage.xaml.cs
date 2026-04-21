@@ -18,7 +18,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             _buildingId = buildingId;
         }
 
-        public AdType? SelectedType { get; set; }
+        private AdType? _selectedType;
+        public AdType? SelectedType
+        {
+            get => _selectedType;
+            set {
+                if (_selectedType == value) return;
+                _selectedType = value;
+                OnPropertyChanged(nameof(SelectedType));
+            }
+        }
+
         public AdCategory? SelectedCategory { get; set; }
 
         private string _description = string.Empty;
@@ -52,6 +62,18 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void SelectTypeButton_Click(object sender, MouseButtonEventArgs e)
+        {
+            Push(
+                new SelectAdTypePage(selectedType: SelectedType),
+                onPop: (object? value) => {
+                    if (value is not AdType type) return;
+                    SelectedType = type;
+                }
+            );
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

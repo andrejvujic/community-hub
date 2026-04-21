@@ -68,7 +68,7 @@
                     Background="#dedede"
                     BorderBrush="Gray"
                     BorderThickness="1">
-                    <Grid Background="#dedede" Height="48">
+                    <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectTypeButton_Click">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
