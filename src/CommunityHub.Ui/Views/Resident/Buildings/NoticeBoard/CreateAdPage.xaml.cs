@@ -2,6 +2,8 @@
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
@@ -9,6 +11,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     public partial class CreateAdPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
+        private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
+
         public CreateAdPage(long userId, long buildingId)
         {
             InitializeComponent();
@@ -51,26 +55,35 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }
         }
 
-        public DateTime? SelectedStartDate { get; set; } = DateTime.Now;
-        public DateTime? SelectedEndDate { get; set; } = DateTime.Now;
+        public DateTime? SelectedStartDate { get; set; }
+        public string SelectedStartDateText {
+            get
+            {
+                if (SelectedStartDate == null) return "Izaberite...";
+                return SelectedStartDate.Value.ToString("d. MMMM", _culture);
+            }
+        }
+
+        public DateTime? SelectedEndDate { get; set; }
+        public string SelectedEndDateText
+        {
+            get
+            {
+                if (SelectedEndDate == null) return "Izaberite...";
+                return SelectedEndDate.Value.ToString("d. MMMM", _culture);
+            }
+        }
 
         public string SelectedDateRangeText
         {
             get
             {
                 if (SelectedStartDate is null || SelectedEndDate is null) return "Izaberite...";
-                var culture = new CultureInfo("sr-Latn-RS");
-
-                var formattedStartDate = SelectedStartDate.Value.ToString("d. MMMM", culture);
-                var formattedEndDate = SelectedStartDate.Value.ToString("d. MMMM", culture);
-
-                return $"{formattedStartDate} — {formattedEndDate}";
+                return $"{SelectedStartDateText} — {SelectedEndDateText}";
             }
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
-
-        public event PropertyChangedEventHandler? PropertyChanged;
 
         private void SelectTypeButton_Click(object sender, MouseButtonEventArgs e)
         {
@@ -94,6 +107,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             );
         }
 
+        private void OpenSelectDateRangeMenuButton_Click(object sender, MouseButtonEventArgs e)
+            => SelectDateRangeOverlay.Visibility = Visibility.Visible;
+        private void CloseSelectDateRangeMenuButton_Click(object sender, RoutedEventArgs e)
+            => SelectDateRangeOverlay.Visibility = Visibility.Collapsed;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

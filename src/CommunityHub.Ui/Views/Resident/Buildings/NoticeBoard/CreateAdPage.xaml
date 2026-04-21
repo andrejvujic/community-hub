@@ -15,165 +15,287 @@
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="48"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0" Background="#dedede">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="64"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid
-                     Grid.Column="0"
-                     MouseLeftButtonDown="BackButton_Click"
-                     Background="Transparent">
-                    <TextBlock
-                         Text="&#xf177;"
-                         FontSize="24"
-                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"/>
-                </Grid>
-
-                <TextBlock
-                     Grid.Column="1"
-                     Text="Objavljivanje oglasa"
-                     FontSize="20"
-                     VerticalAlignment="Center">
-                </TextBlock>
-            </Grid>
-
-            <Grid Margin="8" Grid.Row="1">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Vrsta oglasa" FontSize="18" Grid.Row="0"/>
+                <Grid Grid.Row="0" Background="#dedede">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Border
-                    Grid.Row="1" 
-                    Background="#dedede"
-                    BorderBrush="Gray"
-                    BorderThickness="1">
-                    <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectTypeButton_Click">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Label
-                            Grid.Column="0"
-                            VerticalContentAlignment="Center"
-                            Content="{Binding SelectedType, Converter={StaticResource AdTypeToStringConverter}, ConverterParameter='Izaberite...'}"
-                            FontSize="18"
-                            Padding="4"/>
-
+                    <Grid
+                         Grid.Column="0"
+                         MouseLeftButtonDown="BackButton_Click"
+                         Background="Transparent">
                         <TextBlock
-                            Grid.Column="1"
-                            Text="&#xf178;"
-                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            Margin="4,4,8,4"
-                            Padding="0"/>
+                             Text="&#xf177;"
+                             FontSize="24"
+                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
                     </Grid>
-                </Border>
 
-                <Label Content="Kategorija" FontSize="18" Grid.Row="3"/>
+                    <TextBlock
+                         Grid.Column="1"
+                         Text="Objavljivanje oglasa"
+                         FontSize="20"
+                         VerticalAlignment="Center">
+                    </TextBlock>
+                </Grid>
 
-                <Border
-                    Grid.Row="4" 
-                    Background="#dedede"
-                    BorderBrush="Gray"
-                    BorderThickness="1">
-                    <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCategoryButton_Click">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                <Grid Margin="8" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                        <Label
-                            Grid.Column="0"
-                            VerticalContentAlignment="Center"
-                            Content="{Binding SelectedCategory, Converter={StaticResource AdCategoryToStringConverter}, ConverterParameter='Izaberite...'}"
-                            FontSize="18"
-                            Padding="4"/>
+                    <Label Content="Vrsta oglasa" FontSize="18" Grid.Row="0"/>
 
-                        <TextBlock
-                            Grid.Column="1"
-                            Text="&#xf178;"
-                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                            VerticalAlignment="Center"
-                            FontSize="24"
-                            Margin="4,4,8,4"
-                            Padding="0"/>
-                    </Grid>
-                </Border>
+                    <Border
+                        Grid.Row="1" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectTypeButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                <Label Content="Opis" FontSize="18" Grid.Row="6"/>
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedType, Converter={StaticResource AdTypeToStringConverter}, ConverterParameter='Izaberite...'}"
+                                FontSize="18"
+                                Padding="4"/>
 
-                <TextBox
-                    Grid.Row="7"
-                    FontSize="18"
-                    Height="172"
-                    Padding="4"
-                    MaxLength="200"
-                    TextWrapping="Wrap"
-                    Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
 
-                <Label Content="Opseg datuma" FontSize="18" Grid.Row="9"/>
+                    <Label Content="Kategorija" FontSize="18" Grid.Row="3"/>
 
-                <Border
-                    Grid.Row="10" 
-                    Background="#dedede"
-                    BorderBrush="Gray"
-                    BorderThickness="1">
-                    <Grid Background="#dedede" Height="48">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    <Border
+                        Grid.Row="4" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCategoryButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Label
-                    Grid.Column="0"
-                    VerticalContentAlignment="Center"
-                    Content="{Binding SelectedDateRangeText}"
-                    FontSize="18"
-                    Padding="4"/>
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedCategory, Converter={StaticResource AdCategoryToStringConverter}, ConverterParameter='Izaberite...'}"
+                                FontSize="18"
+                                Padding="4"/>
 
-                        <TextBlock
-                    Grid.Column="1"
-                    Text="&#xf178;"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Label Content="Opis" FontSize="18" Grid.Row="6"/>
+
+                    <TextBox
+                        Grid.Row="7"
+                        FontSize="18"
+                        Height="172"
+                        Padding="4"
+                        MaxLength="200"
+                        TextWrapping="Wrap"
+                        Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="Opseg datuma" FontSize="18" Grid.Row="9"/>
+
+                    <Border
+                        Grid.Row="10" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="OpenSelectDateRangeMenuButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedDateRangeText}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+
+
+            <Button
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,16"
+                Content="Objavi oglas"
+                FontSize="18"
+                Width="192"
+                Height="72"/>
+
+            <Grid
+                x:Name="SelectDateRangeOverlay"
+                Visibility="Collapsed"
+                Background="#bb000000">
+                <Grid
+                    Background="White"
+                    Margin="16"
                     VerticalAlignment="Center"
-                    FontSize="24"
-                    Margin="4,4,8,4"
-                    Padding="0"/>
-                    </Grid>
-                </Border>
+                    HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        FontSize="18"
+                        Margin="8,8,8,0"
+                        TextWrapping="Wrap"
+                        Text="Odaberite opseg datuma za važenje oglasa"/>
+
+                    <Separator Grid.Row="1" Margin="8,0"/>
+
+                    <TextBlock
+                        Grid.Row="2"
+                        FontSize="18"
+                        TextWrapping="Wrap"
+                        Margin="8,8,8,0"
+                        Text="Početni datum"/>
+
+                    <Border
+                        Grid.Row="4" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Margin="8,0,8,0">
+                        <Grid Background="#dedede" Height="48">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedStartDateText}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock
+                        Grid.Row="6"
+                        FontSize="18"
+                        TextWrapping="Wrap"
+                        Margin="8,8,8,0"
+                        Text="Krajnji datum"/>
+
+                    <Border
+                        Grid.Row="8" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Margin="8,0,8,0">
+                        <Grid Background="#dedede" Height="48">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedEndDateText}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Separator Grid.Row="9" Margin="8,0"/>
+
+                    <Button
+                        Grid.Row="10"
+                        Margin="8,0,8,8"
+                        Height="48"
+                        FontSize="18"
+                        HorizontalAlignment="Stretch"
+                        Click="CloseSelectDateRangeMenuButton_Click"
+                        Content="Zatvori"/>
+                </Grid>
             </Grid>
         </Grid>
-
-        <Button
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            Margin="0,0,0,16"
-            Content="Objavi oglas"
-            FontSize="18"
-            Width="192"
-            Height="72"/>
     </Grid>
 </navigation:MainNavigatorConsumerPage>
