@@ -36,6 +36,158 @@
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
+            <Grid Margin="0,15,15,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Column="0" BorderBrush="Black"  BorderThickness="1" Margin="0,0,5,0" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="10">
+                            <TextBlock Text="Statistika" FontSize="22" Margin="0,0,0,15"/>
+
+                            <UniformGrid Columns="1">
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Ukupan broj građana: " FontSize="15"/>
+                                    <TextBlock Text="100" FontSize="15"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Broj novih građana: " FontSize="15"/>
+                                    <TextBlock Text="15" FontSize="15"/>
+                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Broj neaktivnih građana: " FontSize="15"/>
+                                    <TextBlock Text="40" FontSize="15"/>
+                                    <TextBlock Text="(40%)" FontSize="15"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Broj aktivnih građana: " FontSize="15"/>
+                                    <TextBlock Text="15" FontSize="15"/>
+                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Broj istaknutih građana: " FontSize="15"/>
+                                    <TextBlock Text="15" FontSize="15"/>
+                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Broj građana od poverenja: " FontSize="15"/>
+                                    <TextBlock Text="15" FontSize="15"/>
+                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                </StackPanel>
+                            </UniformGrid>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*" />
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" 
+                                    BorderBrush="Black" 
+                                    BorderThickness="1"
+                                    Padding="15" 
+                                    Background="White">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <TextBlock Text="&#xf0eb;" 
+                                                   FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
+                                                   FontSize="18" 
+                                                   Foreground="#FFD700"
+                                                   VerticalAlignment="Center" 
+                                                   Margin="0,0,10,0"/>
+                                        <TextBlock Text="Preporuka sistema" FontSize="18" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock TextWrapping="Wrap" FontSize="14" LineHeight="20">
+                                        <Run Text="U kvartu "/>
+                                        <Run Text="Liman 1"/>
+                                        <Run Text=" je primećeno da je najveći broj "/>
+                                        <Run Text="neaktivnih"/>
+                                        <Run Text=" građana. Predlažemo vam da zakažete sastanak "/>
+                                        <Run Text="motivacije."/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Grid.Row="1" 
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Top"
+                                    Height="40"
+                                    Cursor="Hand">
+                                <TextBlock Text="Zakaži sastanak motivacije"/>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Background="White" Margin="5,0,0,0" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Margin="0,0,0,20">
+                            <TextBlock Text="Sastanci" FontSize="22" VerticalAlignment="Center"/>
+                            <Button HorizontalAlignment="Right" Padding="5" Cursor="Hand">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xf067;" 
+                                               FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
+                                               VerticalAlignment="Center" 
+                                               Margin="0,0,8,0"/>
+                                    <TextBlock Text="Zakaži novi sastanak (Ctrl + N)" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <DataGrid x:Name="MeetingsDataGrid"
+                                  Grid.Row="1" 
+                                  AutoGenerateColumns="False" 
+                                  CanUserAddRows="False" 
+                                  CanUserResizeRows="False"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False"
+                                  CanUserSortColumns="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  Background="Transparent">>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Tema" Width="2*"/>
+                                <DataGridTextColumn Header="Vreme" Width="100"/>
+                                <DataGridTextColumn Header="Datum-opseg" Width="1.5*"/>
+                                <DataGridTextColumn Header="Stanje" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Grid Grid.Row="2" Margin="0,20,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                <TextBlock Text="Odredite konačan termin" Margin="0,0,0,5"/>
+                                <DatePicker Width="200"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="1" 
+                                    HorizontalAlignment="Center"
+                                    Content="Potvrdite konačan termin" 
+                                    VerticalAlignment="Bottom"
+                                    Padding="15,8"
+                                    Cursor="Hand"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

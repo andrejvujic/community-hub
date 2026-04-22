@@ -111,7 +111,8 @@
                                 <Run Text="NazivKvarta" />
                             </TextBlock>
 
-                            <DataGrid x:Name="ReservationsDataGrid" Grid.Row="1" 
+                            <DataGrid x:Name="ReservationsDataGrid"
+                                      Grid.Row="1" 
                                       AutoGenerateColumns="False" 
                                       CanUserAddRows="False" 
                                       CanUserResizeRows="False"
