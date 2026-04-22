@@ -1,6 +1,7 @@
 ﻿
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.CommonRoomRentalRequest;
 using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories
@@ -12,7 +13,6 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
-                          common_room_rental_request.common_room_id,
                           common_room_rental_request.start_date, 
                           common_room_rental_request.end_date, 
                           common_room_rental_request.rental_statuses AS rental_status,
@@ -23,7 +23,14 @@ namespace CommunityHub.Application.Database.Repositories
                           resident.password AS resident_password,
                           resident.name AS resident_name,
                           resident.surname AS resident_surname,
-                          resident.user_role AS resident_user_role
+                          resident.user_role AS resident_user_role,
+
+                          common_room.id AS common_room_id,
+                          common_room.building_id,
+                          common_room.name,
+                          common_room.description,
+                          common_room.floor_number,
+                          common_room.rental_type
 
                    FROM common_room_rental_requests common_room_rental_request
                    INNER JOIN common_rooms common_room ON
@@ -57,6 +64,45 @@ namespace CommunityHub.Application.Database.Repositories
             });
 
             return approvedDates;
+        }
+
+        public List<CommonRoomRentalRequest> GetAllByBuildingId(long buildingId)
+        {
+            var query = PostgresQuery.Create(
+                 @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
+                          common_room_rental_request.start_date, 
+                          common_room_rental_request.end_date, 
+                          common_room_rental_request.rental_statuses AS rental_status,
+                          common_room_rental_request.assigned_date,
+                          resident.id AS resident_user_id,
+                          resident.username AS resident_username,
+                          resident.password AS resident_password,
+                          resident.name AS resident_name,
+                          resident.surname AS resident_surname,
+                          resident.user_role AS resident_user_role,
+                          common_room.id AS common_room_id,
+                          common_room.building_id,
+                          common_room.name,
+                          common_room.description,
+                          common_room.floor_number,
+                          common_room.rental_type
+                   FROM common_room_rental_requests common_room_rental_request
+                   INNER JOIN common_rooms common_room ON
+                   common_room_rental_request.common_room_id = common_room.id
+                   INNER JOIN users resident ON
+                   common_room_rental_request.resident_id = resident.id
+                   WHERE common_room.building_id = @building_id;"
+            )
+            .AddParameter("building_id", buildingId);
+
+            var rentalRequests = new List<CommonRoomRentalRequest>();
+            query.ExecuteReader(reader =>
+            {
+                var commonRoomRentalRequest = _commonRoomRentalRequestMapper.MapToEntity(reader);
+                rentalRequests.Add(commonRoomRentalRequest);
+            });
+
+            return rentalRequests;
         }
     }
 }

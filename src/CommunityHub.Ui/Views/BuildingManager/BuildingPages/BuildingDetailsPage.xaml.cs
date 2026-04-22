@@ -56,7 +56,8 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 case "CommonRoom":
                     BuildingFrame.Navigate(new CommonRoomsPage(_user, _building));
                     break;
-                case "RentingRoom":
+                case "CommonRoomRentalRequest":
+                    BuildingFrame.Navigate(new CommonRoomRentalRequestsPage(_user, _building));
                     break;
                 case "NoticeBoard":
                     break;

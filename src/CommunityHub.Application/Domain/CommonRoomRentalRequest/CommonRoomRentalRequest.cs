@@ -1,10 +1,11 @@
-﻿
+﻿using CommonRoomDomain = CommunityHub.Application.Domain.CommonRoom;
+
 namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
 { 
     public class CommonRoomRentalRequest
     {
         public long Id { get; private set; }
-        public long CommonRoomId { get; private set; }
+        public CommonRoomDomain.CommonRoom CommonRoom { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public RentalStatus Status { get; private set; }
@@ -12,7 +13,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
         public DateTime? AssignedDate { get; private set; }
 
         public CommonRoomRentalRequest(
-            long commonRoomId,
+            CommonRoomDomain.CommonRoom commonRoom,
             DateTime startDate,
             DateTime endDate,
             RentalStatus status,
@@ -23,7 +24,10 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             if(resident == null)
                 throw new ArgumentNullException("Resident can't be null.");
 
-            CommonRoomId = commonRoomId;
+            if(commonRoom == null)
+                throw new ArgumentNullException("Common room can't be null.");
+
+            CommonRoom = commonRoom;
             Status = status;
             Resident = resident;
             AssignedDate = assignedDate;
@@ -36,7 +40,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
         }
 
         public CommonRoomRentalRequest CopyWith(
-            long? commonRoomId = null,
+            CommonRoomDomain.CommonRoom? commonRoom = null,
             DateTime? startDate = null,
             DateTime? endDate = null,
             RentalStatus? status = null,
@@ -45,7 +49,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             long? id = null
         ) {
             return new CommonRoomRentalRequest(
-                commonRoomId ?? CommonRoomId,
+                commonRoom ?? CommonRoom,
                 startDate ?? StartDate,
                 endDate ?? EndDate,
                 status ?? Status,
