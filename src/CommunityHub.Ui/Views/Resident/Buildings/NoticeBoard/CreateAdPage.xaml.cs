@@ -4,6 +4,7 @@ using CommunityHub.Application.Domain.NoticeBoard;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -14,9 +15,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     {
         private readonly long _userId, _buildingId;
         private readonly CultureInfo _culture = new("sr-Latn-RS");
+        private readonly DateTime _today = DateTime.Now.Date;
 
         private readonly UserRepository _userRepository = new();
         private readonly AdRepository _adRepository = new();
+        private readonly AdTimeSlotRepository _adTimeSlotRepository = new();
 
         public CreateAdPage(long userId, long buildingId)
         {
@@ -44,34 +47,38 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 );
         }
 
-        private void ShowErrorAlert()
+        private List<AdTimeSlot> CreateAdTimeSlots(
+            Ad ad,
+            int firstTimeSlotStartHour = 16,
+            int timeSlotCount = 4
+        )
         {
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Greška",
-                        "Došlo je do greške prilikom objavljivanja oglasa. Provjerite da li ste ispravno unijeli sve informacije i pokušajte ponovo.",
-                        AlertType.Error
-                    ).AddOption("U redu")
-                );
-        }
+            var timeSlots = new List<AdTimeSlot>();
 
-        private void ShowSuccessAlert(long publishedAdId)
-        {
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Oglas objavljen",
-                        "Vaš oglas je uspješno objavljen i biće prikazan ostalim stanarima na oglasnoj tabli zgrade.",
-                        AlertType.Info
-                    )
-                    .AddOption(
-                        "Nastavi",
-                        () => Pop(publishedAdId)
-                    )
-                );
-        }
+            var currentDay = ad.StartDate.Date;
+            while (currentDay <= ad.EndDate.Date)
+            {
+                for (int i = 0; i < timeSlotCount; ++i)
+                {
+                    var slotStartTime = currentDay.AddHours(firstTimeSlotStartHour + i);
+                    var slotEndTime = slotStartTime.AddHours(1);
 
+                    Debug.WriteLine($"giving {ad.Id}");
+
+                    timeSlots.Add(
+                        new AdTimeSlot(
+                            ad.Id,
+                            startTime: slotStartTime,
+                            endTime: slotEndTime
+                        )
+                    );
+                }
+
+                currentDay = currentDay.AddDays(1);
+            }
+
+            return timeSlots;
+        }
 
         private AdType? _selectedType;
         public AdType? SelectedType
@@ -110,7 +117,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         }
 
         // The start date can't be in the past.
-        public DateTime MinStartDate => DateTime.Now; 
+        public DateTime MinStartDate => _today; 
 
         // The start date can't be after the end date.
         public DateTime? MaxStartDate => SelectedEndDate; 
@@ -118,7 +125,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         // The end date can't be before the start date
         // (or in the past if the start date hasn't been
         // selected yet).
-        public DateTime MinEndDate => SelectedStartDate ?? DateTime.Now; 
+        public DateTime MinEndDate => SelectedStartDate ?? _today; 
 
 
         private DateTime? _selectedStartDate;
@@ -133,18 +140,18 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 OnPropertyChanged(nameof(SelectedStartDate));
                 OnPropertyChanged(nameof(SelectedStartDateText));
                 OnPropertyChanged(nameof(SelectedDateRangeText));
+
                 OnPropertyChanged(nameof(MinEndDate));
-                OnPropertyChanged(nameof(IsDateRangeSelected));
+
+                OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 OnPropertyChanged(nameof(IsFormValid));
             }
         }
-        public string SelectedStartDateText {
-            get
-            {
-                if (SelectedStartDate == null) return "Izaberite...";
-                return SelectedStartDate.Value.ToString("d. MMMM", _culture);
-            }
-        }
+        public string SelectedStartDateText
+            => SelectedStartDate is null ?
+                "Izaberite..." :
+                SelectedStartDate.Value.ToString("d. MMMM", _culture);
+
 
         private DateTime? _selectedEndDate;
         public DateTime? SelectedEndDate
@@ -158,20 +165,18 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 OnPropertyChanged(nameof(SelectedEndDate));
                 OnPropertyChanged(nameof(SelectedEndDateText));
                 OnPropertyChanged(nameof(SelectedDateRangeText));
+
                 OnPropertyChanged(nameof(MaxStartDate));
-                OnPropertyChanged(nameof(IsDateRangeSelected));
+
+                OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 OnPropertyChanged(nameof(IsFormValid));
             }
         }
 
         public string SelectedEndDateText
-        {
-            get
-            {
-                if (SelectedEndDate == null) return "Izaberite...";
-                return SelectedEndDate.Value.ToString("d. MMMM", _culture);
-            }
-        }
+            => SelectedEndDate is null ?
+                "Izaberite..." :
+                SelectedEndDate.Value.ToString("d. MMMM", _culture);
 
         public string SelectedDateRangeText
         {
@@ -182,25 +187,26 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }
         }
 
-        public bool IsDateRangeSelected => SelectedStartDate is not null && SelectedEndDate is not null;
+        public bool IsSelectedDateRangeValid {
+            get
+            {
+                if (SelectedStartDate is null || SelectedEndDate is null) return false;
+                if (SelectedStartDate.Value < _today) return false;
+                if (SelectedEndDate.Value < SelectedStartDate.Value) return false;
 
-        public bool IsSelectedDateRangeValid()
-        {
-            if (!IsDateRangeSelected) return false;
-            if (SelectedStartDate!.Value < DateTime.Now) return false;
-            if (SelectedEndDate!.Value < SelectedStartDate.Value) return false;
-            return true;
+                return true;
+            }
         }
 
         public bool IsFormValid
         { 
             get
             {
-                if (!IsSelectedDateRangeValid()) return false;
+                if (!IsSelectedDateRangeValid) return false;
 
                 if (string.IsNullOrWhiteSpace(Description)) return false;
 
-                if (SelectedType == null || SelectedCategory == null) return false;
+                if (SelectedType is null || SelectedCategory is null) return false;
 
                 return true;
             }       
@@ -217,6 +223,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }
 
             var publishedAd = _adRepository.Create(ad);
+
+            var timeSlots = CreateAdTimeSlots(publishedAd);
+            foreach (var timeSlot in timeSlots)
+                _adTimeSlotRepository.Create(timeSlot);
+
             ShowSuccessAlert(publishedAd.Id);
         }
 
@@ -243,22 +254,51 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 }
             );
         }
+        private void ShowErrorAlert()
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Greška",
+                        "Došlo je do greške prilikom objavljivanja oglasa. Provjerite da li ste ispravno unijeli sve informacije i pokušajte ponovo.",
+                        AlertType.Error
+                    ).AddOption("U redu")
+                );
+        }
 
-        private void OpenSelectDateRangeMenuButton_Click(object sender, MouseButtonEventArgs e)
-            => SelectDateRangeOverlay.Visibility = Visibility.Visible;
-        private void CloseSelectDateRangeMenuButton_Click(object sender, RoutedEventArgs e)
-            => SelectDateRangeOverlay.Visibility = Visibility.Collapsed;
+        private void ShowSuccessAlert(long publishedAdId)
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Oglas objavljen",
+                        "Vaš oglas je uspješno objavljen i biće prikazan ostalim stanarima na oglasnoj tabli zgrade.",
+                        AlertType.Info
+                    )
+                    .AddOption(
+                        "Nastavi",
+                        () => Pop(publishedAdId)
+                    )
+                );
+        }
 
-        private void OpenStartDatePickerButton_Click(object sender, MouseButtonEventArgs e)
-            => StartDatePicker.Visibility = Visibility.Visible;
+        private void ToggleOverlayVisibility(FrameworkElement overlay)
+            =>
+                overlay.Visibility = overlay.Visibility switch
+                {
+                    Visibility.Visible => Visibility.Collapsed,
+                    Visibility.Collapsed => Visibility.Visible,
+                    _ => Visibility.Visible
+                };
 
-        private void CloseStartDatePickerButton_Click(object sender, RoutedEventArgs e)
-            => StartDatePicker.Visibility = Visibility.Collapsed;
+        private void ToggleSelectDateRangeMenuButton_Click(object sender, EventArgs e)
+            => ToggleOverlayVisibility(SelectDateRangeOverlay);
 
-        private void OpenEndDatePickerButton_Click(object sender, MouseButtonEventArgs e)
-            => EndDatePicker.Visibility = Visibility.Visible;
-        private void CloseEndDatePickerButton_Click(object sender, RoutedEventArgs e)
-            => EndDatePicker.Visibility = Visibility.Collapsed;
+        private void ToggleStartDatePickerButton_Click(object sender, EventArgs e)
+            => ToggleOverlayVisibility(StartDatePicker);
+
+        private void ToggleEndDatePickerButton_Click(object sender, EventArgs e)
+            => ToggleOverlayVisibility(EndDatePicker);
 
 
         public event PropertyChangedEventHandler? PropertyChanged;

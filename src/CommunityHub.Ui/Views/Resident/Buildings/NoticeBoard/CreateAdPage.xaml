@@ -143,7 +143,7 @@
                         Background="#dedede"
                         BorderBrush="Gray"
                         BorderThickness="1">
-                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="OpenSelectDateRangeMenuButton_Click">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleSelectDateRangeMenuButton_Click">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -226,7 +226,7 @@
                             Background="#dedede"
                             BorderBrush="Gray"
                             BorderThickness="1">
-                            <Grid Background="#dedede" Height="48" MouseLeftButtonDown="OpenStartDatePickerButton_Click">
+                            <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleStartDatePickerButton_Click">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -260,7 +260,7 @@
                             Background="#dedede"
                             BorderBrush="Gray"
                             BorderThickness="1">
-                            <Grid Background="#dedede" Height="48"  MouseLeftButtonDown="OpenEndDatePickerButton_Click">
+                            <Grid Background="#dedede" Height="48"  MouseLeftButtonDown="ToggleEndDatePickerButton_Click">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -290,8 +290,8 @@
                             Height="48"
                             FontSize="18"
                             HorizontalAlignment="Stretch"
-                            Click="CloseSelectDateRangeMenuButton_Click"
-                            IsEnabled="{Binding IsDateRangeSelected}"
+                            Click="ToggleSelectDateRangeMenuButton_Click"
+                            IsEnabled="{Binding IsSelectedDateRangeValid}"
                             Content="Potvrdi"/>
                     </Grid>
                 </Border>
@@ -327,7 +327,7 @@
                             Height="48"
                             FontSize="18"
                             HorizontalAlignment="Stretch"
-                            Click="CloseStartDatePickerButton_Click"
+                            Click="ToggleStartDatePickerButton_Click"
                             Content="Potvrdi"/>
                     </Grid>
                 </Border>
@@ -362,7 +362,7 @@
                             Height="48"
                             FontSize="18"
                             HorizontalAlignment="Stretch"
-                            Click="CloseEndDatePickerButton_Click"
+                            Click="ToggleEndDatePickerButton_Click"
                             Content="Potvrdi"/>
                     </Grid>
                 </Border>
