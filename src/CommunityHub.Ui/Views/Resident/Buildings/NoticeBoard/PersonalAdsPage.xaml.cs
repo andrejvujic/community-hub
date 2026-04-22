@@ -40,10 +40,21 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         public bool HasAds { get => Ads.Count > 0; }
 
         private void CreateAdButton_Click(object sender, RoutedEventArgs e)
-            => Push(new CreateAdPage(
+        {
+            Push(
+                new CreateAdPage(
                     userId: _userId,
                     buildingId: _buildingId
-                ));
+                ),
+                onPop: (object? value) =>
+                {
+                    if (value is long publishedAdId)
+                    {
+                        UpdateAds();
+                    }
+                }
+             );
+         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
