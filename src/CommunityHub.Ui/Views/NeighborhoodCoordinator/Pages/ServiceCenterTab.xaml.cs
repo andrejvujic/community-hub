@@ -42,9 +42,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             Neighborhoods.Clear();
             var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
-            foreach (var n in neighborhoods)
+            foreach (var neighborhood in neighborhoods)
             {
-                Neighborhoods.Add(n);
+                Neighborhoods.Add(neighborhood);
             }
         }
     }
