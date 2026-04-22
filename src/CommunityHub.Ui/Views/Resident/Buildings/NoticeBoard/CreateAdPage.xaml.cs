@@ -1,17 +1,22 @@
-﻿using CommunityHub.Application.Domain.NoticeBoard;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
 using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 {
-    public partial class CreateAdPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class CreateAdPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
-        private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
+        private readonly CultureInfo _culture = new("sr-Latn-RS");
+
+        private readonly UserRepository _userRepository = new();
+        private readonly AdRepository _adRepository = new();
 
         public CreateAdPage(long userId, long buildingId)
         {
@@ -21,6 +26,52 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             _userId = userId;
             _buildingId = buildingId;
         }
+
+        private Ad? CreateAd()
+        {
+            var author = _userRepository.GetById(_userId);
+            if (author == null) return null;
+
+            return new Ad(
+                    author,
+                    _buildingId,
+                    SelectedType!.Value,
+                    SelectedCategory!.Value,
+                    AdStatus.Active,
+                    Description,
+                    SelectedStartDate!.Value,
+                    SelectedEndDate!.Value
+                );
+        }
+
+        private void ShowErrorAlert()
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Greška",
+                        "Došlo je do greške prilikom objavljivanja oglasa. Provjerite da li ste ispravno unijeli sve informacije i pokušajte ponovo.",
+                        AlertType.Error
+                    ).AddOption("U redu")
+                );
+        }
+
+        private void ShowSuccessAlert(long publishedAdId)
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Oglas objavljen",
+                        "Vaš oglas je uspješno objavljen i biće prikazan ostalim stanarima na oglasnoj tabli zgrade.",
+                        AlertType.Info
+                    )
+                    .AddOption(
+                        "Nastavi",
+                        () => Pop(publishedAdId)
+                    )
+                );
+        }
+
 
         private AdType? _selectedType;
         public AdType? SelectedType
@@ -77,7 +128,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             set
             {
                 if (_selectedStartDate == value) return;
-                _selectedStartDate = value;
+                _selectedStartDate = value is null ? null : value.Value.Date;
+
                 OnPropertyChanged(nameof(SelectedStartDate));
                 OnPropertyChanged(nameof(SelectedStartDateText));
                 OnPropertyChanged(nameof(SelectedDateRangeText));
@@ -101,7 +153,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             set
             {
                 if (_selectedEndDate == value) return;
-                _selectedEndDate = value;
+                _selectedEndDate = value is null ? null : value.Value.Date;
+
                 OnPropertyChanged(nameof(SelectedEndDate));
                 OnPropertyChanged(nameof(SelectedEndDateText));
                 OnPropertyChanged(nameof(SelectedDateRangeText));
@@ -131,21 +184,40 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         public bool IsDateRangeSelected => SelectedStartDate is not null && SelectedEndDate is not null;
 
+        public bool IsSelectedDateRangeValid()
+        {
+            if (!IsDateRangeSelected) return false;
+            if (SelectedStartDate!.Value < DateTime.Now) return false;
+            if (SelectedEndDate!.Value < SelectedStartDate.Value) return false;
+            return true;
+        }
+
         public bool IsFormValid
         { 
             get
             {
-                if (!IsDateRangeSelected) return false;
-                if (SelectedStartDate!.Value < DateTime.Now) return false;
-                if (SelectedEndDate!.Value < SelectedStartDate.Value) return false;
+                if (!IsSelectedDateRangeValid()) return false;
 
                 if (string.IsNullOrWhiteSpace(Description)) return false;
 
-                if (SelectedType == null) return false;
-                if (SelectedCategory == null) return false;
+                if (SelectedType == null || SelectedCategory == null) return false;
 
                 return true;
             }       
+        }
+
+        private void PublishAdButton_Click(object sender, RoutedEventArgs e)
+        {
+            var ad = CreateAd();
+
+            if (ad == null)
+            {
+                ShowErrorAlert();
+                return;
+            }
+
+            var publishedAd = _adRepository.Create(ad);
+            ShowSuccessAlert(publishedAd.Id);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -177,8 +249,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void CloseSelectDateRangeMenuButton_Click(object sender, RoutedEventArgs e)
             => SelectDateRangeOverlay.Visibility = Visibility.Collapsed;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         private void OpenStartDatePickerButton_Click(object sender, MouseButtonEventArgs e)
             => StartDatePicker.Visibility = Visibility.Visible;
 
@@ -191,6 +261,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             => EndDatePicker.Visibility = Visibility.Collapsed;
 
 
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
