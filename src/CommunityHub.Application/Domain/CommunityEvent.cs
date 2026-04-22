@@ -8,7 +8,7 @@ public class CommunityEvent
     public DateTime EventStart { get; private set; }
     public int DurationMinutes { get; private set; }
     public int MinVolunteers { get; private set; }
-    public string Status { get; private set; }
+    public EventStatus Status { get; private set; }
     public Neighborhood Neighborhood { get; private set; }
     public Citizen Organizer { get; private set; }
 
@@ -19,7 +19,7 @@ public class CommunityEvent
         DateTime eventStart,
         int durationMinutes,
         int minVolunteers,
-        string status,
+        EventStatus status,
         Neighborhood neighborhood,
         Citizen organizer)
     {
@@ -41,7 +41,7 @@ public class CommunityEvent
         DateTime? eventStart = null,
         int? durationMinutes = null,
         int? minVolunteers = null,
-        string? status = null,
+        EventStatus? status = null,
         Neighborhood? neighborhood = null,
         Citizen? organizer = null)
     {
