@@ -1,4 +1,5 @@
-﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+﻿using System.Collections;
+using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories
@@ -82,6 +83,22 @@ namespace CommunityHub.Application.Database.Repositories
                 bookedJobs.Add(_bookedJobMapper.MapToEntity(reader));
             });
             return bookedJobs;
+        }
+
+        public BookedJob Create(BookedJob bookedJob)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO booked_jobs
+                    (scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id)
+                  VALUES
+                    (@scheduled_date, @scheduled_time, @duration_hours, @unit_price, @is_substitution, @job_listing_id, @neighborhood_id, @substituting_provider_id)
+                  RETURNING id"
+            )
+            .ExtendParameters(_bookedJobMapper.MapToQueryParameters(bookedJob));
+            
+            long bookedJobId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            return bookedJob.CopyWith(id: bookedJobId);
         }
     }
 }
