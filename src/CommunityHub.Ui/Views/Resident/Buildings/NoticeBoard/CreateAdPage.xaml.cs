@@ -30,6 +30,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 if (_selectedType == value) return;
                 _selectedType = value;
                 OnPropertyChanged(nameof(SelectedType));
+                OnPropertyChanged(nameof(IsFormValid));
             }
         }
 
@@ -41,6 +42,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 if (_selectedCategory == value) return; 
                 _selectedCategory = value;
                 OnPropertyChanged(nameof(SelectedCategory));
+                OnPropertyChanged(nameof(IsFormValid));
             }
         }
 
@@ -52,6 +54,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 if (_description == value) return;
                 _description = value;
                 OnPropertyChanged(nameof(Description));
+                OnPropertyChanged(nameof(IsFormValid));
             }
         }
 
@@ -80,6 +83,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 OnPropertyChanged(nameof(SelectedDateRangeText));
                 OnPropertyChanged(nameof(MinEndDate));
                 OnPropertyChanged(nameof(IsDateRangeSelected));
+                OnPropertyChanged(nameof(IsFormValid));
             }
         }
         public string SelectedStartDateText {
@@ -103,6 +107,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 OnPropertyChanged(nameof(SelectedDateRangeText));
                 OnPropertyChanged(nameof(MaxStartDate));
                 OnPropertyChanged(nameof(IsDateRangeSelected));
+                OnPropertyChanged(nameof(IsFormValid));
             }
         }
 
@@ -125,6 +130,23 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         }
 
         public bool IsDateRangeSelected => SelectedStartDate is not null && SelectedEndDate is not null;
+
+        public bool IsFormValid
+        { 
+            get
+            {
+                if (!IsDateRangeSelected) return false;
+                if (SelectedStartDate!.Value < DateTime.Now) return false;
+                if (SelectedEndDate!.Value < SelectedStartDate.Value) return false;
+
+                if (string.IsNullOrWhiteSpace(Description)) return false;
+
+                if (SelectedType == null) return false;
+                if (SelectedCategory == null) return false;
+
+                return true;
+            }       
+        }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
