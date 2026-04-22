@@ -19,7 +19,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 name,
                 description,
                 floorNumber,
-                type
+                type,
+                id
             );
         }
 

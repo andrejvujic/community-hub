@@ -1,6 +1,7 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.NoticeBoard;
 using CommunityHub.Application.Domain.CommonRoom;
+using CommunityHub.Application.Domain.CommonRoomRentalRequest;
 using Npgsql;
 using System.Data;
 using System.Text.Json;
@@ -25,6 +26,7 @@ public static class PostgresConnection
         builder.MapEnum<MeetingTheme>("meeting_themes");
         builder.MapEnum<MeetingStatus>("meeting_statuses");
         builder.MapEnum<BudgetCategory>("budget_categories");
+        builder.MapEnum<RentalStatus>("common_room_rental_statuses");
 
         var dataSource = builder.Build();
         return dataSource.OpenConnection();

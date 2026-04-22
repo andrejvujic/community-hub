@@ -17,6 +17,7 @@
             RentalType type,
             long id = 0
         ) {
+            Id = id;
             BuildingId = buildingId;
             Name = name;
             Description = description;
@@ -32,7 +33,8 @@
             string? name = null,
             string? description = null,
             int? floorNumber = null,
-            RentalType? type = null
+            RentalType? type = null,
+            long? id = null
         )
         {
             return new CommonRoom(
@@ -40,7 +42,8 @@
                 name ?? Name,
                 description ?? Description,
                 floorNumber ?? FloorNumber,
-                type ?? Type
+                type ?? Type,
+                id ?? Id
             );
         }
     }
