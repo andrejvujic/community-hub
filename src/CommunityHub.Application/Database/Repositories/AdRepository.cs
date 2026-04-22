@@ -7,6 +7,35 @@ namespace CommunityHub.Application.Database.Repositories
     {
         private readonly AdMapper _adMapper = new();
 
+        public Ad Create(Ad ad)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO ads 
+                        (building_id,
+                        resident_id,
+                        ad_type,
+                        ad_category,
+                        ad_status,
+                        description,
+                        start_date,
+                        end_date)
+                VALUES 
+                        (@building_id,
+                        @author_id,
+                        @ad_type,
+                        @ad_category,
+                        @ad_status,
+                        @description,
+                        @start_date,
+                        @end_date)
+                RETURNING id"
+            ).ExtendParameters(_adMapper.MapToQueryParameters(ad));
+
+            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));;
+
+            return ad.CopyWith(id: id);
+        }
+
         public List<Ad> GetByBuildingId(long id)
         {
             var query = PostgresQuery.Create(
