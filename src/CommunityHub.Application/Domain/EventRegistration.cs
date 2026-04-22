@@ -12,7 +12,6 @@ public class EventRegistration
     public EventRegistration(long id, Citizen citizen, long eventId, bool? attended = null)
     {
         if (citizen == null) throw new ArgumentNullException(nameof(citizen));
-        if (eventId <= 0) throw new ArgumentException("Invalid eventId.", nameof(eventId));
 
         Id = id;
         Citizen = citizen;

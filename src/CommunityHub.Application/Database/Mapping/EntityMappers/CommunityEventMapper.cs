@@ -22,9 +22,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
             DateTime datePart = reader.GetDateTime(reader.GetOrdinal("community_event_event_date"));
             var timeValue = reader.GetValue(reader.GetOrdinal("community_event_start_time"));
-            DateTime eventStart = timeValue is TimeSpan ts
-                ? datePart.Date + ts
-                : datePart.Date + ((DateTime)timeValue).TimeOfDay;
+            DateTime eventStart = timeValue is TimeSpan ts ? datePart.Date + ts : datePart.Date + ((DateTime)timeValue).TimeOfDay;
 
             int durationMinutes = reader.GetInt32(reader.GetOrdinal("community_event_duration_minutes"));
             int minVolunteers = reader.GetInt32(reader.GetOrdinal("community_event_min_volunteers"));
