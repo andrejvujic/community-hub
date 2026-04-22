@@ -98,6 +98,7 @@
             </TabItem>
 
             <TabItem Header="Statistika i sastanci (F4)">
+                <pages:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
             </TabItem>
 
             <TabItem Header="Servisni centar (F5)">
