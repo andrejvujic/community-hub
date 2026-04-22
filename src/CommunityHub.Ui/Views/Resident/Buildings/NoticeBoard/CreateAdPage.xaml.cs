@@ -4,7 +4,6 @@ using CommunityHub.Application.Domain.NoticeBoard;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -62,8 +61,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 {
                     var slotStartTime = currentDay.AddHours(firstTimeSlotStartHour + i);
                     var slotEndTime = slotStartTime.AddHours(1);
-
-                    Debug.WriteLine($"giving {ad.Id}");
 
                     timeSlots.Add(
                         new AdTimeSlot(
