@@ -98,6 +98,7 @@
                                   CanUserResizeColumns="False"
                                   CanUserSortColumns="False"
                                   IsReadOnly="True"
+                                  HeadersVisibility="Column"
                                   Margin="0,0,0,25">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Naziv ulice" Binding="{Binding Street.Name}" Width="*"/>
@@ -112,6 +113,7 @@
                                   AutoGenerateColumns="False" 
                                   CanUserResizeColumns="False"
                                   CanUserSortColumns="False"
+                                  HeadersVisibility="Column"
                                   IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Ime" Binding="{Binding Name}" Width="0.9*"/>

@@ -53,6 +53,7 @@
                   CanUserResizeColumns="False"
                   IsReadOnly="True"
                   SelectionMode="Single"
+                  HeadersVisibility="Column"
                   SelectionChanged="RequestsDataGrid_SelectionChanged">
 
             <DataGrid.Columns>
