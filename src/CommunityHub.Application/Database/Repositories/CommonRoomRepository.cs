@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.CommonRoom;
 
 namespace CommunityHub.Application.Database.Repositories
@@ -33,6 +34,20 @@ namespace CommunityHub.Application.Database.Repositories
             );
 
             return commonRooms;
+        }
+
+        public CommonRoom Create(CommonRoom commonRoom)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO common_rooms (building_id, name, description, floor_number, rental_type) 
+                VALUES (@building_id, @name, @description, @floor_number, @rental_type)
+                RETURNING id"
+            )
+            .ExtendParameters(_commonRoomMapper.MapToQueryParameters(commonRoom));
+
+            long generatedId = query.ExecuteScalar<long>(result => Convert.ToInt64(result));
+
+            return commonRoom.CopyWith(id: generatedId);
         }
     }
 }
