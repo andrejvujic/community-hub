@@ -51,7 +51,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "ad_status", entity.Status },
                 { "ad_type", entity.Type },
                 { "start_date", entity.StartDate },
-                { "end_date", entity.StartDate }
+                { "end_date", entity.EndDate }
             };
         }
     }
