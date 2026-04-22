@@ -1,0 +1,1 @@
+CREATE TYPE event_statuses AS ENUM ('preparation', 'scheduled', 'cancelled', 'finished');
