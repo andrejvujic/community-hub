@@ -13,6 +13,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     public partial class CreateAdPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
+
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Now.Date;
 
@@ -225,7 +226,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             foreach (var timeSlot in timeSlots)
                 _adTimeSlotRepository.Create(timeSlot);
 
-            ShowSuccessAlert(publishedAd.Id);
+            ShowSuccessAlert(publishedAd);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -251,6 +252,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 }
             );
         }
+
         private void ShowErrorAlert()
         {
             if (this is IAlertConsumer consumer)
@@ -263,7 +265,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 );
         }
 
-        private void ShowSuccessAlert(long publishedAdId)
+        private void ShowSuccessAlert(Ad publishedAd)
         {
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
@@ -274,7 +276,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     )
                     .AddOption(
                         "Nastavi",
-                        () => Pop(publishedAdId)
+                        () => Pop(publishedAd)
                     )
                 );
         }

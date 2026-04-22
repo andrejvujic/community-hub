@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _repository.GetByBuildingId(_buildingId);
+            List<Ad> ads = _repository.GetForBuilding(_buildingId);
             foreach (var ad in ads)
                 Ads.Add(ad);
         }
