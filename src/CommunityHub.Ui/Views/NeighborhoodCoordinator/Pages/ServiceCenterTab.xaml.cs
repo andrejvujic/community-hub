@@ -35,10 +35,10 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
-            LoadData();
+            LoadNeighborhoods();
         }
 
-        private void LoadData()
+        private void LoadNeighborhoods()
         {
             Neighborhoods.Clear();
             var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);

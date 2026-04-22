@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages.CityFacilitiesTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#F5F6FA">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="White" Margin="15" CornerRadius="12">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="15,15,15,10">
+                    <TextBlock Text="Moji kvartovi" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                </Grid>
+
+                <ListBox x:Name="NeighborhoodsListBox" 
+                         Grid.Row="1" 
+                         Margin="10,0,10,10"
+                         ItemsSource="{Binding Neighborhoods}"
+                         Style="{StaticResource NeighborhoodListBoxStyle}"
+                         ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" BorderBrush="Black"  BorderThickness="1" Margin="10" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Rezervacija za kvart:" FontSize="32" HorizontalAlignment="Center" />
+                        <TextBlock Text="Naziv kvarta" FontSize="32" Margin="0,5,0,50" HorizontalAlignment="Center" />
+
+                        <TextBlock Text="Izaberite objekat:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                        <ComboBox x:Name="FacilitiesComboBox" Height="35"  Width="250" FontSize="20" Margin="0,0,0,40" HorizontalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <Run Text="Objekat"/>
+                                        <Run Text=" ("/>
+                                        <Run Text="20"/>
+                                        <Run Text=" glasova)"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Grid Margin="0,0,0,20" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Trajanje posete (h):" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBox x:Name="DurationTextBox" Grid.Column="1" Height="35" Width="50" FontSize="14" VerticalContentAlignment="Center" Padding="5,0"/>
+                        </Grid>
+
+                        <TextBlock Text="Opseg datuma:" FontSize="24" Margin="0,30,0,10" HorizontalAlignment="Center"/>
+                        <Grid Margin="0,10,0,30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Od:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <DatePicker x:Name="StartDatePicker" Height="35" FontSize="24"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Do:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <DatePicker x:Name="EndDatePicker" Height="35" FontSize="24"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Button x:Name="ReserveButton" Content="Proveri dostupnost i rezerviši" Height="50" Width="300" FontSize="20" Cursor="Hand" Margin="5,25,5,0" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Grid Grid.Column="1" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2.5*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1" Padding="5" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" FontSize="20" Margin="0,0,0,15">
+                                <Run Text="Spisak rezervacija kvarta "/>
+                                <Run Text="NazivKvarta" />
+                            </TextBlock>
+
+                            <DataGrid x:Name="ReservationsDataGrid"
+                                      Grid.Row="1" 
+                                      AutoGenerateColumns="False" 
+                                      CanUserAddRows="False" 
+                                      CanUserResizeRows="False"
+                                      CanUserResizeColumns="False"
+                                      CanUserReorderColumns="False"
+                                      CanUserSortColumns="False"
+                                      IsReadOnly="True"
+                                      HeadersVisibility="Column"
+                                      Background="Transparent">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Objekat" Width="*"/>
+                                    <DataGridTextColumn Header="Datum" Width="100"/>
+                                    <DataGridTextColumn Header="Vreme" Width="80"/>
+                                    <DataGridTextColumn Header="Trajanje" Width="80"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Padding="5" Margin="0,10,0,0">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Generisanje izveštaja" FontSize="30" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Generiši izveštaj o svim rezervacijama gradskih objekata" FontSize="16" Margin="0,0,0,15" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+                                <TextBlock Text="od:" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <DatePicker x:Name="ReportStartDatePicker" FontSize="16" Width="130" Height="30" Margin="0,0,15,0"/>
+
+                                <TextBlock Text="do:" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <DatePicker x:Name="ReportEndDatePicker" FontSize="16" Width="130" Height="30"/>
+                            </StackPanel>
+
+                            <Button x:Name="GenerateReportButton" Content="Generiši izveštaj" Height="35" Width="250" HorizontalAlignment="Center" FontSize="20" Cursor="Hand" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl>

@@ -98,6 +98,7 @@
             </TabItem>
 
             <TabItem Header="Statistika i sastanci (F4)">
+                <pages:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
             </TabItem>
 
             <TabItem Header="Servisni centar (F5)">
@@ -105,6 +106,7 @@
             </TabItem>
 
             <TabItem Header="Gradski objekti (F6)">
+                <pages:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
             <TabItem Header="Budžet (F7)">
