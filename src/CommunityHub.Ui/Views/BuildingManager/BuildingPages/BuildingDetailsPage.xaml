@@ -209,10 +209,10 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="sideBarRentingRoomItem"
+                        x:Name="sideBarCommonRoomRentalRequestItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
-                        Tag="RentingRoom">
+                        Tag="CommonRoomRentalRequest">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Style.Triggers>
