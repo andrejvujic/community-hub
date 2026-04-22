@@ -105,6 +105,7 @@
             </TabItem>
 
             <TabItem Header="Gradski objekti (F6)">
+                <pages:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
             <TabItem Header="Budžet (F7)">
