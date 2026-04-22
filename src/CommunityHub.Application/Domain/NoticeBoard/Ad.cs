@@ -49,6 +49,7 @@ namespace CommunityHub.Application.Domain.NoticeBoard
         public bool IsRequest { get => Type == AdType.Request; }
 
         public Ad CopyWith(
+            long? id = null,
             User? author = null,
             long? buildingId = null,
             AdType? type = null,
@@ -67,7 +68,8 @@ namespace CommunityHub.Application.Domain.NoticeBoard
                 status ?? Status,
                 description ?? Description,
                 startDate ?? StartDate,
-                endDate ?? EndDate
+                endDate ?? EndDate,
+                id ?? Id
             );
         }
     }
