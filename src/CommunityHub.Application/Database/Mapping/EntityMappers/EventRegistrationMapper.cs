@@ -12,7 +12,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             if (reader.IsDBNull(reader.GetOrdinal("registration_id"))) return null;
             long id = reader.GetInt64(reader.GetOrdinal("registration_id"));
 
-            Citizen? citizen = (_citizenMapper?.MapToEntity(reader.WithPrefix("citizen"))) ?? throw new Exception("Couldn't read EventRegistration from database because of missing citizen data");
+            Citizen? citizen = (_citizenMapper?.MapToEntity(reader.WithPrefix("registration_citizen"))) ?? throw new Exception("Couldn't read EventRegistration from database because of missing citizen data");
 
             bool? attended = null;
             int attendedOrd = reader.GetOrdinal("registration_attended");

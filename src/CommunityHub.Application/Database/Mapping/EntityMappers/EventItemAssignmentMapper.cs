@@ -14,7 +14,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             long id = reader.GetInt64(reader.GetOrdinal("event_item_assignment_id"));
 
             EventRegistration registration = _registrationMapper?.MapToEntity(reader.WithPrefix("registration")) ?? throw new Exception("Couldn't read EventItemAssignment from database because of missing registration data");
-            EventItem item = _itemMapper?.MapToEntity(reader.WithPrefix("item")) ?? throw new Exception("Couldn't read EventItemAssignment from database because of missing item data");
+            EventItem item = _itemMapper?.MapToEntity(reader.WithPrefix("event_item")) ?? throw new Exception("Couldn't read EventItemAssignment from database because of missing item data");
 
             return new EventItemAssignment(id, registration, item);
         }

@@ -30,7 +30,7 @@ namespace CommunityHub.Application.Database.Repositories
             var items = new List<EventRegistration>();
             query.ExecuteReader(reader =>
             {
-                var reg = _mapper.MapToEntity(reader.WithPrefix("registration"));
+                var reg = _mapper.MapToEntity(reader);
                 if (reg is not null) items.Add(reg);
             });
 
@@ -71,7 +71,7 @@ namespace CommunityHub.Application.Database.Repositories
             EventRegistration? result = null;
             query.ExecuteReader(reader =>
             {
-                var reg = _mapper.MapToEntity(reader.WithPrefix("registration"));
+                var reg = _mapper.MapToEntity(reader);
                 if (reg != null) result = reg;
             });
 
