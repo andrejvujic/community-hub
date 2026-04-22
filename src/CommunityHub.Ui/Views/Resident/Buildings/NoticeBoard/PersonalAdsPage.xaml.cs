@@ -4,7 +4,6 @@ using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
@@ -30,7 +29,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _repository.GetByAuthorId(_userId);
+            List<Ad> ads = _repository.GetAuthorAdsForBuilding(_userId, _buildingId);
             foreach (var ad in ads)
                 Ads.Add(ad);
 
@@ -48,9 +47,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 ),
                 onPop: (object? value) =>
                 {
-                    if (value is long publishedAdId)
+                    if (value is Ad publishedAd)
                     {
                         UpdateAds();
+                        Push(new MatchingAdsPage(publishedAd));
+                        return;
                     }
                 }
              );
