@@ -30,13 +30,14 @@
                          ItemsSource="{Binding Neighborhoods}"
                          Style="{StaticResource NeighborhoodListBoxStyle}"
                          ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
+                         SelectionChanged="NeighborhoodsListBox_SelectionChanged">
                 </ListBox>
             </Grid>
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-            <Grid>
+            <Grid x:Name="NeighborhoodServiceDetails" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="1*"/>
@@ -48,9 +49,9 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" 
-                               Text="Dostupne servisne usluge za kvart NazivKvarta (lokacija Grad, Država)" 
-                               FontSize="22"
+                    <TextBlock x:Name="ServicesTitleTextBlock"
+                               Grid.Row="0"
+                               FontSize="22" 
                                Margin="0,0,0,15"/>
 
                     <Grid Grid.Row="1">
@@ -61,48 +62,52 @@
 
                         <Border Grid.Column="0" Background="White" BorderThickness="2" BorderBrush="Black" Margin="0,0,7.5,0" Padding="10">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <StackPanel>
-                                    <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="8" Margin="0,0,0,10" Padding="10">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0">
-                                                <Rectangle Fill="LightGray" RadiusX="5" RadiusY="5"/>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                <TextBlock Text="Naziv usluge" FontSize="16" />
-                                                <TextBlock Text="Naziv servisera" FontSize="13" />
-                                                <TextBlock Text="cena usluge" FontSize="14" />
-                                                <TextBlock Text="nacin placanja usluge" FontSize="12" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
+                                <ListBox x:Name="JobListingsListBox"
+                                         ItemsSource="{Binding JobListings}"
+                                         BorderThickness="0">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="LightGray" 
+                                                    BorderThickness="1" 
+                                                    CornerRadius="8" 
+                                                    Margin="0,0,0,10" 
+                                                    Padding="10" 
+                                                    Width="257" 
+                                                    Height="115">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                    <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="8" Margin="0,0,0,10" Padding="10">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0">
-                                                <Rectangle Fill="LightGray" RadiusX="5" RadiusY="5"/>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                <TextBlock Text="Naziv usluge" FontSize="16" />
-                                                <TextBlock Text="Naziv servisera" FontSize="13" />
-                                                <TextBlock Text="cena usluge" FontSize="14" />
-                                                <TextBlock Text="nacin placanja usluge" FontSize="12" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </StackPanel>
+                                                    <Border Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0" CornerRadius="5" ClipToBounds="True">
+                                                        <Image Source="{Binding WorkSamples[0].Path}" Stretch="UniformToFill" />
+                                                    </Border>
+
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding ServiceName}" FontSize="16"/>
+
+                                                        <TextBlock FontSize="13">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                                    <Binding Path="Provider.Name"/>
+                                                                    <Binding Path="Provider.Surname"/>
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding CurrentPriceEntry.Amount, StringFormat='{}{0:N2} RSD'}" FontSize="12"/>
+                                                        <TextBlock Text="{Binding BillingType}" FontSize="12"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </ScrollViewer>
                         </Border>
 
                         <Border Grid.Column="1" Background="White" BorderThickness="2" BorderBrush="Black" Margin="7.5,0,0,0" Padding="5">
-                            <Grid>
+                            <Grid x:Name="JobDetailsGrid" Visibility="Collapsed">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1.2*"/>
                                     <RowDefinition Height="*"/>
@@ -178,7 +183,7 @@
                 </Grid>
 
                 <Border Grid.Row="1" Background="White" Margin="0,15,0,0" >
-                    <Grid>
+                    <Grid x:Name="ScheduledServicesGrid" Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
@@ -193,6 +198,7 @@
                                   CanUserSortColumns="False"
                                   IsReadOnly="True"
                                   Background="Transparent"
+                                  HeadersVisibility="Column"
                                   Margin="0,0,0,15">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Usluga" Width="*"/>
