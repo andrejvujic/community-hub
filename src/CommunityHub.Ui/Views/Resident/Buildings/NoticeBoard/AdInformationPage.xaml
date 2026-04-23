@@ -37,9 +37,9 @@
             BorderThickness="1"
             Padding="4">
             <Grid Background="#dedede" Height="48">
-                <Label
-                    VerticalContentAlignment="Center"
-                    Content="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}}"
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}}"
                     FontSize="18"/>
             </Grid>
         </Border>
@@ -53,9 +53,9 @@
             BorderThickness="1"
             Padding="4">
             <Grid Background="#dedede" Height="48">
-                <Label
-                    VerticalContentAlignment="Center"
-                    Content="{Binding Ad.Category, Converter={StaticResource AdCategoryToStringConverter}}"
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{Binding Ad.Category, Converter={StaticResource AdCategoryToStringConverter}}"
                     FontSize="18"/>
             </Grid>
         </Border>
@@ -71,7 +71,7 @@
             <TextBlock
                 Grid.Row="7"
                 FontSize="18"
-                Height="172"
+                Height="120"
                 TextWrapping="Wrap"
                 Text="{Binding Ad.Description}"/>
         </Border>
