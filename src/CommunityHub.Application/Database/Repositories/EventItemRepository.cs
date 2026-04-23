@@ -23,11 +23,11 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    id AS event_item_id,
-                    name AS event_item_name,
-                    event_id AS event_item_event_id
-                  FROM event_items
-                  WHERE event_id = @event_id"
+                id AS event_item_id,
+                name AS event_item_name,
+                event_id AS event_item_event_id
+                FROM event_items
+                WHERE event_id = @event_id"
             ).AddParameter("event_id", eventId);
 
             var items = new List<EventItem>();
@@ -44,11 +44,11 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    id AS event_item_id,
-                    name AS event_item_name,
-                    event_id AS event_item_event_id
-                  FROM event_items
-                  WHERE id = @id"
+                id AS event_item_id,
+                name AS event_item_name,
+                event_id AS event_item_event_id
+                FROM event_items
+                WHERE id = @id"
             ).AddParameter("id", id);
 
             EventItem? result = null;

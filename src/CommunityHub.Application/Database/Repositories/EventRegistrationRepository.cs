@@ -12,19 +12,20 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    r.id AS registration_id,
-                    r.attended AS registration_attended,
-                    r.event_id AS registration_event_id,
+                r.id AS registration_id,
+                r.attended AS registration_attended,
+                r.event_id AS registration_event_id,
 
-                    c.id AS registration_citizen_user_id,
-                    c.username AS registration_citizen_username,
-                    c.password AS registration_citizen_password,
-                    c.name AS registration_citizen_name,
-                    c.surname AS registration_citizen_surname,
-                    c.user_role AS registration_citizen_user_role
-                  FROM event_registrations r
-                  INNER JOIN users c ON r.citizen_id = c.id
-                  WHERE r.event_id = @event_id"
+                c.id AS registration_citizen_user_id,
+                c.username AS registration_citizen_username,
+                c.password AS registration_citizen_password,
+                c.name AS registration_citizen_name,
+                c.surname AS registration_citizen_surname,
+                c.user_role AS registration_citizen_user_role
+          
+                FROM event_registrations r
+                INNER JOIN users c ON r.citizen_id = c.id
+                WHERE r.event_id = @event_id"
             ).AddParameter("event_id", eventId);
 
             var items = new List<EventRegistration>();
@@ -53,19 +54,20 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    r.id AS registration_id,
-                    r.attended AS registration_attended,
-                    r.event_id AS registration_event_id,
+                r.id AS registration_id,
+                r.attended AS registration_attended,
+                r.event_id AS registration_event_id,
 
-                    c.id AS registration_citizen_user_id,
-                    c.username AS registration_citizen_username,
-                    c.password AS registration_citizen_password,
-                    c.name AS registration_citizen_name,
-                    c.surname AS registration_citizen_surname,
-                    c.user_role AS registration_citizen_user_role
-                  FROM event_registrations r
-                  INNER JOIN users c ON r.citizen_id = c.id
-                  WHERE r.id = @id"
+                c.id AS registration_citizen_user_id,
+                c.username AS registration_citizen_username,
+                c.password AS registration_citizen_password,
+                c.name AS registration_citizen_name,
+                c.surname AS registration_citizen_surname,
+                c.user_role AS registration_citizen_user_role
+                
+                FROM event_registrations r
+                INNER JOIN users c ON r.citizen_id = c.id
+                WHERE r.id = @id"
             ).AddParameter("id", id);
 
             EventRegistration? result = null;
