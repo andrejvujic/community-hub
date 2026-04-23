@@ -35,7 +35,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 status,
                 description,
                 startDate,
-                endDate
+                endDate,
+                id
             );
         }
 
