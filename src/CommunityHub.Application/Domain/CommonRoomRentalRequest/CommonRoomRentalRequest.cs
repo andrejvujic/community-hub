@@ -27,6 +27,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             if(commonRoom == null)
                 throw new ArgumentNullException("Common room can't be null.");
 
+            Id = id;
             CommonRoom = commonRoom;
             Status = status;
             Resident = resident;

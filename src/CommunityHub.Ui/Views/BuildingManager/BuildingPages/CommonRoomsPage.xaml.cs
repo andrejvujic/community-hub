@@ -2,10 +2,6 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.CommonRoom;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -113,10 +109,10 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             if (selectedCommonRoom == null) return;
 
-            var approvedDates = _commonRoomRentalRequestRepository.GetApprovedDates(selectedCommonRoom.Id, _building.Id);
+            var reservedDates = _commonRoomRentalRequestRepository.GetReservedDates(selectedCommonRoom.Id, _building.Id);
 
             calendar.SelectedDates.Clear();
-            foreach (var date in approvedDates)
+            foreach (var date in reservedDates)
                 calendar.SelectedDates.Add(date);
 
             calendar.Visibility = Visibility.Visible;

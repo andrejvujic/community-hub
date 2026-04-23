@@ -1,4 +1,5 @@
 ﻿
+using CommunityHub.Application.Database;
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.CommonRoomRentalRequest;
@@ -9,7 +10,7 @@ namespace CommunityHub.Application.Database.Repositories
     public class CommonRoomRentalRequestRepository
     {
         private readonly CommonRoomRentalRequestMapper _commonRoomRentalRequestMapper = new();
-        public List<DateTime> GetApprovedDates(long commonRoomId, long buildingId)
+        public List<DateTime> GetReservedDates(long commonRoomId, long buildingId)
         {
             var query = PostgresQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
@@ -44,26 +45,26 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("building_id", buildingId)
             .AddParameter("common_room_id", commonRoomId);
 
-            var approvedDates = new List<DateTime>();
+            var reservedDates = new List<DateTime>();
 
             query.ExecuteReader(reader =>
             {
                 var commonRoomRentalRequest = _commonRoomRentalRequestMapper.MapToEntity(reader);
 
                 if (commonRoomRentalRequest.AssignedDate != null)
-                    approvedDates.Add(commonRoomRentalRequest.AssignedDate.Value);
+                    reservedDates.Add(commonRoomRentalRequest.AssignedDate.Value);
                 else
                 {
                     var currentDate = commonRoomRentalRequest.StartDate;
                     while (currentDate <= commonRoomRentalRequest.EndDate)
                     {
-                        approvedDates.Add(currentDate);
+                        reservedDates.Add(currentDate);
                         currentDate = currentDate.AddDays(1);
                     }
                 }
             });
 
-            return approvedDates;
+            return reservedDates;
         }
 
         public List<CommonRoomRentalRequest> GetAllByBuildingId(long buildingId)
@@ -103,6 +104,38 @@ namespace CommunityHub.Application.Database.Repositories
             });
 
             return rentalRequests;
+        }
+
+        public int UpdateStatusAndAssignedDate(long requestId, RentalStatus newStatus, DateTime? assignedDate)
+        {
+            var query = PostgresQuery.Create(
+                @"UPDATE common_room_rental_requests
+                  SET rental_statuses = @new_status, 
+                      assigned_date = @assigned_date
+                  WHERE id = @request_id;"
+            )
+            .AddParameter("new_status", newStatus)
+            .AddParameter("assigned_date", assignedDate)
+            .AddParameter("request_id", requestId);
+
+            return query.GetRowsAffectedCount();
+        }
+
+        public int UpdateStatusAndRange(long requestId, RentalStatus newStatus, DateTime startDate, DateTime endDate)
+        {
+            var query = PostgresQuery.Create(
+                @"UPDATE common_room_rental_requests
+                  SET rental_statuses = @new_status, 
+                      start_date = @start_date,
+                      end_date = @end_date
+                  WHERE id = @request_id;"
+            )
+            .AddParameter("new_status", newStatus)
+            .AddParameter("start_date", startDate)
+            .AddParameter("end_date", endDate)
+            .AddParameter("request_id", requestId);
+
+            return query.GetRowsAffectedCount();
         }
     }
 }
