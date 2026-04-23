@@ -18,5 +18,8 @@ namespace CommunityHub.Application.Services
 
         public List<JobListing> GetJobListingsForLocation(long cityId, long countryId)
             => _jobListingRepository.GetByCityAndCountry(cityId, countryId);
+
+        public List<BookedJob> GetBookedJobListingsForNeighborhood(long neighborhoodId)
+            => _bookedJobRepository.GetByNeighborhoodId(neighborhoodId);
     }
 }
