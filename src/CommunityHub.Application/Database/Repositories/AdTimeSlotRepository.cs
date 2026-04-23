@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.NoticeBoard;
+using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories
 {
@@ -30,8 +31,8 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    time_slot_1.id,
-                    time_slot_1.ad_id,
+                    time_slot_1.id AS time_slot_id,
+                    time_slot_1.ad_id AS time_slot_ad_id,
                     time_slot_1.start_time,
                     time_slot_2.end_time 
                 FROM ad_time_slots time_slot_1
@@ -64,6 +65,8 @@ namespace CommunityHub.Application.Database.Repositories
             query.ExecuteReader(
                 reader => timeSlots.Add(_timeSlotMapper.MapToEntity(reader))
             );
+
+            Debug.WriteLine($"userId: {userId}, adId: {adId}, {timeSlots.Count}");
 
             return timeSlots;
         }
