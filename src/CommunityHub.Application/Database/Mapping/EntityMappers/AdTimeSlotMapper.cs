@@ -5,7 +5,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class AdTimeSlotMapper : EntityMapper<AdTimeSlot>
     {
-        public override AdTimeSlot? MapToEntity(IDataReader reader)
+        public override AdTimeSlot MapToEntity(IDataReader reader)
         {
             long id = reader.GetInt64(reader.GetOrdinal("time_slot_id"));
             long adId = reader.GetInt64(reader.GetOrdinal("time_slot_ad_id"));
