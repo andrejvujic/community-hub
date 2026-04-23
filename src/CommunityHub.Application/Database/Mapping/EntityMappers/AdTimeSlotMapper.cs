@@ -11,8 +11,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             long adId = reader.GetInt64(reader.GetOrdinal("time_slot_ad_id"));
             DateTime startTime = reader.GetDateTime(reader.GetOrdinal("start_time"));
             DateTime endTime = reader.GetDateTime(reader.GetOrdinal("end_time"));
+            bool isReserved = reader.GetBoolean(reader.GetOrdinal("is_reserved"));
 
-            return new AdTimeSlot(adId, startTime, endTime, id);
+            return new AdTimeSlot(adId, startTime, endTime, isReserved, id);
         }
 
         public override Dictionary<string, object?> MapToQueryParameters(AdTimeSlot entity)
