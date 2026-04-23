@@ -4,13 +4,13 @@ using CommunityHub.Application.Domain.NoticeBoard;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 {
-    public partial class AdDetails : MainNavigatorConsumerPage
+    public partial class AdDetailsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
 
         public Ad Ad { get; }
 
-        public AdDetails(long userId, Ad ad)
+        public AdDetailsPage(long userId, Ad ad)
         {
             InitializeComponent();
             DataContext = this;
