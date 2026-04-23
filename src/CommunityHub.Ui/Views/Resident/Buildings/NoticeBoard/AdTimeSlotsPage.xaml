@@ -169,7 +169,7 @@
             <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="Rezervacija termina nije moguća" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                 <TextBlock
-                    Text="Rezervacija nije moguća jer nemate odgovarajuće slobodne termine na svom oglasu u ovoj kategoriji. Provjerite da li imate objavljen oglas u istoj kategoriji i da li na njemu postoje slobodni termini."
+                    Text="Rezervacija nije moguća jer nemate odgovarajuće slobodne termine na svom oglasu u ovoj kategoriji. Provjerite da li imate objavljen oglas u ovoj kategoriji i da li na njemu postoje podudarni slobodni termini."
                     TextWrapping="Wrap" 
                     TextAlignment="Center"
                     FontSize="16"
