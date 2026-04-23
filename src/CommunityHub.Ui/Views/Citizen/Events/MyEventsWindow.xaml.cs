@@ -14,6 +14,8 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             var eventRepo = new CommunityHub.Application.Database.Repositories.CommunityEventRepository();
             var events = eventRepo.GetByOrganizerId(_userId);
             OrganizerEventsList.ItemsSource = events;
+            var volunteerEvents = eventRepo.GetByVolunteerCitizenId(_userId);
+            VolunteerEventsList.ItemsSource = volunteerEvents;
         }
     }
 }
