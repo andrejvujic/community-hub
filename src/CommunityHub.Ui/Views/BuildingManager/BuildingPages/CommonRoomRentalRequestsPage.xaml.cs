@@ -27,7 +27,6 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         }
         private void CommonRoomRentalRequestsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
         }
         private void LeftArrow_Click(object sender, MouseButtonEventArgs e)
@@ -46,7 +45,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             foreach (var request in rentalRequests)
                 RentalRequests.Add(request);
         }
-        private void CheckAndUpdateRentalDateStatuses()
+        public void CheckAndUpdateRentalDateStatuses()
         {
             var rentalRequests = _commonRoomRentalRequestRepository.GetAllByBuildingId(_building.Id);
 
@@ -194,8 +193,10 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             var day = (DateTime)button!.Tag;
 
             _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalStatus.Approved, day);
+            CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
             oneDayPanel.Visibility = Visibility.Collapsed;
+
         }
         private void SuggestMultiDayDates(CommonRoomRentalRequest request)
         {
@@ -260,6 +261,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             var (start,end) = ((DateTime,DateTime))button!.Tag;
 
             _commonRoomRentalRequestRepository.UpdateStatusAndRange(request.Id, RentalStatus.WaitingDateChange, start, end);
+            CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
             multiDayPanel.Visibility = Visibility.Collapsed;
         }
