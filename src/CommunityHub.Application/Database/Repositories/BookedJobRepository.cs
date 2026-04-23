@@ -78,8 +78,7 @@ namespace CommunityHub.Application.Database.Repositories
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BookedJob> bookedJobs = new List<BookedJob>();
-            query.ExecuteReader(reader =>
-            {
+            query.ExecuteReader(reader =>{
                 bookedJobs.Add(_bookedJobMapper.MapToEntity(reader));
             });
             return bookedJobs;
