@@ -11,29 +11,48 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 @"INSERT INTO ads 
-                        (building_id,
-                        resident_id,
-                        ad_type,
-                        ad_category,
-                        ad_status,
-                        description,
-                        start_date,
-                        end_date)
+                    (building_id,
+                    resident_id,
+                    ad_type,
+                    ad_category,
+                    ad_status,
+                    description,
+                    start_date,
+                    end_date)
                 VALUES 
-                        (@building_id,
-                        @author_id,
-                        @ad_type,
-                        @ad_category,
-                        @ad_status,
-                        @description,
-                        @start_date,
-                        @end_date)
+                    (@building_id,
+                    @author_id,
+                    @ad_type,
+                    @ad_category,
+                    @ad_status,
+                    @description,
+                    @start_date,
+                    @end_date)
                 RETURNING id"
             ).ExtendParameters(_adMapper.MapToQueryParameters(ad));
 
             long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));;
 
             return ad.CopyWith(id: id);
+        }
+
+        public void Update(Ad ad)
+        {
+            PostgresQuery.Create(
+                @"UPDATE ads SET
+                    building_id = @building_id,
+                    resident_id = @author_id,
+                    ad_type = @ad_type,
+                    ad_category = @ad_category,
+                    ad_status = @ad_status,
+                    description = @description,
+                    start_date = @start_date,
+                    end_date = @end_date
+                WHERE id = @id"
+            )
+            .AddParameter("id", ad.Id)
+            .ExtendParameters(_adMapper.MapToQueryParameters(ad))
+            .Execute();
         }
 
         public List<Ad> GetForBuilding(long buildingId)
@@ -59,7 +78,8 @@ namespace CommunityHub.Application.Database.Repositories
                 
                 FROM ads ad 
                 INNER JOIN users author ON ad.resident_id = author.id
-                WHERE ad.building_id = @building_id"
+                WHERE ad.building_id = @building_id
+                ORDER BY ad_id ASC"
             ).AddParameter("building_id", buildingId);
 
             List<Ad> ads = new List<Ad>();
@@ -93,7 +113,8 @@ namespace CommunityHub.Application.Database.Repositories
                 
                 FROM ads ad 
                 INNER JOIN users author ON ad.resident_id = author.id
-                WHERE ad.resident_id = @author_id AND ad.building_id = @building_id"
+                WHERE ad.resident_id = @author_id AND ad.building_id = @building_id
+                ORDER BY ad_id ASC"
             ).AddParameter("author_id", authorId)
             .AddParameter("building_id", buildingId);
 

@@ -5,7 +5,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
 {
     public class MainNavigatorConsumerPage : Page
     {
-        public string Id { get; } = new Guid().ToString();
+        public string Id { get; } = Guid.NewGuid().ToString();
 
         protected void Push(MainNavigatorConsumerPage page, Action<object?>? onPop = null)
         {

@@ -50,12 +50,24 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     if (value is Ad publishedAd)
                     {
                         UpdateAds();
-                        Push(new MatchingAdsPage(publishedAd));
+                        Push(new MatchingAdsPage(_userId, publishedAd));
                         return;
                     }
                 }
              );
          }
+
+        private void AdItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not Ad ad) return;
+
+            Push(
+                new PersonalAdDetailsPage(_userId, ad),
+                onPop: _ => UpdateAds()
+            );
+        }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();

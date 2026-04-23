@@ -10,6 +10,7 @@ namespace CommunityHub.Application.Domain.NoticeBoard
 
         public AdType Type { get; private set; }
         public AdCategory Category { get; private set; }
+
         public AdStatus Status { get; private set; }
 
         public string Description { get; private set; }
@@ -48,7 +49,14 @@ namespace CommunityHub.Application.Domain.NoticeBoard
         }
 
         public bool IsOffer { get => Type == AdType.Offer; }
-        public bool IsRequest { get => Type == AdType.Request; }
+        public bool IsRequest { get => Type is AdType.Request; }
+
+
+        public void Archive()
+            => Status = AdStatus.Archived;
+
+        public bool IsActive { get => Status == AdStatus.Active; }
+        public bool IsArchived { get => Status == AdStatus.Archived; }
 
         public Ad CopyWith(
             long? id = null,

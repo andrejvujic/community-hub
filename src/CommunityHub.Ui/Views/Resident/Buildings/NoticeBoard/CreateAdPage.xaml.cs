@@ -67,7 +67,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                         new AdTimeSlot(
                             ad.Id,
                             startTime: slotStartTime,
-                            endTime: slotEndTime
+                            endTime: slotEndTime,
+                            isReserved: false
                         )
                     );
                 }
