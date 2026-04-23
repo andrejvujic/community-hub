@@ -52,4 +52,10 @@
     <Folder Include="Views\ServiceProvider\Pages\JobListings\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\Resident\Buildings\NoticeBoard\SelectAdCategoryPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

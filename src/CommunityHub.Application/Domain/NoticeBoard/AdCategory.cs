@@ -49,4 +49,9 @@
         [EnumMember(Value = "transport")]
         Transport
     }
+
+    public static class AdCategoryValues
+    {
+        public static Array All => Enum.GetValues(typeof(AdCategory));
+    }
 }

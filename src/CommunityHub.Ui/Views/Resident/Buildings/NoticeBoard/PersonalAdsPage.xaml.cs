@@ -4,7 +4,6 @@ using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
@@ -30,7 +29,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _repository.GetByAuthorId(_userId);
+            List<Ad> ads = _repository.GetAuthorAdsForBuilding(_userId, _buildingId);
             foreach (var ad in ads)
                 Ads.Add(ad);
 
@@ -40,10 +39,23 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         public bool HasAds { get => Ads.Count > 0; }
 
         private void CreateAdButton_Click(object sender, RoutedEventArgs e)
-            => Push(new CreateAdPage(
+        {
+            Push(
+                new CreateAdPage(
                     userId: _userId,
                     buildingId: _buildingId
-                ));
+                ),
+                onPop: (object? value) =>
+                {
+                    if (value is Ad publishedAd)
+                    {
+                        UpdateAds();
+                        Push(new MatchingAdsPage(publishedAd));
+                        return;
+                    }
+                }
+             );
+         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();

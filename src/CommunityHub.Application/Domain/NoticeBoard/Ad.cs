@@ -28,9 +28,11 @@ namespace CommunityHub.Application.Domain.NoticeBoard
             DateTime endDate,
             long id = 0
         ) {
-            if (author == null) throw new ArgumentNullException("Author can't be null.");
+            Id = id;
 
+            if (author == null) throw new ArgumentNullException("Author can't be null.");
             Author = author;
+
             BuildingId = buildingId;
 
             Type = type;
@@ -49,6 +51,7 @@ namespace CommunityHub.Application.Domain.NoticeBoard
         public bool IsRequest { get => Type == AdType.Request; }
 
         public Ad CopyWith(
+            long? id = null,
             User? author = null,
             long? buildingId = null,
             AdType? type = null,
@@ -67,7 +70,8 @@ namespace CommunityHub.Application.Domain.NoticeBoard
                 status ?? Status,
                 description ?? Description,
                 startDate ?? StartDate,
-                endDate ?? EndDate
+                endDate ?? EndDate,
+                id: id ?? Id
             );
         }
     }

@@ -9,4 +9,9 @@ namespace CommunityHub.Application.Domain.NoticeBoard
         [EnumMember(Value = "request")]
         Request,
     }
+
+    public static class AdTypeValues
+    {
+        public static Array All => Enum.GetValues(typeof(AdType));
+    }
 }
