@@ -100,5 +100,39 @@ namespace CommunityHub.Application.Database.Repositories
 
             return bookedJob.CopyWith(id: bookedJobId);
         }
+
+        public List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> GetOccupiedSlots(long jobListingId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    booked_job.scheduled_date,
+                    booked_job.scheduled_time,
+                    booked_job.duration_hours
+                FROM booked_jobs booked_job
+                WHERE booked_job.job_listing_id = @job_listing_id
+                ORDER BY booked_job.scheduled_date, booked_job.scheduled_time"
+            ).AddParameter("job_listing_id", jobListingId);
+
+            var results = new List<(DateOnly, TimeOnly?, int?)>();
+            query.ExecuteReader(reader =>
+            {
+                var date = DateOnly.FromDateTime(
+                    reader.GetDateTime(reader.GetOrdinal("scheduled_date")));
+
+                int timeOrdinal = reader.GetOrdinal("scheduled_time");
+                TimeOnly? time = reader.IsDBNull(timeOrdinal) 
+                    ? null
+                    : (TimeOnly)reader.GetValue(timeOrdinal);
+
+                int durationOrdinal = reader.GetOrdinal("duration_hours");
+                int? duration = reader.IsDBNull(durationOrdinal)
+                    ? null
+                    : reader.GetInt32(durationOrdinal);
+
+                results.Add((date, time, duration));
+            });
+
+            return results;
+        }
     }
 }
