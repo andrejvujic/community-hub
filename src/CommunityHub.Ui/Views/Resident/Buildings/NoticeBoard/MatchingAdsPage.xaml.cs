@@ -40,7 +40,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             if (element.DataContext is not Ad ad) return;
 
-            Push(new AdDetails(_userId, ad));
+            Push(new AdDetailsPage(_userId, ad));
         }
     }
 }
