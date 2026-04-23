@@ -12,6 +12,7 @@
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:IEnumerableContainsToBooleanConverter x:Key="IEnumerableContainsToBooleanConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid Margin="8">
@@ -90,37 +91,44 @@
                                                                     </TextBlock.Text>
                                                                 </TextBlock>
 
-                                                                <Border
-                                                                    Grid.Column="2"
-                                                                    Width="36"
-                                                                    Height="36"
-                                                                    BorderThickness="1"
-                                                                    BorderBrush="Gray"
-                                                                    Background="White">
+                                                                <Grid Grid.Column="2" Height="36">
                                                                     <TextBlock
-                                                                        Text="&#xf00c;"
-                                                                        FontSize="24"
-                                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                                        HorizontalAlignment="Center"
-                                                                        VerticalAlignment="Center">
-                                                                        <TextBlock.Style>
-                                                                            <Style TargetType="TextBlock">
-                                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                <Style.Triggers>
-                                                                                    <DataTrigger Value="True">
-                                                                                        <DataTrigger.Binding>
-                                                                                            <MultiBinding Converter="{StaticResource IEnumerableContainsToBooleanConverter}">
-                                                                                                    <Binding Path="SelectedTimeSlotIds" RelativeSource="{RelativeSource AncestorType=Page}"/>
-                                                                                                    <Binding Path="Id"/>
-                                                                                            </MultiBinding>
-                                                                                        </DataTrigger.Binding>
-                                                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                                                    </DataTrigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </TextBlock.Style>
-                                                                    </TextBlock>
-                                                                </Border>
+                                                                        Visibility="{Binding IsReserved, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                        Text="Zauzeto"
+                                                                        FontSize="18"
+                                                                        VerticalAlignment="Center"/>
+
+                                                                    <Border
+                                                                        Visibility="{Binding IsReserved, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                                                                        BorderThickness="1"
+                                                                        BorderBrush="Gray"
+                                                                        Background="White"
+                                                                        Width="36">
+                                                                        <TextBlock
+                                                                            Text="&#xf00c;"
+                                                                            FontSize="24"
+                                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                                            HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center">
+                                                                            <TextBlock.Style>
+                                                                                <Style TargetType="TextBlock">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                    <Style.Triggers>
+                                                                                        <DataTrigger Value="True">
+                                                                                            <DataTrigger.Binding>
+                                                                                                <MultiBinding Converter="{StaticResource IEnumerableContainsToBooleanConverter}">
+                                                                                                    <Binding Path="SelectedTimeSlots" RelativeSource="{RelativeSource AncestorType=Page}"/>
+                                                                                                    <Binding/>
+                                                                                                </MultiBinding>
+                                                                                            </DataTrigger.Binding>
+                                                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                                                        </DataTrigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </TextBlock.Style>
+                                                                        </TextBlock>
+                                                                    </Border>
+                                                                </Grid>
                                                             </Grid>
                                                         </Border>
                                                     </DataTemplate>

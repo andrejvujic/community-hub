@@ -4,7 +4,7 @@ using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,11 +13,14 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     public partial class AdTimeSlotsPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
     {
         private readonly long _userId;
+
+        private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
+
         private readonly AdTimeSlotRepository _timeSlotRepository = new();
         private readonly AdTimeSlotReservationRepository _timeSlotReservationRepository = new();
         public Ad Ad { get; }
         public ObservableCollection<AdTimeSlotGroup> TimeSlotGroups { get; } = new();
-        public ObservableCollection<long> SelectedTimeSlotIds { get; } = new();
+        public ObservableCollection<AdTimeSlot> SelectedTimeSlots { get; } = new();
 
         public AdTimeSlotsPage(long userId, Ad ad)
         {
@@ -42,6 +45,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     ).ToList();
         }
 
+
         private void UpdateReservableTimeSlots()
         {
             var timeSlots = _timeSlotRepository.GetReservableTimeSlotsForUser(
@@ -52,41 +56,77 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             TimeSlotGroups.Clear();
             foreach (var group in GroupTimeSlotsByDay(timeSlots))
                 TimeSlotGroups.Add(group);
+        }
 
+        private List<AdTimeSlotReservation>? CreateReservations()
+        {
+            var reservations = new List<AdTimeSlotReservation>();
+
+            foreach (var selectedTimeSlot in SelectedTimeSlots)
+            {
+                var matchingTimeSlot = _timeSlotRepository.GetMatchingTimeSlotInUserAds(
+                    selectedTimeSlot.Id,
+                    _userId
+                );
+
+                if (matchingTimeSlot == null)
+                {
+                    if (this is IAlertConsumer consumer)
+                        consumer.ShowAlert(
+                            Alert.Create(
+                                "Greška",
+                                $"Nije bilo moguće rezervisati termin {selectedTimeSlot.StartTime:HH.mm} — {selectedTimeSlot.EndTime:HH.mm} na dan {selectedTimeSlot.StartTime.ToString("d. MMMM", _culture)} zato što već imate dogovor sklopljen sa drugim stanarom u ovom terminu.",
+                                AlertType.Error
+                            ).AddOption("U redu")
+                        );
+                    return null;
+                }
+
+                reservations.Add(
+                    new AdTimeSlotReservation(
+                        selectedTimeSlot.Id,
+                        matchingTimeSlot.Id
+                    )
+                );
+            }
+
+            return reservations;
         }
 
         private void ReserveSelectedTimeSlots()
         {
-            foreach (var selectedTimeSlotId in SelectedTimeSlotIds)
-            {
-                var matchingTimeSlot = _timeSlotRepository.GetMatchingTimeSlotInUserAds(
-                    selectedTimeSlotId,
-                    _userId
-                );
-                if (matchingTimeSlot == null) continue;
+            var reservations = CreateReservations();
 
-                var reservation = new AdTimeSlotReservation(selectedTimeSlotId, matchingTimeSlot.Id);
+            if (reservations == null) return;
+
+            foreach (var reservation in reservations)
                 _timeSlotReservationRepository.Create(reservation);
-            }
+
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Rezervacija uspješna",
+                        "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
+                    ).AddOption("U redu")
+                );
         }
 
         private void TimeSlotItem_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not AdTimeSlot timeSlot) return;
+            if (element.DataContext is not AdTimeSlot timeSlot || timeSlot.IsReserved) return;
 
-            if (SelectedTimeSlotIds.Contains(timeSlot.Id))
-            {
-                SelectedTimeSlotIds.Remove(timeSlot.Id);
-            } else
-                SelectedTimeSlotIds.Add(timeSlot.Id);
+            if (SelectedTimeSlots.Contains(timeSlot))
+                SelectedTimeSlots.Remove(timeSlot);
+            else
+                SelectedTimeSlots.Add(timeSlot);
 
-            OnPropertyChanged(nameof(SelectedTimeSlotIds));
+            OnPropertyChanged(nameof(SelectedTimeSlots));
             OnPropertyChanged(nameof(HasSelectedTimeSlots));
         }
 
-        public bool HasSelectedTimeSlots => SelectedTimeSlotIds.Count > 0;
+        public bool HasSelectedTimeSlots => SelectedTimeSlots.Count > 0;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
@@ -98,16 +138,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             UpdateReservableTimeSlots();
 
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Rezervacija uspješna",
-                        "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
-                    ).AddOption("U redu")
-                );
-
-            SelectedTimeSlotIds.Clear();
-            OnPropertyChanged(nameof(SelectedTimeSlotIds));
+            SelectedTimeSlots.Clear();
+            OnPropertyChanged(nameof(SelectedTimeSlots));
             OnPropertyChanged(nameof(HasSelectedTimeSlots));
         }
     }
