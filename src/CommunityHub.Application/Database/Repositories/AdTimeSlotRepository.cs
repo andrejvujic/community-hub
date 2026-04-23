@@ -35,7 +35,10 @@ namespace CommunityHub.Application.Database.Repositories
                     time_slot_2.id AS time_slot_id,
                     time_slot_2.ad_id AS time_slot_ad_id,
                     time_slot_2.start_time,
-                    time_slot_2.end_time
+                    time_slot_2.end_time,
+                    EXISTS (SELECT 1 FROM ad_time_slot_reservations reservation WHERE
+		                reservation.offer_ad_time_slot_id = time_slot_2.id OR
+		                reservation.request_ad_time_slot_id = time_slot_2.id) AS is_reserved
 
                 FROM ad_time_slots time_slot_1
                 INNER JOIN ads ad_1 ON ad_1.id = time_slot_1.ad_id
@@ -52,9 +55,6 @@ namespace CommunityHub.Application.Database.Repositories
 	                time_slot_2.end_time = time_slot_1.end_time
                 WHERE
 	                time_slot_1.id = @time_slot_id AND
-	                NOT EXISTS (SELECT 1 FROM ad_time_slot_reservations reservation WHERE
-		                reservation.offer_ad_time_slot_id = time_slot_1.id OR
-		                reservation.request_ad_time_slot_id = time_slot_1.id) AND
 	                NOT EXISTS (SELECT 1 FROM ad_time_slot_reservations reservation WHERE
 		                reservation.offer_ad_time_slot_id = time_slot_2.id OR
 		                reservation.request_ad_time_slot_id = time_slot_2.id)"
@@ -74,7 +74,11 @@ namespace CommunityHub.Application.Database.Repositories
                     time_slot_1.id AS time_slot_id,
                     time_slot_1.ad_id AS time_slot_ad_id,
                     time_slot_1.start_time,
-                    time_slot_1.end_time 
+                    time_slot_1.end_time,
+                    EXISTS (SELECT 1 FROM ad_time_slot_reservations reservation WHERE
+		                reservation.offer_ad_time_slot_id = time_slot_1.id OR
+		                reservation.request_ad_time_slot_id = time_slot_1.id) AS is_reserved
+
                 FROM ad_time_slots time_slot_1
                 INNER JOIN ads ad_1 ON ad_1.id = time_slot_1.ad_id
                 INNER JOIN ads ad_2 ON
@@ -89,13 +93,7 @@ namespace CommunityHub.Application.Database.Repositories
 	                time_slot_2.start_time = time_slot_1.start_time AND
 	                time_slot_2.end_time = time_slot_1.end_time
                 WHERE
-	                ad_1.id = @ad_id AND
-	                NOT EXISTS (SELECT 1 FROM ad_time_slot_reservations reservation WHERE
-		                reservation.offer_ad_time_slot_id = time_slot_1.id OR
-		                reservation.request_ad_time_slot_id = time_slot_1.id) AND
-	                NOT EXISTS (SELECT 1 FROM ad_time_slot_reservations reservation WHERE
-		                reservation.offer_ad_time_slot_id = time_slot_2.id OR
-		                reservation.request_ad_time_slot_id = time_slot_2.id)"
+	                ad_1.id = @ad_id"
             )
             .AddParameter("user_id", userId)
             .AddParameter("ad_id", adId);
