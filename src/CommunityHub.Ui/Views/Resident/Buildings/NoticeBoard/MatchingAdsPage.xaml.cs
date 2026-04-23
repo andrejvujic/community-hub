@@ -42,5 +42,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             Push(new AdDetailsPage(_userId, ad));
         }
+        private void BackButton_Click(object sender, MouseButtonEventArgs e)
+            => Pop();
     }
 }

@@ -21,15 +21,27 @@
 
         <Grid Grid.Row="0" Background="#dedede">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Grid
+                Grid.Column="0"
+                MouseLeftButtonDown="BackButton_Click"
+                Background="Transparent">
+                <TextBlock
+                    Text="&#xf177;"
+                    FontSize="24"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Grid>
+
             <TextBlock
-                 Grid.Column="1"
-                 Text="Predloženi oglasi"
-                 FontSize="20"
-                 VerticalAlignment="Center">
+                Grid.Column="1"
+                Text="Predloženi oglasi"
+                FontSize="20"
+                VerticalAlignment="Center">
             </TextBlock>
         </Grid>
 
