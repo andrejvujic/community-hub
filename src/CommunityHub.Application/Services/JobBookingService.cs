@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Services
 {
@@ -14,5 +15,8 @@ namespace CommunityHub.Application.Services
             _jobListingRepository = jobListingRepository;
             _bookedJobRepository = bookedJobRepository;
         }
+
+        public List<JobListing> GetJobListingsForLocation(long cityId, long countryId)
+            => _jobListingRepository.GetByCityAndCountry(cityId, countryId);
     }
 }
