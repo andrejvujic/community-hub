@@ -1,6 +1,7 @@
 <Page x:Class="CommunityHub.Ui.Views.Citizen.Events.EventsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
@@ -8,10 +9,141 @@
       Language="sr-Latn-RS"
       Title="Događaji">
 
-    <Grid Margin="40,20,40,40">
-        <TextBlock Text="Događaji"
-                   FontSize="24" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"/>
+    <Page.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}" Margin="30,15,30,25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,20" Height="34">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <TextBox x:Name="SearchBox" Width="460" Height="34" VerticalContentAlignment="Center" Padding="10,0" Text="" Foreground="#000" BorderBrush="Gray" BorderThickness="1" Background="White"/>
+                        <TextBlock Margin="14,0,0,0" VerticalAlignment="Center" Foreground="#666" IsHitTestVisible="False" Text="Pretraži događaje">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+
+                    <Button Grid.Column="1" Width="34" Height="34" Margin="6,0,0,0" Content="🔍" FontSize="14" Background="#F0F0F0" BorderBrush="Gray" BorderThickness="1"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid x:Name="EventsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
+                          BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Naziv događaja" Width="*"/>
+                        <DataGridTextColumn Header="Datum" Width="*"/>
+                        <DataGridTextColumn Header="Vreme" Width="*"/>
+                        <DataGridTextColumn Header="Status" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
+                        <Grid>
+                            <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center" Visibility="Visible">
+                                <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
+                                    Pritisnite Ctrl+S da pretražite događaje. Izaberite željeni događaj klikom miša ili koristeći strelice gore/dole.
+
+                                    Detalji o izabranom događaju biće prikazani ovde.
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel x:Name="DetailsPanel" Visibility="Collapsed">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="260" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                        <TextBlock Text="Naziv događaja" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+                                        <TextBlock FontSize="14" Foreground="#666" Margin="0,0,0,8">01.01.2026 12:00</TextBlock>
+                                        <TextBlock Text="Kratki opis događaja..." FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
+
+                                        <TextBlock Text="Lokacija:" FontWeight="Bold" Margin="0,0,0,4"/>
+                                        <TextBlock Text="Primer adrese ili lokacije" FontSize="13" TextWrapping="Wrap" MinHeight="40" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Border Width="240" Height="140" Background="#EDEDED" CornerRadius="8" Margin="0,0,0,12" BorderBrush="#CCC" BorderThickness="1">
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#666">Slika događaja</TextBlock>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="0,0,8,0">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
+                        </Button>
+
+                        <Button Grid.Column="1" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="4,0,4,0">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Štampaj izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
+                        </Button>
+
+                        <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="8,0,0,0">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Moji događaji<LineBreak/>(Ctrl + 3)</TextBlock>
+                        </Button>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Grid>
+
+        <Border Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}" Background="Transparent" Padding="40">
+            <Grid>
+                <TextBlock TextAlignment="Center" FontSize="20" Foreground="#333" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700">
+                    Da biste videli događaje u vašem kvartu, morate prvo imati članstvo u kvartu. Možete podneti zahtev za pridruživanje novom kvartu u tabu Kvartovi.
+                </TextBlock>
+            </Grid>
+        </Border>
     </Grid>
 </Page>
