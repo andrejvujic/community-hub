@@ -69,6 +69,7 @@
                                                     <DataTemplate>
                                                         <Border
                                                             Grid.Row="2"
+                                                            Background="#dedede"
                                                             BorderBrush="Gray"
                                                             BorderThickness="1"
                                                             Margin="8"
@@ -94,7 +95,8 @@
                                                                     Width="36"
                                                                     Height="36"
                                                                     BorderThickness="1"
-                                                                    BorderBrush="Gray">
+                                                                    BorderBrush="Gray"
+                                                                    Background="White">
                                                                     <TextBlock
                                                                         Text="&#xf00c;"
                                                                         FontSize="24"
