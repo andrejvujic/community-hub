@@ -1,0 +1,112 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard.PersonalAdInformationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      mc:Ignorable="d"
+      Title="Detaljne informacije o oglasu"
+      FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
+        <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </navigation:MainNavigatorConsumerPage.Resources>
+    <Grid>
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Vrsta oglasa" FontSize="18" Grid.Row="0"/>
+
+            <Border
+                Grid.Row="1" 
+                Background="#dedede"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Padding="4">
+                <Grid Background="#dedede" Height="48">
+                    <TextBlock
+                VerticalAlignment="Center"
+                Text="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}}"
+                FontSize="18"/>
+                </Grid>
+            </Border>
+
+            <Label Content="Kategorija" FontSize="18" Grid.Row="3"/>
+
+            <Border
+                Grid.Row="4" 
+                Background="#dedede"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Padding="4">
+                <Grid Background="#dedede" Height="48">
+                    <TextBlock
+                VerticalAlignment="Center"
+                Text="{Binding Ad.Category, Converter={StaticResource AdCategoryToStringConverter}}"
+                FontSize="18"/>
+                </Grid>
+            </Border>
+
+            <Label Content="Opis" FontSize="18" Grid.Row="6"/>
+
+            <Border
+                Grid.Row="7" 
+                Background="#dedede"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Padding="4">
+                <TextBlock
+                    Grid.Row="7"
+                    FontSize="18"
+                    Height="120"
+                    TextWrapping="Wrap"
+                    Text="{Binding Ad.Description}"/>
+            </Border>
+
+            <Label Content="Opseg datuma" FontSize="18" Grid.Row="9"/>
+
+            <Border
+                Grid.Row="10" 
+                Background="#dedede"
+                BorderBrush="Gray"
+                BorderThickness="1">
+                <Grid Background="#dedede" Height="48">
+                    <TextBlock FontSize="18" Padding="4" VerticalAlignment="Center">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                <Binding Path="Ad.StartDate"/>
+                                <Binding Path="Ad.EndDate"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Button
+            Visibility="{Binding Ad.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="0,0,0,16"
+            Content="Arhiviraj"
+            FontSize="18"
+            Width="192"
+            Height="72"
+            Click="ArchiveAdButton_Click"/>
+    </Grid>
+</navigation:MainNavigatorConsumerPage>
