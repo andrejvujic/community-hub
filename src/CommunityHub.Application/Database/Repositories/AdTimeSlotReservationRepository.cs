@@ -5,7 +5,7 @@ namespace CommunityHub.Application.Database.Repositories
 {
     public class AdTimeSlotReservationRepository
     {
-        private readonly AdTimeSlotReservationMapper _reservationMapper = new();
+        private readonly AdTimeSlotReservationMapper _timeSlotReservationMapper = new();
 
         public AdTimeSlotReservation Create(AdTimeSlotReservation reservation)
         {
@@ -14,7 +14,7 @@ namespace CommunityHub.Application.Database.Repositories
                   VALUES (@first_time_slot_id, @second_time_slot_id)
                   RETURNING id"
             )
-            .ExtendParameters(_reservationMapper.MapToQueryParameters(reservation));
+            .ExtendParameters(_timeSlotReservationMapper.MapToQueryParameters(reservation));
 
             long id = query.ExecuteScalar(value => Convert.ToInt64(value));
 
