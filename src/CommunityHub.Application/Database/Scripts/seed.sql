@@ -276,7 +276,12 @@ INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALU
 (7,  '2025-09-02', 2),
 (8,  '2025-09-03', 8),
 (9,  '2025-09-04', 4),
-(10, '2025-09-05', 10);
+(10, '2025-09-05', 10),
+(11, '2025-09-06', 1),
+(12, '2025-09-06', 2),
+(13, '2025-09-06', 3),
+(14, '2025-09-06', 4),
+(15, '2025-09-06', 5);
 
 INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
 (101, 'petar.simic',       'citizen', '123', 'Petar',   'Simić',       1,  1),
@@ -293,7 +298,12 @@ INSERT INTO citizens (id, username, user_role, password, name, surname, address_
 (112, 'ognjen.mitrovic',   'citizen', '123', 'Ognjen',  'Mitrović',    12, NULL),
 (113, 'maja.jaksic',       'citizen', '123', 'Maja',    'Jaksić',      13, NULL),
 (114, 'filip.atanasov',    'citizen', '123', 'Filip',   'Atanasov',    14, NULL),
-(115, 'jana.popovic',      'citizen', '123', 'Jana',    'Popović',     15, NULL);
+(115, 'jana.popovic',      'citizen', '123', 'Jana',    'Popović',     15, NULL),
+(116, 'stefan.milovanovic', 'citizen', '123', 'Stefan',  'Milovanović', 1, 11),
+(117, 'marina.knezevic',   'citizen', '123', 'Marina',  'Knežević',     2, 12),
+(118, 'nemanja.stojanovic', 'citizen', '123', 'Nemanja', 'Stojanović',  3, 13),
+(119, 'teodora.ristic',    'citizen', '123', 'Teodora', 'Ristić',       4, 14),
+(120, 'aleksandar.ivanovic','citizen','123','Aleksandar','Ivanović',    5, 15);
 
 INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date, comment) VALUES
 (101, 2,  'waiting',  '2026-03-01', NULL),
@@ -311,6 +321,67 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (113, 8,  'rejected', '2026-03-22', 'Nepotpuna prijava'),
 (114, 9,  'rejected', '2026-03-23', 'Nepotpuna prijava.'),
 (115, 10, 'rejected', '2026-03-24', 'Neusaglašeni podaci o prebivalištu.');
+
+INSERT INTO community_events (id, name, description, event_date, start_time, duration_minutes, min_volunteers, status, neighborhood_id, organizer_citizen_id) VALUES
+(1, 'Žurka', 'Zabavna mesečna proslava u parku.', '2026-05-20', '09:00', 180, 10, 'preparation', 1, 101),
+(2, 'Bazar', 'Ulični bazar za razmenu i prodaju raznih stvari.', '2026-05-15', '10:00', 240, 20, 'preparation', 2, 102),
+(3, 'Seminar o reciklaži', 'Edukativni seminar za građane o pravilnom odvajanju otpada.', '2026-04-01', '18:00', 90, 5, 'finished', 3, 103),
+(4, 'Humanitarna akcija', 'Prikupljanje i pakovanje pomoći za porodice u potrebi.', '2026-05-30', '08:00', 300, 30, 'preparation', 4, 104),
+(5, 'Letnja proslava', 'Druženje i kulturni program na otvorenom za stanovnike naselja.', '2026-07-10', '19:00', 240, 15, 'cancelled', 5, 105),
+(6, 'Sportski dan', 'Organizacija sportskih aktivnosti i turnira za sve uzraste.', '2026-06-15', '14:00', 180, 25, 'preparation', 1, 116),
+(7, 'Kreativne radionice', 'Radionice za decu i odrasle sa različitim temama i tehnikama.', '2026-05-25', '16:00', 120, 10, 'preparation', 2, 117),
+(8, 'Filmsko veče', 'Projekcija filmova na otvorenom uz diskusiju i druženje.', '2026-06-20', '20:00', 150, 20, 'preparation', 3, 118),
+(9, 'Zdravstveni seminar', 'Besplatne zdravstvene provere i edukacija o zdravlju.', '2026-07-05', '09:00', 240, 15, 'preparation', 4, 119),
+(10, 'Eko akcija', 'Čišćenje i uređenje javnih površina u naselju.', '2026-06-10', '08:00', 180, 30, 'preparation', 5, 120);
+
+INSERT INTO event_items (id, name, event_id) VALUES
+(1, 'Ozvučenje', 1),
+(2, 'Stolice', 1),
+(3, 'Voda', 1),
+(4, 'Hrana', 1),
+(5, 'Sok', 1),
+(6, 'Šatori', 2),
+(7, 'Stolovi', 2),
+(8, 'Projektor', 3),
+(9, 'Letci o reciklaži', 3),
+(10, 'Kutije za pakovanje', 4),
+(11, 'Transportne torbe', 4),
+(12, 'Bina', 5),
+(13, 'Osvetljenje', 5),
+(14, 'Sportska oprema', 6),
+(15, 'Označavanje terena', 6),
+(16, 'Osveženje', 6),
+(17, 'Lopte', 6),
+(18, 'Radni materijal', 7),
+(19, 'Platno za projekciju', 8),
+(20, 'Projektor', 8),
+(21, 'Edukativni materijali', 9),
+(22, 'Vreće za otpad', 10),
+(23, 'Medicinski sto', 9);
+
+INSERT INTO event_registrations (id, attended, event_id, citizen_id) VALUES
+(1, NULL, 2, 107),
+(2, NULL, 7, 107),
+(3, TRUE, 3, 102),
+(4, FALSE,3, 103),
+(5, NULL, 8, 102),
+(6, NULL, 8, 103),
+(7, NULL, 4, 104),
+(8, NULL, 4, 109),
+(9, NULL, 9, 104),
+(10, NULL, 9, 109);
+
+INSERT INTO event_item_assignments (id, registration_id, event_item_id) VALUES
+(1, 1, 6),
+(2, 2, 18),
+(3, 3, 8),
+(4, 4, 9),
+(5, 5, 19),
+(6, 6, 20),
+(7, 7, 10),
+(8, 8, 11),
+(9, 9, 21),
+(10, 10, 23);
 
 INSERT INTO users (id, username, user_role, password, name, surname) VALUES
 (21, 'zoran.milanovic',   'neighborhood_service_provider', '123', 'Zoran',   'Milanović'),

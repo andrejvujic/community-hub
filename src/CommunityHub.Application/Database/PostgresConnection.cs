@@ -27,6 +27,7 @@ public static class PostgresConnection
         builder.MapEnum<MeetingStatus>("meeting_statuses");
         builder.MapEnum<BudgetCategory>("budget_categories");
         builder.MapEnum<RentalStatus>("common_room_rental_statuses");
+        builder.MapEnum<EventStatus>("event_statuses");
 
         var dataSource = builder.Build();
         return dataSource.OpenConnection();
