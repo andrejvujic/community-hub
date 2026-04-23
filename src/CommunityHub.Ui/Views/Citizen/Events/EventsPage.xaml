@@ -172,9 +172,9 @@
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap">Štampaj izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
                         </Button>
 
-                        <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="8,0,0,0">
-                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Moji događaji<LineBreak/>(Ctrl + 3)</TextBlock>
-                        </Button>
+                    <Button x:Name="MyEventsButton" Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="8,0,0,0" Click="MyEventsButton_Click">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Moji događaji<LineBreak/>(Ctrl + 3)</TextBlock>
+                    </Button>
                     </Grid>
                 </Grid>
 

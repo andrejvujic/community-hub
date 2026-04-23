@@ -25,5 +25,17 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                 EventsGrid.ItemsSource = events;
             }
         }
+
+        private void MyEventsButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenMyEventsWindow();
+        }
+
+        private void OpenMyEventsWindow()
+        {
+            var wnd = new MyEventsWindow();
+            wnd.Owner = Window.GetWindow(this);
+            wnd.ShowDialog();
+        }
     }
 }
