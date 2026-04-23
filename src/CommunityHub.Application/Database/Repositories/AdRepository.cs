@@ -78,7 +78,8 @@ namespace CommunityHub.Application.Database.Repositories
                 
                 FROM ads ad 
                 INNER JOIN users author ON ad.resident_id = author.id
-                WHERE ad.building_id = @building_id"
+                WHERE ad.building_id = @building_id
+                ORDER BY ad_id ASC"
             ).AddParameter("building_id", buildingId);
 
             List<Ad> ads = new List<Ad>();
@@ -112,7 +113,8 @@ namespace CommunityHub.Application.Database.Repositories
                 
                 FROM ads ad 
                 INNER JOIN users author ON ad.resident_id = author.id
-                WHERE ad.resident_id = @author_id AND ad.building_id = @building_id"
+                WHERE ad.resident_id = @author_id AND ad.building_id = @building_id
+                ORDER BY ad_id ASC"
             ).AddParameter("author_id", authorId)
             .AddParameter("building_id", buildingId);
 
