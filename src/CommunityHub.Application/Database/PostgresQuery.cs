@@ -59,6 +59,13 @@ namespace CommunityHub.Application.Database
             return command.ExecuteScalar();
         }
 
+        public void Execute()
+        {
+            using IDbConnection connection = PostgresConnection.CreateConnection();
+            using IDbCommand command = CreateCommand(connection);
+            command.ExecuteNonQuery();
+        }
+
         public T ExecuteScalar<T>(Func<object?, T> convert)
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
