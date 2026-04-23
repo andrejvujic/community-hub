@@ -11,6 +11,7 @@
 
     <Page.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+        <converters:EventStatusToStringConverter x:Key="EventStatusToString" />
     </Page.Resources>
 
     <Grid>
@@ -65,10 +66,10 @@
                 <DataGrid x:Name="EventsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
                           BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Naziv događaja" Width="*"/>
-                        <DataGridTextColumn Header="Datum" Width="*"/>
-                        <DataGridTextColumn Header="Vreme" Width="*"/>
-                        <DataGridTextColumn Header="Status" Width="*"/>
+                        <DataGridTextColumn Header="Naziv događaja" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Datum" Binding="{Binding EventStart, StringFormat=d}" Width="*"/>
+                        <DataGridTextColumn Header="Vreme" Binding="{Binding EventStart, StringFormat=t}" Width="*"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource EventStatusToString}}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
