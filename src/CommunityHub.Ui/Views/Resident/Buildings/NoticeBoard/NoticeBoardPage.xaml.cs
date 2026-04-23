@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain.NoticeBoard;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
@@ -34,5 +35,14 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
+
+        private void AdItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not Ad ad) return;
+
+            Push(new AdDetailsPage(_userId, ad));
+        }
     }
 }

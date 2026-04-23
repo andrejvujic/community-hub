@@ -68,7 +68,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
-                                <Grid Background="Transparent">
+                                <Grid Background="Transparent" MouseLeftButtonDown="AdItem_Click">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
