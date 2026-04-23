@@ -12,11 +12,15 @@
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
+        <converters:AdStatusToStringConverter x:Key="AdStatusToStringConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid Margin="8">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="8"/>
@@ -94,6 +98,23 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
+                </Grid>
+            </Border>
+
+            <Label Content="Status" FontSize="18" Grid.Row="12"/>
+
+            <Border
+                Grid.Row="13" 
+                Background="#dedede"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                Padding="4"
+                Visibility="{Binding Ad.IsArchived, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Background="#dedede" Height="48">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{Binding Ad.Status, Converter={StaticResource AdStatusToStringConverter}}"
+                        FontSize="18"/>
                 </Grid>
             </Border>
         </Grid>
