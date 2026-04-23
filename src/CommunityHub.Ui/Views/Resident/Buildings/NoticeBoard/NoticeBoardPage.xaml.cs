@@ -42,6 +42,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             if (element.DataContext is not Ad ad) return;
 
+            if (ad.Author.Id == _userId)
+            {
+                Push(new PersonalAdDetailsPage(_userId, ad));
+                return;
+            }
+
             Push(new AdDetailsPage(_userId, ad));
         }
     }
