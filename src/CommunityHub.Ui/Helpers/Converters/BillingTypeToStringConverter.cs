@@ -7,7 +7,7 @@ namespace CommunityHub.Ui.Helpers.Converters
     public class BillingTypeToStringConverter : IValueConverter
     {
         private const string _perHourText = "Plaćanje po satu";
-        private const string _perJobText = "Plaćanje po poslu";
+        private const string _perJobText = "Plaćanje po usluzi";
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

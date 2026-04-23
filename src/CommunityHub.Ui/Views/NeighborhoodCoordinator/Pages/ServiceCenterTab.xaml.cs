@@ -26,6 +26,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private Neighborhood? _selectedNeighborhood;
         private JobListing? _selectedListing;
 
+        private int _currentImageIndex;
+
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly JobBookingService _jobBookingService = new(
             new JobListingRepository(),
@@ -61,6 +63,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (_selectedNeighborhood is null) return;
 
             JobListings.Clear();
+            HideJobDetails();
 
             ServicesTitleTextBlock.Text =
                 $"Dostupne servisne usluge za kvart {_selectedNeighborhood.Name} " +
@@ -72,6 +75,86 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 JobListings.Add(jobListing);
 
             NeighborhoodServiceDetails.Visibility = Visibility.Visible;
+        }
+
+        private void JobListingsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _selectedListing = JobListingsListBox.SelectedItem as JobListing;
+            if (_selectedListing is null)
+            {
+                HideJobDetails();
+                return;
+            }
+
+            ShowJobDetails(_selectedListing);
+        }
+
+        private void ShowJobDetails(JobListing listing)
+        {
+            JobTitleTextBlock.Text = $"Usluga: {listing.ServiceName}";
+            JobProviderTextBlock.Text = $"Serviser: {listing.Provider.Name} {listing.Provider.Surname}";
+
+            JobDescriptionTextBlock.Text = listing.Description;
+
+            JobPriceTextBlock.Text = $"Trenutna cena: {listing.CurrentPriceEntry.Amount:N2} RSD";
+
+            JobBillingTypeTextBlock.Text = listing.BillingType == BillingType.PerHour 
+                ? "Plaćanje po satu" 
+                : "Plaćanje po usluzi";
+
+            DurationPanel.Visibility = listing.BillingType == BillingType.PerHour
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            _currentImageIndex = 0;
+            ShowCurrentImage(listing);
+
+            JobDetailsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void HideJobDetails()
+        {
+            JobDetailsGrid.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void PrevImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedListing is null || _selectedListing.WorkSamples.Count == 0) return;
+            _currentImageIndex = (_currentImageIndex - 1 + _selectedListing.WorkSamples.Count)
+                                  % _selectedListing.WorkSamples.Count;
+            ShowCurrentImage(_selectedListing);
+        }
+
+        private void NextImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedListing is null || _selectedListing.WorkSamples.Count == 0) return;
+            _currentImageIndex = (_currentImageIndex + 1) % _selectedListing.WorkSamples.Count;
+            ShowCurrentImage(_selectedListing);
+        }
+
+        private void ShowCurrentImage(JobListing listing)
+        {
+            if (listing.WorkSamples is null || listing.WorkSamples.Count == 0)
+            {
+                JobSampleImage.Source = null;
+                return;
+            }
+
+            var path = listing.WorkSamples[_currentImageIndex].Path;
+            try
+            {
+                JobSampleImage.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
+            }
+            catch
+            {
+                JobSampleImage.Source = null;
+            }
+        }
+            
+        private void FindSlotButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
