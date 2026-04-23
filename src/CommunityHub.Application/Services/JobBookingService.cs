@@ -110,5 +110,12 @@ namespace CommunityHub.Application.Services
 
             return candidate.AddHours(durationHours) <= workEnd ? candidate : null;
         }
+
+        public BookedJob BookService(JobListing listing, Neighborhood neighborhood, AvailableJobSlot slot)
+        {
+            var job = new BookedJob(listing, neighborhood, slot.Date, slot.Price, scheduledTime: slot.Time, durationHours: slot.DurationHours);
+
+            return _bookedJobRepository.Create(job);
+        }
     }
 }
