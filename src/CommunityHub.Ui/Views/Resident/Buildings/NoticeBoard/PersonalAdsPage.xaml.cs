@@ -50,7 +50,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     if (value is Ad publishedAd)
                     {
                         UpdateAds();
-                        Push(new MatchingAdsPage(publishedAd));
+                        Push(new MatchingAdsPage(_userId, publishedAd));
                         return;
                     }
                 }
