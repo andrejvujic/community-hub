@@ -14,6 +14,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         public Ad Ad { get; }
         public ObservableCollection<Ad> MatchingAds { get; set; } = new();
+        public bool HasMatchingAds => MatchingAds.Count > 0;
 
         public MatchingAdsPage(long userId, Ad ad)
         {
