@@ -33,7 +33,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void OpenMyEventsWindow()
         {
-            var wnd = new MyEventsWindow();
+            var wnd = new MyEventsWindow(_userId);
             wnd.Owner = Window.GetWindow(this);
             wnd.ShowDialog();
         }

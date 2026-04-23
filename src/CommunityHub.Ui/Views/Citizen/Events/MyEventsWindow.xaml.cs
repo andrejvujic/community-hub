@@ -4,9 +4,16 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 {
     public partial class MyEventsWindow : Window
     {
-        public MyEventsWindow()
+        private readonly long _userId;
+
+        public MyEventsWindow(long userId)
         {
             InitializeComponent();
+            _userId = userId;
+
+            var eventRepo = new CommunityHub.Application.Database.Repositories.CommunityEventRepository();
+            var events = eventRepo.GetByOrganizerId(_userId);
+            OrganizerEventsList.ItemsSource = events;
         }
     }
 }
