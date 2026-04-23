@@ -18,9 +18,18 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private readonly AdTimeSlotRepository _timeSlotRepository = new();
         private readonly AdTimeSlotReservationRepository _timeSlotReservationRepository = new();
+
         public Ad Ad { get; }
+
+        // Contains groups (time slots grouped by day) of time slots for the given
+        // notice board that the user can reserve (the user has matching time slots for
+        // an ad of the opposite type in the same category).
+        public bool HasReservableTimeSlots { get => TimeSlotGroups.Count > 0; }
         public ObservableCollection<AdTimeSlotGroup> TimeSlotGroups { get; } = new();
+
+        // Collection of time slots selected by the user to be reserved.
         public ObservableCollection<AdTimeSlot> SelectedTimeSlots { get; } = new();
+
 
         public AdTimeSlotsPage(long userId, Ad ad)
         {
@@ -69,6 +78,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     _userId
                 );
 
+                // If the user doesn't have an available (not reserved) time slot
+                // they can't reserve the selected time slot.
                 if (matchingTimeSlot == null)
                 {
                     if (this is IAlertConsumer consumer)
@@ -111,6 +122,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 );
         }
 
+        private void ReserveButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReserveSelectedTimeSlots();
+
+            UpdateReservableTimeSlots();
+
+            SelectedTimeSlots.Clear();
+            OnPropertyChanged(nameof(SelectedTimeSlots));
+            OnPropertyChanged(nameof(HasSelectedTimeSlots));
+        }
+
         private void TimeSlotItem_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is not FrameworkElement element) return;
@@ -131,16 +153,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private void ReserveButton_Click(object sender, RoutedEventArgs e)
-        {
-            ReserveSelectedTimeSlots();
-
-            UpdateReservableTimeSlots();
-
-            SelectedTimeSlots.Clear();
-            OnPropertyChanged(nameof(SelectedTimeSlots));
-            OnPropertyChanged(nameof(HasSelectedTimeSlots));
-        }
     }
 }

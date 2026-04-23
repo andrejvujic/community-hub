@@ -15,7 +15,7 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
-        <Grid Margin="8">
+        <Grid Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="16"/>
@@ -147,7 +147,38 @@
             </Grid>
         </Grid>
 
+        <Grid Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
+
+            <DockPanel>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="16"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Text="Rezervacija termina"
+                        FontSize="20"
+                        VerticalAlignment="Center"/>
+
+                    <Separator Grid.Row="1"/>
+                </Grid>
+            </DockPanel>
+
+            <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Rezervacija termina nije moguća" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock
+                    Text="Rezervacija nije moguća jer nemate odgovarajuće slobodne termine na svom oglasu u ovoj kategoriji. Provjerite da li imate objavljen oglas u istoj kategoriji i da li na njemu postoje slobodni termini."
+                    TextWrapping="Wrap" 
+                    TextAlignment="Center"
+                    FontSize="16"
+                    HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
         <Button
+            Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource BooleanToVisibilityConverter}}"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
