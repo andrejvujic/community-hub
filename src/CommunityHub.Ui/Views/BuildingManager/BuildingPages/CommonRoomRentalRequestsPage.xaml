@@ -99,9 +99,6 @@
                                             </Style>
                                         </Border.Style>
 
-
-
-
                                         <Grid Margin="20,14,20,14">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -185,8 +182,101 @@
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            FontSize="26"
+                            FontSize="29"
                             Text="Akcija upravnika" />
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <TextBlock
+                            x:Name="defaultActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Morate odabrati prostoriju da bi se prikazale funkcionalnosti!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            x:Name="approvedActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Prostorija je slobodna u datom opsegu. Zahtev je automatski odobren!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="Collapsed" />
+
+                        <TextBlock
+                            x:Name="rejectedActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="Collapsed" />
+
+                        <TextBlock
+                            x:Name="waitingDateChangeActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Akcija je već odrađena, zahtev je u stanju promene termina!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="Collapsed" />
+
+                        <StackPanel
+                            x:Name="oneDayPanel"
+                            Margin="15,0,15,0"
+                            Visibility="Collapsed">
+
+                            <TextBlock
+                                Margin="0,0,0,25"
+                                HorizontalAlignment="Center"
+                                FontSize="22"
+                                Text="U nastavku su prikazani slobodni dani za iznajmljivanje prostorije:"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+
+                            <StackPanel x:Name="freeDaysPanel" />
+
+                            <TextBlock
+                                Margin="0,20,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="20"
+                                Text="Odaberite neki od datuma klikom na dugme sa željenim datumom."
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel
+                            x:Name="multiDayPanel"
+                            Margin="15,0,15,0"
+                            Visibility="Collapsed">
+
+                            <TextBlock
+                                Margin="0,0,0,25"
+                                HorizontalAlignment="Center"
+                                FontSize="22"
+                                Text="Izabrani opseg nije slobodan, predlažemo Vam neki od ovih opsega:"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+
+                            <StackPanel x:Name="suggestedRangesPanel" />
+
+                            <TextBlock
+                                Margin="0,20,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="20"
+                                Text="Odaberite neki od opsega klikom na dugme sa željenim datumom."
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </Grid>
