@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Button Width="170" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" BorderBrush="Black" BorderThickness="2">
+            <Button x:Name="OrganizeButton" Width="170" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" BorderBrush="Black" BorderThickness="2" Click="OrganizeButton_Click">
                 <TextBlock TextAlignment="Center">Organizuj novi događaj<LineBreak/>(Ctrl + 1)</TextBlock>
             </Button>
         </Grid>

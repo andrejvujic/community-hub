@@ -17,5 +17,12 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             var volunteerEvents = eventRepo.GetByVolunteerCitizenId(_userId);
             VolunteerEventsList.ItemsSource = volunteerEvents;
         }
+
+        private void OrganizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var wnd = new OrganizeEventWindow(_userId);
+            wnd.Owner = this;
+            wnd.ShowDialog();
+        }
     }
 }
