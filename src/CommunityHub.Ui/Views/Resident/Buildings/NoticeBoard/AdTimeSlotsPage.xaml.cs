@@ -67,9 +67,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 TimeSlotGroups.Add(group);
         }
 
-        private List<AdTimeSlotReservation>? CreateReservations()
+        private List<(long offerTimeSlotId, long requestTimeSlotId)>? GetMatchingTimeSlotPairs()
         {
-            var reservations = new List<AdTimeSlotReservation>();
+            var reservations = new List<(long, long)>();
 
             foreach (var selectedTimeSlot in SelectedTimeSlots)
             {
@@ -94,9 +94,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 }
 
                 reservations.Add(
-                    new AdTimeSlotReservation(
-                        selectedTimeSlot.Id,
-                        matchingTimeSlot.Id
+                    (
+                        Ad.IsOffer ? selectedTimeSlot.Id : matchingTimeSlot.Id,
+                        Ad.IsRequest ? selectedTimeSlot.Id : matchingTimeSlot.Id
                     )
                 );
             }
@@ -106,12 +106,15 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private void ReserveSelectedTimeSlots()
         {
-            var reservations = CreateReservations();
+            var reservations = GetMatchingTimeSlotPairs();
 
             if (reservations == null) return;
 
-            foreach (var reservation in reservations)
-                _timeSlotReservationRepository.Create(reservation);
+            foreach (var (offerAdTimeSlotId, requestAdTimeSlotId) in reservations)
+                _timeSlotReservationRepository.Create(
+                    offerAdTimeSlotId: offerAdTimeSlotId,
+                    requestAdTimeSlotId: requestAdTimeSlotId
+                );
 
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
