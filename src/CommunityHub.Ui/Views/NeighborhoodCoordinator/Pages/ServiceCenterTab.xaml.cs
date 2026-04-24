@@ -205,12 +205,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void BookIfConfirmed(AvailableJobSlot slot)
         {
-            var dialog = new BookingConfirmationWindow(_selectedListing!, slot)
+            var bookingConfirmationWindow = new BookingConfirmationWindow(_selectedListing!, slot)
             {
                 Owner = Window.GetWindow(this)
             };
 
-            if (dialog.ShowDialog() != true || !dialog.Confirmed) return;
+            if (bookingConfirmationWindow.ShowDialog() != true || !bookingConfirmationWindow.Confirmed) return;
 
             var booked = _jobBookingService.BookService(_selectedListing!, _selectedNeighborhood!, slot);
 
@@ -246,7 +246,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void ReviewButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var providerReviewWindow = new ProviderReviewWindow()
+            {
+                Owner = Window.GetWindow(this)
+            };
+            providerReviewWindow.ShowDialog();
         }
     }
 }
