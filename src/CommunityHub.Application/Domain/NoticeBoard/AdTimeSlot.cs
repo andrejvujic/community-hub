@@ -9,20 +9,21 @@ namespace CommunityHub.Application.Domain.NoticeBoard
         public DateTime StartTime { get; }
         public DateTime EndTime { get; }
 
-        public bool IsReserved { get; }
+        public AdTimeSlotReservation? Reservation { get; }
+        public bool IsReserved => Reservation != null;
 
         public AdTimeSlot(
             long adId,
             DateTime startTime,
             DateTime endTime,
-            bool isReserved,
+            AdTimeSlotReservation? reservation = null,
             long id = 0
         ) {
             Id = id;
             AdId = adId;
             StartTime = startTime;
             EndTime = endTime;
-            IsReserved = isReserved;
+            Reservation = reservation;
         }
 
         public AdTimeSlot CopyWith(
@@ -30,12 +31,12 @@ namespace CommunityHub.Application.Domain.NoticeBoard
             long? adId = null,
             DateTime? startTime = null,
             DateTime? endTime = null,
-            bool? isReserved = null
+            AdTimeSlotReservation? reservation = null
         ) => new AdTimeSlot(
                     adId ?? AdId,
                     startTime ?? StartTime,
                     endTime ?? EndTime,
-                    isReserved ?? IsReserved,
+                    reservation ?? Reservation,
                     id ?? Id
                  );
 

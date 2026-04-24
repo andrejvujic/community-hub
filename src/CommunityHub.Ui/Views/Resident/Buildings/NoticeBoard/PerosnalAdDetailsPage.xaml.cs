@@ -31,6 +31,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             => OpenAdTimeSlotsPage();
 
         private void OpenAdInformationPage() => LocalFrame.Navigate(new PersonalAdInformationPage(Ad));
-        private void OpenAdTimeSlotsPage() => LocalFrame.Navigate(new AdTimeSlotsPage(_userId, Ad));
+        private void OpenAdTimeSlotsPage() => LocalFrame.Navigate(new PersonalAdTimeSlotsPage(_userId, Ad));
     }
 }
