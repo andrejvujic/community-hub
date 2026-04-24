@@ -27,11 +27,14 @@ namespace CommunityHub.Application.Services
             if (listing.BillingType == BillingType.PerHour && durationHours is null)
                 return null;
 
+            if (listing.BillingType == BillingType.PerHour && durationHours > 12)
+                return null;
+
             var occupied = _bookedJobRepository.GetOccupiedSlots(listing.Id);
             var prices = listing.PriceList.OrderBy(p => p.ValidFrom).ToList();
             var today = DateOnly.FromDateTime(DateTime.Today);
 
-            for (int i = 0; i < 365; i++)
+            for (int i = 1; i < 365; i++)
             {
                 var candidate = today.AddDays(i);
                 var slot = FindSlotOnDay(listing, candidate, durationHours, occupied, prices);
@@ -96,19 +99,30 @@ namespace CommunityHub.Application.Services
             List<(TimeOnly Start, TimeOnly End)> occupied,
             int durationHours)
         {
-            var workStart = new TimeOnly(8, 0);
-            var workEnd = new TimeOnly(20, 0);
-            var candidate = workStart;
+            const int workStartMinutes = 8 * 60;
+            const int workEndMinutes = 20 * 60;
+
+            if (durationHours * 60 > workEndMinutes - workStartMinutes)
+                return null;
+
+            int candidateMinutes = workStartMinutes;
 
             foreach (var slot in occupied)
             {
-                if (candidate.AddHours(durationHours) <= slot.Start)
-                    return candidate;
-                if (slot.End > candidate)
-                    candidate = slot.End;
+                int slotStartMinutes = slot.Start.Hour * 60 + slot.Start.Minute;
+                int slotEndMinutes = slot.End.Hour * 60 + slot.End.Minute;
+
+                if (candidateMinutes + durationHours * 60 <= slotStartMinutes)
+                    return new TimeOnly(candidateMinutes / 60, candidateMinutes % 60);
+
+                if (slotEndMinutes > candidateMinutes)
+                    candidateMinutes = slotEndMinutes;
             }
 
-            return candidate.AddHours(durationHours) <= workEnd ? candidate : null;
+            if (candidateMinutes + durationHours * 60 <= workEndMinutes)
+                return new TimeOnly(candidateMinutes / 60, candidateMinutes % 60);
+
+            return null;
         }
 
         public BookedJob BookService(JobListing listing, Neighborhood neighborhood, AvailableJobSlot slot)
