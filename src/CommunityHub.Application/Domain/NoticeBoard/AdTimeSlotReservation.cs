@@ -1,33 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CommunityHub.Application.Domain.NoticeBoard
+﻿namespace CommunityHub.Application.Domain.NoticeBoard
 {
     public class AdTimeSlotReservation
     {
         public long Id { get; }
-        public long FirstTimeSlotId { get;  }
-        public long SecondTimeSlotId { get; }
+
+        public long OfferTimeSlotId { get;  }
+        public long RequestTimeSlotId { get; }
+
+        public Ad OfferAd { get; }
+        public Ad RequestAd { get; }
 
         public AdTimeSlotReservation(
-            long firstTimeSlotId,
-            long secondTimeSlotId,
+            long offerTimeSlotId,
+            long requestTimeSlotId,
+            Ad offerAd,
+            Ad requestAd,
             long id = 0
         )
-        {
-            FirstTimeSlotId = firstTimeSlotId;  
-            SecondTimeSlotId = secondTimeSlotId;
+        {  
+            RequestTimeSlotId = requestTimeSlotId;
+            OfferTimeSlotId = offerTimeSlotId;
+            RequestAd = requestAd;
+            OfferAd = offerAd;
             Id = id;
         }
 
         public AdTimeSlotReservation CopyWith(
             long? id = null,
-            long? firstTimeSlotId = null,
-            long? secondTimeSlotId = null
+            long? offerTimeSlotId = null,
+            long? requestTimeSlotId = null,
+            Ad? offerAd = null,
+            Ad? requestAd = null
         ) => new AdTimeSlotReservation(
-                firstTimeSlotId ?? FirstTimeSlotId,
-                secondTimeSlotId ?? SecondTimeSlotId,
+                offerTimeSlotId ?? OfferTimeSlotId,
+                requestTimeSlotId ?? RequestTimeSlotId,
+                offerAd ?? OfferAd,
+                requestAd ?? RequestAd,
                 id ?? Id
             );
     }
