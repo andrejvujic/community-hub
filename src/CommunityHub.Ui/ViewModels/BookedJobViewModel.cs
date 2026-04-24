@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels
         public string ProviderName =>
             $"{BookedJob.ActualProvider.Name} {BookedJob.ActualProvider.Surname}";
         public string ScheduledDateTime => BookedJob.ScheduledTime.HasValue
-            ? $"{BookedJob.ScheduledDate:dd.MM.yyyy.} u {BookedJob.ScheduledTime.Value:HH:mm}"
+            ? $"{BookedJob.ScheduledDate:dd.MM.yyyy.} u {BookedJob.ScheduledTime.Value:HH:mm} h"
             : $"{BookedJob.ScheduledDate:dd.MM.yyyy.}";
         public string TotalPrice => BookedJob.DurationHours.HasValue
             ? $"{BookedJob.TotalPrice:N2} RSD ({BookedJob.DurationHours}h)"

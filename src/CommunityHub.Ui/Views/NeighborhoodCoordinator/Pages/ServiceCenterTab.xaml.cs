@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Services;
+using CommunityHub.Ui.ViewModels;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
@@ -29,13 +30,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private int _currentImageIndex;
 
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
+        private readonly ProviderReviewRepository _reviewRepository = new ProviderReviewRepository();
         private readonly JobBookingService _jobBookingService = new(
             new JobListingRepository(),
             new BookedJobRepository()
         );
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
-        public ObservableCollection<JobListing> JobListings { get; set; } = new();
+        public ObservableCollection<JobListing> JobListings { get; set; } = new ObservableCollection<JobListing>();
+        public ObservableCollection<BookedJobViewModel> ScheduledServices { get; set; } = new ObservableCollection<BookedJobViewModel>();
 
         public ServiceCenterTab()
         {
@@ -75,6 +78,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 JobListings.Add(jobListing);
 
             NeighborhoodServiceDetails.Visibility = Visibility.Visible;
+            LoadScheduledServices();
         }
 
         private void JobListingsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -215,6 +219,34 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 "Zakazano",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+
+            var bookedViewModel = new BookedJobViewModel(booked, review: null);
+            ScheduledServices.Add(bookedViewModel);
+        }
+
+        private void LoadScheduledServices()
+        {
+            if (_selectedNeighborhood is null) return;
+            
+            ScheduledServices.Clear();
+
+            var bookedJobs = _jobBookingService.GetBookedJobListingsForNeighborhood(_selectedNeighborhood.Id);
+
+            var reviewsMap = _reviewRepository.GetAllByNeighborhood(_selectedNeighborhood.Id);
+
+            foreach (var job in bookedJobs)
+            {
+                reviewsMap.TryGetValue(job.Id, out var review);
+
+                ScheduledServices.Add(new BookedJobViewModel(job, review));
+            }
+
+            ScheduledServicesGrid.Visibility = Visibility.Visible;
+        }
+
+        private void ReviewButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
