@@ -20,7 +20,7 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="Naziv događaja:" VerticalAlignment="Center" Margin="0,0,8,0" />
                 <Grid>
-                <TextBox x:Name="NameBox" Width="420" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="4,0,0,0"/>
+                <TextBox x:Name="NameBox" Width="420" Height="26" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="4,0,0,0" TextChanged="Input_Changed"/>
                     <TextBlock Text="Unesite naziv događaja" Foreground="#888" Margin="8,4,0,0" VerticalAlignment="Top" IsHitTestVisible="False">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -40,7 +40,7 @@
             <StackPanel Grid.Row="1" Margin="0,12,0,12">
             <TextBlock Text="Opis:"/>
             <Grid>
-                <TextBox x:Name="DescriptionBox" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="4"/>
+                <TextBox x:Name="DescriptionBox" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="4" TextChanged="Input_Changed"/>
                 <TextBlock Text="Kratko objasnite o čemu je događaj" Foreground="#888" Margin="6,6,6,6" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Top">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -74,7 +74,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Datum:" VerticalAlignment="Center" Margin="0,0,8,24" HorizontalAlignment="Left" />
-                <DatePicker Grid.Row="0" Grid.Column="1" x:Name="DatePicker" Width="160" Height="28" Margin="0,0,0,24" />
+                <DatePicker Grid.Row="0" Grid.Column="1" x:Name="DatePicker" Width="160" Height="28" Margin="0,0,0,24" SelectedDateChanged="Input_Changed" />
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Vreme:" VerticalAlignment="Center" Margin="0,0,8,16" HorizontalAlignment="Left" />
                 <Grid Grid.Row="1" Grid.Column="1" Width="160" Margin="0,0,0,24" Height="28">
@@ -83,9 +83,9 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="HourBox" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,6,0" Height="28" VerticalContentAlignment="Center" />
+                    <TextBox x:Name="HourBox" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,6,0" Height="28" VerticalContentAlignment="Center" TextChanged="Input_Changed" />
                     <TextBlock Text=":" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <TextBox x:Name="MinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="6,0,0,0" Height="28" VerticalContentAlignment="Center" />
+                    <TextBox x:Name="MinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="6,0,0,0" Height="28" VerticalContentAlignment="Center" TextChanged="Input_Changed" />
                 </Grid>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Trajanje:" VerticalAlignment="Center" Margin="0,0,8,16" HorizontalAlignment="Left" />
@@ -95,19 +95,19 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="DurationHourBox" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,6,0" Height="28" VerticalContentAlignment="Center" />
+                    <TextBox x:Name="DurationHourBox" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,6,0" Height="28" VerticalContentAlignment="Center" TextChanged="Input_Changed" />
                     <TextBlock Text=":" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <TextBox x:Name="DurationMinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="6,0,0,0" Height="28" VerticalContentAlignment="Center" />
+                    <TextBox x:Name="DurationMinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="6,0,0,0" Height="28" VerticalContentAlignment="Center" TextChanged="Input_Changed" />
                 </Grid>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Potrebno volontera:" VerticalAlignment="Center" Margin="0,0,8,24" HorizontalAlignment="Left" />
-                <TextBox Grid.Row="3" Grid.Column="1" x:Name="VolunteersBox" Width="160" Height="28" HorizontalContentAlignment="Center" Text="0" Margin="0,0,0,24" VerticalContentAlignment="Center" />
+                <TextBox Grid.Row="3" Grid.Column="1" x:Name="VolunteersBox" Width="160" Height="28" HorizontalContentAlignment="Center" Margin="0,0,0,24" VerticalContentAlignment="Center" />
             </Grid>
 
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Potrebne stvari:" />
                 <Grid>
-                    <TextBox x:Name="ItemsBox" Height="160" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" Padding="4"/>
+                    <TextBox x:Name="ItemsBox" Height="160" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" Padding="4" TextChanged="Input_Changed"/>
                     <TextBlock Text="Unesite potrebne stvari, odvojene zarezom" Foreground="#888" Margin="6,6,6,6" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Top">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -133,7 +133,7 @@
             <Button Grid.Column="0" x:Name="DiscardButton" Height="40" Margin="0,0,12,0" BorderBrush="Black" BorderThickness="2" Click="DiscardButton_Click">
                 <TextBlock TextAlignment="Center">Odbaci događaj<LineBreak/>(Esc)</TextBlock>
             </Button>
-            <Button Grid.Column="1" x:Name="SaveButton" Height="40" BorderBrush="Black" BorderThickness="2" Click="SaveButton_Click">
+            <Button Grid.Column="1" x:Name="SaveButton" Height="40" BorderBrush="Black" BorderThickness="2" Click="SaveButton_Click" IsEnabled="False">
                 <TextBlock TextAlignment="Center">Sačuvaj događaj<LineBreak/>(Enter)</TextBlock>
             </Button>
         </Grid>
