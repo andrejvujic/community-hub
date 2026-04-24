@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+             xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <conv:BillingTypeToStringConverter x:Key="BillingConverter" />
+    </UserControl.Resources>
+
     <Grid Background="#F5F6FA">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350" />
@@ -30,13 +36,14 @@
                          ItemsSource="{Binding Neighborhoods}"
                          Style="{StaticResource NeighborhoodListBoxStyle}"
                          ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
+                         SelectionChanged="NeighborhoodsListBox_SelectionChanged">
                 </ListBox>
             </Grid>
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-            <Grid>
+            <Grid x:Name="NeighborhoodServiceDetails" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="1*"/>
@@ -48,9 +55,9 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" 
-                               Text="Dostupne servisne usluge za kvart NazivKvarta (lokacija Grad, Država)" 
-                               FontSize="22"
+                    <TextBlock x:Name="ServicesTitleTextBlock"
+                               Grid.Row="0"
+                               FontSize="22" 
                                Margin="0,0,0,15"/>
 
                     <Grid Grid.Row="1">
@@ -61,61 +68,70 @@
 
                         <Border Grid.Column="0" Background="White" BorderThickness="2" BorderBrush="Black" Margin="0,0,7.5,0" Padding="10">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <StackPanel>
-                                    <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="8" Margin="0,0,0,10" Padding="10">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0">
-                                                <Rectangle Fill="LightGray" RadiusX="5" RadiusY="5"/>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                <TextBlock Text="Naziv usluge" FontSize="16" />
-                                                <TextBlock Text="Naziv servisera" FontSize="13" />
-                                                <TextBlock Text="cena usluge" FontSize="14" />
-                                                <TextBlock Text="nacin placanja usluge" FontSize="12" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
+                                <ListBox x:Name="JobListingsListBox"
+                                         ItemsSource="{Binding JobListings}"
+                                         BorderThickness="0"
+                                         SelectionChanged="JobListingsListBox_SelectionChanged">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="LightGray" 
+                                                    BorderThickness="1" 
+                                                    CornerRadius="8" 
+                                                    Margin="0,0,0,10" 
+                                                    Padding="10" 
+                                                    Width="257" 
+                                                    Height="115">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                    <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="8" Margin="0,0,0,10" Padding="10">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0">
-                                                <Rectangle Fill="LightGray" RadiusX="5" RadiusY="5"/>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                <TextBlock Text="Naziv usluge" FontSize="16" />
-                                                <TextBlock Text="Naziv servisera" FontSize="13" />
-                                                <TextBlock Text="cena usluge" FontSize="14" />
-                                                <TextBlock Text="nacin placanja usluge" FontSize="12" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </StackPanel>
+                                                    <Border Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0" CornerRadius="5" ClipToBounds="True">
+                                                        <Image Source="{Binding WorkSamples[0].Path}" Stretch="UniformToFill" />
+                                                    </Border>
+
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding ServiceName}" FontSize="16"/>
+
+                                                        <TextBlock FontSize="13">
+                                                            <TextBlock.Text>
+                                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                                    <Binding Path="Provider.Name"/>
+                                                                    <Binding Path="Provider.Surname"/>
+                                                                </MultiBinding>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding CurrentPriceEntry.Amount, StringFormat='{}{0:N2} RSD'}" FontSize="12"/>
+                                                        <TextBlock Text="{Binding BillingType, Converter={StaticResource BillingConverter}}" FontSize="12"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </ScrollViewer>
                         </Border>
 
                         <Border Grid.Column="1" Background="White" BorderThickness="2" BorderBrush="Black" Margin="7.5,0,0,0" Padding="5">
-                            <Grid>
+                            <Grid x:Name="JobDetailsGrid" Visibility="Collapsed">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1.2*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0">
-                                    <TextBlock Text="Usluga: Naziv usluge" FontSize="26" Margin="0,0,0,5"/>
-                                    <TextBlock Text="Serviser: Naziv servisera" FontSize="18" Margin="0,0,0,15"/>
+                                    <TextBlock x:Name="JobTitleTextBlock"
+                                               FontSize="20"
+                                               Margin="0,0,0,5"/>
+                                    <TextBlock x:Name="JobProviderTextBlock"
+                                               FontSize="18"
+                                               Margin="0,0,0,15"/>
 
                                     <TextBlock Text="Opis usluge:" FontSize="16" />
-                                    <TextBlock Text="Ovde ce ici opis usluge." 
+                                    <TextBlock x:Name="JobDescriptionTextBlock"
                                                TextWrapping="Wrap"
-                                               FontSize="14" 
+                                               FontSize="14"
                                                Margin="0,5,0,20"/>
                                 </StackPanel>
 
@@ -128,24 +144,30 @@
                                     <StackPanel Grid.Column="0" Margin="0,0,20,0">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Text="Slike:" FontSize="16" Margin="0,0,10,0"/>
-                                            <Rectangle Width="120" Height="120" Fill="LightGray" RadiusX="8" RadiusY="8"/>
+                                            <Border Width="120" Height="120" CornerRadius="8" ClipToBounds="True">
+                                                <Image x:Name="JobSampleImage" Stretch="UniformToFill"/>
+                                            </Border>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                                            <Button Background="Transparent"
+                                            <Button x:Name="PrevImageButton"
+                                                    Background="Transparent"
                                                     BorderThickness="0"
                                                     Padding="0"
                                                     Margin="0,0,10,0"
-                                                    Cursor="Hand">
-                                                <TextBlock Text="&#xf30a;" 
+                                                    Cursor="Hand"
+                                                    Click="PrevImageButton_Click">
+                                                <TextBlock Text="&#xf30a;"
                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                            FontSize="16"/>
                                             </Button>
-                                            <Button Background="Transparent"
+                                            <Button x:Name="NextImageButton"
+                                                    Background="Transparent"
                                                     BorderThickness="0"
                                                     Padding="0"
                                                     Margin="0,0,10,0"
-                                                    Cursor="Hand">
-                                                <TextBlock Text="&#xf30b;" 
+                                                    Cursor="Hand"
+                                                    Click="NextImageButton_Click">
+                                                <TextBlock Text="&#xf30b;"
                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                            FontSize="16"/>
                                             </Button>
@@ -153,24 +175,35 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock FontSize="24" HorizontalAlignment="Left">
-                                            <Run Text="Trenutna cena: "/>
-                                            <Run Text="3000 RSD" />
-                                        </TextBlock>
-                                    
-                                        <TextBlock Text="Plaćanje po usluzi" 
-                                                   FontSize="20" 
-                                                   Margin="0,5,0,25"
+                                        <TextBlock x:Name="JobPriceTextBlock"
+                                                   FontSize="20"
                                                    HorizontalAlignment="Left"/>
 
-                                        <Button Content="Pronađi prvi slobodan termin" 
-                                                FontSize="16" 
-                                                Cursor="Hand"
-                                                HorizontalAlignment="Center"
-                                                Width="250"
-                                                Height="50">
-                                        </Button>
+                                        <TextBlock x:Name="JobBillingTypeTextBlock"
+                                                   FontSize="20"
+                                                   Margin="0,5,0,5"
+                                                   HorizontalAlignment="Left"/>
+
+                                        <StackPanel x:Name="DurationPanel" Visibility="Collapsed" Orientation="Horizontal" Margin="0,0,0,10">
+                                            <TextBlock Text="Trajanje usluge (h):" FontSize="20" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                            <TextBox x:Name="DurationHoursTextBox"
+                                                     Width="60"
+                                                     FontSize="20"
+                                                     VerticalContentAlignment="Center"
+                                                     Text="1"/>
+                                        </StackPanel>
                                     </StackPanel>
+                                    <Button x:Name="FindSlotButton"
+                                            Grid.Column="1"
+                                            Content="Pronađi prvi slobodan termin"
+                                            FontSize="16"
+                                            Cursor="Hand"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            Width="250"
+                                            Height="50"
+                                            Margin="0,0,0,10"
+                                            Click="FindSlotButton_Click"/>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -178,47 +211,43 @@
                 </Grid>
 
                 <Border Grid.Row="1" Background="White" Margin="0,15,0,0" >
-                    <Grid>
+                    <Grid x:Name="ScheduledServicesGrid" Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <DataGrid Grid.Row="0" x:Name="ScheduledServicesDataGrid" 
-                                  AutoGenerateColumns="False" 
-                                  CanUserAddRows="False" 
+                        <DataGrid x:Name="ScheduledServicesDataGrid" 
+                                  ItemsSource="{Binding ScheduledServices}"
+                                  Grid.Row="0" 
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
                                   CanUserResizeRows="False"
                                   CanUserResizeColumns="False"
                                   CanUserReorderColumns="False"
                                   CanUserSortColumns="False"
                                   IsReadOnly="True"
                                   Background="Transparent"
+                                  HeadersVisibility="Column"
+                                  FontSize="14"
                                   Margin="0,0,0,15">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Usluga" Width="*"/>
-                                <DataGridTextColumn Header="Serviser" Width="*"/>
-                                <DataGridTextColumn Header="Datum i vreme" Width="200"/>
-                                <DataGridTextColumn Header="Cena" Width="150"/>
-                                <DataGridTextColumn Header="Status" Width="150"/>
-                                <DataGridTextColumn Header="Ocena" Width="80"/>
+                                <DataGridTextColumn Header="Usluga" Binding="{Binding ServiceName}" Width="*"/>
+                                <DataGridTextColumn Header="Serviser" Binding="{Binding ProviderName}" Width="*"/>
+                                <DataGridTextColumn Header="Datum i vreme" Binding="{Binding ScheduledDateTime}" Width="150"/>
+                                <DataGridTextColumn Header="Cena" Binding="{Binding TotalPrice}" Width="150"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                <DataGridTextColumn Header="Ocena" Binding="{Binding Rating}" Width="50"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
-                            <TextBlock Text="Izaberi ocenu:" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox Width="70" FontSize="16" Margin="20,0,15,0">
-                                <ComboBoxItem Content="1" />
-                                <ComboBoxItem Content="2" />
-                                <ComboBoxItem Content="3" />
-                                <ComboBoxItem Content="4" />
-                                <ComboBoxItem Content="5" />
-                            </ComboBox>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <Button Content="Oceni uslugu"
                                     Width="150"
                                     Margin="0,0,70,0"
                                     FontSize="14"
-                                    Cursor="Hand">
-                            </Button>
+                                    Cursor="Hand"
+                                    Click="ReviewButton_Click"/>
                         </StackPanel>
                     </Grid>
                 </Border>
