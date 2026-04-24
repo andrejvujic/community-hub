@@ -55,6 +55,8 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="8"/>
                                             <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock
@@ -72,6 +74,13 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
+
+                                        <TextBlock
+                                            Grid.Column="4"
+                                            Text="{Binding TimeSlotCount, StringFormat='{}{0} termina'}"
+                                            FontSize="20"
+                                            FontWeight="Bold"
+                                            Margin="0,0,4,0"/>
                                     </Grid>
 
                                     <Border 
