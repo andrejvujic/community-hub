@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 {
@@ -75,6 +77,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 Reservations.Add(reservations);
         }
 
+        private void ReservationItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not AdReservation reservation) return;
+
+            Push(
+                new AdDetailsPage(_userId, reservation.Ad),
+                onPop: _ => UpdateReservations()
+            );
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
