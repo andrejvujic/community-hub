@@ -262,7 +262,7 @@ namespace CommunityHub.Application.Database.Repositories
         public string GetMostHelpfulResident(long buildingId)
         {
             var query = PostgresQuery.Create(
-                @"SELECT u.name, u.surname, COUNT(*) AS zauzeti_termini
+                @"SELECT u.name, u.surname, COUNT(*) AS busy_time_slots
                     FROM ad_time_slots ts
                     INNER JOIN ads a   ON ts.ad_id = a.id
                     INNER JOIN users u ON a.resident_id = u.id
@@ -270,7 +270,7 @@ namespace CommunityHub.Application.Database.Repositories
                     WHERE a.building_id = @building_id
                     AND a.ad_type = 'offer'
                     GROUP BY u.id, u.username, u.surname
-                    ORDER BY zauzeti_termini DESC
+                    ORDER BY busy_time_slots DESC
                     LIMIT 1;"
             )
             .AddParameter("building_id", buildingId);
