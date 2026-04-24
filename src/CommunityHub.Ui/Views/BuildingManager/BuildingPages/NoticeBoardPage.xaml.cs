@@ -143,7 +143,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         };
         private void LoadAds()
         {
-            List<Ad> ads = _adRepository.GetByBuildingId(_building.Id);
+            List<Ad> ads = _adRepository.GetForBuilding(_building.Id);
 
             foreach (Ad ad in ads)
                 Ads.Add(ad);
@@ -223,7 +223,6 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             categoryDataGrid.ItemsSource = data;
         }
-
         private void LoadActiveAdsByCategory()
         {
             List<(AdCategory Category, int ActiveAdsCount)> activeAds = _adRepository.GetActiveAdsByCategory(_building.Id);
