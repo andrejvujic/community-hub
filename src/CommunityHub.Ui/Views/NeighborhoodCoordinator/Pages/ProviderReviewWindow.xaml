@@ -77,13 +77,15 @@
                     Height="40"
                     Margin="0,0,8,0"
                     FontSize="14"
-                    Cursor="Hand"/>
+                    Cursor="Hand"
+                    Click="CancelButton_Click"/>
             <Button Grid.Column="1"
                     Content="Potvrdi"
                     Height="40"
                     Margin="8,0,0,0"
                     FontSize="14"
-                    Cursor="Hand"/>
+                    Cursor="Hand"
+                    Click="ConfirmButton_Click"/>
         </Grid>
     </Grid>
 </Window>

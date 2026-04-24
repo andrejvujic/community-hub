@@ -246,11 +246,25 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void ReviewButton_Click(object sender, RoutedEventArgs e)
         {
-            var providerReviewWindow = new ProviderReviewWindow()
+            if (ScheduledServicesDataGrid.SelectedItem is not BookedJobViewModel selected) return;
+
+            if (!selected.CanReview)
+            {
+                MessageBox.Show(
+                    "Ova usluga ne može biti ocenjena.",
+                    "Ocenjivanje nije moguće",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var providerReviewWindow = new ProviderReviewWindow(selected, _coordinatorId, _reviewRepository)
             {
                 Owner = Window.GetWindow(this)
             };
-            providerReviewWindow.ShowDialog();
+
+            if (providerReviewWindow.ShowDialog() == true)
+                LoadScheduledServices();
         }
     }
 }
