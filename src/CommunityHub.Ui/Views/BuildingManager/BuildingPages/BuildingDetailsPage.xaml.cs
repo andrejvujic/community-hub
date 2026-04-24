@@ -12,11 +12,15 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private readonly Building _building;
         private readonly User _user;
         private Grid? _selectedSideBarItem = null;
+        private CommonRoomRentalRequestsPage _commonRoomRentalRequestsPage;
 
         public BuildingDetailsPage(User user, Building building)
         {
             InitializeComponent();
             _building = building;
+            _user = user;
+            _commonRoomRentalRequestsPage = new CommonRoomRentalRequestsPage(_user, _building);
+            _commonRoomRentalRequestsPage.CheckAndUpdateRentalDateStatuses();
             _user = user;
             BuildingFrame.Navigate(new BuildingInfoPage(_user, _building));
         }
