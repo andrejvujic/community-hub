@@ -24,20 +24,20 @@ public class ProviderReviewRepository
         jl.service_name,
         jl.description,
         jl.billing_type,
-        lc.id AS listing_city_id,
-        lc.name AS listing_city_name,
-        lco.id AS listing_country_id,
-        lco.name AS listing_country_name,
+        lc.id AS listing_city_city_id,
+        lc.name AS listing_city_city_name,
+        lco.id AS listing_country_country_id,
+        lco.name AS listing_country_country_name,
         pu.id AS user_id,
         pu.username,
         pu.password,
         pu.name,
         pu.surname,
         pu.user_role,
-        pc.id AS provider_city_id,
-        pc.name AS provider_city_name,
-        pco.id AS provider_country_id,
-        pco.name AS provider_country_name,
+        pc.id AS provider_city_city_id,
+        pc.name AS provider_city_city_name,
+        pco.id AS provider_country_country_id,
+        pco.name AS provider_country_country_name,
         n.id AS neighborhood_id,
         n.name AS neighborhood_name,
         n.description,
@@ -162,5 +162,26 @@ public class ProviderReviewRepository
             if (value == null || value == DBNull.Value) return null;
             return Convert.ToDecimal(value);
         });
+    }
+    
+    public Dictionary<long, ProviderReview> GetAllByNeighborhood(long neighborhoodId)
+    {
+        var query = PostgresQuery.Create(
+            $"SELECT {SelectColumns} {FromJoins} WHERE bj.neighborhood_id = @neighborhood_id"
+        )
+        .AddParameter("neighborhood_id", neighborhoodId);
+
+        var reviewsMap = new Dictionary<long, ProviderReview>();
+
+        query.ExecuteReader(reader =>
+        {
+            var review = _mapper.MapToEntity(reader);
+            if (review != null)
+            {
+                reviewsMap[review.BookedJob.Id] = review;
+            }
+        });
+
+        return reviewsMap;
     }
 }
