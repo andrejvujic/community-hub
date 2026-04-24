@@ -96,7 +96,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             JobDescriptionTextBlock.Text = listing.Description;
 
-            JobPriceTextBlock.Text = $"Trenutna cena: {listing.CurrentPriceEntry.Amount:N2} RSD";
+            JobPriceTextBlock.Text = listing.CurrentPriceEntry is not null
+                ? $"Trenutna cena: {listing.CurrentPriceEntry.Amount:N2} RSD"
+                : "Cena nije dostupna";
 
             JobBillingTypeTextBlock.Text = listing.BillingType == BillingType.PerHour 
                 ? "Plaćanje po satu" 
@@ -151,10 +153,68 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 JobSampleImage.Source = null;
             }
         }
-            
+
         private void FindSlotButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_selectedListing is null || _selectedNeighborhood is null) return;
 
+            if (!TryGetDurationHours(out int? durationHours)) return;
+
+            var slot = _jobBookingService.FindFirstAvailableSlot(_selectedListing, durationHours);
+
+            if (slot is null)
+            {
+                ShowNoSlotsMessage();
+                return;
+            }
+
+            BookIfConfirmed(slot);
+        }
+
+        private bool TryGetDurationHours(out int? durationHours)
+        {
+            durationHours = null;
+            if (_selectedListing!.BillingType != BillingType.PerHour) return true;
+
+            if (!int.TryParse(DurationHoursTextBox.Text.Trim(), out int hours) || hours <= 0)
+            {
+                MessageBox.Show(
+                    "Molimo unesite ispravno trajanje usluge u satima.",
+                    "Nevažeći unos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return false;
+            }
+
+            durationHours = hours;
+            return true;
+        }
+
+        private void ShowNoSlotsMessage()
+        {
+            MessageBox.Show(
+                "Nije pronađen slobodan termin u narednih 365 dana.",
+                "Nema slobodnih termina",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+
+        private void BookIfConfirmed(AvailableJobSlot slot)
+        {
+            var dialog = new BookingConfirmationWindow(_selectedListing!, slot)
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            if (dialog.ShowDialog() != true || !dialog.Confirmed) return;
+
+            var booked = _jobBookingService.BookService(_selectedListing!, _selectedNeighborhood!, slot);
+
+            MessageBox.Show(
+                $"Termin je uspešno zakazan za {booked.ScheduledDate:dd.MM.yyyy.}.",
+                "Zakazano",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 }
