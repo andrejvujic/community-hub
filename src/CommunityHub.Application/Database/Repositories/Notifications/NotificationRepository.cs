@@ -38,6 +38,23 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
             _notificationDetailsRepository.Create(details);
         }
 
+        public void Update(Notification notification)
+        {
+            PostgresQuery.Create(
+                @"UPDATE notifications SET
+                    recipient_id = @recipient_id,
+                    sent_at = @sent_at,
+                    title = @title,
+                    message = @message,
+                    status = @status,
+                    type = @type
+                WHERE id = @id"
+            )
+            .AddParameter("id", notification.Id)
+            .ExtendParameters(_notificationMapper.MapToQueryParameters(notification))
+            .Execute();
+        }
+
         public int GetNotificationCountForUser(long userId, NotificationStatus? status = null)
         {
             var query = PostgresQuery.Create(
