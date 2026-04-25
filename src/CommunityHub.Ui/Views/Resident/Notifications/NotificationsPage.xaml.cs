@@ -4,6 +4,7 @@ using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications.Details;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -42,6 +43,14 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
             if (sender is not FrameworkElement element) return;
 
             if (element.DataContext is not Notification notification) return;
+
+            if (!notification.IsRead)
+            {
+                Debug.WriteLine($"before: {notification.Status}");
+                notification.MarkAsRead();
+                Debug.WriteLine($"after: {notification.Status}");
+                _notificationRepository.Update(notification);
+            }
 
             if (!notification.HasDetails) return;
 
