@@ -8,14 +8,20 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
     {
         private readonly UserMapper _userMapper = new();
 
-        public override Ad MapToEntity(IDataReader reader)
+        public override Ad? MapToEntity(IDataReader reader)
         {
+            if (!reader.HasColumn("ad_id")) return null;
+
+            int idColumnIndex = reader.GetOrdinal("ad_id");
+            if (reader.IsDBNull(idColumnIndex)) return null;
+
+            long id = reader.GetInt64(idColumnIndex);
+
             User? author = _userMapper.MapToEntity(reader.WithPrefix("author"));
             if (author == null)
                 throw new Exception("Couldn't convert database row to entity because of missing data. Author can't be null.");
 
-            long id = reader.GetInt64(reader.GetOrdinal("ad_id"));
-            
+
             AdCategory category = (AdCategory)reader.GetValue(reader.GetOrdinal("ad_category"));
             AdStatus status = (AdStatus)reader.GetValue(reader.GetOrdinal("ad_status"));
             AdType type = (AdType)reader.GetValue(reader.GetOrdinal("ad_type"));

@@ -1,5 +1,9 @@
 ﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Notifications;
+using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
@@ -13,8 +17,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     public partial class AdTimeSlotsPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
     {
         private readonly long _userId;
+        private readonly User _user;
+        private readonly UserRepository _userRepository = new();
 
-        private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
+        private readonly NotificationRepository _notificationRepository = new();
+
+        private readonly CultureInfo _culture = new("sr-Latn-RS");
 
         private readonly AdTimeSlotRepository _timeSlotRepository = new();
         private readonly AdTimeSlotReservationRepository _timeSlotReservationRepository = new();
@@ -37,6 +45,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             DataContext = this;
 
             _userId = userId;
+            _user = _userRepository.GetById(_userId)!;
+
             Ad = ad;
 
             UpdateReservableTimeSlots();
@@ -125,9 +135,21 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 );
         }
 
+        private void NotifyAuthorAboutReservation()
+            => _notificationRepository.Create(
+                    Notification.Create(
+                        Ad.Author.Id,
+                        "Nova rezervacija",
+                        $"{_user.Name} {_user.Surname} je napravio rezervaciju za vaš oglas.",
+                        NotificationType.AdReservation,
+                        details: new AdReservationNotificationDetails(Ad.Id)
+                    )
+                );
+
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
         {
             ReserveSelectedTimeSlots();
+            NotifyAuthorAboutReservation();
 
             UpdateReservableTimeSlots();
 

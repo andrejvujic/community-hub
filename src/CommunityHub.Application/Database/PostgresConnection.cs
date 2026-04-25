@@ -5,6 +5,7 @@ using CommunityHub.Application.Domain.CommonRoomRentalRequest;
 using Npgsql;
 using System.Data;
 using System.Text.Json;
+using CommunityHub.Application.Domain.Notifications;
 
 namespace CommunityHub.Application.Database;
 
@@ -15,6 +16,14 @@ public static class PostgresConnection
     public static IDbConnection CreateConnection()
     {
         var builder = new NpgsqlDataSourceBuilder(ConnectionString);
+        AddEnumMapping(builder);
+
+        var dataSource = builder.Build();
+        return dataSource.OpenConnection();
+    }
+
+    private static void AddEnumMapping(NpgsqlDataSourceBuilder builder)
+    {
         builder.MapEnum<Role>("roles");
         builder.MapEnum<Status>("statuses");
         builder.MapEnum<ParityType>("parity_types");
@@ -28,9 +37,8 @@ public static class PostgresConnection
         builder.MapEnum<BudgetCategory>("budget_categories");
         builder.MapEnum<RentalStatus>("common_room_rental_statuses");
         builder.MapEnum<EventStatus>("event_statuses");
-
-        var dataSource = builder.Build();
-        return dataSource.OpenConnection();
+        builder.MapEnum<NotificationStatus>("notification_statuses");
+        builder.MapEnum<NotificationType>("notification_types");
     }
 
     private static string LoadConnectionString()
