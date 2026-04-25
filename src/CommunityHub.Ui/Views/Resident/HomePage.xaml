@@ -1,15 +1,16 @@
-﻿<Page x:Class="CommunityHub.Ui.Views.Resident.HomePage"
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.HomePage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident"
+        xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
         mc:Ignorable="d"
         Title="Početna"
         FontFamily="{StaticResource AppFontFamily}">
-    <Page.Resources>
+    <navigation:MainNavigatorConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </Page.Resources>
+    </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
 
@@ -36,7 +37,8 @@
 
             <Grid
                 Grid.Column="1"
-                Background="Transparent">
+                Background="Transparent"
+                MouseLeftButtonDown="TopBar_NotificationsItemClick">
                 <TextBlock
                     Text="&#xf0f3;"
                     FontSize="24"
@@ -78,7 +80,7 @@
 
         </Grid>
 
-        <Frame Grid.Row="1" x:Name="HomeFrame" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Row="1" x:Name="LocalFrame" NavigationUIVisibility="Hidden"/>
 
         <Grid Grid.Row="2" Background="#dedede">
             <Grid.ColumnDefinitions>
@@ -136,4 +138,4 @@
             </Grid>
         </Grid>
     </Grid>
-</Page>
+</navigation:MainNavigatorConsumerPage>
