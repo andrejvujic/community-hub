@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers.Notifications;
 using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories.Notifications
 {
@@ -7,6 +8,16 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
     {
         private readonly NotificationMapper _notificationMapper = new(); 
         private readonly NotificationDetailsRepository _notificationDetailsRepository = new NotificationDetailsRepository();
+
+        private static string GetOrderByClause(NotificationOrder order)
+        {
+            return order switch
+            {
+                NotificationOrder.SentAtAscending => "ORDER BY notification.sent_at ASC",
+                NotificationOrder.SentAtDescending => "ORDER BY notification.sent_at DESC",
+                _ => string.Empty
+            };
+        }
 
         public void Create(Notification notification)
         {
@@ -55,7 +66,10 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
             .Execute();
         }
 
-        public int GetNotificationCountForUser(long userId, NotificationStatus? status = null)
+        public int GetNotificationCountForUser(
+            long userId,
+            NotificationStatus? status = null
+        )
         {
             var query = PostgresQuery.Create(
                 @"SELECT COUNT(*) notification_count FROM notifications notification
@@ -70,10 +84,14 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
             return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
         }
 
-        public List<Notification> GetNotificationsForUser(long userId, NotificationStatus? status = null)
+        public List<Notification> GetNotificationsForUser(
+            long userId,
+            NotificationOrder order = NotificationOrder.SentAtDescending,
+            NotificationStatus? status = null
+        )
         {
             var query = PostgresQuery.Create(
-                @"SELECT
+                $@"SELECT
                     notification.id AS notification_id,
                     notification.recipient_id,
                     notification.title,
@@ -95,7 +113,7 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
                     notification.recipient_id = @user_id AND
                     (notification.status = @status OR @status IS NULL)
                 
-                ORDER BY notification.sent_at DESC"
+               {GetOrderByClause(order)}"
             )
             .AddParameter("user_id", userId)
             .AddParameter("status", status);
