@@ -1,14 +1,16 @@
 ﻿using CommunityHub.Application.Database.Repositories.Notifications;
 using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings;
+using CommunityHub.Ui.Views.Resident.Notifications;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident
 {
-    public partial class HomePage : Page, INotifyPropertyChanged
+    public partial class HomePage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId;
 
@@ -58,8 +60,17 @@ namespace CommunityHub.Ui.Views.Resident
 
         public bool HasUnreadNotifications => UnreadNotificationCount > 0;
 
-        private void OpenBuildingsPage() => HomeFrame.Navigate(new BuildingsPage(_userId));
-        private void OpenApartmentAccessRequestsPage() => HomeFrame.Navigate(new ApartmentAccessRequestsPage(_userId));
+        private void OpenNotificationsPage() {
+            Push(
+                new NotificationsPage(_userId),
+                onPop: _ => UpdateUnreadNotificationCount()
+            );
+        }
+
+        private void OpenBuildingsPage() => LocalFrame.Navigate(new BuildingsPage(_userId));
+        private void OpenApartmentAccessRequestsPage() => LocalFrame.Navigate(new ApartmentAccessRequestsPage(_userId));
+        private void TopBar_NotificationsItemClick(object sender, MouseButtonEventArgs e)
+                => OpenNotificationsPage();
 
         private void BottomBar_RequestsItemClick(object sender, MouseButtonEventArgs e) => OpenApartmentAccessRequestsPage();
         private void BottomBar_BuildingsItemClick(object sender, MouseButtonEventArgs e) => OpenBuildingsPage();
@@ -67,5 +78,6 @@ namespace CommunityHub.Ui.Views.Resident
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
     }
 }
