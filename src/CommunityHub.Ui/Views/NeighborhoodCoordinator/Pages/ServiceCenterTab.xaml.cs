@@ -104,8 +104,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 ? $"Trenutna cena: {listing.CurrentPriceEntry.Amount:N2} RSD"
                 : "Cena nije dostupna";
 
-            JobBillingTypeTextBlock.Text = listing.BillingType == BillingType.PerHour 
-                ? "Plaćanje po satu" 
+            JobBillingTypeTextBlock.Text = listing.BillingType == BillingType.PerHour
+                ? "Plaćanje po satu"
                 : "Plaćanje po usluzi";
 
             DurationPanel.Visibility = listing.BillingType == BillingType.PerHour
@@ -227,7 +227,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadScheduledServices()
         {
             if (_selectedNeighborhood is null) return;
-            
+
             ScheduledServices.Clear();
 
             var bookedJobs = _jobBookingService.GetBookedJobListingsForNeighborhood(_selectedNeighborhood.Id);
@@ -265,6 +265,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             if (providerReviewWindow.ShowDialog() == true)
                 LoadScheduledServices();
+        }
+
+        private void EditReviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

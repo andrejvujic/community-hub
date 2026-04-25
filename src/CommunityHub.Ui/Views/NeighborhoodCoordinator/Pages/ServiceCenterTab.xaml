@@ -242,6 +242,12 @@
                         </DataGrid>
 
                         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Content="Izmeni recenziju"
+                                    Width="150"
+                                    Margin="0,0,10,0"
+                                    FontSize="14"
+                                    Cursor="Hand"
+                                    Click="EditReviewButton_Click"/>
                             <Button Content="Oceni uslugu"
                                     Width="150"
                                     Margin="0,0,70,0"
