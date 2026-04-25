@@ -13,6 +13,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private readonly long _buildingId;
         private readonly AdRepository _repository = new();
         public ObservableCollection<Ad> Ads { get; } = new();
+        public bool HasAds => Ads.Count > 0;
 
         public NoticeBoardPage(long userId, long buildingId)
         {
@@ -35,6 +36,25 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
+
+        private void CreateAdButton_Click(object sender, RoutedEventArgs e)
+        {
+            Push(
+                new CreateAdPage(
+                    userId: _userId,
+                    buildingId: _buildingId
+                ),
+                onPop: (object? value) =>
+                {
+                    if (value is Ad publishedAd)
+                    {
+                        UpdateAds();
+                        Push(new MatchingAdsPage(_userId, publishedAd));
+                        return;
+                    }
+                }
+             );
+        }
 
         private void AdItem_Click(object sender, MouseButtonEventArgs e)
         {
