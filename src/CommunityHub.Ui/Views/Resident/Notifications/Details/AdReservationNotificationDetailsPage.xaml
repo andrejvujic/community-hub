@@ -49,15 +49,14 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Margin="8,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="4"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <TextBlock
-                            Grid.Column="2"
                             Width="24"
                             Height="24"
                             Margin="0,0,4,0"
@@ -69,14 +68,12 @@
                         <Separator Width="2" Opacity="0" />
 
                         <TextBlock
-                            Grid.Column="0"
-                            FontSize="16"
+                            FontSize="18"
                             Text="{Binding Notification.SentAt, StringFormat='{}{0:d. MMMM yyyy.}', ConverterCulture='sr-Latn-RS'}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <TextBlock
-                            Grid.Column="2"
                             Width="24"
                             Height="24"
                             Margin="0,0,4,0"
@@ -88,8 +85,7 @@
                         <Separator Width="2" Opacity="0"/>
 
                         <TextBlock
-                            Grid.Column="2"
-                            FontSize="16"
+                            FontSize="18"
                             Text="{Binding Notification.SentAt, StringFormat='{}{0:HH.mm}h'}"/>
                     </StackPanel>
                 </Grid>
