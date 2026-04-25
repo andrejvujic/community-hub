@@ -64,7 +64,7 @@
                                         Padding="8"
                                         BorderBrush="Gray"
                                         BorderThickness="1">
-                                        <Grid Background="Transparent" MouseLeftButtonDown="NotificationItem_Click"> 
+                                        <Grid Background="Transparent"> 
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="16"/>
@@ -133,8 +133,8 @@
                                                  BorderBrush="Gray"
                                                  Background="#dedede"
                                                  Padding="16">
-                                                 <Grid>
-                                                     <Grid.ColumnDefinitions>
+                                                 <Grid Background="Transparent"  MouseLeftButtonDown="NotificationItem_Click">
+                                                    <Grid.ColumnDefinitions>
                                                          <ColumnDefinition Width="*"/>
                                                          <ColumnDefinition Width="Auto"/>
                                                      </Grid.ColumnDefinitions>

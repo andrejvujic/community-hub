@@ -41,7 +41,7 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="0,0,0,16" Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
+                                <Grid Margin="0,0,0,16" Background="Transparent">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="8"/>
@@ -175,7 +175,7 @@
                                                 BorderBrush="Gray"
                                                 Background="#dedede"
                                                 Padding="16">
-                                                <Grid>
+                                                <Grid Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
