@@ -101,7 +101,11 @@
                 </Grid>
             </Border>
 
-            <Label Content="Status" FontSize="18" Grid.Row="12"/>
+            <Label
+                Visibility="{Binding Ad.IsArchived, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Content="Status"
+                FontSize="18"
+                Grid.Row="12"/>
 
             <Border
                 Grid.Row="13" 
