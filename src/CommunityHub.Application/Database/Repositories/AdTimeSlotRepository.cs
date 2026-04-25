@@ -210,8 +210,7 @@ namespace CommunityHub.Application.Database.Repositories
 	                ad_2.ad_category = ad_1.ad_category AND
 	                ad_2.ad_type <> ad_1.ad_type AND
 	                ad_2.resident_id <> ad_1.resident_id AND
-	                ad_2.building_id = ad_1.building_id AND
-	                ad_2.ad_status = 'active'
+	                ad_2.building_id = ad_1.building_id
 
                 INNER JOIN ad_time_slots time_slot_2 ON
 	                time_slot_2.ad_id = ad_2.id AND
