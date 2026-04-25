@@ -143,7 +143,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         };
         private void LoadAds()
         {
-            List<Ad> ads = _adRepository.GetForBuilding(_building.Id);
+            List<Ad> ads = _adRepository.GetAdsForBuilding(_building.Id);
 
             foreach (Ad ad in ads)
                 Ads.Add(ad);

@@ -11,7 +11,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     {
         private readonly long _userId;
         private readonly long _buildingId;
-        private readonly AdRepository _repository = new();
+        private readonly AdRepository _adRepository = new();
         public ObservableCollection<Ad> Ads { get; } = new();
         public bool HasAds => Ads.Count > 0;
 
@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _repository.GetForBuilding(_buildingId);
+            List<Ad> ads = _adRepository.GetAdsForBuilding(_buildingId, AdStatus.Active);
             foreach (var ad in ads)
                 Ads.Add(ad);
         }
