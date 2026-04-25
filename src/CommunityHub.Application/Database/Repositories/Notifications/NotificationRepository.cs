@@ -52,5 +52,43 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
 
             return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
         }
+
+        public List<Notification> GetNotificationsForUser(long userId, NotificationStatus? status = null)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    notification.id AS notification_id,
+                    notification.recipient_id,
+                    notification.title,
+                    notification.message,
+                    notification.sent_at,
+                    notification.type AS notification_type,
+                    notification.status AS notification_status,
+
+                    reservation_details.id  AS reservation_details_id,
+                    reservation_details.notification_id AS reservation_details_notification_id,
+                    reservation_details.ad_id AS reservation_details_ad_id
+
+                FROM notifications notification
+
+                LEFT OUTER JOIN ad_reservation_notification_details reservation_details ON
+                    reservation_details.notification_id = notification.id
+             
+                WHERE
+                    notification.recipient_id = @user_id AND
+                    (notification.status = @status OR @status IS NULL)"
+            )
+            .AddParameter("user_id", userId)
+            .AddParameter("status", status);
+
+            List<Notification> notifications = new();
+
+            query.ExecuteReader(reader => notifications.Add(
+                    _notificationMapper.MapToEntity(reader)
+                )
+            );
+
+            return notifications;
+        }
     }
 }
