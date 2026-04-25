@@ -30,7 +30,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private int _currentImageIndex;
 
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
-        private readonly ProviderReviewRepository _reviewRepository = new ProviderReviewRepository();
+        private readonly ProviderReviewRepository _providerReviewRepository = new ProviderReviewRepository();
         private readonly JobBookingService _jobBookingService = new(
             new JobListingRepository(),
             new BookedJobRepository()
@@ -232,7 +232,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             var bookedJobs = _jobBookingService.GetBookedJobListingsForNeighborhood(_selectedNeighborhood.Id);
 
-            var reviewsMap = _reviewRepository.GetAllByNeighborhood(_selectedNeighborhood.Id);
+            var reviewsMap = _providerReviewRepository.GetAllByNeighborhood(_selectedNeighborhood.Id);
 
             foreach (var job in bookedJobs)
             {
@@ -258,18 +258,35 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
                 return;
             }
 
-            var providerReviewWindow = new ProviderReviewWindow(selected, _coordinatorId, _reviewRepository)
+            OpenReviewWindow(selected);
+        }
+
+        private void EditReviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ScheduledServicesDataGrid.SelectedItem is not BookedJobViewModel selected) return;
+
+            if (!selected.CanEditReview)
+            {
+                MessageBox.Show(
+                    "Recenzija se može menjati samo u roku od 3 dana od kreiranja.",
+                    "Izmena nije dozvoljena",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            OpenReviewWindow(selected);
+        }
+
+        private void OpenReviewWindow(BookedJobViewModel selected)
+        {
+            var providerReviewWindow= new ProviderReviewWindow(selected, _coordinatorId, _providerReviewRepository)
             {
                 Owner = Window.GetWindow(this)
             };
 
             if (providerReviewWindow.ShowDialog() == true)
                 LoadScheduledServices();
-        }
-
-        private void EditReviewButton_Click(object sender, RoutedEventArgs e)
-        {
-            
         }
     }
 }
