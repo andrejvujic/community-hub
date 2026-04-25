@@ -1,15 +1,18 @@
-﻿using CommunityHub.Application.Domain.Notifications.Details;
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers.Notifications.Details;
+using CommunityHub.Application.Domain.Notifications.Details;
 
 namespace CommunityHub.Application.Database.Repositories.Notifications
 {
     public class NotificationDetailsRepository
     {
+        private readonly AdReservationNotificationDetailsMapper _reservationDetailsMapper = new();
+
         public void Create(NotificationDetails details)
         {
             switch (details)
             {
-                case AdReservationNotificationDetails adReservationDetails:
-                    CreateAdReservationDetails(adReservationDetails);
+                case AdReservationNotificationDetails reservationDetails:
+                    CreateAdReservationDetails(reservationDetails);
                     break;
             }
         }
@@ -21,11 +24,10 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
                     (notification_id,
                     ad_id)
                 VALUES
-                    (@notification_id,
-                    @ad_id)"
+                    (@details_notification_id,
+                    @details_ad_id)"
             )
-            .AddParameter("notification_id", details.NotificationId)
-            .AddParameter("ad_id", details.AdId)
+            .ExtendParameters(_reservationDetailsMapper.MapToQueryParameters(details))
             .Execute();
         }
     }
