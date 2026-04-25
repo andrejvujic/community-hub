@@ -1,15 +1,14 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard;
-using System.Diagnostics;
-using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications.Details
 {
-    public partial class AdReservationNotificationDetailsPage : MainNavigatorConsumerPage
+    public partial class AdReservationNotificationDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
     {
         private long _userId;
         private readonly AdRepository _adRepository = new();
@@ -27,12 +26,22 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
         private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
         {
             if (Notification.Details is not AdReservationNotificationDetails details)
-                throw new Exception("Notification.Details must be instance of AdReservationNotificationDetails");
+                throw new Exception("Notification.Details must be an instance of AdReservationNotificationDetails");
 
             var ad = _adRepository.GetById(details.AdId);
-            Debug.WriteLine(ad is null);
-
-            if (ad == null) return;
+            if (ad != null)
+            {
+                if (this is IAlertConsumer consumer)
+                    consumer.ShowAlert(
+                        Alert.Create(
+                            "Greška",
+                            "Traženi oglas nije pronađen.",
+                            AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
+                return;
+            }
 
             Push(
                 new PersonalAdDetailsPage(
