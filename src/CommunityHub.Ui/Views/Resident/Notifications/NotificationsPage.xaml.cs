@@ -38,22 +38,15 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
 
             OnPropertyChanged(nameof(HasNotifications));
         }
-        private void NotificationItem_Click(object sender, MouseButtonEventArgs e)
+
+        private void MarkNotificationAsRead(Notification notification)
         {
-            if (sender is not FrameworkElement element) return;
+            notification.MarkAsRead();
+            _notificationRepository.Update(notification);
+        }
 
-            if (element.DataContext is not Notification notification) return;
-
-            if (!notification.IsRead)
-            {
-                Debug.WriteLine($"before: {notification.Status}");
-                notification.MarkAsRead();
-                Debug.WriteLine($"after: {notification.Status}");
-                _notificationRepository.Update(notification);
-            }
-
-            if (!notification.HasDetails) return;
-
+        private void OpenNotificationDetailsPage(Notification notification)
+        {
             switch (notification.Type)
             {
                 case NotificationType.AdReservation:
@@ -63,6 +56,19 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
                     );
                     break;
             }
+        }
+
+        private void NotificationItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not Notification notification) return;
+
+            if (!notification.IsRead)
+                MarkNotificationAsRead(notification);
+
+            if (notification.HasDetails)
+                OpenNotificationDetailsPage(notification);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
