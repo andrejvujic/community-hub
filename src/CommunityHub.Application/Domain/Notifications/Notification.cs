@@ -15,8 +15,16 @@ namespace CommunityHub.Application.Domain.Notifications
         public DateTime SentAt { get; }
 
         public NotificationType Type { get; }
-        public NotificationStatus Status { get; }
+        public NotificationStatus Status { get; private set; }
         public bool IsRead { get => Status == NotificationStatus.Read; }
+
+        public void MarkAsRead()
+        {
+            if (IsRead)
+                throw new InvalidOperationException("Notification.Status is already NotificationStatus.Read");
+
+            Status = NotificationStatus.Read;
+        }
 
         public NotificationDetails? Details { get; }
         public bool HasDetails { get => Details is not null; }
