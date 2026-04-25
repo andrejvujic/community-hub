@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     {
         private readonly long _userId;
 
-        private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
+        private readonly CultureInfo _culture = new("sr-Latn-RS");
 
         private readonly AdTimeSlotRepository _timeSlotRepository = new();
 
