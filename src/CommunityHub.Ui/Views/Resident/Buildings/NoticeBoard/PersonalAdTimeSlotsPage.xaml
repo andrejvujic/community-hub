@@ -41,7 +41,7 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="0,0,0,8" Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
+                                <Grid Margin="0,0,0,16" Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="8"/>
@@ -98,7 +98,7 @@
 
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Grid Margin="0,0,0,8">
+                                                        <Grid Margin="0,0,0,16">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="Auto"/>
                                                                 <RowDefinition Height="4"/>
@@ -107,7 +107,7 @@
 
                                                             <TextBlock
                                                                 Grid.Row="0"
-                                                                FontSize="18"
+                                                                FontSize="20"
                                                                 FontWeight="Bold"
                                                                 Text="{Binding Day, StringFormat='{}{0:d. MMMM}', ConverterCulture='sr-Latn-RS'}"/>
 
@@ -115,11 +115,11 @@
                                                                 Grid.Row="2"
                                                                 BorderBrush="Gray"
                                                                 BorderThickness="1"
-                                                                Padding="8,8,8,0">
+                                                                Padding="0,8,8,0">
                                                                 <ItemsControl ItemsSource="{Binding TimeSlots}">
                                                                     <ItemsControl.ItemsPanel>
                                                                         <ItemsPanelTemplate>
-                                                                            <StackPanel/>
+                                                                            <UniformGrid Columns="2"/>
                                                                         </ItemsPanelTemplate>
                                                                     </ItemsControl.ItemsPanel>
 
@@ -130,9 +130,9 @@
                                                                                 Background="#dedede"
                                                                                 BorderBrush="Gray"
                                                                                 BorderThickness="1"
-                                                                                Margin="0,0,0,8"
+                                                                                Margin="8,0,0,8"
                                                                                 Padding="8">
-                                                                                <Grid>
+                                                                                <Grid HorizontalAlignment="Center">
                                                                                     <Grid.ColumnDefinitions>
                                                                                         <ColumnDefinition Width="Auto"/>
                                                                                         <ColumnDefinition Width="8"/>
@@ -168,7 +168,7 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
 
-                                            <Separator Margin="0,4,0,12"/>
+                                            <Separator Margin="0,-4,0,12"/>
 
                                             <Border
                                                 BorderThickness="1"
