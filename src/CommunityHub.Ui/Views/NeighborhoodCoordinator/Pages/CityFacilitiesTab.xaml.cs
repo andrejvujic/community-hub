@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.CityFacility;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
@@ -22,9 +23,13 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     public partial class CityFacilitiesTab : UserControl
     {
         private long _coordinatorId;
-        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
+        private Neighborhood? _selectedNeighborhood;
+
+        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository(); 
+        private readonly CityFacilityRepository _cityFacilityRepository = new CityFacilityRepository();
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
+        public ObservableCollection<CityFacility> Facilities { get; set; } = new ObservableCollection<CityFacility>();
 
         public CityFacilitiesTab()
         {
@@ -43,9 +48,28 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             Neighborhoods.Clear();
             var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
             foreach (var n in neighborhoods)
-            {
                 Neighborhoods.Add(n);
-            }
+        }
+
+        private void NeighborhoodsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _selectedNeighborhood = NeighborhoodsListBox.SelectedItem as Neighborhood;
+            if (_selectedNeighborhood is null) return;
+
+            NeighborhoodNameTextBlock.Text = _selectedNeighborhood.Name;
+            ReservationsTitleRun.Text = _selectedNeighborhood.Name;
+
+            LoadFacilities();
+
+            FacilitiesPanel.Visibility = Visibility.Visible;
+        }
+
+        private void LoadFacilities()
+        {
+            Facilities.Clear();
+            var facilities = _cityFacilityRepository.GetByCityId(_selectedNeighborhood!.City.Id);
+            foreach (var f in facilities)
+                Facilities.Add(f);
         }
     }
 }
