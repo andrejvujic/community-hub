@@ -24,7 +24,11 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override Dictionary<string, object?> MapToQueryParameters(CityFacility entity)
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object?>
+            {
+                { "name", entity.Name },
+                { "city_id", entity.City.Id }
+            };
         }
     }
 }
