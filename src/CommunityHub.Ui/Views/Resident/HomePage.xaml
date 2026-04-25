@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Početna"
         FontFamily="{StaticResource AppFontFamily}">
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
     <Grid>
         <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
 
@@ -40,6 +43,25 @@
                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
+
+                <Border
+                    Visibility="{Binding HasUnreadNotifications, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0,4,8,0"
+                    Width="24"
+                    Height="24"
+                    CornerRadius="12"
+                    Background="Red"
+                    BorderBrush="#dedede"
+                    BorderThickness="2">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Foreground="White"
+                        FontSize="12"
+                        Text="{Binding UnreadNotificationCountText}"/>
+                </Border>
             </Grid>
 
             <Grid
