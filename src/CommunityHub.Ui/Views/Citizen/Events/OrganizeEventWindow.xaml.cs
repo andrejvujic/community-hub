@@ -1,21 +1,23 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Globalization;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Database.Repositories;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {
     public partial class OrganizeEventWindow : Window
-    {
+    {   
         private readonly long _userId;
-        public string? CreatedName { get; private set; }
-        public string? CreatedDescription { get; private set; }
-        public DateTime? CreatedEventStart { get; private set; }
-        public int? CreatedDurationMinutes { get; private set; }
-        public int? CreatedMinVolunteers { get; private set; }
-        public List<EventItem>? CreatedItems { get; private set; }
+        private readonly CitizenRepository _citizenRepository = new CitizenRepository();
+        private readonly CommunityEventRepository _communityEventRepository = new CommunityEventRepository();
+
+        private DateTime? _cachedEventStart;
+        private int? _cachedDurationMinutes;
+        private int? _cachedMinVolunteers;
+        private List<string>? _cachedItemNames;
 
         public OrganizeEventWindow(long userId)
         {
@@ -32,12 +34,13 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         {
             bool hasName = !string.IsNullOrWhiteSpace(NameBox.Text);
             bool hasDesc = !string.IsNullOrWhiteSpace(DescriptionBox.Text);
-            bool hasValidStart = TryGetEventStart(out _);
-            bool hasValidDuration = TryGetDuration(out _);
-            bool hasValidVolunteers = TryGetMinVolunteers(out _);
-            bool hasItems = ParseItems(ItemsBox.Text).Count > 0;
+            if (TryGetEventStart(out var es)) _cachedEventStart = es; else _cachedEventStart = null;
+            if (TryGetDuration(out var dm)) _cachedDurationMinutes = dm; else _cachedDurationMinutes = null;
+            if (TryGetMinVolunteers(out var mv)) _cachedMinVolunteers = mv; else _cachedMinVolunteers = null;
+            var items = ParseItems(ItemsBox.Text);
+            _cachedItemNames = items.Count > 0 ? items : null;
 
-            SaveButton.IsEnabled = hasName && hasDesc && hasValidStart && hasValidDuration && hasValidVolunteers && hasItems;
+            SaveButton.IsEnabled = hasName && hasDesc && _cachedEventStart.HasValue && _cachedDurationMinutes.HasValue && _cachedMinVolunteers.HasValue && _cachedItemNames != null;
         }
 
         private bool TryGetEventStart(out DateTime eventStart)
@@ -84,7 +87,32 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: implement save
+            var name = NameBox.Text.Trim();
+            var description = DescriptionBox.Text.Trim();
+            var eventStart = _cachedEventStart!.Value;
+            var duration = _cachedDurationMinutes!.Value;
+            var minVolunteers = _cachedMinVolunteers!.Value;
+            var items = _cachedItemNames!.Select(n => new EventItem(0, n, 0)).ToList();
+
+            var organizer = _citizenRepository.GetById(_userId);
+            var neighborhood = organizer!.Membership!.Neighborhood;
+
+            CommunityEvent ev = new CommunityEvent(
+                id: 0,
+                name: name,
+                description: description,
+                eventStart: eventStart,
+                durationMinutes: duration,
+                minVolunteers: minVolunteers,
+                status: EventStatus.Preparation,
+                neighborhood: neighborhood,
+                organizer: organizer,
+                items: items
+            );
+
+            CommunityEvent createdEvent = _communityEventRepository.Create(ev);
+            this.DialogResult = true;
+            this.Close();
         }
 
         private List<string> ParseItems(string? raw)

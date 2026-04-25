@@ -18,6 +18,12 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             var citizen = _citizenRepository.GetById(_userId);
             this.DataContext = citizen;
 
+            RefreshNeighborhoodEvents();
+        }
+
+        public void RefreshNeighborhoodEvents()
+        {
+            var citizen = _citizenRepository.GetById(_userId);
             if (citizen?.Membership != null)
             {
                 var neighborhoodId = citizen.Membership.Neighborhood.Id;
@@ -35,7 +41,11 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         {
             var wnd = new MyEventsWindow(_userId);
             wnd.Owner = Window.GetWindow(this);
-            wnd.ShowDialog();
+            var result = wnd.ShowDialog();
+            if (result == true)
+            {
+                RefreshNeighborhoodEvents();
+            }
         }
     }
 }
