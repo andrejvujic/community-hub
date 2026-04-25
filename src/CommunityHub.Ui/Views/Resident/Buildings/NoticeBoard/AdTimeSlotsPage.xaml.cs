@@ -1,6 +1,11 @@
 ﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Notifications;
+using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Converters;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,6 +18,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
     public partial class AdTimeSlotsPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
     {
         private readonly long _userId;
+        private readonly User _user;
+        private readonly UserRepository _userRepository = new();
+
+        private readonly NotificationRepository _notificationRepository = new();
 
         private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
 
@@ -37,6 +46,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             DataContext = this;
 
             _userId = userId;
+            _user = _userRepository.GetById(_userId)!;
+
             Ad = ad;
 
             UpdateReservableTimeSlots();
@@ -116,6 +127,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     requestAdTimeSlotId: requestAdTimeSlotId
                 );
 
+            NotifyAuthorAboutReservation();
+
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
@@ -124,6 +137,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     ).AddOption("U redu")
                 );
         }
+
+        private void NotifyAuthorAboutReservation()
+            => _notificationRepository.Create(
+                    Notification.Create(
+                        Ad.Author.Id,
+                        "Nova rezervacija",
+                        $"{_user.Name} {_user.Surname} je napravio rezervaciju za vaš oglas.",
+                        NotificationType.AdReservation,
+                        details: new AdReservationNotificationDetails(Ad.Id)
+                    )
+                );
 
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
         {
