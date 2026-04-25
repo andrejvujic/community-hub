@@ -63,7 +63,7 @@
                                         Padding="8"
                                         BorderBrush="Gray"
                                         BorderThickness="1">
-                                        <Grid>
+                                        <Grid Background="Transparent" MouseLeftButtonDown="NotificationItem_Click"> 
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="16"/>
@@ -81,7 +81,7 @@
 
                                                 <TextBlock
                                                     Grid.Column="0"
-                                                    FontSize="14"
+                                                    FontSize="16"
                                                     Text="{Binding SentAt, StringFormat='{}{0: d. MMMM yyyy.} — {0: HH.mm}h', ConverterCulture='sr-Latn-RS'}"
                                                     VerticalAlignment="Center"/>
 

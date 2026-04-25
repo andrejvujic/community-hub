@@ -1,8 +1,10 @@
 ﻿using CommunityHub.Application.Database.Repositories.Notifications;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Notifications.Details;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications
@@ -34,6 +36,24 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
                 Notifications.Add(notification);
 
             OnPropertyChanged(nameof(HasNotifications));
+        }
+        private void NotificationItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not Notification notification) return;
+
+            if (!notification.HasDetails) return;
+
+            switch (notification.Type)
+            {
+                case NotificationType.AdReservation:
+                    Push(
+                        new AdReservationNotificationDetailsPage(_userId, notification),
+                        onPop: _ => UpdateNotifications()
+                    );
+                    break;
+            }
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
