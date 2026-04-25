@@ -9,5 +9,8 @@
             Id = id;
             NotificationId = notificationId;
         }
+
+        public void AttachToNotification(long notificationId)
+            => NotificationId = notificationId;
     }
 }
