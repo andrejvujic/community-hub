@@ -5,7 +5,6 @@ using CommunityHub.Application.Domain.NoticeBoard;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
-using CommunityHub.Ui.Helpers.Converters;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,7 +22,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private readonly NotificationRepository _notificationRepository = new();
 
-        private readonly CultureInfo _culture = new CultureInfo("sr-Latn-RS");
+        private readonly CultureInfo _culture = new("sr-Latn-RS");
 
         private readonly AdTimeSlotRepository _timeSlotRepository = new();
         private readonly AdTimeSlotReservationRepository _timeSlotReservationRepository = new();
@@ -127,8 +126,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     requestAdTimeSlotId: requestAdTimeSlotId
                 );
 
-            NotifyAuthorAboutReservation();
-
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
@@ -152,6 +149,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
         {
             ReserveSelectedTimeSlots();
+            NotifyAuthorAboutReservation();
 
             UpdateReservableTimeSlots();
 
