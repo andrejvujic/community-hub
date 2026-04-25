@@ -33,5 +33,15 @@
             coordinator.name AS coordinator_name,
             coordinator.surname AS coordinator_surname,
             coordinator.user_role AS coordinator_user_role";
+
+        private const string FromJoins = @"
+            FROM facility_reservations facility_reservation
+            INNER JOIN city_facilities city_facility ON city_facility.id = facility_reservation.facility_id
+            INNER JOIN cities facility_city ON facility_city.id = city_facility.city_id
+            INNER JOIN countries facility_country ON facility_country.id = facility_city.country_id
+            INNER JOIN neighborhoods neighborhood ON neighborhood.id = facility_reservation.neighborhood_id
+            INNER JOIN cities neighborhood_city ON neighborhood_city.id = neighborhood.city_id
+            INNER JOIN countries neighborhood_country ON neighborhood_country.id = neighborhood_city.country_id
+            INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id";
     }
 }
