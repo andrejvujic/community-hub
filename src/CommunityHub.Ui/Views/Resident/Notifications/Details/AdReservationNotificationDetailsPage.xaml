@@ -46,6 +46,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="16"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Margin="8,0">
@@ -92,37 +94,46 @@
 
                 <Separator Grid.Row="1"/>
 
-                <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="4"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <TextBlock Grid.Row="2" FontSize="18" TextWrapping="Wrap">
+                    <Run FontWeight="Bold">
+                        <Run.Text>
+                            <Binding Path="Notification.Title" Mode="OneWay"/>
+                        </Run.Text>
+                    </Run>
+                    <Run Text="—"/>
+                    <Run>
+                        <Run.Text>
+                            <Binding Path="Notification.Message" Mode="OneWay"/> 
+                        </Run.Text>
+                    </Run>
+                </TextBlock>
 
-                    <TextBlock
-                        Grid.Row="0"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Text="{Binding Notification.Title}"/>
+                <Border
+                     Grid.Row="4"
+                     BorderThickness="1"
+                     BorderBrush="Gray"
+                     Background="#dedede"
+                     Padding="16">
+                    <Grid Background="Transparent" MouseLeftButtonDown="OpenAdButton_Click">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
+                        <TextBlock
+                             Grid.Column="0"
+                             FontSize="18"
+                             Text="Prikaži oglas"/>
 
-                    <TextBlock
-                        Grid.Row="2"
-                        FontSize="18"
-                        Text="{Binding Notification.Message}"
-                        TextWrapping="Wrap"/>
-                </Grid>
+                        <TextBlock
+                             Grid.Column="1"
+                             Text="&#xf178;"
+                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                             VerticalAlignment="Center"
+                             FontSize="24"/>
+                    </Grid>
+                </Border>
             </Grid>
         </Grid>
-
-        <Button
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            Margin="0,0,0,16"
-            Click="OpenAdButton_Click"
-            Content="Pogledaj oglas"
-            FontSize="18"
-            Width="192"
-            Height="72"/>
     </Grid>
 </navigation:MainNavigatorConsumerPage>

@@ -131,7 +131,7 @@
                                                  BorderThickness="1"
                                                  BorderBrush="Gray"
                                                  Background="#dedede"
-                                                 Padding="8">
+                                                 Padding="16">
                                                  <Grid>
                                                      <Grid.ColumnDefinitions>
                                                          <ColumnDefinition Width="*"/>

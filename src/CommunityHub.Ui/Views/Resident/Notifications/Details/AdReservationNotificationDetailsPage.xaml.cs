@@ -24,7 +24,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             Notification = notification;
         }
 
-        private void OpenAdButton_Click(object sender, RoutedEventArgs e)
+        private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
         {
             if (Notification.Details is not AdReservationNotificationDetails details)
                 throw new Exception("Notification.Details must be instance of AdReservationNotificationDetails");
