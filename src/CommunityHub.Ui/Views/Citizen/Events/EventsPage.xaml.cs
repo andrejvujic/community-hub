@@ -34,12 +34,25 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void MyEventsButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenMyEventsWindow();
+            var wnd = new MyEventsWindow(_userId);
+            wnd.Owner = Window.GetWindow(this);
+            var result = wnd.ShowDialog();
+            if (result == true)
+            {
+                RefreshNeighborhoodEvents();
+            }
         }
 
-        private void OpenMyEventsWindow()
+        private void ApplyToVolunteerButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var wnd = new MyEventsWindow(_userId);
+            var selected = EventsGrid.SelectedItem as CommunityHub.Application.Domain.CommunityEvent;
+            if (selected == null)
+            {
+                MessageBox.Show("Izaberite događaj pre prijave.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var wnd = new ApplyToVolunteerWindow(_userId, selected);
             wnd.Owner = Window.GetWindow(this);
             var result = wnd.ShowDialog();
             if (result == true)

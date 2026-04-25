@@ -164,7 +164,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="0,0,8,0">
+                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="0,0,8,0" Click="ApplyToVolunteerButton_Click">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
                         </Button>
 
