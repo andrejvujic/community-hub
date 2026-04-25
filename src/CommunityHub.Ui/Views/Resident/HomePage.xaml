@@ -59,6 +59,7 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Foreground="White"
+                        FontWeight="Bold"
                         FontSize="12"
                         Text="{Binding UnreadNotificationCountText}"/>
                 </Border>
