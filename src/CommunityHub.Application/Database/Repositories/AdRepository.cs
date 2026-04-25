@@ -57,7 +57,7 @@ namespace CommunityHub.Application.Database.Repositories
             .Execute();
         }
 
-        public List<Ad> GetForBuilding(long buildingId)
+        public List<Ad> GetAdsForBuilding(long buildingId, AdStatus? status = null)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -80,9 +80,13 @@ namespace CommunityHub.Application.Database.Repositories
                 
                 FROM ads ad 
                 INNER JOIN users author ON ad.resident_id = author.id
-                WHERE ad.building_id = @building_id
+                WHERE
+                    ad.building_id = @building_id AND
+                    (ad.ad_status = @ad_status OR @ad_status IS NULL)
                 ORDER BY ad_id ASC"
-            ).AddParameter("building_id", buildingId);
+            )
+            .AddParameter("building_id", buildingId)
+            .AddParameter("ad_status", status);
 
             List<Ad> ads = new List<Ad>();
             query.ExecuteReader(
