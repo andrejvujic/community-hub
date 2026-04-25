@@ -24,7 +24,7 @@
 
             <TextBlock
                 Grid.Row="0"
-                Text="Rezervacija termina"
+                Text="Rezervacije"
                 FontSize="20"
                 VerticalAlignment="Center"/>
 
@@ -78,9 +78,9 @@
                                         <TextBlock
                                             Grid.Column="4"
                                             Text="{Binding TimeSlotCount, StringFormat='{}{0} termina'}"
-                                            FontSize="20"
-                                            FontWeight="Bold"
-                                            Margin="0,0,4,0"/>
+                                            FontSize="18"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,8,0"/>
                                     </Grid>
 
                                     <Border 

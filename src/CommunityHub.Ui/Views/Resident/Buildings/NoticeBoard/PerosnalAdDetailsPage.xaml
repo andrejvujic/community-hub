@@ -94,7 +94,7 @@
 
                 <Label
                     Grid.Row="1"
-                    Content="Termini"
+                    Content="Rezervacije"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Padding="0,4,0,8"
