@@ -27,7 +27,13 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override Dictionary<string, object?> MapToQueryParameters(FacilityReservation entity)
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object?>
+            {
+                { "start_datetime", entity.StartDatetime },
+                { "end_datetime", entity.EndDatetime },
+                { "facility_id", entity.Facility.Id },
+                { "neighborhood_id", entity.Neighborhood.Id }
+            };
         }
     }
 }
