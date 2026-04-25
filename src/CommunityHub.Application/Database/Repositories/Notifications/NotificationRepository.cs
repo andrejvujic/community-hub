@@ -93,7 +93,9 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
              
                 WHERE
                     notification.recipient_id = @user_id AND
-                    (notification.status = @status OR @status IS NULL)"
+                    (notification.status = @status OR @status IS NULL)
+                
+                ORDER BY notification.sent_at DESC"
             )
             .AddParameter("user_id", userId)
             .AddParameter("status", status);
