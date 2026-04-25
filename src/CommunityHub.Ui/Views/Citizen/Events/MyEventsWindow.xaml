@@ -24,20 +24,22 @@
             </Button>
         </Grid>
 
-        <TextBlock Grid.Row="1" Text="Događaji koje organizujem:" FontWeight="Bold" Margin="0,12,0,8">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Visible" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Items.Count, ElementName=OrganizerEventsList}" Value="0">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Događaji koje organizujem:" FontWeight="Bold" Margin="0,12,0,8">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Items.Count, ElementName=OrganizerEventsList}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-        <ListBox x:Name="OrganizerEventsList" Grid.Row="2" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="OrganizerEventsList" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -72,20 +74,20 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Grid.Row="3" Text="Događaji na kojima volontiram:" FontWeight="Bold" Margin="0,12,0,8">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Visible" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Items.Count, ElementName=VolunteerEventsList}" Value="0">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
+                <TextBlock Text="Događaji na kojima volontiram:" FontWeight="Bold" Margin="0,12,0,8">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Items.Count, ElementName=VolunteerEventsList}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-        <ListBox x:Name="VolunteerEventsList" Grid.Row="4" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="VolunteerEventsList" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -118,6 +120,8 @@
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+                </ListBox>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

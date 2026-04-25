@@ -93,8 +93,6 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             }
         }
 
-
-
         private void CreateNeighborhoodMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
         {
             MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
