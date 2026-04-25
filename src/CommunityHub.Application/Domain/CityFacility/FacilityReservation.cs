@@ -24,5 +24,21 @@
             StartDatetime = startDatetime;
             EndDatetime = endDatetime;
         }
+
+        public FacilityReservation CopyWith(
+            long? id = null,
+            CityFacility? facility = null,
+            Neighborhood? neighborhood = null,
+            DateTime? startDatetime = null,
+            DateTime? endDatetime = null)
+        {
+            return new FacilityReservation(
+                facility ?? Facility,
+                neighborhood ?? Neighborhood,
+                startDatetime ?? StartDatetime,
+                endDatetime ?? EndDatetime,
+                id ?? Id
+            );
+        }
     }
 }
