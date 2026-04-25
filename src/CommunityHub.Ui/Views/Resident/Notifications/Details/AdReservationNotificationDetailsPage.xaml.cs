@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
                 throw new Exception("Notification.Details must be an instance of AdReservationNotificationDetails");
 
             var ad = _adRepository.GetById(details.AdId);
-            if (ad != null)
+            if (ad == null)
             {
                 if (this is IAlertConsumer consumer)
                     consumer.ShowAlert(
