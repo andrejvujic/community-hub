@@ -1019,6 +1019,31 @@ SELECT setval(
     true
 );
 
+SELECT setval( 
+    pg_get_serial_sequence('public.community_events','id'),
+    COALESCE((SELECT MAX(id) FROM public.community_events), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.event_items','id'),
+    COALESCE((SELECT MAX(id) FROM public.event_items), 0), 
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.event_registrations','id'),
+    COALESCE((SELECT MAX(id) FROM public.event_registrations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.event_item_assignments','id'),
+    COALESCE((SELECT MAX(id) FROM public.event_item_assignments), 0),
+    true
+);
+
+
 SELECT setval(
     pg_get_serial_sequence('public.service_providers', 'id'),
     COALESCE((SELECT MAX(id) FROM public.service_providers), 0),
