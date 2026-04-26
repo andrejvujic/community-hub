@@ -10,6 +10,12 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 {
+    public enum PublishmentValidationResult
+    {
+        Valid,
+        MatchingAdExists,
+    }
+
     public partial class CreateAdPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
@@ -77,6 +83,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             return timeSlots;
         }
+
+        private void PublishAd(Ad ad)
+        {
+            var publishedAd = _adRepository.Create(ad);
+
+            var timeSlots = CreateAdTimeSlots(publishedAd);
+            foreach (var timeSlot in timeSlots)
+                _adTimeSlotRepository.Create(timeSlot);
+
+            ShowSuccessAlert(publishedAd);
+        } 
 
         private AdType? _selectedType;
         public AdType? SelectedType
@@ -210,23 +227,32 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             }       
         }
 
+        private PublishmentValidationResult ValidateAdPublishment(Ad ad)
+        {
+            // User can't have more than one active ad in the
+            // same building with the same type and category
+            // whose date ranges overlap.
+            if (_adRepository.HasMatchingAds(_userId, ad))
+                return PublishmentValidationResult.MatchingAdExists;
+
+            return PublishmentValidationResult.Valid;
+        }
+
+
         private void PublishAdButton_Click(object sender, RoutedEventArgs e)
         {
-            var ad = CreateAd();
+            Ad? ad = CreateAd();
+            if (ad == null) return;
 
-            if (ad == null)
+            PublishmentValidationResult result = ValidateAdPublishment(ad);
+
+            if (result == PublishmentValidationResult.Valid)
             {
-                ShowErrorAlert();
+                PublishAd(ad);
                 return;
             }
 
-            var publishedAd = _adRepository.Create(ad);
-
-            var timeSlots = CreateAdTimeSlots(publishedAd);
-            foreach (var timeSlot in timeSlots)
-                _adTimeSlotRepository.Create(timeSlot);
-
-            ShowSuccessAlert(publishedAd);
+            ShowPublishmentValidationResult(result);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -253,16 +279,22 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             );
         }
 
-        private void ShowErrorAlert()
+        private void ShowPublishmentValidationResult(PublishmentValidationResult result)
         {
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Greška",
-                        "Došlo je do greške prilikom objavljivanja oglasa. Provjerite da li ste ispravno unijeli sve informacije i pokušajte ponovo.",
-                        AlertType.Error
-                    ).AddOption("U redu")
-                );
+            switch (result)
+            {
+                case PublishmentValidationResult.MatchingAdExists:
+                    if (this is IAlertConsumer consumer)
+                        consumer.ShowAlert(
+                            Alert.Create(
+                                "Greška",
+                                "Objava oglasa nije bila moguća. Već imate aktivan oglas u ovoj zgradi sa istim tipom, kategorijom i preklapajućim datumima. Korigujte opseg datuma i pokušajte ponovo.",
+                                AlertType.Error
+                            )
+                            .AddOption("U redu")
+                        );  
+                    break;
+            }
         }
 
         private void ShowSuccessAlert(Ad publishedAd)
