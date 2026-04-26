@@ -31,7 +31,7 @@
                 <Separator Grid.Row="2"/>
 
                 <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl x:Name="RequestsItemsControl" ItemsSource="{Binding RentalRequests}">
+                    <ItemsControl ItemsSource="{Binding RentalRequests}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border
@@ -121,7 +121,8 @@
             Margin="16"
             BorderThickness="0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Bottom">
+            VerticalAlignment="Bottom"
+            Click="RequestCommonRoomRentalButton_Click">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>

@@ -34,5 +34,14 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
             foreach (var rentalRequest in rentalRequests)
                 RentalRequests.Add(rentalRequest);
         }
+
+        private void RequestCommonRoomRentalButton_Click(object sender, System.Windows.RoutedEventArgs e)
+            => Push(
+                    new RequestCommonRoomRentalPage(
+                        _userId,
+                        CommonRoom
+                    ),
+                    onPop: _ => UpdateRenalRequests()
+               );
     }
 }
