@@ -1,0 +1,135 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests.CommonRoomRentalRequestsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      mc:Ignorable="d"
+      Title="Zahtjevi za iznajmljivanje zajedničke prostorije"
+      FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <converters:RentalRequestStatusToStringConverter x:Key="RentalRequestStatusToStringConverter"/>
+        <converters:RentalRequestStatusToIconCodeConverter x:Key="RentalRequestStatusToIconCodeConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
+    <Grid>
+        <Grid Margin="8" Visibility="{Binding HasRentalRequests, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Moji zahtjevi" FontSize="20"/>
+
+                <Separator Grid.Row="2"/>
+
+                <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="RequestsItemsControl" ItemsSource="{Binding RentalRequests}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Padding="8"
+                                    Margin="0,0,0,8"
+                                    Background="#dedede"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1">
+                                    <Grid Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                   Text="&#xf133;"
+                                                   FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="16"
+                                                   Margin="0,0,8,0"
+                                                   Padding="0"/>
+                                                <TextBlock FontSize="16">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0:d. MMMM} — {1: d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                                            <Binding Path="StartDate"/>
+                                                            <Binding Path="EndDate"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+
+                                            <Separator Opacity="0" Height="2"/>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock
+                                                     Text="{Binding Status, Converter={StaticResource RentalRequestStatusToIconCodeConverter}}"
+                                                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                     VerticalAlignment="Center"
+                                                     FontSize="16"
+                                                     Margin="0,0,8,0"
+                                                     Padding="0"/>
+
+                                                <TextBlock
+                                                    Text="{Binding Status, Converter={StaticResource RentalRequestStatusToStringConverter}}"
+                                                    FontSize="16"
+                                                    FontWeight="Bold"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Text="&#xf178;"
+                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                            VerticalAlignment="Center"
+                                            FontSize="24"
+                                            Margin="0,0,8,0"
+                                            Padding="0"/>
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <Grid Visibility="{Binding HasRentalRequests, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+            <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Nema zahtjeva za iznajmljivanje" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock
+                    Text="Još uvijek niste napravili zahtjev za iznajmljivanje ove zajedničke prostorije. Svoj prvi zahtjev za iznajmljivanje ove zajedničke prostorije možete napraviti klikom na dugme ispod."
+                    TextWrapping="Wrap" 
+                    TextAlignment="Center"
+                    FontSize="16"
+                    HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <Button
+            Content="&#x2b;"
+            Foreground="White"
+            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+            FontSize="24"
+            Margin="16"
+            BorderThickness="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse Width="64" Height="64" Fill="Black"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</navigation:MainNavigatorConsumerPage>
