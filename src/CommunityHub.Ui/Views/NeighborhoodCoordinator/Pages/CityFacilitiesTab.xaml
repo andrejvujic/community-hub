@@ -121,6 +121,7 @@
 
                             <DataGrid x:Name="ReservationsDataGrid"
                                       Grid.Row="1" 
+                                      ItemsSource="{Binding Reservations}"
                                       AutoGenerateColumns="False" 
                                       CanUserAddRows="False" 
                                       CanUserResizeRows="False"
@@ -129,12 +130,13 @@
                                       CanUserSortColumns="False"
                                       IsReadOnly="True"
                                       HeadersVisibility="Column"
-                                      Background="Transparent">
+                                      Background="Transparent"
+                                      FontSize="18">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Objekat" Width="*"/>
-                                    <DataGridTextColumn Header="Datum" Width="100"/>
-                                    <DataGridTextColumn Header="Vreme" Width="80"/>
-                                    <DataGridTextColumn Header="Trajanje" Width="80"/>
+                                    <DataGridTextColumn Header="Objekat" Binding="{Binding Facility.Name}" Width="*"/>
+                                    <DataGridTextColumn Header="Datum" Binding="{Binding StartDatetime, StringFormat='{}{0:dd.MM.yyyy.}'}" Width="100"/>
+                                    <DataGridTextColumn Header="Početak" Binding="{Binding StartDatetime, StringFormat='{}{0:HH:mm}'}" Width="80"/>
+                                    <DataGridTextColumn Header="Kraj" Binding="{Binding EndDatetime, StringFormat='{}{0:HH:mm}'}" Width="80"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
