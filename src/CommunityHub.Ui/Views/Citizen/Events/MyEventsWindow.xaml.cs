@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Windows.Input;
+using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
@@ -17,6 +19,8 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             OrganizerEventsList.ItemsSource = events;
             var volunteerEvents = _communityEventRepository.GetByVolunteerCitizenId(_userId);
             VolunteerEventsList.ItemsSource = volunteerEvents;
+
+            OrganizerEventsList.PreviewKeyDown += OrganizerEventsList_PreviewKeyDown;
         }
 
         private void OrganizeButton_Click(object sender, RoutedEventArgs e)
@@ -29,6 +33,27 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                 var events = _communityEventRepository.GetByOrganizerId(_userId);
                 OrganizerEventsList.ItemsSource = events;
                 this.DialogResult = true;
+            }
+        }
+
+        private void OrganizerEventsList_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var selectedEvent = OrganizerEventsList.SelectedItem as CommunityEvent;
+                if (selectedEvent == null)
+                    return;
+
+                if (selectedEvent.Status == EventStatus.Finished && selectedEvent.Organizer.Id == _userId)
+                {
+                    var wnd = new MarkVolunteersWindow(selectedEvent);
+                    wnd.Owner = this;
+                    wnd.ShowDialog();
+                    e.Handled = true;
+
+                    var events = _communityEventRepository.GetByOrganizerId(_userId);
+                    OrganizerEventsList.ItemsSource = events;
+                }
             }
         }
     }

@@ -149,5 +149,16 @@ namespace CommunityHub.Application.Database.Repositories
 
             return result;
         }
+
+        public void UpdateAttendance(long registrationId, bool? attended)
+        {
+            var query = PostgresQuery.Create(
+                "UPDATE event_registrations SET attended = @attended WHERE id = @id"
+            )
+            .AddParameter("id", registrationId)
+            .AddParameter("attended", attended);
+
+            query.GetRowsAffectedCount();
+        }
     }
 }
