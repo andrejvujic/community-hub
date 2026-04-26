@@ -87,14 +87,14 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                <TextBlock Grid.Column="0" Text="{Binding Item.Name}" VerticalAlignment="Center" Margin="8,0,0,0" />
 
                                 <CheckBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
 
                                 <TextBlock Grid.Column="2" Text="✔" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,16,0" Foreground="#2E8B57">
                                     <TextBlock.Visibility>
                                         <MultiBinding Converter="{StaticResource CollectionInclusionToVisibilityConverter}">
-                                            <Binding Path="Id" />
+                                            <Binding Path="Item.Id" />
                                             <Binding ElementName="ItemsListBox" Path="Tag" />
                                         </MultiBinding>
                                     </TextBlock.Visibility>

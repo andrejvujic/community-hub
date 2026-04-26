@@ -10,6 +10,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private readonly long _userId;
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly CommunityEventRepository _eventRepository = new CommunityEventRepository();
+        private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
 
         public EventsPage(long userId)
         {
@@ -49,6 +50,20 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             if (selected == null)
             {
                 MessageBox.Show("Izaberite događaj pre prijave.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (selected.Status != EventStatus.Preparation)
+            {
+                MessageBox.Show("Prijava je dozvoljena samo dok je događaj u pripremi.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var registrations = _eventRegistrationRepository.GetByEventId(selected.Id);
+            var citizen = _citizenRepository.GetById(_userId);
+            if (registrations.Any(r => r.Citizen.Id == citizen!.Id))
+            {
+                MessageBox.Show("Već ste se prijavili za ovaj događaj.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
