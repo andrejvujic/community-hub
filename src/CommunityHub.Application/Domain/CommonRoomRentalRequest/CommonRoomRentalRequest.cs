@@ -8,7 +8,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
         public CommonRoomDomain.CommonRoom CommonRoom { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
-        public RentalStatus Status { get; private set; }
+        public RentalRequestStatus Status { get; private set; }
         public User? Resident { get; private set; }
         public DateTime? AssignedDate { get; private set; }
 
@@ -16,7 +16,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             CommonRoomDomain.CommonRoom commonRoom,
             DateTime startDate,
             DateTime endDate,
-            RentalStatus status,
+            RentalRequestStatus status,
             User? resident,
             DateTime? assignedDate,
             long id = 0
@@ -44,7 +44,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             CommonRoomDomain.CommonRoom? commonRoom = null,
             DateTime? startDate = null,
             DateTime? endDate = null,
-            RentalStatus? status = null,
+            RentalRequestStatus? status = null,
             User? resident = null,
             DateTime? assignedDate = null,
             long? id = null

@@ -15,7 +15,7 @@
 
     <Page.Resources>
         <conv:RentalTypeToStringConverter x:Key="RentalTypeConverter" />
-        <conv:RentalStatusToStringConverter x:Key="RentalStatusConverter" />
+        <conv:RentalRequestStatusToStringConverter x:Key="RentalStatusConverter" />
     </Page.Resources>
 
     <Grid Margin="10,25,0,0">

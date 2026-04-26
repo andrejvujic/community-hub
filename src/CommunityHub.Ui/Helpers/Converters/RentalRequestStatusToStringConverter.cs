@@ -4,26 +4,26 @@ using System.Windows.Data;
 
 namespace CommunityHub.Ui.Helpers.Converters
 {
-    public class RentalStatusToStringConverter : IValueConverter
+    public class RentalRequestStatusToStringConverter : IValueConverter
     {
         private readonly string _approvedText = "Odobren";
         private readonly string _rejectedText = "Odbijen";
         private readonly string _waitingText = "Na čekanju";
-        private readonly string _waitingDateChangeText = "Na čekanju - promena termina";
+        private readonly string _waitingDateChangeText = "Na čekanju — promena termina";
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not RentalStatus status) return null;
+            if (value is not RentalRequestStatus status) return null;
 
             switch (status)
             {
-                case RentalStatus.Approved:
+                case RentalRequestStatus.Accepted:
                     return _approvedText;
-                case RentalStatus.Rejected:
+                case RentalRequestStatus.Rejected:
                     return _rejectedText;
-                case RentalStatus.Waiting:
+                case RentalRequestStatus.Waiting:
                     return _waitingText;
-                case RentalStatus.WaitingDateChange:
+                case RentalRequestStatus.WaitingDateChange:
                     return _waitingDateChangeText;
             }
 
