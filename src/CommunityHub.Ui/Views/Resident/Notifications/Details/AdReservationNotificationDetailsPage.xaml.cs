@@ -46,7 +46,8 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             Push(
                 new PersonalAdDetailsPage(
                     _userId,
-                    ad
+                    ad,
+                    initialTab: PersonalAdDetailsPageTab.TimeSlots
                 )
             );
         }
