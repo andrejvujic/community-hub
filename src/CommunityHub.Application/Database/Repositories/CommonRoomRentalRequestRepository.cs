@@ -13,15 +13,19 @@ namespace CommunityHub.Application.Database.Repositories
                 @"INSERT INTO common_room_rental_requests
                     (common_room_id,
                     resident_id,
-                    start_date,
-                    end_date,
+                    requested_start_date,
+                    requested_end_date,
+                    proposed_start_date,
+                    proposed_end_date,
                     rental_status,
                     assigned_date)
                   VALUES
                     (@common_room_id,
                     @resident_id,
-                    @start_date,
-                    @end_date,
+                    @requested_start_date,
+                    @requested_end_date,
+                    @proposed_start_date,
+                    @proposed_end_date,
                     @rental_status,
                     @assigned_date);"
             )
@@ -45,8 +49,10 @@ namespace CommunityHub.Application.Database.Repositories
                 @"UPDATE common_room_rental_requests SET
                     common_room_id = @common_room_id,
                     resident_id = @resident_id,
-                    start_date = @start_date,
-                    end_date = @end_date,
+                    requested_start_date = @requested_start_date,
+                    requested_end_date = @requested_end_date,
+                    proposed_start_date = @proposed_start_date,
+                    proposed_end_date = @proposed_end_date,
                     rental_status = @rental_status,
                     assigned_date = @assigned_date
                 WHERE id = @id;"
@@ -60,8 +66,10 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
-                          common_room_rental_request.start_date, 
-                          common_room_rental_request.end_date, 
+                          common_room_rental_request.requested_start_date, 
+                          common_room_rental_request.requested_end_date, 
+                          common_room_rental_request.proposed_start_date,
+                          common_room_rental_request.proposed_end_date,
                           common_room_rental_request.rental_status AS rental_status,
                           common_room_rental_request.assigned_date,
 
@@ -101,8 +109,8 @@ namespace CommunityHub.Application.Database.Repositories
                     reservedDates.Add(commonRoomRentalRequest.AssignedDate.Value);
                 else
                 {
-                    var currentDate = commonRoomRentalRequest.StartDate;
-                    while (currentDate <= commonRoomRentalRequest.EndDate)
+                    var currentDate = commonRoomRentalRequest.RequestedStartDate;
+                    while (currentDate <= commonRoomRentalRequest.RequestedEndDate)
                     {
                         reservedDates.Add(currentDate);
                         currentDate = currentDate.AddDays(1);
@@ -117,8 +125,10 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
-                          common_room_rental_request.start_date, 
-                          common_room_rental_request.end_date, 
+                          common_room_rental_request.requested_start_date, 
+                          common_room_rental_request.requested_end_date, 
+                          common_room_rental_request.proposed_start_date,
+                          common_room_rental_request.proposed_end_date,
                           common_room_rental_request.rental_status AS rental_status,
                           common_room_rental_request.assigned_date,
                           resident.id AS resident_user_id,
@@ -188,8 +198,10 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
-                          common_room_rental_request.start_date, 
-                          common_room_rental_request.end_date, 
+                          common_room_rental_request.requested_start_date, 
+                          common_room_rental_request.requested_end_date, 
+                          common_room_rental_request.proposed_start_date,
+                          common_room_rental_request.proposed_end_date,
                           common_room_rental_request.rental_status AS rental_status,
                           common_room_rental_request.assigned_date,
                           resident.id AS resident_user_id,

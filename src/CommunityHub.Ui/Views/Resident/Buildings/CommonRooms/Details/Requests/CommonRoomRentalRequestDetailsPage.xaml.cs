@@ -48,7 +48,23 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
         private void AcceptDateRangeChangeButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Request.ProposedStartDate == null || Request.ProposedEndDate == null)
+            {
+                if (this is IAlertConsumer consumer)
+                    consumer.ShowAlert(
+                        Alert.Create(
+                            title: "Greška",
+                            content: "Nije bilo moguće prihvatiti promjenu jer upravnik nije postavio predloženi opseg datuma.",
+                            type: AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
+                return;
+            }
+
+            Request.ApplyProposedDateRange();
             Request = Request.CopyWith(status: RentalRequestStatus.Waiting);
+
             _rentalRequestRepository.Update(Request);
             OnPropertyChanged(nameof(Request));
         }

@@ -57,6 +57,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="8"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" FontSize="20" VerticalAlignment="Center" TextWrapping="Wrap">
@@ -66,28 +68,36 @@
 
             <Separator Grid.Row="2"/>
 
-            <StackPanel Grid.Row="4" Orientation="Horizontal">
-                <TextBlock
-                Text="&#xf133;"
-                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                TextAlignment="Center"
-                VerticalAlignment="Center"
-                Width="24"
-                FontSize="20"/>
+            <StackPanel Grid.Row="4">
+                <TextBlock Text="Zahtijevani opseg datuma" FontSize="18" FontWeight="Bold"/>
 
-                <Separator Opacity="0" Width="8"/>
+                <Separator Opacity="0" Height="4"/>
 
-                <TextBlock FontSize="18" VerticalAlignment="Center">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
-                            <Binding Path="Request.StartDate"/>
-                            <Binding Path="Request.EndDate"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Text="&#xf133;"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="24"
+                        FontSize="20"/>
+
+                    <Separator Opacity="0" Width="8"/>
+
+                    <TextBlock FontSize="18" VerticalAlignment="Center">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                <Binding Path="Request.RequestedStartDate"/>
+                                <Binding Path="Request.RequestedEndDate"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
             </StackPanel>
 
-            <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <Separator Grid.Row="6"/>
+
+            <StackPanel Grid.Row="8" Orientation="Horizontal">
                 <TextBlock
                     Text="{Binding Request.Status, Converter={StaticResource RentalRequestStatusToIconCodeConverter}}"
                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
@@ -104,7 +114,7 @@
                     Text="{Binding Request.Status, Converter={StaticResource RentalRequestStatusToStringConverter}}"/>
             </StackPanel>
 
-            <Grid Grid.Row="8">
+            <Grid Grid.Row="10">
                 <Grid Visibility="{Binding Request.IsApproved, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Visibility="{Binding Request.IsSingleDayRental, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock
@@ -112,10 +122,15 @@
                             TextWrapping="Wrap"
                             Text="Vaš zahtjev za iznajmljivanje zajedničke prostorije je odboren. Termin koji vam je upravnik dodijelio je prikazan ispod."/>
 
-                        <Separator Opacity="0" Height="4"/>
+                        <Separator Margin="0,8"/>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
+                        <StackPanel>
+                            <TextBlock Text="Dodijeljeni termin" FontSize="18" FontWeight="Bold"/>
+
+                            <Separator Opacity="0" Height="4"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
                                 Text="&#xf274;"
                                 FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                 TextAlignment="Center"
@@ -123,12 +138,13 @@
                                 Width="24"
                                 FontSize="20"/>
 
-                            <Separator Opacity="0" Width="8"/>
+                                <Separator Opacity="0" Width="8"/>
 
-                            <TextBlock
+                                <TextBlock
                                 FontSize="18"
                                 VerticalAlignment="Center"
                                 Text="{Binding Request.AssignedDate, Mode=OneWay, StringFormat='{}{0:d. MMMM}', ConverterCulture='sr-Latn-RS'}"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -136,6 +152,10 @@
                 <Grid Visibility="{Binding Request.IsWaitingForDateChange, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="8"/>
                             <RowDefinition Height="Auto"/>
@@ -147,7 +167,35 @@
                             TextWrapping="Wrap"
                             Text="Prostorija nije bila dostupna u terminu kojeg ste naveli prilikom podnošenja zahtjeva. Upravnik je predložio novi opseg datuma. Pogledajte novi opseg datuma i odlučite da li želite da ga prihvatite."/>
 
-                        <Grid Grid.Row="2">
+                        <Separator Grid.Row="2"/>
+
+                        <StackPanel Grid.Row="4">
+                            <TextBlock Text="Predloženi opseg datuma" FontSize="18" FontWeight="Bold"/>
+
+                            <Separator Opacity="0" Height="4"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Text="&#xf133;"
+                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                    TextAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Width="24"
+                                    FontSize="20"/>
+
+                                <Separator Opacity="0" Width="8"/>
+
+                                <TextBlock FontSize="18" VerticalAlignment="Center">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                            <Binding Path="Request.ProposedStartDate"/>
+                                            <Binding Path="Request.ProposedEndDate"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <Grid Grid.Row="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="8"/>
