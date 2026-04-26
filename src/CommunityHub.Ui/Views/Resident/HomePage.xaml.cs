@@ -1,11 +1,11 @@
-﻿using CommunityHub.Application.Database.Repositories.Notifications;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Notifications;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings;
 using CommunityHub.Ui.Views.Resident.Notifications;
 using System.ComponentModel;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident
@@ -15,6 +15,7 @@ namespace CommunityHub.Ui.Views.Resident
         private readonly long _userId;
 
         private readonly NotificationRepository _notificationRepository = new();
+        private readonly AdRepository _adRepository = new AdRepository();
         public HomePage(long userId)
         {
             InitializeComponent();
@@ -23,6 +24,7 @@ namespace CommunityHub.Ui.Views.Resident
             _userId = userId;
 
             UpdateUnreadNotificationCount();
+            _adRepository.ArchiveExpiredAds();
 
             OpenBuildingsPage();
         }
