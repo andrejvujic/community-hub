@@ -101,7 +101,7 @@
                                     Background="#dedede"
                                     BorderBrush="Gray"
                                     BorderThickness="1">
-                                    <Grid Background="Transparent">
+                                    <Grid Background="Transparent" MouseLeftButtonDown="CommonRoomItem_Click">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>

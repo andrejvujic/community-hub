@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain.CommonRoom;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
@@ -31,6 +32,15 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
             var commonRooms = _commonRoomRepository.GetByBuildingId(_buildingId);
             foreach (var commonRoom in commonRooms)
                 CommonRooms.Add(commonRoom);
+        }
+
+        private void CommonRoomItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not CommonRoom commonRoom) return;
+
+            Push(new CommonRoomDetailsPage(_userId, commonRoom));
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
