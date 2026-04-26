@@ -63,5 +63,20 @@ namespace CommunityHub.Application.Database.Repositories
             });
             return reservations;
         }
+
+        public List<FacilityReservation> GetByFacilityId(long facilityId)
+        {
+            var query = PostgresQuery.Create(
+                $"SELECT {SelectColumns} {FromJoins} WHERE facility_reservation.facility_id = @facility_id ORDER BY facility_reservation.start_datetime"
+            ).AddParameter("facility_id", facilityId);
+
+            List<FacilityReservation> reservations = new List<FacilityReservation>();
+            query.ExecuteReader(reader =>
+            {
+                var reservation = facilityReservationMapper.MapToEntity(reader);
+                if (reservation is not null) reservations.Add(reservation);
+            });
+            return reservations;
+        }
     }
 }
