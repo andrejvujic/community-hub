@@ -14,8 +14,11 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private long EventId;
         private CommunityHub.Application.Domain.Citizen? citizen;
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
+        private readonly CommunityEventRepository _eventRepository = new CommunityEventRepository();
         private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
         private readonly EventItemAssignmentRepository _eventItemAssignmentRepository = new EventItemAssignmentRepository();
+        private readonly EventItemRepository _eventItemRepository = new EventItemRepository();
+
         public ApplyToVolunteerWindow(long userId, CommunityEvent ev)
         {
             InitializeComponent();
@@ -58,27 +61,23 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                 }
             }
 
-            var eventRepo = new CommunityEventRepository();
-            var regRepo = new EventRegistrationRepository();
-            var assignRepo = new EventItemAssignmentRepository();
-            var itemRepo = new EventItemRepository();
-
-            var registrations = regRepo.GetByEventId(EventId);
-            var assignments = assignRepo.GetByEventId(EventId);
-            var items = itemRepo.GetByEventId(EventId);
-
-            var ev = eventRepo.GetById(EventId);
-            if (ev != null)
-            {
-                bool enoughVolunteers = registrations.Count >= ev.MinVolunteers;
-                bool allItemsAssigned = items.All(i => assignments.Any(a => a.Item.Id == i.Id));
-                if (enoughVolunteers && allItemsAssigned && ev.Status == EventStatus.Preparation)
-                {
-                    eventRepo.UpdateStatus(EventId, EventStatus.Scheduled);
-                }
-            }
-
+            UpdateEventStatusIfReady();
             this.DialogResult = true;
+        }
+
+        private void UpdateEventStatusIfReady()
+        {
+            var registrations = _eventRegistrationRepository.GetByEventId(EventId);
+            var assignments = _eventItemAssignmentRepository.GetByEventId(EventId);
+            var items = _eventItemRepository.GetByEventId(EventId);
+            var ev = _eventRepository.GetById(EventId);
+
+            bool enoughVolunteers = registrations.Count >= ev!.MinVolunteers;
+            bool allItemsAssigned = items.All(i => assignments.Any(a => a.Item.Id == i.Id));
+            if (enoughVolunteers && allItemsAssigned && ev.Status == EventStatus.Preparation)
+            {
+                _eventRepository.UpdateStatus(EventId, EventStatus.Scheduled);
+            }
         }
     }
 

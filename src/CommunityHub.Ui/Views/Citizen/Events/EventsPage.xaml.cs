@@ -22,7 +22,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             RefreshNeighborhoodEvents();
         }
 
-        public void RefreshNeighborhoodEvents()
+        private void RefreshNeighborhoodEvents()
         {
             var citizen = _citizenRepository.GetById(_userId);
             if (citizen?.Membership != null)

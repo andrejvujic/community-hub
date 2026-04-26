@@ -1,14 +1,15 @@
+using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
+using CommunityHub.Ui.Views.Citizen.Donations;
+using CommunityHub.Ui.Views.Citizen.Events;
+using CommunityHub.Ui.Views.Citizen.LocalFacilities;
+using CommunityHub.Ui.Views.Citizen.Meetings;
+using CommunityHub.Ui.Views.Citizen.Neighborhoods;
+using CommunityHub.Ui.Views.Citizen.TrustRecords;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Ui.Views.Citizen.Neighborhoods;
-using CommunityHub.Ui.Views.Citizen.Donations;
-using CommunityHub.Ui.Views.Citizen.TrustRecords;
-using CommunityHub.Ui.Views.Citizen.Meetings;
-using CommunityHub.Ui.Views.Citizen.LocalFacilities;
-using CommunityHub.Ui.Views.Citizen.Events;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
@@ -30,6 +31,12 @@ namespace CommunityHub.Ui.Views.Citizen
             KeyDown += Window_KeyDown;
 
             MainFrame.Navigate(new MainMenuPage(_userId));
+
+            var citizen = _citizenRepository.GetById(_userId);
+            if (citizen?.Membership != null)
+            {
+                Task.Run(() => UpdateEventStatusesIfReady(citizen.Membership.Neighborhood.Id));
+            }
         }
 
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e)
@@ -132,6 +139,34 @@ namespace CommunityHub.Ui.Views.Citizen
                 MainFrame.Content = null;
             else
                 MainFrame.Navigate(page);
+        }
+
+        private void UpdateEventStatusesIfReady(long neighborhoodId)
+        {
+            var eventRepo = new CommunityEventRepository();
+            var events = eventRepo.GetByNeighborhoodId(neighborhoodId);
+
+            var preparationEvents = events.Where(e => e.Status == EventStatus.Preparation).ToList();
+            foreach (var ev in preparationEvents)
+            {
+                var timeToEvent = ev.EventStart - DateTime.Now;
+                bool enoughVolunteers = ev.Registrations.Count >= ev.MinVolunteers;
+                bool allItemsAssigned = ev.Items.All(i => ev.Assignments.Any(a => a.Item.Id == i.Id));
+
+                if (timeToEvent.TotalHours < 12 && (!enoughVolunteers || !allItemsAssigned))
+                {
+                    eventRepo.UpdateStatus(ev.Id, EventStatus.Cancelled);
+                }
+            }
+
+            var scheduledEvents = events.Where(e => e.Status == EventStatus.Scheduled).ToList();
+            foreach (var ev in scheduledEvents)
+            {
+                if (DateTime.Now > ev.EventStart.AddMinutes(ev.DurationMinutes))
+                {
+                    eventRepo.UpdateStatus(ev.Id, EventStatus.Finished);
+                }
+            }
         }
     }
 }

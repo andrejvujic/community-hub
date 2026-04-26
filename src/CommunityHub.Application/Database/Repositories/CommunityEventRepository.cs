@@ -461,7 +461,7 @@ namespace CommunityHub.Application.Database.Repositories
         {
             var query = PostgresQuery.Create(
                 "UPDATE community_events SET status = @status WHERE id = @id"
-            ).AddParameter("status", status.ToString().ToLower())
+            ).AddParameter("status", status)
              .AddParameter("id", eventId);
             query.GetRowsAffectedCount();
         }
