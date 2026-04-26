@@ -4,10 +4,12 @@ using CommunityHub.Application.Domain.CommonRoom;
 using CommunityHub.Application.Domain.CommonRoomRentalRequest;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class CommonRoomRentalRequestsPage : MainNavigatorConsumerPage
+    public partial class CommonRoomRentalRequestsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId;
         private readonly CommonRoomRentalRequestRepository _rentalRequestRepository = new();
@@ -33,9 +35,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
             var rentalRequests =  _rentalRequestRepository.GetByResidentIdAndCommonRoomId(_userId, CommonRoom.Id);
             foreach (var rentalRequest in rentalRequests)
                 RentalRequests.Add(rentalRequest);
+
+            OnPropertyChanged(nameof(HasRentalRequests));
         }
 
-        private void RequestCommonRoomRentalButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void RequestCommonRoomRentalButton_Click(object sender, RoutedEventArgs e)
             => Push(
                     new RequestCommonRoomRentalPage(
                         _userId,
@@ -43,5 +47,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                     ),
                     onPop: _ => UpdateRenalRequests()
                );
+
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

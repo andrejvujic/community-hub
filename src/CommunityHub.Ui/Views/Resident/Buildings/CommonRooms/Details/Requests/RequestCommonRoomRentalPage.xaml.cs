@@ -1,18 +1,30 @@
-﻿using CommunityHub.Application.Domain.CommonRoom;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.CommonRoom;
+using CommunityHub.Application.Domain.CommonRoomRentalRequest;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class RequestCommonRoomRentalPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public enum RentalRequestValidationResult
+    {
+        Valid,
+        PendingRequestExists
+    }
+
+    public partial class RequestCommonRoomRentalPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
     {
         private readonly long _userId;
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
+
+        private readonly UserRepository _userRepository = new();
+        private  readonly CommonRoomRentalRequestRepository _rentalRequestRepository = new();
 
         public CommonRoom CommonRoom { get; }
 
@@ -105,13 +117,82 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                 return true;
             }
         }
+        private void ShowSuccessAlert()
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Zahtjev podnesen",
+                        "Vaš zahtjev je uspješno podnesen.",
+                        AlertType.Info
+                    )
+                    .AddOption("U redu", () => Pop())
+                );
+        }
 
-        private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
+        private void ShowRentalRequestValidationResult(RentalRequestValidationResult result)
+        {
+            if (this is not IAlertConsumer consumer)
+                return;
+
+            switch (result)
+            {
+                case RentalRequestValidationResult.PendingRequestExists:
+                        consumer.ShowAlert(
+                              Alert.Create(
+                                  "Greška",
+                                  "Nije moguće kreirati zahtjev za iznajmljivanje ove zajedničke prostorije zato što ste već imate zahtjev za ovu zajedničku prostoriju koji je još uvijek u fazi obrade.",
+                                  AlertType.Error
+                              )
+                              .AddOption("U redu")
+                          );
+                    break;
+
+            }
+        }
+
+        RentalRequestValidationResult ValidateRentalRequest()
+        {
+            if (_rentalRequestRepository.HasPendingRequest(_userId, CommonRoom.Id))
+                return RentalRequestValidationResult.PendingRequestExists;
+
+            return RentalRequestValidationResult.Valid;
+        }
+
+        CommonRoomRentalRequest? CreateRentalRequest()
+        {
+            var resident = _userRepository.GetById(_userId);
+
+            if (resident is null) return null;
+
+           return new CommonRoomRentalRequest(
+                resident: resident,
+                commonRoom: CommonRoom,
+                startDate: SelectedStartDate!.Value,
+                endDate: SelectedEndDate!.Value
+            );
+        }
 
         private void CreateRentalRequestButton_Click(object sender, RoutedEventArgs e)
         {
+            var request = CreateRentalRequest();
 
+            if (request is null) return;
+
+            var validationResult = ValidateRentalRequest();
+
+            if (validationResult == RentalRequestValidationResult.Valid)
+            {
+                _rentalRequestRepository.Create(request);
+                ShowSuccessAlert();
+                return;
+            }
+
+            ShowRentalRequestValidationResult(validationResult);
         }
+
+        private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
+
 
         private void ToggleOverlayVisibility(FrameworkElement overlay)
             =>

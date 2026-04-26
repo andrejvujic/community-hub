@@ -9,24 +9,18 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public RentalRequestStatus Status { get; private set; }
-        public User? Resident { get; private set; }
+        public User Resident { get; private set; }
         public DateTime? AssignedDate { get; private set; }
 
         public CommonRoomRentalRequest(
+            User resident,
             CommonRoomDomain.CommonRoom commonRoom,
             DateTime startDate,
             DateTime endDate,
-            RentalRequestStatus status,
-            User? resident,
-            DateTime? assignedDate,
+            RentalRequestStatus status = RentalRequestStatus.Waiting,
+            DateTime? assignedDate = null,
             long id = 0
         ) {
-            if(resident == null)
-                throw new ArgumentNullException("Resident can't be null.");
-
-            if(commonRoom == null)
-                throw new ArgumentNullException("Common room can't be null.");
-
             Id = id;
             CommonRoom = commonRoom;
             Status = status;
@@ -50,11 +44,11 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             long? id = null
         ) {
             return new CommonRoomRentalRequest(
+                resident ?? Resident,
                 commonRoom ?? CommonRoom,
                 startDate ?? StartDate,
                 endDate ?? EndDate,
                 status ?? Status,
-                resident ?? Resident,
                 assignedDate ?? AssignedDate,
                 id ?? Id
             );
