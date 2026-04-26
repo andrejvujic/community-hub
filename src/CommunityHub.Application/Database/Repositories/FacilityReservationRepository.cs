@@ -49,7 +49,7 @@ namespace CommunityHub.Application.Database.Repositories
             INNER JOIN countries neighborhood_country ON neighborhood_country.id = neighborhood_city.country_id
             INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id";
 
-        private List<FacilityReservation> GetByNeighborhoodId(long neighborhoodId)
+        public List<FacilityReservation> GetByNeighborhoodId(long neighborhoodId)
         {
             var query = PostgresQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE neighborhood.id = @neighborhood_id ORDER BY facility_reservation.start_datetime DESC"
