@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms;
 using CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard;
 using System.Windows.Input;
 
@@ -9,7 +10,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
     public partial class BuildingOptionsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
-        private readonly ImageRepository _imageRepository = new();
 
         public Building Building { get; }
         public BuildingOptionsPage(long userId, Building building)
@@ -34,6 +34,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
 
         private void OpenPersonalAdsPageButton_Click(object sender, MouseButtonEventArgs e)
             => Push(new PersonalAdsPage(
+                userId: _userId,
+                buildingId: Building.Id
+            ));
+
+        private void OpenCommonRoomsPageButton_Click(object sender, MouseButtonEventArgs e)
+            => Push(new CommonRoomsPage(
                 userId: _userId,
                 buildingId: Building.Id
             ));
