@@ -173,27 +173,9 @@
             </Grid>
 
             <Grid
-                Visibility="{Binding HasMatchingAds, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                Margin="8">
-                <DockPanel>
-                    <Grid DockPanel.Dock="Top">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="16"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock
-                            Grid.Row="0"
-                            Text="Predloženi oglasi"
-                            FontSize="20"
-                            VerticalAlignment="Center"/>
-
-                        <Separator Grid.Row="1"/>
-                    </Grid>
-                </DockPanel>
-
+                Visibility="{Binding HasMatchingAds, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                 <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Label Content="Nema oglasa" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <Label Content="Nema podudarnih oglasa" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock
                         Text="Trenutno nema oglasa u odgovarajućoj kategoriji. Bićete obaviješteni kada se pojavi oglas odgovarajuće kategorije na oglasnoj tabli. "
                         TextWrapping="Wrap" 
