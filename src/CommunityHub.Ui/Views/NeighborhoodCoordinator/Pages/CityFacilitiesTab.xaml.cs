@@ -25,11 +25,13 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private long _coordinatorId;
         private Neighborhood? _selectedNeighborhood;
 
-        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository(); 
+        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly CityFacilityRepository _cityFacilityRepository = new CityFacilityRepository();
+        private readonly FacilityReservationRepository _facilityReservationRepository = new FacilityReservationRepository();
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
         public ObservableCollection<CityFacility> Facilities { get; set; } = new ObservableCollection<CityFacility>();
+        public ObservableCollection<FacilityReservation> Reservations { get; set; } = new ObservableCollection<FacilityReservation>();
 
         public CityFacilitiesTab()
         {
@@ -60,6 +62,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             ReservationsTitleRun.Text = _selectedNeighborhood.Name;
 
             LoadFacilities();
+            LoadReservations();
 
             FacilitiesPanel.Visibility = Visibility.Visible;
         }
@@ -70,6 +73,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             var facilities = _cityFacilityRepository.GetByCityId(_selectedNeighborhood!.City.Id);
             foreach (var f in facilities)
                 Facilities.Add(f);
+        }
+
+        private void LoadReservations()
+        {
+            Reservations.Clear();
+            var reservations = _facilityReservationRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
+            foreach (var r in reservations)
+                Reservations.Add(r);
         }
     }
 }
