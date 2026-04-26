@@ -1,12 +1,15 @@
-﻿using CommunityHub.Application.Domain.CommonRoom;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.CommonRoom;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 {
     public partial class CommonRoomsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId, _buildingId;
+        private readonly CommonRoomRepository _commonRoomRepository = new();
 
         public ObservableCollection<CommonRoom> CommonRooms { get; } = new();
         public bool HasCommonRooms => CommonRooms.Count > 0;
@@ -18,8 +21,19 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 
             InitializeComponent();
             DataContext = this;
+
+            GetCommonRooms();
         }
-        private void BackButton_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+        private void GetCommonRooms()
+        {
+            CommonRooms.Clear();
+            var commonRooms = _commonRoomRepository.GetByBuildingId(_buildingId);
+            foreach (var commonRoom in commonRooms)
+                CommonRooms.Add(commonRoom);
+        }
+
+        private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
     }
 }
