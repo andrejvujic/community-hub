@@ -10,8 +10,10 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
 
         public DateTime RequestedStartDate { get; private set; }
         public DateTime RequestedEndDate { get; private set; }
+        public bool HasProposedDateRange => ProposedStartDate != null && ProposedEndDate != null;
         public DateTime? ProposedStartDate { get; private set; }
         public DateTime? ProposedEndDate { get; private set; }
+
         public DateTime? AssignedDate { get; private set; }
 
         public RentalRequestStatus Status { get; private set; }
