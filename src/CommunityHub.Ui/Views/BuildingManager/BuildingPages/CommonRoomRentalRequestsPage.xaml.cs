@@ -71,7 +71,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         {
             var reservedDates = _commonRoomRentalRequestRepository.GetReservedDates(request.CommonRoom.Id, _building.Id);
 
-            bool hasConflict = reservedDates.Any(d => d >= request.StartDate && d <= request.EndDate);
+            bool hasConflict = reservedDates.Any(d => d >= request.RequestedStartDate && d <= request.RequestedEndDate);
 
             if (!hasConflict)
                 _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Approved, null);
@@ -81,8 +81,8 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             var reservedDates = _commonRoomRentalRequestRepository.GetReservedDates(request.CommonRoom.Id, _building.Id);
             bool isAllReserved = true;
 
-            DateTime current = request.StartDate;
-            while (current <= request.EndDate)
+            DateTime current = request.RequestedStartDate;
+            while (current <= request.RequestedEndDate)
             {
                 if (!reservedDates.Contains(current))
                 {
@@ -155,9 +155,9 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             freeDaysPanel.Children.Clear();
             oneDayPanel.Visibility = Visibility.Visible;
 
-            DateTime current = request.StartDate;
+            DateTime current = request.RequestedStartDate;
 
-            while(current <= request.EndDate)
+            while(current <= request.RequestedEndDate)
             {
                 if(!reservedDates.Contains(current))
                 {
@@ -204,9 +204,9 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             suggestedRangesPanel.Children.Clear();
             multiDayPanel.Visibility = Visibility.Visible;
 
-            int duration = (request.EndDate - request.StartDate).Days + 1;
+            int duration = (request.RequestedEndDate - request.RequestedStartDate).Days + 1;
             int foundCount = 0;
-            DateTime candidateStart = request.StartDate.AddDays(1);
+            DateTime candidateStart = request.RequestedStartDate.AddDays(1);
 
             while (foundCount < 3)
             {

@@ -168,8 +168,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
            return new CommonRoomRentalRequest(
                 resident: resident,
                 commonRoom: CommonRoom,
-                startDate: SelectedStartDate!.Value,
-                endDate: SelectedEndDate!.Value
+                requestedStartDate: SelectedStartDate!.Value,
+                requestedEndDate: SelectedEndDate!.Value
             );
         }
 

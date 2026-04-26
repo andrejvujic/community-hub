@@ -58,8 +58,8 @@
                                                 <TextBlock FontSize="16">
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0:d. MMMM} — {1: d. MMMM}" ConverterCulture="sr-Latn-RS">
-                                                            <Binding Path="StartDate"/>
-                                                            <Binding Path="EndDate"/>
+                                                            <Binding Path="RequestedStartDate"/>
+                                                            <Binding Path="RequestedEndDate"/>
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
