@@ -89,7 +89,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
                 name: nameTextBox.Text.Trim(),
                 description: descriptionTextBox.Text.Trim(),
                 floorNumber: (int)floorsUpDown.Value!,
-                type: GetSelectedRentalType()
+                rentalType: GetSelectedRentalType()
             );
 
             _commonRoomRepository.Create(commonRoom);

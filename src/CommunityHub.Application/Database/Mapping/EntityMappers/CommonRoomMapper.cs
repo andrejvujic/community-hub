@@ -32,7 +32,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "name", entity.Name },
                 { "description", entity.Description },
                 { "floor_number", entity.FloorNumber },
-                { "rental_type", entity.Type }
+                { "rental_type", entity.RentalType }
             };
         }
     }

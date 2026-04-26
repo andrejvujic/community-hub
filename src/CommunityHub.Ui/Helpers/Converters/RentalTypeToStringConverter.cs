@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application.Domain.CommonRoom;
-using CommunityHub.Application.Domain.NoticeBoard;
 using System.Globalization;
 using System.Windows.Data;
 

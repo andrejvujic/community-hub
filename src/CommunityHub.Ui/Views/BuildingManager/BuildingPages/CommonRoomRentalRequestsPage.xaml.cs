@@ -54,7 +54,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
                 if (request.Status != RentalStatus.Waiting)
                     continue;
 
-                var type = request.CommonRoom.Type;
+                var type = request.CommonRoom.RentalType;
 
                 switch (type)
                 {
@@ -144,7 +144,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         }
         private void HandleWaitingStatus(CommonRoomRentalRequest request)
         {
-            if (request.CommonRoom.Type == RentalType.OneDay)
+            if (request.CommonRoom.RentalType == RentalType.OneDay)
                 SuggestOneDayDates(request);
             else
                 SuggestMultiDayDates(request);
