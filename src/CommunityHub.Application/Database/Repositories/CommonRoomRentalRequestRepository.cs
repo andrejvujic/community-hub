@@ -29,6 +29,33 @@ namespace CommunityHub.Application.Database.Repositories
             .Execute();
         }
 
+        public void Delete(long id)
+        {
+            PostgresQuery.Create(
+                @"DELETE FROM common_room_rental_requests
+                  WHERE id = @id;"
+            )
+            .AddParameter("id", id)
+            .Execute();
+        }
+
+        public void Update(CommonRoomRentalRequest request)
+        {
+            PostgresQuery.Create(
+                @"UPDATE common_room_rental_requests SET
+                    common_room_id = @common_room_id,
+                    resident_id = @resident_id,
+                    start_date = @start_date,
+                    end_date = @end_date,
+                    rental_status = @rental_status,
+                    assigned_date = @assigned_date
+                WHERE id = @id;"
+            )
+            .ExtendParameters(_commonRoomRentalRequestMapper.MapToQueryParameters(request))
+            .AddParameter("id", request.Id)
+            .Execute();
+        }
+
         public List<DateTime> GetReservedDates(long commonRoomId, long buildingId)
         {
             var query = PostgresQuery.Create(
