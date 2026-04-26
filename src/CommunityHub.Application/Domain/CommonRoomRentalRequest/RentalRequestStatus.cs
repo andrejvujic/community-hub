@@ -2,7 +2,7 @@
 
 namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
 {
-    public enum RentalStatus
+    public enum RentalRequestStatus
     {
         [EnumMember(Value = "approved")]
         Approved,

@@ -16,27 +16,29 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             User? resident = _userMapper.MapToEntity(reader.WithPrefix("resident"));
             if (resident == null)
-                throw new Exception("Couldn't convert database row to entity because of missing data. Resident can't be null.");
+                throw new Exception("CommonRoomRentalRequest.Resident can't be null");
 
             long id = reader.GetInt64(reader.GetOrdinal("common_room_rental_request_id"));
 
             CommonRoom? commonRoom = _commonRoomMapper.MapToEntity(reader);
             if (commonRoom == null)
-                throw new Exception("Couldn't convert database row to entity because of missing data. Common room can't be null.");
+                throw new Exception("CommonRoomRentalRequest.CommonRoom can't be null");
 
             DateTime startDate = reader.GetDateTime(reader.GetOrdinal("start_date"));
             DateTime endDate = reader.GetDateTime(reader.GetOrdinal("end_date"));
-            RentalStatus status = (RentalStatus)reader.GetValue(reader.GetOrdinal("rental_status"));
-            DateTime? assignedDate = reader.IsDBNull(reader.GetOrdinal("assigned_date")) ? null : reader.GetDateTime(reader.GetOrdinal("assigned_date"));
+            RentalRequestStatus status = (RentalRequestStatus)reader.GetValue(reader.GetOrdinal("rental_status"));
+
+            DateTime? assignedDate = reader.IsDBNull(reader.GetOrdinal("assigned_date")) ?
+                null : reader.GetDateTime(reader.GetOrdinal("assigned_date"));
 
             return new CommonRoomRentalRequest(
-                commonRoom,
-                startDate,
-                endDate,
-                status,
-                resident,
-                assignedDate,
-                id
+                commonRoom: commonRoom,
+                resident: resident,
+                startDate: startDate,
+                endDate: endDate,
+                status: status,
+                assignedDate: assignedDate,
+                id: id
             );
         }
 

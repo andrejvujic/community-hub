@@ -51,10 +51,10 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             foreach (var request in rentalRequests)
             {
-                if (request.Status != RentalStatus.Waiting)
+                if (request.Status != RentalRequestStatus.Waiting)
                     continue;
 
-                var type = request.CommonRoom.Type;
+                var type = request.CommonRoom.RentalType;
 
                 switch (type)
                 {
@@ -74,7 +74,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             bool hasConflict = reservedDates.Any(d => d >= request.StartDate && d <= request.EndDate);
 
             if (!hasConflict)
-                _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalStatus.Approved, null);
+                _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Approved, null);
         }
         private void UpdateOneDayRequestStatus(CommonRoomRentalRequest request)
         {
@@ -93,7 +93,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             }
 
             if (isAllReserved)
-                _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalStatus.Rejected, null);
+                _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Rejected, null);
         }
         private void RentalRequestCard_Click(object sender, MouseButtonEventArgs e)
         {
@@ -119,16 +119,16 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             switch (request?.Status)
             {
-                case RentalStatus.Approved:
+                case RentalRequestStatus.Approved:
                     approvedActionText.Visibility = Visibility.Visible;
                     break;
-                case RentalStatus.Rejected:
+                case RentalRequestStatus.Rejected:
                     rejectedActionText.Visibility = Visibility.Visible;
                     break;
-                case RentalStatus.WaitingDateChange:
+                case RentalRequestStatus.WaitingDateChange:
                     waitingDateChangeActionText.Visibility = Visibility.Visible;
                     break;
-                case RentalStatus.Waiting:
+                case RentalRequestStatus.Waiting:
                     HandleWaitingStatus(request);
                     break;
             }
@@ -144,7 +144,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         }
         private void HandleWaitingStatus(CommonRoomRentalRequest request)
         {
-            if (request.CommonRoom.Type == RentalType.OneDay)
+            if (request.CommonRoom.RentalType == RentalType.OneDay)
                 SuggestOneDayDates(request);
             else
                 SuggestMultiDayDates(request);
@@ -192,7 +192,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             var button = sender as Button;
             var day = (DateTime)button!.Tag;
 
-            _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalStatus.Approved, day);
+            _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Approved, day);
             CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
             oneDayPanel.Visibility = Visibility.Collapsed;
@@ -260,7 +260,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             var button = sender as Button;
             var (start,end) = ((DateTime,DateTime))button!.Tag;
 
-            _commonRoomRentalRequestRepository.UpdateStatusAndRange(request.Id, RentalStatus.WaitingDateChange, start, end);
+            _commonRoomRentalRequestRepository.UpdateStatusAndRange(request.Id, RentalRequestStatus.WaitingDateChange, start, end);
             CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
             multiDayPanel.Visibility = Visibility.Collapsed;

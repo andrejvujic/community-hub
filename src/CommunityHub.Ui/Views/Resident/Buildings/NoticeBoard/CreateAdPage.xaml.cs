@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.NoticeBoard;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
@@ -21,7 +20,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private readonly long _userId, _buildingId;
 
         private readonly CultureInfo _culture = new("sr-Latn-RS");
-        private readonly DateTime _today = DateTime.Now.Date;
+        private readonly DateTime _today = DateTime.Today;
 
         private readonly UserRepository _userRepository = new();
         private readonly AdRepository _adRepository = new();

@@ -7,33 +7,35 @@
         public string Name { get; private set; }
         public string Description { get; private set; }
         public int FloorNumber { get; private set; }
-        public RentalType Type { get; private set; }
+        public RentalType RentalType { get; private set; }
 
         public CommonRoom(
             long buildingId,
             string name,
             string description,
             int floorNumber,
-            RentalType type,
+            RentalType rentalType,
             long id = 0
         ) {
             Id = id;
             BuildingId = buildingId;
             Name = name;
             Description = description;
-            FloorNumber = floorNumber;
+            RentalType = rentalType;
 
             if (floorNumber < 1) throw new ArgumentOutOfRangeException("Floor number must be greater than 0.");
-
-            Type = type;
+            FloorNumber = floorNumber;
         }
+
+        public bool IsMultiDayRental => RentalType == RentalType.MultiDay;
+        public bool IsSingleDayRental => RentalType == RentalType.OneDay;
 
         public CommonRoom CopyWith(
             long? buildingId = null,
             string? name = null,
             string? description = null,
             int? floorNumber = null,
-            RentalType? type = null,
+            RentalType? rentalType = null,
             long? id = null
         )
         {
@@ -42,7 +44,7 @@
                 name ?? Name,
                 description ?? Description,
                 floorNumber ?? FloorNumber,
-                type ?? Type,
+                rentalType ?? RentalType,
                 id ?? Id
             );
         }
