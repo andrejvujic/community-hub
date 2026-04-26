@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.CommonRoom;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details;
+using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
@@ -25,9 +26,15 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
         private void OpenCommonRoomInformationPage()
             => LocalFrame.Navigate(new CommonRoomInformationPage(CommonRoom));
 
+        private void OpenCommonRoomRentalRequestsPage()
+            => LocalFrame.Navigate(new CommonRoomRentalRequestsPage(_userId, CommonRoom));
+
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
         private void BottomBar_InformationItemClick(object sender, MouseButtonEventArgs e)
             => OpenCommonRoomInformationPage();
+
+        private void BottomBar_RentalItemClick(object sender, MouseButtonEventArgs e)
+        => OpenCommonRoomRentalRequestsPage();
     }
 }

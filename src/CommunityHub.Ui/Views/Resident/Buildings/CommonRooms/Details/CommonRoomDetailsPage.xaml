@@ -77,7 +77,7 @@
                     FontSize="14"/>
             </Grid>
 
-            <Grid Grid.Column="1" Background="Transparent">
+            <Grid Grid.Column="1" Background="Transparent" MouseLeftButtonDown="BottomBar_RentalItemClick">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
