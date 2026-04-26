@@ -25,7 +25,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
 
-
         private void DeleteRequest()
         {
             _rentalRequestRepository.Delete(Request.Id);
@@ -54,7 +53,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                     consumer.ShowAlert(
                         Alert.Create(
                             title: "Greška",
-                            content: "Nije bilo moguće prihvatiti promjenu jer upravnik nije postavio predloženi opseg datuma.",
+                            content: "Nije bilo moguće prihvatiti promjenu opsega datuma jer ga upravnik nije postavio.",
                             type: AlertType.Error
                         )
                         .AddOption("U redu")
@@ -64,8 +63,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
             Request.ApplyProposedDateRange();
             Request = Request.CopyWith(status: RentalRequestStatus.Waiting);
-
             _rentalRequestRepository.Update(Request);
+
             OnPropertyChanged(nameof(Request));
         }
 

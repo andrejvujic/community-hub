@@ -195,6 +195,7 @@
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
+
                         <Grid Grid.Row="6">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
