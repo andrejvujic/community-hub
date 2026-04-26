@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.NoticeBoard;
+using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -205,6 +206,30 @@ namespace CommunityHub.Application.Database.Repositories
             );
 
             return ads;
+        }
+
+        public bool HasMatchingAds(long authorId, Ad ad)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT EXISTS
+                    (SELECT 1
+                    FROM ads ad
+                    WHERE
+                        ad.building_id = @building_id AND
+                        (DATERANGE(ad.start_date, ad.end_date, '[]') &&
+                            DATERANGE(CAST(@start_date AS DATE), CAST(@end_date AS DATE), '[]'))
+                        AND ad.resident_id = @author_id
+                        AND ad.ad_type = @type
+                        AND ad.ad_category = @category
+                        AND ad.ad_status = 'active')"
+            ).AddParameter("building_id", ad.BuildingId)
+             .AddParameter("author_id", authorId)
+             .AddParameter("type", ad.Type)
+             .AddParameter("category", ad.Category)
+             .AddParameter("start_date", ad.StartDate)
+             .AddParameter("end_date", ad.EndDate);
+
+            return query.ExecuteScalar<bool>(result => Convert.ToBoolean(result));
         }
 
         public int GetAdsCountByDateAndType(long buildingId, AdType type, int year, int? month)
