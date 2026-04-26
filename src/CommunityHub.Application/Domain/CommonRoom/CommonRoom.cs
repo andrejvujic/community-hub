@@ -27,7 +27,8 @@
             FloorNumber = floorNumber;
         }
 
-        public bool IsRentableForMultipleDays => RentalType == RentalType.MultiDay;
+        public bool IsMultiDayRental => RentalType == RentalType.MultiDay;
+        public bool IsSingleDayRental => RentalType == RentalType.OneDay;
 
         public CommonRoom CopyWith(
             long? buildingId = null,

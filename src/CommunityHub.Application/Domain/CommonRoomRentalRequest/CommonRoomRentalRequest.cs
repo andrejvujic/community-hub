@@ -34,6 +34,9 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
             EndDate = endDate;
         }
 
+        public bool IsApproved => Status == RentalRequestStatus.Approved;
+        public bool IsWaitingForDateChange => Status == RentalRequestStatus.WaitingDateChange;
+
         public CommonRoomRentalRequest CopyWith(
             CommonRoomDomain.CommonRoom? commonRoom = null,
             DateTime? startDate = null,

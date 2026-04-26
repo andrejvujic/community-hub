@@ -74,7 +74,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             bool hasConflict = reservedDates.Any(d => d >= request.StartDate && d <= request.EndDate);
 
             if (!hasConflict)
-                _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Accepted, null);
+                _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Approved, null);
         }
         private void UpdateOneDayRequestStatus(CommonRoomRentalRequest request)
         {
@@ -119,7 +119,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             switch (request?.Status)
             {
-                case RentalRequestStatus.Accepted:
+                case RentalRequestStatus.Approved:
                     approvedActionText.Visibility = Visibility.Visible;
                     break;
                 case RentalRequestStatus.Rejected:
@@ -192,7 +192,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             var button = sender as Button;
             var day = (DateTime)button!.Tag;
 
-            _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Accepted, day);
+            _commonRoomRentalRequestRepository.UpdateStatusAndAssignedDate(request.Id, RentalRequestStatus.Approved, day);
             CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
             oneDayPanel.Visibility = Visibility.Collapsed;

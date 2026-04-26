@@ -106,7 +106,7 @@
 
                 <Grid Grid.Row="6">
                     <TextBlock
-                        Visibility="{Binding CommonRoom.IsRentableForMultipleDays, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                        Visibility="{Binding CommonRoom.IsMultiDayRental, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                         FontSize="18"
                         Foreground="Gray"
                         TextWrapping="Wrap">
@@ -118,7 +118,7 @@
                     </TextBlock>
 
                     <TextBlock
-                        Visibility="{Binding CommonRoom.IsRentableForMultipleDays, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding CommonRoom.IsMultiDayRental, Converter={StaticResource BooleanToVisibilityConverter}}"
                         FontSize="18"
                         Foreground="Gray"
                         TextWrapping="Wrap">

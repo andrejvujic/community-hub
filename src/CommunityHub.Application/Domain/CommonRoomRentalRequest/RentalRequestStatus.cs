@@ -5,7 +5,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
     public enum RentalRequestStatus
     {
         [EnumMember(Value = "approved")]
-        Accepted,
+        Approved,
         [EnumMember(Value = "waiting")]
         Waiting,
         [EnumMember(Value = "rejected")]

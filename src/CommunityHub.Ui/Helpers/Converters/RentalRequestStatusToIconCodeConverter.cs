@@ -23,7 +23,7 @@ namespace CommunityHub.Ui.Helpers.Converters
                     return _waitingIconCode;
                 case RentalRequestStatus.WaitingDateChange:
                     return _waitingDateChangeIconCode;
-                case RentalRequestStatus.Accepted:
+                case RentalRequestStatus.Approved:
                     return _acceptedIconCode;
                 case RentalRequestStatus.Rejected:
                     return _rejectedIconCode;

@@ -1,11 +1,11 @@
-﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Database.Repositories;
+﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.CommonRoom;
 using CommunityHub.Application.Domain.CommonRoomRentalRequest;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
@@ -48,6 +48,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                     onPop: _ => UpdateRenalRequests()
                );
 
+        private void RentalRequestItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not CommonRoomRentalRequest request) return;
+
+            Push(
+                new CommonRoomRentalRequestDetailsPage(request),
+                onPop: _ => UpdateRenalRequests()
+            );
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

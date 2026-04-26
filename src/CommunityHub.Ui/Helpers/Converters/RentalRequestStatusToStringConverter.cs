@@ -17,7 +17,7 @@ namespace CommunityHub.Ui.Helpers.Converters
 
             switch (status)
             {
-                case RentalRequestStatus.Accepted:
+                case RentalRequestStatus.Approved:
                     return _approvedText;
                 case RentalRequestStatus.Rejected:
                     return _rejectedText;
