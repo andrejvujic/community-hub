@@ -1,7 +1,12 @@
-﻿namespace CommunityHub.Application.Database.Repositories
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Domain.CityFacility;
+
+namespace CommunityHub.Application.Database.Repositories
 {
     public class FacilityReservationRepository
     {
+        private readonly FacilityReservationMapper facilityReservationMapper = new FacilityReservationMapper();
+
         private const string SelectColumns = @"
             facility_reservation.id AS facility_reservation_id,
             facility_reservation.start_datetime,
@@ -43,5 +48,20 @@
             INNER JOIN cities neighborhood_city ON neighborhood_city.id = neighborhood.city_id
             INNER JOIN countries neighborhood_country ON neighborhood_country.id = neighborhood_city.country_id
             INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id";
+
+        private List<FacilityReservation> GetByNeighborhoodId(long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                $"SELECT {SelectColumns} {FromJoins} WHERE neighborhood.id = @neighborhood_id ORDER BY facility_reservation.start_datetime DESC"
+            ).AddParameter("neighborhood_id", neighborhoodId);
+            
+            List<FacilityReservation> reservations = new List<FacilityReservation>();
+            query.ExecuteReader(reader =>
+            {
+                var reservation = facilityReservationMapper.MapToEntity(reader);
+                if (reservation is not null) reservations.Add(reservation);
+            });
+            return reservations;
+        }
     }
 }
