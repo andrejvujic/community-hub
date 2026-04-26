@@ -6,54 +6,71 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
     {
         public long Id { get; private set; }
         public CommonRoomDomain.CommonRoom CommonRoom { get; private set; }
-        public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
-        public RentalRequestStatus Status { get; private set; }
         public User Resident { get; private set; }
+
+        public DateTime RequestedStartDate { get; private set; }
+        public DateTime RequestedEndDate { get; private set; }
+        public DateTime? ProposedStartDate { get; private set; }
+        public DateTime? ProposedEndDate { get; private set; }
         public DateTime? AssignedDate { get; private set; }
+
+        public RentalRequestStatus Status { get; private set; }
 
         public CommonRoomRentalRequest(
             User resident,
             CommonRoomDomain.CommonRoom commonRoom,
-            DateTime startDate,
-            DateTime endDate,
-            RentalRequestStatus status = RentalRequestStatus.Waiting,
+            DateTime requestedStartDate,
+            DateTime requestedEndDate,
+            DateTime? proposedStartDate = null,
+            DateTime? proposedEndDate = null,
             DateTime? assignedDate = null,
+            RentalRequestStatus status = RentalRequestStatus.Waiting,
             long id = 0
         ) {
             Id = id;
             CommonRoom = commonRoom;
             Status = status;
             Resident = resident;
+
+            RequestedStartDate = requestedStartDate;
+            RequestedEndDate = requestedEndDate;
+            ProposedStartDate = proposedStartDate;
+            ProposedEndDate = proposedEndDate;
             AssignedDate = assignedDate;
-
-            if (startDate > endDate || (assignedDate.HasValue && assignedDate < startDate) || (assignedDate.HasValue && assignedDate > endDate)) 
-                throw new ArgumentNullException("Invalid date range.");
-
-            StartDate = startDate;
-            EndDate = endDate;
         }
 
         public bool IsApproved => Status == RentalRequestStatus.Approved;
         public bool IsWaitingForDateChange => Status == RentalRequestStatus.WaitingDateChange;
 
+        public void ApplyProposedDateRange()
+        {
+            RequestedStartDate = ProposedStartDate ?? RequestedStartDate;
+            RequestedEndDate = ProposedEndDate ?? RequestedEndDate;
+            ProposedStartDate = null;
+            ProposedEndDate = null;
+        }
+
         public CommonRoomRentalRequest CopyWith(
-            CommonRoomDomain.CommonRoom? commonRoom = null,
-            DateTime? startDate = null,
-            DateTime? endDate = null,
-            RentalRequestStatus? status = null,
             User? resident = null,
+            CommonRoomDomain.CommonRoom? commonRoom = null,
+            DateTime? requestedStartDate = null,
+            DateTime? requestedEndDate = null,
+            DateTime? proposedStartDate = null,
+            DateTime? proposedEndDate = null,
             DateTime? assignedDate = null,
+            RentalRequestStatus? status = null,
             long? id = null
         ) {
             return new CommonRoomRentalRequest(
-                resident ?? Resident,
-                commonRoom ?? CommonRoom,
-                startDate ?? StartDate,
-                endDate ?? EndDate,
-                status ?? Status,
-                assignedDate ?? AssignedDate,
-                id ?? Id
+                resident: resident ?? Resident,
+                commonRoom: commonRoom ?? CommonRoom,
+                requestedStartDate: requestedStartDate ?? RequestedStartDate,
+                requestedEndDate: requestedEndDate ?? RequestedEndDate,
+                proposedStartDate: proposedStartDate ?? ProposedStartDate,
+                proposedEndDate: proposedEndDate ?? ProposedEndDate,
+                status: status ?? Status,
+                assignedDate: assignedDate ?? AssignedDate,
+                id: id ?? Id
             );
         }
     }
