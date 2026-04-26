@@ -58,6 +58,17 @@ namespace CommunityHub.Application.Database.Repositories
             .Execute();
         }
 
+        public void ArchiveExpiredAds()
+        {
+            PostgresQuery.Create(
+                @"UPDATE ads
+                SET ad_status = 'archived'
+                WHERE end_date < @today AND ad_status = 'active'"
+            )
+            .AddParameter("today", DateTime.Now)
+            .Execute();
+        }
+
         public Ad? GetById(long id)
         {
             var query = PostgresQuery.Create(
