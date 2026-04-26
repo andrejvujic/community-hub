@@ -151,7 +151,7 @@
                         </StackPanel>
                     </Grid>
 
-                    <Grid Visibility="{Binding Request.IsWaitingForDateChange, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid Visibility="{Binding Request.HasProposedDateRange, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
