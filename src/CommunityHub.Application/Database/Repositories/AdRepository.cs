@@ -122,7 +122,11 @@ namespace CommunityHub.Application.Database.Repositories
 
             List<Ad> ads = new List<Ad>();
             query.ExecuteReader(
-                reader => ads.Add(_adMapper.MapToEntity(reader))
+                reader => {
+                    var ad = _adMapper.MapToEntity(reader);
+                    if (ad == null) return;
+                    ads.Add(ad);
+                }
             );
 
             return ads;
@@ -158,7 +162,11 @@ namespace CommunityHub.Application.Database.Repositories
 
             List<Ad> ads = new List<Ad>();
             query.ExecuteReader(
-                reader => ads.Add(_adMapper.MapToEntity(reader))
+                reader => {
+                    var ad = _adMapper.MapToEntity(reader);
+                    if (ad == null) return;
+                    ads.Add(ad);
+                }
             );
 
             return ads;
@@ -202,7 +210,11 @@ namespace CommunityHub.Application.Database.Repositories
 
             List<Ad> ads = new List<Ad>();
             query.ExecuteReader(
-                reader => ads.Add(_adMapper.MapToEntity(reader))
+                reader => {
+                    var ad = _adMapper.MapToEntity(reader);
+                    if (ad == null) return;
+                    ads.Add(ad);
+                }
             );
 
             return ads;
