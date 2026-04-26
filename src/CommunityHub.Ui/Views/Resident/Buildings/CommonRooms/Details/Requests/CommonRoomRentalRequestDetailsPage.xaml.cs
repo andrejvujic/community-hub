@@ -25,13 +25,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
 
-        private void DeleteRequest()
-        {
-            _rentalRequestRepository.Delete(Request.Id);
-            Pop();
-        }
-
-        private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
+        private void CancelRequest()
         {
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
@@ -41,9 +35,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                         type: AlertType.Warning
                     )
                     .AddOption("Otkaži")
-                    .AddOption("Nastavi", () => DeleteRequest())
+                    .AddOption("Nastavi",
+                        () => {
+                                _rentalRequestRepository.Delete(Request.Id);
+                                Pop();
+                            }
+                        )
                 );
         }
+
+        private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
+            => CancelRequest();
 
         private void AcceptProposedDateRangeButton_Click(object sender, RoutedEventArgs e)
         {
