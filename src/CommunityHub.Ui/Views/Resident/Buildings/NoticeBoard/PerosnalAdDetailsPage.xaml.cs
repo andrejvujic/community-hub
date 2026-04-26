@@ -4,13 +4,23 @@ using CommunityHub.Application.Domain.NoticeBoard;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 {
+    public enum PersonalAdDetailsPageTab
+    {
+        Information,
+        TimeSlots
+    }
+
     public partial class PersonalAdDetailsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
 
         public Ad Ad { get; }
 
-        public PersonalAdDetailsPage(long userId, Ad ad)
+        public PersonalAdDetailsPage(
+            long userId,
+            Ad ad,
+            PersonalAdDetailsPageTab initialTab = PersonalAdDetailsPageTab.Information
+        )
         {
             InitializeComponent();
             DataContext = this;
@@ -18,7 +28,20 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             _userId = userId;
             Ad = ad;
 
-            OpenAdInformationPage();
+            OpenInitialTab(initialTab);
+        }
+
+        private void OpenInitialTab(PersonalAdDetailsPageTab initialTab)
+        {
+                switch (initialTab)
+                {
+                    case PersonalAdDetailsPageTab.Information:
+                        OpenAdInformationPage();
+                        break;
+                    case PersonalAdDetailsPageTab.TimeSlots:
+                        OpenAdTimeSlotsPage();
+                        break;
+            }
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
