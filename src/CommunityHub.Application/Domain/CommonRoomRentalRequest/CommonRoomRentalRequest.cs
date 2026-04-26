@@ -42,7 +42,7 @@ namespace CommunityHub.Application.Domain.CommonRoomRentalRequest
         public bool IsApproved => Status == RentalRequestStatus.Approved;
         public bool IsWaitingForDateChange => Status == RentalRequestStatus.WaitingDateChange;
 
-        public void ApplyProposedDateRange()
+        public void AcceptProposedDateRange()
         {
             RequestedStartDate = ProposedStartDate ?? RequestedStartDate;
             RequestedEndDate = ProposedEndDate ?? RequestedEndDate;

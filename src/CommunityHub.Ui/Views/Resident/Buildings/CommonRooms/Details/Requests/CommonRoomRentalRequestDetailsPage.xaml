@@ -215,7 +215,7 @@
                                 Height="48"
                                 FontSize="18"
                                 Content="Prihvati"
-                                Click="AcceptDateRangeChangeButton_Click"/>
+                                Click="AcceptProposedDateRangeChangeButton_Click"/>
 
                         </Grid>
                     </Grid>

@@ -45,7 +45,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                 );
         }
 
-        private void AcceptDateRangeChangeButton_Click(object sender, RoutedEventArgs e)
+        private void AcceptProposedDateRangeChangeButton_Click(object sender, RoutedEventArgs e)
         {
             if (Request.ProposedStartDate == null || Request.ProposedEndDate == null)
             {
@@ -61,7 +61,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                 return;
             }
 
-            Request.ApplyProposedDateRange();
+            Request.AcceptProposedDateRange();
             Request = Request.CopyWith(status: RentalRequestStatus.Waiting);
             _rentalRequestRepository.Update(Request);
 
