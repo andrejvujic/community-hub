@@ -39,26 +39,5 @@ namespace CommunityHub.Application.Database.Repositories
 
             return items;
         }
-
-        public EventItem? GetById(long id)
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT
-                id AS event_item_id,
-                name AS event_item_name,
-                event_id AS event_item_event_id
-                FROM event_items
-                WHERE id = @id"
-            ).AddParameter("id", id);
-
-            EventItem? result = null;
-            query.ExecuteReader(reader =>
-            {
-                var item = _mapper.MapToEntity(reader);
-                if (item != null) result = item;
-            });
-
-            return result;
-        }
     }
 }

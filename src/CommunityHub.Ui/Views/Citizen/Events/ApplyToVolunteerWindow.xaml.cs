@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Windows;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
@@ -14,7 +13,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private long EventId;
         private CommunityHub.Application.Domain.Citizen? citizen;
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
-        private readonly CommunityEventRepository _eventRepository = new CommunityEventRepository();
+        private readonly CommunityEventRepository _communityEventRepository = new CommunityEventRepository();
         private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
         private readonly EventItemAssignmentRepository _eventItemAssignmentRepository = new EventItemAssignmentRepository();
         private readonly EventItemRepository _eventItemRepository = new EventItemRepository();
@@ -70,13 +69,13 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             var registrations = _eventRegistrationRepository.GetByEventId(EventId);
             var assignments = _eventItemAssignmentRepository.GetByEventId(EventId);
             var items = _eventItemRepository.GetByEventId(EventId);
-            var ev = _eventRepository.GetById(EventId);
+            var ev = _communityEventRepository.GetById(EventId);
 
             bool enoughVolunteers = registrations.Count >= ev!.MinVolunteers;
             bool allItemsAssigned = items.All(i => assignments.Any(a => a.Item.Id == i.Id));
             if (enoughVolunteers && allItemsAssigned && ev.Status == EventStatus.Preparation)
             {
-                _eventRepository.UpdateStatus(EventId, EventStatus.Scheduled);
+                _communityEventRepository.UpdateStatus(EventId, EventStatus.Scheduled);
             }
         }
     }
