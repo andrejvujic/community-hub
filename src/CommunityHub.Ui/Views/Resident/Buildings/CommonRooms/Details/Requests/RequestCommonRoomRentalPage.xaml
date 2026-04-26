@@ -1,0 +1,333 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests.RequestCommonRoomRentalPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      mc:Ignorable="d"
+      Title="Podnošenje zahtjeva za iznajmljivanje zajedničke prostorije"
+      FontFamily="{StaticResource AppFontFamily}"
+      xml:lang="sr-Latn-RS">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#dedede">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="64"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid
+                    Grid.Column="0"
+                    MouseLeftButtonDown="BackButton_Click"
+                    Background="Transparent">
+                    <TextBlock
+                        Text="&#xf177;"
+                        FontSize="24"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                </Grid>
+
+                <TextBlock
+                    Grid.Column="1"
+                    Text="Zahtjev za iznajmljivanje"
+                    FontSize="20"
+                    VerticalAlignment="Center">
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" FontSize="20" VerticalAlignment="Center" TextWrapping="Wrap">
+                    <Run Text="Zahtjev za iznajmljivanje zajedničke prostorije —"/>
+                    <Run Text="{Binding CommonRoom.Name, StringFormat='{}{0}', Mode=OneWay}"  FontWeight="Bold"/>
+                </TextBlock>
+
+                <Separator Grid.Row="2"/>
+
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Opseg datuma" FontSize="18" Grid.Row="0"/>
+
+                    <Border
+                        Grid.Row="1" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleSelectDateRangeMenuButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedDateRangeText}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="6">
+                    <TextBlock
+                        Visibility="{Binding CommonRoom.IsRentableForMultipleDays, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                        FontSize="18"
+                        Foreground="Gray"
+                        TextWrapping="Wrap">
+                        <Run Text="Napomena —"/>
+                        <Run Text="{Binding CommonRoom.Name, Mode=OneWay}" FontWeight="Bold"/>
+                        <Run Text="je prostorija za koju je moguće" />
+                        <Run FontWeight="Bold" Text="jednodnevno"/>
+                        <Run Text="iznajmljivanje. Potrebno je da navedete opseg datuma unutar kojeg želite da iznajmite ovu prostoriju. Kada upravnik pregleda i odobri vaš zahtjev dobićete informaciju o tačnom datumu kada vam je ova prostorija data na raspolaganje."/>
+                    </TextBlock>
+
+                    <TextBlock
+                        Visibility="{Binding CommonRoom.IsRentableForMultipleDays, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        FontSize="18"
+                        Foreground="Gray"
+                        TextWrapping="Wrap">
+                        <Run Text="Napomena —"/>
+                        <Run Text="{Binding CommonRoom.Name, Mode=OneWay}" FontWeight="Bold"/>
+                        <Run Text="je prostorija za koju je moguće" />
+                        <Run FontWeight="Bold" Text="višednevno"/>
+                        <Run Text="iznajmljivanje. Moguće je da prostorija neće biti dostupna u željenom terminu ukoliko već postoji rezervacija, ali upravnik će predložiti novi opseg datuma kada je prostorija dostupna za iznajmljivanje."/>
+                    </TextBlock>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Button
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,16"
+                IsEnabled="{Binding IsSelectedDateRangeValid}"
+                Click="CreateRentalRequestButton_Click"
+                Content="Podnesi zahtjev"
+                FontSize="18"
+                Width="192"
+                Height="72"/>
+
+        <!-- Overlay za biranje opsega datuma u kojem oglas vazi. -->
+        <Grid
+                x:Name="SelectDateRangeOverlay"
+                Visibility="Collapsed"
+                Background="#bb000000">
+            <Border
+                    Margin="16"
+                    Padding="8"
+                    Background="White"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                            Grid.Row="0"
+                            FontSize="18"
+                            TextWrapping="Wrap"
+                            Text="Odaberite opseg datuma za važenje oglasa"/>
+
+                    <Separator Grid.Row="1" Height="12"/>
+
+                    <TextBlock
+                            Grid.Row="2"
+                            FontSize="18"
+                            TextWrapping="Wrap"
+                            Text="Početni datum"/>
+
+                    <Border
+                            Grid.Row="4" 
+                            Background="#dedede"
+                            BorderBrush="Gray"
+                            BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleStartDatePickerButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                    Grid.Column="0"
+                                    VerticalContentAlignment="Center"
+                                    Content="{Binding SelectedStartDateText}"
+                                    FontSize="18"
+                                    Padding="4"/>
+
+                            <TextBlock
+                                    Grid.Column="1"
+                                    Text="&#xf178;"
+                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    Margin="0,0,8,0"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock
+                            Grid.Row="6"
+                            FontSize="18"
+                            TextWrapping="Wrap"
+                            Text="Krajnji datum"/>
+
+                    <Border
+                            Grid.Row="8" 
+                            Background="#dedede"
+                            BorderBrush="Gray"
+                            BorderThickness="1">
+                        <Grid Background="#dedede" Height="48"  MouseLeftButtonDown="ToggleEndDatePickerButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                    Grid.Column="0"
+                                    VerticalContentAlignment="Center"
+                                    Content="{Binding SelectedEndDateText}"
+                                    FontSize="18"
+                                    Padding="4"/>
+
+                            <TextBlock
+                                    Grid.Column="1"
+                                    Text="&#xf178;"
+                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    Margin="0,0,8,0"/>
+                        </Grid>
+                    </Border>
+
+                    <Separator Grid.Row="9" Height="24"/>
+
+                    <Button
+                            Grid.Row="10"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="ToggleSelectDateRangeMenuButton_Click"
+                            IsEnabled="{Binding IsSelectedDateRangeValid}"
+                            Content="Potvrdi"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Kalendar za biranje pocetnog datuma. -->
+        <Grid
+                x:Name="StartDatePicker"
+                Visibility="Collapsed"
+                Background="#33000000">
+            <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                        <Viewbox  Stretch="Uniform">
+                            <Calendar
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    DisplayDateStart="{Binding MinStartDate, Mode=OneWay}"
+                                    DisplayDateEnd="{Binding MaxStartDate, Mode=OneWay}"
+                                    SelectedDate="{Binding SelectedStartDate}"/>
+                        </Viewbox>
+                    </Border>
+
+                    <Button
+                            Grid.Row="2"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="ToggleStartDatePickerButton_Click"
+                            Content="Potvrdi"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Kalendar za biranje krajnjeg datuma. -->
+        <Grid
+                x:Name="EndDatePicker"
+                Visibility="Collapsed"
+                Background="#33000000">
+            <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                        <Viewbox  Stretch="Uniform">
+                            <Calendar
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    DisplayDateStart="{Binding MinEndDate, Mode=OneWay}"
+                                    SelectedDate="{Binding SelectedEndDate}"/>
+                        </Viewbox>
+                    </Border>
+
+                    <Button
+                            Grid.Row="2"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="ToggleEndDatePickerButton_Click"
+                            Content="Potvrdi"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</navigation:MainNavigatorConsumerPage>
