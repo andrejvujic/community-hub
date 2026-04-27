@@ -95,5 +95,14 @@ namespace CommunityHub.Application.Database.Repositories
 
             query.GetRowsAffectedCount();
         }
+
+        public int GetConfirmedVolunteerCount(long citizenId)
+        {
+            var query = PostgresQuery.Create(
+                "SELECT COUNT(*) FROM event_registrations WHERE citizen_id = @citizenId AND attended = TRUE"
+            ).AddParameter("citizenId", citizenId);
+
+            return query.ExecuteScalar<int>(Convert.ToInt32);
+        }
     }
 }
