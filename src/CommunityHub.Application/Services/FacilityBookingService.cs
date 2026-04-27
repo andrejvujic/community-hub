@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.CityFacility;
 
 namespace CommunityHub.Application.Services
 {
@@ -10,5 +11,8 @@ namespace CommunityHub.Application.Services
         {
             _reservationRepository = reservationRepository;
         }
+
+        public List<FacilityReservation> GetReservationsForNeighborhood(long neighborhoodId)
+            => _reservationRepository.GetByNeighborhoodId(neighborhoodId);
     }
 }
