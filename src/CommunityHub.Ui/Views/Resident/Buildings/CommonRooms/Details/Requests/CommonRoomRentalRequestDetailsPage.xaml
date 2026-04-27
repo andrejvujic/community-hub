@@ -110,8 +110,9 @@
                     <Separator Opacity="0" Width="8"/>
 
                     <TextBlock
-                        FontSize="18"
                         VerticalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Bold"
                         Text="{Binding Request.Status, Converter={StaticResource RentalRequestStatusToStringConverter}}"/>
                 </StackPanel>
 
