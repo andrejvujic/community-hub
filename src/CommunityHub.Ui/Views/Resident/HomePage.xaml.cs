@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.Views.Resident
         private readonly long _userId;
 
         private readonly NotificationRepository _notificationRepository = new();
-        private readonly AdRepository _adRepository = new AdRepository();
+        private readonly AdRepository _adRepository = new();
         public HomePage(long userId)
         {
             InitializeComponent();
