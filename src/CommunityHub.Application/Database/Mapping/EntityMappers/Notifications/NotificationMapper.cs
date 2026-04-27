@@ -8,7 +8,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers.Notifications
     {
         private readonly UserMapper _userMapper = new();
 
-        private readonly AdReservationNotificationDetailsMapper _reservationDetailsMapper = new();
+        private readonly AdEventNotificationDetailsMapper _adEventMapper = new();
 
         public override Notification MapToEntity(IDataReader reader)
         {
@@ -22,13 +22,18 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers.Notifications
             var title = reader.GetString(reader.GetOrdinal("title"));
             var message = reader.GetString(reader.GetOrdinal("message"));
 
-            var status = (NotificationStatus)reader.GetValue(reader.GetOrdinal("notification_status"));
-            var type = (NotificationType)reader.GetValue(reader.GetOrdinal("notification_type"));
+            var status = (NotificationStatus)reader.GetValue(
+                reader.GetOrdinal("notification_status")
+            );
+
+            var type = (NotificationType)reader.GetValue(
+                reader.GetOrdinal("notification_type")
+            );
 
             var details = type switch
             {
-                NotificationType.AdReservation => _reservationDetailsMapper.MapToEntity(
-                    reader.WithPrefix("reservation")
+                NotificationType.AdEvent => _adEventMapper.MapToEntity(
+                    reader.WithPrefix("ad_event")
                 ),
                 _ => null
             };
