@@ -226,7 +226,9 @@ namespace CommunityHub.Application.Database.Repositories
                         common_room_rental_request.resident_id = resident.id
                    
                    WHERE resident.id = @resident_id
-                        AND common_room.id = @common_room_id"
+                        AND common_room.id = @common_room_id
+
+                   ORDER BY common_room_rental_request_id DESC"
             )
             .AddParameter("resident_id", residentId)
             .AddParameter("common_room_id", commonRoomId);
