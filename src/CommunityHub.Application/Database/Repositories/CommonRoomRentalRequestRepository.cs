@@ -70,7 +70,7 @@ namespace CommunityHub.Application.Database.Repositories
                           common_room_rental_request.requested_end_date, 
                           common_room_rental_request.proposed_start_date,
                           common_room_rental_request.proposed_end_date,
-                          common_room_rental_request.rental_status AS rental_status,
+                          common_room_rental_request.rental_status,
                           common_room_rental_request.assigned_date,
 
                           resident.id AS resident_user_id,
@@ -129,7 +129,7 @@ namespace CommunityHub.Application.Database.Repositories
                           common_room_rental_request.requested_end_date, 
                           common_room_rental_request.proposed_start_date,
                           common_room_rental_request.proposed_end_date,
-                          common_room_rental_request.rental_status AS rental_status,
+                          common_room_rental_request.rental_status,
                           common_room_rental_request.assigned_date,
                           resident.id AS resident_user_id,
                           resident.username AS resident_username,
@@ -177,18 +177,18 @@ namespace CommunityHub.Application.Database.Repositories
             return query.GetRowsAffectedCount();
         }
 
-        public int UpdateStatusAndRange(long requestId, RentalRequestStatus newStatus, DateTime startDate, DateTime endDate)
+        public int UpdateStatusAndRange(long requestId, RentalRequestStatus newStatus, DateTime proposedStartDate, DateTime proposedEndDate)
         {
             var query = PostgresQuery.Create(
                 @"UPDATE common_room_rental_requests
                   SET rental_status = @new_status, 
-                      start_date = @start_date,
-                      end_date = @end_date
+                      proposed_start_date = @proposed_start_date,
+                      proposed_end_date = @proposed_end_date
                   WHERE id = @request_id;"
             )
             .AddParameter("new_status", newStatus)
-            .AddParameter("start_date", startDate)
-            .AddParameter("end_date", endDate)
+            .AddParameter("proposed_start_date", proposedStartDate)
+            .AddParameter("proposed_end_date", proposedEndDate)
             .AddParameter("request_id", requestId);
 
             return query.GetRowsAffectedCount();

@@ -135,7 +135,22 @@
                                                 </Grid>
 
                                                 <Grid Grid.Column="1">
-                                                    <TextBlock FontSize="17" Text="{Binding StartDate, StringFormat='Početni datum: {0:dd.MM.yyyy.}'}" />
+                                                    <TextBlock FontSize="17">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="{Binding RequestedStartDate, StringFormat='Početni datum: {0:dd.MM.yyyy.}'}" />
+                                                                <Style.Triggers>
+                                                                    <MultiDataTrigger>
+                                                                        <MultiDataTrigger.Conditions>
+                                                                            <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
+                                                                            <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
+                                                                        </MultiDataTrigger.Conditions>
+                                                                        <Setter Property="Text" Value="{Binding ProposedStartDate, StringFormat='Predloženi početak: {0:dd.MM.yyyy.}'}" />
+                                                                    </MultiDataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
                                                 </Grid>
                                             </Grid>
 
@@ -150,7 +165,22 @@
                                                 </Grid>
 
                                                 <Grid Grid.Column="1">
-                                                    <TextBlock FontSize="17" Text="{Binding EndDate, StringFormat='Krajnji datum: {0:dd.MM.yyyy.}'}" />
+                                                    <TextBlock FontSize="17">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="{Binding RequestedEndDate, StringFormat='Krajnji datum: {0:dd.MM.yyyy.}'}" />
+                                                                <Style.Triggers>
+                                                                    <MultiDataTrigger>
+                                                                        <MultiDataTrigger.Conditions>
+                                                                            <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
+                                                                            <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
+                                                                        </MultiDataTrigger.Conditions>
+                                                                        <Setter Property="Text" Value="{Binding ProposedEndDate, StringFormat='Predloženi kraj: {0:dd.MM.yyyy.}'}" />
+                                                                    </MultiDataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
                                                 </Grid>
                                             </Grid>
 
@@ -214,7 +244,7 @@
                             VerticalAlignment="Center"
                             FontSize="22"
                             Foreground="Black"
-                            Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"
+                            Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"  
                             TextAlignment="Center"
                             TextWrapping="Wrap"
                             Visibility="Collapsed" />
