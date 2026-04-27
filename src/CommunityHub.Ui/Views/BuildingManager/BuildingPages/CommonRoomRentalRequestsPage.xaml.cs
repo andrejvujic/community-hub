@@ -226,9 +226,9 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
                 if(isFree)
                 {
-                    var start = candidateStart;
-                    var end = candidateEnd;
-                    var button = CreateMultiDayButton(start, end);
+                    var proposedStart = candidateStart;
+                    var proposedEnd = candidateEnd;
+                    var button = CreateMultiDayButton(proposedStart, proposedEnd);
 
                     button.Click += (s, e) => FreeRangeButton_Click(s, e, request);
                     suggestedRangesPanel.Children.Add(button);
@@ -239,12 +239,12 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
                 candidateStart = candidateStart.AddDays(1);
             }
         }
-        private Button CreateMultiDayButton(DateTime start, DateTime end)
+        private Button CreateMultiDayButton(DateTime proposedStart, DateTime proposedEnd)
         {
             return new Button
             {
-                Content = $"{start:dd.MM.yyyy.} - {end:dd.MM.yyyy.}",
-                Tag = (start, end),
+                Content = $"{proposedStart:dd.MM.yyyy.} - {proposedEnd:dd.MM.yyyy.}",
+                Tag = (proposedStart, proposedEnd),
                 Margin = new Thickness(0, 6, 0, 6),
                 Padding = new Thickness(10, 6, 10, 6),
                 FontSize = 15,
@@ -258,9 +258,9 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             if (result == MessageBoxResult.No) return;
 
             var button = sender as Button;
-            var (start,end) = ((DateTime,DateTime))button!.Tag;
+            var (proposedStartDate, proposedEndDate) = ((DateTime, DateTime))button!.Tag;
 
-            _commonRoomRentalRequestRepository.UpdateStatusAndRange(request.Id, RentalRequestStatus.WaitingDateChange, start, end);
+            _commonRoomRentalRequestRepository.UpdateStatusAndRange(request.Id, RentalRequestStatus.WaitingDateChange, proposedStartDate, proposedEndDate);
             CheckAndUpdateRentalDateStatuses();
             RefreshRentalRequests();
             multiDayPanel.Visibility = Visibility.Collapsed;
