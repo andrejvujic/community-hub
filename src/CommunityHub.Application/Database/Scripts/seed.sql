@@ -486,7 +486,7 @@ INSERT INTO provider_reviews (id, quality_rating, communication_rating, comment,
  
 INSERT INTO common_rooms (building_id, name, description, floor_number, rental_type) VALUES
 (1,  'Sala za sastanke',      'Manja sala za sastanke kucnog saveta i okupljanja stanara.', 1, 'one_day'),
-(2,  'Teretana',              'Zajednička teretana za stanare zgrade.', 1, 'one_day'),
+(1,  'Teretana',              'Zajednička teretana za stanare zgrade.', 1, 'multi_day'),
 (3,  'Vešernica',             'Prostorija za sušenje vesa i odlaganje daski za peglanje.', 1, 'multi_day'),
 (4,  'Ostava',                'Zajednička ostava za odlaganje sezonskih stvari.', 1, 'multi_day'),
 (5,  'Hobi radionica',        'Prostor za sitne popravke, rad sa alatom i uradi sam aktivnosti.', 1, 'one_day'),
@@ -502,22 +502,14 @@ INSERT INTO common_rooms (building_id, name, description, floor_number, rental_t
 (15, 'Soba za proslave',      'Sala namenjena manjim porodicnim proslavama.', 1, 'one_day');
 
 INSERT INTO common_room_rental_requests
-(common_room_id, start_date, end_date, rental_statuses, resident_id, assigned_date) VALUES
-(1,  '2026-05-08', '2026-05-08', 'approved',             6,  '2026-05-08'),
-(2,  '2026-05-10', '2026-05-10', 'waiting',              7,  NULL),
-(3,  '2026-05-12', '2026-05-15', 'waiting',              8,  NULL),
-(4,  '2026-05-09', '2026-05-20', 'approved',             9,  NULL),
-(5,  '2026-05-14', '2026-05-14', 'waiting_date_change', 10,  NULL),
-(6,  '2026-05-11', '2026-05-25', 'approved',            16,  NULL),
-(7,  '2026-05-17', '2026-05-17', 'approved',            17,  '2026-05-17'),
-(8,  '2026-05-07', '2026-05-07', 'rejected',            18,  NULL),
-(9,  '2026-05-19', '2026-05-19', 'waiting',             19,  NULL),
-(10, '2026-05-21', '2026-05-30', 'waiting',             20,  NULL),
-(11, '2026-05-22', '2026-05-22', 'approved',             6,  '2026-05-22'),
-(12, '2026-05-23', '2026-05-28', 'waiting_date_change',  7,  NULL),
-(13, '2026-05-24', '2026-05-24', 'approved',             8,  '2026-05-24'),
-(14, '2026-05-25', '2026-06-01', 'waiting',              9,  NULL),
-(15, '2026-05-26', '2026-05-26', 'approved',            10,  '2026-05-26');
+(common_room_id, requested_start_date, requested_end_date, proposed_start_date, proposed_end_date, rental_status, resident_id, assigned_date) VALUES
+(2, '2026-05-12', '2026-05-15', NULL, NULL, 'waiting', 6, NULL),
+(2, '2026-05-18', '2026-05-20', NULL, NULL, 'waiting', 6, NULL),
+(2, '2026-05-15', '2026-05-16', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-18', '2026-05-20', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-21', '2026-05-21', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-19', '2026-05-22', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-19', '2026-05-20', NULL, NULL, 'waiting', 6, NULL);
 
 INSERT INTO ads
 (building_id, resident_id, ad_type, ad_category, ad_status, description, start_date, end_date) VALUES

@@ -282,7 +282,7 @@
 
                             <DataGridTextColumn
                                 Width="*"
-                                Binding="{Binding Type, Converter={StaticResource RentalTypeToStringConverter}}"
+                                Binding="{Binding RentalType, Converter={StaticResource RentalTypeToStringConverter}}"
                                 Header="Način iznajmljivanja" />
 
                             <DataGridTemplateColumn Width="*" Header="Akcija">
