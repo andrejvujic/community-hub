@@ -7,7 +7,7 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
     public class NotificationRepository
     {
         private readonly NotificationMapper _notificationMapper = new(); 
-        private readonly NotificationDetailsRepository _notificationDetailsRepository = new NotificationDetailsRepository();
+        private readonly NotificationDetailsRepository _notificationDetailsRepository = new();
 
         private static string GetOrderByClause(NotificationOrder order)
         {
@@ -66,7 +66,7 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
             .Execute();
         }
 
-        public int GetNotificationCountForUser(
+        public int GetCountByUserId(
             long userId,
             NotificationStatus? status = null
         )
@@ -84,7 +84,7 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
             return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
         }
 
-        public List<Notification> GetNotificationsForUser(
+        public List<Notification> GetByUserId(
             long userId,
             NotificationOrder order = NotificationOrder.SentAtDescending,
             NotificationStatus? status = null
@@ -100,14 +100,15 @@ namespace CommunityHub.Application.Database.Repositories.Notifications
                     notification.type AS notification_type,
                     notification.status AS notification_status,
 
-                    reservation_details.id  AS reservation_details_id,
-                    reservation_details.notification_id AS reservation_details_notification_id,
-                    reservation_details.ad_id AS reservation_details_ad_id
+                    ad_event.id  AS ad_event_details_id,
+                    ad_event.notification_id AS ad_event_details_notification_id,
+                    ad_event.ad_id AS ad_event_details_ad_id,
+                    ad_event.ad_event_type AS ad_event_details_ad_event_type
 
                 FROM notifications notification
 
-                LEFT OUTER JOIN ad_reservation_notification_details reservation_details ON
-                    reservation_details.notification_id = notification.id
+                LEFT OUTER JOIN ad_event_notification_details ad_event ON
+                    ad_event.notification_id = notification.id
              
                 WHERE
                     notification.recipient_id = @user_id AND
