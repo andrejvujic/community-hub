@@ -61,7 +61,7 @@
                 <Border Grid.Row="0" Grid.Column="1" Height="220" Width="300" Background="#FFE5E5E5" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,0">
                 </Border>
                 
-                <Button Grid.Row="1"  Grid.Column="2" Height="66" HorizontalAlignment="Stretch" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2" Margin="0,1,10,0">
+                <Button x:Name="ShowOtherMembersTrustRecordsButton" Grid.Row="1"  Grid.Column="2" Height="66" HorizontalAlignment="Stretch" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2" Margin="0,1,10,0" Click="ShowOtherMembersTrustButton_Click">
                     <TextBlock TextAlignment="Center" TextWrapping="Wrap">
                         Evidencije poverenja ostalih<LineBreak/>članova kvarta<LineBreak/>(Ctrl + 1)
                     </TextBlock>
