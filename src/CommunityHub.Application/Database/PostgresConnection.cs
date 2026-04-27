@@ -6,6 +6,7 @@ using Npgsql;
 using System.Data;
 using System.Text.Json;
 using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
 
 namespace CommunityHub.Application.Database;
 
@@ -39,6 +40,7 @@ public static class PostgresConnection
         builder.MapEnum<EventStatus>("event_statuses");
         builder.MapEnum<NotificationStatus>("notification_statuses");
         builder.MapEnum<NotificationType>("notification_types");
+        builder.MapEnum<AdEventType>("ad_event_types");
     }
 
     private static string LoadConnectionString()
