@@ -9,10 +9,11 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications.Details
 {
-    enum AdValidationResult
+    enum AdAvailabilityValidationResult
     {
         Valid,
-        NotFound
+        AdNotFound,
+        AdNotActive
     }
 
     public partial class AdEventNotificationDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
@@ -30,12 +31,12 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             Notification = notification;
         }
 
-        private void ShowAdValidationResult(AdValidationResult result)
+        private void ShowAdAvailabilityValidationResult(AdAvailabilityValidationResult result)
         {
             if (this is not IAlertConsumer consumer) return;
 
             switch (result) {
-                case AdValidationResult.NotFound:
+                case AdAvailabilityValidationResult.AdNotFound:
                     consumer.ShowAlert(
                         Alert.Create(
                             "Greška",
@@ -45,15 +46,28 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
                         .AddOption("U redu")
                     );
                     break;
+                case AdAvailabilityValidationResult.AdNotActive:
+                    consumer.ShowAlert(
+                        Alert.Create(
+                            "Greška",
+                            "Traženi oglas je istekao i više nije dostupan za zakazivanje termina..",
+                            AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
+                    break;
             }
         }
 
-        private AdValidationResult ValidateAd(Ad? ad)
+        private AdAvailabilityValidationResult ValidateAdAvailability(Ad? ad, AdEventType eventType)
         {
             if (ad == null)
-                return AdValidationResult.NotFound;
+                return AdAvailabilityValidationResult.AdNotFound;
 
-            return AdValidationResult.Valid;
+            if (!ad.IsActive && eventType == AdEventType.MatchingAdCreated)
+                return AdAvailabilityValidationResult.AdNotActive;
+
+            return AdAvailabilityValidationResult.Valid;
         }
 
         private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
@@ -62,14 +76,14 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
                 throw new Exception("Notification.Details must be an instance of AdEventNotificationDetails");
 
             var ad = _adRepository.GetById(details.AdId);
-            var validationResult = ValidateAd(ad);
+            var validationResult = ValidateAdAvailability(ad, details.EventType);
 
-            if (validationResult == AdValidationResult.Valid)
+            if (validationResult == AdAvailabilityValidationResult.Valid)
             {
                 switch (details.EventType)
                 {
                     case AdEventType.MatchingAdCreated:
-                        OpenAdTimeSlotsPage(ad!);
+                        OpenMatchingAdTimeSlotsPage(ad!);
                         break;
                     case AdEventType.AdTimeSlotsReserved:
                         OpenPersonalAdTimeSlotsPage(ad!);
@@ -78,10 +92,10 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
                 return;
             }
 
-            ShowAdValidationResult(validationResult);
+            ShowAdAvailabilityValidationResult(validationResult);
         }
 
-        private void OpenAdTimeSlotsPage(Ad ad)
+        private void OpenMatchingAdTimeSlotsPage(Ad ad)
             => Push(
                 new AdDetailsPage(
                     _userId,
