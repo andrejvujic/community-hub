@@ -4,9 +4,9 @@ namespace CommunityHub.Application.Domain.Notifications
 {
     public enum NotificationType
     {
-        [EnumMember(Value = "ad_reservation")]
-        AdReservation,
-        [EnumMember(Value = "ad_creation")]
-        AdCreation,
+        [EnumMember(Value = "other")]
+        Other,
+        [EnumMember(Value = "ad_event")]
+        AdEvent,
     }
 }
