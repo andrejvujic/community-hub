@@ -15,7 +15,7 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
-        <Grid Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
+        <Grid Visibility="{Binding HasReservations, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="16"/>
@@ -218,7 +218,7 @@
 
                     <TextBlock
                         Grid.Row="0"
-                        Text="Rezervacija termina"
+                        Text="Rezervacije"
                         FontSize="20"
                         VerticalAlignment="Center"/>
 
