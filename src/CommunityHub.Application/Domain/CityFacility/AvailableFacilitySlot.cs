@@ -14,5 +14,8 @@
             IsOutsideRange = isOutsideRange;
             DurationHours = (int)(end - start).TotalHours;
         }
+
+        public string DisplayText =>
+            $"{Start:dd.MM.yyyy.} u {Start:HH:mm} ({DurationHours}h)";
     }
 }
