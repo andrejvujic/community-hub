@@ -87,12 +87,21 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
         {
-            var facilityBookingWindow = new FacilityBookingWindow()
+            var facility = FacilitiesComboBox.SelectedItem as CityFacility;
+
+            int durationHours = 0;
+            int.TryParse(DurationTextBox.Text.Trim(), out durationHours);
+
+            var rangeStart = StartDatePicker.SelectedDate.Value;
+            var rangeEnd = EndDatePicker.SelectedDate.Value.AddDays(1).AddSeconds(-1);
+            var (slotInRange, slotsOutsideRange) = _facilityBookingService.FindSlots(facility!, durationHours, rangeStart, rangeEnd);
+
+            var facilityBookingWindow = new FacilityBookingWindow(facility, _selectedNeighborhood, slotInRange, slotsOutsideRange, _facilityBookingService)
             {
                 Owner = Window.GetWindow(this)
             };
-            facilityBookingWindow.ShowDialog();
-
+            if (facilityBookingWindow.ShowDialog() == true && facilityBookingWindow.CreatedReservation is not null)
+                Reservations.Insert(0, facilityBookingWindow.CreatedReservation);
         }
     }
 }
