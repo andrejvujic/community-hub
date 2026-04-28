@@ -15,6 +15,16 @@ namespace CommunityHub.Application.Database.Repositories.Ads
             .Execute();
         }
 
+        public void DeleteByAdId(long adId)
+        {
+            PostgresQuery.Create(
+                @"DELETE FROM ad_match_subscriptions
+                WHERE ad_id = @ad_id"
+            )
+            .AddParameter("ad_id", adId)
+            .Execute();
+        }
+
         public bool IsSubscribed(long adId)
         {
             var query = PostgresQuery.Create(
