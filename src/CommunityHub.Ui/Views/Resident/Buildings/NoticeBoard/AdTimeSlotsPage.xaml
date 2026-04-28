@@ -16,73 +16,67 @@
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="16"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding TimeSlotGroups}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-            <TextBlock
-                Grid.Row="0"
-                Text="Rezervacija termina"
-                FontSize="20"
-                VerticalAlignment="Center"/>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="4"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-            <Separator Grid.Row="1"/>
-
-            <Grid Grid.Row="2">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <ItemsControl ItemsSource="{Binding TimeSlotGroups}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="0,0,0,8">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="4"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock
+                                    <TextBlock
                                         Grid.Row="0"
                                         FontSize="20"
                                         FontWeight="Bold"
                                         Text="{Binding Day, StringFormat='{}{0:d. MMMM}', ConverterCulture='sr-Latn-RS'}"/>
 
-                                        <Border
-                                            Grid.Row="2"
-                                            BorderBrush="Gray"
-                                            BorderThickness="1">
-                                            <ItemsControl ItemsSource="{Binding TimeSlots}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
+                                    <Border
+                                        Grid.Row="2"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1">
+                                        <ItemsControl ItemsSource="{Binding TimeSlots}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
 
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border
-                                                            Grid.Row="2"
-                                                            Background="#dedede"
-                                                            BorderBrush="Gray"
-                                                            BorderThickness="1"
-                                                            Margin="8"
-                                                            Padding="8">
-                                                            <Grid Background="Transparent" MouseLeftButtonDown="TimeSlotItem_Click"> 
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="8"/>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                </Grid.ColumnDefinitions>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border
+                                                        Grid.Row="2"
+                                                        Background="#dedede"
+                                                        BorderBrush="Gray"
+                                                        BorderThickness="1"
+                                                        Margin="8"
+                                                        Padding="8">
+                                                        <Grid Background="Transparent" MouseLeftButtonDown="TimeSlotItem_Click">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="8"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
 
-                                                                <TextBlock Grid.Column="0" FontSize="18" VerticalAlignment="Center">
+                                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                                <TextBlock
+                                                                    Text="&#xf017;"
+                                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                                    VerticalAlignment="Center"
+                                                                    FontSize="16"/>
+
+                                                                <Separator Width="8" Opacity="0"/>
+
+                                                                <TextBlock FontSize="18" VerticalAlignment="Center">
                                                                     <TextBlock.Text>
                                                                         <MultiBinding StringFormat="{}{0:HH.mm} — {1:HH.mm}">
                                                                             <Binding Path="StartTime"/>
@@ -90,82 +84,63 @@
                                                                         </MultiBinding>
                                                                     </TextBlock.Text>
                                                                 </TextBlock>
+                                                            </StackPanel>
 
-                                                                <Grid Grid.Column="2" Height="36">
-                                                                    <TextBlock
+                                                            <Grid Grid.Column="2" Height="36">
+                                                                <TextBlock
                                                                         Visibility="{Binding IsReserved, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                                         Text="Zauzeto"
                                                                         FontSize="18"
                                                                         VerticalAlignment="Center"/>
 
-                                                                    <Border
+                                                                <Border
                                                                         Visibility="{Binding IsReserved, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                                                                         BorderThickness="1"
                                                                         BorderBrush="Gray"
                                                                         Background="White"
                                                                         Width="36">
-                                                                        <TextBlock
-                                                                            Text="&#xf00c;"
-                                                                            FontSize="24"
-                                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                                            HorizontalAlignment="Center"
-                                                                            VerticalAlignment="Center">
-                                                                            <TextBlock.Style>
-                                                                                <Style TargetType="TextBlock">
-                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                    <Style.Triggers>
-                                                                                        <DataTrigger Value="True">
-                                                                                            <DataTrigger.Binding>
-                                                                                                <MultiBinding Converter="{StaticResource IEnumerableContainsToBooleanConverter}">
-                                                                                                    <Binding Path="SelectedTimeSlots" RelativeSource="{RelativeSource AncestorType=Page}"/>
-                                                                                                    <Binding/>
-                                                                                                </MultiBinding>
-                                                                                            </DataTrigger.Binding>
-                                                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                                                        </DataTrigger>
-                                                                                    </Style.Triggers>
-                                                                                </Style>
-                                                                            </TextBlock.Style>
-                                                                        </TextBlock>
-                                                                    </Border>
-                                                                </Grid>
+                                                                    <TextBlock
+                                                                        Text="&#xf00c;"
+                                                                        FontSize="24"
+                                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                                        HorizontalAlignment="Center"
+                                                                        VerticalAlignment="Center">
+                                                                        <TextBlock.Style>
+                                                                            <Style TargetType="TextBlock">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                <Style.Triggers>
+                                                                                    <DataTrigger Value="True">
+                                                                                        <DataTrigger.Binding>
+                                                                                            <MultiBinding Converter="{StaticResource IEnumerableContainsToBooleanConverter}">
+                                                                                                <Binding Path="SelectedTimeSlots" RelativeSource="{RelativeSource AncestorType=Page}"/>
+                                                                                                <Binding/>
+                                                                                            </MultiBinding>
+                                                                                        </DataTrigger.Binding>
+                                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </TextBlock.Style>
+                                                                    </TextBlock>
+                                                                </Border>
                                                             </Grid>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <Grid Height="72" Margin="0,8"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
+                    <Grid Height="72" Margin="0,8"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <Grid Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
-
-            <DockPanel>
-                <Grid DockPanel.Dock="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="16"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock
-                        Grid.Row="0"
-                        Text="Rezervacija termina"
-                        FontSize="20"
-                        VerticalAlignment="Center"/>
-
-                    <Separator Grid.Row="1"/>
-                </Grid>
-            </DockPanel>
-
             <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="Rezervacija termina nije moguća" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                 <TextBlock

@@ -1,0 +1,119 @@
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard;
+using System.Windows.Input;
+
+namespace CommunityHub.Ui.Views.Resident.Notifications.Details
+{
+    enum AdAvailability
+    {
+        Available,
+        NotFound,
+        Expired
+    }
+
+    public partial class AdEventNotificationDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
+    {
+        private long _userId;
+        private readonly AdRepository _adRepository = new();
+        public Notification Notification { get; set; }
+
+        public AdEventNotificationDetailsPage(long userId, Notification notification)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            _userId = userId;
+            Notification = notification;
+        }
+
+        private void ShowAdAvailabilityCheckResult(AdAvailability result)
+        {
+            if (this is not IAlertConsumer consumer) return;
+
+            switch (result) {
+                case AdAvailability.NotFound:
+                    consumer.ShowAlert(
+                        Alert.Create(
+                            "Greška",
+                            "Traženi oglas nije pronađen.",
+                            AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
+                    break;
+                case AdAvailability.Expired:
+                    consumer.ShowAlert(
+                        Alert.Create(
+                            "Greška",
+                            "Traženi oglas je istekao i više nije dostupan za zakazivanje termina..",
+                            AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
+                    break;
+            }
+        }
+
+        private AdAvailability CheckAdAvailability(Ad? ad, AdEventType eventType)
+        {
+            if (ad == null)
+                return AdAvailability.NotFound;
+
+            if (!ad.IsActive && eventType == AdEventType.MatchingAdCreated)
+                return AdAvailability.Expired;
+
+            return AdAvailability.Available;
+        }
+
+        private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (Notification.Details is not AdEventNotificationDetails details)
+                throw new Exception("Notification.Details must be an instance of AdEventNotificationDetails");
+
+            var ad = _adRepository.GetById(details.AdId);
+            var availability = CheckAdAvailability(ad, details.EventType);
+
+            if (availability == AdAvailability.Available)
+            {
+                switch (details.EventType)
+                {
+                    case AdEventType.MatchingAdCreated:
+                        OpenMatchingAdTimeSlotsPage(ad!);
+                        break;
+                    case AdEventType.AdTimeSlotsReserved:
+                        OpenPersonalAdTimeSlotsPage(ad!);
+                        break;
+                }
+                return;
+            }
+
+            ShowAdAvailabilityCheckResult(availability);
+        }
+
+        private void OpenMatchingAdTimeSlotsPage(Ad ad)
+            => Push(
+                new AdDetailsPage(
+                    _userId,
+                    ad,
+                    initialTab: AdDetailsPageTab.TimeSlots
+                )
+            );
+
+        private void OpenPersonalAdTimeSlotsPage(Ad ad)
+            => Push(
+                new PersonalAdDetailsPage(
+                    _userId,
+                    ad,
+                    initialTab: PersonalAdDetailsPageTab.TimeSlots
+                )
+            );
+
+        private void BackButton_Click(object sender, MouseButtonEventArgs e)
+            => Pop();
+    }
+}

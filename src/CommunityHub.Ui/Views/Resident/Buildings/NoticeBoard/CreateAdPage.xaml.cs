@@ -1,5 +1,9 @@
 ﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Ads;
+using CommunityHub.Application.Database.Repositories.Notifications;
 using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
@@ -23,8 +27,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private readonly DateTime _today = DateTime.Today;
 
         private readonly UserRepository _userRepository = new();
+
         private readonly AdRepository _adRepository = new();
         private readonly AdTimeSlotRepository _adTimeSlotRepository = new();
+        private readonly AdMatchSubscriptionRepository _adMatchSubscriptionRepository = new();
+
+        private readonly NotificationRepository _notficationRepository = new();
 
         public CreateAdPage(long userId, long buildingId)
         {
@@ -83,7 +91,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             return timeSlots;
         }
 
-        private void PublishAd(Ad ad)
+        private Ad PublishAd(Ad ad)
         {
             var publishedAd = _adRepository.Create(ad);
 
@@ -92,7 +100,43 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                 _adTimeSlotRepository.Create(timeSlot);
 
             ShowSuccessAlert(publishedAd);
+
+            return publishedAd;
         } 
+
+        private List<Ad> GetMatchingSubscribedAds(Ad ad)
+        {
+            var matchingAds = _adRepository.GetMatchingAds(ad.Id);
+
+            return matchingAds.Where(
+                matchingAd => _adMatchSubscriptionRepository.IsSubscribed(matchingAd.Id)
+            ).ToList();
+        }
+
+        private void NotifyAuthorsOfMatchingSubscribedAds(Ad ad)
+        {
+            var subscribedAds = GetMatchingSubscribedAds(ad);
+            var authorIds = subscribedAds.Select(ad => ad.Author.Id).Distinct();
+
+            foreach (var authorId in authorIds)
+            {
+                _notficationRepository.Create(
+                    Notification.Create(
+                        recipientId: authorId,
+                        title: "Pronađen kompatibilan oglas",
+                        message: "Na oglasnoj tabli se pojavio oglas sa odgovarajućom kategorijom i podudarnim datumima.",
+                        type: NotificationType.AdEvent,
+                        details: new AdEventNotificationDetails(
+                            ad.Id,
+                            AdEventType.MatchingAdCreated
+                        )
+                    )
+                );
+            }
+
+            foreach (var subscribedAd in subscribedAds)
+                _adMatchSubscriptionRepository.DeleteByAdId(subscribedAd.Id);
+        }
 
         private AdType? _selectedType;
         public AdType? SelectedType
@@ -247,7 +291,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             if (result == PublishmentValidationResult.Valid)
             {
-                PublishAd(ad);
+                var publishedAd = PublishAd(ad);
+                NotifyAuthorsOfMatchingSubscribedAds(publishedAd);
                 return;
             }
 

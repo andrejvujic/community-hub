@@ -103,12 +103,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     return null;
                 }
 
-                reservations.Add(
-                    (
-                        Ad.IsOffer ? selectedTimeSlot.Id : matchingTimeSlot.Id,
-                        Ad.IsRequest ? selectedTimeSlot.Id : matchingTimeSlot.Id
-                    )
-                );
+                reservations.Add((Ad.IsOffer ? selectedTimeSlot.Id : matchingTimeSlot.Id,
+                        Ad.IsRequest ? selectedTimeSlot.Id : matchingTimeSlot.Id));
             }
 
             return reservations;
@@ -117,7 +113,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void ReserveSelectedTimeSlots()
         {
             var reservations = GetMatchingTimeSlotPairs();
-
             if (reservations == null) return;
 
             foreach (var (offerAdTimeSlotId, requestAdTimeSlotId) in reservations)
@@ -140,9 +135,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     Notification.Create(
                         Ad.Author.Id,
                         "Nova rezervacija",
-                        $"{_user.Name} {_user.Surname} je napravio rezervaciju za vaš oglas.",
-                        NotificationType.AdReservation,
-                        details: new AdReservationNotificationDetails(Ad.Id)
+                        $"Stanar {_user.Name} {_user.Surname} je napravio rezervaciju za vaš oglas.",
+                        NotificationType.AdEvent,
+                        details: new AdEventNotificationDetails(
+                            Ad.Id,
+                            AdEventType.AdTimeSlotsReserved
+                        )
                     )
                 );
 

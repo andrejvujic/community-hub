@@ -16,195 +16,179 @@
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid Visibility="{Binding HasReservations, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="16"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Reservations}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-            <TextBlock
-                Grid.Row="0"
-                Text="Rezervacije"
-                FontSize="20"
-                VerticalAlignment="Center"/>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,16" Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="8"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="8"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-            <Separator Grid.Row="1"/>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="2">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Reservations}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Text="&#xf007;"
+                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                        VerticalAlignment="Center"
+                                        FontSize="20"/>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,0,0,16" Background="Transparent">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="8"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="8"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="2" FontSize="20" FontWeight="Bold">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Ad.Author.Name"/>
+                                                <Binding Path="Ad.Author.Surname"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
 
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            Text="&#xf007;"
-                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                            VerticalAlignment="Center"
-                                            FontSize="20"/>
-
-                                        <TextBlock Grid.Column="2" FontSize="20" FontWeight="Bold">
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0} {1}">
-                                                    <Binding Path="Ad.Author.Name"/>
-                                                    <Binding Path="Ad.Author.Surname"/>
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-
-                                        <TextBlock
-                                            Grid.Column="4"
-                                            Text="{Binding TimeSlotCount, StringFormat='{}{0} termina'}"
-                                            FontSize="18"
-                                            VerticalAlignment="Center"
-                                            Margin="0,0,8,0"/>
-                                    </Grid>
-
-                                    <Border 
-                                        Grid.Row="2"
-                                        BorderBrush="Gray"
-                                        BorderThickness="1"
-                                        Padding="8,8,8,0">
-                                        <StackPanel>
-                                            <ItemsControl ItemsSource="{Binding TimeSlotGroups}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Margin="0,0,0,16">
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="Auto"/>
-                                                                <RowDefinition Height="4"/>
-                                                                <RowDefinition Height="Auto"/>
-                                                            </Grid.RowDefinitions>
-
-                                                            <TextBlock
-                                                                Grid.Row="0"
-                                                                FontSize="20"
-                                                                FontWeight="Bold"
-                                                                Text="{Binding Day, StringFormat='{}{0:d. MMMM}', ConverterCulture='sr-Latn-RS'}"/>
-
-                                                            <Border
-                                                                Grid.Row="2"
-                                                                BorderBrush="Gray"
-                                                                BorderThickness="1"
-                                                                Padding="0,8,8,0">
-                                                                <ItemsControl ItemsSource="{Binding TimeSlots}">
-                                                                    <ItemsControl.ItemsPanel>
-                                                                        <ItemsPanelTemplate>
-                                                                            <UniformGrid Columns="2"/>
-                                                                        </ItemsPanelTemplate>
-                                                                    </ItemsControl.ItemsPanel>
-
-                                                                    <ItemsControl.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <Border
-                                                                                Grid.Row="2"
-                                                                                Background="#dedede"
-                                                                                BorderBrush="Gray"
-                                                                                BorderThickness="1"
-                                                                                Margin="8,0,0,8"
-                                                                                Padding="8">
-                                                                                <Grid HorizontalAlignment="Center">
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition Width="Auto"/>
-                                                                                        <ColumnDefinition Width="8"/>
-                                                                                        <ColumnDefinition Width="Auto"/>
-                                                                                    </Grid.ColumnDefinitions>
-
-
-                                                                                    <TextBlock
-                                                                                        Grid.Column="0"
-                                                                                        Text="&#xf017;"
-                                                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                                                        VerticalAlignment="Center"
-                                                                                        FontSize="16"/>
-
-                                                                                    <TextBlock Grid.Column="2" FontSize="18" VerticalAlignment="Center">
-                                                                                        <TextBlock.Text>
-                                                                                            <MultiBinding StringFormat="{}{0:HH.mm} — {1:HH.mm}">
-                                                                                                <Binding Path="StartTime"/>
-                                                                                                <Binding Path="EndTime"/>
-                                                                                            </MultiBinding>
-                                                                                        </TextBlock.Text>
-                                                                                    </TextBlock>
-                                                                                </Grid>
-
-                                                                            </Border>
-                                                                        </DataTemplate>
-                                                                    </ItemsControl.ItemTemplate>
-                                                                </ItemsControl>
-                                                            </Border>
-                                                        </Grid>
-
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-
-                                            <Separator Margin="0,-4,0,12"/>
-
-                                            <Border
-                                                BorderThickness="1"
-                                                BorderBrush="Gray"
-                                                Background="#dedede"
-                                                Padding="16">
-                                                <Grid Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <TextBlock
-                                                        Grid.Column="0"
-                                                        FontSize="18"
-                                                        Text="Detalji o oglasu"/>
-
-                                                    <TextBlock
-                                                        Grid.Column="1"
-                                                        Text="&#xf178;"
-                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                        VerticalAlignment="Center"
-                                                        FontSize="24"/>
-                                                </Grid>
-                                            </Border>
-
-                                            <Separator Height="8" Opacity="0"/>
-                                        </StackPanel>
-                                    </Border>
-
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        Text="{Binding TimeSlotCount, StringFormat='{}{0} termina'}"
+                                        FontSize="18"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,8,0"/>
                                 </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </Grid>
+
+                                <Border 
+                                    Grid.Row="2"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1"
+                                    Padding="8,8,8,0">
+                                    <StackPanel>
+                                        <ItemsControl ItemsSource="{Binding TimeSlotGroups}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="0,0,0,16">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="4"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBlock
+                                                            Grid.Row="0"
+                                                            FontSize="20"
+                                                            FontWeight="Bold"
+                                                            Text="{Binding Day, StringFormat='{}{0:d. MMMM}', ConverterCulture='sr-Latn-RS'}"/>
+
+                                                        <Border
+                                                            Grid.Row="2"
+                                                            BorderBrush="Gray"
+                                                            BorderThickness="1"
+                                                            Padding="0,8,8,0">
+                                                            <ItemsControl ItemsSource="{Binding TimeSlots}">
+                                                                <ItemsControl.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <UniformGrid Columns="2"/>
+                                                                    </ItemsPanelTemplate>
+                                                                </ItemsControl.ItemsPanel>
+
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Border
+                                                                            Grid.Row="2"
+                                                                            Background="#dedede"
+                                                                            BorderBrush="Gray"
+                                                                            BorderThickness="1"
+                                                                            Margin="8,0,0,8"
+                                                                            Padding="8">
+                                                                            <Grid HorizontalAlignment="Center">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="Auto"/>
+                                                                                    <ColumnDefinition Width="8"/>
+                                                                                    <ColumnDefinition Width="Auto"/>
+                                                                                </Grid.ColumnDefinitions>
+
+
+                                                                                <TextBlock
+                                                                                    Grid.Column="0"
+                                                                                    Text="&#xf017;"
+                                                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                                                    VerticalAlignment="Center"
+                                                                                    FontSize="16"/>
+
+                                                                                <TextBlock Grid.Column="2" FontSize="18" VerticalAlignment="Center">
+                                                                                    <TextBlock.Text>
+                                                                                        <MultiBinding StringFormat="{}{0:HH.mm} — {1:HH.mm}">
+                                                                                            <Binding Path="StartTime"/>
+                                                                                            <Binding Path="EndTime"/>
+                                                                                        </MultiBinding>
+                                                                                    </TextBlock.Text>
+                                                                                </TextBlock>
+                                                                            </Grid>
+
+                                                                        </Border>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </Border>
+                                                    </Grid>
+
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Separator Margin="0,-4,0,12"/>
+
+                                        <Border
+                                            BorderThickness="1"
+                                            BorderBrush="Gray"
+                                            Background="#dedede"
+                                            Padding="16">
+                                            <Grid Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Column="0"
+                                                    FontSize="18"
+                                                    Text="Detalji o oglasu"/>
+
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Text="&#xf178;"
+                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="24"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <Separator Height="8" Opacity="0"/>
+                                    </StackPanel>
+                                </Border>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
 
         <Grid Visibility="{Binding HasReservations, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">

@@ -32,7 +32,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
         {
             Notifications.Clear();
 
-            var notifications = _notificationRepository.GetNotificationsForUser(_userId);
+            var notifications = _notificationRepository.GetByUserId(_userId);
             foreach (var notification in notifications)
                 Notifications.Add(notification);
 
@@ -49,9 +49,9 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
         {
             switch (notification.Type)
             {
-                case NotificationType.AdReservation:
+                case NotificationType.AdEvent:
                     Push(
-                        new AdReservationNotificationDetailsPage(_userId, notification),
+                        new AdEventNotificationDetailsPage(_userId, notification),
                         onPop: _ => UpdateNotifications()
                     );
                     break;

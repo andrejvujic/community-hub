@@ -31,7 +31,7 @@ namespace CommunityHub.Ui.Views.Resident
 
         private void UpdateUnreadNotificationCount()
         {
-            UnreadNotificationCount = _notificationRepository.GetNotificationCountForUser(
+            UnreadNotificationCount = _notificationRepository.GetCountByUserId(
                 _userId,
                 NotificationStatus.Unread
             );

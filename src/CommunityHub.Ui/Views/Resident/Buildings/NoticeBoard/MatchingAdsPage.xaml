@@ -177,7 +177,7 @@
                 <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Content="Nema podudarnih oglasa" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                     <TextBlock
-                        Text="Trenutno nema oglasa u odgovarajućoj kategoriji. Bićete obaviješteni kada se pojavi oglas odgovarajuće kategorije na oglasnoj tabli. "
+                        Text="Trenutno nema oglasa u odgovarajućoj kategoriji. Dobićete obavještenje kada se oglas odgovarajuće kategorije sa podudarnim terminima pojavi na oglasnoj tabli."
                         TextWrapping="Wrap" 
                         TextAlignment="Center"
                         FontSize="16"
