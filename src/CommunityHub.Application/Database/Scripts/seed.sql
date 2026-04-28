@@ -780,6 +780,13 @@ INSERT INTO ad_time_slot_reservations (offer_ad_time_slot_id, request_ad_time_sl
 (28, 30),  
 (31, 32);
 
+INSERT INTO reported_issues (description, reported_date, priority, status, resident_id, building_id) VALUES
+('Lift ne radi već 3 dana, stanari sa višim spratovima imaju problem.', '2026-03-10', 'urgent', 'open', 1, 1),
+('Sijalica u hodniku na 2. spratu je pregorela.', '2026-03-18', 'can_wait', 'resolved', 2, 1),
+('Curenje vode iz cevi u podrumu, mokri zidovi.', '2026-04-01', 'should_be_resolved_soon', 'potentially_resolved', 3, 1),
+('Interfon na glavnom ulazu ne funkcioniše.', '2026-04-15', 'should_be_resolved_soon', 'open', 4, 1),
+('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1);
+
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
 ('/Resources/Images/building_1.jpg', 1),
@@ -1123,6 +1130,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.ad_time_slot_reservations', 'id'),
     COALESCE((SELECT MAX(id) FROM public.ad_time_slot_reservations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.reported_issues', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.reported_issues), 0),
     true
 );
 
