@@ -339,10 +339,10 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,0,2">
                     <Grid
-                        x:Name="sideBarProblemOverviewItem"
+                        x:Name="sideBarReportedIssueItem"
                         Cursor="Hand"
                         MouseLeftButtonDown="SideBarItem_Click"
-                        Tag="ProblemOverview">
+                        Tag="ReportedIssue">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Style.Triggers>

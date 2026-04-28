@@ -7,6 +7,7 @@ using System.Data;
 using System.Text.Json;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.ReportedIsssue;
 
 namespace CommunityHub.Application.Database;
 
@@ -41,7 +42,9 @@ public static class PostgresConnection
         builder.MapEnum<NotificationStatus>("notification_statuses");
         builder.MapEnum<NotificationType>("notification_types");
         builder.MapEnum<AdEventType>("ad_event_types");
-    }
+        builder.MapEnum<ReportedIssuePriority>("reported_issue_priorities");
+        builder.MapEnum<ReportedIssueStatus>("reported_issue_statuses");
+    }   
 
     private static string LoadConnectionString()
     {

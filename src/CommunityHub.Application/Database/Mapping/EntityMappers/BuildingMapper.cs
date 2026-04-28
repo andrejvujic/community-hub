@@ -7,8 +7,10 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
     {
         private readonly AddressMapper _addressMapper = new();
         private readonly UserMapper _userMapper = new();
-        public override Building MapToEntity(IDataReader reader)
+        public override Building? MapToEntity(IDataReader reader)
         {
+            if (!reader.HasColumn("building_id")) return null;
+
             var manager = _userMapper.MapToEntity(reader.WithPrefix("building_manager"));
             if (manager == null)
                 throw new Exception("Building.Manager can't be null");

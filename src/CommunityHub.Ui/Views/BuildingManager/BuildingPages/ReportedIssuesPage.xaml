@@ -1,0 +1,181 @@
+﻿<Page
+    x:Class="CommunityHub.Ui.Views.BuildingManager.BuildingPages.ReportedIssuesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ReportedIssuesPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="{StaticResource AppFontFamily}"
+    Loaded="ReportedIssuesPage_Loaded"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:ReportedIssuePriorityToStringConverter x:Key="ReportedIssuePriorityToStringConverter" />
+        <conv:ReportedIssueStatusToStringConverter x:Key="ReportedIssueStatusToStringConverter" />
+    </Page.Resources>
+
+    <ScrollViewer>
+        <Grid Margin="10,25,40,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="0"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Cursor="Hand"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    FontSize="28"
+                    MouseLeftButtonDown="LeftArrow_Click"
+                    Text="&#xf060;" />
+
+                <TextBlock
+                    x:Name="streetInfo"
+                    Grid.Column="1"
+                    Margin="15,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="21" />
+
+                <Button
+                    Grid.Column="2"
+                    Padding="5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Content="Generiši izveštaj"
+                    Cursor="Hand"
+                    FontSize="10" />
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="30,30,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="1000" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="1" HorizontalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding ReportedIssues}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+
+                                <Border
+                                    Width="480"
+                                    Height="200"
+                                    Margin="0,20,15,0"
+                                    BorderBrush="Black"
+                                    BorderThickness="2">
+                                    <Grid Margin="15,15,15,15">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center">
+                                                <TextBlock FontSize="20">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} {1}">
+                                                            <Binding Path="Resident.Name" />
+                                                            <Binding Path="Resident.Surname" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+
+                                            </Grid>
+
+                                            <Grid
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+                                                <TextBlock FontSize="18" Text="{Binding ReportedAt, StringFormat={}{0:dd.MM.yyyy.}}" />
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1" Margin="0,8,0,0">
+                                            <TextBlock FontSize="17" Text="{Binding Status, Converter={StaticResource ReportedIssueStatusToStringConverter}, StringFormat='Status: {0}'}" />
+                                        </Grid>
+
+                                        <Grid Grid.Row="2" Margin="0,13,0,0">
+                                            <TextBlock
+                                                FontSize="14"
+                                                Text="{Binding Description, StringFormat='Opis: {0}'}"
+                                                TextWrapping="Wrap" />
+                                        </Grid>
+
+                                        <Grid Grid.Row="3" VerticalAlignment="Bottom">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock FontSize="17" Text="{Binding Priority, Converter={StaticResource ReportedIssuePriorityToStringConverter}, StringFormat='Prioritet: {0}'}" />
+                                            </Grid>
+
+                                            <Grid
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Cursor="Hand"
+                                                MouseLeftButtonDown="SolveIssue_Click">
+                                                <TextBlock Padding="5" FontSize="17">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Status}" Value="Open">
+                                                                    <Setter Property="Visibility" Value="Visible" />
+                                                                </DataTrigger>
+
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="LightGray" />
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                    <Run FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" Text="&#xf0ad;" />
+                                                    <Run Text=" Popravi" />
+                                                </TextBlock>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Page>
