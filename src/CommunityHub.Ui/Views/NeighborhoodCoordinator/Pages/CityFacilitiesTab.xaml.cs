@@ -87,21 +87,97 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
         {
-            var facility = FacilitiesComboBox.SelectedItem as CityFacility;
+            if (!TryGetBookingInputs(out var facility, out int durationHours,
+                out DateTime rangeStart, out DateTime rangeEnd)) return;
 
-            int durationHours = 0;
-            int.TryParse(DurationTextBox.Text.Trim(), out durationHours);
+            var (slotInRange, slotsOutsideRange) = _facilityBookingService
+                .FindSlots(facility!, durationHours, rangeStart, rangeEnd);
 
-            var rangeStart = StartDatePicker.SelectedDate.Value;
-            var rangeEnd = EndDatePicker.SelectedDate.Value.AddDays(1).AddSeconds(-1);
-            var (slotInRange, slotsOutsideRange) = _facilityBookingService.FindSlots(facility!, durationHours, rangeStart, rangeEnd);
+            if (slotInRange is null && slotsOutsideRange.Count == 0)
+            {
+                MessageBox.Show(
+                    "Nije pronađen nijedan slobodan termin u narednih 90 dana.",
+                    "Nema slobodnih termina",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
-            var facilityBookingWindow = new FacilityBookingWindow(facility, _selectedNeighborhood, slotInRange, slotsOutsideRange, _facilityBookingService)
+            OpenBookingWindow(facility!, slotInRange, slotsOutsideRange);
+        }
+
+        private void OpenBookingWindow(
+            CityFacility facility,
+            AvailableFacilitySlot? slotInRange,
+            List<AvailableFacilitySlot> slotsOutsideRange)
+        {
+            var facilityBookingWindow = new FacilityBookingWindow(facility, _selectedNeighborhood!, slotInRange, slotsOutsideRange, _facilityBookingService)
             {
                 Owner = Window.GetWindow(this)
             };
+
             if (facilityBookingWindow.ShowDialog() == true && facilityBookingWindow.CreatedReservation is not null)
                 Reservations.Insert(0, facilityBookingWindow.CreatedReservation);
+        }
+
+        private bool TryGetBookingInputs(
+            out CityFacility? facility,
+            out int durationHours,
+            out DateTime rangeStart,
+            out DateTime rangeEnd)
+        {
+            durationHours = 0;
+            rangeStart = DateTime.MinValue;
+            rangeEnd = DateTime.MinValue;
+
+            facility = FacilitiesComboBox.SelectedItem as CityFacility;
+            if (facility is null)
+            {
+                MessageBox.Show("Izaberite objekat.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (!TryGetDuration(out durationHours)) return false;
+            if (!TryGetDateRange(out rangeStart, out rangeEnd)) return false;
+
+            return true;
+        }
+
+        private bool TryGetDuration(out int durationHours)
+        {
+            if (!int.TryParse(DurationTextBox.Text.Trim(), out durationHours) || durationHours <= 0)
+            {
+                MessageBox.Show("Unesite ispravno trajanje posete u satima.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryGetDateRange(out DateTime rangeStart, out DateTime rangeEnd)
+        {
+            rangeStart = DateTime.MinValue;
+            rangeEnd = DateTime.MinValue;
+
+            if (StartDatePicker.SelectedDate is null || EndDatePicker.SelectedDate is null)
+            {
+                MessageBox.Show("Izaberite opseg datuma.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            rangeStart = StartDatePicker.SelectedDate.Value;
+            rangeEnd = EndDatePicker.SelectedDate.Value.AddDays(1).AddSeconds(-1);
+
+            if (rangeStart >= rangeEnd)
+            {
+                MessageBox.Show("Početni datum mora biti pre krajnjeg.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
         }
     }
 }
