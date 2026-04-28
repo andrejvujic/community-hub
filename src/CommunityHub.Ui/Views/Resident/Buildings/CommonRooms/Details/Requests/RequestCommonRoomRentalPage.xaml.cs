@@ -161,7 +161,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
         CommonRoomRentalRequest? CreateRentalRequest()
         {
-            var resident = _userRepository.GetById(_userId);
+            var resident = _userRepository.Get(_userId);
 
             if (resident is null) return null;
 

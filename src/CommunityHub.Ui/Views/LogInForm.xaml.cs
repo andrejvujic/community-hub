@@ -43,7 +43,7 @@ public partial class LogInForm : Window
             return;
         }
 
-        User user = (_userRepository.GetById(userId.Value))!;
+        User user = (_userRepository.Get(userId.Value))!;
 
         switch (role)
         {

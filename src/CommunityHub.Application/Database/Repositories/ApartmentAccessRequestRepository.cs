@@ -18,7 +18,30 @@ namespace CommunityHub.Application.Database.Repositories
             };
         }
 
-        public List<ApartmentAccessRequest> GetByApplicantId(
+        public ApartmentAccessRequest Create(ApartmentAccessRequest request)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO apartment_access_requests
+                (applicant_id, apartment_id, comment, status, creation_date)
+                VALUES
+                (@applicant_id, @apartment_id, @comment, @status, @creation_date)
+                RETURNING id"
+            ).ExtendParameters(
+                _apartmentAccessRequestMapper.MapToQueryParameters(request)
+            );
+
+            long id = query.ExecuteScalar(Convert.ToInt64);
+            return request.CopyWith(id: id);
+        }
+
+        public void Delete(long requestId)
+        {
+            PostgresQuery.Create("DELETE FROM apartment_access_requests WHERE id = @request_id")
+            .AddParameter("request_id", requestId)
+            .ExecuteScalar();
+        }
+
+        public List<ApartmentAccessRequest> GetByApplicant(
             long id,
             Status? status = null,
             RequestOrder order = RequestOrder.Unspecified
@@ -83,16 +106,21 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("id", id)
             .AddParameter("status", status);
 
-            List<ApartmentAccessRequest> requests = [];
+            List<ApartmentAccessRequest> requests = new();
+
             query.ExecuteReader(
-                    reader => requests.Add(
-                        _apartmentAccessRequestMapper.MapToEntity(reader)
-                    )
+                reader => requests.Add(
+                    _apartmentAccessRequestMapper.MapToEntity(reader)
+                )
             );
             return requests;
         }
 
-        public List<ApartmentAccessRequest> GetByUserAndBuilding(long userId, long buildingId, Status? status = null)
+        public List<ApartmentAccessRequest> GetByUserAndBuilding(
+            long userId,
+            long buildingId,
+            Status? status = null
+        )
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -152,53 +180,32 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("buildingId", buildingId)
             .AddParameter("status", status);
 
-            List<ApartmentAccessRequest> requests = [];
+            List<ApartmentAccessRequest> requests = new();
+
             query.ExecuteReader(
-                    reader => requests.Add(
-                        _apartmentAccessRequestMapper.MapToEntity(reader)
-                    )
+                reader => requests.Add(
+                    _apartmentAccessRequestMapper.MapToEntity(reader)
+                )
             );
+
             return requests;
-        }
-
-        public ApartmentAccessRequest Create(ApartmentAccessRequest request)
-        {
-            var query = PostgresQuery.Create(
-                @"INSERT INTO apartment_access_requests
-                (applicant_id, apartment_id, comment, status, creation_date)
-                VALUES
-                (@applicant_id, @apartment_id, @comment, @status, @creation_date)
-                RETURNING id"
-            ).ExtendParameters(
-                _apartmentAccessRequestMapper.MapToQueryParameters(request)
-            );
-
-            long id = query.ExecuteScalar(value => Convert.ToInt64(value));
-            return request.CopyWith(id: id);
-        }
-
-        public void Delete(long requestId)
-        {
-            PostgresQuery.Create(
-                "DELETE FROM apartment_access_requests WHERE id = @request_id"
-            )
-            .AddParameter("request_id", requestId)
-            .ExecuteScalar();
         }
 
         public bool HasPendingRequest(long userId, long apartmentId)
         {
             var query = PostgresQuery.Create(
-                @"SELECT request.id
-                FROM apartment_access_requests request
-                WHERE
-                    request.applicant_id = @user_id AND
-                    request.apartment_id = @apartment_id AND
-                    request.status = 'waiting'"
+                @"SELECT EXISTS(
+                    SELECT 1
+                    FROM apartment_access_requests request
+                    WHERE
+                        request.applicant_id = @user_id AND
+                        request.apartment_id = @apartment_id AND
+                        request.status = 'waiting')"
             )
             .AddParameter("user_id", userId)
             .AddParameter("apartment_id", apartmentId);
-            return query.ExecuteScalar(requestId => requestId != null);
+
+            return query.ExecuteScalar(Convert.ToBoolean);
         }
 
         public int UpdateStatus(long requestId, Status newStatus, string comment)

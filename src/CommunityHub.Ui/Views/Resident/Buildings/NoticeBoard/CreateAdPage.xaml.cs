@@ -45,7 +45,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private Ad? CreateAd()
         {
-            var author = _userRepository.GetById(_userId);
+            var author = _userRepository.Get(_userId);
             if (author == null) return null;
 
             return new Ad(

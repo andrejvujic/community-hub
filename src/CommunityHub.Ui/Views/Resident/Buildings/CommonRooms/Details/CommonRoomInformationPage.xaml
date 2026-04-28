@@ -12,66 +12,69 @@
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
-    <Grid>
-        <Grid Margin="8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="8" Orientation="Vertical">
+            <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="36"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Label Content="Lokacija" FontSize="18" Grid.Row="0"/>
-
-            <Border
-                Grid.Row="1" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4">
-                <Grid Background="#dedede" Height="48">
                     <TextBlock
-                        VerticalAlignment="Center"
-                        Text="{Binding CommonRoom.FloorNumber, StringFormat='{}{0}. spart'}"
-                        FontSize="18"/>
+                    Grid.Column="0"
+                    Text="&#xf3c5;"
+                    FontSize="22"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="Lokacija" FontSize="14"/>
+                        <TextBlock
+                            Text="{Binding CommonRoom.FloorNumber, StringFormat='{}{0}. sprat'}"
+                            FontSize="18"
+                            FontWeight="Bold"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <Label Content="Način iznajmljivanja" FontSize="18" Grid.Row="3"/>
+            <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="36"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Border
-                Grid.Row="4" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4">
-                <Grid Background="#dedede" Height="48">
                     <TextBlock
-                        VerticalAlignment="Center"
+                        Grid.Column="0"
+                        Text="&#xf073;"
+                        FontSize="22"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="Način iznajmljivanja" FontSize="14"/>
+                        <TextBlock
                         Text="{Binding CommonRoom.RentalType, Converter={StaticResource RentalTypeToStringConverter}}"
-                        FontSize="18"/>
+                        FontSize="18"
+                        FontWeight="Bold"
+                        TextWrapping="Wrap"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <Label Content="Opis" FontSize="18" Grid.Row="6"/>
-
-            <Border
-                Grid.Row="7" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4">
-                <TextBlock
-                    Grid.Row="7"
-                    FontSize="18"
-                    Height="120"
-                    TextWrapping="Wrap"
-                    Text="{Binding CommonRoom.Description}"/>
+            <Border BorderBrush="Gray" BorderThickness="1" Padding="8">
+                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                    <TextBlock Text="Opis" FontSize="14"/>
+                    <TextBlock
+                        Text="{Binding CommonRoom.Description}"
+                        FontSize="18"
+                        TextWrapping="Wrap"/>
+                </StackPanel>
             </Border>
-        </Grid>
-    </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
 </navigation:MainNavigatorConsumerPage>

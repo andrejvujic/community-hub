@@ -6,8 +6,22 @@ namespace CommunityHub.Application.Database.Repositories
 {
     public class BuildingRepository
     {
-        private readonly BuildingMapper _buildingMapper = new BuildingMapper();
-        private readonly ImageMapper _imageMapper = new ImageMapper();
+        private readonly BuildingMapper _buildingMapper = new();
+        private readonly ImageMapper _imageMapper = new();
+
+        public Building Create(Building building)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO buildings (floor_count, apartment_count, building_manager_id, address_id) 
+                VALUES (@floor_count, @apartment_count, @building_manager_id, @address_id)
+                RETURNING id"
+            )
+            .ExtendParameters(_buildingMapper.MapToQueryParameters(building));
+
+            long id = query.ExecuteScalar(Convert.ToInt64);
+
+            return building.CopyWith(id: id);
+        }
 
         public List<Building> Search(BuildingSearchParameters searchParameters)
         {
@@ -58,21 +72,23 @@ namespace CommunityHub.Application.Database.Repositories
             ) 
             .ExtendParameters(searchParameters.ToQueryParameters());
             
-            Dictionary<long, Building> buildings = new Dictionary<long, Building>();
+            Dictionary<long, Building> buildings = new();
             
-            query.ExecuteReader(reader => {
-                Building building = _buildingMapper.MapToEntity(reader);
+            query.ExecuteReader(
+                reader => {
+                    var building = _buildingMapper.MapToEntity(reader);
                 
-                if (!buildings.TryGetValue(building.Id, out Building? existingBuilding))
-                {
-                    buildings.Add(building.Id, building);
-                    existingBuilding = building;
-                }
+                    if (!buildings.TryGetValue(building.Id, out Building? existingBuilding))
+                    {
+                        buildings.Add(building.Id, building);
+                        existingBuilding = building;
+                    }
 
-                Image? image = _imageMapper.MapToEntity(reader);
-                if (image is not null)
-                    existingBuilding.Images.Add(image);
-            });
+                    var image = _imageMapper.MapToEntity(reader);
+                    if (image is not null)
+                        existingBuilding.Images.Add(image);
+                }
+            );
 
 
             return buildings.Values.ToList();
@@ -141,20 +157,6 @@ namespace CommunityHub.Application.Database.Repositories
             });
 
             return buildings.Values.ToList();
-        }
-
-        public Building Create(Building building)
-        {
-            var query = PostgresQuery.Create(
-                @"INSERT INTO buildings (floor_count, apartment_count, building_manager_id, address_id) 
-                VALUES (@floor_count, @apartment_count, @building_manager_id, @address_id)
-                RETURNING id"
-            )
-            .ExtendParameters(_buildingMapper.MapToQueryParameters(building));
-
-            long generatedId = query.ExecuteScalar<long>(result => Convert.ToInt64(result));
-
-            return building.CopyWith(id: generatedId);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             InitializeComponent();
             DataContext = this;
             _coordinatorId = coordinatorId;
-            User? user = _userRepository.GetById(coordinatorId);
+            User? user = _userRepository.Get(coordinatorId);
             if (user == null)
             {
                 MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);

@@ -6,7 +6,7 @@ namespace CommunityHub.Application.Database.Repositories;
 
 public class CityRepository
 {
-    private readonly CityMapper _cityMapper = new CityMapper();
+    private readonly CityMapper _cityMapper = new();
 
     public List<City> GetByCountryId(long id)
     {
@@ -36,8 +36,14 @@ public class CityRepository
         )
         .ExtendParameters(searchParameters.ToQueryParameters());
 
-        List<City> results = new List<City>();
-        query.ExecuteReader(reader => results.Add(_cityMapper.MapToEntity(reader)));
+        List<City> results = new();
+
+        query.ExecuteReader(
+            reader => results.Add(
+                _cityMapper.MapToEntity(reader)
+            )
+        );
+
         return results;
     }
 }

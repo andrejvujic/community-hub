@@ -40,7 +40,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
         private void LoadUser()
         {
-            User? user = _userRepository.GetById(_userId);
+            User? user = _userRepository.Get(_userId);
             if (user == null)
             {
                 MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);

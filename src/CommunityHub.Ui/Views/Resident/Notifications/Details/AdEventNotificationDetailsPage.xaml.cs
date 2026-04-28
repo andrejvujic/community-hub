@@ -75,7 +75,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             if (Notification.Details is not AdEventNotificationDetails details)
                 throw new Exception("Notification.Details must be an instance of AdEventNotificationDetails");
 
-            var ad = _adRepository.GetById(details.AdId);
+            var ad = _adRepository.Get(details.AdId);
             var availability = CheckAdAvailability(ad, details.EventType);
 
             if (availability == AdAvailability.Available)

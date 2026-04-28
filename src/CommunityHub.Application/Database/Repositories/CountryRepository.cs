@@ -27,8 +27,14 @@ public class CountryRepository
         )
         .ExtendParameters(searchParameters.ToQueryParameters());
 
-        List<Country> results = new List<Country>();
-        query.ExecuteReader(reader => results.Add(_countryMapper.MapToEntity(reader)));
+        List<Country> results = new();
+
+        query.ExecuteReader(
+            reader => results.Add(
+                _countryMapper.MapToEntity(reader)
+            )
+        );
+
         return results;
     }
 }

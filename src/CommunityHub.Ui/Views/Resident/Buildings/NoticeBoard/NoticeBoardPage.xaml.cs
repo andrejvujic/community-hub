@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _adRepository.GetAdsForBuilding(_buildingId, AdStatus.Active);
+            List<Ad> ads = _adRepository.GetByBuilding(_buildingId, AdStatus.Active);
             foreach (var ad in ads)
                 Ads.Add(ad);
         }

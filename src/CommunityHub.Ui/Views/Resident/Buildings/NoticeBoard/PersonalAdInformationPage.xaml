@@ -21,7 +21,7 @@
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="32"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -36,9 +36,9 @@
                         <StackPanel Grid.Column="1" Margin="8,0,0,0">
                             <TextBlock Text="Vrsta oglasa" FontSize="14"/>
                             <TextBlock
-                                Text="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}}"
+                                Text="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}, StringFormat='{}{0} pomoć'}"
                                 FontSize="18"
-                                FontWeight="SemiBold"/>
+                                FontWeight="Bold"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -46,7 +46,7 @@
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="32"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -63,43 +63,26 @@
                             <TextBlock
                                 Text="{Binding Ad.Category, Converter={StaticResource AdCategoryToStringConverter}}"
                                 FontSize="18"
-                                FontWeight="SemiBold"/>
+                                FontWeight="Bold"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="36"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="Opis" FontSize="14"/>
                         <TextBlock
-                            Grid.Column="0"
-                            Text="&#xf05a;"
-                            FontSize="22"
-                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Margin="0,4,0,0"/>
-
-                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                            <TextBlock Text="Opis" FontSize="14"/>
-                            <TextBlock
                                 Text="{Binding Ad.Description}"
                                 FontSize="18"
-                                TextWrapping="Wrap"
-                                Margin="0,4,0,0"/>
-                        </StackPanel>
-                    </Grid>
+                                TextWrapping="Wrap"/>
+                    </StackPanel>
                 </Border>
 
 
                 <Border BorderBrush="Gray" BorderThickness="1" Padding="8">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="32"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -113,7 +96,7 @@
 
                         <StackPanel Grid.Column="1" Margin="8,0,0,0">
                             <TextBlock Text="Opseg datuma" FontSize="14"/>
-                            <TextBlock FontSize="18" FontWeight="SemiBold">
+                            <TextBlock FontSize="18" FontWeight="Bold">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
                                         <Binding Path="Ad.StartDate"/>

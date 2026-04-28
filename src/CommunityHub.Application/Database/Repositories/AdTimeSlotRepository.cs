@@ -26,7 +26,7 @@ namespace CommunityHub.Application.Database.Repositories
             return adTimeSlot.CopyWith(id: id);
         }
 
-        public AdTimeSlot? GetMatchingTimeSlotInUserAds(long timeSlotId, long userId)
+        public AdTimeSlot? GetMatchingTimeSlotInAuthorAds(long referenceTimeSlotId, long authorId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -45,7 +45,7 @@ namespace CommunityHub.Application.Database.Repositories
 	                ad_2.resident_id <> ad_1.resident_id AND
 	                ad_2.building_id = ad_1.building_id AND
 	                ad_2.ad_status = 'active' AND
-	                ad_2.resident_id = @user_id
+	                ad_2.resident_id = @author_id
 
                 INNER JOIN ad_time_slots time_slot_2 ON
 	                time_slot_2.ad_id = ad_2.id AND
@@ -60,15 +60,19 @@ namespace CommunityHub.Application.Database.Repositories
 	                time_slot_1.id = @time_slot_id AND
 	                reservation.id IS NULL"
             )
-            .AddParameter("user_id", userId)
-            .AddParameter("time_slot_id", timeSlotId);
+            .AddParameter("author_id", authorId)
+            .AddParameter("time_slot_id", referenceTimeSlotId);
 
             AdTimeSlot? timeSlot = null;
-            query.ExecuteReader(reader => timeSlot = _timeSlotMapper.MapToEntity(reader));
+
+            query.ExecuteReader(
+                reader => timeSlot = _timeSlotMapper.MapToEntity(reader)
+            );
+
             return timeSlot;
         }
 
-        public List<AdTimeSlot> GetReservableTimeSlotsForUser(long adId, long userId)
+        public List<AdTimeSlot> GetReservableTimeSlots(long adId, long userId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -156,7 +160,7 @@ namespace CommunityHub.Application.Database.Repositories
             return timeSlots;
         }
 
-        public List<AdTimeSlot> GetReservedTimeSlotsForAd(long adId)
+        public List<AdTimeSlot> GetReservedTimeSlots(long adId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -230,7 +234,7 @@ namespace CommunityHub.Application.Database.Repositories
             )
             .AddParameter("ad_id", adId);
 
-            var timeSlots = new List<AdTimeSlot>();
+            List<AdTimeSlot> timeSlots = new();
 
             query.ExecuteReader(
                 reader => timeSlots.Add(

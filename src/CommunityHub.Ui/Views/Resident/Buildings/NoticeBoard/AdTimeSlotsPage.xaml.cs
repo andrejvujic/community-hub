@@ -45,7 +45,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             DataContext = this;
 
             _userId = userId;
-            _user = _userRepository.GetById(_userId)!;
+            _user = _userRepository.Get(_userId)!;
 
             Ad = ad;
 
@@ -67,7 +67,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private void UpdateReservableTimeSlots()
         {
-            var timeSlots = _timeSlotRepository.GetReservableTimeSlotsForUser(
+            var timeSlots = _timeSlotRepository.GetReservableTimeSlots(
                 Ad.Id,
                 _userId
             );
@@ -83,7 +83,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
             foreach (var selectedTimeSlot in SelectedTimeSlots)
             {
-                var matchingTimeSlot = _timeSlotRepository.GetMatchingTimeSlotInUserAds(
+                var matchingTimeSlot = _timeSlotRepository.GetMatchingTimeSlotInAuthorAds(
                     selectedTimeSlot.Id,
                     _userId
                 );

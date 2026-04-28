@@ -32,7 +32,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         private void UpdateRenalRequests()
         {
             RentalRequests.Clear();
-            var rentalRequests =  _rentalRequestRepository.GetByResidentIdAndCommonRoomId(_userId, CommonRoom.Id);
+            var rentalRequests =  _rentalRequestRepository.GetByResidentAndCommonRoom(_userId, CommonRoom.Id);
             foreach (var rentalRequest in rentalRequests)
                 RentalRequests.Add(rentalRequest);
 
