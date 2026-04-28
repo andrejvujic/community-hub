@@ -7,7 +7,6 @@ using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -31,7 +30,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private readonly AdRepository _adRepository = new();
         private readonly AdTimeSlotRepository _adTimeSlotRepository = new();
-        private readonly AdMatchSubscriptionRepository _adMatchSubscription = new();
+        private readonly AdMatchSubscriptionRepository _adMatchSubscriptionRepository = new();
 
         private readonly NotificationRepository _notficationRepository = new();
 
@@ -110,18 +109,14 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
             var matchingAds = _adRepository.GetMatchingAds(ad.Id);
 
             return matchingAds.Where(
-                matchingAd => {
-                    bool a = _adMatchSubscription.IsSubscribed(matchingAd.Id);
-                    Debug.WriteLine($"{a}");
-                    return a;
-            }
+                matchingAd => _adMatchSubscriptionRepository.IsSubscribed(matchingAd.Id)
             ).ToList();
         }
 
         private void NotifyAuthorsOfMatchingSubscribedAds(Ad ad)
         {
-            var ads = GetMatchingSubscribedAds(ad);
-            var authorIds = ads.Select(ad => ad.Author.Id).Distinct();
+            var subscribedAds = GetMatchingSubscribedAds(ad);
+            var authorIds = subscribedAds.Select(ad => ad.Author.Id).Distinct();
 
             foreach (var authorId in authorIds)
             {
@@ -138,6 +133,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
                     )
                 );
             }
+
+            foreach (var subscribedAd in subscribedAds)
+                _adMatchSubscriptionRepository.DeleteByAdId(subscribedAd.Id);
         }
 
         private AdType? _selectedType;
