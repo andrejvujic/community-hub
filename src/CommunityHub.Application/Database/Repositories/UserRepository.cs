@@ -5,8 +5,8 @@ namespace CommunityHub.Application.Database.Repositories;
 
 public class UserRepository
 {
-    private readonly UserMapper _userMapper = new UserMapper();
-    public User? GetById(long id)
+    private readonly UserMapper _userMapper = new();
+    public User? Get(long id)
     {
         var query = PostgresQuery.Create(
             @"SELECT
@@ -22,7 +22,9 @@ public class UserRepository
         .AddParameter("id", id);
 
         User? user = null;
-        query.ExecuteReader(reader => user = _userMapper.MapToEntity(reader));
+        query.ExecuteReader(
+            reader => user = _userMapper.MapToEntity(reader)
+        );
         return user;
     }
 
@@ -33,7 +35,10 @@ public class UserRepository
         )
         .AddParameter("username", username)
         .AddParameter("password", password);
-        return query.ExecuteScalar<long?>(value => Convert.ToInt64(value));
+
+        return query.ExecuteScalar<long?>(
+            value => Convert.ToInt64(value)
+        );
     }
 
     public Role? GetRoleById(long id)
@@ -42,6 +47,9 @@ public class UserRepository
             "SELECT user_role FROM users WHERE id = @id"
         )
         .AddParameter("id", id);
-        return query.ExecuteScalar<Role?>(value => (Role)value!);
+
+        return query.ExecuteScalar<Role?>(
+            value => value is Role role ? role : null
+        );
     }
 }

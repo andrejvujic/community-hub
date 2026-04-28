@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
         private void GetCommonRooms()
         {
             CommonRooms.Clear();
-            var commonRooms = _commonRoomRepository.GetByBuildingId(_buildingId);
+            var commonRooms = _commonRoomRepository.GetByBuilding(_buildingId);
             foreach (var commonRoom in commonRooms)
                 CommonRooms.Add(commonRoom);
         }

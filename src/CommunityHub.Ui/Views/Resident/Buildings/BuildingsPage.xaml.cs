@@ -32,7 +32,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
         {
             foreach (var building in MembershipGroups.Select(group => group.Building))
             {
-                List<Image> images = _imageRepository.GetByBuildingId(building.Id);
+                List<Image> images = _imageRepository.GetByBuilding(building.Id);
                 foreach (var image in images)
                     building.Images.Add(image);
             }
@@ -54,7 +54,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
 
         void UpdateMemberships()
         {
-            List<ApartmentMembership> memberships = _apartmentMembershipRepository.GetByResidentId(_userId);
+            List<ApartmentMembership> memberships = _apartmentMembershipRepository.GetByResident(_userId);
             List<BuildingMembershipGroup> groups = GroupMembershipsByBuildingId(memberships);
 
             MembershipGroups.Clear();

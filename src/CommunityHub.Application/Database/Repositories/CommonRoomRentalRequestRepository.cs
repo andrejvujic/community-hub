@@ -8,59 +8,53 @@ namespace CommunityHub.Application.Database.Repositories
         private readonly CommonRoomRentalRequestMapper _commonRoomRentalRequestMapper = new();
 
         public void Create(CommonRoomRentalRequest request)
-        {
-            PostgresQuery.Create(
-                @"INSERT INTO common_room_rental_requests
-                    (common_room_id,
-                    resident_id,
-                    requested_start_date,
-                    requested_end_date,
-                    proposed_start_date,
-                    proposed_end_date,
-                    rental_status,
-                    assigned_date)
-                  VALUES
-                    (@common_room_id,
-                    @resident_id,
-                    @requested_start_date,
-                    @requested_end_date,
-                    @proposed_start_date,
-                    @proposed_end_date,
-                    @rental_status,
-                    @assigned_date);"
-            )
-            .ExtendParameters(_commonRoomRentalRequestMapper.MapToQueryParameters(request))
-            .Execute();
-        }
+            => PostgresQuery.Create(
+                    @"INSERT INTO common_room_rental_requests
+                        (common_room_id,
+                        resident_id,
+                        requested_start_date,
+                        requested_end_date,
+                        proposed_start_date,
+                        proposed_end_date,
+                        rental_status,
+                        assigned_date)
+                      VALUES
+                        (@common_room_id,
+                        @resident_id,
+                        @requested_start_date,
+                        @requested_end_date,
+                        @proposed_start_date,
+                        @proposed_end_date,
+                        @rental_status,
+                        @assigned_date);"
+                )
+                .ExtendParameters(_commonRoomRentalRequestMapper.MapToQueryParameters(request))
+                .Execute();
 
         public void Delete(long id)
-        {
-            PostgresQuery.Create(
-                @"DELETE FROM common_room_rental_requests
-                  WHERE id = @id;"
-            )
-            .AddParameter("id", id)
-            .Execute();
-        }
+            =>  PostgresQuery.Create(
+                    @"DELETE FROM common_room_rental_requests
+                      WHERE id = @id;"
+                )
+                .AddParameter("id", id)
+                .Execute();
 
         public void Update(CommonRoomRentalRequest request)
-        {
-            PostgresQuery.Create(
-                @"UPDATE common_room_rental_requests SET
-                    common_room_id = @common_room_id,
-                    resident_id = @resident_id,
-                    requested_start_date = @requested_start_date,
-                    requested_end_date = @requested_end_date,
-                    proposed_start_date = @proposed_start_date,
-                    proposed_end_date = @proposed_end_date,
-                    rental_status = @rental_status,
-                    assigned_date = @assigned_date
-                WHERE id = @id;"
-            )
-            .ExtendParameters(_commonRoomRentalRequestMapper.MapToQueryParameters(request))
-            .AddParameter("id", request.Id)
-            .Execute();
-        }
+            => PostgresQuery.Create(
+                    @"UPDATE common_room_rental_requests SET
+                        common_room_id = @common_room_id,
+                        resident_id = @resident_id,
+                        requested_start_date = @requested_start_date,
+                        requested_end_date = @requested_end_date,
+                        proposed_start_date = @proposed_start_date,
+                        proposed_end_date = @proposed_end_date,
+                        rental_status = @rental_status,
+                        assigned_date = @assigned_date
+                    WHERE id = @id;"
+                )
+                .ExtendParameters(_commonRoomRentalRequestMapper.MapToQueryParameters(request))
+                .AddParameter("id", request.Id)
+                .Execute();
 
         public List<DateTime> GetReservedDates(long commonRoomId, long buildingId)
         {
@@ -194,7 +188,7 @@ namespace CommunityHub.Application.Database.Repositories
             return query.GetRowsAffectedCount();
         }
 
-        public List<CommonRoomRentalRequest> GetByResidentIdAndCommonRoomId(long residentId, long commonRoomId)
+        public List<CommonRoomRentalRequest> GetByResidentAndCommonRoom(long residentId, long commonRoomId)
         {
             var query = PostgresQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
@@ -257,7 +251,7 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("user_id", userId)
             .AddParameter("common_room_id", commonRoomId);
 
-            return query.ExecuteScalar<bool>(value => Convert.ToBoolean(value));
+            return query.ExecuteScalar(Convert.ToBoolean);
         }
     }
 }   

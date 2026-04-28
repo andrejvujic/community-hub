@@ -95,7 +95,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
             if (_apartmentMembershipRepository.HasMembership(_userId, ApartmentId.Value))
                 return AccessRequestValidationResult.AlreadyMember;
 
-            if (_apartmentMembershipRepository.IsApartmentOccupied(ApartmentId.Value))
+            if (_apartmentMembershipRepository.IsOccupied(ApartmentId.Value))
                 return AccessRequestValidationResult.ApartmentOccupied;
 
             return AccessRequestValidationResult.Valid;
@@ -170,8 +170,8 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         private void CreateAccessRequest() {
             if (ApartmentId == null) return;
 
-            var apartment = _apartmentRepository.GetById(ApartmentId.Value);
-            var applicant = _userRepository.GetById(_userId);
+            var apartment = _apartmentRepository.Get(ApartmentId.Value);
+            var applicant = _userRepository.Get(_userId);
             if (apartment == null || applicant == null) return;
 
             var request = new ApartmentAccessRequest(

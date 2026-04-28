@@ -65,7 +65,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         public void UpdateRequests()
         {
-            var requests = _repository.GetByApplicantId(
+            var requests = _repository.GetByApplicant(
                 _userId,
                 status: SelectedStatus,
                 order: SelectedOrder

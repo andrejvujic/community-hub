@@ -1,8 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.NoticeBoard;
-using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CommunityHub.Application.Database.Repositories
 {
@@ -34,7 +31,7 @@ namespace CommunityHub.Application.Database.Repositories
                 RETURNING id"
             ).ExtendParameters(_adMapper.MapToQueryParameters(ad));
 
-            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));;
+            long id = query.ExecuteScalar(Convert.ToInt64);
 
             return ad.CopyWith(id: id);
         }
@@ -58,18 +55,7 @@ namespace CommunityHub.Application.Database.Repositories
             .Execute();
         }
 
-        public void ArchiveExpiredAds()
-        {
-            PostgresQuery.Create(
-                @"UPDATE ads
-                SET ad_status = 'archived'
-                WHERE end_date < @today AND ad_status = 'active'"
-            )
-            .AddParameter("today", DateTime.Now)
-            .Execute();
-        }
-
-        public Ad? GetById(long id)
+        public Ad? Get(long id)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -100,7 +86,7 @@ namespace CommunityHub.Application.Database.Repositories
             return ad;
         }
 
-        public List<Ad> GetAdsForBuilding(long buildingId, AdStatus? status = null)
+        public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -143,7 +129,7 @@ namespace CommunityHub.Application.Database.Repositories
             return ads;
         }
 
-        public List<Ad> GetAuthorAdsForBuilding(long authorId, long buildingId)
+        public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -171,7 +157,8 @@ namespace CommunityHub.Application.Database.Repositories
             ).AddParameter("author_id", authorId)
             .AddParameter("building_id", buildingId);
 
-            List<Ad> ads = new List<Ad>();
+            List<Ad> ads = new();
+
             query.ExecuteReader(
                 reader => {
                     var ad = _adMapper.MapToEntity(reader);
@@ -219,11 +206,12 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE ad_1.id = @ad_id"
             ).AddParameter("ad_id", adId);
 
-            List<Ad> ads = new List<Ad>();
+            List<Ad> ads = new();
+
             query.ExecuteReader(
                 reader => {
                     var ad = _adMapper.MapToEntity(reader);
-                    if (ad == null) return;
+                    if (ad is null) return;
                     ads.Add(ad);
                 }
             );
@@ -231,28 +219,27 @@ namespace CommunityHub.Application.Database.Repositories
             return ads;
         }
 
-        public bool HasMatchingAds(long authorId, Ad ad)
+        public bool HasMatchingAds(long authorId, Ad referenceAd)
         {
             var query = PostgresQuery.Create(
                 @"SELECT EXISTS
-                    (SELECT 1
-                    FROM ads ad
+                    (SELECT 1 FROM ads ad
                     WHERE
-                        ad.building_id = @building_id AND
-                        (DATERANGE(ad.start_date, ad.end_date, '[]') &&
-                            DATERANGE(CAST(@start_date AS DATE), CAST(@end_date AS DATE), '[]'))
-                        AND ad.resident_id = @author_id
-                        AND ad.ad_type = @type
-                        AND ad.ad_category = @category
-                        AND ad.ad_status = 'active')"
-            ).AddParameter("building_id", ad.BuildingId)
-             .AddParameter("author_id", authorId)
-             .AddParameter("type", ad.Type)
-             .AddParameter("category", ad.Category)
-             .AddParameter("start_date", ad.StartDate)
-             .AddParameter("end_date", ad.EndDate);
+                    ad.building_id = @building_id AND
+                    ad.resident_id = @author_id AND
+                    ad.ad_type = @type AND
+                    ad.ad_category = @category AND
+                    ad.ad_status = 'active' AND
+                    (DATERANGE(ad.start_date, ad.end_date, '[]') && DATERANGE(CAST(@start_date AS DATE), CAST(@end_date AS DATE), '[]')))"
+            )
+            .AddParameter("building_id", referenceAd.BuildingId)
+            .AddParameter("type", referenceAd.Type)
+            .AddParameter("category", referenceAd.Category)
+            .AddParameter("start_date", referenceAd.StartDate)
+            .AddParameter("end_date", referenceAd.EndDate)
+            .AddParameter("author_id", authorId);
 
-            return query.ExecuteScalar<bool>(result => Convert.ToBoolean(result));
+            return query.ExecuteScalar(Convert.ToBoolean);
         }
 
         public int GetAdsCountByDateAndType(long buildingId, AdType type, int year, int? month)
@@ -368,6 +355,16 @@ namespace CommunityHub.Application.Database.Repositories
             });
 
             return resident ?? "N/A";
+        }
+        public void ArchiveExpiredAds()
+        {
+            PostgresQuery.Create(
+                @"UPDATE ads
+                SET ad_status = 'archived'
+                WHERE end_date < @today AND ad_status = 'active'"
+            )
+            .AddParameter("today", DateTime.Now)
+            .Execute();
         }
     }
 }

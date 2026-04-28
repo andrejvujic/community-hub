@@ -6,37 +6,54 @@ namespace CommunityHub.Application.Database.Repositories
     public class ApartmentMembershipRepository
     {
         private readonly ApartmentMembershipMapper _apartmentMembershipMapper = new();
-        public bool IsApartmentOccupied(long apartmentId)
+
+        public ApartmentMembership Create(ApartmentMembership membership)
         {
             var query = PostgresQuery.Create(
-            @"SELECT
-                membership.id
-            FROM apartment_memberships membership
-            WHERE
-                membership.apartment_id = @apartment_id"
+                @"INSERT INTO apartment_memberships
+                (building_resident_id, apartment_id, acceptance_date)
+                VALUES
+                (@resident_id, @apartment_id, @acceptance_date)
+                RETURNING id"
+            ).ExtendParameters(
+                _apartmentMembershipMapper.MapToQueryParameters(membership)
+            );
+
+            long id = query.ExecuteScalar(Convert.ToInt64);
+            return membership.CopyWith(id: id);
+        }
+
+        public bool IsOccupied(long apartmentId)
+        {
+            var query = PostgresQuery.Create(
+            @"SELECT EXISTS(
+                SELECT 1
+                FROM apartment_memberships membership
+                WHERE membership.apartment_id = @apartment_id)"
             )
             .AddParameter("apartment_id", apartmentId);
 
-            return query.ExecuteScalar<bool>(membershipId => membershipId != null);
+            return query.ExecuteScalar(Convert.ToBoolean);
         }
 
         public bool HasMembership(long userId, long apartmentId)
         {
             var query = PostgresQuery.Create(
-                @"SELECT
-                    membership.id
-                FROM apartment_memberships membership
-                WHERE
-                    membership.apartment_id = @apartment_id AND
-                    membership.building_resident_id = @user_id"
+                @"SELECT EXISTS(
+                    SELECT 1
+                        membership.id
+                    FROM apartment_memberships membership
+                    WHERE
+                        membership.apartment_id = @apartment_id AND
+                        membership.building_resident_id = @user_id)"
             )
             .AddParameter("apartment_id", apartmentId)
             .AddParameter("user_id", userId);
 
-            return query.ExecuteScalar<bool>(membershipId => membershipId != null);
+            return query.ExecuteScalar(Convert.ToBoolean);
         }
 
-        public List<ApartmentMembership> GetByResidentId(long id)
+        public List<ApartmentMembership> GetByResident(long id)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -91,11 +108,14 @@ namespace CommunityHub.Application.Database.Repositories
                 WHERE resident.id = @id"
             ).AddParameter("id", id);
 
-            List<ApartmentMembership> memberships = [];
-            query.ExecuteReader(reader => memberships.Add(
+            List<ApartmentMembership> memberships = new();
+
+            query.ExecuteReader(
+                reader => memberships.Add(
                     _apartmentMembershipMapper.MapToEntity(reader)
                 )
             );
+
             return memberships;
         }
 
@@ -156,29 +176,15 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("buildingId", buildingId);
 
 
-            List<ApartmentMembership> memberships = [];
+            List<ApartmentMembership> memberships = new();
+
             query.ExecuteReader(
-                    reader => memberships.Add(
-                        _apartmentMembershipMapper.MapToEntity(reader)
-                    )
+                reader => memberships.Add(
+                    _apartmentMembershipMapper.MapToEntity(reader)
+                )
             );
+
             return memberships;
-        }
-
-        public ApartmentMembership Create(ApartmentMembership membership)
-        {
-            var query = PostgresQuery.Create(
-                @"INSERT INTO apartment_memberships
-                (building_resident_id, apartment_id, acceptance_date)
-                VALUES
-                (@resident_id, @apartment_id, @acceptance_date)
-                RETURNING id"
-            ).ExtendParameters(
-                _apartmentMembershipMapper.MapToQueryParameters(membership)
-            );
-
-            long id = query.ExecuteScalar(value => Convert.ToInt64(value));
-            return membership.CopyWith(id: id);
         }
     }
 }

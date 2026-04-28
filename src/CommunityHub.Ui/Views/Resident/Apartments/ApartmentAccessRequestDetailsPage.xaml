@@ -28,187 +28,186 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid
-            Grid.Column="0"
-            MouseLeftButtonDown="BackButton_Click"
-            Background="Transparent">
+                    Grid.Column="0"
+                    MouseLeftButtonDown="BackButton_Click"
+                    Background="Transparent">
                     <TextBlock
-                Text="&#xf177;"
-                FontSize="24"
-                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"/>
+                        Text="&#xf177;"
+                        FontSize="24"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
                 </Grid>
 
                 <TextBlock
-            Grid.Column="1"
-            Text="Detalji o zahtjevu"
-            FontSize="20"
-            VerticalAlignment="Center">
-                </TextBlock>
-            </Grid>
-
-            <Grid Grid.Row="1" Margin="8">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" FontSize="20" Padding="4" VerticalAlignment="Center" TextWrapping="Wrap">
-                <Run Text="Zahtjev za pridruživanje zgradi"/>
-                <Run FontWeight="Bold">
-                    <Run.Text>
-                        <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="Request.Apartment.Building.Address.Street.Name" Mode="OneWay"/>
-                            <Binding Path="Request.Apartment.Building.Address.StreetNumber" Mode="OneWay"/>
-                        </MultiBinding>
-                    </Run.Text>
-                </Run>
-                </TextBlock>
-
-                <Separator Grid.Row="2"/>
-
-                <Grid Grid.Row="4">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <TextBlock
-                    Text="&#xf64f;"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="24"
-                    FontSize="20"/>
-
-                        <Separator Opacity="0" Width="8"/>
-
-                        <TextBlock
-                    FontSize="18"
-                    VerticalAlignment="Center">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}">
-                                    <Binding Path="Request.Apartment.Building.Address.City.Name"/>
-                                    <Binding Path="Request.Apartment.Building.Address.Country.Name"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <TextBlock
-                    Text="&#xf3c5;"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="24"
-                    FontSize="20"/>
-
-                        <Separator Opacity="0" Width="8"/>
-
-                        <TextBlock
-                    FontSize="18"
-                    VerticalAlignment="Center"
-                    Text="{Binding Request.Apartment.Building.Address.Neighborhood}"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="4" Orientation="Horizontal">
-                        <TextBlock
-                    Text="&#xf52a;"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="24"
-                    FontSize="20"/>
-
-                        <Separator Opacity="0" Width="8"/>
-
-                        <TextBlock
-                    FontSize="18"
-                    VerticalAlignment="Center"
-                    Text="{Binding Request.Apartment.Number, StringFormat='Stan broj {0}'}"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="6" Orientation="Horizontal">
-                        <TextBlock
-                    Text="&#xf133;"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="24"
-                    FontSize="20"/>
-
-                        <Separator Opacity="0" Width="8"/>
-
-                        <TextBlock
-                    FontSize="18"
-                    VerticalAlignment="Center"
-                    Text="{Binding Request.CreationDate, StringFormat='{}{0:d. MMMM yyyy.}', ConverterCulture=sr-Latn-RS}"/>
-                    </StackPanel>
-                </Grid>
-
-                <Separator Grid.Row="6"/>
-
-                <StackPanel Grid.Row="8" Orientation="Horizontal">
-                    <TextBlock
-                    Text="{Binding Request.Status, Converter={StaticResource StatusToIconCodeConverter}}"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    FontWeight="Bold"
+                    Grid.Column="1"
+                    Text="Detalji o zahtjevu"
                     FontSize="20"
-                    TextAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="24"/>
-
-                    <Separator Opacity="0" Width="8"/>
-
-                    <TextBlock
-                    FontSize="18"
-                    FontWeight="Bold"
-                    VerticalAlignment="Center"
-                    Text="{Binding Request.Status, Converter={StaticResource StatusToStringConverter}}"/>
-                </StackPanel>
-
-                <Grid
-                    Grid.Row="10"
-                    Visibility="{Binding Request.HasComment, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="4"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Obrazloženje:" FontWeight="Bold" FontSize="18"/>
-                    <Border
-                        Grid.Row="2"
-                        Background="#dedede"
-                        BorderBrush="#4a4a4a"
-                        BorderThickness="1">
-                        <ScrollViewer x:Name="CommentScrollViewer" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                            <TextBlock
-                                Padding="8"
-                                Text="{Binding Request.Comment}"
-                                FontSize="18"
-                                Foreground="#4a4a4a"
-                                TextWrapping="Wrap"
-                                Width="{Binding ActualWidth, ElementName=CommentScrollViewer}"/>
-                        </ScrollViewer>
-                    </Border>
-                </Grid>
+                    VerticalAlignment="Center">
+                </TextBlock>
             </Grid>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="8">
+
+                    <TextBlock FontSize="20" VerticalAlignment="Center" TextWrapping="Wrap">
+                        <Run Text="Zahtjev za pridruživanje zgradi"/>
+                        <Run FontWeight="Bold">
+                            <Run.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="Request.Apartment.Building.Address.Street.Name" Mode="OneWay"/>
+                                    <Binding Path="Request.Apartment.Building.Address.StreetNumber" Mode="OneWay"/>
+                                </MultiBinding>
+                            </Run.Text>
+                        </Run>
+                    </TextBlock>
+
+                    <Separator Margin="0,8"/>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf64f;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Lokacija" FontSize="14"/>
+                                <TextBlock FontSize="18" FontWeight="Bold">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}, {1}">
+                                            <Binding Path="Request.Apartment.Building.Address.City.Name"/>
+                                            <Binding Path="Request.Apartment.Building.Address.Country.Name"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf3c5;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Naselje" FontSize="14"/>
+                                    <TextBlock
+                                        Text="{Binding Request.Apartment.Building.Address.Neighborhood}"
+                                        FontSize="18"
+                                        FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf52a;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Stan" FontSize="14"/>
+                                <TextBlock
+                                    Text="{Binding Request.Apartment.Number}"
+                                    FontSize="18"
+                                    FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf133;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Datum zahtjeva" FontSize="14"/>
+                                <TextBlock
+                                    Text="{Binding Request.CreationDate, StringFormat='{}{0:d. MMMM yyyy.}', ConverterCulture=sr-Latn-RS}"
+                                    FontSize="18"
+                                    FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="{Binding Request.Status, Converter={StaticResource StatusToIconCodeConverter}}"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Status" FontSize="14"/>
+                                <TextBlock
+                                    Text="{Binding Request.Status, Converter={StaticResource StatusToStringConverter}}"
+                                    FontSize="18"
+                                    FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Visibility="{Binding Request.HasComment, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Padding="8">
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Obrazloženje" FontSize="14"/>
+                            <TextBlock
+                                    Text="{Binding Request.Comment}"
+                                    FontSize="18"
+                                    TextWrapping="Wrap"
+                                    FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <Button

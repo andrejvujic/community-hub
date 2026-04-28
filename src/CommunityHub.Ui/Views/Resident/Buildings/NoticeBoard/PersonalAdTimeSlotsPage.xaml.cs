@@ -67,7 +67,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard
 
         private void UpdateReservations()
         {
-            var timeSlots = _timeSlotRepository.GetReservedTimeSlotsForAd(Ad.Id);
+            var timeSlots = _timeSlotRepository.GetReservedTimeSlots(Ad.Id);
             Debug.WriteLine(timeSlots.Count);
 
             Reservations.Clear();

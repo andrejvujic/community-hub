@@ -5,9 +5,23 @@ namespace CommunityHub.Application.Database.Repositories
 {
     public class ImageRepository
     {
-        private readonly ImageMapper _imageMapper = new ImageMapper();
+        private readonly ImageMapper _imageMapper = new();
 
-        public List<Image> GetByBuildingId(long buildingId)
+        public Image Create(Image image)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO images (path, building_id, neighborhood_id, job_listing_id) 
+                VALUES (@path, @image_building_id, @image_neighborhood_id, @image_job_listing_id) 
+                RETURNING id"
+            )
+            .ExtendParameters(_imageMapper.MapToQueryParameters(image));
+
+            long id = query.ExecuteScalar(Convert.ToInt64);
+
+            return image.CopyWith(id: id);
+        }
+
+        public List<Image> GetByBuilding(long buildingId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
@@ -20,11 +34,14 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("building_id", buildingId);
 
             var images = new List<Image>();
-            query.ExecuteReader(reader =>
-            {
-                var image = _imageMapper.MapToEntity(reader);
-                if (image is not null) images.Add(image);
-            });
+
+            query.ExecuteReader(
+                reader => {
+                    var image = _imageMapper.MapToEntity(reader);
+                    if (image is not null)
+                        images.Add(image);
+                }
+            );
 
             return images;
         }
@@ -98,20 +115,6 @@ namespace CommunityHub.Application.Database.Repositories
             )
             .AddParameter("job_listing_id", jobListingId)
             .GetRowsAffectedCount();
-        }
-
-        public Image Create(Image image)
-        {
-            var query = PostgresQuery.Create(
-                @"INSERT INTO images (path, building_id, neighborhood_id, job_listing_id) 
-                VALUES (@path, @image_building_id, @image_neighborhood_id, @image_job_listing_id) 
-                RETURNING id"
-            )
-            .ExtendParameters(_imageMapper.MapToQueryParameters(image));
-
-            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
-
-            return image.CopyWith(id: id);
         }
     }
 }

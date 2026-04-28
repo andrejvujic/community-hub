@@ -22,7 +22,7 @@ namespace CommunityHub.Application.Database.Repositories
             return commonRoom.CopyWith(id: generatedId);
         }
 
-        public List<CommonRoom> GetByBuildingId(long buildingId)
+        public List<CommonRoom> GetByBuilding(long buildingId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT 
@@ -39,8 +39,11 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("building_id", buildingId);
 
             List<CommonRoom> commonRooms = new();
+
             query.ExecuteReader(
-                reader => commonRooms.Add(_commonRoomMapper.MapToEntity(reader))
+                reader => commonRooms.Add(
+                    _commonRoomMapper.MapToEntity(reader)
+                )
             );
 
             return commonRooms;
