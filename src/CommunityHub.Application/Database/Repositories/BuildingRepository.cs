@@ -133,7 +133,6 @@ namespace CommunityHub.Application.Database.Repositories
                 INNER JOIN streets street ON address.street_id = street.id
                 INNER JOIN cities city ON address.city_id = city.id
                 INNER JOIN countries country ON city.country_id = country.id
-                INNER JOIN apartments apartment ON apartment.building_id = building.id
                 LEFT JOIN images image ON image.building_id = building.id
 
                 WHERE
