@@ -82,5 +82,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             foreach (var r in reservations)
                 Reservations.Add(r);
         }
+
+        private void ReserveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var facilityBookingWindow = new FacilityBookingWindow()
+            {
+                Owner = Window.GetWindow(this)
+            };
+            facilityBookingWindow.ShowDialog();
+
+        }
     }
 }

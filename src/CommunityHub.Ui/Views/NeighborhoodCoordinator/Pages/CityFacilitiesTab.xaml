@@ -97,7 +97,15 @@
                             </StackPanel>
                         </Grid>
 
-                        <Button x:Name="ReserveButton" Content="Proveri dostupnost i rezerviši" Height="50" Width="300" FontSize="20" Cursor="Hand" Margin="5,25,5,0" HorizontalAlignment="Center"/>
+                        <Button x:Name="ReserveButton" 
+                                Content="Proveri dostupnost i rezerviši" 
+                                Height="50" 
+                                Width="300" 
+                                FontSize="20" 
+                                Cursor="Hand" 
+                                Margin="5,25,5,0" 
+                                HorizontalAlignment="Center"
+                                Click="ReserveButton_Click"/>
                     </StackPanel>
                 </Border>
 
