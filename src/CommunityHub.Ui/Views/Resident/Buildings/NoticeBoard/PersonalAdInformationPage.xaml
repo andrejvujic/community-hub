@@ -16,113 +16,117 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
-        <Grid Margin="8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="8" Orientation="Vertical">
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Label Content="Vrsta oglasa" FontSize="18" Grid.Row="0"/>
+                        <TextBlock
+                            Grid.Column="0"
+                            Text="&#xf02b;"
+                            FontSize="22"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
 
-            <Border
-                Grid.Row="1" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4">
-                <Grid Background="#dedede" Height="48">
-                    <TextBlock
-                VerticalAlignment="Center"
-                Text="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}}"
-                FontSize="18"/>
-                </Grid>
-            </Border>
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Vrsta oglasa" FontSize="14"/>
+                            <TextBlock
+                                Text="{Binding Ad.Type, Converter={StaticResource AdTypeToStringConverter}}"
+                                FontSize="18"
+                                FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-            <Label Content="Kategorija" FontSize="18" Grid.Row="3"/>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Border
-                Grid.Row="4" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4">
-                <Grid Background="#dedede" Height="48">
-                    <TextBlock
-                VerticalAlignment="Center"
-                Text="{Binding Ad.Category, Converter={StaticResource AdCategoryToStringConverter}}"
-                FontSize="18"/>
-                </Grid>
-            </Border>
+                        <TextBlock
+                            Grid.Column="0"
+                            Text="&#xf022;"
+                            FontSize="22"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
 
-            <Label Content="Opis" FontSize="18" Grid.Row="6"/>
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Kategorija" FontSize="14"/>
+                            <TextBlock
+                                Text="{Binding Ad.Category, Converter={StaticResource AdCategoryToStringConverter}}"
+                                FontSize="18"
+                                FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-            <Border
-                Grid.Row="7" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4">
-                <TextBlock
-                    Grid.Row="7"
-                    FontSize="18"
-                    Height="120"
-                    TextWrapping="Wrap"
-                    Text="{Binding Ad.Description}"/>
-            </Border>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Label Content="Opseg datuma" FontSize="18" Grid.Row="9"/>
+                        <TextBlock
+                            Grid.Column="0"
+                            Text="&#xf05a;"
+                            FontSize="22"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Margin="0,4,0,0"/>
 
-            <Border
-                Grid.Row="10" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1">
-                <Grid Background="#dedede" Height="48">
-                    <TextBlock FontSize="18" Padding="4" VerticalAlignment="Center">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
-                                <Binding Path="Ad.StartDate"/>
-                                <Binding Path="Ad.EndDate"/>
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                </Grid>
-            </Border>
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Opis" FontSize="14"/>
+                            <TextBlock
+                                Text="{Binding Ad.Description}"
+                                FontSize="18"
+                                TextWrapping="Wrap"
+                                Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
 
-            <Label
-                Visibility="{Binding Ad.IsArchived, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Content="Status"
-                FontSize="18"
-                Grid.Row="12"/>
 
-            <Border
-                Grid.Row="13" 
-                Background="#dedede"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                Padding="4"
-                Visibility="{Binding Ad.IsArchived, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid Background="#dedede" Height="48">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Text="{Binding Ad.Status, Converter={StaticResource AdStatusToStringConverter}}"
-                        FontSize="18"/>
-                </Grid>
-            </Border>
-        </Grid>
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
+                        <TextBlock
+                            Grid.Column="0"
+                            Text="&#xf073;"
+                            FontSize="22"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Opseg datuma" FontSize="14"/>
+                            <TextBlock FontSize="18" FontWeight="SemiBold">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                        <Binding Path="Ad.StartDate"/>
+                                        <Binding Path="Ad.EndDate"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
         <Button
             Visibility="{Binding Ad.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"
             HorizontalAlignment="Center"
