@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.CityFacility;
+using CommunityHub.Application.Services;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
@@ -28,6 +29,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly CityFacilityRepository _cityFacilityRepository = new CityFacilityRepository();
         private readonly FacilityReservationRepository _facilityReservationRepository = new FacilityReservationRepository();
+        private readonly FacilityBookingService _facilityBookingService = new FacilityBookingService(new FacilityReservationRepository());
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
         public ObservableCollection<CityFacility> Facilities { get; set; } = new ObservableCollection<CityFacility>();
