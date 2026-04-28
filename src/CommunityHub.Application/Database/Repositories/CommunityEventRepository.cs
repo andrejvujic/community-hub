@@ -465,5 +465,16 @@ namespace CommunityHub.Application.Database.Repositories
              .AddParameter("id", eventId);
             query.GetRowsAffectedCount();
         }
+
+        public int GetOrganizedEventsCount(long organizerId)
+        {
+            var query = PostgresQuery.Create(
+                "SELECT COUNT(*) FROM community_events WHERE organizer_citizen_id = @organizerId AND status = @status"
+            )
+            .AddParameter("organizerId", organizerId)
+            .AddParameter("status", EventStatus.Finished);
+
+            return query.ExecuteScalar<int>(Convert.ToInt32);
+        }
     }
 }

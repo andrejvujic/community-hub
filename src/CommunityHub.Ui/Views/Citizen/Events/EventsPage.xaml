@@ -183,7 +183,7 @@
 
         <Border Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}" Background="Transparent" Padding="40">
             <Grid>
-                <TextBlock TextAlignment="Center" FontSize="20" Foreground="#333" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700">
+                <TextBlock TextAlignment="Center" FontSize="20" Foreground="#333" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700" Margin="0,0,0,20">
                     Da biste videli događaje u vašem kvartu, morate prvo imati članstvo u kvartu. Možete podneti zahtev za pridruživanje novom kvartu u tabu Kvartovi.
                 </TextBlock>
             </Grid>
