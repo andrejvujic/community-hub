@@ -11,10 +11,10 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         public override ReportedIssue MapToEntity(IDataReader reader)
         {
             var id = reader.GetInt64(reader.GetOrdinal("reported_issue_id"));
-            
+
             var description = reader.GetString(reader.GetOrdinal("description"));
 
-            var reportedAt = reader.GetDateTime(reader.GetOrdinal("reported_at"));
+            var reportedAt = reader.GetDateTime(reader.GetOrdinal("reported_date"));
 
             var priority = (ReportedIssuePriority)reader.GetValue(reader.GetOrdinal("reported_issue_priority"));
 
@@ -34,7 +34,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             return new()
             {
                 { "description", entity.Description },
-                { "reported_at", entity.ReportedAt },
+                { "reported_date", entity.ReportedAt },
                 { "priority", entity.Priority },
                 { "status", entity.Status },
                 { "resident_id", entity.ResidentId },

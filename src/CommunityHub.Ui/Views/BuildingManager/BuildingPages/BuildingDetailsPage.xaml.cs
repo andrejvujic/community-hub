@@ -68,7 +68,8 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     break;
                 case "SchedulingAssembly":
                     break;
-                case "ProblemOverview":
+                case "ReportedIssue":
+                    BuildingFrame.Navigate(new ReportedIssuesPage(_user, _building));
                     break;
             }
         }
