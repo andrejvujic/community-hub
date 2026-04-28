@@ -16,8 +16,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             long id = reader.GetInt64(idOrdinal);
 
             string name = reader.GetString(reader.GetOrdinal("city_facility_name"));
-            City city = _cityMapper.MapToEntity(reader);
-            Country country = _countryMapper.MapToEntity(reader);
+            City city = _cityMapper.MapToEntity(reader.WithPrefix("facility"));
+            Country country = _countryMapper.MapToEntity(reader.WithPrefix("facility"));
 
             return new CityFacility(name, city, country, id);
         }

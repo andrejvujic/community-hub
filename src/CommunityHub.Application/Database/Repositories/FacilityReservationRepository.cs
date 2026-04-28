@@ -15,11 +15,11 @@ namespace CommunityHub.Application.Database.Repositories
             city_facility.id AS city_facility_id,
             city_facility.name AS city_facility_name,
 
-            facility_city.id AS city_id,
-            facility_city.name AS city_name,
+            facility_city.id AS facility_city_id,
+            facility_city.name AS facility_city_name,
 
-            facility_country.id AS country_id,
-            facility_country.name AS country_name,
+            facility_country.id AS facility_country_id,
+            facility_country.name AS facility_country_name,
 
             neighborhood.id AS neighborhood_id,
             neighborhood.name AS neighborhood_name,

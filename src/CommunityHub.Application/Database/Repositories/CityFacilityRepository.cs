@@ -14,11 +14,11 @@ namespace CommunityHub.Application.Database.Repositories
                     city_facility.id AS city_facility_id,
                     city_facility.name AS city_facility_name,
 
-                    city.id AS city_id,
-                    city.name AS city_name,
+                    city.id AS facility_city_id,
+                    city.name AS facility_city_name,
 
-                    country.id AS country_id,
-                    country.name AS country_name
+                    country.id AS facility_country_id,
+                    country.name AS facility_country_name
 
                 FROM city_facilities city_facility
                 INNER JOIN cities city ON city.id = city_facility.city_id
