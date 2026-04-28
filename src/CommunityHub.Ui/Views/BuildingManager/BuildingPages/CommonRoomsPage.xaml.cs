@@ -26,7 +26,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         private void RefreshCommonRoomsPage()
         {
             CommonRooms.Clear();
-            var commonRooms = _commonRoomRepository.GetByUserAndBuilding(_user.Id, _building.Id);
+            var commonRooms = _commonRoomRepository.GetByBuilding(_building.Id);
 
             foreach (var commonRoom in commonRooms)
                 CommonRooms.Add(commonRoom);

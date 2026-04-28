@@ -73,10 +73,8 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         }
         private void YearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             RefreshOfferRequestPieChart();
             RefreshCategoryBarChart();
-
         }
         private void RefreshOfferRequestPieChart()
         {

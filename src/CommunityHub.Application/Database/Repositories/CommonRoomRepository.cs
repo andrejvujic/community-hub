@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.CommonRoom;
 
 namespace CommunityHub.Application.Database.Repositories
@@ -46,7 +45,7 @@ namespace CommunityHub.Application.Database.Repositories
             return commonRooms;
         }
 
-        public List<CommonRoom> GetByUserAndBuilding(long managerId, long buildingId)
+        public List<CommonRoom> GetByBuilding(long buildingId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT 
@@ -58,12 +57,8 @@ namespace CommunityHub.Application.Database.Repositories
 	                common_room.rental_type
 
                     FROM common_rooms common_room
-                    INNER JOIN buildings building ON
-                    common_room.building_id = building.id
-                    WHERE building.building_manager_id = @manager_id
-                    AND building.id = @building_id;"
+                    WHERE common_room.building_id = @building_id;" 
             )
-            .AddParameter("manager_id", managerId)
             .AddParameter("building_id", buildingId);
 
             List<CommonRoom> commonRooms = new();
