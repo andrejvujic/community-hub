@@ -1,31 +1,36 @@
-﻿namespace CommunityHub.Application.Domain
+﻿namespace CommunityHub.Application.Domain.CityFacility
 {
     public class CityFacility
     {
         public long Id { get; private set; }
-        public City City { get; private set; }
         public string Name { get; private set; }
+        public City City { get; private set; }
+        public Country Country { get; private set; }
 
         public CityFacility(
-            City city,
             string name,
+            City city,
+            Country country,
             long id = 0
         )
         {
             Id = id;
-            City = city;
             Name = name;
+            City = city;
+            Country = country;
         }
 
         public CityFacility CopyWith(
             long? id = null,
+            string? name = null,
             City? city = null,
-            string? name = null
+            Country? country = null
         )
         {
             return new CityFacility(
-                city ?? City,
                 name ?? Name,
+                city ?? City,
+                country ?? Country,
                 id ?? Id
             );
         }

@@ -30,13 +30,14 @@
                          ItemsSource="{Binding Neighborhoods}"
                          Style="{StaticResource NeighborhoodListBoxStyle}"
                          ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
+                         SelectionChanged="NeighborhoodsListBox_SelectionChanged">
                 </ListBox>
             </Grid>
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-            <Grid>
+            <Grid x:Name="FacilitiesPanel" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.8*" />
                     <ColumnDefinition Width="*" />
@@ -45,18 +46,19 @@
                 <Border Grid.Column="0" BorderBrush="Black"  BorderThickness="1" Margin="10" Padding="10">
                     <StackPanel>
                         <TextBlock Text="Rezervacija za kvart:" FontSize="32" HorizontalAlignment="Center" />
-                        <TextBlock Text="Naziv kvarta" FontSize="32" Margin="0,5,0,50" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="NeighborhoodNameTextBlock" FontSize="32" Margin="0,5,0,50" HorizontalAlignment="Center" />
 
                         <TextBlock Text="Izaberite objekat:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                        <ComboBox x:Name="FacilitiesComboBox" Height="35"  Width="250" FontSize="20" Margin="0,0,0,40" HorizontalAlignment="Center">
+                        <ComboBox x:Name="FacilitiesComboBox" 
+                                  Height="35"  
+                                  Width="250" 
+                                  FontSize="20" 
+                                  Margin="0,0,0,40" 
+                                  HorizontalAlignment="Center"
+                                  ItemsSource="{Binding Facilities}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock>
-                                        <Run Text="Objekat"/>
-                                        <Run Text=" ("/>
-                                        <Run Text="20"/>
-                                        <Run Text=" glasova)"/>
-                                    </TextBlock>
+                                    <TextBlock Text="{Binding Name}"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
@@ -67,7 +69,13 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Trajanje posete (h):" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox x:Name="DurationTextBox" Grid.Column="1" Height="35" Width="50" FontSize="14" VerticalContentAlignment="Center" Padding="5,0"/>
+                            <TextBox x:Name="DurationTextBox" 
+                                     Grid.Column="1" 
+                                     Height="35" 
+                                     Width="50" 
+                                     FontSize="24" 
+                                     VerticalContentAlignment="Center" 
+                                     Padding="5,0"/>
                         </Grid>
 
                         <TextBlock Text="Opseg datuma:" FontSize="24" Margin="0,30,0,10" HorizontalAlignment="Center"/>
@@ -89,7 +97,15 @@
                             </StackPanel>
                         </Grid>
 
-                        <Button x:Name="ReserveButton" Content="Proveri dostupnost i rezerviši" Height="50" Width="300" FontSize="20" Cursor="Hand" Margin="5,25,5,0" HorizontalAlignment="Center"/>
+                        <Button x:Name="ReserveButton" 
+                                Content="Proveri dostupnost i rezerviši" 
+                                Height="50" 
+                                Width="300" 
+                                FontSize="20" 
+                                Cursor="Hand" 
+                                Margin="5,25,5,0" 
+                                HorizontalAlignment="Center"
+                                Click="ReserveButton_Click"/>
                     </StackPanel>
                 </Border>
 
@@ -108,11 +124,12 @@
 
                             <TextBlock Grid.Row="0" FontSize="20" Margin="0,0,0,15">
                                 <Run Text="Spisak rezervacija kvarta "/>
-                                <Run Text="NazivKvarta" />
+                                <Run x:Name="ReservationsTitleRun"/>
                             </TextBlock>
 
                             <DataGrid x:Name="ReservationsDataGrid"
                                       Grid.Row="1" 
+                                      ItemsSource="{Binding Reservations}"
                                       AutoGenerateColumns="False" 
                                       CanUserAddRows="False" 
                                       CanUserResizeRows="False"
@@ -121,12 +138,13 @@
                                       CanUserSortColumns="False"
                                       IsReadOnly="True"
                                       HeadersVisibility="Column"
-                                      Background="Transparent">
+                                      Background="Transparent"
+                                      FontSize="18">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Objekat" Width="*"/>
-                                    <DataGridTextColumn Header="Datum" Width="100"/>
-                                    <DataGridTextColumn Header="Vreme" Width="80"/>
-                                    <DataGridTextColumn Header="Trajanje" Width="80"/>
+                                    <DataGridTextColumn Header="Objekat" Binding="{Binding Facility.Name}" Width="*"/>
+                                    <DataGridTextColumn Header="Datum" Binding="{Binding StartDatetime, StringFormat='{}{0:dd.MM.yyyy.}'}" Width="100"/>
+                                    <DataGridTextColumn Header="Početak" Binding="{Binding StartDatetime, StringFormat='{}{0:HH:mm}'}" Width="80"/>
+                                    <DataGridTextColumn Header="Kraj" Binding="{Binding EndDatetime, StringFormat='{}{0:HH:mm}'}" Width="80"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

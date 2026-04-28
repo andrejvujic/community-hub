@@ -22,10 +22,11 @@ namespace CommunityHub.Application.Database.Repositories
                 ORDER BY price_entry.valid_from"
             ).AddParameter("job_listing_id", jobListingId);
 
-            var results = new List<PriceEntry>();
             List<PriceEntry> priceEntries = new List<PriceEntry>();
-            query.ExecuteReader(reader =>{
-                priceEntries.Add(_priceEntryMapper.MapToEntity(reader));
+            query.ExecuteReader(reader =>
+            {
+                var priceEntry = _priceEntryMapper.MapToEntity(reader);
+                if (priceEntry is not null) priceEntries.Add(priceEntry);
             });
 
             return priceEntries;
