@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Media;
+using System.Collections.Generic;
 using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Helpers.Converters
@@ -10,23 +10,28 @@ namespace CommunityHub.Ui.Helpers.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var stars = new List<TrustLevelIconStar>();
             if (value is TrustStatus status)
             {
+                int count = 0;
+                TrustStarType type = TrustStarType.Empty;
                 switch (status)
                 {
                     case TrustStatus.New:
-                        return new TrustLevelIcon { StarCount = 1, StarType = TrustStarType.Empty };
+                        count = 1; type = TrustStarType.Empty; break;
                     case TrustStatus.Inactive:
-                        return new TrustLevelIcon { StarCount = 1, StarType = TrustStarType.Black };
+                        count = 1; type = TrustStarType.Black; break;
                     case TrustStatus.Active:
-                        return new TrustLevelIcon { StarCount = 1, StarType = TrustStarType.Yellow };
+                        count = 1; type = TrustStarType.Yellow; break;
                     case TrustStatus.Prominent:
-                        return new TrustLevelIcon { StarCount = 2, StarType = TrustStarType.Yellow };
+                        count = 2; type = TrustStarType.Yellow; break;
                     case TrustStatus.Trustworthy:
-                        return new TrustLevelIcon { StarCount = 3, StarType = TrustStarType.Yellow };
+                        count = 3; type = TrustStarType.Yellow; break;
                 }
+                for (int i = 0; i < count; i++)
+                    stars.Add(new TrustLevelIconStar { StarType = type });
             }
-            return new TrustLevelIcon { StarCount = 0, StarType = TrustStarType.Empty };
+            return stars;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -37,9 +42,8 @@ namespace CommunityHub.Ui.Helpers.Converters
 
     public enum TrustStarType { Empty, Black, Yellow }
 
-    public class TrustLevelIcon
+    public class TrustLevelIconStar
     {
-        public int StarCount { get; set; }
         public TrustStarType StarType { get; set; }
     }
 }

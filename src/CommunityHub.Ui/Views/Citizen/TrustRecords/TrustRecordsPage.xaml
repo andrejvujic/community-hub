@@ -12,6 +12,7 @@
     <Page.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
         <converters:TrustStatusToStringConverter x:Key="TrustStatusToStringConverter" />
+        <converters:TrustStatusToIconConverter x:Key="TrustStatusToIconConverter" />
     </Page.Resources>
 
     <Grid Margin="40,20,40,40">
@@ -54,6 +55,39 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Row="0" Grid.Column="1" Height="220" Width="300" Background="#FFE5E5E5" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,0">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <ItemsControl ItemsSource="{Binding TrustStatus, Converter={StaticResource TrustStatusToIconConverter}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="56" Margin="4,10,4,10" HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="★"/>
+                                                <Setter Property="Foreground" Value="Gold"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding StarType}" Value="Empty">
+                                                        <Setter Property="Text" Value="☆"/>
+                                                        <Setter Property="Foreground" Value="Gray"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StarType}" Value="Black">
+                                                        <Setter Property="Text" Value="★"/>
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"
+                                   Text="{Binding TrustStatus, Converter={StaticResource TrustStatusToStringConverter}}"/>
+                    </StackPanel>
                 </Border>
                 <Button x:Name="ShowOtherMembersTrustRecordsButton" Grid.Row="1"  Grid.Column="2" Height="66" HorizontalAlignment="Stretch" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2" Margin="0,1,10,0" Click="ShowOtherMembersTrustButton_Click">
                     <TextBlock TextAlignment="Center" TextWrapping="Wrap">
