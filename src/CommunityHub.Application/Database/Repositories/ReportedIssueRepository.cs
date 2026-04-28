@@ -3,13 +3,13 @@ using CommunityHub.Application.Domain.ReportedIsssue;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class ReportedIssueRepository
-    {
+	public class ReportedIssueRepository
+	{
 		private readonly ReportedIssueMapper _reportedIssueMapper = new();
-        public List<ReportedIssue> GetAllByBuilding(long buildingId)
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT
+		public List<ReportedIssue> GetAllByBuilding(long buildingId)
+		{
+			var query = PostgresQuery.Create(
+				@"SELECT
 					reported_issue.id AS reported_issue_id,
 					reported_issue.description,
 					reported_issue.reported_date,
@@ -26,15 +26,29 @@ namespace CommunityHub.Application.Database.Repositories
 					u.surname AS resident_surname
 	
 					FROM reported_issues reported_issue INNER JOIN users u on reported_issue.resident_id = u.id 
-					WHERE reported_issue.building_id = @building_id;"
-                )
+					WHERE reported_issue.building_id = @building_id
+					ORDER BY reported_issue.reported_date ASC;"
+				)
 				.AddParameter("@building_id", buildingId);
 
 			List<ReportedIssue> reportedIssues = new List<ReportedIssue>();
 
-			query.ExecuteReader(reader => reportedIssues.Add(_reportedIssueMapper.MapToEntity(reader)));	
+			query.ExecuteReader(reader => reportedIssues.Add(_reportedIssueMapper.MapToEntity(reader)));
 
 			return reportedIssues;
-        }
-    }
+		}
+
+		public int UpdateStatus(long issueId, ReportedIssueStatus newStatus)
+		{
+			var query = PostgresQuery.Create(
+				@"UPDATE reported_issues
+				  SET status = @new_status
+				  WHERE id = @issue_id;"
+			)
+			.AddParameter("@new_status", newStatus)
+			.AddParameter("@issue_id", issueId);
+
+			return query.GetRowsAffectedCount();
+		}
+	}
 }

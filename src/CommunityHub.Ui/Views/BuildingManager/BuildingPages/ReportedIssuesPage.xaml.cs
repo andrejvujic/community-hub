@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
-using System.Diagnostics;
-
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 {
@@ -13,19 +11,22 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
     {
         private readonly User _user;
         private readonly Building _building;
-        public ObservableCollection<ReportedIssue> ReportedIssues = [];
+        public ObservableCollection<ReportedIssue> ReportedIssues { get; set; } = [];
         private readonly ReportedIssueRepository _reportedIssueRepository = new();
         public ReportedIssuesPage(User user, Building building)
         {
             InitializeComponent();
             _user = user;
             _building = building;
+            DataContext = this;
             SetStreetInfo();
         }
-        private void ReportedIssuesPage_Loaded(object sender, RoutedEventArgs e)
+        private void ReportedIssuesPage_Loaded(object sender, RoutedEventArgs e) => RefreshReportedIssues();
+        private void RefreshReportedIssues()
         {
-            var reportedIssues = LoadReportedIssues();
+            ReportedIssues.Clear();
 
+            var reportedIssues = LoadReportedIssues();
             foreach (var reportedIssue in reportedIssues)
                 ReportedIssues.Add(reportedIssue);
         }
@@ -40,6 +41,20 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         private List<ReportedIssue> LoadReportedIssues()
         {
             return _reportedIssueRepository.GetAllByBuilding(_building.Id);
+        }
+        private void SolveIssue_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Da li želite da označite ovaj problem kao rešen?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.No) return;
+
+            var reportedIssue = (sender as Grid)?.DataContext as ReportedIssue;
+
+            if (reportedIssue == null) return;
+            
+            _reportedIssueRepository.UpdateStatus(reportedIssue.Id, ReportedIssueStatus.PotentiallyResolved);
+
+            RefreshReportedIssues();
         }
     }
 }
