@@ -4,26 +4,22 @@ namespace CommunityHub.Application.Domain
 {
     public class CitizenTrustRecord
     {
-        public string Name { get; }
-        public string Surname { get; } 
+        public Citizen Citizen { get; }
         public int Organized { get; }
         public int Volunteered { get; }
-        public DateTime JoiningDate { get; }
         public TrustStatus TrustStatus => CalculateTrustStatus();
 
-        public CitizenTrustRecord(string name, string surname, int organized, int volunteered, DateTime joiningDate)
+        public CitizenTrustRecord(Citizen citizen, int organized, int volunteered)
         {
-            Name = name;
-            Surname = surname;
+            Citizen = citizen;
             Organized = organized;
             Volunteered = volunteered;
-            JoiningDate = joiningDate;
         }
 
         private TrustStatus CalculateTrustStatus()
         {
             var totalEvents = Organized + Volunteered;
-            var membershipDuration = DateTime.Now - JoiningDate;
+            var membershipDuration = Citizen?.Membership != null ? DateTime.Now - Citizen.Membership.AcceptanceDate : TimeSpan.MaxValue;
 
             if (membershipDuration.TotalDays < 365)
                 return TrustStatus.New;

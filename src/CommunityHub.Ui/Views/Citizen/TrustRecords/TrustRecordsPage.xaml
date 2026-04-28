@@ -11,56 +11,50 @@
 
     <Page.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+        <converters:TrustStatusToStringConverter x:Key="TrustStatusToStringConverter" />
     </Page.Resources>
 
     <Grid Margin="40,20,40,40">
-        <Grid Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+        <Grid Visibility="{Binding Citizen.Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
                 <TextBlock Text="Moja evidencija poverenja" FontSize="48" Margin="0,50,0,40"/>
                 <TextBlock FontSize="20" Margin="0,0,0,5">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="Korisnik: {0} {1}">
-                            <Binding Path="Name" TargetNullValue="N/A" FallbackValue="N/A" />
-                            <Binding Path="Surname" TargetNullValue="" FallbackValue="" />
+                            <Binding Path="Citizen.Name" TargetNullValue="N/A" FallbackValue="N/A" />
+                            <Binding Path="Citizen.Surname" TargetNullValue="" FallbackValue="" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                
                 <TextBlock FontSize="20" Margin="0,0,0,5">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="Adresa: {0} {1}">
-                            <Binding Path="Address.Street.Name" TargetNullValue="N/A" FallbackValue="N/A" />
-                            <Binding Path="Address.StreetNumber" TargetNullValue="" FallbackValue="" />
+                            <Binding Path="Citizen.Address.Street.Name" TargetNullValue="N/A" FallbackValue="N/A" />
+                            <Binding Path="Citizen.Address.StreetNumber" TargetNullValue="" FallbackValue="" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                
                 <StackPanel>
-                    <TextBlock Text="{Binding Membership.Neighborhood.Name, StringFormat='Kvart: \{0\}'}" FontSize="20" Margin="0,0,0,5"/>
-                    <TextBlock Text="{Binding Membership.AcceptanceDate, StringFormat='Član od \{0:d.M.yyyy.\}'}" FontSize="20" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding Citizen.Membership.Neighborhood.Name, StringFormat='Kvart: {0}'}" FontSize="20" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding Citizen.Membership.AcceptanceDate, StringFormat='Član od {0:d.M.yyyy.}'}" FontSize="20" Margin="0,0,0,5"/>
                 </StackPanel>
             </StackPanel>
-            
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,50">
-                <TextBlock x:Name="OrganizedEventsCountText" FontSize="20" Margin="0,0,0,5"/>
-                <TextBlock x:Name="ConfirmedVolunteerCountText" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Organized, StringFormat='Organizovanih događaja: {0}'}" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Volunteered, StringFormat='Broj potvrđenih volontiranja: {0}'}" FontSize="20" Margin="0,0,0,5"/>
             </StackPanel>
-            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.8*"/>
                     <RowDefinition Height="0.2*"/>
                 </Grid.RowDefinitions>
-                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
                 <Border Grid.Row="0" Grid.Column="1" Height="220" Width="300" Background="#FFE5E5E5" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,0">
                 </Border>
-                
                 <Button x:Name="ShowOtherMembersTrustRecordsButton" Grid.Row="1"  Grid.Column="2" Height="66" HorizontalAlignment="Stretch" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2" Margin="0,1,10,0" Click="ShowOtherMembersTrustButton_Click">
                     <TextBlock TextAlignment="Center" TextWrapping="Wrap">
                         Evidencije poverenja ostalih<LineBreak/>članova kvarta<LineBreak/>(Ctrl + 1)
@@ -68,8 +62,7 @@
                 </Button>
             </Grid>
         </Grid>
-        
-        <Border Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}" Background="Transparent" Padding="40">
+        <Border Visibility="{Binding Citizen.Membership, Converter={StaticResource NullToVisibility}}" Background="Transparent" Padding="40">
             <Grid>
                 <TextBlock TextAlignment="Center" FontSize="20" Foreground="#333" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700">
                     Da biste videli evidencije poverenja u vašem kvartu, morate prvo imati članstvo u kvartu. Možete podneti zahtev za pridruživanje novom kvartu u tabu Kvartovi.
