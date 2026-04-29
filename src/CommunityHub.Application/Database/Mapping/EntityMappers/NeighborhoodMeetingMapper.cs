@@ -30,7 +30,16 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override Dictionary<string, object?> MapToQueryParameters(NeighborhoodMeeting entity)
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object?>
+            {
+                { "theme", entity.Theme },
+                { "meeting_time", entity.MeetingTime.ToTimeSpan() },
+                { "date_range_start", entity.DateRangeStart.ToDateTime(TimeOnly.MinValue) },
+                { "date_range_end", entity.DateRangeEnd.ToDateTime(TimeOnly.MinValue) },
+                { "scheduled_date", entity.ScheduledDate?.ToDateTime(TimeOnly.MinValue) },
+                { "status", entity.Status },
+                { "neighborhood_id", entity.Neighborhood.Id }
+            };
         }
     }
 }
