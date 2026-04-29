@@ -47,29 +47,5 @@ namespace CommunityHub.Application.Database.Repositories
 
             return commonRooms;
         }
-
-        public List<CommonRoom> GetByBuilding(long buildingId)
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT 
-	                common_room.id as common_room_id,
-	                common_room.building_id,
-	                common_room.name,
-	                common_room.description,
-	                common_room.floor_number,
-	                common_room.rental_type
-
-                    FROM common_rooms common_room
-                    WHERE common_room.building_id = @building_id;" 
-            )
-            .AddParameter("building_id", buildingId);
-
-            List<CommonRoom> commonRooms = new();
-            query.ExecuteReader(
-                reader => commonRooms.Add(_commonRoomMapper.MapToEntity(reader))
-            );
-
-            return commonRooms;
-        }
     }
 }
