@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace CommunityHub.Ui.Views.Resident.Buildings
+namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
 {
     public partial class BuildingsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {

@@ -1,12 +1,11 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms;
-using CommunityHub.Ui.Views.Resident.Buildings.Ads;
 using System.Windows.Input;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 
-namespace CommunityHub.Ui.Views.Resident.Buildings
+namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
 {
     public partial class BuildingOptionsPage : MainNavigatorConsumerPage
     {
