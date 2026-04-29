@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
@@ -17,9 +18,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     /// </summary>
     public partial class ScheduleMeetingWindow : Window
     {
-        public ScheduleMeetingWindow()
+        private MeetingTheme? _theme;
+
+        public ScheduleMeetingWindow(MeetingTheme? fixedTheme = null)
         {
             InitializeComponent();
+            _theme = fixedTheme;
         }
     }
 }
