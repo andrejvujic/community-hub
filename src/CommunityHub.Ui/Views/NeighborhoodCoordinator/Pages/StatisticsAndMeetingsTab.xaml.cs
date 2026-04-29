@@ -89,6 +89,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             UpdateRow(ActiveCitizensTxt, ActiveCitizensPercentTxt, trustRecords, TrustStatus.Active, total);
             UpdateRow(ProminentCitizensTxt, ProminentCitizensPercentTxt, trustRecords, TrustStatus.Prominent, total);
             UpdateRow(TrustworthyCitizensTxt, TrustworthyCitizensPercentTxt, trustRecords, TrustStatus.Trustworthy, total);
+
+            UpdateRecommendationUI(trustRecords);
         }
 
         private void UpdateRow(TextBlock countTxt, TextBlock percentTxt, List<CitizenTrustRecord> trustRecords, TrustStatus status, int total)
@@ -98,6 +100,57 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
             countTxt.Text = count.ToString();
             percentTxt.Text = $"({percent}%)";
+        }
+
+        private void UpdateRecommendationUI(List<CitizenTrustRecord> trustRecords)
+        {
+            ResetRecommendationUI();
+            if (trustRecords.Count == 0) return;
+
+            int newCount = trustRecords.Count(r => r.TrustStatus == TrustStatus.New);
+            int inactiveCount = trustRecords.Count(r => r.TrustStatus == TrustStatus.Inactive);
+            int maxCount = GetMaxTrustCount(trustRecords);
+
+            if (maxCount == newCount) ShowWelcomeRecommendation();
+            else if (maxCount == inactiveCount) ShowMotivationRecommendation();
+        }
+
+        private int GetMaxTrustCount(List<CitizenTrustRecord> records)
+        {
+            int newCount = records.Count(r => r.TrustStatus == TrustStatus.New);
+            int inactiveCount = records.Count(r => r.TrustStatus == TrustStatus.Inactive);
+            int activeCount = records.Count(r => r.TrustStatus == TrustStatus.Active);
+            int prominentCount = records.Count(r => r.TrustStatus == TrustStatus.Prominent);
+            int trustworthyCount = records.Count(r => r.TrustStatus == TrustStatus.Trustworthy);
+
+            int maxNew = Math.Max(newCount, inactiveCount);
+            int maxInactive = Math.Max(activeCount, prominentCount);
+            return Math.Max(maxNew, Math.Max(maxInactive, trustworthyCount));
+        }
+
+        private void ResetRecommendationUI()
+        {
+            RecommendationContainer.Visibility = Visibility.Collapsed;
+            WelcomeRecommendationText.Visibility = Visibility.Collapsed;
+            WelcomeMeetingButton.Visibility = Visibility.Collapsed;
+            MotivationRecommendationText.Visibility = Visibility.Collapsed;
+            MotivationMeetingButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowWelcomeRecommendation()
+        {
+            RecommendationContainer.Visibility = Visibility.Visible;
+            WelcomeRecommendationText.Visibility = Visibility.Visible;
+            WelcomeMeetingButton.Visibility = Visibility.Visible;
+            WelcomeNeighborhoodNameRun.Text = _selectedNeighborhood!.Name;
+        }
+
+        private void ShowMotivationRecommendation()
+        {
+            RecommendationContainer.Visibility = Visibility.Visible;
+            MotivationRecommendationText.Visibility = Visibility.Visible;
+            MotivationMeetingButton.Visibility = Visibility.Visible;
+            MotivationNeighborhoodNameRun.Text = _selectedNeighborhood!.Name;
         }
     }
 }
