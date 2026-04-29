@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.Application.Domain.Buildings.ReportedIssues
+﻿namespace CommunityHub.Application.Domain.Buildings.Issues
 {
     public class Issue
     {
