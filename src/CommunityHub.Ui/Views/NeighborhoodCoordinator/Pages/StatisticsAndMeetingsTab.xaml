@@ -30,13 +30,14 @@
                      ItemsSource="{Binding Neighborhoods}"
                      Style="{StaticResource NeighborhoodListBoxStyle}"
                      ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
+                     SelectionChanged="NeighborhoodsListBox_SelectionChanged">
                 </ListBox>
             </Grid>
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-            <Grid Margin="0,15,15,15">
+            <Grid x:Name="StatisticsAndMeetingsPanel" Visibility="Collapsed" Margin="0,15,15,15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="2*" />
@@ -55,32 +56,32 @@
                             <UniformGrid Columns="1">
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Ukupan broj građana: " FontSize="15"/>
-                                    <TextBlock Text="100" FontSize="15"/>
+                                    <TextBlock x:Name="TotalCitizensTxt" FontSize="15" FontWeight="Bold"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj novih građana: " FontSize="15"/>
-                                    <TextBlock Text="15" FontSize="15"/>
-                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                    <TextBlock x:Name="NewCitizensTxt" FontSize="15" Margin="5,0"/>
+                                    <TextBlock x:Name="NewCitizensPercentTxt" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj neaktivnih građana: " FontSize="15"/>
-                                    <TextBlock Text="40" FontSize="15"/>
-                                    <TextBlock Text="(40%)" FontSize="15"/>
+                                    <TextBlock x:Name="InactiveCitizensTxt" FontSize="15" Margin="5,0"/>
+                                    <TextBlock x:Name="InactiveCitizensPercentTxt" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj aktivnih građana: " FontSize="15"/>
-                                    <TextBlock Text="15" FontSize="15"/>
-                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                    <TextBlock x:Name="ActiveCitizensTxt" FontSize="15" Margin="5,0"/>
+                                    <TextBlock x:Name="ActiveCitizensPercentTxt" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj istaknutih građana: " FontSize="15"/>
-                                    <TextBlock Text="15" FontSize="15"/>
-                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                    <TextBlock x:Name="ProminentCitizensTxt" Text="0" FontSize="15" Margin="5,0"/>
+                                    <TextBlock x:Name="ProminentCitizensPercentTxt" Text="(0%)" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj građana od poverenja: " FontSize="15"/>
-                                    <TextBlock Text="15" FontSize="15"/>
-                                    <TextBlock Text="(15%)" FontSize="15"/>
+                                    <TextBlock x:Name="TrustworthyCitizensTxt" Text="0" FontSize="15" Margin="5,0"/>
+                                    <TextBlock x:Name="TrustworthyCitizensPercentTxt" Text="(0%)" FontSize="15"/>
                                 </StackPanel>
                             </UniformGrid>
                         </StackPanel>

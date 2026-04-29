@@ -22,7 +22,10 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
     public partial class StatisticsAndMeetingsTab : UserControl
     {
         private long _coordinatorId;
+        private Neighborhood? _selectedNeighborhood;
+
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
+        private readonly NeighborhoodMembershipRepository _membershipRepository = new NeighborhoodMembershipRepository();
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
 
@@ -46,6 +49,45 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             {
                 Neighborhoods.Add(n);
             }
+        }
+
+        private void NeighborhoodsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _selectedNeighborhood = NeighborhoodsListBox.SelectedItem as Neighborhood;
+            if (_selectedNeighborhood == null) return;
+
+            LoadAndDisplayStatistics();
+            StatisticsAndMeetingsPanel.Visibility = Visibility.Visible;
+        }
+
+        private void LoadAndDisplayStatistics()
+        {
+            var trustRecords = _membershipRepository.GetTrustRecordsByNeighborhoodId(_selectedNeighborhood!.Id);
+
+            if (trustRecords.Count == 0) return;
+
+            DisplayTrustStatusCounts(trustRecords);
+        }
+
+        private void DisplayTrustStatusCounts(List<CitizenTrustRecord> trustRecords)
+        {
+            int total = trustRecords.Count;
+            TotalCitizensTxt.Text = total.ToString();
+
+            UpdateRow(NewCitizensTxt, NewCitizensPercentTxt, trustRecords, TrustStatus.New, total);
+            UpdateRow(InactiveCitizensTxt, InactiveCitizensPercentTxt, trustRecords, TrustStatus.Inactive, total);
+            UpdateRow(ActiveCitizensTxt, ActiveCitizensPercentTxt, trustRecords, TrustStatus.Active, total);
+            UpdateRow(ProminentCitizensTxt, ProminentCitizensPercentTxt, trustRecords, TrustStatus.Prominent, total);
+            UpdateRow(TrustworthyCitizensTxt, TrustworthyCitizensPercentTxt, trustRecords, TrustStatus.Trustworthy, total);
+        }
+
+        private void UpdateRow(TextBlock countTxt, TextBlock percentTxt, List<CitizenTrustRecord> trustRecords, TrustStatus status, int total)
+        {
+            int count = trustRecords.Count(r => r.TrustStatus == status);
+            double percent = Math.Round((double)count / total * 100, 1);
+
+            countTxt.Text = count.ToString();
+            percentTxt.Text = $"({percent}%)";
         }
     }
 }
