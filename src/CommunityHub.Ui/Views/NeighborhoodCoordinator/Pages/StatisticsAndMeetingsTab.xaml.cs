@@ -26,8 +26,10 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly NeighborhoodMembershipRepository _membershipRepository = new NeighborhoodMembershipRepository();
+        private readonly NeighborhoodMeetingRepository _meetingRepository = new NeighborhoodMeetingRepository();
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
+        public ObservableCollection<NeighborhoodMeeting> Meetings { get; set; } = new ObservableCollection<NeighborhoodMeeting>();
 
         public StatisticsAndMeetingsTab()
         {
@@ -57,6 +59,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (_selectedNeighborhood == null) return;
 
             LoadAndDisplayStatistics();
+            LoadMeetings();
             StatisticsAndMeetingsPanel.Visibility = Visibility.Visible;
         }
 
@@ -67,6 +70,13 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             if (trustRecords.Count == 0) return;
 
             DisplayTrustStatusCounts(trustRecords);
+        }
+
+        private void LoadMeetings()
+        {
+            Meetings.Clear();
+            var data = _meetingRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
+            foreach (var m in data) Meetings.Add(m);
         }
 
         private void DisplayTrustStatusCounts(List<CitizenTrustRecord> trustRecords)

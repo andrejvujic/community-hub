@@ -4,8 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+             xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <conv:MeetingStatusToStringConverter x:Key="MeetingStatusConverter"/>
+        <conv:MeetingThemeToStringConverter x:Key="MeetingThemeConverter"/>
+    </UserControl.Resources>
+
     <Grid Background="#F5F6FA">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350" />
@@ -150,6 +157,7 @@
                         </Grid>
 
                         <DataGrid x:Name="MeetingsDataGrid"
+                                  ItemsSource="{Binding Meetings}"
                                   Grid.Row="1" 
                                   AutoGenerateColumns="False" 
                                   CanUserAddRows="False" 
@@ -159,12 +167,25 @@
                                   CanUserSortColumns="False"
                                   IsReadOnly="True"
                                   HeadersVisibility="Column"
-                                  Background="Transparent">>
+                                  Background="Transparent">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Tema" Width="2*"/>
-                                <DataGridTextColumn Header="Vreme" Width="100"/>
-                                <DataGridTextColumn Header="Datum-opseg" Width="1.5*"/>
-                                <DataGridTextColumn Header="Stanje" Width="120"/>
+                                <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="2*"/>
+                                <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTime}" Width="100"/>
+                                <DataGridTemplateColumn Header="Datum-opseg" Width="1.5*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center" Margin="4,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                                        <Binding Path="DateRangeStart" />
+                                                        <Binding Path="DateRangeEnd" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Stanje" Binding="{Binding Status, Converter={StaticResource MeetingStatusConverter}}" Width="120"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
