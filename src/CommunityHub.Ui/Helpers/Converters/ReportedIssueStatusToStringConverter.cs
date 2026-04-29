@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings.ReportedIssues;
+﻿using CommunityHub.Application.Domain.Buildings.Issues;
 using System.Globalization;
 using System.Windows.Data;
 

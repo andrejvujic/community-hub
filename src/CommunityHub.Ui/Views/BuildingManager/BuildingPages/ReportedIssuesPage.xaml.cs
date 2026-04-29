@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.ReportedIssues;
+using CommunityHub.Application.Domain.Buildings.Issues;
 using CommunityHub.Application.Domain.Buildings;
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
