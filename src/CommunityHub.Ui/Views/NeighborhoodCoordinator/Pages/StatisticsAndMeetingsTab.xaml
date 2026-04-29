@@ -142,7 +142,8 @@
                                     Margin="0,10,0,0"
                                     Height="40"
                                     Cursor="Hand"
-                                    Visibility="Collapsed">
+                                    Visibility="Collapsed"
+                                    Click="WelcomeMeetingButton_Click">
                                 <TextBlock Text="Zakaži sastanak dobrodošlice"/>
                             </Button>
 
@@ -151,7 +152,8 @@
                                     Margin="0,10,0,0"
                                     Height="40"
                                     Cursor="Hand"
-                                    Visibility="Collapsed">
+                                    Visibility="Collapsed"
+                                    Click="MotivationMeetingButton_Click">
                                 <TextBlock Text="Zakaži sastanak motivacije"/>
                             </Button>
                         </Grid>
@@ -167,7 +169,7 @@
 
                         <Grid Grid.Row="0" Margin="0,0,0,20">
                             <TextBlock Text="Sastanci" FontSize="22" VerticalAlignment="Center"/>
-                            <Button HorizontalAlignment="Right" Padding="5" Cursor="Hand">
+                            <Button HorizontalAlignment="Right" Padding="5" Cursor="Hand" Click="ScheduleNewMeetingButton_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xf067;" 
                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
