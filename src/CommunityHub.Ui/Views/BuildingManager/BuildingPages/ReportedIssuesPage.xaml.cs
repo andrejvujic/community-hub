@@ -13,7 +13,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
         private readonly User _user;
         private readonly Building _building;
         public ObservableCollection<Issue> ReportedIssues { get; set; } = [];
-        private readonly ReportedIssueRepository _reportedIssueRepository = new();
+        private readonly IssueRepository _reportedIssueRepository = new();
         public ReportedIssuesPage(User user, Building building)
         {
             InitializeComponent();

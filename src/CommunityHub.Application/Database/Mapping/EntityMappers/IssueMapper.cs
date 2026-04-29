@@ -1,9 +1,9 @@
-﻿using CommunityHub.Application.Domain.Buildings.ReportedIssues;
+﻿using CommunityHub.Application.Domain.Buildings.Issues;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
-    public class ReportedIssueMapper: EntityMapper<Issue>
+    public class IssueMapper: EntityMapper<Issue>
     {
         private readonly UserMapper _userMapper = new();
         private readonly BuildingMapper _buildingMapper = new();

@@ -4,7 +4,7 @@ using System.Data;
 using System.Text.Json;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
-using CommunityHub.Application.Domain.Buildings.ReportedIssues;
+using CommunityHub.Application.Domain.Buildings.Issues;
 using CommunityHub.Application.Domain.Buildings.Ads;
 using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 
