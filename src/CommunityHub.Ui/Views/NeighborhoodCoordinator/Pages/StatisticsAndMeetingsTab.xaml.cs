@@ -152,5 +152,29 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             MotivationMeetingButton.Visibility = Visibility.Visible;
             MotivationNeighborhoodNameRun.Text = _selectedNeighborhood!.Name;
         }
+
+        private void WelcomeMeetingButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenScheduleWindow(MeetingTheme.Welcome);
+        }
+
+        private void MotivationMeetingButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenScheduleWindow(MeetingTheme.Motivation);
+        }
+
+        private void ScheduleNewMeetingButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenScheduleWindow(null);
+        }
+
+        private void OpenScheduleWindow(MeetingTheme? theme)
+        {
+            var window = new ScheduleMeetingWindow(theme)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            window.ShowDialog();
+        }
     }
 }
