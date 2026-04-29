@@ -74,7 +74,8 @@
                         <TextBlock
                                 Text="{Binding Ad.Description}"
                                 FontSize="18"
-                                TextWrapping="Wrap"/>
+                                TextWrapping="Wrap"
+                                FontWeight="Bold"/>
                     </StackPanel>
                 </Border>
 
