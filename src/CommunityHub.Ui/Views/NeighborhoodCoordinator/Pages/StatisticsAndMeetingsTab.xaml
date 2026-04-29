@@ -167,24 +167,12 @@
                                   CanUserSortColumns="False"
                                   IsReadOnly="True"
                                   HeadersVisibility="Column"
-                                  Background="Transparent">
+                                  Background="Transparent"
+                                  FontSize="16">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="2*"/>
+                                <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="130"/>
                                 <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTime}" Width="100"/>
-                                <DataGridTemplateColumn Header="Datum-opseg" Width="1.5*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock VerticalAlignment="Center" Margin="4,0">
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0} - {1}">
-                                                        <Binding Path="DateRangeStart" />
-                                                        <Binding Path="DateRangeEnd" />
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Datum-opseg" Binding="{Binding DisplayDate}" Width="1.5*"/>
                                 <DataGridTextColumn Header="Stanje" Binding="{Binding Status, Converter={StaticResource MeetingStatusConverter}}" Width="120"/>
                             </DataGrid.Columns>
                         </DataGrid>
