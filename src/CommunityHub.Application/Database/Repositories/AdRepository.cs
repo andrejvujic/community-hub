@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Buildings.Ads;
 
 namespace CommunityHub.Application.Database.Repositories
 {

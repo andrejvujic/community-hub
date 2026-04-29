@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Buildings;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;

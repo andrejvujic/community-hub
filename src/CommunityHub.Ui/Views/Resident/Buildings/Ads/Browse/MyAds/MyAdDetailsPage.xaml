@@ -1,0 +1,106 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds.MyAdDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      mc:Ignorable="d" 
+      Title="Detalji o oglasu"
+      FontFamily="{StaticResource AppFontFamily}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#dedede">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Column="0"
+                MouseLeftButtonDown="BackButton_Click"
+                Background="Transparent">
+                <TextBlock
+                    Text="&#xf177;"
+                    FontSize="24"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Grid>
+
+            <TextBlock
+                Grid.Column="1"
+                Text="Detalji o oglasu"
+                FontSize="20"
+                VerticalAlignment="Center">
+            </TextBlock>
+        </Grid>
+
+        <Frame
+            Grid.Row="1"
+            x:Name="LocalFrame"
+            JournalOwnership="OwnsJournal"
+            NavigationUIVisibility="Hidden"/>
+
+        <Grid Grid.Row="2" Background="#dedede">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"  MouseLeftButtonDown="BottomBar_InformationItemClick" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Content="&#xf1ad;"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,8,0,0"
+                    FontSize="24"/>
+
+                <Label
+                    Grid.Row="1"
+                    Content="Informacije"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,4,0,8"
+                    FontSize="14"/>
+            </Grid>
+
+            <Grid Grid.Column="1" MouseLeftButtonDown="BottomBar_TimeSlotsItemClick" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Content="&#xf133;"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,8,0,0"
+                    FontSize="24"/>
+
+                <Label
+                    Grid.Row="1"
+                    Content="Rezervacije"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0,4,0,8"
+                    FontSize="14"/>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</navigation:MainNavigatorConsumerPage>

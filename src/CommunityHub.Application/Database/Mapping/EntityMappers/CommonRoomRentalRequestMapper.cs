@@ -1,9 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.CommonRoom;
-using CommunityHub.Application.Domain.CommonRoomRentalRequest;
-using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Buildings.CommonRooms;
+using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 using System.Data;
-using System.Runtime.CompilerServices;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {

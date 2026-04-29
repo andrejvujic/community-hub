@@ -1,10 +1,12 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Buildings.Ads;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
-using CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications.Details
@@ -106,10 +108,10 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
 
         private void OpenPersonalAdTimeSlotsPage(Ad ad)
             => Push(
-                new PersonalAdDetailsPage(
+                new MyAdDetailsPage(
                     _userId,
                     ad,
-                    initialTab: PersonalAdDetailsPageTab.TimeSlots
+                    initialTab: MyAdDetailsPageTab.TimeSlots
                 )
             );
 

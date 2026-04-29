@@ -1,12 +1,12 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.ReportedIsssue;
+using CommunityHub.Application.Domain.Buildings.ReportedIssues;
 
 namespace CommunityHub.Application.Database.Repositories
 {
 	public class ReportedIssueRepository
 	{
 		private readonly ReportedIssueMapper _reportedIssueMapper = new();
-		public List<ReportedIssue> GetAllByBuilding(long buildingId)
+		public List<Issue> GetAllByBuilding(long buildingId)
 		{
 			var query = PostgresQuery.Create(
 				@"SELECT
@@ -31,14 +31,14 @@ namespace CommunityHub.Application.Database.Repositories
 				)
 				.AddParameter("@building_id", buildingId);
 
-			List<ReportedIssue> reportedIssues = new List<ReportedIssue>();
+			List<Issue> reportedIssues = new List<Issue>();
 
 			query.ExecuteReader(reader => reportedIssues.Add(_reportedIssueMapper.MapToEntity(reader)));
 
 			return reportedIssues;
 		}
 
-		public int UpdateStatus(long issueId, ReportedIssueStatus newStatus)
+		public int UpdateStatus(long issueId, IssueStatus newStatus)
 		{
 			var query = PostgresQuery.Create(
 				@"UPDATE reported_issues

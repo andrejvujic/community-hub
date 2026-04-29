@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.ReportedIsssue;
+﻿using CommunityHub.Application.Domain.Buildings.ReportedIssues;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -12,15 +12,15 @@ namespace CommunityHub.Ui.Helpers.Converters
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not ReportedIssueStatus status) return null;
+            if (value is not IssueStatus status) return null;
 
             switch (status)
             {
-                case ReportedIssueStatus.Open:
+                case IssueStatus.Open:
                     return _openText;
-                case ReportedIssueStatus.PotentiallyResolved:
+                case IssueStatus.PotentiallyResolved:
                     return _potentiallyResolvedText;
-                case ReportedIssueStatus.Resolved:
+                case IssueStatus.Resolved:
                     return _resolvedText;
             }
 

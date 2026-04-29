@@ -1,13 +1,12 @@
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.NoticeBoard;
-using CommunityHub.Application.Domain.CommonRoom;
-using CommunityHub.Application.Domain.CommonRoomRentalRequest;
 using Npgsql;
 using System.Data;
 using System.Text.Json;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
-using CommunityHub.Application.Domain.ReportedIsssue;
+using CommunityHub.Application.Domain.Buildings.ReportedIssues;
+using CommunityHub.Application.Domain.Buildings.Ads;
+using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 
 namespace CommunityHub.Application.Database;
 
@@ -42,8 +41,8 @@ public static class PostgresConnection
         builder.MapEnum<NotificationStatus>("notification_statuses");
         builder.MapEnum<NotificationType>("notification_types");
         builder.MapEnum<AdEventType>("ad_event_types");
-        builder.MapEnum<ReportedIssuePriority>("reported_issue_priorities");
-        builder.MapEnum<ReportedIssueStatus>("reported_issue_statuses");
+        builder.MapEnum<IssuePriority>("reported_issue_priorities");
+        builder.MapEnum<IssueStatus>("reported_issue_statuses");
     }   
 
     private static string LoadConnectionString()

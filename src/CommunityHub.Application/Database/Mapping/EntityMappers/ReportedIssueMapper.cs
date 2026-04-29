@@ -1,14 +1,14 @@
-﻿using CommunityHub.Application.Domain.ReportedIsssue;
+﻿using CommunityHub.Application.Domain.Buildings.ReportedIssues;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
-    public class ReportedIssueMapper: EntityMapper<ReportedIssue>
+    public class ReportedIssueMapper: EntityMapper<Issue>
     {
         private readonly UserMapper _userMapper = new();
         private readonly BuildingMapper _buildingMapper = new();
 
-        public override ReportedIssue MapToEntity(IDataReader reader)
+        public override Issue MapToEntity(IDataReader reader)
         {
             var id = reader.GetInt64(reader.GetOrdinal("reported_issue_id"));
 
@@ -16,9 +16,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
             var reportedAt = reader.GetDateTime(reader.GetOrdinal("reported_date"));
 
-            var priority = (ReportedIssuePriority)reader.GetValue(reader.GetOrdinal("reported_issue_priority"));
+            var priority = (IssuePriority)reader.GetValue(reader.GetOrdinal("reported_issue_priority"));
 
-            var status = (ReportedIssueStatus)reader.GetValue(reader.GetOrdinal("reported_issue_status"));
+            var status = (IssueStatus)reader.GetValue(reader.GetOrdinal("reported_issue_status"));
 
             var residentId = reader.GetInt64(reader.GetOrdinal("resident_id"));
             var resident = _userMapper.MapToEntity(reader.WithPrefix("resident"));
@@ -26,10 +26,10 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             var buildingId = reader.GetInt64(reader.GetOrdinal("building_id"));
             var building = _buildingMapper.MapToEntity(reader.WithPrefix("building"));
 
-            return new ReportedIssue(description, reportedAt, priority, status, residentId, buildingId, resident, building, id);
+            return new Issue(description, reportedAt, priority, status, residentId, buildingId, resident, building, id);
         }
 
-        public override Dictionary<string, object?> MapToQueryParameters(ReportedIssue entity)
+        public override Dictionary<string, object?> MapToQueryParameters(Issue entity)
         {
             return new()
             {

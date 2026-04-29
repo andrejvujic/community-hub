@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
 using System.Windows.Input;

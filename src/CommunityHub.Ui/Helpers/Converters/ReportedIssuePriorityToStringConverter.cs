@@ -1,5 +1,5 @@
 ﻿
-using CommunityHub.Application.Domain.ReportedIsssue;
+using CommunityHub.Application.Domain.Buildings.ReportedIssues;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -14,15 +14,15 @@ namespace CommunityHub.Ui.Helpers.Converters
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not ReportedIssuePriority priority) return null;
+            if (value is not IssuePriority priority) return null;
 
             switch (priority)
             {
-                case ReportedIssuePriority.Urgent:
+                case IssuePriority.Urgent:
                     return _urgentText;
-                case ReportedIssuePriority.CanWait:
+                case IssuePriority.CanWait:
                     return _canWaitText;
-                case ReportedIssuePriority.ShouldBeResolvedSoon:
+                case IssuePriority.ShouldBeResolvedSoon:
                     return _shouldBeResolvedSoonText;
             }
 

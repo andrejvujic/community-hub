@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.NoticeBoard;
+﻿using CommunityHub.Application.Domain.Buildings.Ads;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

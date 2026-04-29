@@ -1,6 +1,8 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.CommonRoom;
+using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Domain.Buildings.CommonRooms;
+using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;

@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Resident\Buildings\NoticeBoard\SelectAdCategoryPage.xaml.cs">
+    <Compile Update="Views\Resident\Buildings\Ads\Create\SelectAdCategoryPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

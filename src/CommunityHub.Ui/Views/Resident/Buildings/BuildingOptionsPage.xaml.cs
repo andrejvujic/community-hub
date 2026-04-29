@@ -1,9 +1,10 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms;
-using CommunityHub.Ui.Views.Resident.Buildings.NoticeBoard;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads;
 using System.Windows.Input;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings
 {
@@ -27,13 +28,13 @@ namespace CommunityHub.Ui.Views.Resident.Buildings
             => Push(new BuildingDetailsPage(Building));
 
         private void OpenNoticeBoardPageButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(new NoticeBoardPage(
+            => Push(new AdsPage(
                 userId: _userId,
                 buildingId: Building.Id
             ));
 
         private void OpenPersonalAdsPageButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(new PersonalAdsPage(
+            => Push(new MyAdsPage(
                 userId: _userId,
                 buildingId: Building.Id
             ));
