@@ -11,6 +11,18 @@
         public DateOnly? ScheduledDate { get; private set; }
         public MeetingStatus Status { get; private set; }
 
+        public string DisplayDate
+        {
+            get
+            {
+                if (Status == MeetingStatus.Scheduled && ScheduledDate.HasValue)
+                {
+                    return ScheduledDate.Value.ToString("dd.MM.yyyy.");
+                }
+                return $"{DateRangeStart:dd.MM.yyyy.} - {DateRangeEnd:dd.MM.yyyy.}";
+            }
+        }
+
         public NeighborhoodMeeting(
             Neighborhood neighborhood,
             MeetingTheme theme,
