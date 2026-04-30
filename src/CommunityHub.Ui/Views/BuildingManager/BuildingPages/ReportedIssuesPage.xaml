@@ -14,8 +14,8 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <conv:ReportedIssuePriorityToStringConverter x:Key="ReportedIssuePriorityToStringConverter" />
-        <conv:ReportedIssueStatusToStringConverter x:Key="ReportedIssueStatusToStringConverter" />
+        <conv:IssuePriorityToStringConverter x:Key="ReportedIssuePriorityToStringConverter" />
+        <conv:IssueStatusToStringConverter x:Key="ReportedIssueStatusToStringConverter" />
     </Page.Resources>
 
     <ScrollViewer>
