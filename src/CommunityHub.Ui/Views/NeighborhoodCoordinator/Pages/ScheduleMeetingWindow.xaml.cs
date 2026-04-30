@@ -25,5 +25,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             InitializeComponent();
             _theme = fixedTheme;
         }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StartVotingButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
