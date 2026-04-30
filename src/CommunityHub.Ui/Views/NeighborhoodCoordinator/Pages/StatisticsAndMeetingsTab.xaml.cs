@@ -170,7 +170,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void OpenScheduleWindow(MeetingTheme? theme)
         {
-            var window = new ScheduleMeetingWindow(theme)
+            var window = new ScheduleMeetingWindow(_selectedNeighborhood!, theme)
             {
                 Owner = Window.GetWindow(this)
             };
