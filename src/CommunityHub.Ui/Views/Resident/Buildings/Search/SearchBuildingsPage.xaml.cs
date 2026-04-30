@@ -1,8 +1,9 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
+using CommunityHub.Ui.Views.Resident.Buildings.Browse;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;

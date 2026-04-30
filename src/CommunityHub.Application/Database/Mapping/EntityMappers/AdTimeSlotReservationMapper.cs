@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.NoticeBoard;
+﻿using CommunityHub.Application.Domain.Buildings.Ads.TimeSlots;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

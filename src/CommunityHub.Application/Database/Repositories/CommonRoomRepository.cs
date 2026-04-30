@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.CommonRoom;
+using CommunityHub.Application.Domain.Buildings.CommonRooms;
 
 namespace CommunityHub.Application.Database.Repositories
 {

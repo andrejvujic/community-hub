@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.NoticeBoard;
+﻿using CommunityHub.Application.Domain.Buildings.Ads;
 
 namespace CommunityHub.Application.Database.Repositories.Ads
 {

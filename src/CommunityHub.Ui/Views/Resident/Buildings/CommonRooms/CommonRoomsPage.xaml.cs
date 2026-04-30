@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.CommonRoom;
+using CommunityHub.Application.Domain.Buildings.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.Windows;

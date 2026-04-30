@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.CommonRoomRentalRequest;
+using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 using System.Globalization;
 using System.Windows.Data;
 

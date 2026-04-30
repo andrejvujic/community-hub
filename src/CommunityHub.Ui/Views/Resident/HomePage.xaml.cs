@@ -3,7 +3,7 @@ using CommunityHub.Application.Database.Repositories.Notifications;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
-using CommunityHub.Ui.Views.Resident.Buildings;
+using CommunityHub.Ui.Views.Resident.Buildings.Browse;
 using CommunityHub.Ui.Views.Resident.Notifications;
 using System.ComponentModel;
 using System.Windows.Input;

@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.NoticeBoard;
+using CommunityHub.Application.Domain.Buildings.Ads;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

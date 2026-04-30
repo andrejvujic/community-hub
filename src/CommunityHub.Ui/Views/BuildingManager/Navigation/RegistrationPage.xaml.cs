@@ -1,5 +1,7 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Apartments;
+using CommunityHub.Application.Domain.Buildings;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

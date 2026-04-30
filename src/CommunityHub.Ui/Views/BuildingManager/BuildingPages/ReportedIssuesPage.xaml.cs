@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.ReportedIsssue;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.Buildings.Issues;
+using CommunityHub.Application.Domain.Buildings;
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 {
@@ -11,8 +12,8 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
     {
         private readonly User _user;
         private readonly Building _building;
-        public ObservableCollection<ReportedIssue> ReportedIssues { get; set; } = [];
-        private readonly ReportedIssueRepository _reportedIssueRepository = new();
+        public ObservableCollection<Issue> ReportedIssues { get; set; } = [];
+        private readonly IssueRepository _reportedIssueRepository = new();
         public ReportedIssuesPage(User user, Building building)
         {
             InitializeComponent();
@@ -38,7 +39,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_user));
         }
         private void SetStreetInfo() => streetInfo.Text = $"{_building.Address.Street.Name} {_building.Address.StreetNumber}";
-        private List<ReportedIssue> LoadReportedIssues()
+        private List<Issue> LoadReportedIssues()
         {
             return _reportedIssueRepository.GetAllByBuilding(_building.Id);
         }
@@ -48,11 +49,11 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             if (result == MessageBoxResult.No) return;
 
-            var reportedIssue = (sender as Grid)?.DataContext as ReportedIssue;
+            var reportedIssue = (sender as Grid)?.DataContext as Issue;
 
             if (reportedIssue == null) return;
             
-            _reportedIssueRepository.UpdateStatus(reportedIssue.Id, ReportedIssueStatus.PotentiallyResolved);
+            _reportedIssueRepository.UpdateStatus(reportedIssue.Id, IssueStatus.PotentiallyResolved);
 
             RefreshReportedIssues();
         }

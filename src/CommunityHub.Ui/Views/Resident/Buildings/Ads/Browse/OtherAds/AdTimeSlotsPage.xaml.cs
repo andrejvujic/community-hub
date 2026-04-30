@@ -1,0 +1,181 @@
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Notifications;
+using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Buildings.Ads;
+using CommunityHub.Application.Domain.Buildings.Ads.TimeSlots;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Navigation;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Input;
+
+namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
+{
+    public partial class AdTimeSlotsPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
+    {
+        private readonly long _userId;
+        private readonly User _user;
+        private readonly UserRepository _userRepository = new();
+
+        private readonly NotificationRepository _notificationRepository = new();
+
+        private readonly CultureInfo _culture = new("sr-Latn-RS");
+
+        private readonly AdTimeSlotRepository _timeSlotRepository = new();
+        private readonly AdTimeSlotReservationRepository _timeSlotReservationRepository = new();
+
+        public Ad Ad { get; }
+
+        // Contains groups (time slots grouped by day) of time slots for the given
+        // notice board that the user can reserve (the user has matching time slots for
+        // an ad of the opposite type in the same category).
+        public bool HasReservableTimeSlots { get => TimeSlotGroups.Count > 0; }
+        public ObservableCollection<AdTimeSlotGroup> TimeSlotGroups { get; } = new();
+
+        // Collection of time slots selected by the user to be reserved.
+        public ObservableCollection<AdTimeSlot> SelectedTimeSlots { get; } = new();
+
+
+        public AdTimeSlotsPage(long userId, Ad ad)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            _userId = userId;
+            _user = _userRepository.Get(_userId)!;
+
+            Ad = ad;
+
+            UpdateReservableTimeSlots();
+        }
+
+        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlot> timeSlots)
+        {
+            var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
+
+            return groups.Select(timeSlots =>
+                        new AdTimeSlotGroup(
+                            timeSlots.First().StartTime.Date,
+                            [..timeSlots]
+                        )
+                    ).ToList();
+        }
+
+
+        private void UpdateReservableTimeSlots()
+        {
+            var timeSlots = _timeSlotRepository.GetReservableTimeSlots(
+                Ad.Id,
+                _userId
+            );
+
+            TimeSlotGroups.Clear();
+            foreach (var group in GroupTimeSlotsByDay(timeSlots))
+                TimeSlotGroups.Add(group);
+        }
+
+        private List<(long offerTimeSlotId, long requestTimeSlotId)>? GetMatchingTimeSlotPairs()
+        {
+            var reservations = new List<(long, long)>();
+
+            foreach (var selectedTimeSlot in SelectedTimeSlots)
+            {
+                var matchingTimeSlot = _timeSlotRepository.GetMatchingTimeSlotInAuthorAds(
+                    selectedTimeSlot.Id,
+                    _userId
+                );
+
+                // If the user doesn't have an available (not reserved) time slot
+                // they can't reserve the selected time slot.
+                if (matchingTimeSlot == null)
+                {
+                    if (this is IAlertConsumer consumer)
+                        consumer.ShowAlert(
+                            Alert.Create(
+                                "Greška",
+                                $"Nije bilo moguće rezervisati termin {selectedTimeSlot.StartTime:HH.mm} — {selectedTimeSlot.EndTime:HH.mm} na dan {selectedTimeSlot.StartTime.ToString("d. MMMM", _culture)} zato što već imate dogovor sklopljen sa drugim stanarom u ovom terminu.",
+                                AlertType.Error
+                            ).AddOption("U redu")
+                        );
+                    return null;
+                }
+
+                reservations.Add((Ad.IsOffer ? selectedTimeSlot.Id : matchingTimeSlot.Id,
+                        Ad.IsRequest ? selectedTimeSlot.Id : matchingTimeSlot.Id));
+            }
+
+            return reservations;
+        }
+
+        private void ReserveSelectedTimeSlots()
+        {
+            var reservations = GetMatchingTimeSlotPairs();
+            if (reservations == null) return;
+
+            foreach (var (offerAdTimeSlotId, requestAdTimeSlotId) in reservations)
+                _timeSlotReservationRepository.Create(
+                    offerAdTimeSlotId: offerAdTimeSlotId,
+                    requestAdTimeSlotId: requestAdTimeSlotId
+                );
+
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Rezervacija uspješna",
+                        "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
+                    ).AddOption("U redu")
+                );
+        }
+
+        private void NotifyAuthorAboutReservation()
+            => _notificationRepository.Create(
+                    Notification.Create(
+                        Ad.Author.Id,
+                        "Nova rezervacija",
+                        $"Stanar {_user.Name} {_user.Surname} je napravio rezervaciju za vaš oglas.",
+                        NotificationType.AdEvent,
+                        details: new AdEventNotificationDetails(
+                            Ad.Id,
+                            AdEventType.AdTimeSlotsReserved
+                        )
+                    )
+                );
+
+        private void ReserveButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReserveSelectedTimeSlots();
+            NotifyAuthorAboutReservation();
+
+            UpdateReservableTimeSlots();
+
+            SelectedTimeSlots.Clear();
+            OnPropertyChanged(nameof(SelectedTimeSlots));
+            OnPropertyChanged(nameof(HasSelectedTimeSlots));
+        }
+
+        private void TimeSlotItem_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not FrameworkElement element) return;
+
+            if (element.DataContext is not AdTimeSlot timeSlot || timeSlot.IsReserved) return;
+
+            if (SelectedTimeSlots.Contains(timeSlot))
+                SelectedTimeSlots.Remove(timeSlot);
+            else
+                SelectedTimeSlots.Add(timeSlot);
+
+            OnPropertyChanged(nameof(SelectedTimeSlots));
+            OnPropertyChanged(nameof(HasSelectedTimeSlots));
+        }
+
+        public bool HasSelectedTimeSlots => SelectedTimeSlots.Count > 0;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}
