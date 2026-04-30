@@ -4,6 +4,7 @@ using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms;
 using System.Windows.Input;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
+using CommunityHub.Ui.Views.Resident.Buildings.Issues;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
 {
@@ -42,6 +43,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
             => Push(new CommonRoomsPage(
                 userId: _userId,
                 buildingId: Building.Id
+            ));
+
+        private void OpenIssuesPageButton_Click(object sender, MouseButtonEventArgs e)
+            => Push(new IssuesPage(
+                userId: _userId,
+                buildingId: Building.Id 
             ));
     }
 }
