@@ -36,7 +36,144 @@
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-                
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="1.8*" />
+                    <RowDefinition Height="1.2*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock Text="Detalji budžeta kvarta NazivKvarta" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <DataGrid x:Name="BudgetCategoriesDataGrid" 
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False" 
+                              CanUserResizeRows="False"
+                              CanUserResizeColumns="False"
+                              CanUserReorderColumns="False"
+                              CanUserSortColumns="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              Background="Transparent"
+                              Height="210">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Kategorija" Width="*" />
+                            <DataGridTextColumn Header="Ukupne donacije" Width="*" />
+                            <DataGridTextColumn Header="Potrošeno" Width="*" />
+                            <DataGridTextColumn Header="Raspoloživo" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <Grid Grid.Row="1" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                        <TextBlock Text="Donacija: NazivKategorije" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <DataGrid x:Name="DonationsDataGrid" 
+                                  AutoGenerateColumns="False" 
+                                  CanUserAddRows="False" 
+                                  CanUserResizeRows="False"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False"
+                                  CanUserSortColumns="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  Background="Transparent"
+                                  Height="190">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Iznos" Width="*" />
+                                <DataGridTextColumn Header="Datum" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                        <TextBlock Text="Evidencija troškova: NazivKategorije" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <DataGrid x:Name="ExpensesDataGrid"  
+                                  AutoGenerateColumns="False" 
+                                  CanUserAddRows="False" 
+                                  CanUserResizeRows="False"
+                                  CanUserResizeColumns="False"
+                                  CanUserReorderColumns="False"
+                                  CanUserSortColumns="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  Background="Transparent"
+                                  Height="190">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Opis" Width="2*" />
+                                <DataGridTextColumn Header="Iznos" Width="*" />
+                                <DataGridTextColumn Header="Datum" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1" Padding="10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Margin="0,0,20,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Evidencija novog troška" FontWeight="Bold" FontSize="18" Margin="0,0,0,10"/>
+
+                            <Grid Grid.Row="1" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Opis:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBox x:Name="DescriptionTextBox" Grid.Column="1" Height="25" VerticalContentAlignment="Center"/>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Iznos (RSD):" VerticalAlignment="Center"/>
+                                <TextBox x:Name="AmountTextBox" Grid.Column="0" Margin="110,0,10,0" Height="25" VerticalContentAlignment="Center"/>
+
+                                <TextBlock Grid.Column="1" Text="Datum:" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                                <DatePicker x:Name="ExpenseDatePicker" 
+                                            Grid.Column="2" 
+                                            VerticalAlignment="Center"
+                                            Focusable="False" 
+                                            IsHitTestVisible="False"/>
+                            </Grid>
+                        </Grid>
+
+                        <Button Grid.Column="1"
+                                Height="50"
+                                VerticalAlignment="Center"
+                                Padding="5"
+                                Cursor="Hand"
+                                Margin="30,0,10,0"
+                                Click="RegisterButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xf067;" 
+                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text=" Evidentiraj trošak" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
         
     </Grid>

@@ -31,6 +31,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             InitializeComponent();
             DataContext = this;
+            ExpenseDatePicker.SelectedDate = DateTime.Now;
         }
 
         public void Initialize(long coordinatorId)
@@ -46,5 +47,10 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             foreach (var neighborhood in neighborhoods)
                 Neighborhoods.Add(neighborhood);
         }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
     }
 }
