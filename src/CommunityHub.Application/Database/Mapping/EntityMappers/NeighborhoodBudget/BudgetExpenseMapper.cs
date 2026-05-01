@@ -31,7 +31,14 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBu
 
         public override Dictionary<string, object?> MapToQueryParameters(BudgetExpense entity)
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object?>
+            {
+                { "amount", entity.Amount },
+                { "description", entity.Description },
+                { "expense_date", entity.ExpenseDate.ToDateTime(TimeOnly.MinValue) },
+                { "budget_category_balance_id", entity.BudgetCategoryBalance.Id },
+                { "coordinator_id", entity.Coordinator.Id }
+            };
         }
     }
 }
