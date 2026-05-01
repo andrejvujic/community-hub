@@ -23,7 +23,12 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBu
 
         public override Dictionary<string, object?> MapToQueryParameters(BudgetCategoryBalance entity)
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object?>
+            {
+                { "category", entity.Category },
+                { "neighborhood_id", entity.Neighborhood.Id },
+                { "total_amount", entity.TotalAmount }
+            };
         }
     }
 }
