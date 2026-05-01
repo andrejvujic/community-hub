@@ -1,10 +1,13 @@
-﻿using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
 
 namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
 {
     public class BudgetCategoryBalanceRepository
     {
+        private readonly BudgetCategoryBalanceMapper _budgetCategoryBalanceMapper = new BudgetCategoryBalanceMapper();
+
         private const string SelectColumns = @"
             budget_category_balance.id AS budget_category_balance_id,
             budget_category_balance.category AS budget_category,
@@ -34,5 +37,20 @@ namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
             INNER JOIN cities city ON city.id = neighborhood.city_id
             INNER JOIN countries country ON country.id = city.country_id
             INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id";
+
+        public List<BudgetCategoryBalance> GetByNeighborhoodId(long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                $@"SELECT {SelectColumns} {FromJoins} WHERE budget_category_balance.neighborhood_id = @neighborhood_id ORDER BY budget_category_balance.category"
+            ).AddParameter("neighborhood_id", neighborhoodId);
+
+            List<BudgetCategoryBalance> budgetCategoryBalances = new List<BudgetCategoryBalance>();
+            query.ExecuteReader(reader =>
+            {
+                var budgetCategoryBalance = _budgetCategoryBalanceMapper.MapToEntity(reader);
+                if (budgetCategoryBalance is not null) budgetCategoryBalances.Add(budgetCategoryBalance);
+            });
+            return budgetCategoryBalances;
+        }
     }
 }
