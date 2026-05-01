@@ -27,5 +27,12 @@ namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
             coordinator.name AS coordinator_name,
             coordinator.surname AS coordinator_surname,
             coordinator.user_role AS coordinator_user_role";
+
+        private const string FromJoins = @"
+            FROM budget_category_balances budget_category_balance
+            INNER JOIN neighborhoods neighborhood ON neighborhood.id = budget_category_balance.neighborhood_id
+            INNER JOIN cities city ON city.id = neighborhood.city_id
+            INNER JOIN countries country ON country.id = city.country_id
+            INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id";
     }
 }
