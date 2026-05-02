@@ -25,5 +25,8 @@ namespace CommunityHub.Application.Services
 
         public List<BudgetCategoryBalance> GetBalancesForNeighborhood(long neighborhoodId)
             => _balanceRepository.GetByNeighborhoodId(neighborhoodId);
+
+        public List<BudgetExpense> GetExpensesForNeighborhood(long neighborhoodId)
+            => _expenseRepository.GetByNeighborhoodId(neighborhoodId);
     }
 }
