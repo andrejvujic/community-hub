@@ -41,7 +41,10 @@ namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
         public List<BudgetCategoryBalance> GetByNeighborhoodId(long neighborhoodId)
         {
             var query = PostgresQuery.Create(
-                $@"SELECT {SelectColumns} {FromJoins} WHERE budget_category_balance.neighborhood_id = @neighborhood_id ORDER BY budget_category_balance.category"
+                $@"SELECT {SelectColumns} 
+                {FromJoins} 
+                WHERE budget_category_balance.neighborhood_id = @neighborhood_id 
+                ORDER BY budget_category_balance.category"
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BudgetCategoryBalance> budgetCategoryBalances = new List<BudgetCategoryBalance>();

@@ -1,7 +1,14 @@
-﻿namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
+using CommunityHub.Application.Domain.NeighborhoodBudget;
+
+namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
 {
     public class BudgetExpenseRepository
     {
+
+        private readonly BudgetExpenseMapper _budgetExpenseMapper = new BudgetExpenseMapper();
+
         private const string SelectColumns = @"
             budget_expense.id AS budget_expense_id,
             budget_expense.amount AS expense_amount,
@@ -45,5 +52,23 @@
             INNER JOIN countries country ON country.id = city.country_id
             INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id
             INNER JOIN users expense_coordinator ON expense_coordinator.id = budget_expense.coordinator_id";
+
+        public List<BudgetExpense> GetByNeighborhoodId(long neighborhoodId)
+        {
+            var query = PostgresQuery.Create(
+                $@"SELECT {SelectColumns} 
+                {FromJoins} 
+                WHERE budget_category_balance.neighborhood_id = @neighborhood_id 
+                ORDER BY budget_expense.expense_date DESC"
+            ).AddParameter("neighborhood_id", neighborhoodId);
+
+            List<BudgetExpense> budgetExpenses = new List<BudgetExpense>();
+            query.ExecuteReader(reader =>
+            {
+                var budgetExpense = _budgetExpenseMapper.MapToEntity(reader);
+                if (budgetExpense is not null) budgetExpenses.Add(budgetExpense);
+            });
+            return budgetExpenses;
+        }
     }
 }
