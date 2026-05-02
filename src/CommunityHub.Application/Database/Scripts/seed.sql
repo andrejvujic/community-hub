@@ -893,6 +893,18 @@ INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, da
 (9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
 (10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
 
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(1, '2026-05-03', 1, 105),
+(2, '2026-05-03', 1, 116),
+(3, '2026-05-12', 2, 117),
+(4, '2026-05-15', 3, 118),
+(5, '2026-05-20', 4, 104),
+(6, '2026-05-20', 4, 119),
+(7, '2026-04-02', 5, 105),
+(8, '2026-03-12', 6, 106),
+(9, '2026-05-22', 7, 107),
+(10, '2026-05-04', 8, 108);
+
 INSERT INTO city_facilities (id, name, city_id) VALUES
 (1,  'Bioskop Fontana',         1),
 (2,  'Gradski bazen Tašmajdan', 1),
@@ -1019,29 +1031,34 @@ SELECT setval(
 );
 
 SELECT setval( 
-    pg_get_serial_sequence('public.community_events','id'),
+    pg_get_serial_sequence('public.community_events', 'id'),
     COALESCE((SELECT MAX(id) FROM public.community_events), 0),
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_items','id'),
+    pg_get_serial_sequence('public.event_items', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_items), 0), 
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_registrations','id'),
+    pg_get_serial_sequence('public.event_registrations', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_registrations), 0),
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_item_assignments','id'),
+    pg_get_serial_sequence('public.event_item_assignments', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_item_assignments), 0),
     true
 );
 
+SELECT setval(
+    pg_get_serial_sequence('public.meeting_date_votes', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.meeting_date_votes), 0),
+    true
+);
 
 SELECT setval(
     pg_get_serial_sequence('public.service_providers', 'id'),
