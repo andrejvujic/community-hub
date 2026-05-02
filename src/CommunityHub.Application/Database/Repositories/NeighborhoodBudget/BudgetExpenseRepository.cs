@@ -70,5 +70,21 @@ namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
             });
             return budgetExpenses;
         }
+
+        public BudgetExpense Create(BudgetExpense budgetExpense)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO budget_expenses 
+                (amount, description, expense_date, budget_category_balance_id, coordinator_id)
+                VALUES 
+                (@amount, @description, @expense_date, @budget_category_balance_id, @coordinator_id)
+                RETURNING id"
+            )
+            .ExtendParameters(_budgetExpenseMapper.MapToQueryParameters(budgetExpense));
+            
+            long budgetExpenseId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            return budgetExpense.CopyWith(id: budgetExpenseId);
+        }
     }
 }
