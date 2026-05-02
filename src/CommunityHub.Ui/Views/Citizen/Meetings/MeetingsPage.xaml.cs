@@ -65,8 +65,36 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
             var result = wnd.ShowDialog();
             if (result == true)
             {
-                RefreshNeighborhoodMeetings();
+                ProcessVote(selected, wnd.SelectedDate);
             }
+        }
+
+        private void ProcessVote(NeighborhoodMeeting meeting, DateOnly selectedDate)
+        {
+            if (this.Tag is MeetingDateVote existingVote)
+            {
+                UpdateExistingVote(existingVote, selectedDate);
+            }
+            else
+            {
+                CreateNewVote(meeting, selectedDate);
+            }
+
+            RefreshNeighborhoodMeetings();
+        }
+
+        private void UpdateExistingVote(MeetingDateVote existingVote, DateOnly votedDate)
+        {
+            _meetingDateVoteRepository.UpdateDate(existingVote.Id, votedDate);
+            MessageBox.Show("Vaš glas je uspešno izmenjen.", "Izmena");
+        }
+
+        private void CreateNewVote(NeighborhoodMeeting meeting, DateOnly votedDate)
+        {
+            var citizen = _citizenRepository.GetById(_userId);
+            var newVote = new MeetingDateVote(meeting, citizen!, votedDate);
+            _meetingDateVoteRepository.Create(newVote);
+            MessageBox.Show("Vaš glas je uspešno zabeležen.", "Uspeh");
         }
     }
 }

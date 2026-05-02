@@ -5,6 +5,8 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
 {   
     public partial class VoteForMeetingDateWindow : Window
     {
+        public DateOnly SelectedDate { get; private set; }
+
         public VoteForMeetingDateWindow(NeighborhoodMeeting meeting)
         {
             InitializeComponent();
@@ -16,6 +18,7 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            SelectedDate = DateOnly.FromDateTime(VoteDatePicker.SelectedDate!.Value);
             this.DialogResult = true;
         }
 
