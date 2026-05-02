@@ -383,6 +383,18 @@ INSERT INTO event_item_assignments (id, registration_id, event_item_id) VALUES
 (9, 9, 21),
 (10, 10, 23);
 
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(1, '2026-05-03', 1, 105),
+(2, '2026-05-03', 1, 116),
+(3, '2026-05-12', 2, 117),
+(4, '2026-05-15', 3, 118),
+(5, '2026-05-20', 4, 104),
+(6, '2026-05-20', 4, 119),
+(7, '2026-04-02', 5, 105),
+(8, '2026-03-12', 6, 106),
+(9, '2026-05-22', 7, 107),
+(10, '2026-05-04', 8, 108);
+
 INSERT INTO users (id, username, user_role, password, name, surname) VALUES
 (21, 'zoran.milanovic',   'neighborhood_service_provider', '123', 'Zoran',   'Milanović'),
 (22, 'ana.djordjevic',   'neighborhood_service_provider', '123', 'Ana',    'Đorđević'),
@@ -1019,29 +1031,34 @@ SELECT setval(
 );
 
 SELECT setval( 
-    pg_get_serial_sequence('public.community_events','id'),
+    pg_get_serial_sequence('public.community_events', 'id'),
     COALESCE((SELECT MAX(id) FROM public.community_events), 0),
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_items','id'),
+    pg_get_serial_sequence('public.event_items', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_items), 0), 
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_registrations','id'),
+    pg_get_serial_sequence('public.event_registrations', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_registrations), 0),
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_item_assignments','id'),
+    pg_get_serial_sequence('public.event_item_assignments', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_item_assignments), 0),
     true
 );
 
+SELECT setval(
+    pg_get_serial_sequence('public.meeting_date_votes', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.meeting_date_votes), 0),
+    true
+);
 
 SELECT setval(
     pg_get_serial_sequence('public.service_providers', 'id'),
