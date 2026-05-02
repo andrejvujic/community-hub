@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.NeighborhoodBudget;
+using CommunityHub.Application.Domain.NeighborhoodBudget;
 
 namespace CommunityHub.Application.Services
 {
@@ -21,5 +22,8 @@ namespace CommunityHub.Application.Services
             //_donationRepository = donationRepository;
             _neighborhoodRepository = neighborhoodRepository;
         }
+
+        public List<BudgetCategoryBalance> GetBalancesForNeighborhood(long neighborhoodId)
+            => _balanceRepository.GetByNeighborhoodId(neighborhoodId);
     }
 }
