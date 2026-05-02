@@ -120,7 +120,7 @@
                         </StackPanel>
                     </Border>
 
-                    <Button Grid.Row="1" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="25,12,25,0">
+                    <Button Grid.Row="1" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="25,12,25,0" Click="VoteButton_Click">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">
                             Glasaj za vreme sastanka<LineBreak/>(Ctrl + 1)
                         </TextBlock>

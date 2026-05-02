@@ -1,6 +1,7 @@
-using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.Citizen.Meetings
 {
@@ -37,10 +38,34 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
             if (MeetingsGrid.SelectedItem is NeighborhoodMeeting selectedMeeting)
             {
                 this.Tag = _meetingDateVoteRepository.GetByMeetingIdAndCitizenId(selectedMeeting.Id, _userId);
-    }
+            }
             else
             {
                 this.Tag = null;
+            }
+        }
+
+        private void VoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = MeetingsGrid.SelectedItem as NeighborhoodMeeting;
+            if (selected == null)
+            {
+                MessageBox.Show("Izaberite sastanak iz tabele.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (selected.Status != MeetingStatus.InPreparation)
+            {
+                MessageBox.Show("Može se glasati samo za sastanke koji su u statusu pripreme.", "Nije moguće glasanje", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var wnd = new VoteForMeetingDateWindow(selected);
+            wnd.Owner = Window.GetWindow(this);
+            var result = wnd.ShowDialog();
+            if (result == true)
+            {
+                RefreshNeighborhoodMeetings();
             }
         }
     }
