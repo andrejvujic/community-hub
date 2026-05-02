@@ -55,5 +55,17 @@ namespace CommunityHub.Application.Database.Repositories.NeighborhoodBudget
             });
             return budgetCategoryBalances;
         }
+
+        public void UpdateTotalAmount(long id, decimal newAmount)
+        {
+            PostgresQuery.Create(
+                @"UPDATE budget_category_balances
+                SET total_amount = @total_amount
+                WHERE id = @id"
+            )
+            .AddParameter("id", id)
+            .AddParameter("total_amount", newAmount)
+            .Execute();
+        }
     }
 }
