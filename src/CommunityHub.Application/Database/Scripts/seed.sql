@@ -383,18 +383,6 @@ INSERT INTO event_item_assignments (id, registration_id, event_item_id) VALUES
 (9, 9, 21),
 (10, 10, 23);
 
-INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
-(1, '2026-05-03', 1, 105),
-(2, '2026-05-03', 1, 116),
-(3, '2026-05-12', 2, 117),
-(4, '2026-05-15', 3, 118),
-(5, '2026-05-20', 4, 104),
-(6, '2026-05-20', 4, 119),
-(7, '2026-04-02', 5, 105),
-(8, '2026-03-12', 6, 106),
-(9, '2026-05-22', 7, 107),
-(10, '2026-05-04', 8, 108);
-
 INSERT INTO users (id, username, user_role, password, name, surname) VALUES
 (21, 'zoran.milanovic',   'neighborhood_service_provider', '123', 'Zoran',   'Milanović'),
 (22, 'ana.djordjevic',   'neighborhood_service_provider', '123', 'Ana',    'Đorđević'),
@@ -904,6 +892,18 @@ INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, da
 (8,  'motivation', '19:00', '2026-05-01', '2026-05-05', '2026-05-04', 'scheduled',      8),
 (9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
 (10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
+
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(1, '2026-05-03', 1, 105),
+(2, '2026-05-03', 1, 116),
+(3, '2026-05-12', 2, 117),
+(4, '2026-05-15', 3, 118),
+(5, '2026-05-20', 4, 104),
+(6, '2026-05-20', 4, 119),
+(7, '2026-04-02', 5, 105),
+(8, '2026-03-12', 6, 106),
+(9, '2026-05-22', 7, 107),
+(10, '2026-05-04', 8, 108);
 
 INSERT INTO city_facilities (id, name, city_id) VALUES
 (1,  'Bioskop Fontana',         1),

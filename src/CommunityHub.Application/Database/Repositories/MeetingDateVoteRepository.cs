@@ -36,13 +36,61 @@ namespace CommunityHub.Application.Database.Repositories
             var query = PostgresQuery.Create(
                 @"SELECT 
                 v.id, v.voted_date, 
-                m.id AS meeting_id, m.theme AS meeting_theme, m.meeting_time, m.date_range_start, m.date_range_end, m.scheduled_date, m.meeting_status,
-                c.id AS user_id, c.username, c.password, c.name, c.surname, c.user_role,
-                n.id AS neighborhood_id, n.name AS neighborhood_name, n.description, n.budget
+        
+                m.id AS meeting_id, 
+                m.theme AS meeting_theme, 
+                m.meeting_time, 
+                m.date_range_start, 
+                m.date_range_end, 
+                m.scheduled_date, 
+                m.status AS meeting_status,
+
+                n.id AS neighborhood_id, 
+                n.name AS neighborhood_name, 
+                n.description, 
+                n.budget,
+        
+                c.id AS user_id, 
+                c.username, 
+                c.password, 
+                c.name, 
+                c.surname, 
+                c.user_role,
+        
+                addr.id AS address_id,
+                addr.street_number,
+                addr.neighborhood,
+                addr.street_id,
+        
+                s.id AS street_id,
+                s.name AS street_name,
+
+                city.id AS city_id,
+                city.name AS city_name,
+                city.country_id,
+                country.id AS country_id,
+                country.name AS country_name,
+
+                mem.id AS membership_id,
+                mem.acceptance_date,
+
+                coord.id AS coordinator_user_id,
+                coord.username AS coordinator_username,
+                coord.password AS coordinator_password,
+                coord.name AS coordinator_name,
+                coord.surname AS coordinator_surname,
+                coord.user_role AS coordinator_user_role
+
                 FROM meeting_date_votes v
                 INNER JOIN neighborhood_meetings m ON v.meeting_id = m.id
                 INNER JOIN citizens c ON v.citizen_id = c.id
                 INNER JOIN neighborhoods n ON m.neighborhood_id = n.id
+                INNER JOIN addresses addr ON c.address_id = addr.id
+                INNER JOIN streets s ON addr.street_id = s.id
+                INNER JOIN cities city ON addr.city_id = city.id
+                INNER JOIN countries country ON city.country_id = country.id
+                INNER JOIN users coord ON n.coordinator_id = coord.id
+                LEFT JOIN neighborhood_memberships mem ON c.membership_id = mem.id
                 WHERE v.meeting_id = @meetingId AND v.citizen_id = @citizenId"
             )
             .AddParameter("meetingId", meetingId)
