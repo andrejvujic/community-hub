@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+             xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <conv:BudgetCategoryToStringConverter x:Key="BudgetCategoryConverter" />
+    </UserControl.Resources>
+
     <Grid Background="#F5F6FA">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350" />
@@ -30,13 +36,14 @@
                      ItemsSource="{Binding Neighborhoods}"
                      Style="{StaticResource NeighborhoodListBoxStyle}"
                      ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
+                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
+                     SelectionChanged="NeighborhoodsListBox_SelectionChanged">
                 </ListBox>
             </Grid>
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-            <Grid Margin="10">
+            <Grid x:Name="BudgetPanel" Margin="10" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="1.8*" />
@@ -44,8 +51,9 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                    <TextBlock Text="Detalji budžeta kvarta NazivKvarta" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="BudgetTitleTextBlock" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
                     <DataGrid x:Name="BudgetCategoriesDataGrid" 
+                              ItemsSource="{Binding BudgetCategories}"
                               AutoGenerateColumns="False" 
                               CanUserAddRows="False" 
                               CanUserResizeRows="False"
@@ -57,10 +65,10 @@
                               Background="Transparent"
                               Height="210">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Kategorija" Width="*" />
-                            <DataGridTextColumn Header="Ukupne donacije" Width="*" />
-                            <DataGridTextColumn Header="Potrošeno" Width="*" />
-                            <DataGridTextColumn Header="Raspoloživo" Width="*" />
+                            <DataGridTextColumn Header="Kategorija" Binding="{Binding Category, Converter={StaticResource BudgetCategoryConverter}}" Width="*" />
+                            <DataGridTextColumn Header="Ukupne donacije" Binding="{Binding TotalDonationsDisplay}" Width="*" />
+                            <DataGridTextColumn Header="Potrošeno" Binding="{Binding TotalExpensesDisplay}" Width="*" />
+                            <DataGridTextColumn Header="Raspoloživo" Binding="{Binding AvailableDisplay}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
