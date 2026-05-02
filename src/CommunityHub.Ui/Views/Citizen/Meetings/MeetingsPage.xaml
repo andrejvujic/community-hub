@@ -11,6 +11,8 @@
 
     <Page.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+        <converters:MeetingStatusToStringConverter x:Key="MeetingStatusToString" />
+        <converters:MeetingThemeToStringConverter x:Key="MeetingThemeToString" />
     </Page.Resources>
 
     <Grid>
@@ -44,6 +46,12 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       Margin="0,0,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeToString}}" Width="*" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource MeetingStatusToString}}" Width="*" />
+                        <DataGridTextColumn Header="Datum/Opseg" Binding="{Binding DisplayDate}" Width="*" />
+                        <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTime}" Width="*" />
+                    </DataGrid.Columns>
                 </DataGrid>
 
                 <Grid Grid.Column="2">
@@ -54,9 +62,39 @@
 
                     <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
-                                Odaberite sastanak da biste počeli.
-                            </TextBlock>
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center"
+                                        Visibility="{Binding SelectedItem, ElementName=MeetingsGrid, Converter={StaticResource NullToVisibility}}">
+                                <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
+                                    Odaberite sastanak da biste počeli.
+                                </TextBlock>
+                            </StackPanel>
+                            
+                            <StackPanel VerticalAlignment="Center"
+                                        Visibility="{Binding SelectedItem, ElementName=MeetingsGrid, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+                                <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedItem.Status, ElementName=MeetingsGrid}" Value="Cancelled">
+                                                    <Setter Property="Text" Value="Ovaj sastanak je otkazan." />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding SelectedItem.Status, ElementName=MeetingsGrid}" Value="Scheduled">
+                                                    <Setter Property="Text">
+                                                        <Setter.Value>
+                                                            <MultiBinding StringFormat="Ovaj sastanak će se održati {0}">
+                                                                <Binding Path="SelectedItem.DisplayDate" ElementName="MeetingsGrid" />
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
                         </StackPanel>
                     </Border>
 
