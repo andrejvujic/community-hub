@@ -36,5 +36,14 @@
             expense_coordinator.name AS expense_coordinator_name,
             expense_coordinator.surname AS expense_coordinator_surname,
             expense_coordinator.user_role AS expense_coordinator_user_role";
+
+        private const string FromJoins = @"
+            FROM budget_expenses budget_expense
+            INNER JOIN budget_category_balances budget_category_balance ON budget_category_balance.id = budget_expense.budget_category_balance_id
+            INNER JOIN neighborhoods neighborhood ON neighborhood.id = budget_category_balance.neighborhood_id
+            INNER JOIN cities city ON city.id = neighborhood.city_id
+            INNER JOIN countries country ON country.id = city.country_id
+            INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id
+            INNER JOIN users expense_coordinator ON expense_coordinator.id = budget_expense.coordinator_id";
     }
 }
