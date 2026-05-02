@@ -36,7 +36,24 @@ namespace CommunityHub.Ui.Helpers.Converters
 
         public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value is not string categoryText)
+                return null;
+
+            if (string.IsNullOrWhiteSpace(categoryText))
+                return null;
+
+            return categoryText switch
+            {
+                _streetMaintenanceText => BudgetCategory.StreetMaintenance,
+                _parkMaintenanceText => BudgetCategory.ParkMaintenance,
+                _lightingText => BudgetCategory.Lighting,
+                _cleanlinessText => BudgetCategory.Cleanliness,
+                _greeneryText => BudgetCategory.Greenery,
+                _emergencyRepairsText => BudgetCategory.EmergencyRepairs,
+                _playgroundsText => BudgetCategory.Playgrounds,
+                _sportsFacilitiesText => BudgetCategory.SportsFacilities,
+                _ => null
+            };
         }
     }
 }
