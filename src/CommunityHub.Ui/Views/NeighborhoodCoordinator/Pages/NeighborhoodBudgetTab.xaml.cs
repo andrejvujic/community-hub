@@ -125,7 +125,70 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
+            var selected = BudgetCategoriesDataGrid.SelectedItem as BudgetCategoryViewModel;
+            if (selected is null)
+            {
+                MessageBox.Show("Odaberite kategoriju.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!TryGetExpenseInputs(out decimal amount, out string description)) return;
+
+            TryCreateExpense(selected, amount, description);
         }
 
+        private void TryCreateExpense(
+            BudgetCategoryViewModel selected,
+            decimal amount,
+            string description)
+        {
+            try
+            {
+                var coordinator = _selectedNeighborhood!.Coordinator;
+                _budgetService.CreateExpense(selected.Balance, coordinator, amount, description);
+                MessageBox.Show("Trošak je uspešno evidentiran.", "Uspeh",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadBudgetData();
+                RefreshCategoryDetails(selected.Balance.Id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Nedovoljno sredstava",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private bool TryGetExpenseInputs(out decimal amount, out string description)
+        {
+            amount = 0;
+            description = string.Empty;
+
+            if (!decimal.TryParse(AmountTextBox.Text.Trim(), out amount) || amount <= 0)
+            {
+                MessageBox.Show("Unesite ispravan iznos.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            description = DescriptionTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(description))
+            {
+                MessageBox.Show("Unesite opis troška.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void RefreshCategoryDetails(long balanceId)
+        {
+            var refreshed = BudgetCategories.FirstOrDefault(c => c.Balance.Id == balanceId);
+            if (refreshed is null) return;
+
+            BudgetCategoriesDataGrid.SelectedItem = refreshed;
+            PopulateCategoryDetails(refreshed);
+        }
     }
 }
