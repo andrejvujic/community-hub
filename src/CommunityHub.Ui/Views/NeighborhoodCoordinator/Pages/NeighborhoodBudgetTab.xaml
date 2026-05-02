@@ -63,7 +63,8 @@
                               IsReadOnly="True"
                               HeadersVisibility="Column"
                               Background="Transparent"
-                              Height="210">
+                              Height="210"
+                              SelectionChanged="BudgetCategoriesDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Kategorija" Binding="{Binding Category, Converter={StaticResource BudgetCategoryConverter}}" Width="*" />
                             <DataGridTextColumn Header="Ukupne donacije" Binding="{Binding TotalDonationsDisplay}" Width="*" />
@@ -73,14 +74,14 @@
                     </DataGrid>
                 </StackPanel>
 
-                <Grid Grid.Row="1" Margin="0,0,0,10">
+                <Grid x:Name="CategoryDetailsPanel" Grid.Row="1" Margin="0,0,0,10" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1.5*" />
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                        <TextBlock Text="Donacija: NazivKategorije" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="DonationsTitleTextBlock" FontWeight="SemiBold" Margin="0,0,0,5"/>
                         <DataGrid x:Name="DonationsDataGrid" 
                                   AutoGenerateColumns="False" 
                                   CanUserAddRows="False" 
@@ -91,7 +92,8 @@
                                   IsReadOnly="True"
                                   HeadersVisibility="Column"
                                   Background="Transparent"
-                                  Height="190">
+                                  Height="190"
+                                  FontSize="16">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Iznos" Width="*" />
                                 <DataGridTextColumn Header="Datum" Width="*" />
@@ -100,8 +102,9 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                        <TextBlock Text="Evidencija troškova: NazivKategorije" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="ExpensesTitleTextBlock" FontWeight="SemiBold" Margin="0,0,0,5"/>
                         <DataGrid x:Name="ExpensesDataGrid"  
+                                  ItemsSource="{Binding Expenses}"
                                   AutoGenerateColumns="False" 
                                   CanUserAddRows="False" 
                                   CanUserResizeRows="False"
@@ -111,11 +114,12 @@
                                   IsReadOnly="True"
                                   HeadersVisibility="Column"
                                   Background="Transparent"
-                                  Height="190">
+                                  Height="190"
+                                  FontSize="16">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Opis" Width="2*" />
-                                <DataGridTextColumn Header="Iznos" Width="*" />
-                                <DataGridTextColumn Header="Datum" Width="*" />
+                                <DataGridTextColumn Header="Opis" Binding="{Binding Description}" Width="*" />
+                                <DataGridTextColumn Header="Iznos" Binding="{Binding AmountDisplay}" Width="140" />
+                                <DataGridTextColumn Header="Datum" Binding="{Binding DateDisplay}" Width="90" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>

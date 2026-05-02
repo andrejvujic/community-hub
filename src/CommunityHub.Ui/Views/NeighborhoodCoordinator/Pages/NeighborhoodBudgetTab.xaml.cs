@@ -16,6 +16,7 @@ using CommunityHub.Application.Database.Repositories.NeighborhoodBudget;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
 using CommunityHub.Application.Services;
+using CommunityHub.Ui.Helpers.Converters;
 using CommunityHub.Ui.ViewModels;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
@@ -34,6 +35,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
         public ObservableCollection<BudgetCategoryViewModel> BudgetCategories { get; set; } = new ObservableCollection<BudgetCategoryViewModel>();
+        public ObservableCollection<BudgetExpenseViewModel> Expenses { get; set; } = new ObservableCollection<BudgetExpenseViewModel>();
 
         private readonly NeighborhoodBudgetService _budgetService = new(
             new BudgetCategoryBalanceRepository(),
@@ -92,6 +94,33 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
                 BudgetCategories.Add(new BudgetCategoryViewModel(balance, 0, expenses));
             }
+        }
+
+        private void BudgetCategoriesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selected = BudgetCategoriesDataGrid.SelectedItem as BudgetCategoryViewModel;
+            if (selected is null)
+            {
+                CategoryDetailsPanel.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            PopulateCategoryDetails(selected);
+            CategoryDetailsPanel.Visibility = Visibility.Visible;
+        }
+
+        private void PopulateCategoryDetails(BudgetCategoryViewModel selected)
+        {
+            var converter = new BudgetCategoryToStringConverter();
+            var categoryName = converter.Convert(selected.Category, typeof(string), null, System.Globalization.CultureInfo.CurrentCulture);
+
+            DonationsTitleTextBlock.Text = $"Donacije: {categoryName}";
+            ExpensesTitleTextBlock.Text = $"Troškovi: {categoryName}";
+
+            Expenses.Clear();
+            var categoryExpenses = _allExpenses.Where(ex => ex.BudgetCategoryBalance.Id == selected.Balance.Id);
+            foreach (var ex in categoryExpenses)
+                Expenses.Add(new BudgetExpenseViewModel(ex));
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
