@@ -156,5 +156,17 @@ namespace CommunityHub.Application.Database.Repositories
 
             return neighborhoods.Values.ToList();
         }
+
+        public void UpdateBudget(long neighborhoodId, int newBudget)
+        {
+            PostgresQuery.Create(
+                @"UPDATE neighborhoods
+                SET budget = @budget
+                WHERE id = @id"
+            )
+            .AddParameter("id", neighborhoodId)
+            .AddParameter("budget", newBudget)
+            .Execute();
+        }
     }
 }

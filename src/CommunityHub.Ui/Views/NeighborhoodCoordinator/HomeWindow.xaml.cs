@@ -36,6 +36,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             ServiceCenterTab.Initialize(_userId);
             StatisticsAndMeetingsTab.Initialize(_userId);
             CityFacilitiesTab.Initialize(_userId);
+            NeighborhoodBudgetTab.Initialize(_userId);
         }
 
         private void LoadUser()
