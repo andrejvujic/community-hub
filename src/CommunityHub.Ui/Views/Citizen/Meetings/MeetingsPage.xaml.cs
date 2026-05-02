@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
@@ -10,6 +9,7 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
         private readonly long _userId;
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly NeighborhoodMeetingRepository _neighborhoodMeetingRepository = new NeighborhoodMeetingRepository();
+        private readonly MeetingDateVoteRepository _meetingDateVoteRepository = new MeetingDateVoteRepository();
 
         public MeetingsPage(long userId)
         {
@@ -29,6 +29,18 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
                 var neighborhoodId = citizen.Membership.Neighborhood.Id;
                 var meetings = _neighborhoodMeetingRepository.GetByNeighborhoodId(neighborhoodId);
                 MeetingsGrid.ItemsSource = meetings;
+            }
+        }
+
+        private void MeetingsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MeetingsGrid.SelectedItem is NeighborhoodMeeting selectedMeeting)
+            {
+                this.Tag = _meetingDateVoteRepository.GetByMeetingIdAndCitizenId(selectedMeeting.Id, _userId);
+    }
+            else
+            {
+                this.Tag = null;
             }
         }
     }

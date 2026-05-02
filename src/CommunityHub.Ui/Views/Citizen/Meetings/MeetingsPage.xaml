@@ -36,6 +36,7 @@
                 </Grid.ColumnDefinitions>
 
                 <DataGrid x:Name="MeetingsGrid" Grid.Column="0"
+                      SelectionChanged="MeetingsGrid_SelectionChanged"
                       AutoGenerateColumns="False"
                       HeadersVisibility="Column"
                       BorderBrush="Black"
@@ -63,15 +64,13 @@
                     <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
                         <StackPanel VerticalAlignment="Center">
                         <Grid>
-                            <StackPanel VerticalAlignment="Center"
-                                        Visibility="{Binding SelectedItem, ElementName=MeetingsGrid, Converter={StaticResource NullToVisibility}}">
+                            <StackPanel VerticalAlignment="Center" Visibility="{Binding SelectedItem, ElementName=MeetingsGrid, Converter={StaticResource NullToVisibility}}">
                                 <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
                                     Odaberite sastanak da biste počeli.
                                 </TextBlock>
                             </StackPanel>
                             
-                            <StackPanel VerticalAlignment="Center"
-                                        Visibility="{Binding SelectedItem, ElementName=MeetingsGrid, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+                            <StackPanel VerticalAlignment="Center" Visibility="{Binding SelectedItem, ElementName=MeetingsGrid, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
                                 <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -80,6 +79,7 @@
                                                 <DataTrigger Binding="{Binding SelectedItem.Status, ElementName=MeetingsGrid}" Value="Cancelled">
                                                     <Setter Property="Text" Value="Ovaj sastanak je otkazan." />
                                                 </DataTrigger>
+
                                                 <DataTrigger Binding="{Binding SelectedItem.Status, ElementName=MeetingsGrid}" Value="Scheduled">
                                                     <Setter Property="Text">
                                                         <Setter.Value>
@@ -89,6 +89,28 @@
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
+                                                
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding SelectedItem.Status, ElementName=MeetingsGrid}" Value="InPreparation" />
+                                                        <Condition Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=Page}}" Value="{x:Null}" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Text" Value="Još uvek niste glasali za vreme ovog sastanka. Možete glasati do 24h pre sastanka." />
+                                                </MultiDataTrigger>
+
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding SelectedItem.Status, ElementName=MeetingsGrid}" Value="InPreparation" />
+                                                        <Condition Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}" Value="Visible" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Text">
+                                                        <Setter.Value>
+                                                            <MultiBinding StringFormat="Glasali ste da ovaj sastanak bude održan {0:dd.MM.yyyy.} Možete promeniti svoj glas do 24h pre sastanka.">
+                                                                <Binding Path="Tag.VotedDate" RelativeSource="{RelativeSource AncestorType=Page}" />
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
