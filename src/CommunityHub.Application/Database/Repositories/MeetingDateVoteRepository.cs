@@ -101,5 +101,25 @@ namespace CommunityHub.Application.Database.Repositories
 
             return vote;
         }
+
+        public Dictionary<DateOnly, int> GetVoteCountsForMeeting(long meetingId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT voted_date, COUNT(*) as vote_count 
+                FROM meeting_date_votes 
+                WHERE meeting_id = @meetingId 
+                GROUP BY voted_date"
+            ).AddParameter("meetingId", meetingId);
+
+            var voteCounts = new Dictionary<DateOnly, int>();
+            query.ExecuteReader(reader =>
+            {
+                var date = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("voted_date")));
+                var count = reader.GetInt32(reader.GetOrdinal("vote_count"));
+                voteCounts[date] = count;
+            });
+
+            return voteCounts;
+        }
     }
 }
