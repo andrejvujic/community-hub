@@ -48,5 +48,27 @@ namespace CommunityHub.Application.Services
             else if (DateOnly.FromDateTime(DateTime.Today) >= meeting.DateRangeStart)
                 _meetingRepository.UpdateStatus(meeting.Id, MeetingStatus.Cancelled);
         }
+
+        public List<DateOnly> GetTiedDates(long meetingId)
+        {
+            var voteCounts = _voteRepository.GetVoteCountsForMeeting(meetingId);
+            if (voteCounts.Count == 0) return new List<DateOnly>();
+
+            int maxVotes = voteCounts.Values.Max();
+            return voteCounts
+                .Where(v => v.Value == maxVotes)
+                .Select(v => v.Key)
+                .OrderBy(d => d)
+                .ToList();
+        }
+
+        public bool HasTiedDates(long meetingId)
+        {
+            var voteCounts = _voteRepository.GetVoteCountsForMeeting(meetingId);
+            if (voteCounts.Count == 0) return false;
+
+            int maxVotes = voteCounts.Values.Max();
+            return voteCounts.Count(v => v.Value == maxVotes) > 1;
+        }
     }
 }
