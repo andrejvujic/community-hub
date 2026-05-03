@@ -42,7 +42,8 @@ namespace CommunityHub.Application.Database.Repositories
                 INNER JOIN cities ON neighborhoods.city_id = cities.id
                 INNER JOIN countries ON cities.country_id = countries.id
                 INNER JOIN users AS coordinator ON neighborhoods.coordinator_id = coordinator.id
-                WHERE neighborhood_meetings.neighborhood_id = @id"
+                WHERE neighborhood_meetings.neighborhood_id = @id
+                ORDER BY COALESCE(scheduled_date, date_range_start) ASC, meeting_time ASC"
             ).AddParameter("id", neighborhoodId);
 
             List<NeighborhoodMeeting> meetings = new List<NeighborhoodMeeting>();
