@@ -52,6 +52,19 @@ namespace CommunityHub.Application.Database.Repositories
             return meetings;
         }
 
+
+        public void UpdateStatus(long meetingId, MeetingStatus newStatus)
+        {
+            PostgresQuery.Create(
+                @"UPDATE neighborhood_meetings 
+                SET status = @status 
+                WHERE id = @id"
+            )
+            .AddParameter("status", newStatus)
+            .AddParameter("id", meetingId)
+            .Execute();
+        }
+
         public NeighborhoodMeeting Create(NeighborhoodMeeting meeting)
         {
             var query = PostgresQuery.Create(
