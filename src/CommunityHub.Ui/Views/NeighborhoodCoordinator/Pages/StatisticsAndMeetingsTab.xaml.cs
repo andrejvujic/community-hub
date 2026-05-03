@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Services;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {
@@ -27,6 +28,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
         private readonly NeighborhoodMembershipRepository _membershipRepository = new NeighborhoodMembershipRepository();
         private readonly NeighborhoodMeetingRepository _meetingRepository = new NeighborhoodMeetingRepository();
+
+        private readonly MeetingSchedulingService _meetingSchedulingService = new MeetingSchedulingService(new NeighborhoodMeetingRepository(), new MeetingDateVoteRepository());
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
         public ObservableCollection<NeighborhoodMeeting> Meetings { get; set; } = new ObservableCollection<NeighborhoodMeeting>();
@@ -75,8 +78,10 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         private void LoadMeetings()
         {
             Meetings.Clear();
-            var data = _meetingRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
-            foreach (var m in data) Meetings.Add(m);
+            var meetings = _meetingRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
+            _meetingSchedulingService.ProcessMeetingsInPreparation(meetings);
+            var updatedMeetings = _meetingRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
+            foreach (var m in updatedMeetings) Meetings.Add(m);
         }
 
         private void DisplayTrustStatusCounts(List<CitizenTrustRecord> trustRecords)
@@ -174,7 +179,72 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
             {
                 Owner = Window.GetWindow(this)
             };
-            window.ShowDialog();
+
+            if (window.ShowDialog() == true)
+            {
+                LoadMeetings();
+            }
+        }
+
+        private void MeetingsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selected = MeetingsDataGrid.SelectedItem as NeighborhoodMeeting;
+
+            TiedDatesPanel.Visibility = Visibility.Collapsed;
+            TiedDatesComboBox.ItemsSource = null;
+
+            if (selected is null) return;
+
+            var now = DateOnly.FromDateTime(DateTime.Today);
+            bool isVotingTimeOver = now >= selected.DateRangeStart.AddDays(-1);
+            bool isStillInPrep = selected.Status == MeetingStatus.InPreparation;
+
+            if (!isVotingTimeOver || !isStillInPrep) return;
+
+            CheckAndShowTiedDates(selected);
+        }
+
+        private void CheckAndShowTiedDates(NeighborhoodMeeting meeting)
+        {
+            bool hasTied = _meetingSchedulingService.HasTiedDates(meeting.Id);
+            if (!hasTied) return;
+
+            var tiedDates = _meetingSchedulingService.GetTiedDates(meeting.Id);
+
+            TiedDatesComboBox.ItemsSource = tiedDates
+                .Select(d => new { Date = d, Display = d.ToString("dd.MM.yyyy.") })
+                .ToList();
+            TiedDatesComboBox.DisplayMemberPath = "Display";
+            TiedDatesComboBox.SelectedValuePath = "Date";
+
+            TiedDatesPanel.Visibility = Visibility.Visible;
+            ConfirmTermButton.IsEnabled = false;
+        }
+
+        private void TiedDatesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ConfirmTermButton.IsEnabled = TiedDatesComboBox.SelectedValue != null;
+        }
+
+        private void ConfirmTermButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = MeetingsDataGrid.SelectedItem as NeighborhoodMeeting;
+            if (selected is null) return;
+
+            if (TiedDatesComboBox.SelectedValue is not DateOnly chosenDate)
+            {
+                MessageBox.Show("Odaberite termin.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _meetingRepository.UpdateScheduledDate(selected.Id, chosenDate);
+            _meetingRepository.UpdateStatus(selected.Id, MeetingStatus.Scheduled);
+
+            MessageBox.Show($"Uspešno ste zakazali termin za {chosenDate:dd.MM.yyyy.}.");
+
+            TiedDatesPanel.Visibility = Visibility.Collapsed;
+            LoadMeetings();
         }
     }
 }
