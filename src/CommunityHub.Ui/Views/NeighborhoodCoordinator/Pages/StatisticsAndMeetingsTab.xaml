@@ -194,6 +194,16 @@
                                   Background="Transparent"
                                   FontSize="16"
                                   SelectionChanged="MeetingsDataGrid_SelectionChanged">
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsTied}" Value="True">
+                                            <Setter Property="Background" Value="#FFF4CE"/>
+                                            <Setter Property="ToolTip" Value="Nerešen broj glasova! Potreban odabir konačnog datuma."/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="130"/>
                                 <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTime}" Width="100"/>
