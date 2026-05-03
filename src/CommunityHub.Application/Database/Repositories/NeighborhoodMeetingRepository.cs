@@ -51,5 +51,19 @@ namespace CommunityHub.Application.Database.Repositories
             });
             return meetings;
         }
+
+        public NeighborhoodMeeting Create(NeighborhoodMeeting meeting)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO neighborhood_meetings 
+                (theme, meeting_time, date_range_start, date_range_end, status, neighborhood_id) 
+                VALUES (@theme, @meeting_time, @date_range_start, @date_range_end, @status, @neighborhood_id) 
+                RETURNING id"
+            ).ExtendParameters(_neighborhoodMeetingMapper.MapToQueryParameters(meeting));
+
+            long neighborhoodMeetingId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            return meeting.CopyWith(id: neighborhoodMeetingId);
+        }
     }
 }
