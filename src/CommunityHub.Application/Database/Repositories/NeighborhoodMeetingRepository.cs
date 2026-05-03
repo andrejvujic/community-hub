@@ -64,6 +64,18 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("id", meetingId)
             .Execute();
         }
+        public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate)
+        {
+            PostgresQuery.Create(
+                @"UPDATE neighborhood_meetings 
+                SET scheduled_date = @date 
+                WHERE id = @id"
+            )
+            .AddParameter("date", scheduledDate.ToDateTime(TimeOnly.MinValue))
+            .AddParameter("id", meetingId)
+            .Execute();
+        }
+
 
         public NeighborhoodMeeting Create(NeighborhoodMeeting meeting)
         {
