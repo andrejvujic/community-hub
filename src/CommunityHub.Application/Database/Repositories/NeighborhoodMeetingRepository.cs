@@ -42,7 +42,8 @@ namespace CommunityHub.Application.Database.Repositories
                 INNER JOIN cities ON neighborhoods.city_id = cities.id
                 INNER JOIN countries ON cities.country_id = countries.id
                 INNER JOIN users AS coordinator ON neighborhoods.coordinator_id = coordinator.id
-                WHERE neighborhood_meetings.neighborhood_id = @id"
+                WHERE neighborhood_meetings.neighborhood_id = @id
+                ORDER BY COALESCE(scheduled_date, date_range_start) ASC, meeting_time ASC"
             ).AddParameter("id", neighborhoodId);
 
             List<NeighborhoodMeeting> meetings = new List<NeighborhoodMeeting>();
@@ -50,6 +51,45 @@ namespace CommunityHub.Application.Database.Repositories
                 meetings.Add(_neighborhoodMeetingMapper.MapToEntity(reader));
             });
             return meetings;
+        }
+
+
+        public void UpdateStatus(long meetingId, MeetingStatus newStatus)
+        {
+            PostgresQuery.Create(
+                @"UPDATE neighborhood_meetings 
+                SET status = @status 
+                WHERE id = @id"
+            )
+            .AddParameter("status", newStatus)
+            .AddParameter("id", meetingId)
+            .Execute();
+        }
+        public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate)
+        {
+            PostgresQuery.Create(
+                @"UPDATE neighborhood_meetings 
+                SET scheduled_date = @date 
+                WHERE id = @id"
+            )
+            .AddParameter("date", scheduledDate.ToDateTime(TimeOnly.MinValue))
+            .AddParameter("id", meetingId)
+            .Execute();
+        }
+
+
+        public NeighborhoodMeeting Create(NeighborhoodMeeting meeting)
+        {
+            var query = PostgresQuery.Create(
+                @"INSERT INTO neighborhood_meetings 
+                (theme, meeting_time, date_range_start, date_range_end, status, neighborhood_id) 
+                VALUES (@theme, @meeting_time, @date_range_start, @date_range_end, @status, @neighborhood_id) 
+                RETURNING id"
+            ).ExtendParameters(_neighborhoodMeetingMapper.MapToQueryParameters(meeting));
+
+            long neighborhoodMeetingId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            return meeting.CopyWith(id: neighborhoodMeetingId);
         }
     }
 }

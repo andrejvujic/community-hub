@@ -51,11 +51,23 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="0,0,10,0">
                 <TextBlock Text="Od" FontSize="20" Margin="0,0,0,5"/>
-                <DatePicker x:Name="FromDatePicker" FontSize="20" Height="35"/>
+                <DatePicker x:Name="FromDatePicker" FontSize="20" Height="35">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Do" FontSize="20" Margin="0,0,0,5"/>
-                <DatePicker x:Name="ToDatePicker" FontSize="20" Height="35"/>
+                <DatePicker x:Name="ToDatePicker" FontSize="20" Height="35">
+                    <DatePicker.Resources>
+                        <Style TargetType="DatePickerTextBox">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </Style>
+                    </DatePicker.Resources>
+                </DatePicker>
             </StackPanel>
         </Grid>
 

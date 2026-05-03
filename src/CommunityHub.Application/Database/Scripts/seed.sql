@@ -966,6 +966,43 @@ INSERT INTO budget_expenses (amount, description, expense_date, budget_category_
 (22000.00, 'Farbanje klupa u glavnom parku', '2026-05-02', 18, 11),
 (3100.00,  'Nabavka kesa za komunalni otpad', '2026-04-10', 20, 11);
 
+INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
+(16, '2026-04-01', 1), (17, '2026-04-01', 1), (18, '2026-04-01', 1), (19, '2026-04-01', 1), (20, '2026-04-01', 1), (21, '2026-04-01', 1),
+(22, '2026-04-01', 6), (23, '2026-04-01', 6), (24, '2026-04-01', 6), (25, '2026-04-01', 6), (26, '2026-04-01', 6), (27, '2026-04-01', 6),
+(28, '2026-04-01', 11), (29, '2026-04-01', 11), (30, '2026-04-01', 11), (31, '2026-04-01', 11), (32, '2026-04-01', 11), (33, '2026-04-01', 11);
+
+INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
+(121, 'c1.1', 'citizen', '123', 'Ivan', 'Ivić', 1, 16), (122, 'c1.2', 'citizen', '123', 'Ana', 'Anić', 1, 17), (123, 'c1.3', 'citizen', '123', 'Luka', 'Lukić', 1, 18), (124, 'c1.4', 'citizen', '123', 'Maja', 'Majić', 1, 19), (125, 'c1.5', 'citizen', '123', 'Sava', 'Savić', 1, 20), (126, 'c1.6', 'citizen', '123', 'Sara', 'Sarić', 1, 21),
+(127, 'c6.1', 'citizen', '123', 'Marko', 'Marković', 6, 22), (128, 'c6.2', 'citizen', '123', 'Jana', 'Janić', 6, 23), (129, 'c6.3', 'citizen', '123', 'Igor', 'Igorić', 6, 24), (130, 'c6.4', 'citizen', '123', 'Tea', 'Teić', 6, 25), (131, 'c6.5', 'citizen', '123', 'Vuk', 'Vukić', 6, 26), (132, 'c6.6', 'citizen', '123', 'Mina', 'Minić', 6, 27),
+(133, 'c11.1', 'citizen', '123', 'Pera', 'Perić', 11, 28), (134, 'c11.2', 'citizen', '123', 'Neda', 'Nedić', 11, 29), (135, 'c11.3', 'citizen', '123', 'Uroš', 'Urošić', 11, 30), (136, 'c11.4', 'citizen', '123', 'Mira', 'Mirić', 11, 31), (137, 'c11.5', 'citizen', '123', 'Bane', 'Banić', 11, 32), (138, 'c11.6', 'citizen', '123', 'Ena', 'Enić', 11, 33);
+
+INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date) VALUES
+(121, 1, 'accepted', '2026-03-25'), (122, 1, 'accepted', '2026-03-25'), (123, 1, 'accepted', '2026-03-25'), (124, 1, 'accepted', '2026-03-25'), (125, 1, 'accepted', '2026-03-25'), (126, 1, 'accepted', '2026-03-25'),
+(127, 6, 'accepted', '2026-03-25'), (128, 6, 'accepted', '2026-03-25'), (129, 6, 'accepted', '2026-03-25'), (130, 6, 'accepted', '2026-03-25'), (131, 6, 'accepted', '2026-03-25'), (132, 6, 'accepted', '2026-03-25'),
+(133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
+
+INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
+(11, 'welcome', '18:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 1),
+(12, 'motivation', '19:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 1),
+(13, 'welcome', '20:00', '2026-05-03', '2026-05-07', NULL, 'in_preparation', 1),
+(14, 'welcome', '18:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 6),
+(15, 'motivation', '19:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 6),
+(16, 'welcome', '20:00', '2026-05-03', '2026-05-07', NULL, 'in_preparation', 6),
+(17, 'welcome', '18:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 11),
+(18, 'motivation', '19:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 11),
+(19, 'welcome', '20:00', '2026-05-03', '2026-05-07', NULL, 'in_preparation', 11);
+
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(11, '2026-05-04', 11, 121), (12, '2026-05-05', 11, 122),
+(13, '2026-05-04', 12, 123), (14, '2026-05-06', 12, 124),
+(15, '2026-05-03', 13, 125), (16, '2026-05-04', 13, 126),
+(17, '2026-05-04', 14, 127), (18, '2026-05-05', 14, 128),
+(19, '2026-05-04', 15, 129), (20, '2026-05-06', 15, 130),
+(21, '2026-05-03', 16, 131), (22, '2026-05-04', 16, 132),
+(23, '2026-05-04', 17, 133), (24, '2026-05-05', 17, 134),
+(25, '2026-05-04', 18, 135), (26, '2026-05-06', 18, 136),
+(27, '2026-05-03', 19, 137), (28, '2026-05-04', 19, 138);
+
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
     COALESCE((SELECT MAX(id) FROM public.users), 0),
@@ -1155,6 +1192,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.images', 'id'),
     COALESCE((SELECT MAX(id) FROM public.images), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhood_meetings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhood_meetings), 0),
     true
 );
 

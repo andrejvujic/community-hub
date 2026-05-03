@@ -10,6 +10,8 @@
         public DateOnly DateRangeEnd { get; private set; }
         public DateOnly? ScheduledDate { get; private set; }
         public MeetingStatus Status { get; private set; }
+        public bool IsTied 
+            => Status == MeetingStatus.InPreparation && DateOnly.FromDateTime(DateTime.Today) >= DateRangeStart.AddDays(-1);
 
         public string DisplayDate
         {
