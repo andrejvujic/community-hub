@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Buildings.CommonRooms;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class CommonRoomRepository
+    public class CommonRoomRepository : ICommonRoomRepository
     {
         private readonly CommonRoomMapper _commonRoomMapper = new();
 

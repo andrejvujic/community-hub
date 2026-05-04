@@ -1,10 +1,11 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class CountryRepository
+public class CountryRepository : ICountryRepository
 {
     private readonly CountryMapper _countryMapper = new CountryMapper();
 

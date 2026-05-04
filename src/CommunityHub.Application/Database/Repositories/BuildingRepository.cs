@@ -2,10 +2,11 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Helpers.Search;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class BuildingRepository
+    public class BuildingRepository : IBuildingRepository
     {
         private readonly BuildingMapper _buildingMapper = new();
         private readonly ImageMapper _imageMapper = new();

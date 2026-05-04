@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Buildings.Ads.TimeSlots;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class AdTimeSlotRepository
+    public class AdTimeSlotRepository : IAdTimeSlotRepository
     {
         private readonly AdTimeSlotMapper _timeSlotMapper = new();
 

@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class CommonRoomRentalRequestRepository
+    public class CommonRoomRentalRequestRepository : ICommonRoomRentalRequestRepository
     {
         private readonly CommonRoomRentalRequestMapper _commonRoomRentalRequestMapper = new();
 

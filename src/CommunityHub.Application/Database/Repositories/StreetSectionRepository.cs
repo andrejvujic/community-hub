@@ -1,10 +1,11 @@
 ﻿using System.Net.WebSockets;
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class StreetSectionRepository
+    public class StreetSectionRepository : IStreetSectionRepository
     {
         private readonly StreetSectionMapper _streetSectionMapper = new StreetSectionMapper();
         public int GetStartNumber(long? streetId, long? cityId)

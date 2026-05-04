@@ -1,10 +1,11 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers.Notifications;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories.Notifications
 {
-    public class NotificationRepository
+    public class NotificationRepository: INotificationRepository
     {
         private readonly NotificationMapper _notificationMapper = new(); 
         private readonly NotificationDetailsRepository _notificationDetailsRepository = new();

@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Apartments;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class ApartmentMembershipRepository
+    public class ApartmentMembershipRepository : IApartmentMembershipRepository
     {
         private readonly ApartmentMembershipMapper _apartmentMembershipMapper = new();
 
