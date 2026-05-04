@@ -18,6 +18,7 @@
         public bool IsEditable(DateTime now) => (now - CreatedAt).TotalDays <= 3;
 
         public static bool CanBeCreatedFor(BookedJob bookedJob, DateTime now) =>
+            CompletionDateTime(bookedJob) <= now &&
             (now - CompletionDateTime(bookedJob)).TotalDays <= 10;
 
         private static DateTime CompletionDateTime(BookedJob bookedJob)

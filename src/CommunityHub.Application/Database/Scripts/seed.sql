@@ -893,6 +893,18 @@ INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, da
 (9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
 (10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
 
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(1, '2026-05-03', 1, 105),
+(2, '2026-05-03', 1, 116),
+(3, '2026-05-12', 2, 117),
+(4, '2026-05-15', 3, 118),
+(5, '2026-05-20', 4, 104),
+(6, '2026-05-20', 4, 119),
+(7, '2026-04-02', 5, 105),
+(8, '2026-03-12', 6, 106),
+(9, '2026-05-22', 7, 107),
+(10, '2026-05-04', 8, 108);
+
 INSERT INTO city_facilities (id, name, city_id) VALUES
 (1,  'Bioskop Fontana',         1),
 (2,  'Gradski bazen Tašmajdan', 1),
@@ -919,44 +931,77 @@ INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id
 (11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
 (12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
 
-INSERT INTO budget_category_balances (id, category, neighborhood_id, total_amount) VALUES
-(1,  'street_maintenance', 1,  120000.00),
-(2,  'park_maintenance',   1,  95000.00),
-(3,  'lighting',           1,  60000.00),
-(4,  'cleanliness',        1,  45000.00),
-(5,  'greenery',           1,  80000.00),
-(6,  'emergency_repairs',  1,  50000.00),
-(7,  'street_maintenance', 2,  200000.00),
-(8,  'park_maintenance',   2,  150000.00),
-(9,  'lighting',           2,  90000.00),
-(10, 'cleanliness',        2,  70000.00),
-(11, 'greenery',           2,  110000.00),
-(12, 'emergency_repairs',  2,  80000.00),
-(13, 'street_maintenance', 3,  100000.00),
-(14, 'park_maintenance',   3,  75000.00),
-(15, 'lighting',           3,  50000.00),
-(16, 'cleanliness',        4,  55000.00),
-(17, 'greenery',           4,  40000.00),
-(18, 'street_maintenance', 5,  160000.00),
-(19, 'park_maintenance',   5,  130000.00),
-(20, 'emergency_repairs',  5,  90000.00);
+INSERT INTO budget_category_balances (category, neighborhood_id, total_amount) VALUES
+('street_maintenance', 1, 200000.00),
+('park_maintenance',   1, 150000.00),
+('lighting',           1, 80000.00),
+('cleanliness',        1, 120000.00),
+('greenery',           1, 100000.00),
+('emergency_repairs',  1, 100000.00),
+('playgrounds',        1, 50000.00),
+('sports_facilities',  1, 50000.00),
+('street_maintenance', 6, 100000.00),
+('park_maintenance',   6, 50000.00),
+('lighting',           6, 40000.00),
+('cleanliness',        6, 80000.00),
+('greenery',           6, 50000.00),
+('emergency_repairs',  6, 60000.00),
+('playgrounds',        6, 20000.00),
+('sports_facilities',  6, 20000.00),
+('street_maintenance', 11, 120000.00),
+('park_maintenance',   11, 60000.00),
+('lighting',           11, 50000.00),
+('cleanliness',        11, 70000.00),
+('greenery',           11, 50000.00),
+('emergency_repairs',  11, 80000.00),
+('playgrounds',        11, 20000.00),
+('sports_facilities',  11, 20000.00);
 
-INSERT INTO budget_expenses (id, amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
-(1,  15000.00, 'Krpljenje rupa na Njegoševoj ulici.',                    '2026-02-10', 1,  11),
-(2,  22000.00, 'Košenje trave i uređenje drvoreda u parku.',             '2026-02-15', 2,  11),
-(3,  8000.00,  'Zamena 10 uličnih svetiljki na Vračaru.',                '2026-03-01', 3,  11),
-(4,  5000.00,  'Nabavka kanti za otpad i postavljanje.',                 '2026-03-05', 4,  11),
-(5,  12000.00, 'Sadnja novih stabala duž bulevara.',                     '2026-03-20', 5,  11),
-(6,  30000.00, 'Hitna popravka vodovodne cevi u Bloku 45.',              '2026-02-08', 12, 12),
-(7,  45000.00, 'Asfaltiranje dela ulice Jurija Gagarina.',               '2026-03-12', 7,  12),
-(8,  18000.00, 'Postavljanje klupa i stolova u parku.',                  '2026-03-25', 8,  12),
-(9,  25000.00, 'Čišćenje i sanacija fasada zgrada u Grbavici.',          '2026-02-20', 14, 13),
-(10, 10000.00, 'Popravka javne rasvete na Bulevaru oslobođenja.',        '2026-04-01', 15, 13),
-(11, 35000.00, 'Izgradnja dečjeg igrališta u centru grada.',             '2026-03-15', 17, 14),
-(12, 20000.00, 'Čišćenje i održavanje centralnog trga.',                 '2026-04-05', 16, 14),
-(13, 50000.00, 'Rekonstrukcija trotoara u Aerodromskom naselju.',        '2026-02-25', 18, 15),
-(14, 28000.00, 'Uređenje parka kod sportskog centra.',                   '2026-03-30', 19, 15),
-(15, 15000.00, 'Hitna popravka kanalizacije u Aerodromskom naselju.',    '2026-04-10', 20, 15);
+INSERT INTO budget_expenses (amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
+(12500.50, 'Popravka ulične svetiljke u Njegoševoj', '2026-04-20', 3, 11),
+(45000.00, 'Asfaltiranje udarne rupe kod hrama', '2026-04-25', 1, 11),
+(8200.00,  'Nove sadnice za Karađorđev park', '2026-05-01', 5, 11),
+(5600.00,  'Zamena peska u peskarniku na igralištu', '2026-04-15', 15, 11),
+(15000.00, 'Hitna sanacija vodovodne cevi', '2026-04-28', 14, 11),
+(22000.00, 'Farbanje klupa u glavnom parku', '2026-05-02', 18, 11),
+(3100.00,  'Nabavka kesa za komunalni otpad', '2026-04-10', 20, 11);
+
+INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
+(16, '2026-04-01', 1), (17, '2026-04-01', 1), (18, '2026-04-01', 1), (19, '2026-04-01', 1), (20, '2026-04-01', 1), (21, '2026-04-01', 1),
+(22, '2026-04-01', 6), (23, '2026-04-01', 6), (24, '2026-04-01', 6), (25, '2026-04-01', 6), (26, '2026-04-01', 6), (27, '2026-04-01', 6),
+(28, '2026-04-01', 11), (29, '2026-04-01', 11), (30, '2026-04-01', 11), (31, '2026-04-01', 11), (32, '2026-04-01', 11), (33, '2026-04-01', 11);
+
+INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
+(121, 'c1.1', 'citizen', '123', 'Ivan', 'Ivić', 1, 16), (122, 'c1.2', 'citizen', '123', 'Ana', 'Anić', 1, 17), (123, 'c1.3', 'citizen', '123', 'Luka', 'Lukić', 1, 18), (124, 'c1.4', 'citizen', '123', 'Maja', 'Majić', 1, 19), (125, 'c1.5', 'citizen', '123', 'Sava', 'Savić', 1, 20), (126, 'c1.6', 'citizen', '123', 'Sara', 'Sarić', 1, 21),
+(127, 'c6.1', 'citizen', '123', 'Marko', 'Marković', 6, 22), (128, 'c6.2', 'citizen', '123', 'Jana', 'Janić', 6, 23), (129, 'c6.3', 'citizen', '123', 'Igor', 'Igorić', 6, 24), (130, 'c6.4', 'citizen', '123', 'Tea', 'Teić', 6, 25), (131, 'c6.5', 'citizen', '123', 'Vuk', 'Vukić', 6, 26), (132, 'c6.6', 'citizen', '123', 'Mina', 'Minić', 6, 27),
+(133, 'c11.1', 'citizen', '123', 'Pera', 'Perić', 11, 28), (134, 'c11.2', 'citizen', '123', 'Neda', 'Nedić', 11, 29), (135, 'c11.3', 'citizen', '123', 'Uroš', 'Urošić', 11, 30), (136, 'c11.4', 'citizen', '123', 'Mira', 'Mirić', 11, 31), (137, 'c11.5', 'citizen', '123', 'Bane', 'Banić', 11, 32), (138, 'c11.6', 'citizen', '123', 'Ena', 'Enić', 11, 33);
+
+INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date) VALUES
+(121, 1, 'accepted', '2026-03-25'), (122, 1, 'accepted', '2026-03-25'), (123, 1, 'accepted', '2026-03-25'), (124, 1, 'accepted', '2026-03-25'), (125, 1, 'accepted', '2026-03-25'), (126, 1, 'accepted', '2026-03-25'),
+(127, 6, 'accepted', '2026-03-25'), (128, 6, 'accepted', '2026-03-25'), (129, 6, 'accepted', '2026-03-25'), (130, 6, 'accepted', '2026-03-25'), (131, 6, 'accepted', '2026-03-25'), (132, 6, 'accepted', '2026-03-25'),
+(133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
+
+INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
+(11, 'welcome', '18:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 1),
+(12, 'motivation', '19:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 1),
+(13, 'welcome', '20:00', '2026-05-03', '2026-05-07', NULL, 'in_preparation', 1),
+(14, 'welcome', '18:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 6),
+(15, 'motivation', '19:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 6),
+(16, 'welcome', '20:00', '2026-05-03', '2026-05-07', NULL, 'in_preparation', 6),
+(17, 'welcome', '18:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 11),
+(18, 'motivation', '19:00', '2026-05-04', '2026-05-08', NULL, 'in_preparation', 11),
+(19, 'welcome', '20:00', '2026-05-03', '2026-05-07', NULL, 'in_preparation', 11);
+
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(11, '2026-05-04', 11, 121), (12, '2026-05-05', 11, 122),
+(13, '2026-05-04', 12, 123), (14, '2026-05-06', 12, 124),
+(15, '2026-05-03', 13, 125), (16, '2026-05-04', 13, 126),
+(17, '2026-05-04', 14, 127), (18, '2026-05-05', 14, 128),
+(19, '2026-05-04', 15, 129), (20, '2026-05-06', 15, 130),
+(21, '2026-05-03', 16, 131), (22, '2026-05-04', 16, 132),
+(23, '2026-05-04', 17, 133), (24, '2026-05-05', 17, 134),
+(25, '2026-05-04', 18, 135), (26, '2026-05-06', 18, 136),
+(27, '2026-05-03', 19, 137), (28, '2026-05-04', 19, 138);
 
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
@@ -1019,29 +1064,34 @@ SELECT setval(
 );
 
 SELECT setval( 
-    pg_get_serial_sequence('public.community_events','id'),
+    pg_get_serial_sequence('public.community_events', 'id'),
     COALESCE((SELECT MAX(id) FROM public.community_events), 0),
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_items','id'),
+    pg_get_serial_sequence('public.event_items', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_items), 0), 
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_registrations','id'),
+    pg_get_serial_sequence('public.event_registrations', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_registrations), 0),
     true
 );
 
 SELECT setval(
-    pg_get_serial_sequence('public.event_item_assignments','id'),
+    pg_get_serial_sequence('public.event_item_assignments', 'id'),
     COALESCE((SELECT MAX(id) FROM public.event_item_assignments), 0),
     true
 );
 
+SELECT setval(
+    pg_get_serial_sequence('public.meeting_date_votes', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.meeting_date_votes), 0),
+    true
+);
 
 SELECT setval(
     pg_get_serial_sequence('public.service_providers', 'id'),
@@ -1142,6 +1192,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.images', 'id'),
     COALESCE((SELECT MAX(id) FROM public.images), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhood_meetings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhood_meetings), 0),
     true
 );
 

@@ -110,6 +110,7 @@
             </TabItem>
 
             <TabItem Header="Budžet (F7)">
+                <pages:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
             </TabItem>
 
             <TabItem Header="Profil (F8)">

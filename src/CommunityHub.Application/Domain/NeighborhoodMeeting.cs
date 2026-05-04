@@ -10,6 +10,20 @@
         public DateOnly DateRangeEnd { get; private set; }
         public DateOnly? ScheduledDate { get; private set; }
         public MeetingStatus Status { get; private set; }
+        public bool IsTied 
+            => Status == MeetingStatus.InPreparation && DateOnly.FromDateTime(DateTime.Today) >= DateRangeStart.AddDays(-1);
+
+        public string DisplayDate
+        {
+            get
+            {
+                if (Status == MeetingStatus.Scheduled && ScheduledDate.HasValue)
+                {
+                    return ScheduledDate.Value.ToString("dd.MM.yyyy.");
+                }
+                return $"{DateRangeStart:dd.MM.yyyy.} - {DateRangeEnd:dd.MM.yyyy.}";
+            }
+        }
 
         public NeighborhoodMeeting(
             Neighborhood neighborhood,

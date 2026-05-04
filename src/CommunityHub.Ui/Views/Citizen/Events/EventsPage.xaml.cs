@@ -46,7 +46,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void ApplyToVolunteerButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var selected = EventsGrid.SelectedItem as CommunityHub.Application.Domain.CommunityEvent;
+            var selected = EventsGrid.SelectedItem as CommunityEvent;
             if (selected == null)
             {
                 MessageBox.Show("Izaberite događaj pre prijave.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
