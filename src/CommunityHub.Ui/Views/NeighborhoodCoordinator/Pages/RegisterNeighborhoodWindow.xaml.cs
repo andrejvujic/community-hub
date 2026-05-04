@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
 using Microsoft.Win32;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages

@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Notifications.Details;
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
 using System.Data;
 using System.Diagnostics;
 

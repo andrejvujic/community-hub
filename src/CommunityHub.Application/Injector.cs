@@ -1,6 +1,18 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Notifications;
 using CommunityHub.Application.Domain.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
+using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.TimeSlots;
+using CommunityHub.Application.Modules.Shared.API.Public.Users;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Shared.Core.Services.Users;
+using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
+using CommunityHub.Application.Shared.Database.Repositories.Notifications;
 
 namespace CommunityHub.Application
 {
@@ -8,6 +20,7 @@ namespace CommunityHub.Application
     {
         private static Dictionary<Type, object> _implementations = new()
         {
+            // Repositories:
             { typeof(IUserRepository), new UserRepository() },
             { typeof(IAdRepository), new AdRepository() },
             { typeof(IAdTimeSlotRepository), new AdTimeSlotRepository() },
@@ -28,6 +41,46 @@ namespace CommunityHub.Application
             { typeof(IStreetRepository), new StreetRepository() },
             { typeof(IStreetSectionRepository), new StreetSectionRepository() },
             { typeof(IImageRepository), new ImageRepository() },
+            // Services:
+            { 
+                typeof(IAdService),
+                new AdService(
+                    new AdRepository(),
+                    new AdTimeSlotService(
+                        new AdTimeSlotRepository()
+                    ),
+                    new AdTimeSlotGenerator()
+                )
+            },
+            { 
+                typeof(IAdTimeSlotService),
+                new AdTimeSlotService(
+                    new AdTimeSlotRepository()
+                )
+            },
+            {
+                typeof(IAdMatchSubscriptionService),
+                new AdMatchSubscriptionService(
+                    new AdMatchSubscriptionRepository(),
+                    new AdService(
+                        new AdRepository(),
+                        new AdTimeSlotService(
+                            new AdTimeSlotRepository()
+                        ),
+                        new AdTimeSlotGenerator()
+                    ),
+                    new NotificationRepository()
+                )
+            },
+
+            {
+                typeof(IUserService),
+                new UserService(
+                    new UserRepository()
+                )
+            },
+            // Domain services:
+            { typeof(IAdTimeSlotGenerator), new AdTimeSlotGenerator() }
         };
 
         public static T CreateInstance<T>()

@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

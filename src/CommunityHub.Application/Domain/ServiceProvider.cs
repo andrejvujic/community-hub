@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+
+namespace CommunityHub.Application.Domain
 {
     public class ServiceProvider : User
     {

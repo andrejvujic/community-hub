@@ -2,8 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using CommunityHub.Ui.Views.BuildingManager.BuildingPages;
 
 namespace CommunityHub.Ui.Views.BuildingManager

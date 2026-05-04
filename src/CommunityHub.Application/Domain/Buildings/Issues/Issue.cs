@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.Buildings.Issues
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+
+namespace CommunityHub.Application.Domain.Buildings.Issues
 {
     public class Issue
     {

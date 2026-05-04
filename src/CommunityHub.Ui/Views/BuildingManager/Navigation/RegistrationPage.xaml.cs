@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

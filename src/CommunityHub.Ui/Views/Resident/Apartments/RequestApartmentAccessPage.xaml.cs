@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;

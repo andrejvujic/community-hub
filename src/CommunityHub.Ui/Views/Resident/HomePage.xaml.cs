@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Notifications;
-using CommunityHub.Application.Domain.Notifications;
+﻿using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+using CommunityHub.Application.Shared.Database.Repositories.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings.Browse;

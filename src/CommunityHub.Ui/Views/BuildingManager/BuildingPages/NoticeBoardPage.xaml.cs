@@ -1,7 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Domain.Buildings.Ads;
+﻿using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;

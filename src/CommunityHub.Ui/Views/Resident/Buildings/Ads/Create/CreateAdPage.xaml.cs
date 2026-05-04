@@ -1,9 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Notifications;
-using CommunityHub.Application.Domain.Buildings.Ads;
-using CommunityHub.Application.Domain.Buildings.Ads.TimeSlots;
-using CommunityHub.Application.Domain.Notifications;
-using CommunityHub.Application.Domain.Notifications.Details;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Shared.API.Public.Users;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
@@ -26,14 +24,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
 
-        private readonly UserRepository _userRepository = new();
-
-        private readonly AdRepository _adRepository = new();
-        private readonly AdTimeSlotRepository _adTimeSlotRepository = new();
-        private readonly AdMatchSubscriptionRepository _adMatchSubscriptionRepository = new();
-
-        private readonly NotificationRepository _notficationRepository = new();
-
+        private readonly IUserService _userService = Injector.CreateInstance<IUserService>();
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
+        private readonly IAdMatchSubscriptionService _adMatchSubscriptionService = Injector.CreateInstance<IAdMatchSubscriptionService>();
+        
         public CreateAdPage(long userId, long buildingId)
         {
             InitializeComponent();
@@ -45,97 +39,20 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 
         private Ad? CreateAd()
         {
-            var author = _userRepository.Get(_userId);
-            if (author == null) return null;
+            var author = _userService.Get(_userId);
+
+            if (author is null) return null;
 
             return new Ad(
-                    author,
-                    _buildingId,
-                    SelectedType!.Value,
-                    SelectedCategory!.Value,
-                    AdStatus.Active,
-                    Description,
-                    SelectedStartDate!.Value,
-                    SelectedEndDate!.Value
-                );
-        }
-
-        private List<AdTimeSlot> CreateAdTimeSlots(
-            Ad ad,
-            int firstTimeSlotStartHour = 16,
-            int timeSlotCount = 4
-        )
-        {
-            var timeSlots = new List<AdTimeSlot>();
-
-            var currentDay = ad.StartDate.Date;
-            while (currentDay <= ad.EndDate.Date)
-            {
-                for (int i = 0; i < timeSlotCount; ++i)
-                {
-                    var slotStartTime = currentDay.AddHours(firstTimeSlotStartHour + i);
-                    var slotEndTime = slotStartTime.AddHours(1);
-
-                    timeSlots.Add(
-                        new AdTimeSlot(
-                            ad.Id,
-                            startTime: slotStartTime,
-                            endTime: slotEndTime
-                        )
-                    );
-                }
-
-                currentDay = currentDay.AddDays(1);
-            }
-
-            return timeSlots;
-        }
-
-        private Ad PublishAd(Ad ad)
-        {
-            var publishedAd = _adRepository.Create(ad);
-
-            var timeSlots = CreateAdTimeSlots(publishedAd);
-            foreach (var timeSlot in timeSlots)
-                _adTimeSlotRepository.Create(timeSlot);
-
-            ShowSuccessAlert(publishedAd);
-
-            return publishedAd;
-        } 
-
-        private List<Ad> GetMatchingSubscribedAds(Ad ad)
-        {
-            var matchingAds = _adRepository.GetMatchingAds(ad.Id);
-
-            return matchingAds.Where(
-                matchingAd => _adMatchSubscriptionRepository.IsSubscribed(matchingAd.Id)
-            ).ToList();
-        }
-
-        private void NotifyAuthorsOfMatchingSubscribedAds(Ad ad)
-        {
-            var subscribedAds = GetMatchingSubscribedAds(ad);
-            var authorIds = subscribedAds.Select(ad => ad.Author.Id).Distinct();
-
-            foreach (var authorId in authorIds)
-            {
-                _notficationRepository.Create(
-                    Notification.Create(
-                        recipientId: authorId,
-                        title: "Pronađen kompatibilan oglas",
-                        message: "Na oglasnoj tabli se pojavio oglas sa odgovarajućom kategorijom i podudarnim datumima.",
-                        type: NotificationType.AdEvent,
-                        details: new AdEventNotificationDetails(
-                            ad.Id,
-                            AdEventType.MatchingAdCreated
-                        )
-                    )
-                );
-            }
-
-            foreach (var subscribedAd in subscribedAds)
-                _adMatchSubscriptionRepository.DeleteByAdId(subscribedAd.Id);
+                author: author,
+                buildingId: _buildingId,
+                type: SelectedType!.Value,
+                category: SelectedCategory!.Value,
+                status: AdStatus.Active,
+                description: Description,
+                startDate: SelectedStartDate!.Value,
+                endDate: SelectedEndDate!.Value
+            );
         }
 
         private AdType? _selectedType;
@@ -275,12 +192,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
             // User can't have more than one active ad in the
             // same building with the same type and category
             // whose date ranges overlap.
-            if (_adRepository.HasMatchingAds(_userId, ad))
+            if (_adService.HasMatchingAds(_userId, ad))
                 return PublishmentValidationResult.MatchingAdExists;
 
             return PublishmentValidationResult.Valid;
         }
-
 
         private void PublishAdButton_Click(object sender, RoutedEventArgs e)
         {
@@ -291,8 +207,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 
             if (result == PublishmentValidationResult.Valid)
             {
-                var publishedAd = PublishAd(ad);
-                NotifyAuthorsOfMatchingSubscribedAds(publishedAd);
+                var publishedAd = _adService.Publish(ad);
+                _adMatchSubscriptionService.NotifyAuthorsOfSubscribedMatchingAds(publishedAd);
+                ShowSuccessAlert(publishedAd);   
                 return;
             }
 

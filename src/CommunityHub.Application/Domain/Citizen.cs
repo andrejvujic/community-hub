@@ -1,3 +1,5 @@
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+
 namespace CommunityHub.Application.Domain
 {
     public class Citizen : User
