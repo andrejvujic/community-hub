@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class StreetRepository
+    public class StreetRepository : IStreetRepository
     {
         private readonly StreetMapper _streetMapper = new StreetMapper();
         public List<Street> GetByCityId(long id)
