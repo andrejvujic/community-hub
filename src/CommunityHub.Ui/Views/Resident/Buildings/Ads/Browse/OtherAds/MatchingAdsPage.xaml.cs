@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Ads;
 using CommunityHub.Application.Domain.Buildings.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;

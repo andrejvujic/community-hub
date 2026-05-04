@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Buildings.Ads;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {

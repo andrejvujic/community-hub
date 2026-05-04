@@ -1,11 +1,13 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Buildings.Issues;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-	public class IssueRepository
-	{
+	public class IssueRepository : IIssueRepository
+    {
 		private readonly IssueMapper _issueMapper = new();
+
 		public List<Issue> GetAllByBuilding(long buildingId)
 		{
 			var query = PostgresQuery.Create(
