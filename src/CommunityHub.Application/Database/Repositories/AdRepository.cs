@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain.Buildings.Ads;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class AdRepository
+    public class AdRepository : IAdRepository
     {
         private readonly AdMapper _adMapper = new();
 
