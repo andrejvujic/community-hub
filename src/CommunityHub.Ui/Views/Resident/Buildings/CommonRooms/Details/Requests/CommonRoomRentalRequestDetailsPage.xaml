@@ -178,7 +178,7 @@
                                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                     FontSize="22"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Top"/>
+                                    VerticalAlignment="Center"/>
 
                                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                                     <TextBlock Text="Predloženi opseg datuma" FontSize="14"/>
