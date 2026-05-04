@@ -1,8 +1,9 @@
 ﻿using CommunityHub.Application.Domain.Buildings.Ads;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
-namespace CommunityHub.Application.Database.Repositories.Ads
+namespace CommunityHub.Application.Database.Repositories
 {
-    public class AdMatchSubscriptionRepository
+    public class AdMatchSubscriptionRepository: IAdMatchSubscriptionRepository
     {
         public void Create(AdMatchSubscription subscription) {
             PostgresQuery.Create(

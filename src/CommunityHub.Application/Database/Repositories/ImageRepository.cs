@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class ImageRepository
+    public class ImageRepository : IImageRepository
     {
         private readonly ImageMapper _imageMapper = new();
 
