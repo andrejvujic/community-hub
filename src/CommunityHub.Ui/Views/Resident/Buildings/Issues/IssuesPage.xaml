@@ -1,0 +1,206 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Issues.IssuesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Issues"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      mc:Ignorable="d" 
+      Title="Problemi"
+      FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:IssueStatusToStringConverter x:Key="IssueStatusToStringConverter"/>
+        <converters:IssuePriorityToStringConverter x:Key="IssuePriorityToStringConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#dedede">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="64"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid
+                    Grid.Column="0"
+                    MouseLeftButtonDown="BackButton_Click"
+                    Background="Transparent">
+                    <TextBlock
+                        Text="&#xf177;"
+                        FontSize="24"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                </Grid>
+
+                <TextBlock
+                    Grid.Column="1"
+                    Text="Problemi"
+                    FontSize="20"
+                    VerticalAlignment="Center">
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid Visibility="{Binding HasReportedIssues, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
+                    <ScrollViewer>
+                        <ItemsControl ItemsSource="{Binding ReportedIssues}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        BorderBrush="Gray"
+                                        BorderThickness="1"
+                                        Padding="8"
+                                        Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="8"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Border
+                                                Grid.Row="0"
+                                                Background="#dedede"
+                                                BorderBrush="Gray"
+                                                BorderThickness="1"
+                                                Padding="8"
+                                                MaxHeight="96">
+                                                <StackPanel>
+                                                    <TextBlock
+                                                        Text="Opis"
+                                                        FontSize="12"/>
+                                                    <TextBlock
+                                                        Text="{Binding Description}"
+                                                        FontSize="16"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        TextWrapping="WrapWithOverflow"
+                                                        FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Grid Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Text="&#xf133;"
+                                                            Foreground="#4a4a4a"
+                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="16"
+                                                            Margin="0,0,8,0"
+                                                            Padding="0"/>
+                                                        <TextBlock
+                                                             Text="{Binding ReportedAt, StringFormat='{}{0:d. MMMM yyyy.}', ConverterCulture=sr-Latn-RS}"
+                                                             Foreground="#4a4a4a"
+                                                             FontSize="14"/>
+                                                    </StackPanel>
+
+                                                    <Separator Opacity="0" Height="2"/>
+
+                                                     <StackPanel Orientation="Horizontal">
+                                                        <!--
+                                                         <TextBlock
+                                                              Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}"
+                                                              FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                              VerticalAlignment="Center"
+                                                              FontSize="16"
+                                                              Margin="0,0,8,0"
+                                                              Padding="0"/>
+                                                        -->
+                                                         <TextBlock
+                                                             Text="{Binding Status, Converter={StaticResource IssueStatusToStringConverter}}"
+                                                             FontSize="14"
+                                                             FontWeight="Bold"/>
+                                                     </StackPanel>
+
+
+                                                    <Separator Opacity="0" Height="2"/>
+
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <!--
+                                                         <TextBlock
+                                                              Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}"
+                                                              FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                              VerticalAlignment="Center"
+                                                              FontSize="16"
+                                                              Margin="0,0,8,0"
+                                                              Padding="0"/>
+                                                        -->
+                                                        <TextBlock
+                                                             Text="{Binding Priority, Converter={StaticResource IssuePriorityToStringConverter}}"
+                                                             FontSize="14"
+                                                             FontWeight="Bold"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                                 <TextBlock
+                                                     Grid.Column="1"
+                                                     Text="&#xf178;"
+                                                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                     VerticalAlignment="Center"
+                                                     FontSize="24"
+                                                     Margin="0,0,8,0"
+                                                     Padding="0"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+
+                <Grid Visibility="{Binding HasReportedIssues, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Content="Nemate prijavljene probleme" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock
+                            Text="Nema prijavljenih problema za prikazivanje. Još uvijek niste prijavili nijedan problem za ovu zgradu. Svoju prvu prijavu možete podnijeti klikom na dugme ispod."
+                            TextWrapping="Wrap" 
+                            TextAlignment="Center"
+                            FontSize="16"
+                            HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Button
+            Content="&#x2b;"
+            Foreground="White"
+            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+            FontSize="24"
+            Margin="16"
+            BorderThickness="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Click="ReportIssueButton_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse Width="64" Height="64" Fill="Black"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</navigation:MainNavigatorConsumerPage>

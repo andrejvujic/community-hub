@@ -1,11 +1,13 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Buildings.Issues;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-	public class IssueRepository
-	{
+	public class IssueRepository : IIssueRepository
+    {
 		private readonly IssueMapper _issueMapper = new();
+
 		public List<Issue> GetAllByBuilding(long buildingId)
 		{
 			var query = PostgresQuery.Create(
@@ -37,6 +39,45 @@ namespace CommunityHub.Application.Database.Repositories
 
 			return issues;
 		}
+
+		public List<Issue> GetAllByBuildingAndResident(long buildingId, long residentId)
+		{
+            var query = PostgresQuery.Create(
+                @"SELECT
+					issue.id AS reported_issue_id,
+					issue.description,
+					issue.reported_date,
+					issue.priority AS reported_issue_priority,
+					issue.status AS reported_issue_status,
+					issue.building_id,
+
+					issue.resident_id,
+
+					resident.id AS resident_user_id,
+					resident.username AS resident_username,
+					resident.user_role AS resident_user_role,
+					resident.password AS resident_password,
+					resident.name AS resident_name,
+					resident.surname AS resident_surname
+	
+				FROM reported_issues issue
+				INNER JOIN users resident ON issue.resident_id = resident.id 
+				WHERE issue.building_id = @building_id AND	
+					  issue.resident_id = @resident_id"
+            )
+			.AddParameter("building_id", buildingId)
+			.AddParameter("resident_id", residentId);
+
+			List<Issue> issues = new();
+
+            query.ExecuteReader(
+				reader => issues.Add(
+					_issueMapper.MapToEntity(reader)
+				)
+			);
+
+            return issues;
+        }
 
 		public int UpdateStatus(long issueId, IssueStatus newStatus)
 		{

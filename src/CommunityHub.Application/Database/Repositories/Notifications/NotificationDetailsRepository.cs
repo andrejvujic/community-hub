@@ -1,11 +1,13 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories.Notifications
 {
-    public class NotificationDetailsRepository
+    public class NotificationDetailsRepository : INotificationDetailsRepository
     {
         private readonly AdEventNotificationDetailsMapper _adEventMapper = new();
+
         public void Create(NotificationDetails details)
         {
             switch (details)

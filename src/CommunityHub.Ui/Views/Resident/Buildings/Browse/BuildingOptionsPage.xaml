@@ -201,7 +201,7 @@
                 Padding="16,24"
                 BorderBrush="Gray"
                 BorderThickness="1">
-                <Grid Background="Transparent">
+                <Grid Background="Transparent" MouseLeftButtonDown="OpenIssuesPageButton_Click">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="12"/>
@@ -218,7 +218,7 @@
 
                     <TextBlock
                         Grid.Column="2"
-                        Text="Prijava problema"
+                        Text="Problemi"
                         FontSize="20"/>
 
                     <TextBlock

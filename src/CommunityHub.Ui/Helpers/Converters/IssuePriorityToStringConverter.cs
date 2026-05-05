@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace CommunityHub.Ui.Helpers.Converters
 {
-    public class ReportedIssuePriorityToStringConverter : IValueConverter
+    public class IssuePriorityToStringConverter : IValueConverter
     {
 
         private readonly string _urgentText = "Potrebno hitno rešavanje";

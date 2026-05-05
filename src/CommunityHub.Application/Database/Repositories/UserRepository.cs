@@ -1,9 +1,10 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class UserRepository
+public class UserRepository : IUserRepository
 {
     private readonly UserMapper _userMapper = new();
     public User? Get(long id)

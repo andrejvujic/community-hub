@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Apartments;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories;
 
-public class ApartmentRepository
+public class ApartmentRepository : IApartmentRepository
 {
     private readonly ApartmentMapper _apartmentMapper = new();
 

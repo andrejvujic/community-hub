@@ -1,6 +1,8 @@
-﻿namespace CommunityHub.Application.Database.Repositories
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces;
+
+namespace CommunityHub.Application.Database.Repositories
 {
-    public class AdTimeSlotReservationRepository
+    public class AdTimeSlotReservationRepository : IAdTimeSlotReservationRepository
     {
         public void Create(long offerAdTimeSlotId, long requestAdTimeSlotId)
         {

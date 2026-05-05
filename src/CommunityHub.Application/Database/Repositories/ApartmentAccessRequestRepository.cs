@@ -1,15 +1,16 @@
-﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces;
+using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class ApartmentAccessRequestRepository
+    public class ApartmentAccessRequestRepository : IApartmentAccessRequestRepository
     {
         private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new();
 
-        private static string GetOrderByClause(RequestOrder order)
+        public string GetOrderByClause(RequestOrder order)
         {
             return order switch
             {

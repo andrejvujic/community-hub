@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class AddressRepository
+    public class AddressRepository : IAddressRepository
     {
         private readonly AddressMapper _addressMapper = new AddressMapper();
         public List<int> GetOccupiedStreetNumbers(long? streetId, long? cityId)
