@@ -18,6 +18,15 @@
 
         public ServiceProvider ActualProvider => SubstitutingProvider ?? Listing.Provider;
 
+        public bool IsFinished(DateTime at)
+        {
+            if (DurationHours.HasValue && ScheduledTime.HasValue)
+            {
+                return ScheduledDate.ToDateTime(ScheduledTime.Value).AddHours(DurationHours.Value) <= at;
+            }
+            return ScheduledDate < DateOnly.FromDateTime(at);
+        }
+
         public BookedJob(
             JobListing listing,
             Neighborhood neighborhood,
