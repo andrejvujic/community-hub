@@ -15,21 +15,42 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services
 
             while (currentDay <= ad.EndDate.Date)
             {
-                for (int i = 0; i < timeSlotCount; ++i)
-                {
-                    var slotStartTime = currentDay.AddHours(firstTimeSlotStartHour + i);
-                    var slotEndTime = slotStartTime.AddHours(1);
 
-                    timeSlots.Add(
-                        new AdTimeSlot(
-                            ad.Id,
-                            startTime: slotStartTime,
-                            endTime: slotEndTime
-                        )
-                    );
-                }
-
+                timeSlots.AddRange(
+                    GenerateTimeSlotsForDay(
+                        day: currentDay,
+                        ad: ad,
+                        firstTimeSlotStartHour: firstTimeSlotStartHour,
+                        timeSlotCount: timeSlotCount
+                    )
+                );
                 currentDay = currentDay.AddDays(1);
+            }
+
+            return timeSlots;
+        }
+
+        private static List<AdTimeSlot> GenerateTimeSlotsForDay(
+            DateTime day,
+            Ad ad,
+            int firstTimeSlotStartHour,
+            int timeSlotCount
+        )
+        {
+            var timeSlots = new List<AdTimeSlot>();
+
+            for (int i = 0; i < timeSlotCount; ++i)
+            {
+                var slotStartTime = day.AddHours(firstTimeSlotStartHour + i);
+                var slotEndTime = slotStartTime.AddHours(1);
+
+                timeSlots.Add(
+                    new AdTimeSlot(
+                        ad.Id,
+                        startTime: slotStartTime,
+                        endTime: slotEndTime
+                    )
+                );
             }
 
             return timeSlots;

@@ -1,5 +1,6 @@
-﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
@@ -9,8 +10,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
     public partial class MyAdInfoPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
     {
-        private readonly AdRepository _adRepository = new();
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
 
+        // TODO: Use DTO
         public Ad Ad { get; }
 
         public MyAdInfoPage(Ad ad)
@@ -19,14 +21,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
             DataContext = this;
 
             Ad = ad;
-        }
-
-        private void ArchiveAd()
-        {
-            Ad.Archive();
-            _adRepository.Update(Ad);
-
-            OnPropertyChanged(nameof(Ad));
         }
 
         private void ArchiveAdButton_Click(object sender, RoutedEventArgs e)
@@ -41,7 +35,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
                     .AddOption("Otkaži")
                     .AddOption(
                         "Nastavi",
-                        callback: () => ArchiveAd()
+                        callback: () => {
+                            _adService.Archive(Ad);
+                            OnPropertyChanged(nameof(Ad));
+                        }
                     )
                 );
         }

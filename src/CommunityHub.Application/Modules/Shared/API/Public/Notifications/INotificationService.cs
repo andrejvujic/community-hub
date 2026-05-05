@@ -1,6 +1,9 @@
-﻿namespace CommunityHub.Application.Modules.Shared.API.Public.Notifications
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+
+namespace CommunityHub.Application.Modules.Shared.API.Public.Notifications
 {
-    internal class INotificationService
+    public interface INotificationService
     {
+        public void Create(Notification notification);
     }
 }

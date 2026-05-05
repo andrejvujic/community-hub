@@ -1,79 +1,33 @@
-﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
 using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.TimeSlots;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdTimeSlotsPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
+    public partial class MyAdTimeSlotsPage : MainNavigatorConsumerPage, IAlertConsumer
     {
         private readonly long _userId;
-
-        private readonly AdTimeSlotRepository _timeSlotRepository = new();
-
-        public Ad Ad { get; }
-
-        // Contains groups (time slots grouped by day) of time slots for the given
-        // notice board that the user can reserve (the user has matching time slots for
-        // an ad of the opposite type in the same category).
-        public bool HasReservations { get => Reservations.Count > 0; }
-        public ObservableCollection<AdReservation> Reservations { get; } = new();
+        private readonly MyAdTimeSlotsViewModel _viewModel;
 
         public MyAdTimeSlotsPage(long userId, Ad ad)
         {
-            InitializeComponent();
-            DataContext = this;
-
+            _viewModel = new MyAdTimeSlotsViewModel(ad);
             _userId = userId;
-            Ad = ad;
 
-            UpdateReservations();
-        }
+            InitializeComponent();
+            DataContext = _viewModel;
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlot> timeSlots)
-        {
-            var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
-
-            return groups.Select(timeSlots =>
-                        new AdTimeSlotGroup(
-                            timeSlots.First().StartTime.Date,
-                            [.. timeSlots]
-                        )
-                    ).ToList();
-        }
-
-        private List<AdReservation> ConstructAdReservations(List<AdTimeSlot> timeSlots)
-        {
-            var groups = timeSlots.GroupBy(timeSlot => {
-                var reservation = timeSlot.Reservation!;
-                return Ad.IsOffer ? reservation.RequestAd.Id : reservation.OfferAd.Id;
-            });
-
-            return groups.Select(timeSlots =>
-            {
-                var reservation = timeSlots.First().Reservation!;
-                return new AdReservation(
-                    Ad.IsOffer ? reservation.RequestAd : reservation.OfferAd,
-                    GroupTimeSlotsByDay([.. timeSlots])
-                );
-            }).ToList();
-        }
-
-        private void UpdateReservations()
-        {
-            var timeSlots = _timeSlotRepository.GetReservedTimeSlots(Ad.Id);
-            Debug.WriteLine(timeSlots.Count);
-
-            Reservations.Clear();
-            foreach (var reservations in ConstructAdReservations(timeSlots))
-                Reservations.Add(reservations);
+            _viewModel.UpdateReservations();
         }
 
         private void ReservationItem_Click(object sender, MouseButtonEventArgs e)
@@ -84,12 +38,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 
             Push(
                 new AdDetailsPage(_userId, reservation.Ad),
-                onPop: _ => UpdateReservations()
+                onPop: _ => _viewModel.UpdateReservations()
             );
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

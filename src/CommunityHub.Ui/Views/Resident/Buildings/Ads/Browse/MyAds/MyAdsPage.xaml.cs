@@ -1,4 +1,6 @@
-﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
@@ -13,9 +15,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
     public partial class MyAdsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
-        private readonly AdRepository _repository = new();
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
 
         public ObservableCollection<Ad> Ads { get; } = new();
+        public bool HasAds => Ads.Count > 0; 
 
         public MyAdsPage(long userId, long buildingId)
         {
@@ -31,14 +34,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _repository.GetByAuthorAndBuilding(_userId, _buildingId);
+            List<Ad> ads = _adService.GetByAuthorAndBuilding(_userId, _buildingId);
             foreach (var ad in ads)
                 Ads.Add(ad);
 
             OnPropertyChanged(nameof(HasAds));
         }
-
-        public bool HasAds { get => Ads.Count > 0; }
 
         private void CreateAdButton_Click(object sender, RoutedEventArgs e)
         {

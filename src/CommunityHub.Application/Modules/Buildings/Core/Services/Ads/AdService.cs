@@ -33,6 +33,28 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             return publishedAd;
         }
 
+        public Ad Archive(Ad ad)
+        {
+            ad.Archive();
+            _adRepository.Update(ad);
+            return ad;
+        }
+
+        public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null)
+        {
+            var ads = _adRepository.GetByBuilding(
+                buildingId,
+                status: status
+            );
+            return ads;
+        }
+
+        public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
+        {
+            var ads = _adRepository.GetByAuthorAndBuilding(authorId, buildingId);
+            return ads;
+        }
+
         public bool HasMatchingAds(long authorId, Ad referenceAd)
         {
             var ads = _adRepository.GetByAuthorAndBuilding(authorId, referenceAd.BuildingId);

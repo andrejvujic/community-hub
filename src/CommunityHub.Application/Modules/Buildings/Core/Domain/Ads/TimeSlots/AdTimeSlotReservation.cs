@@ -7,14 +7,14 @@
         public long OfferTimeSlotId { get;  }
         public long RequestTimeSlotId { get; }
 
-        public Ad OfferAd { get; }
-        public Ad RequestAd { get; }
+        public Ad? OfferAd { get; }
+        public Ad? RequestAd { get; }
 
         public AdTimeSlotReservation(
             long offerTimeSlotId,
             long requestTimeSlotId,
-            Ad offerAd,
-            Ad requestAd,
+            Ad? offerAd = null,
+            Ad? requestAd = null,
             long id = 0
         )
         {  

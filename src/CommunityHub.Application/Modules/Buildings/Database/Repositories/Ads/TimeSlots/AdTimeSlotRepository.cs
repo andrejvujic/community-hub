@@ -28,220 +28,192 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
             return adTimeSlot.CopyWith(id: id);
         }
 
-        public AdTimeSlot? GetMatchingTimeSlotInAuthorAds(long referenceTimeSlotId, long authorId)
+        public List<AdTimeSlot> GetTimeSlotsByAuthor(long authorId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    time_slot_2.id AS time_slot_id,
-                    time_slot_2.ad_id AS time_slot_ad_id,
-                    time_slot_2.start_time,
-                    time_slot_2.end_time
+                    time_slot.id AS time_slot_id,
+                    time_slot.ad_id AS time_slot_ad_id,
+                    time_slot.start_time,
+                    time_slot.end_time,
 
-                FROM ad_time_slots time_slot_1
+                    ad.id AS ad_id,
+                    ad.ad_category,
+                    ad.ad_status,
+                    ad.ad_type,
+                    ad.building_id AS ad_building_id,
+                    ad.description,
+                    ad.start_date,
+                    ad.end_date,
 
-                INNER JOIN ads ad_1 ON ad_1.id = time_slot_1.ad_id
+                    author.id AS author_user_id,
+                    author.name AS author_name,
+                    author.surname AS author_surname,
+                    author.username AS author_username,
+                    author.password AS author_password,
+                    author.user_role AS author_user_role,
 
-                INNER JOIN ads ad_2 ON
-	                ad_2.ad_category = ad_1.ad_category AND
-	                ad_2.ad_type <> ad_1.ad_type AND
-	                ad_2.resident_id <> ad_1.resident_id AND
-	                ad_2.building_id = ad_1.building_id AND
-	                ad_2.ad_status = 'active' AND
-	                ad_2.resident_id = @author_id
-
-                INNER JOIN ad_time_slots time_slot_2 ON
-	                time_slot_2.ad_id = ad_2.id AND
-	                time_slot_2.start_time = time_slot_1.start_time AND
-	                time_slot_2.end_time = time_slot_1.end_time
-
-                LEFT OUTER JOIN ad_time_slot_reservations reservation ON
-                    (reservation.offer_ad_time_slot_id = time_slot_2.id) OR
-                    (reservation.request_ad_time_slot_id = time_slot_2.id)
-
-                WHERE
-	                time_slot_1.id = @time_slot_id AND
-	                reservation.id IS NULL"
-            )
-            .AddParameter("author_id", authorId)
-            .AddParameter("time_slot_id", referenceTimeSlotId);
-
-            AdTimeSlot? timeSlot = null;
-
-            query.ExecuteReader(
-                reader => timeSlot = _timeSlotMapper.MapToEntity(reader)
-            );
-
-            return timeSlot;
-        }
-
-        public List<AdTimeSlot> GetReservableTimeSlots(long adId, long userId)
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT
-                    time_slot_1.id AS time_slot_id,
-                    time_slot_1.ad_id AS time_slot_ad_id,
-                    time_slot_1.start_time,
-                    time_slot_1.end_time,
-
-                    reservation.id as reservation_id,
-
-                    reservation.offer_ad_time_slot_id,
+                    reservation.id AS reservation_id,
+                    reservation.offer_ad_time_slot_id, 
                     reservation.request_ad_time_slot_id,
 
-                    ad_1.id AS ad_1_ad_id,
-                    ad_1.ad_category AS ad_1_ad_category,
-                    ad_1.ad_status AS ad_1_ad_status,
-                    ad_1.ad_type AS ad_1_ad_type,
-                    ad_1.building_id AS ad_1_ad_building_id,
-                    ad_1.description AS ad_1_description,
-                    ad_1.start_date AS ad_1_start_date,
-                    ad_1.end_date AS ad_1_end_date, 
+                    offer_ad.id AS offer_ad_ad_id,
+                    offer_ad.ad_category AS offer_ad_ad_category,
+                    offer_ad.ad_status AS offer_ad_ad_status,
+                    offer_ad.ad_type AS offer_ad_ad_type,
+                    offer_ad.building_id AS offer_ad_ad_building_id,
+                    offer_ad.description AS offer_ad_description,
+                    offer_ad.start_date AS offer_ad_start_date,
+                    offer_ad.end_date AS offer_ad_end_date,
 
-                    author_1.id AS ad_1_author_user_id,
-                    author_1.name AS ad_1_author_name,
-                    author_1.surname AS ad_1_author_surname,
-                    author_1.username AS ad_1_author_username,
-                    author_1.password AS ad_1_author_password,
-                    author_1.user_role AS ad_1_author_user_role,
+                    offer_ad_author.id AS offer_ad_author_user_id,
+                    offer_ad_author.name AS offer_ad_author_name,
+                    offer_ad_author.surname AS offer_ad_author_surname,
+                    offer_ad_author.username AS offer_ad_author_username,
+                    offer_ad_author.password AS offer_ad_author_password,
+                    offer_ad_author.user_role AS offer_ad_author_user_role,
 
-                    ad_2.id AS ad_2_ad_id,
-                    ad_2.ad_category AS ad_2_ad_category,
-                    ad_2.ad_status AS ad_2_ad_status,
-                    ad_2.ad_type AS ad_2_ad_type,
-                    ad_2.building_id AS ad_2_ad_building_id,
-                    ad_2.description AS ad_2_description,
-                    ad_2.start_date AS ad_2_start_date,
-                    ad_2.end_date AS ad_2_end_date, 
+                    request_ad.id AS request_ad_ad_id,
+                    request_ad.ad_category AS request_ad_ad_category,
+                    request_ad.ad_status AS request_ad_ad_status,
+                    request_ad.ad_type AS request_ad_ad_type,
+                    request_ad.building_id AS request_ad_ad_building_id,
+                    request_ad.description AS request_ad_description,
+                    request_ad.start_date AS request_ad_start_date,
+                    request_ad.end_date AS request_ad_end_date,
 
-                    author_2.id AS ad_2_author_user_id,
-                    author_2.name AS ad_2_author_name,
-                    author_2.surname AS ad_2_author_surname,
-                    author_2.username AS ad_2_author_username,
-                    author_2.password AS ad_2_author_password,
-                    author_2.user_role AS ad_2_author_user_role
+                    request_ad_author.id AS request_ad_author_user_id,
+                    request_ad_author.name AS request_ad_author_name,
+                    request_ad_author.surname AS request_ad_author_surname,
+                    request_ad_author.username AS request_ad_author_username,
+                    request_ad_author.password AS request_ad_author_password,
+                    request_ad_author.user_role AS request_ad_author_user_role
 
-                FROM ad_time_slots time_slot_1
+                FROM ad_time_slots time_slot
 
-                INNER JOIN ads ad_1 ON ad_1.id = time_slot_1.ad_id
+                INNER JOIN ads ad ON ad.id = time_slot.ad_id
+                INNER JOIN users author ON author.id = ad.resident_id
 
-                INNER JOIN ads ad_2 ON
-	                ad_2.ad_category = ad_1.ad_category AND
-	                ad_2.ad_type <> ad_1.ad_type AND
-	                ad_2.resident_id <> ad_1.resident_id AND
-	                ad_2.building_id = ad_1.building_id AND
-	                ad_2.ad_status = 'active' AND
-	                ad_2.resident_id = @user_id
-
-                INNER JOIN ad_time_slots time_slot_2 ON
-	                time_slot_2.ad_id = ad_2.id AND
-	                time_slot_2.start_time = time_slot_1.start_time AND
-	                time_slot_2.end_time = time_slot_1.end_time
-                
                 LEFT OUTER JOIN ad_time_slot_reservations reservation ON
-                    (reservation.offer_ad_time_slot_id = time_slot_1.id) OR
-                    (reservation.request_ad_time_slot_id = time_slot_1.id)
-               
-                INNER JOIN users author_1 ON author_1.id = ad_1.resident_id
+                    (reservation.offer_ad_time_slot_id = time_slot.id) OR
+                    (reservation.request_ad_time_slot_id = time_slot.id)
 
-                INNER JOIN users author_2 ON author_2.id = ad_2.resident_id
+                LEFT OUTER JOIN ad_time_slots offer_time_slot ON offer_time_slot.id = reservation.offer_ad_time_slot_id
+                LEFT OUTER JOIN ad_time_slots request_time_slot ON request_time_slot.id = reservation.request_ad_time_slot_id
+                LEFT OUTER JOIN ads offer_ad ON offer_ad.id = offer_time_slot.ad_id
+                LEFT OUTER JOIN users offer_ad_author ON offer_ad_author.id = offer_ad.resident_id
+                LEFT OUTER JOIN ads request_ad ON request_ad.id = request_time_slot.ad_id
+                LEFT OUTER JOIN users request_ad_author ON request_ad_author.id = request_ad.resident_id
 
                 WHERE
-	                ad_1.id = @ad_id"
+                    ad.resident_id = @author_id"
             )
-            .AddParameter("user_id", userId)
-            .AddParameter("ad_id", adId);
+            .AddParameter("author_id", authorId);
 
             var timeSlots = new List<AdTimeSlot>();
 
             query.ExecuteReader(
-                reader => timeSlots.Add(
-                    _timeSlotMapper.MapToEntity(reader)
-                )
+                reader => { 
+                    var timeSlot = _timeSlotMapper.MapToEntity(reader);
+                    if (timeSlot is null) return;
+                    timeSlots.Add(timeSlot);
+                }
             );
 
             return timeSlots;
         }
 
-        public List<AdTimeSlot> GetReservedTimeSlots(long adId)
+        public List<AdTimeSlot> GetTimeSlotsByAd(long adId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
-                    time_slot_1.id AS time_slot_id,
-                    time_slot_1.ad_id AS time_slot_ad_id,
-                    time_slot_1.start_time,
-                    time_slot_1.end_time,
+                    time_slot.id AS time_slot_id,
+                    time_slot.ad_id AS time_slot_ad_id,
+                    time_slot.start_time,
+                    time_slot.end_time,
 
-                    reservation.id as reservation_id,
+                    ad.id AS ad_id,
+                    ad.ad_category,
+                    ad.ad_status,
+                    ad.ad_type,
+                    ad.building_id AS ad_building_id,
+                    ad.description,
+                    ad.start_date,
+                    ad.end_date,
 
-                    reservation.offer_ad_time_slot_id,
+                    author.id AS author_user_id,
+                    author.name AS author_name,
+                    author.surname AS author_surname,
+                    author.username AS author_username,
+                    author.password AS author_password,
+                    author.user_role AS author_user_role,
+
+                    reservation.id AS reservation_id,
+                    reservation.offer_ad_time_slot_id, 
                     reservation.request_ad_time_slot_id,
 
-                    ad_1.id AS ad_1_ad_id,
-                    ad_1.ad_category AS ad_1_ad_category,
-                    ad_1.ad_status AS ad_1_ad_status,
-                    ad_1.ad_type AS ad_1_ad_type,
-                    ad_1.building_id AS ad_1_ad_building_id,
-                    ad_1.description AS ad_1_description,
-                    ad_1.start_date AS ad_1_start_date,
-                    ad_1.end_date AS ad_1_end_date, 
+                    offer_ad.id AS offer_ad_ad_id,
+                    offer_ad.ad_category AS offer_ad_ad_category,
+                    offer_ad.ad_status AS offer_ad_ad_status,
+                    offer_ad.ad_type AS offer_ad_ad_type,
+                    offer_ad.building_id AS offer_ad_ad_building_id,
+                    offer_ad.description AS offer_ad_description,
+                    offer_ad.start_date AS offer_ad_start_date,
+                    offer_ad.end_date AS offer_ad_end_date,
 
-                    author_1.id AS ad_1_author_user_id,
-                    author_1.name AS ad_1_author_name,
-                    author_1.surname AS ad_1_author_surname,
-                    author_1.username AS ad_1_author_username,
-                    author_1.password AS ad_1_author_password,
-                    author_1.user_role AS ad_1_author_user_role,
+                    offer_ad_author.id AS offer_ad_author_user_id,
+                    offer_ad_author.name AS offer_ad_author_name,
+                    offer_ad_author.surname AS offer_ad_author_surname,
+                    offer_ad_author.username AS offer_ad_author_username,
+                    offer_ad_author.password AS offer_ad_author_password,
+                    offer_ad_author.user_role AS offer_ad_author_user_role,
 
-                    ad_2.id AS ad_2_ad_id,
-                    ad_2.ad_category AS ad_2_ad_category,
-                    ad_2.ad_status AS ad_2_ad_status,
-                    ad_2.ad_type AS ad_2_ad_type,
-                    ad_2.building_id AS ad_2_ad_building_id,
-                    ad_2.description AS ad_2_description,
-                    ad_2.start_date AS ad_2_start_date,
-                    ad_2.end_date AS ad_2_end_date, 
+                    request_ad.id AS request_ad_ad_id,
+                    request_ad.ad_category AS request_ad_ad_category,
+                    request_ad.ad_status AS request_ad_ad_status,
+                    request_ad.ad_type AS request_ad_ad_type,
+                    request_ad.building_id AS request_ad_ad_building_id,
+                    request_ad.description AS request_ad_description,
+                    request_ad.start_date AS request_ad_start_date,
+                    request_ad.end_date AS request_ad_end_date,
 
-                    author_2.id AS ad_2_author_user_id,
-                    author_2.name AS ad_2_author_name,
-                    author_2.surname AS ad_2_author_surname,
-                    author_2.username AS ad_2_author_username,
-                    author_2.password AS ad_2_author_password,
-                    author_2.user_role AS ad_2_author_user_role
+                    request_ad_author.id AS request_ad_author_user_id,
+                    request_ad_author.name AS request_ad_author_name,
+                    request_ad_author.surname AS request_ad_author_surname,
+                    request_ad_author.username AS request_ad_author_username,
+                    request_ad_author.password AS request_ad_author_password,
+                    request_ad_author.user_role AS request_ad_author_user_role
 
-                FROM ad_time_slots time_slot_1
+                FROM ad_time_slots time_slot
 
-                INNER JOIN ads ad_1 ON ad_1.id = time_slot_1.ad_id
+                INNER JOIN ads ad ON ad.id = time_slot.ad_id
+                INNER JOIN users author ON author.id = ad.resident_id
 
-                INNER JOIN ads ad_2 ON
-	                ad_2.ad_category = ad_1.ad_category AND
-	                ad_2.ad_type <> ad_1.ad_type AND
-	                ad_2.resident_id <> ad_1.resident_id AND
-	                ad_2.building_id = ad_1.building_id
+                LEFT OUTER JOIN ad_time_slot_reservations reservation ON
+                    (reservation.offer_ad_time_slot_id = time_slot.id) OR
+                    (reservation.request_ad_time_slot_id = time_slot.id)
 
-                INNER JOIN ad_time_slots time_slot_2 ON
-	                time_slot_2.ad_id = ad_2.id AND
-	                time_slot_2.start_time = time_slot_1.start_time AND
-	                time_slot_2.end_time = time_slot_1.end_time
-                
-                INNER JOIN ad_time_slot_reservations reservation ON
-                    (reservation.offer_ad_time_slot_id = time_slot_1.id) OR
-                    (reservation.request_ad_time_slot_id = time_slot_1.id)
-               
-                INNER JOIN users author_1 ON author_1.id = ad_1.resident_id
-
-                INNER JOIN users author_2 ON author_2.id = ad_2.resident_id
+                LEFT OUTER JOIN ad_time_slots offer_time_slot ON offer_time_slot.id = reservation.offer_ad_time_slot_id
+                LEFT OUTER JOIN ad_time_slots request_time_slot ON request_time_slot.id = reservation.request_ad_time_slot_id
+                LEFT OUTER JOIN ads offer_ad ON offer_ad.id = offer_time_slot.ad_id
+                LEFT OUTER JOIN users offer_ad_author ON offer_ad_author.id = offer_ad.resident_id
+                LEFT OUTER JOIN ads request_ad ON request_ad.id = request_time_slot.ad_id
+                LEFT OUTER JOIN users request_ad_author ON request_ad_author.id = request_ad.resident_id
 
                 WHERE
-	                ad_1.id = @ad_id"
+                    ad.id = @ad_id"
             )
             .AddParameter("ad_id", adId);
 
-            List<AdTimeSlot> timeSlots = new();
+            var timeSlots = new List<AdTimeSlot>();
 
             query.ExecuteReader(
-                reader => timeSlots.Add(
-                    _timeSlotMapper.MapToEntity(reader)
-                )
+                reader =>
+                {
+                    var timeSlot = _timeSlotMapper.MapToEntity(reader);
+                    if (timeSlot is null) return;
+                    timeSlots.Add(timeSlot);
+                }
             );
 
             return timeSlots;

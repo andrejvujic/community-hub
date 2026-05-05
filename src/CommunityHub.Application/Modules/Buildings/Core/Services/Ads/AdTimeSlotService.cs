@@ -17,5 +17,31 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         {
             _adTimeSlotRepository.Create(timeSlot);
         }
+
+        public AdTimeSlot? FindMatchingTimeSlotForAuthor(long authorId, AdTimeSlot referenceTimeSlot)
+        {
+            var timeSlots = _adTimeSlotRepository.GetTimeSlotsByAuthor(authorId);
+            return timeSlots.FirstOrDefault(
+                timeSlot => timeSlot.Matches(referenceTimeSlot)
+            );
+        }
+
+        public List<AdTimeSlot> GetReservableTimeSlotsForUser(long adId, long userId)
+        {
+            var adTimeSlots = _adTimeSlotRepository.GetTimeSlotsByAd(adId);
+            var userTimeSlots = _adTimeSlotRepository.GetTimeSlotsByAuthor(userId);
+
+            return adTimeSlots.Where(
+                adTimeSlot => userTimeSlots.Any(
+                    userTimeSlot => userTimeSlot.Matches(adTimeSlot)
+                )
+            ).ToList(); 
+        }
+
+        public List<AdTimeSlot> GetReservedTimeSlotsForAd(long adId)
+        {
+            var timeSlots = _adTimeSlotRepository.GetTimeSlotsByAd(adId);
+            return timeSlots.Where(timeSlot => timeSlot.IsReserved).ToList();
+        }
     }
 }

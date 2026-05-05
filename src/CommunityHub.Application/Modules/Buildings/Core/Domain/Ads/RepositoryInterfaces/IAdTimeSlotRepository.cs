@@ -4,9 +4,9 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryI
 {
     public interface IAdTimeSlotRepository
     {
-        public AdTimeSlot Create(AdTimeSlot adTimeSlot);
-        public AdTimeSlot? GetMatchingTimeSlotInAuthorAds(long referenceTimeSlotId, long authorId);
-        public List<AdTimeSlot> GetReservableTimeSlots(long adId, long userId);
-        public List<AdTimeSlot> GetReservedTimeSlots(long adId);
+        public AdTimeSlot Create(AdTimeSlot timeSlot);
+
+        public List<AdTimeSlot> GetTimeSlotsByAuthor(long authorId);
+        public List<AdTimeSlot> GetTimeSlotsByAd(long adId);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
@@ -12,37 +11,37 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             if (!reader.HasColumn("ad_id")) return null;
 
-            int idColumnIndex = reader.GetOrdinal("ad_id");
+            var idColumnIndex = reader.GetOrdinal("ad_id");
             if (reader.IsDBNull(idColumnIndex)) return null;
 
-            long id = reader.GetInt64(idColumnIndex);
+            var id = reader.GetInt64(idColumnIndex);
 
-            User? author = _userMapper.MapToEntity(reader.WithPrefix("author"));
+            var author = _userMapper.MapToEntity(reader.WithPrefix("author"));
             if (author == null)
                 throw new Exception("Couldn't convert database row to entity because of missing data. Author can't be null.");
 
 
-            AdCategory category = (AdCategory)reader.GetValue(reader.GetOrdinal("ad_category"));
-            AdStatus status = (AdStatus)reader.GetValue(reader.GetOrdinal("ad_status"));
-            AdType type = (AdType)reader.GetValue(reader.GetOrdinal("ad_type"));
+            var category = (AdCategory)reader.GetValue(reader.GetOrdinal("ad_category"));
+            var status = (AdStatus)reader.GetValue(reader.GetOrdinal("ad_status"));
+            var type = (AdType)reader.GetValue(reader.GetOrdinal("ad_type"));
 
-            long buildingId = reader.GetInt64(reader.GetOrdinal("ad_building_id"));
+            var buildingId = reader.GetInt64(reader.GetOrdinal("ad_building_id"));
 
-            string description = reader.GetString(reader.GetOrdinal("description"));
+            var description = reader.GetString(reader.GetOrdinal("description"));
 
-            DateTime startDate = reader.GetDateTime(reader.GetOrdinal("start_date"));
-            DateTime endDate = reader.GetDateTime(reader.GetOrdinal("end_date"));
+            var startDate = reader.GetDateTime(reader.GetOrdinal("start_date"));
+            var endDate = reader.GetDateTime(reader.GetOrdinal("end_date"));
 
             return new Ad(
-                author,
-                buildingId,
-                type,
-                category,
-                status,
-                description,
-                startDate,
-                endDate,
-                id
+                author: author,
+                buildingId: buildingId,
+                type: type,
+                category: category,
+                status: status,
+                description: description,
+                startDate: startDate,
+                endDate: endDate,
+                id: id
             );
         }
 

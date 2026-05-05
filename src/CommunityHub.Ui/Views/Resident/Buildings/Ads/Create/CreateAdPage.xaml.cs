@@ -122,6 +122,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
                 OnPropertyChanged(nameof(IsFormValid));
             }
         }
+
         public string SelectedStartDateText
             => SelectedStartDate is null ?
                 "Izaberite..." :

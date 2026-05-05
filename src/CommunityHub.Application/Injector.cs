@@ -7,9 +7,11 @@ using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
 using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.TimeSlots;
+using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
 using CommunityHub.Application.Modules.Shared.API.Public.Users;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Shared.Core.Services.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Services.Users;
 using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
 using CommunityHub.Application.Shared.Database.Repositories.Notifications;
@@ -59,6 +61,18 @@ namespace CommunityHub.Application
                 )
             },
             {
+                typeof(IAdTimeSlotReservationService),
+                new AdTimeSlotReservationService(
+                    new UserRepository(),
+                    new AdTimeSlotReservationRepository(),
+                    new AdTimeSlotReservationBuilder(
+                        new AdTimeSlotService(
+                            new AdTimeSlotRepository()
+                        )
+                    )
+                )
+            },
+            {
                 typeof(IAdMatchSubscriptionService),
                 new AdMatchSubscriptionService(
                     new AdMatchSubscriptionRepository(),
@@ -79,8 +93,22 @@ namespace CommunityHub.Application
                     new UserRepository()
                 )
             },
+            {
+                typeof(INotificationService),
+                new NotificationService(
+                    new NotificationRepository()    
+                )
+            },
             // Domain services:
-            { typeof(IAdTimeSlotGenerator), new AdTimeSlotGenerator() }
+            { typeof(IAdTimeSlotGenerator), new AdTimeSlotGenerator() },
+            {
+                typeof(IAdTimeSlotReservationBuilder),
+                new AdTimeSlotReservationBuilder(
+                    new AdTimeSlotService(
+                        new AdTimeSlotRepository()
+                    )
+                )
+            },
         };
 
         public static T CreateInstance<T>()

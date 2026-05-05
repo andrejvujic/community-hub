@@ -1,11 +1,12 @@
-﻿using System.Xml.Linq;
-
-namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots
+﻿namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots
 {
     public class AdTimeSlot : IEquatable<AdTimeSlot>
     {
         public long Id { get; }
+
         public long AdId { get; }
+        public Ad? Ad { get; }
+
         public DateTime StartTime { get; }
         public DateTime EndTime { get; }
 
@@ -16,19 +17,41 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots
             long adId,
             DateTime startTime,
             DateTime endTime,
+            Ad? ad = null,
             AdTimeSlotReservation? reservation = null,
             long id = 0
         ) {
             Id = id;
+
             AdId = adId;
+            Ad = ad;
+
             StartTime = startTime;
             EndTime = endTime;
             Reservation = reservation;
         }
 
+        public bool Matches(AdTimeSlot other)
+        {
+            if (Ad is null || other.Ad is null)
+                throw new ArgumentException("Both AdTimeSlot instances must have a non-null Ad property.");
+
+            if (other is null) return false;
+
+            if (other.Id == Id) return false;
+
+            if (other.AdId == AdId) return false;
+            if (!other.Ad.Matches(Ad)) return false;
+
+            if (other.EndTime != EndTime) return false;
+
+            return other.StartTime == StartTime && other.EndTime == EndTime;
+        }
+
         public AdTimeSlot CopyWith(
             long? id = null,
             long? adId = null,
+            Ad? ad = null,
             DateTime? startTime = null,
             DateTime? endTime = null,
             AdTimeSlotReservation? reservation = null
@@ -36,6 +59,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots
                     adId ?? AdId,
                     startTime ?? StartTime,
                     endTime ?? EndTime,
+                    ad ?? Ad,
                     reservation ?? Reservation,
                     id ?? Id
                  );
