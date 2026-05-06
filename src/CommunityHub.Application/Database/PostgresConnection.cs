@@ -2,15 +2,17 @@ using CommunityHub.Application.Domain;
 using Npgsql;
 using System.Data;
 using System.Text.Json;
-using CommunityHub.Application.Domain.Notifications;
-using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Buildings.Issues;
-using CommunityHub.Application.Domain.Buildings.Ads;
 using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
 
 namespace CommunityHub.Application.Database;
 
+[Obsolete("Use DatabaseConnection instead.")]
 public static class PostgresConnection
 {
     private static readonly string ConnectionString = LoadConnectionString();

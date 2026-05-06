@@ -1,6 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Notifications;
-using CommunityHub.Application.Domain.Notifications;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings.Browse;
@@ -14,8 +15,9 @@ namespace CommunityHub.Ui.Views.Resident
     {
         private readonly long _userId;
 
-        private readonly NotificationRepository _notificationRepository = new();
-        private readonly AdRepository _adRepository = new();
+        private readonly INotificationService _notificationService = Injector.CreateInstance<INotificationService>();
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>(); 
+
         public HomePage(long userId)
         {
             InitializeComponent();
@@ -24,16 +26,16 @@ namespace CommunityHub.Ui.Views.Resident
             _userId = userId;
 
             UpdateUnreadNotificationCount();
-            _adRepository.ArchiveExpiredAds();
+            _adService.ArchiveExpiredAds();
 
             OpenBuildingsPage();
         }
 
         private void UpdateUnreadNotificationCount()
         {
-            UnreadNotificationCount = _notificationRepository.GetCountByUserId(
+            UnreadNotificationCount = _notificationService.GetNotificationCountForUser(
                 _userId,
-                NotificationStatus.Unread
+                status: NotificationStatus.Unread
             );
         }
 

@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

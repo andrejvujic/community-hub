@@ -1,10 +1,10 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.Ads;
-using CommunityHub.Application.Domain.Notifications;
-using CommunityHub.Application.Domain.Notifications.Details;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
-using CommunityHub.Ui.Views.Resident.Buildings.Ads;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Windows.Input;
@@ -21,7 +21,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
     public partial class AdEventNotificationDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
     {
         private long _userId;
-        private readonly AdRepository _adRepository = new();
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
         public Notification Notification { get; set; }
 
         public AdEventNotificationDetailsPage(long userId, Notification notification)
@@ -77,7 +77,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             if (Notification.Details is not AdEventNotificationDetails details)
                 throw new Exception("Notification.Details must be an instance of AdEventNotificationDetails");
 
-            var ad = _adRepository.Get(details.AdId);
+            var ad = _adService.Get(details.AdId);
             var availability = CheckAdAvailability(ad, details.EventType);
 
             if (availability == AdAvailability.Available)

@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.NeighborhoodBudget
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+
+namespace CommunityHub.Application.Domain.NeighborhoodBudget
 {
     public class BudgetExpense
     {

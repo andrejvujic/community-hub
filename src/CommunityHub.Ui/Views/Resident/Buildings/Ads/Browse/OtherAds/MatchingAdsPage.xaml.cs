@@ -1,5 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.Ads;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Collections.ObjectModel;
@@ -11,8 +13,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
     public partial class MatchingAdsPage : MainNavigatorConsumerPage
     {
         private readonly long _userId;
-        private readonly AdRepository _adRepository = new();
-        private readonly AdMatchSubscriptionRepository _adMatchSubscriptionRepository = new();
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
+        private readonly IAdMatchSubscriptionService _adMatchSubscriptionService = Injector.CreateInstance<IAdMatchSubscriptionService>();
 
         public Ad Ad { get; }
         public ObservableCollection<Ad> MatchingAds { get; set; } = new();
@@ -34,12 +36,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
         private void LoadMatchingAds()
         {
             MatchingAds.Clear();
-            foreach (var ad in _adRepository.GetMatchingAds(Ad.Id))
+            foreach (var ad in _adService.GetMatchingAds(Ad))
                 MatchingAds.Add(ad);
         }
 
         private void CreateAdMatchSubscription()
-            => _adMatchSubscriptionRepository.Create(
+            => _adMatchSubscriptionService.Create(
                 new AdMatchSubscription(
                     subscribedAd: Ad,
                     subscribedAdId: Ad.Id

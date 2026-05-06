@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers.Notifications.Details;
-using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers.Notifications
