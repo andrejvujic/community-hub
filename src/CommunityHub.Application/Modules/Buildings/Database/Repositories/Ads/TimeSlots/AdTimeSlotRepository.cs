@@ -2,6 +2,7 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
+using System.Diagnostics;
 
 namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.TimeSlots
 {
@@ -9,28 +10,62 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
     {
         private readonly AdTimeSlotMapper _timeSlotMapper = new();
 
-        public AdTimeSlot Create(AdTimeSlot adTimeSlot)
+        public void Create(AdTimeSlot timeSlot)
         {
-            var query = PostgresQuery.Create(
-                @"INSERT INTO ad_time_slots
-                    (ad_id,
-                    start_time,
-                    end_time)
-                VALUES
-                    (@ad_id,
-                    @start_time,
-                    @end_time)
-                RETURNING id"
-            ).ExtendParameters(_timeSlotMapper.MapToQueryParameters(adTimeSlot));
+            using var connection = DatabaseConnection.Create();
 
-            long id = query.ExecuteScalar(value => Convert.ToInt64(value));
+            connection.Execute(
+                DatabaseQuery.Create(
+                    @"INSERT INTO ad_time_slots
+                        (ad_id,
+                        start_time,
+                        end_time)
+                    VALUES
+                        (@ad_id,
+                        @start_time,
+                        @end_time)"
+                ).ExtendParameters(
+                    _timeSlotMapper.MapToQueryParameters(timeSlot)
+                )
+            );
+        }
 
-            return adTimeSlot.CopyWith(id: id);
+        public void CreateMany(List<AdTimeSlot> timeSlots)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            connection.BeginTransaction();
+
+            try
+            {
+                foreach (var timeSlot in timeSlots)
+                    connection.Execute(
+                        DatabaseQuery.Create(
+                            @"INSERT INTO ad_time_slots
+                                (ad_id,
+                                start_time,
+                                end_time)
+                            VALUES
+                                (@ad_id,
+                                @start_time,
+                                @end_time)"
+                        ).ExtendParameters(
+                            _timeSlotMapper.MapToQueryParameters(timeSlot)
+                        )
+                    );
+
+                connection.CommitTransaction();
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+                connection.RollbackTranscation();
+            }
         }
 
         public List<AdTimeSlot> GetTimeSlotsByAuthor(long authorId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     time_slot.id AS time_slot_id,
                     time_slot.ad_id AS time_slot_ad_id,
@@ -112,7 +147,8 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
 
             var timeSlots = new List<AdTimeSlot>();
 
-            query.ExecuteReader(
+            connection.ExecuteReader(
+                query,
                 reader => { 
                     var timeSlot = _timeSlotMapper.MapToEntity(reader);
                     if (timeSlot is null) return;
@@ -125,7 +161,9 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
 
         public List<AdTimeSlot> GetTimeSlotsByAd(long adId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     time_slot.id AS time_slot_id,
                     time_slot.ad_id AS time_slot_ad_id,
@@ -207,9 +245,9 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
 
             var timeSlots = new List<AdTimeSlot>();
 
-            query.ExecuteReader(
-                reader =>
-                {
+            connection.ExecuteReader(
+                query,
+                reader => {
                     var timeSlot = _timeSlotMapper.MapToEntity(reader);
                     if (timeSlot is null) return;
                     timeSlots.Add(timeSlot);

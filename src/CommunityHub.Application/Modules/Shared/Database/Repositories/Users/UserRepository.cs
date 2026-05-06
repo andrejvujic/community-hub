@@ -8,9 +8,12 @@ namespace CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
 public class UserRepository : IUserRepository
 {
     private readonly UserMapper _userMapper = new();
+
     public User? Get(long id)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT
                 id as user_id,
                 username,
@@ -24,33 +27,42 @@ public class UserRepository : IUserRepository
         .AddParameter("id", id);
 
         User? user = null;
-        query.ExecuteReader(
-            reader => user = _userMapper.MapToEntity(reader)
+
+        connection.ExecuteReader(
+            query,
+            reader => {
+                user = _userMapper.MapToEntity(reader);
+            }
         );
+
         return user;
     }
 
     public long? GetIdByCredentials(string username, string password)
     {
-        var query = PostgresQuery.Create(
-            "SELECT id FROM users WHERE username = @username AND password = @password"
-        )
-        .AddParameter("username", username)
-        .AddParameter("password", password);
+        using var connection = DatabaseConnection.Create();
 
-        return query.ExecuteScalar<long?>(
+        var query = DatabaseQuery.Create(
+                "SELECT id FROM users WHERE username = @username AND password = @password"
+            )
+            .AddParameter("username", username)
+            .AddParameter("password", password);
+
+        return connection.ExecuteScalar<long?>(
+            query,
             value => Convert.ToInt64(value)
         );
     }
 
     public Role? GetRoleById(long id)
     {
-        var query = PostgresQuery.Create(
-            "SELECT user_role FROM users WHERE id = @id"
-        )
-        .AddParameter("id", id);
+        using var connection = DatabaseConnection.Create();
 
-        return query.ExecuteScalar<Role?>(
+        var query = DatabaseQuery.Create("SELECT user_role FROM users WHERE id = @id")
+            .AddParameter("id", id);
+
+        return connection.ExecuteScalar<Role?>(
+            query,
             value => value is Role role ? role : null
         );
     }

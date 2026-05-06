@@ -11,7 +11,9 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
 
         public Ad Create(Ad ad)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO ads 
                     (building_id,
                     resident_id,
@@ -33,33 +35,66 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
                 RETURNING id"
             ).ExtendParameters(_adMapper.MapToQueryParameters(ad));
 
-            long id = query.ExecuteScalar(Convert.ToInt64);
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return ad.CopyWith(id: id);
         }
 
         public void Update(Ad ad)
         {
-            PostgresQuery.Create(
-                @"UPDATE ads SET
-                    building_id = @building_id,
-                    resident_id = @author_id,
-                    ad_type = @ad_type,
-                    ad_category = @ad_category,
-                    ad_status = @ad_status,
-                    description = @description,
-                    start_date = @start_date,
-                    end_date = @end_date
-                WHERE id = @id"
-            )
-            .AddParameter("id", ad.Id)
-            .ExtendParameters(_adMapper.MapToQueryParameters(ad))
-            .Execute();
+            using var connection = DatabaseConnection.Create();
+
+            connection.ExecuteScalar(
+                DatabaseQuery.Create(
+                    @"UPDATE ads SET
+                        building_id = @building_id,
+                        resident_id = @author_id,
+                        ad_type = @ad_type,
+                        ad_category = @ad_category,
+                        ad_status = @ad_status,
+                        description = @description,
+                        start_date = @start_date,
+                        end_date = @end_date
+                    WHERE id = @id"
+                )
+                .AddParameter("id", ad.Id)
+                .ExtendParameters(
+                    _adMapper.MapToQueryParameters(ad)
+                )
+            );
         }
+
+        public void UpdateMany(List<Ad> ads)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            foreach (var ad in ads)
+                connection.ExecuteScalar(
+                    DatabaseQuery.Create(
+                        @"UPDATE ads SET
+                            building_id = @building_id,
+                            resident_id = @author_id,
+                            ad_type = @ad_type,
+                            ad_category = @ad_category,
+                            ad_status = @ad_status,
+                            description = @description,
+                            start_date = @start_date,
+                            end_date = @end_date
+                        WHERE id = @id"
+                    )
+                    .AddParameter("id", ad.Id)
+                    .ExtendParameters(
+                        _adMapper.MapToQueryParameters(ad)
+                    )
+                );
+        }
+
 
         public Ad? Get(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     ad.id AS ad_id,
                     ad.ad_category,
@@ -79,18 +114,68 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
                 
                 FROM ads ad
                 INNER JOIN users author ON ad.resident_id = author.id
-                WHERE ad.id = @id"
+                WHERE ad.id = @id
+                LIMIT 1"
             )
             .AddParameter("id", id);
 
             Ad? ad = null;
-            query.ExecuteReader(reader => ad = _adMapper.MapToEntity(reader));
+
+            connection.ExecuteReader(
+                query,
+                reader => {
+                    ad = _adMapper.MapToEntity(reader);
+                }    
+            );
+
             return ad;
+        }
+
+        public List<Ad> GetAll()
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT
+                    ad.id AS ad_id,
+                    ad.ad_category,
+                    ad.ad_status,
+                    ad.ad_type,
+                    ad.building_id AS ad_building_id,
+                    ad.description,
+                    ad.start_date,
+                    ad.end_date,
+
+                    author.id AS author_user_id,
+                    author.name AS author_name,
+                    author.surname AS author_surname,
+                    author.username AS author_username,
+                    author.password AS author_password,
+                    author.user_role AS author_user_role
+                
+                FROM ads ad
+                INNER JOIN users author ON ad.resident_id = author.id"
+            );
+
+            var ads = new List<Ad>();
+
+            connection.ExecuteReader(
+                query,
+                reader => {
+                    var ad = _adMapper.MapToEntity(reader);
+                    if (ad is null) return;
+                    ads.Add(ad);
+                }
+            );
+
+            return ads;
         }
 
         public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
 
                     ad.id AS ad_id,
@@ -119,8 +204,10 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
             .AddParameter("building_id", buildingId)
             .AddParameter("ad_status", status);
 
-            List<Ad> ads = new List<Ad>();
-            query.ExecuteReader(
+            var ads = new List<Ad>();
+
+            connection.ExecuteReader(
+                query,
                 reader => {
                     var ad = _adMapper.MapToEntity(reader);
                     if (ad == null) return;
@@ -133,7 +220,9 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
 
         public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
 
                     ad.id AS ad_id,
@@ -156,12 +245,14 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
                 INNER JOIN users author ON ad.resident_id = author.id
                 WHERE ad.resident_id = @author_id AND ad.building_id = @building_id
                 ORDER BY ad_id ASC"
-            ).AddParameter("author_id", authorId)
+            )
+            .AddParameter("author_id", authorId)
             .AddParameter("building_id", buildingId);
 
-            List<Ad> ads = new();
+            var ads = new List<Ad>();
 
-            query.ExecuteReader(
+            connection.ExecuteReader(
+                query,
                 reader => {
                     var ad = _adMapper.MapToEntity(reader);
                     if (ad == null) return;
@@ -170,78 +261,6 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
             );
 
             return ads;
-        }
-
-        public List<Ad> GetMatchingAds(long adId)
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT 
-
-	                ad_2.id AS ad_id,
-	                ad_2.building_id AS ad_building_id,
-	                ad_2.ad_type,
-	                ad_2.ad_category,
-	                ad_2.ad_status,
-	                ad_2.description,
-	                ad_2.start_date,
-	                ad_2.end_date,
-
-	                author_2.id AS author_user_id,
-	                author_2.name AS author_name,
-	                author_2.surname AS author_surname,
-	                author_2.username AS author_username,
-	                author_2.password AS author_password,
-	                author_2.user_role AS author_user_role
-
-                FROM ads ad_1 
-                INNER JOIN ads ad_2 ON
-
-	                (DATERANGE(ad_2.start_date, ad_2.end_date, '[]') && DATERANGE(ad_1.start_date, ad_1.end_date, '[]')) AND
-	                ad_2.building_id = ad_1.building_id AND
-	                ad_2.resident_id <> ad_1.resident_id AND
-	                ad_2.ad_category = ad_1.ad_category AND
-	                ad_2.ad_type <> ad_1.ad_type AND 
-	                ad_2.ad_status = 'active' AND
-                    ad_2.resident_id <> ad_1.resident_id
-
-                INNER JOIN users author_2 ON author_2.id = ad_2.resident_id
-                WHERE ad_1.id = @ad_id"
-            ).AddParameter("ad_id", adId);
-
-            List<Ad> ads = new();
-
-            query.ExecuteReader(
-                reader => {
-                    var ad = _adMapper.MapToEntity(reader);
-                    if (ad is null) return;
-                    ads.Add(ad);
-                }
-            );
-
-            return ads;
-        }
-
-        public bool HasMatchingAds(long authorId, Ad referenceAd)
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT EXISTS
-                    (SELECT 1 FROM ads ad
-                    WHERE
-                    ad.building_id = @building_id AND
-                    ad.resident_id = @author_id AND
-                    ad.ad_type = @type AND
-                    ad.ad_category = @category AND
-                    ad.ad_status = 'active' AND
-                    (DATERANGE(ad.start_date, ad.end_date, '[]') && DATERANGE(CAST(@start_date AS DATE), CAST(@end_date AS DATE), '[]')))"
-            )
-            .AddParameter("building_id", referenceAd.BuildingId)
-            .AddParameter("type", referenceAd.Type)
-            .AddParameter("category", referenceAd.Category)
-            .AddParameter("start_date", referenceAd.StartDate)
-            .AddParameter("end_date", referenceAd.EndDate)
-            .AddParameter("author_id", authorId);
-
-            return query.ExecuteScalar(Convert.ToBoolean);
         }
 
         public int GetAdsCountByDateAndType(long buildingId, AdType type, int year, int? month)
@@ -357,16 +376,6 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
             });
 
             return resident ?? "N/A";
-        }
-        public void ArchiveExpiredAds()
-        {
-            PostgresQuery.Create(
-                @"UPDATE ads
-                SET ad_status = 'archived'
-                WHERE end_date < @today AND ad_status = 'active'"
-            )
-            .AddParameter("today", DateTime.Now)
-            .Execute();
         }
     }
 }

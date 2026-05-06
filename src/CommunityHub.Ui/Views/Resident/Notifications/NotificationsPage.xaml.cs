@@ -1,5 +1,6 @@
-﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Application.Shared.Database.Repositories.Notifications;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications.Details;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
     public partial class NotificationsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId;
-        private readonly NotificationRepository _notificationRepository = new();
+        private readonly INotificationService _noticationService = Injector.CreateInstance<INotificationService>();
 
         public ObservableCollection<Notification> Notifications { get; } = new();
         public bool HasNotifications => Notifications.Count > 0;
@@ -31,17 +32,11 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
         {
             Notifications.Clear();
 
-            var notifications = _notificationRepository.GetByUserId(_userId);
+            var notifications = _noticationService.GetNotificationsForUser(_userId);
             foreach (var notification in notifications)
                 Notifications.Add(notification);
 
             OnPropertyChanged(nameof(HasNotifications));
-        }
-
-        private void MarkNotificationAsRead(Notification notification)
-        {
-            notification.MarkAsRead();
-            _notificationRepository.Update(notification);
         }
 
         private void OpenNotificationDetailsPage(Notification notification)
@@ -64,7 +59,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
             if (element.DataContext is not Notification notification) return;
 
             if (!notification.IsRead)
-                MarkNotificationAsRead(notification);
+                _noticationService.MarkAsRead(notification);
 
             if (notification.HasDetails)
                 OpenNotificationDetailsPage(notification);

@@ -2,6 +2,7 @@
 
 namespace CommunityHub.Application.Database
 {
+    [Obsolete("Use DatabaseQuery instead.")]
     public class PostgresQuery
     {
         private readonly string _sql;

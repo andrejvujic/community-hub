@@ -27,8 +27,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             var publishedAd = _adRepository.Create(ad);
 
             var timeSlots = _adTimeSlotGenerator.GenerateTimeSlots(publishedAd);
-            foreach (var timeSlot in timeSlots)
-                _adTimeSlotService.Create(timeSlot);
+            _adTimeSlotService.CreateMany(timeSlots);
 
             return publishedAd;
         }
@@ -40,20 +39,30 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             return ad;
         }
 
-        public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null)
+        public void ArchiveExpiredAds()
         {
-            var ads = _adRepository.GetByBuilding(
+            var expiredAds = _adRepository
+                .GetAll()
+                .Where(ad => ad.HasExpired && ad.IsActive)
+                .ToList();
+
+            foreach (var ad in expiredAds)
+                ad.Archive();
+
+            _adRepository.UpdateMany(expiredAds);
+        }
+
+        public Ad? Get(long adId)
+            => _adRepository.Get(adId);
+
+        public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null)
+            => _adRepository.GetByBuilding(
                 buildingId,
                 status: status
             );
-            return ads;
-        }
 
         public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
-        {
-            var ads = _adRepository.GetByAuthorAndBuilding(authorId, buildingId);
-            return ads;
-        }
+            => _adRepository.GetByAuthorAndBuilding(authorId, buildingId);
 
         public bool HasMatchingAds(long authorId, Ad referenceAd)
         {

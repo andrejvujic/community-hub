@@ -12,6 +12,7 @@ using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
 
 namespace CommunityHub.Application.Database;
 
+[Obsolete("Use DatabaseConnection instead.")]
 public static class PostgresConnection
 {
     private static readonly string ConnectionString = LoadConnectionString();

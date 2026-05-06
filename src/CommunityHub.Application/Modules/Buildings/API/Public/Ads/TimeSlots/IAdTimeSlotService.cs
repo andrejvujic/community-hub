@@ -5,6 +5,7 @@ namespace CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots
     public interface IAdTimeSlotService
     {
         public void Create(AdTimeSlot timeSlot);
+        public void CreateMany(List<AdTimeSlot> timeSlots);
 
         public List<AdTimeSlot> GetReservedTimeSlotsForAd(long adId);
         public List<AdTimeSlot> GetReservableTimeSlotsForUser(long adId, long userId);

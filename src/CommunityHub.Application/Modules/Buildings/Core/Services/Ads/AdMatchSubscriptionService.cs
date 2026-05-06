@@ -23,16 +23,18 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             _notificationRepository = notificationRepository;
         }
 
-        public bool IsSubscribed(long adId) => _adMatchSubscriptionRepository.IsSubscribed(adId);
+        public void Create(AdMatchSubscription subscription)
+            => _adMatchSubscriptionRepository.Create(subscription);
+
+        public bool IsSubscribed(long adId) => _adMatchSubscriptionRepository.ExistsWithAdId(adId);
 
         public void NotifyAuthorsOfSubscribedMatchingAds(Ad referenceAd)
         {
             var ads = _adService.GetMatchingAds(referenceAd);
             var authorIds = ads.Select(ad => ad.Author.Id).Distinct();
 
-            foreach (var authorId in authorIds)
-                _notificationRepository.Create(
-                    Notification.Create(
+            var notifications = authorIds.Select(
+                authorId => Notification.Create(
                         recipientId: authorId,
                         title: "Pronađen kompatibilan oglas",
                         message: "Na oglasnoj tabli se pojavio oglas sa odgovarajućom kategorijom i podudarnim datumima.",
@@ -41,11 +43,14 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
                             referenceAd.Id,
                             AdEventType.MatchingAdCreated
                         )
-                    )
-                );
+                )
+            ).ToList();
 
-            foreach (var ad in ads)
-                _adMatchSubscriptionRepository.DeleteByAdId(ad.Id);
+            _notificationRepository.CreateMany(notifications);
+
+            _adMatchSubscriptionRepository.DeleteManyByAdId(
+                ads.Select(ad => ad.Id).ToList()
+            );
         }
     }
 }
