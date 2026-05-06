@@ -11,28 +11,57 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
 
         public void Create(NotificationDetails details)
         {
+            using var connection = DatabaseConnection.Create();
+
             switch (details)
             {
                 case AdEventNotificationDetails:
-                    CreateAdEventNotificationDetails((AdEventNotificationDetails)details);
+                    CreateAdEventNotificationDetails(
+                        connection,
+                        (AdEventNotificationDetails)details
+                    );
                     break;
             }
         }
 
-        private void CreateAdEventNotificationDetails(AdEventNotificationDetails details)
+        public void CreateMany(List<NotificationDetails> details)
         {
-            PostgresQuery.Create(
-                @"INSERT INTO ad_event_notification_details
-                    (notification_id,
-                    ad_id,
-                    ad_event_type)
-                VALUES
-                    (@details_notification_id,
-                    @details_ad_id,
-                    @details_ad_event_type)"
-            )
-            .ExtendParameters(_adEventMapper.MapToQueryParameters(details))
-            .Execute();
+            using var connection = DatabaseConnection.Create();
+
+            foreach (var d in details)
+            {
+                switch (d)
+                {
+                    case AdEventNotificationDetails:
+                        CreateAdEventNotificationDetails(
+                            connection,
+                            (AdEventNotificationDetails)d
+                        );
+                        break;
+                }
+            }
+        }
+
+        private void CreateAdEventNotificationDetails(
+            DatabaseConnection connection,
+            AdEventNotificationDetails details
+        )
+        {
+            connection.Execute(
+                DatabaseQuery.Create(
+                    @"INSERT INTO ad_event_notification_details
+                        (notification_id,
+                        ad_id,
+                        ad_event_type)
+                    VALUES
+                        (@details_notification_id,
+                        @details_ad_id,
+                        @details_ad_event_type)"
+                )
+                .ExtendParameters(
+                    _adEventMapper.MapToQueryParameters(details)
+                )
+            );
         }
     }
 }

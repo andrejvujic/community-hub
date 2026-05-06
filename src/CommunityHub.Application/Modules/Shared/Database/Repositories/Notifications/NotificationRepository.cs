@@ -23,7 +23,9 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
 
         public void Create(Notification notification)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO notifications
                     (recipient_id,
                     sent_at,
@@ -40,9 +42,11 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
                     @type)
                 RETURNING id"
             )
-            .ExtendParameters(_notificationMapper.MapToQueryParameters(notification));
+            .ExtendParameters(
+                _notificationMapper.MapToQueryParameters(notification)
+            );
 
-            long notificationId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long notificationId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             if (!notification.HasDetails) return;
 
@@ -51,9 +55,53 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
             _notificationDetailsRepository.Create(details);
         }
 
+        public void CreateMany(List<Notification> notifications)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            foreach (var notification in notifications)
+            {
+                var query = DatabaseQuery.Create(
+                    @"INSERT INTO notifications
+                        (recipient_id,
+                        sent_at,
+                        title,
+                        message,
+                        status,
+                        type)
+                    VALUES
+                        (@recipient_id,
+                        @sent_at,
+                        @title,
+                        @message,
+                        @status,
+                        @type)
+                    RETURNING id"
+                )
+                .ExtendParameters(
+                    _notificationMapper.MapToQueryParameters(notification)
+                );
+
+                long notificationId = connection.ExecuteScalar(query, Convert.ToInt64);
+
+                if (!notification.HasDetails) return;
+
+                notification.Details!.AttachToNotification(notificationId);
+            }
+
+            _notificationDetailsRepository.CreateMany(
+                notifications
+                    .Where(notification => notification.HasDetails)
+                    .Select(notification => notification.Details!)
+                    .ToList()
+            );
+        }
+
         public void Update(Notification notification)
         {
-            PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE notifications SET
                     recipient_id = @recipient_id,
                     sent_at = @sent_at,
@@ -64,26 +112,11 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
                 WHERE id = @id"
             )
             .AddParameter("id", notification.Id)
-            .ExtendParameters(_notificationMapper.MapToQueryParameters(notification))
-            .Execute();
-        }
+            .ExtendParameters(
+                _notificationMapper.MapToQueryParameters(notification)
+            );
 
-        public int GetCountByUserId(
-            long userId,
-            NotificationStatus? status = null
-        )
-        {
-            var query = PostgresQuery.Create(
-                @"SELECT COUNT(*) notification_count FROM notifications notification
-                INNER JOIN users recipient ON recipient.id = notification.recipient_id
-                WHERE
-                    recipient.id = @user_id AND
-                    (notification.status = @status OR @status IS NULL)"
-            )
-            .AddParameter("user_id", userId)
-            .AddParameter("status", status);
-
-            return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
+            connection.Execute(query);
         }
 
         public List<Notification> GetByUserId(
@@ -92,7 +125,9 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
             NotificationStatus? status = null
         )
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT
                     notification.id AS notification_id,
                     notification.recipient_id,
@@ -123,9 +158,13 @@ namespace CommunityHub.Application.Shared.Database.Repositories.Notifications
 
             List<Notification> notifications = new();
 
-            query.ExecuteReader(reader => notifications.Add(
-                    _notificationMapper.MapToEntity(reader)
-                )
+            connection.ExecuteReader(
+                query,
+                reader => {
+                    notifications.Add(
+                        _notificationMapper.MapToEntity(reader)
+                    );
+                }
             );
 
             return notifications;
