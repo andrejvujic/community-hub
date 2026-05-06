@@ -6,9 +6,10 @@ namespace CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Repo
     public interface INotificationRepository
     {
         public void Create(Notification notification);
+        public void CreateMany(List<Notification> notifications);
+
         public void Update(Notification notification);
 
-        public int GetCountByUserId(long userId, NotificationStatus? status = null);
         public List<Notification> GetByUserId(
             long userId,
             NotificationOrder order = NotificationOrder.SentAtDescending,

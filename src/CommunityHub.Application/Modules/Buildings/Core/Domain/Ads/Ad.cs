@@ -60,6 +60,8 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
         public bool IsActive => Status is AdStatus.Active;
         public bool IsArchived => Status is AdStatus.Archived;
 
+        public bool HasExpired => EndDate.Date < DateTime.Today;
+
         public bool Matches(Ad other)
         {
             if (other == null) return false;

@@ -6,7 +6,9 @@ namespace CommunityHub.Application.Modules.Buildings.API.Public.Ads
     {
         public Ad Publish(Ad ad);
         public Ad Archive(Ad ad);
+        public void ArchiveExpiredAds();
 
+        public Ad? Get(long adId);
         public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId);
         public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null);
 

@@ -6,5 +6,6 @@ namespace CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Repo
     public interface INotificationDetailsRepository
     {
         public void Create(NotificationDetails details);
+        public void CreateMany(List<NotificationDetails> details);
     }
 }

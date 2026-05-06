@@ -13,10 +13,11 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             _adTimeSlotRepository = adTimeSlotRepository;
         }
 
-        public void Create(AdTimeSlot timeSlot)
-        {
+        public void Create(AdTimeSlot timeSlot) =>
             _adTimeSlotRepository.Create(timeSlot);
-        }
+
+        public void CreateMany(List<AdTimeSlot> timeSlots) =>
+            _adTimeSlotRepository.CreateMany(timeSlots);
 
         public AdTimeSlot? FindMatchingTimeSlotForAuthor(long authorId, AdTimeSlot referenceTimeSlot)
         {
