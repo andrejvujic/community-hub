@@ -1,7 +1,6 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
 using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
