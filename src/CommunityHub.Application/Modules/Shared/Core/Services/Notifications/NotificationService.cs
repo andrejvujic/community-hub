@@ -32,7 +32,7 @@ namespace CommunityHub.Application.Modules.Shared.Core.Services.Notifications
                 userId,
                 status: status
             );
-            return notifications.Count();
+            return notifications.Count;
         }
 
         public Notification MarkAsRead(Notification notification)
