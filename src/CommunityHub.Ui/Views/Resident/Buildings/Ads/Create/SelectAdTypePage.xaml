@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Ads.Create"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
-      xmlns:ads="clr-namespace:CommunityHub.Application.Domain.Buildings.Ads;assembly=CommunityHub.Application"
+      xmlns:ads="clr-namespace:CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;assembly=CommunityHub.Application"
       mc:Ignorable="d"
       Title="Biranje tipa oglasa"
       FontFamily="{StaticResource AppFontFamily}">

@@ -1,10 +1,10 @@
-﻿using CommunityHub.Application.Domain;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.Buildings.Issues;
 using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 {

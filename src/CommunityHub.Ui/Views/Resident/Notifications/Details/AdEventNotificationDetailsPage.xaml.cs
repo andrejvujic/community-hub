@@ -1,7 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.Ads;
-using CommunityHub.Application.Domain.Notifications;
-using CommunityHub.Application.Domain.Notifications.Details;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads;

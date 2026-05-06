@@ -18,7 +18,7 @@
         <Grid Visibility="{Binding HasReservableTimeSlots, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    <ItemsControl ItemsSource="{Binding TimeSlotGroups}">
+                    <ItemsControl ItemsSource="{Binding ReservableTimeSlotGroups}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel/>
@@ -112,7 +112,8 @@
                                                                                     <DataTrigger Value="True">
                                                                                         <DataTrigger.Binding>
                                                                                             <MultiBinding Converter="{StaticResource IEnumerableContainsToBooleanConverter}">
-                                                                                                <Binding Path="SelectedTimeSlots" RelativeSource="{RelativeSource AncestorType=Page}"/>
+                                                                                                <Binding Path="DataContext.SelectedTimeSlots"
+                                                                                                    RelativeSource="{RelativeSource AncestorType=Page}"/>
                                                                                                 <Binding/>
                                                                                             </MultiBinding>
                                                                                         </DataTrigger.Binding>

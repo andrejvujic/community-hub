@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.Buildings.CommonRooms;
 using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
+using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;

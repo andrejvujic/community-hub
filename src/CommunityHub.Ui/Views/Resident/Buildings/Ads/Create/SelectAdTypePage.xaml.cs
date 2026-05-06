@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings.Ads;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows;
 using System.Windows.Input;

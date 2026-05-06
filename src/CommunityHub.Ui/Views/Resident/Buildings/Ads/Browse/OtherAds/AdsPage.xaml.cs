@@ -1,5 +1,7 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.Ads;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Create;
@@ -14,7 +16,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
     {
         private readonly long _userId;
         private readonly long _buildingId;
-        private readonly AdRepository _adRepository = new();
+
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>(); 
+
         public ObservableCollection<Ad> Ads { get; } = new();
         public bool HasAds => Ads.Count > 0;
 
@@ -31,8 +35,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
 
         private void UpdateAds()
         {
+            var ads = _adService.GetByBuilding(
+                _buildingId,
+                status: AdStatus.Active
+            );
+
             Ads.Clear();
-            List<Ad> ads = _adRepository.GetByBuilding(_buildingId, AdStatus.Active);
             foreach (var ad in ads)
                 Ads.Add(ad);
         }

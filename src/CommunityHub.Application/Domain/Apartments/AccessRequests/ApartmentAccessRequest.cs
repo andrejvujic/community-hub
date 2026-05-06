@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.Apartments.AccessRequests
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+
+namespace CommunityHub.Application.Domain.Apartments.AccessRequests
 {
     public class ApartmentAccessRequest
     {

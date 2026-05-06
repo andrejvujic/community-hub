@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows.Input;
-using CommunityHub.Application.Domain.Buildings.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
