@@ -32,7 +32,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!Request.IsCancellable) return;
+            if (!Request.IsPending) return;
 
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(

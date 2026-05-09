@@ -12,14 +12,16 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Apartments
 
         public bool IsMember(long residentId, long apartmentId)
         {
-            var memberships = _apartmentMembershipRepository.GetByApartment(apartmentId);
-            return memberships.Any(membership => membership.Resident.Id == residentId);
+            return _apartmentMembershipRepository.Exists(residentId, apartmentId);
+            // var memberships = _apartmentMembershipRepository.GetByApartment(apartmentId);
+            // return memberships.Any(membership => membership.Resident.Id == residentId);
         }
 
-        public bool IsOccupied(long apartmentId)
+        public bool HasMembers(long apartmentId)
         {
-            var memberships = _apartmentMembershipRepository.GetByApartment(apartmentId);
-            return memberships.Count > 0;
+            return _apartmentMembershipRepository.Exists(apartmentId);
+            // var memberships = _apartmentMembershipRepository.GetByApartment(apartmentId);
+            // return memberships.Count > 0;
         }
     }
 }

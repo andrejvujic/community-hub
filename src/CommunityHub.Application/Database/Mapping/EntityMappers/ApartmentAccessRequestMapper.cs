@@ -1,7 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
@@ -14,25 +12,27 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override ApartmentAccessRequest MapToEntity(IDataReader reader)
         {
-            User? applicant = _userMapper.MapToEntity(reader.WithPrefix("applicant"));
-            Apartment? apartment = _apartmentMapper.MapToEntity(reader);
+            var applicant = _userMapper.MapToEntity(reader.WithPrefix("applicant"));
+            var apartment = _apartmentMapper.MapToEntity(reader);
 
             if (applicant == null || apartment == null)
                 throw new Exception("Couldn't read ApartmentAccessRequest from database because of missing data");
 
-            long id = reader.GetInt64(reader.GetOrdinal("request_id"));
-            Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
+            var id = reader.GetInt64(reader.GetOrdinal("request_id"));
+            var status = (Status)reader.GetValue(reader.GetOrdinal("status"));
             
-            int commentColumnIndex = reader.GetOrdinal("comment");
-            string? comment = reader.IsDBNull(commentColumnIndex) ? null : reader.GetString(commentColumnIndex);
+            var commentColumnIndex = reader.GetOrdinal("comment");
+            var comment = reader.IsDBNull(commentColumnIndex) ? null : reader.GetString(commentColumnIndex);
             
-            DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
+            var creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
 
             return new ApartmentAccessRequest(
-                applicant,
-                apartment,
-                status,
-                creationDate,
+                applicant: applicant,
+                applicantId: applicant.Id,
+                apartment: apartment,
+                apartmentId: apartment.Id,
+                status: status,
+                creationDate: creationDate,
                 id: id,
                 comment: comment
             ); 
@@ -42,8 +42,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
-                { "applicant_id", entity.Applicant.Id },
-                { "apartment_id", entity.Apartment.Id },
+                { "applicant_id", entity.ApplicantId },
+                { "apartment_id", entity.ApartmentId },
                 { "comment", entity.Comment },
                 { "status", entity.Status },
                 { "creation_date", entity.CreationDate }

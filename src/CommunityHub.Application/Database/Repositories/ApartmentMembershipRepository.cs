@@ -39,7 +39,7 @@ namespace CommunityHub.Application.Database.Repositories
 
         public List<ApartmentMembership> GetByResident(long id)
         {
-            var connection = DatabaseConnection.Create();
+            using var connection = DatabaseConnection.Create();
 
             var query = DatabaseQuery.Create(
                 @"SELECT
@@ -108,7 +108,7 @@ namespace CommunityHub.Application.Database.Repositories
 
         public List<ApartmentMembership> GetByApartment(long id)
         {
-            var connection = DatabaseConnection.Create();
+            using var connection = DatabaseConnection.Create();
 
             var query = DatabaseQuery.Create(
                 @"SELECT
@@ -242,6 +242,39 @@ namespace CommunityHub.Application.Database.Repositories
             );
 
             return memberships;
+        }
+
+        public bool Exists(long apartmentId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT EXISTS(
+                SELECT 1
+                FROM apartment_memberships membership
+                WHERE membership.apartment_id = @apartment_id)"
+            )
+            .AddParameter("apartment_id", apartmentId);
+
+            return connection.ExecuteScalar(query, Convert.ToBoolean);
+        }
+
+        public bool Exists(long residentId, long apartmentId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT EXISTS(
+                    SELECT 1
+                    FROM apartment_memberships membership
+                    WHERE
+                        membership.apartment_id = @apartment_id AND
+                        membership.building_resident_id = @resident_id)"
+            )
+            .AddParameter("apartment_id", apartmentId)
+            .AddParameter("resident_id", residentId);
+
+            return connection.ExecuteScalar(query, Convert.ToBoolean);
         }
     }
 }
