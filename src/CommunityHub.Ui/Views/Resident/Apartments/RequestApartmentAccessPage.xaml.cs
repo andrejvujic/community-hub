@@ -20,6 +20,11 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
+        private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = _viewModel.Submit();
+            ShowValidationResult(result);
+        }
 
         private void ShowValidationResult(AccessRequestValidationResult result)
         {
@@ -31,7 +36,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                     consumer.ShowAlert(
                         Alert.Create(
                             "Greška",
-                            $"Stan broj {_viewModel.ApartmentNumber} ne postoji u zgradi {_viewModel.Building.Address.Street.Name} {_viewModel.Building.Address.StreetNumber}. Provjerite uneseni broj stana i pokušajte ponovo.",
+                            $"Stan broj {_viewModel.ApartmentNumber} ne postoji u zgradi {_viewModel.Building.DisplayAddress}. Provjerite uneseni broj stana i pokušajte ponovo.",
                             AlertType.Error
                         )
                         .AddOption("U redu")
@@ -42,7 +47,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                         consumer.ShowAlert(
                             Alert.Create(
                                 "Upozorenje",
-                                $"Da li ste sigurni da ste unijeli ispravan broj stana? Već postoji član koji je pridružen stanu broj {_viewModel.ApartmentNumber} u zgradi {_viewModel.Building.Address.Street.Name} {_viewModel.Building.Address.StreetNumber}.",
+                                $"Da li ste sigurni da ste unijeli ispravan broj stana? Već postoji član koji je pridružen stanu broj {_viewModel.ApartmentNumber} u zgradi {_viewModel.Building.DisplayAddress}.",
                                 AlertType.Warning
                             )
                             .AddOption("Otkaži")
@@ -54,7 +59,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                     consumer.ShowAlert(
                           Alert.Create(
                               "Greška",
-                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {_viewModel.ApartmentNumber} u zgradi {_viewModel.Building.Address.Street.Name} {_viewModel.Building.Address.StreetNumber} zato što ste već učlanjeni u ovaj stan.",
+                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {_viewModel.ApartmentNumber} u zgradi {_viewModel.Building.DisplayAddress} zato što ste već učlanjeni u ovaj stan.",
                               AlertType.Error
                           )
                           .AddOption("U redu")
@@ -65,19 +70,13 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                     consumer.ShowAlert(
                           Alert.Create(
                               "Greška",
-                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {_viewModel.ApartmentNumber} u zgradi {_viewModel.Building.Address.Street.Name} {_viewModel.Building.Address.StreetNumber} zato što već imate zahtjev za ovaj stan koji je još uvijek u fazi obrade.",
+                              $"Nije moguće kreirati zahtjev za pridruženje stanu broj {_viewModel.ApartmentNumber} u zgradi {_viewModel.Building.DisplayAddress} zato što već imate zahtjev za ovaj stan koji je još uvijek u fazi obrade.",
                               AlertType.Error
                           )
                           .AddOption("U redu")
                       );
                     break;
             }
-        }
-
-        private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
-        {
-            var result = _viewModel.Submit();
-            ShowValidationResult(result);
         }
     }
 }
