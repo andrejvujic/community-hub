@@ -7,5 +7,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces
         public Apartment Create(Apartment apartment);
         public Apartment? Get(long id);
         public long? FindIdByBuildingAndNumber(long buildingId, int apartmentNumber);
+
+        public bool Exists(long buildingId, int apartmentNumber);
     }
 }

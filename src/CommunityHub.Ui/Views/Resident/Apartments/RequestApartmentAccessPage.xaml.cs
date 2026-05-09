@@ -46,7 +46,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                                 AlertType.Warning
                             )
                             .AddOption("Otkaži")
-                            .AddOption("Nastavi", () => _viewModel.CreateAccessRequest())
+                            .AddOption("Nastavi", () => _viewModel.Submit())
                         );
                     break;
 
@@ -76,14 +76,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = _viewModel.ValidateAccessRequest();
-
-            if (result == AccessRequestValidationResult.Valid)
-            {
-                _viewModel.CreateAccessRequest();
-                return;
-            }
-
+            var result = _viewModel.Submit();
             ShowValidationResult(result);
         }
     }

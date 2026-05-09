@@ -45,6 +45,14 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
             }
         }
 
+        public AccessRequestValidationResult Submit()
+        {
+            var result = ValidateAccessRequest();
+            if (result is AccessRequestValidationResult.Valid)
+                CreateAccessRequest();
+            return result;
+        }
+
         public AccessRequestValidationResult ValidateAccessRequest()
             => _apartmentAccessRequestService.ValidateAccessRequest(
                     UserId,
@@ -58,12 +66,14 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
                 Building.Id,
                 ApartmentNumber
             );
-            if (apartmentId == null) return;
+
+            if (apartmentId is null)
+                throw new ArgumentException("ApartmentId can't be null.");
 
             _apartmentAccessRequestService.Create(
                 new ApartmentAccessRequest(
                     applicantId: UserId,
-                    apartmentId: apartmentId.Value,
+                    apartmentId: apartmentId!.Value,
                     status: Status.Waiting,
                     DateTime.Now
                 )

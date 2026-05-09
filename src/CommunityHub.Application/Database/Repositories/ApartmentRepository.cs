@@ -76,7 +76,9 @@ public class ApartmentRepository : IApartmentRepository
 
     public long? FindIdByBuildingAndNumber(long buildingId, int apartmentNumber)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT
                 apartment.id
             FROM apartments apartment
@@ -87,6 +89,27 @@ public class ApartmentRepository : IApartmentRepository
         .AddParameter("building_id", buildingId)
         .AddParameter("apartment_number", apartmentNumber);
 
-        return query.ExecuteScalar<long?>(id => Convert.ToInt64(id));
+        return connection.ExecuteScalar<long?>(
+            query,
+            id => Convert.ToInt64(id)
+        );
+    }
+
+    public bool Exists(long buildingId, int apartmentNumber)
+    {
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
+            @"SELECT EXISTS(
+            SELECT 1
+            FROM apartments apartment
+            WHERE
+                apartment.building_id = @building_id AND
+                apartment.apartment_number = @apartment_number)"
+        )
+        .AddParameter("building_id", buildingId)
+        .AddParameter("apartment_number", apartmentNumber);
+
+        return connection.ExecuteScalar(query, Convert.ToBoolean);
     }
 }
