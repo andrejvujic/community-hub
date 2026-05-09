@@ -24,6 +24,14 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Apartments
         public void Create(ApartmentAccessRequest request)
             => _apartmentAccessRequestRepository.Create(request);
 
+        public void Cancel(ApartmentAccessRequest request)
+        {
+            if (!request.IsPending)
+                throw new InvalidOperationException("Only pendning requests can be cancelled.");
+
+            _apartmentAccessRequestRepository.Delete(request.Id);
+        }
+
         public AccessRequestValidationResult ValidateAccessRequest(long residentId, long buildingId, int apartmentNumber)
         {
             var apartmentId = _apartmentRepository.FindIdByBuildingAndNumber(buildingId, apartmentNumber);
