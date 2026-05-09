@@ -11,6 +11,7 @@
       FontFamily="{StaticResource AppFontFamily}">
     <navigation:MainNavigatorConsumerPage.Resources>
         <converters:EqualityConverter x:Key="EqualityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
@@ -108,40 +109,49 @@
                             VerticalAlignment="Center"/>
                     </Button>
 
-                    <ItemsControl
-                        Grid.Column="1"
+                    <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ItemsControl
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        ItemsSource="{Binding Building.Images}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
+                        ItemsSource="{Binding Building.Images}"
+                        Visibility="{Binding ShouldUseTextIndicator, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
 
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Ellipse Height="10" Width="10" Margin="0,0,4,0">
-                                    <Ellipse.Style>
-                                        <Style TargetType="Ellipse">
-                                            <Setter Property="Fill" Value="#dedede"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Value="True">
-                                                    <DataTrigger.Binding>
-                                                        <MultiBinding Converter="{StaticResource EqualityConverter}">
-                                                            <Binding />
-                                                            <Binding Path="CurrentImage" RelativeSource="{RelativeSource AncestorType=Page}" />
-                                                        </MultiBinding>
-                                                    </DataTrigger.Binding>
-                                                    <Setter Property="Fill" Value="#4a4a4a"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Ellipse Height="10" Width="10" Margin="0,0,4,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#dedede"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                                <Binding />
+                                                                <Binding Path="DataContext.CurrentImage" RelativeSource="{RelativeSource AncestorType=Page}" />
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <Setter Property="Fill" Value="#4a4a4a"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding ShouldUseTextIndicator, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Text="{Binding CurrentImageText}"
+                            FontSize="18"/>
+                    </Grid>
 
                     <Button
                         Grid.Column="2"
