@@ -17,8 +17,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\Buildings\Core\Services\Buildings\" />
-  </ItemGroup>
-
 </Project>
