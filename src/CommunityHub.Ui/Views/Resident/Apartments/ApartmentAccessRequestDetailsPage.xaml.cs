@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Apartments;
+using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows;

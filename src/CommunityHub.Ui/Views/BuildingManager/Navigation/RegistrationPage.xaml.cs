@@ -1,8 +1,11 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+﻿using CommunityHub.Application.Database.Repositories.Apartments;
+using CommunityHub.Application.Database.Repositories.Buildings;
+using CommunityHub.Application.Database.Repositories.Shared;
+using CommunityHub.Application.Database.Repositories.Shared.Addresses;
+using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Users;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

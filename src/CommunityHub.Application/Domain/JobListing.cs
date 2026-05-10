@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain
+﻿using CommunityHub.Application.Domain.Addresses;
+
+namespace CommunityHub.Application.Domain
 {
     public class JobListing
     {

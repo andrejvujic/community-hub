@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+﻿using CommunityHub.Application.Domain.Notifications;
 using System.Globalization;
 using System.Windows.Data;
 

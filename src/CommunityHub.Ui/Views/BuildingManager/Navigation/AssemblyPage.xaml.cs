@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {

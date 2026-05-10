@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
-using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
+using CommunityHub.Application.Database.Repositories.Shared;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Ui.Views;
 

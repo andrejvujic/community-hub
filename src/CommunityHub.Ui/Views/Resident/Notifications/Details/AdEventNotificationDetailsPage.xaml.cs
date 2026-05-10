@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
+﻿using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Notifications;

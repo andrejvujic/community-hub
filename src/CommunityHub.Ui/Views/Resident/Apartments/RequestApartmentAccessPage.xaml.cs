@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Apartments;
+using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments;

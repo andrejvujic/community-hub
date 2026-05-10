@@ -1,12 +1,22 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
-using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
-using CommunityHub.Application.Shared.Database.Repositories.Notifications;
+using CommunityHub.Application.Database.Repositories.Ads;
+using CommunityHub.Application.Database.Repositories.Ads.TimeSlots;
+using CommunityHub.Application.Database.Repositories.Apartments;
+using CommunityHub.Application.Database.Repositories.Buildings;
+using CommunityHub.Application.Database.Repositories.CommonRooms;
+using CommunityHub.Application.Database.Repositories.Issues;
+using CommunityHub.Application.Database.Repositories.Shared;
+using CommunityHub.Application.Database.Repositories.Shared.Addresses;
+using CommunityHub.Application.Database.Repositories.Shared.Notifications;
+using CommunityHub.Application.Domain.Addresses.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Images;
+using CommunityHub.Application.Domain.Issues.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 
 namespace CommunityHub.Application
 {

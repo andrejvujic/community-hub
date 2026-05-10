@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Helpers.Search;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Buildings;
+using CommunityHub.Application.Services.Buildings;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 

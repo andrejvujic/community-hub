@@ -1,11 +1,11 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
-using CommunityHub.Application.Domain.Buildings.Issues;
+using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+using CommunityHub.Application.Domain.Issues;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.Users;
 using Npgsql;
 using System.Data;
 using System.Text.Json;

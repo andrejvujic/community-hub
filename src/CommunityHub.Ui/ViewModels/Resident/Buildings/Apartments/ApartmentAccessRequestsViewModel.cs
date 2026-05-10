@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Apartments;
+using CommunityHub.Application.Services.Apartments;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 

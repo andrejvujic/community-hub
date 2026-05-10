@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
-using CommunityHub.Application.Modules.Buildings.Core.Services.CommonRooms;
+﻿using CommunityHub.Application.Domain.CommonRooms;
+using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;

@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings.Issues;
+﻿using CommunityHub.Application.Domain.Issues;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

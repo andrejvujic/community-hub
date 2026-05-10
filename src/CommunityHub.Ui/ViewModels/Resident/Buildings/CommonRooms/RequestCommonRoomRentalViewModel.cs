@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
-using CommunityHub.Application.Modules.Buildings.Core.Services.CommonRooms;
+﻿using CommunityHub.Application.Domain.CommonRooms;
+using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+using CommunityHub.Application.Services.CommonRooms;
 using System.ComponentModel;
 using System.Globalization;
 

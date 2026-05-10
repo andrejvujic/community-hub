@@ -1,8 +1,8 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Collections.ObjectModel;

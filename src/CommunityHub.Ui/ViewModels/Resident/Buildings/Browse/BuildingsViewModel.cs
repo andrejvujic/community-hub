@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Apartments;
+using CommunityHub.Application.Services.Apartments;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 

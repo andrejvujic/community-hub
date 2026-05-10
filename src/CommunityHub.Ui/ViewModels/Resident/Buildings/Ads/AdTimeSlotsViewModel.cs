@@ -1,12 +1,12 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Shared.Core.Services.Notifications;
+using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Notifications;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 

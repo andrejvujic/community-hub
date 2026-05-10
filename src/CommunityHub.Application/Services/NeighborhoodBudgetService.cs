@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.NeighborhoodBudget;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Services
 {

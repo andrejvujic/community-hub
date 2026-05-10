@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Apartments;
+using CommunityHub.Application.Services.Apartments;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments

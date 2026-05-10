@@ -1,6 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

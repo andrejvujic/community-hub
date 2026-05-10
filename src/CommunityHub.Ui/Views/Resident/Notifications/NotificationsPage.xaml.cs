@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Shared.Core.Services.Notifications;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Services.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications.Details;
 using System.Collections.ObjectModel;

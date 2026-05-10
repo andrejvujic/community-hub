@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.CityFacility
+﻿using CommunityHub.Application.Domain.Addresses;
+
+namespace CommunityHub.Application.Domain.CityFacility
 {
     public class CityFacility
     {

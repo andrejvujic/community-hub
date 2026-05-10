@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget
 {
