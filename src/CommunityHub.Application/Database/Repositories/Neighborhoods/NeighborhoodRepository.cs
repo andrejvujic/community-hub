@@ -2,16 +2,16 @@
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class NeighborhoodRepository
+    public class NeighborhoodRepository : INeighborhoodRepository
     {
         private readonly NeighborhoodMapper _neighborhoodMapper = new NeighborhoodMapper();
         private readonly ImageMapper _imageMapper = new ImageMapper();
-        private readonly StreetSectionRepository _streetSectionRepository = new StreetSectionRepository();
-        private readonly ImageRepository _imageRepository = new ImageRepository();
 
         public List<Neighborhood> GetByCoordinatorId(long id)
         {

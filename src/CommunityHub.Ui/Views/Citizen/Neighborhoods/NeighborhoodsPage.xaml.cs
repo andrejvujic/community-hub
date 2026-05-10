@@ -1,6 +1,8 @@
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Helpers.Search;
 using System.Windows;
 using System.Windows.Controls;

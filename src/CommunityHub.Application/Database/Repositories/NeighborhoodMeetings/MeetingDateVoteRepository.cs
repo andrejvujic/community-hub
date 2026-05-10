@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.NeighborhoodMeetings;
+using CommunityHub.Application.Domain.NeighborhoodMeetings.RepositoryInterfaces;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.NeighborhoodMeetings
 {
-    public class MeetingDateVoteRepository
+    public class MeetingDateVoteRepository : IMeetingDateVoteRepository
     {
         private readonly MeetingDateVoteMapper _voteMapper = new MeetingDateVoteMapper();
 

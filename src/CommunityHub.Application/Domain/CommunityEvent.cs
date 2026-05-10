@@ -1,3 +1,4 @@
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Users;
 using System.Collections.Generic;
 using System.Linq;

@@ -17,9 +17,7 @@ namespace CommunityHub.Ui.ViewModels
         public string TotalPrice => BookedJob.DurationHours.HasValue
             ? $"{BookedJob.TotalPrice:N2} RSD ({BookedJob.DurationHours}h)"
             : $"{BookedJob.TotalPrice:N2} RSD";
-        public string Status => BookedJob.ScheduledDate < DateOnly.FromDateTime(DateTime.Today)
-            ? "Izvršeno"
-            : "Zakazano";
+        public string Status => BookedJob.IsFinished(DateTime.Now) ? "Izvršeno" : "Zakazano";
         public string Rating => Review is not null
             ? $"{Review.AverageRating:F2}"
             : "/";

@@ -1,10 +1,12 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 {
-    public class NeighborhoodMembershipRepository
+    public class NeighborhoodMembershipRepository : INeighborhoodMembershipRepository
     {
         private readonly NeighborhoodMembershipMapper _neighborhoodMembershipMapper = new NeighborhoodMembershipMapper();
         private readonly CitizenMapper _citizenMapper = new CitizenMapper();

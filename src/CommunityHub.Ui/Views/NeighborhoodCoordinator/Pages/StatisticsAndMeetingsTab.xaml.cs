@@ -12,7 +12,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.NeighborhoodMeetings;
+using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.NeighborhoodMeetings;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages

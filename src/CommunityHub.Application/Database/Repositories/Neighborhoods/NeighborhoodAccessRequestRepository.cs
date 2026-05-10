@@ -1,10 +1,12 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 {
-    public class NeighborhoodAccessRequestRepository
+    public class NeighborhoodAccessRequestRepository : INeighborhoodAccessRequestRepository
     {
         private readonly NeighborhoodAccessRequestMapper _neighborhoodAccessRequestMapper = new NeighborhoodAccessRequestMapper();
 
