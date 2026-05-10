@@ -11,7 +11,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
         private readonly ApartmentAccessRequestService _apartmentAccessRequestService = new();
         private readonly ApartmentService _apartmentService = new();
 
-        public long UserId { get; set; }
+        public long UserId { get; }
         public Building Building { get; }
 
         public RequestApartmentAccessViewModel(long userId, Building building) {
@@ -43,14 +43,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
                 OnPropertyChanged(nameof(ApartmentNumber));
                 OnPropertyChanged(nameof(IsApartmentNumberValid));
             }
-        }
-
-        public AccessRequestValidationResult ValidateAndCreateAccessRequest()
-        {
-            var result = ValidateAccessRequest();
-            if (result is AccessRequestValidationResult.Valid)
-                CreateAccessRequest();
-            return result;
         }
 
         public AccessRequestValidationResult ValidateAccessRequest()

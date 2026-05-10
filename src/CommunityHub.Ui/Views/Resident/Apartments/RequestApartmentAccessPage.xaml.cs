@@ -22,8 +22,27 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
         private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = _viewModel.ValidateAndCreateAccessRequest();
+            var result = _viewModel.ValidateAccessRequest();
+            if (result is AccessRequestValidationResult.Valid)
+            {
+                _viewModel.CreateAccessRequest();
+                ShowSuccessAlert();
+                return;
+            }
             ShowValidationResult(result);
+        }
+
+        private void ShowSuccessAlert()
+        {
+            if (this is IAlertConsumer consumer)
+                consumer.ShowAlert(
+                    Alert.Create(
+                        "Zahtjev podnesen",
+                        "Vaš zahtjev je uspješno podnesen. Sve svoje zahtjeve možete pogledati na početnom ekranu.",
+                        AlertType.Info
+                    )
+                    .AddOption("U redu", () => PopAll())
+                );
         }
 
         private void ShowValidationResult(AccessRequestValidationResult result)
@@ -51,7 +70,11 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                                 AlertType.Warning
                             )
                             .AddOption("Otkaži")
-                            .AddOption("Nastavi", () => _viewModel.CreateAccessRequest())
+                            .AddOption("Nastavi", () => {
+                                    _viewModel.CreateAccessRequest();
+                                    ShowSuccessAlert();
+                                }
+                            )
                         );
                     break;
 
