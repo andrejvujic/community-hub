@@ -1,14 +1,13 @@
 ﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
     public enum PublishmentValidationResult
     {
         Valid,
-        MatchingAdExists,
+        DuplicateAdExists,
     }
 
     public class AdService
@@ -37,8 +36,8 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 
         public PublishmentValidationResult ValidatePublishment(long userId, Ad ad)
         {
-            if (HasMatchingAds(userId, ad))
-                return PublishmentValidationResult.MatchingAdExists;
+            if (HasDuplicateAds(userId, ad))
+                return PublishmentValidationResult.DuplicateAdExists;
 
             return PublishmentValidationResult.Valid;
         }
@@ -75,11 +74,11 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
             => _adRepository.GetByAuthorAndBuilding(authorId, buildingId);
 
-        public bool HasMatchingAds(long authorId, Ad referenceAd)
+        public bool HasDuplicateAds(long authorId, Ad referenceAd)
         {
             var ads = _adRepository.GetByAuthorAndBuilding(authorId, referenceAd.BuildingId);
             return ads.Any(
-                ad => ad.Matches(referenceAd)
+                ad => ad.IsDuplicateOf(referenceAd)
             );
         }
 
@@ -94,7 +93,10 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public List<long> GetAuthorIdsOfMatchingAds(Ad referenceAd)
         {
             var ads = GetMatchingAds(referenceAd);
-            return ads.Select(ad => ad.Author.Id).ToList();
+            return ads
+                .Select(ad => ad.AuthorId)
+                .Distinct()
+                .ToList();
         }
     }
 }

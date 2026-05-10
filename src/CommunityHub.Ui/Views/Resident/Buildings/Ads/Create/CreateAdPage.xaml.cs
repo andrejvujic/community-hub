@@ -61,7 +61,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
         {
             switch (result)
             {
-                case PublishmentValidationResult.MatchingAdExists:
+                case PublishmentValidationResult.DuplicateAdExists:
                     if (this is IAlertConsumer consumer)
                         consumer.ShowAlert(
                             Alert.Create(

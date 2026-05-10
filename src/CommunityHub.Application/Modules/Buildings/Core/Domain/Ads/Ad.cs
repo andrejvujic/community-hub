@@ -65,6 +65,20 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
 
         public bool HasExpired => EndDate.Date < DateTime.Today;
 
+        public bool IsDuplicateOf(Ad other)
+        {
+            if (other == null) return false;
+
+            if (Id == other.Id) return true;
+            if (AuthorId != other.AuthorId) return false;
+            if (BuildingId != other.BuildingId) return false;
+
+            if (Type != other.Type) return false;
+            if (Category != other.Category) return false;
+
+            return Overlaps(other);
+        }
+
         public bool Matches(Ad other)
         {
             if (other == null) return false;
@@ -75,14 +89,18 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
 
             if (Type == other.Type) return false;
             if (Category != other.Category) return false;
-            if (!other.IsActive) return false;
+
+            return other.IsActive && Overlaps(other);
+        }
+
+        public bool Overlaps(Ad other)
+        {
+            if (other == null) return false;
 
             if (StartDate > other.EndDate) return false;
             if (other.StartDate > EndDate) return false;
-
             return true;
         }
-
 
         public Ad CopyWith(
             long? id = null,
