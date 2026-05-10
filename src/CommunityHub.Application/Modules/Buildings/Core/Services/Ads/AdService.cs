@@ -1,15 +1,21 @@
 ﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
+    public enum PublishmentValidationResult
+    {
+        Valid,
+        MatchingAdExists,
+    }
+
     public class AdService
     {
         private readonly IAdRepository _adRepository;
         private readonly AdTimeSlotService _adTimeSlotService;
         private readonly AdTimeSlotGenerator _adTimeSlotGenerator;
-
         public AdService(
             IAdRepository adRepository,
             IAdTimeSlotRepository adTimeSlotRepository
@@ -27,6 +33,14 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             _adTimeSlotService.CreateMany(timeSlots);
 
             return publishedAd;
+        }
+
+        public PublishmentValidationResult ValidatePublishment(long userId, Ad ad)
+        {
+            if (HasMatchingAds(userId, ad))
+                return PublishmentValidationResult.MatchingAdExists;
+
+            return PublishmentValidationResult.Valid;
         }
 
         public Ad Archive(Ad ad)

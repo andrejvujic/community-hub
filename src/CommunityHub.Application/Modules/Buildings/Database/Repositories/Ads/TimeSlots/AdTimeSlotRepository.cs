@@ -73,6 +73,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
                     time_slot.end_time,
 
                     ad.id AS ad_id,
+                    ad.resident_id AS author_id,
                     ad.ad_category,
                     ad.ad_status,
                     ad.ad_type,
@@ -93,6 +94,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
                     reservation.request_ad_time_slot_id,
 
                     offer_ad.id AS offer_ad_ad_id,
+                    offer_ad.resident_id AS offer_ad_author_id,
                     offer_ad.ad_category AS offer_ad_ad_category,
                     offer_ad.ad_status AS offer_ad_ad_status,
                     offer_ad.ad_type AS offer_ad_ad_type,
@@ -109,6 +111,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
                     offer_ad_author.user_role AS offer_ad_author_user_role,
 
                     request_ad.id AS request_ad_ad_id,
+                    request_ad.resident_id AS request_ad_author_id,
                     request_ad.ad_category AS request_ad_ad_category,
                     request_ad.ad_status AS request_ad_ad_status,
                     request_ad.ad_type AS request_ad_ad_type,
@@ -171,6 +174,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
                     time_slot.end_time,
 
                     ad.id AS ad_id,
+                    ad.resident_id AS author_id,
                     ad.ad_category,
                     ad.ad_status,
                     ad.ad_type,
@@ -191,6 +195,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
                     reservation.request_ad_time_slot_id,
 
                     offer_ad.id AS offer_ad_ad_id,
+                    offer_ad.resident_id AS offer_ad_author_id,
                     offer_ad.ad_category AS offer_ad_ad_category,
                     offer_ad.ad_status AS offer_ad_ad_status,
                     offer_ad.ad_type AS offer_ad_ad_type,
@@ -207,6 +212,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.T
                     offer_ad_author.user_role AS offer_ad_author_user_role,
 
                     request_ad.id AS request_ad_ad_id,
+                    request_ad.resident_id AS request_ad_author_id,
                     request_ad.ad_category AS request_ad_ad_category,
                     request_ad.ad_status AS request_ad_ad_status,
                     request_ad.ad_type AS request_ad_ad_type,

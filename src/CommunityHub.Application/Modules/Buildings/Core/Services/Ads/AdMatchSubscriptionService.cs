@@ -32,7 +32,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public void NotifyAuthorsOfSubscribedMatchingAds(Ad referenceAd)
         {
             var ads = _adService.GetMatchingAds(referenceAd);
-            var authorIds = ads.Select(ad => ad.Author.Id).Distinct();
+            var authorIds = ads.Select(ad => ad.AuthorId).Distinct();
 
             var notifications = authorIds.Select(
                 authorId => Notification.Create(

@@ -97,6 +97,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
             var query = DatabaseQuery.Create(
                 @"SELECT
                     ad.id AS ad_id,
+                    ad.resident_id AS author_id,
                     ad.ad_category,
                     ad.ad_status,
                     ad.ad_type,
@@ -138,6 +139,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
             var query = DatabaseQuery.Create(
                 @"SELECT
                     ad.id AS ad_id,
+                    ad.resident_id AS author_id,
                     ad.ad_category,
                     ad.ad_status,
                     ad.ad_type,
@@ -179,6 +181,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
                 @"SELECT
 
                     ad.id AS ad_id,
+                    ad.resident_id AS author_id,
                     ad.ad_category,
                     ad.ad_status,
                     ad.ad_type,
@@ -226,6 +229,7 @@ namespace CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads
                 @"SELECT
 
                     ad.id AS ad_id,
+                    ad.resident_id AS author_id,
                     ad.ad_category,
                     ad.ad_status,
                     ad.ad_type,

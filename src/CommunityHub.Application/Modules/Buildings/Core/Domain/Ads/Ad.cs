@@ -4,22 +4,24 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
 {
     public class Ad
     {
-        public long Id { get; private set; }
-        public User Author { get; private set; }
-        public long BuildingId { get; private set; }
+        public long Id { get; }
 
-        public AdType Type { get; private set; }
-        public AdCategory Category { get; private set; }
+        public long AuthorId { get; }
+        public User? Author { get; }
 
+        public long BuildingId { get; }
+
+        public AdType Type { get; }
+        public AdCategory Category { get; }
         public AdStatus Status { get; private set; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
+        public DateTime StartDate { get; }
+        public DateTime EndDate { get; }
 
         public Ad(
-            User author,
+            long authorId,
             long buildingId,
             AdType type,
             AdCategory category,
@@ -27,11 +29,12 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
             string description,
             DateTime startDate,
             DateTime endDate,
+            User? author = null,
             long id = 0
         ) {
             Id = id;
 
-            if (author == null) throw new ArgumentNullException("Author can't be null.");
+            AuthorId = authorId;
             Author = author;
 
             BuildingId = buildingId;
@@ -67,7 +70,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
             if (other == null) return false;
 
             if (Id == other.Id) return false;
-            if (Author.Id == other.Author.Id) return false;
+            if (AuthorId == other.AuthorId) return false;
             if (BuildingId != other.BuildingId) return false;
 
             if (Type == other.Type) return false;
@@ -83,6 +86,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
 
         public Ad CopyWith(
             long? id = null,
+            long? authorId = null,
             User? author = null,
             long? buildingId = null,
             AdType? type = null,
@@ -94,14 +98,15 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads
         )
         {
             return new Ad(
-                author ?? Author,
-                buildingId ?? BuildingId,
-                type ?? Type,
-                category ?? Category,
-                status ?? Status,
-                description ?? Description,
-                startDate ?? StartDate,
-                endDate ?? EndDate,
+                author: author ?? Author,
+                authorId: authorId ?? AuthorId, 
+                buildingId: buildingId ?? BuildingId,
+                type: type ?? Type,
+                category: category ?? Category,
+                status: status ?? Status,
+                description: description ?? Description,
+                startDate: startDate ?? StartDate,
+                endDate: endDate ?? EndDate,
                 id: id ?? Id
             );
         }
