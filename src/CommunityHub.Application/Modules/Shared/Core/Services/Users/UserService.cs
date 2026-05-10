@@ -1,10 +1,9 @@
-﻿using CommunityHub.Application.Modules.Shared.API.Public.Users;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Users.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Modules.Shared.Core.Services.Users
 {
-    public class UserService : IUserService
+    public class UserService
     {
         private readonly IUserRepository _userRepository;
 

@@ -1,11 +1,10 @@
 ﻿using CommunityHub.Application.Helpers.Sorting;
-using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Modules.Shared.Core.Services.Notifications
 {
-    public class NotificationService: INotificationService
+    public class NotificationService
     {
         private readonly INotificationRepository _notificationRepository;
 
