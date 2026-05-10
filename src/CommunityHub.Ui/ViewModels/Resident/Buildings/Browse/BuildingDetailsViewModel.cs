@@ -2,7 +2,7 @@
 using CommunityHub.Application.Domain.Buildings;
 using System.ComponentModel;
 
-namespace CommunityHub.Ui.ViewModels.Resident.Buildings
+namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 {
     public class BuildingDetailsViewModel : INotifyPropertyChanged
     {

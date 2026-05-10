@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ViewModels\Resident\Buildings\Create\" />
     <Folder Include="ViewModels\Shared\" />
     <Folder Include="Views\ServiceProvider\Pages\Forums\" />
     <Folder Include="Views\ServiceProvider\Pages\JobListings\" />

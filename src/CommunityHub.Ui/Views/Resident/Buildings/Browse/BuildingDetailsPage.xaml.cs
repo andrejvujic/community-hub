@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
-using CommunityHub.Ui.ViewModels.Resident.Buildings;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Browse;
 using System.Windows;
 using System.Windows.Input;
 

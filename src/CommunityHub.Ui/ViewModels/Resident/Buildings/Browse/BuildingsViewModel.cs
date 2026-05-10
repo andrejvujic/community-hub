@@ -4,7 +4,7 @@ using CommunityHub.Application.Modules.Buildings.Core.Services.Apartments;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace CommunityHub.Ui.ViewModels.Resident.Buildings
+namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 {
     public class BuildingsViewModel : INotifyPropertyChanged
     {
