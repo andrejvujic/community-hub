@@ -1,27 +1,33 @@
-﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
+﻿using CommunityHub.Application.Domain.CommonRooms;
+using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class CommonRoomMapper : EntityMapper<CommonRoom>
     {
-        public override CommonRoom MapToEntity(IDataReader reader)
+        public override CommonRoom? MapToEntity(IDataReader reader)
         {
-            long id = reader.GetInt64(reader.GetOrdinal("common_room_id"));
-            long buildingId = reader.GetInt64(reader.GetOrdinal("building_id"));
-            string name = reader.GetString(reader.GetOrdinal("name"));
-            string description = reader.GetString(reader.GetOrdinal("description"));
-            int floorNumber = reader.GetInt32(reader.GetOrdinal("floor_number"));
-            RentalType type = (RentalType)reader.GetValue(reader.GetOrdinal("rental_type"));
+            if (!reader.HasColumn("common_room_id")) return null;
+
+            var idColumnOrdinal = reader.GetOrdinal("common_room_id");
+            if (reader.IsDBNull(idColumnOrdinal)) return null;
+
+            var id = reader.GetInt64(idColumnOrdinal);
+
+            var buildingId = reader.GetInt64(reader.GetOrdinal("building_id"));
+            var name = reader.GetString(reader.GetOrdinal("name"));
+            var description = reader.GetString(reader.GetOrdinal("description"));
+            var floorNumber = reader.GetInt32(reader.GetOrdinal("floor_number"));
+            var rentalType = (RentalType)reader.GetValue(reader.GetOrdinal("rental_type"));
 
             return new CommonRoom(
-                buildingId,
-                name,
-                description,
-                floorNumber,
-                type,
-                id
+                id: id,
+                buildingId: buildingId,
+                name: name,
+                description: description,
+                floorNumber: floorNumber,
+                rentalType: rentalType
             );
         }
 

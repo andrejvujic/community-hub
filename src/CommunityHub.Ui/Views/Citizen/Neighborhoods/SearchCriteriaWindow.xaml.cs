@@ -1,5 +1,5 @@
 using System.Windows;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods

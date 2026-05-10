@@ -1,10 +1,12 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Notifications;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -12,14 +14,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
     public class AdTimeSlotsViewModel : INotifyPropertyChanged
     {
-        private readonly INotificationService _notificationService
-            = Injector.CreateInstance<INotificationService>();
+        private readonly NotificationService _notificationService;
 
-        private readonly IAdTimeSlotService _adTimeSlotService
-            = Injector.CreateInstance<IAdTimeSlotService>();
-
-        private readonly IAdTimeSlotReservationService _timeSlotReservationService
-            = Injector.CreateInstance<IAdTimeSlotReservationService>();
+        private readonly AdTimeSlotService _timeSlotService;
+        private readonly AdTimeSlotReservationService _timeSlotReservationService;
 
         public long UserId { get; }
         public Ad Ad { get; }
@@ -31,6 +29,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         public ObservableCollection<AdTimeSlot> SelectedTimeSlots { get; } = new();
 
         public AdTimeSlotsViewModel(long userId, Ad ad) {
+            _notificationService = new(
+                Injector.CreateInstance<INotificationRepository>()
+            );
+
+            _timeSlotService = new(
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
+            _timeSlotReservationService = new(
+                Injector.CreateInstance<IAdTimeSlotRepository>(),
+                Injector.CreateInstance<IAdTimeSlotReservationRepository>()
+            );
+
             UserId = userId;
             Ad = ad;
         }
@@ -58,7 +69,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 
         public void UpdateReservableTimeSlots()
         {
-            var timeSlots = _adTimeSlotService.GetReservableTimeSlotsForUser(
+            var timeSlots = _timeSlotService.GetReservableTimeSlotsForUser(
                 Ad.Id,
                 UserId
             );

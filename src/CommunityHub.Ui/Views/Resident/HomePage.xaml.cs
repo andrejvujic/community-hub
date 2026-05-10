@@ -1,87 +1,50 @@
-﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
-using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
-using CommunityHub.Ui.Helpers.Navigation;
+﻿using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.ViewModels.Resident;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings.Browse;
 using CommunityHub.Ui.Views.Resident.Notifications;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident
 {
-    public partial class HomePage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class HomePage : MainNavigatorConsumerPage
     {
-        private readonly long _userId;
-
-        private readonly INotificationService _notificationService = Injector.CreateInstance<INotificationService>();
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>(); 
+        private readonly HomeViewModel _viewModel;
 
         public HomePage(long userId)
         {
             InitializeComponent();
-            DataContext = this;
-
-            _userId = userId;
-
-            UpdateUnreadNotificationCount();
-            _adService.ArchiveExpiredAds();
+            
+            _viewModel = new HomeViewModel(userId);
+            DataContext = _viewModel;
+            _viewModel.Initialize();
 
             OpenBuildingsPage();
         }
 
-        private void UpdateUnreadNotificationCount()
+        private void OpenNotificationsPage()
         {
-            UnreadNotificationCount = _notificationService.GetNotificationCountForUser(
-                _userId,
-                status: NotificationStatus.Unread
-            );
-        }
-
-        private int _unreadNotificationCount = 0;
-        public int UnreadNotificationCount {
-            get => _unreadNotificationCount;
-            set
-            {
-                if (_unreadNotificationCount == value) return;
-                _unreadNotificationCount = value;
-                OnPropertyChanged(nameof(UnreadNotificationCount));
-                OnPropertyChanged(nameof(UnreadNotificationCountText));
-                OnPropertyChanged(nameof(HasUnreadNotifications));
-            }
-        }
-
-        public string UnreadNotificationCountText
-        {
-            get
-            {
-                const int thresholdNotificationCount = 9;
-                if (UnreadNotificationCount > thresholdNotificationCount) return $"{thresholdNotificationCount}+";
-                return UnreadNotificationCount.ToString();
-            }
-        }
-
-        public bool HasUnreadNotifications => UnreadNotificationCount > 0;
-
-        private void OpenNotificationsPage() {
             Push(
-                new NotificationsPage(_userId),
-                onPop: _ => UpdateUnreadNotificationCount()
+                new NotificationsPage(_viewModel.UserId),
+                onPop: _ => _viewModel.UpdateUnreadNotificationCount()
             );
         }
 
-        private void OpenBuildingsPage() => LocalFrame.Navigate(new BuildingsPage(_userId));
-        private void OpenApartmentAccessRequestsPage() => LocalFrame.Navigate(new ApartmentAccessRequestsPage(_userId));
+        private void OpenBuildingsPage() => LocalFrame.Navigate(
+            new BuildingsPage(_viewModel.UserId)
+        );
+
+        private void OpenApartmentAccessRequestsPage() => LocalFrame.Navigate(
+            new ApartmentAccessRequestsPage(_viewModel.UserId)
+        );
+
         private void TopBar_NotificationsItemClick(object sender, MouseButtonEventArgs e)
                 => OpenNotificationsPage();
 
         private void BottomBar_RequestsItemClick(object sender, MouseButtonEventArgs e) => OpenApartmentAccessRequestsPage();
         private void BottomBar_BuildingsItemClick(object sender, MouseButtonEventArgs e) => OpenBuildingsPage();
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
 
     }
 }

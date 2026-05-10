@@ -5,9 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Apartments"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Podnošenje zahtjeva"
       FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -69,8 +73,6 @@
 
                 <Label Content="Broj stana" FontSize="18" Grid.Row="4"/>
                 <TextBox
-                    x:Name="ApartmentNumberTextBox"
-                    TextChanged="ApartmentNumberTextBox_TextChanged"
                     Height="48"
                     FontSize="16"
                     Text="{Binding ApartmentNumberText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
@@ -80,13 +82,12 @@
 
                 <Grid Grid.Row="7">
                     <TextBlock
-                        x:Name="ApartmentNumberInvalidError"
-                        Visibility="Collapsed"
+                        Visibility="{Binding IsApartmentNumberValid, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                         Foreground="#4a4a4a"
                         FontSize="16"
                         TextWrapping="Wrap">
-                    <Run Text="&#xf071;" FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"/>
-                    <Run Text="Uneseni broj stana nije ispravan. Provjerite Vaš unos i pokušajte ponovo."/>
+                        <Run Text="&#xf071;" FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"/>
+                        <Run Text="Ovo polje je obavezno. Uneseni broj stana nije ispravan. Provjerite Vaš unos i pokušajte ponovo."/>
                     </TextBlock>
                 </Grid>
             </Grid>

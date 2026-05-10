@@ -11,7 +11,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         public DateTime EventStart { get; set; }
 
         private long EventId;
-        private CommunityHub.Application.Domain.Citizen? citizen;
+        private Application.Domain.Users.Citizen? citizen;
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly CommunityEventRepository _communityEventRepository = new CommunityEventRepository();
         private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();

@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+﻿using CommunityHub.Application.Domain.Ads;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
@@ -11,15 +11,13 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             if (!reader.HasColumn("ad_id")) return null;
 
-            var idColumnIndex = reader.GetOrdinal("ad_id");
-            if (reader.IsDBNull(idColumnIndex)) return null;
+            var idColumnOrdinal = reader.GetOrdinal("ad_id");
+            if (reader.IsDBNull(idColumnOrdinal)) return null;
 
-            var id = reader.GetInt64(idColumnIndex);
+            var id = reader.GetInt64(idColumnOrdinal);
 
+            var authorId = reader.GetInt64(reader.GetOrdinal("author_id"));
             var author = _userMapper.MapToEntity(reader.WithPrefix("author"));
-            if (author == null)
-                throw new Exception("Couldn't convert database row to entity because of missing data. Author can't be null.");
-
 
             var category = (AdCategory)reader.GetValue(reader.GetOrdinal("ad_category"));
             var status = (AdStatus)reader.GetValue(reader.GetOrdinal("ad_status"));
@@ -33,6 +31,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             var endDate = reader.GetDateTime(reader.GetOrdinal("end_date"));
 
             return new Ad(
+                authorId: authorId,
                 author: author,
                 buildingId: buildingId,
                 type: type,
@@ -49,7 +48,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
-                { "author_id", entity.Author.Id },
+                { "author_id", entity.AuthorId },
                 { "building_id", entity.BuildingId },
                 { "description", entity.Description },
                 { "ad_category", entity.Category },

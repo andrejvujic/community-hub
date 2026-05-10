@@ -1,6 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
@@ -12,23 +10,20 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override CommonRoomRentalRequest MapToEntity(IDataReader reader)
         {
-            User? resident = _userMapper.MapToEntity(reader.WithPrefix("resident"));
-            if (resident == null)
-                throw new Exception("CommonRoomRentalRequest.Resident can't be null");
+            var id = reader.GetInt64(reader.GetOrdinal("common_room_rental_request_id"));
+            var status = (RentalRequestStatus)reader.GetValue(reader.GetOrdinal("rental_status"));
 
-            CommonRoom commonRoom = _commonRoomMapper.MapToEntity(reader);
+            var residentId = reader.GetInt64(reader.GetOrdinal("common_room_rental_request_resident_id"));
+            var resident = _userMapper.MapToEntity(reader.WithPrefix("resident"));
 
+            var commonRoomId = reader.GetInt64(reader.GetOrdinal("common_room_rental_request_common_room_id"));
+            var commonRoom = _commonRoomMapper.MapToEntity(reader);
 
-            long id = reader.GetInt64(reader.GetOrdinal("common_room_rental_request_id"));
-            RentalRequestStatus status = (RentalRequestStatus)reader.GetValue(reader.GetOrdinal("rental_status"));
-
-            DateTime requestedStartDate = reader.GetDateTime(reader.GetOrdinal("requested_start_date"));
-
-            DateTime requestedEndDate = reader.GetDateTime(reader.GetOrdinal("requested_end_date"));
+            var requestedStartDate = reader.GetDateTime(reader.GetOrdinal("requested_start_date"));
+            var requestedEndDate = reader.GetDateTime(reader.GetOrdinal("requested_end_date"));
 
             DateTime? proposedStartDate = reader.IsDBNull(reader.GetOrdinal("proposed_start_date")) ?
                 null : reader.GetDateTime(reader.GetOrdinal("proposed_start_date"));
-
             DateTime? proposedEndDate = reader.IsDBNull(reader.GetOrdinal("proposed_end_date")) ?
                 null : reader.GetDateTime(reader.GetOrdinal("proposed_end_date"));
 
@@ -36,7 +31,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 null : reader.GetDateTime(reader.GetOrdinal("assigned_date"));
 
             return new CommonRoomRentalRequest(
+                commonRoomId: commonRoomId,
                 commonRoom: commonRoom,
+                residentId: residentId,
                 resident: resident,
                 requestedStartDate: requestedStartDate,
                 requestedEndDate: requestedEndDate,

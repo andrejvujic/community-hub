@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages

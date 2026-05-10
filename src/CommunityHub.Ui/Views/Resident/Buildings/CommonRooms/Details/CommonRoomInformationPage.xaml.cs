@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
+﻿using CommunityHub.Application.Domain.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details

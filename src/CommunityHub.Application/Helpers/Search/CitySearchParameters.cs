@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain;
+﻿using CommunityHub.Application.Domain.Addresses;
 
 namespace CommunityHub.Application.Helpers.Search
 {

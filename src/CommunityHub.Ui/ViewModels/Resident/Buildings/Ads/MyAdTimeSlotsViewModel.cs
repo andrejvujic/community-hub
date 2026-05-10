@@ -1,7 +1,8 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Services.Ads;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -9,7 +10,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
     public class MyAdTimeSlotsViewModel : INotifyPropertyChanged
     {
-        private readonly IAdTimeSlotService _timeSlotService = Injector.CreateInstance<IAdTimeSlotService>();
+        private readonly AdTimeSlotService _timeSlotService;
 
         public ObservableCollection<AdReservation> Reservations { get; } = new();
         public bool HasReservations { get => Reservations.Count > 0; }
@@ -17,6 +18,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         public Ad Ad { get; }
         public MyAdTimeSlotsViewModel(Ad ad)
         {
+            _timeSlotService = new(
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
             Ad = ad;
         }
 

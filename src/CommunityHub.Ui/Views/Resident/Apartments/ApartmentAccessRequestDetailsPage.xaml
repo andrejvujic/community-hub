@@ -211,7 +211,7 @@
         </Grid>
 
         <Button
-            Visibility="{Binding Request.IsCancellable, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Visibility="{Binding Request.IsPending, Converter={StaticResource BooleanToVisibilityConverter}}"
             Click="CancelRequestButton_Click"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
