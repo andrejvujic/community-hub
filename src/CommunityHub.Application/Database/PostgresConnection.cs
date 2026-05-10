@@ -9,6 +9,7 @@ using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.Domain.NeighborhoodMeetings;
 
 namespace CommunityHub.Application.Database;
 

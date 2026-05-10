@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Windows.Data;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.NeighborhoodMeetings;
 
 namespace CommunityHub.Ui.Helpers.Converters
 {

@@ -1,5 +1,5 @@
 using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.NeighborhoodMeetings;
 using System.Windows;
 using System.Windows.Controls;
 

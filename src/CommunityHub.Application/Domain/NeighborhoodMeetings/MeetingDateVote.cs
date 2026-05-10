@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain
+namespace CommunityHub.Application.Domain.NeighborhoodMeetings
 {
     public class MeetingDateVote
     {
