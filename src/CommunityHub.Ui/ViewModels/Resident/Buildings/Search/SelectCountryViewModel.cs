@@ -1,7 +1,5 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
-using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
 using CommunityHub.Application.Modules.Shared.Core.Services.Addresses;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

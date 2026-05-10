@@ -1,81 +1,45 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Domain;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.Collections.ObjectModel;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
     public partial class SelectCityPage : MainNavigatorConsumerPage, INotifyPropertyChanged
     {
-        private readonly CityRepository _repository;
-        private readonly Action<City?> _onCitySelected;
-        private readonly Country _selectedCountry;
-        public City? SelectedCity { get; private set; }
-        public ObservableCollection<City> Cities { get; } = new ObservableCollection<City>();
-
-        public string SearchText { get; set; } = string.Empty;
-        private CitySearchParameters GetSearchParameters() => new CitySearchParameters(
-            country: _selectedCountry,
-            name: SearchText
-        );
+        private readonly SelectCityViewModel _viewModel;
 
         public SelectCityPage(
-            Action<City?> onCitySelected,
+            Action<City?> setCity,
             Country selectedCountry,
             City? selectedCity = null
         )
         {
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new SelectCityViewModel(
+                setCity: setCity,
+                selectedCountry: selectedCountry,
+                selectedCity: selectedCity
+            );
+            DataContext = _viewModel;
 
-            _repository = new CityRepository();
-
-            _onCitySelected = onCitySelected;
-            _selectedCountry = selectedCountry;
-            SelectedCity = selectedCity;
-
-            UpdateSearchResults();
+            _viewModel.UpdateSearchResults();
         }
 
-        private void UpdateSearchResults()
-        {
-            MainContent.Visibility = Visibility.Hidden;
-            EmptyContent.Visibility = Visibility.Hidden;
+        private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
-            LoadSearchResults();
-
-            if (Cities.Count > 0)
-            {
-                MainContent.Visibility = Visibility.Visible;
-                return;
-            }
-
-            EmptyContent.Visibility = Visibility.Visible;
-        }
-
-        private void LoadSearchResults()
-        {
-            var cities = _repository.Search(GetSearchParameters());
-            Cities.Clear();
-            foreach (var city in cities)
-                Cities.Add(city);
-        }
-
-        private void BackButton_Click(object sender, System.Windows.Input.MouseButtonEventArgs e) => Pop();
-
-        private void SearchButton_Click(object sender, System.Windows.Input.MouseButtonEventArgs e) => UpdateSearchResults();
+        private void SearchButton_Click(object sender, MouseButtonEventArgs e) => _viewModel.UpdateSearchResults();
 
         private void CitySearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SearchText))
-                UpdateSearchResults();
+            if (!_viewModel.HasSetSearchText)
+                _viewModel.UpdateSearchResults();
         }
 
-        private void CityItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void CityItem_Click(object sender, MouseButtonEventArgs e)
         {
             var element = sender as FrameworkElement;
             if (element == null) return;
@@ -83,17 +47,13 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var city = element.DataContext as City;
             if (city == null) return;
 
-            if (city == SelectedCity)
+            if (_viewModel.IsCitySelected(city))
             {
-                // If the selected city is clicked again, it should be deselcted.
-                SelectedCity = null;
-                OnPropertyChanged(nameof(SelectedCity));
-
-                _onCitySelected.Invoke(null);
+                _viewModel.ResetSelectedCity();
                 return;
             }
 
-            _onCitySelected.Invoke(city);
+            _viewModel.UpdateSelectedCity(city);
             Pop();
         }
 
