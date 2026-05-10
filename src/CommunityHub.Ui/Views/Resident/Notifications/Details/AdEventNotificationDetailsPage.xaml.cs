@@ -1,36 +1,23 @@
-﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+﻿using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.ViewModels.Resident.Notifications;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications.Details
 {
-    enum AdAvailability
-    {
-        Available,
-        NotFound,
-        Expired
-    }
-
     public partial class AdEventNotificationDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
     {
-        private long _userId;
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
-        public Notification Notification { get; set; }
+        private readonly AdEventNotificationDetailsViewModel _viewModel;
 
         public AdEventNotificationDetailsPage(long userId, Notification notification)
         {
             InitializeComponent();
-            DataContext = this;
-
-            _userId = userId;
-            Notification = notification;
+            _viewModel = new AdEventNotificationDetailsViewModel(userId, notification);
+            DataContext = _viewModel;
         }
 
         private void ShowAdAvailabilityCheckResult(AdAvailability result)
@@ -52,7 +39,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
                     consumer.ShowAlert(
                         Alert.Create(
                             "Greška",
-                            "Traženi oglas je istekao i više nije dostupan za zakazivanje termina..",
+                            "Traženi oglas je istekao i više nije dostupan za zakazivanje termina.",
                             AlertType.Error
                         )
                         .AddOption("U redu")
@@ -61,34 +48,20 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             }
         }
 
-        private AdAvailability CheckAdAvailability(Ad? ad, AdEventType eventType)
-        {
-            if (ad == null)
-                return AdAvailability.NotFound;
-
-            if (!ad.IsActive && eventType == AdEventType.MatchingAdCreated)
-                return AdAvailability.Expired;
-
-            return AdAvailability.Available;
-        }
 
         private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
         {
-            if (Notification.Details is not AdEventNotificationDetails details)
-                throw new Exception("Notification.Details must be an instance of AdEventNotificationDetails");
-
-            var ad = _adService.Get(details.AdId);
-            var availability = CheckAdAvailability(ad, details.EventType);
+            var availability = _viewModel.GetAdAvailability();
 
             if (availability == AdAvailability.Available)
             {
-                switch (details.EventType)
+                switch (_viewModel.NotificationDetails.EventType)
                 {
                     case AdEventType.MatchingAdCreated:
-                        OpenMatchingAdTimeSlotsPage(ad!);
+                        OpenMatchingAdTimeSlotsPage();
                         break;
                     case AdEventType.AdTimeSlotsReserved:
-                        OpenPersonalAdTimeSlotsPage(ad!);
+                        OpenPersonalAdTimeSlotsPage();
                         break;
                 }
                 return;
@@ -97,20 +70,20 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             ShowAdAvailabilityCheckResult(availability);
         }
 
-        private void OpenMatchingAdTimeSlotsPage(Ad ad)
+        private void OpenMatchingAdTimeSlotsPage()
             => Push(
                 new AdDetailsPage(
-                    _userId,
-                    ad,
+                    _viewModel.UserId,
+                    _viewModel.Ad!,
                     initialTab: AdDetailsPageTab.TimeSlots
                 )
             );
 
-        private void OpenPersonalAdTimeSlotsPage(Ad ad)
+        private void OpenPersonalAdTimeSlotsPage()
             => Push(
                 new MyAdDetailsPage(
-                    _userId,
-                    ad,
+                    _viewModel.UserId,
+                    _viewModel.Ad!,
                     initialTab: MyAdDetailsPageTab.TimeSlots
                 )
             );

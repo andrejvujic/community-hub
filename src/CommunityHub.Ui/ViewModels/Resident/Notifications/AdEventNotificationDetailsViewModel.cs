@@ -1,0 +1,57 @@
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
+
+namespace CommunityHub.Ui.ViewModels.Resident.Notifications
+{
+    public enum AdAvailability
+    {
+        Available,
+        NotFound,
+        Expired
+    }
+
+    public class AdEventNotificationDetailsViewModel
+    {
+        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
+
+        public long UserId { get; }
+
+        public Notification Notification { get; }
+        public AdEventNotificationDetails NotificationDetails
+        {
+            get
+            {
+                if (Notification.Details is not AdEventNotificationDetails details)
+                    throw new Exception("Notification.Details must be an instance of AdEventNotificationDetails");
+
+                return details;
+            }
+        }
+
+        public Ad? Ad { get; }
+
+        public AdEventNotificationDetailsViewModel(long userId, Notification notification)
+        {
+            UserId = userId;
+            Notification = notification;
+            Ad = LoadAd();
+        }
+
+        private Ad? LoadAd() => _adService.Get(NotificationDetails.AdId);
+
+        public AdAvailability GetAdAvailability()
+        {
+            if (Ad == null)
+                return AdAvailability.NotFound;
+
+            if (!Ad.IsActive && NotificationDetails.EventType == AdEventType.MatchingAdCreated)
+                return AdAvailability.Expired;
+
+            return AdAvailability.Available;
+        }
+    }
+}
