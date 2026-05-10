@@ -22,7 +22,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
         private void CreateAccessRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = _viewModel.Submit();
+            var result = _viewModel.ValidateAndCreateAccessRequest();
             ShowValidationResult(result);
         }
 
@@ -51,7 +51,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
                                 AlertType.Warning
                             )
                             .AddOption("Otkaži")
-                            .AddOption("Nastavi", () => _viewModel.Submit())
+                            .AddOption("Nastavi", () => _viewModel.CreateAccessRequest())
                         );
                     break;
 

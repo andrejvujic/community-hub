@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Domain.RepositoryInterfaces;
+using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Apartments
 {
@@ -31,6 +32,17 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Apartments
 
             _apartmentAccessRequestRepository.Delete(request.Id);
         }
+
+
+        public List<ApartmentAccessRequest> GetByApplicant(
+            long applicantId,
+            Status? status = null,
+            RequestOrder order = RequestOrder.Unspecified
+        ) => _apartmentAccessRequestRepository.GetByApplicant(
+                applicantId,
+                status: status,
+                order: order
+              );
 
         public AccessRequestValidationResult ValidateAccessRequest(long residentId, long buildingId, int apartmentNumber)
         {

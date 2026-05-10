@@ -45,7 +45,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
             }
         }
 
-        public AccessRequestValidationResult Submit()
+        public AccessRequestValidationResult ValidateAndCreateAccessRequest()
         {
             var result = ValidateAccessRequest();
             if (result is AccessRequestValidationResult.Valid)
