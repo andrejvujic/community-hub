@@ -1,3 +1,5 @@
+using CommunityHub.Application.Domain.Neighborhoods;
+
 namespace CommunityHub.Application.Domain
 {
     public class NeighborhoodMembership

@@ -16,6 +16,7 @@ using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Users;
 using Microsoft.Win32;
 

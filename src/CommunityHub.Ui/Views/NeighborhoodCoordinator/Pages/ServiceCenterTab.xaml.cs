@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services;
 using CommunityHub.Ui.ViewModels;
 

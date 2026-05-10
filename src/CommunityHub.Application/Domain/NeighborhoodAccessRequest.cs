@@ -1,3 +1,4 @@
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Domain

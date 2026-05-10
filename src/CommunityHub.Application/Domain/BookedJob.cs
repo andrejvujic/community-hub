@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+
+namespace CommunityHub.Application.Domain
 {
     public class BookedJob
     {

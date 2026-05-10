@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.NeighborhoodBudget
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+
+namespace CommunityHub.Application.Domain.NeighborhoodBudget
 {
     public class BudgetCategoryBalance
     {

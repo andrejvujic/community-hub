@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain
+namespace CommunityHub.Application.Domain.Neighborhoods
 {
     public class Neighborhood
     {

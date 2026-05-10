@@ -2,6 +2,7 @@
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories
