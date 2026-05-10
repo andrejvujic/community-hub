@@ -10,7 +10,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
     {
         private readonly SelectCountryViewModel _viewModel;
 
-
         public SelectCountryPage(Action<Country?> setCountry, Country? selectedCountry = null)
         {
             InitializeComponent();

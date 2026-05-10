@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
-    public partial class SelectCityPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class SelectCityPage : MainNavigatorConsumerPage
     {
         private readonly SelectCityViewModel _viewModel;
 
@@ -56,9 +56,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             _viewModel.UpdateSelectedCity(city);
             Pop();
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

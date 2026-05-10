@@ -1,7 +1,6 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.CommonRooms;
+﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.Collections.ObjectModel;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,29 +8,16 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 {
     public partial class CommonRoomsPage : MainNavigatorConsumerPage
     {
-        private readonly long _userId, _buildingId;
-        private readonly CommonRoomRepository _commonRoomRepository = new();
-
-        public ObservableCollection<CommonRoom> CommonRooms { get; } = new();
-        public bool HasCommonRooms => CommonRooms.Count > 0;
+        private readonly CommonRoomsViewModel _viewModel;
 
         public CommonRoomsPage(long userId, long buildingId)
         {
-            _userId = userId;
-            _buildingId = buildingId;
+            _viewModel = new CommonRoomsViewModel(userId, buildingId);
 
             InitializeComponent();
-            DataContext = this;
+            DataContext = _viewModel;
 
-            GetCommonRooms();
-        }
-
-        private void GetCommonRooms()
-        {
-            CommonRooms.Clear();
-            var commonRooms = _commonRoomRepository.GetByBuilding(_buildingId);
-            foreach (var commonRoom in commonRooms)
-                CommonRooms.Add(commonRoom);
+            _viewModel.UpdateCommonRooms();
         }
 
         private void CommonRoomItem_Click(object sender, MouseButtonEventArgs e)
@@ -40,7 +26,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 
             if (element.DataContext is not CommonRoom commonRoom) return;
 
-            Push(new CommonRoomDetailsPage(_userId, commonRoom));
+            Push(new CommonRoomDetailsPage(_viewModel.UserId, commonRoom));
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
