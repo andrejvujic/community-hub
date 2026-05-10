@@ -17,6 +17,9 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.CommonRooms
         public void Create(CommonRoomRentalRequest request)
             => _rentalRequestRepository.Create(request);
 
+        public List<CommonRoomRentalRequest> GetByResidentAndCommonRoom(long residentId, long commonRoomId)
+            => _rentalRequestRepository.GetByResidentAndCommonRoom(residentId, commonRoomId);
+
         public RentalRequestValidationResult ValidateRentalRequest(long residentId, long commonRoomId)
         {
             if (HasPendingRequest(residentId, commonRoomId))
