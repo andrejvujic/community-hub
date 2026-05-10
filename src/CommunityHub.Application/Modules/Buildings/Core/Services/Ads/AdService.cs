@@ -34,9 +34,9 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             return publishedAd;
         }
 
-        public PublishmentValidationResult ValidatePublishment(long userId, Ad ad)
+        public PublishmentValidationResult ValidatePublishment(Ad ad)
         {
-            if (HasDuplicateAds(userId, ad))
+            if (HasDuplicateAds(authorId: ad.AuthorId, referenceAd: ad))
                 return PublishmentValidationResult.DuplicateAdExists;
 
             return PublishmentValidationResult.Valid;

@@ -53,7 +53,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
                 endDate: SelectedEndDate!.Value
             );
 
-            var validationResult = _adService.ValidatePublishment(UserId, ad);
+            var validationResult = _adService.ValidatePublishment(ad);
 
             if (validationResult is PublishmentValidationResult.Valid)
             {
