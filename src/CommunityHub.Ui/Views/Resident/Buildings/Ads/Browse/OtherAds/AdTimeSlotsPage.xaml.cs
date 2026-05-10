@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
+﻿using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.Ads.TimeSlots;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;

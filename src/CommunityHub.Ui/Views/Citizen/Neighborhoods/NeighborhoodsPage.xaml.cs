@@ -1,4 +1,5 @@
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Helpers.Search;
 using System.Windows;
@@ -93,7 +94,7 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             }
         }
 
-        private void CreateNeighborhoodMembership(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        private void CreateNeighborhoodMembership(Application.Domain.Users.Citizen citizen, Neighborhood neighborhood)
         {
             MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -111,7 +112,7 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             this.DataContext = _citizenRepository.GetById(_userId);
         }
 
-        private void AutoRejectPendingRequests(CommunityHub.Application.Domain.Citizen citizen, long approvedNeighborhoodId)
+        private void AutoRejectPendingRequests(Application.Domain.Users.Citizen citizen, long approvedNeighborhoodId)
         {
             var pending = _neighborhoodAccessRequestRepository.GetWaitingByCitizenId(citizen.Id);
             foreach (var r in pending.Where(r => r.Neighborhood.Id != approvedNeighborhoodId))
@@ -121,7 +122,7 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             }
         }
 
-        private void CreateNeighborhoodAccessRequest(CommunityHub.Application.Domain.Citizen citizen, Neighborhood neighborhood)
+        private void CreateNeighborhoodAccessRequest(Application.Domain.Users.Citizen citizen, Neighborhood neighborhood)
         {
             MessageBox.Show("Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
             

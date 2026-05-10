@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+﻿using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds

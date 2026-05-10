@@ -1,3 +1,5 @@
+using CommunityHub.Application.Domain.Users;
+
 namespace CommunityHub.Application.Domain
 {
     public class NeighborhoodAccessRequest

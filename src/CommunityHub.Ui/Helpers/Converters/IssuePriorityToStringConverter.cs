@@ -1,5 +1,4 @@
-﻿
-using CommunityHub.Application.Domain.Buildings.Issues;
+﻿using CommunityHub.Application.Domain.Issues;
 using System.Globalization;
 using System.Windows.Data;
 

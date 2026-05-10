@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Domain.Buildings
 {

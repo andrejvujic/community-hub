@@ -1,14 +1,8 @@
-﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads.TimeSlots;
+﻿using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 

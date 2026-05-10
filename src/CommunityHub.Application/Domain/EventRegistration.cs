@@ -1,3 +1,4 @@
+using CommunityHub.Application.Domain.Users;
 using System;
 
 namespace CommunityHub.Application.Domain;

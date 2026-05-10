@@ -5,11 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Search"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Kriterijum za pretraživanje"
       FontFamily="{StaticResource AppFontFamily}">
     <navigation:MainNavigatorConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid>
@@ -110,7 +112,7 @@
                         </Grid>
                     </Border>
 
-                    <Grid Visibility="{Binding IsCitySelectionDisabled, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#dedede" Opacity="0.7"/>
+                    <Grid Visibility="{Binding IsCountrySelected, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Background="#dedede" Opacity="0.7"/>
                 </Grid>
 
                 <Label Content="Ulica" FontSize="18" Grid.Row="6"/>

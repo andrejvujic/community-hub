@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.Issues;
+﻿using CommunityHub.Application.Database.Repositories.Issues;
+using CommunityHub.Application.Domain.Issues;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

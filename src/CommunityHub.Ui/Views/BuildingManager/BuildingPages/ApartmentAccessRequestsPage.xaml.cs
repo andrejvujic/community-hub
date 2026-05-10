@@ -1,9 +1,9 @@
-﻿using CommunityHub.Application.Database.Repositories;
+﻿using CommunityHub.Application.Database.Repositories.Apartments;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Users;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;

@@ -1,7 +1,7 @@
 using System.Windows;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Helpers.Search;
+using CommunityHub.Application.Database.Repositories.Shared.Addresses;
+using CommunityHub.Application.Domain.Addresses;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {

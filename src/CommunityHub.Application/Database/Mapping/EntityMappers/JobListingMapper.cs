@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Addresses;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

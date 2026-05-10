@@ -5,11 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Search"
       xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Pretraživanje zgrada"
       FontFamily="{StaticResource AppFontFamily}">
     <navigation:MainNavigatorConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </navigation:MainNavigatorConsumerPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -58,7 +60,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <Grid x:Name="MainContent" Visibility="Hidden" Margin="8">
+            <Grid Visibility="{Binding HasSearchResults, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="8"/>
@@ -79,10 +81,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" Content="{Binding Buildings.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
+                        <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                         <Button
-                            x:Name="ResetSearchButton"
                             Content="Poništi pretragu"
+                            Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                             Height="48"
                             Padding="8"
                             Grid.Column="2"
@@ -95,7 +97,7 @@
                 </Grid>
 
                 <ScrollViewer x:Name="BuildingsScrollViewer" Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl x:Name="BuildingsItemsControl" ItemsSource="{Binding Buildings}">
+                    <ItemsControl x:Name="BuildingsItemsControl" ItemsSource="{Binding SearchResults}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border
@@ -211,7 +213,7 @@
                 </ScrollViewer>
             </Grid>
 
-            <Grid x:Name="EmptyContent" Visibility="Hidden" Margin="8">
+            <Grid Visibility="{Binding HasSearchResults, Converter={StaticResource InverseBooleanToVisibilityConverter}}"  Margin="8">
                 <DockPanel>
                     <Grid DockPanel.Dock="Top">
                         <Grid.RowDefinitions>
@@ -233,9 +235,10 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Column="0" Content="{Binding Buildings.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
+                                <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                                 <Button
                                     Content="Poništi pretragu"
+                                    Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                     Height="48"
                                     Padding="8"
                                     Grid.Column="2"

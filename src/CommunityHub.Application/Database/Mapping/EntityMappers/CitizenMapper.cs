@@ -1,5 +1,6 @@
 using CommunityHub.Application.Domain;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users;
+using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
