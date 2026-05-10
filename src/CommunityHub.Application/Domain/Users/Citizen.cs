@@ -1,4 +1,5 @@
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Neighborhoods;
 
 namespace CommunityHub.Application.Domain.Users
 {
