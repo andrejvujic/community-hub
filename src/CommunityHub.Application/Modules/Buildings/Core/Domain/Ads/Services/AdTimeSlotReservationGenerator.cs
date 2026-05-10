@@ -1,17 +1,18 @@
-﻿using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 namespace CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services
 {
-    public class AdTimeSlotReservationBuilder: IAdTimeSlotReservationBuilder
+    public class AdTimeSlotReservationGenerator
     {
-        private readonly IAdTimeSlotService _timeSlotService;
+        private readonly AdTimeSlotService _timeSlotService;
 
-        public AdTimeSlotReservationBuilder(IAdTimeSlotService timeSlotService)
+        public AdTimeSlotReservationGenerator(IAdTimeSlotRepository timeSlotRepository)
         {
-            _timeSlotService = timeSlotService;
+            _timeSlotService = new(timeSlotRepository);
         }
 
-        public List<AdTimeSlotReservation>? CreateReservations(
+        public List<AdTimeSlotReservation>? Generate(
             long userId,
             List<AdTimeSlot> timeSlots
         )

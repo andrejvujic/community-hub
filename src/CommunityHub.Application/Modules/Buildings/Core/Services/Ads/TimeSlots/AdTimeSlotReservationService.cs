@@ -1,33 +1,26 @@
-﻿using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Shared.Core.Domain.Users.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
-    public class AdTimeSlotReservationService : IAdTimeSlotReservationService
+    public class AdTimeSlotReservationService
     {
-        private readonly IUserRepository _userRepository;
         private readonly IAdTimeSlotReservationRepository _timeSlotReservationRepository;
-        private readonly IAdTimeSlotReservationBuilder _timeSlotReservationBuilder;
+        private readonly AdTimeSlotReservationGenerator _timeSlotReservationGenerator;
 
         public AdTimeSlotReservationService(
-            IUserRepository userRepository,
-            IAdTimeSlotReservationRepository timeSlotReservationRepository,
-            IAdTimeSlotReservationBuilder timeSlotReservationBuilder
+            IAdTimeSlotRepository timeSlotRepository,
+            IAdTimeSlotReservationRepository timeSlotReservationRepository
         )
         {
-            _userRepository = userRepository;
             _timeSlotReservationRepository = timeSlotReservationRepository;
-            _timeSlotReservationBuilder = timeSlotReservationBuilder;
+            _timeSlotReservationGenerator = new(timeSlotRepository);
         }
 
         public List<AdTimeSlotReservation>? Reserve(long userId, List<AdTimeSlot> timeSlots)
         {
-            var user = _userRepository.Get(userId);
-
-            var reservations = _timeSlotReservationBuilder.CreateReservations(userId, timeSlots);
+            var reservations = _timeSlotReservationGenerator.Generate(userId, timeSlots);
             if (reservations is null) return null;
 
             _timeSlotReservationRepository.CreateMany(reservations);

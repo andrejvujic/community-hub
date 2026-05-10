@@ -1,25 +1,22 @@
-﻿using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.Services;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
-    public class AdService : IAdService
+    public class AdService
     {
         private readonly IAdRepository _adRepository;
-        private readonly IAdTimeSlotService _adTimeSlotService;
-        private readonly IAdTimeSlotGenerator _adTimeSlotGenerator;
+        private readonly AdTimeSlotService _adTimeSlotService;
+        private readonly AdTimeSlotGenerator _adTimeSlotGenerator;
 
         public AdService(
             IAdRepository adRepository,
-            IAdTimeSlotService adTimeSlotService,
-            IAdTimeSlotGenerator adTimeSlotGenerator
+            IAdTimeSlotRepository adTimeSlotRepository
         ) {
             _adRepository = adRepository;
-            _adTimeSlotService = adTimeSlotService;
-            _adTimeSlotGenerator = adTimeSlotGenerator;
+            _adTimeSlotService = new(adTimeSlotRepository);
+            _adTimeSlotGenerator = new();
         }
 
         public Ad Publish(Ad ad)

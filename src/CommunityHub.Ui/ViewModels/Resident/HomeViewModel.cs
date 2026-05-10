@@ -1,19 +1,30 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
-using CommunityHub.Application.Modules.Shared.API.Public.Notifications;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Shared.Core.Services.Notifications;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident
 {
     public class HomeViewModel : INotifyPropertyChanged
     {
-        private readonly INotificationService _notificationService = Injector.CreateInstance<INotificationService>();
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
+        private readonly NotificationService _notificationService;
+        private readonly AdService _adService;
 
         public long UserId { get; }
 
         public HomeViewModel(long userId) {
+            _notificationService = new(
+                Injector.CreateInstance<INotificationRepository>()
+            );
+
+            _adService = new(
+                Injector.CreateInstance<IAdRepository>(),
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
             UserId = userId;
         }
 

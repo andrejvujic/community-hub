@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
@@ -16,7 +16,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
 
     public class AdEventNotificationDetailsViewModel
     {
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
+        private readonly AdService _adService;
 
         public long UserId { get; }
 
@@ -36,6 +36,11 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
 
         public AdEventNotificationDetailsViewModel(long userId, Notification notification)
         {
+            _adService = new(
+                Injector.CreateInstance<IAdRepository>(),
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
             UserId = userId;
             Notification = notification;
             Ad = LoadAd();

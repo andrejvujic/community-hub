@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
@@ -10,13 +11,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
     public partial class MyAdInfoPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
     {
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
+        private readonly AdService _adService;
 
-        // TODO: Use DTO
         public Ad Ad { get; }
 
         public MyAdInfoPage(Ad ad)
         {
+            _adService = new(
+                Injector.CreateInstance<IAdRepository>(),
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
             InitializeComponent();
             DataContext = this;
 

@@ -1,27 +1,26 @@
-﻿using CommunityHub.Application.Modules.Buildings.API.Public.Ads.TimeSlots;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.TimeSlots;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
-    public class AdTimeSlotService : IAdTimeSlotService
+    public class AdTimeSlotService
     {
-        private readonly IAdTimeSlotRepository _adTimeSlotRepository;
+        private readonly IAdTimeSlotRepository _timeSlotRepository;
 
-        public AdTimeSlotService(IAdTimeSlotRepository adTimeSlotRepository)
+        public AdTimeSlotService(IAdTimeSlotRepository timeSlotRepository)
         {
-            _adTimeSlotRepository = adTimeSlotRepository;
+            _timeSlotRepository = timeSlotRepository;
         }
 
         public void Create(AdTimeSlot timeSlot) =>
-            _adTimeSlotRepository.Create(timeSlot);
+            _timeSlotRepository.Create(timeSlot);
 
         public void CreateMany(List<AdTimeSlot> timeSlots) =>
-            _adTimeSlotRepository.CreateMany(timeSlots);
+            _timeSlotRepository.CreateMany(timeSlots);
 
         public AdTimeSlot? FindMatchingTimeSlotForAuthor(long authorId, AdTimeSlot referenceTimeSlot)
         {
-            var timeSlots = _adTimeSlotRepository.GetTimeSlotsByAuthor(authorId);
+            var timeSlots = _timeSlotRepository.GetTimeSlotsByAuthor(authorId);
             return timeSlots.FirstOrDefault(
                 timeSlot => timeSlot.Matches(referenceTimeSlot)
             );
@@ -29,8 +28,8 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 
         public List<AdTimeSlot> GetReservableTimeSlotsForUser(long adId, long userId)
         {
-            var adTimeSlots = _adTimeSlotRepository.GetTimeSlotsByAd(adId);
-            var userTimeSlots = _adTimeSlotRepository.GetTimeSlotsByAuthor(userId);
+            var adTimeSlots = _timeSlotRepository.GetTimeSlotsByAd(adId);
+            var userTimeSlots = _timeSlotRepository.GetTimeSlotsByAuthor(userId);
 
             return adTimeSlots.Where(
                 adTimeSlot => userTimeSlots.Any(
@@ -41,7 +40,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 
         public List<AdTimeSlot> GetReservedTimeSlotsForAd(long adId)
         {
-            var timeSlots = _adTimeSlotRepository.GetTimeSlotsByAd(adId);
+            var timeSlots = _timeSlotRepository.GetTimeSlotsByAd(adId);
             return timeSlots.Where(timeSlot => timeSlot.IsReserved).ToList();
         }
     }

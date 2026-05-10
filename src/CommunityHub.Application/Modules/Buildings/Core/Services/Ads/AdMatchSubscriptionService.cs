@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
+﻿using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications;
 using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Details;
@@ -7,20 +6,22 @@ using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.Reposito
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
-    public class AdMatchSubscriptionService: IAdMatchSubscriptionService
+    public class AdMatchSubscriptionService
     {
         private readonly IAdMatchSubscriptionRepository _adMatchSubscriptionRepository;
-        private readonly IAdService _adService;
         private readonly INotificationRepository _notificationRepository;
+        private readonly AdService _adService;
 
         public AdMatchSubscriptionService(
+            IAdRepository adRepository,
             IAdMatchSubscriptionRepository adMatchSubscriptionRepository,
-            IAdService adService,
-            INotificationRepository notificationRepository)
+            IAdTimeSlotRepository adTimeSlotRepository,
+            INotificationRepository notificationRepository
+        )
         {
             _adMatchSubscriptionRepository = adMatchSubscriptionRepository;
-            _adService = adService;
             _notificationRepository = notificationRepository;
+            _adService = new(adRepository, adTimeSlotRepository);
         }
 
         public void Create(AdMatchSubscription subscription)

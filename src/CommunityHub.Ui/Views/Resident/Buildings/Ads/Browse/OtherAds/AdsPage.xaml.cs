@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Buildings.Database.Repositories.Ads;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Create;
@@ -17,13 +17,18 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
         private readonly long _userId;
         private readonly long _buildingId;
 
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>(); 
+        private readonly AdService _adService; 
 
         public ObservableCollection<Ad> Ads { get; } = new();
         public bool HasAds => Ads.Count > 0;
 
         public AdsPage(long userId, long buildingId)
         {
+            _adService = new(
+                Injector.CreateInstance<IAdRepository>(),
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
             InitializeComponent();
             DataContext = this;
 

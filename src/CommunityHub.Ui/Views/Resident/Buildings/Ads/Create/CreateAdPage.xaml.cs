@@ -1,7 +1,10 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Modules.Buildings.API.Public.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads;
-using CommunityHub.Application.Modules.Shared.API.Public.Users;
+using CommunityHub.Application.Modules.Buildings.Core.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Shared.Core.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Modules.Shared.Core.Services.Users;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
@@ -24,12 +27,28 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
 
-        private readonly IUserService _userService = Injector.CreateInstance<IUserService>();
-        private readonly IAdService _adService = Injector.CreateInstance<IAdService>();
-        private readonly IAdMatchSubscriptionService _adMatchSubscriptionService = Injector.CreateInstance<IAdMatchSubscriptionService>();
+        private readonly UserService _userService;
+        private readonly AdService _adService;
+        private readonly AdMatchSubscriptionService _adMatchSubscriptionService;
         
         public CreateAdPage(long userId, long buildingId)
         {
+            _adService = new(
+                Injector.CreateInstance<IAdRepository>(),
+                Injector.CreateInstance<IAdTimeSlotRepository>()
+            );
+
+            _adMatchSubscriptionService = new(
+                Injector.CreateInstance<IAdRepository>(),
+                Injector.CreateInstance<IAdMatchSubscriptionRepository>(),
+                Injector.CreateInstance<IAdTimeSlotRepository>(),
+                Injector.CreateInstance<INotificationRepository>()
+            );
+
+            _userService = new(
+                Injector.CreateInstance<IUserRepository>()
+            );
+
             InitializeComponent();
             DataContext = this;
 
