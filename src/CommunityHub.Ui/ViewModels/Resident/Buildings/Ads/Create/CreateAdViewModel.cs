@@ -8,6 +8,22 @@ using System.Globalization;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
 {
+    public class SubmissionResult
+    {
+        public PublishmentValidationResult ValidationResult { get; }
+
+        private readonly Ad? _ad;
+        public Ad PublishedAd => _ad ?? throw new InvalidOperationException("Submission wasn't successful.");
+
+        public SubmissionResult(PublishmentValidationResult validationResult, Ad? ad = null)
+        {
+            ValidationResult = validationResult;
+            _ad = ad;
+        }
+
+        public bool IsSuccessful => ValidationResult is PublishmentValidationResult.Valid && _ad is not null;
+    }
+
     public class CreateAdViewModel: INotifyPropertyChanged
     {
         private readonly CultureInfo _culture = new("sr-Latn-RS");
@@ -37,7 +53,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
             BuildingId = buildingId;
         }
 
-        public (PublishmentValidationResult, Ad?) Submit()
+        public SubmissionResult Submit()
         {
             if (!IsFormValid)
                 throw new InvalidOperationException("Invalid form can't be submitted.");
@@ -59,10 +75,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
             {
                 var publishedAd = _adService.Publish(ad);
                 _adMatchSubscriptionService.NotifyAuthorsOfSubscribedMatchingAds(publishedAd);
-                return (PublishmentValidationResult.Valid, publishedAd);
+                return new(validationResult, publishedAd);
             }
 
-            return (validationResult, null);
+            return new(validationResult);
         }
 
         private AdType? _selectedType;

@@ -8,7 +8,6 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 {
-
     public partial class CreateAdPage : MainNavigatorConsumerPage, IAlertConsumer
     {
         private readonly CreateAdViewModel _viewModel;
@@ -22,15 +21,15 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 
         private void PublishAdButton_Click(object sender, RoutedEventArgs e)
         {
-            var (validationResult, publishedAd) = _viewModel.Submit();
+            var result = _viewModel.Submit();
 
-            if (validationResult is PublishmentValidationResult.Valid)
+            if (result.IsSuccessful)
             {
-                ShowSuccessAlert(publishedAd!);   
+                ShowSuccessAlert(result.PublishedAd);
                 return;
             }
 
-            ShowPublishmentValidationResult(validationResult);
+            ShowPublishmentValidationResult(result.ValidationResult);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
