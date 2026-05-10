@@ -39,6 +39,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
 
         public (PublishmentValidationResult, Ad?) Submit()
         {
+            if (!IsFormValid)
+                throw new InvalidOperationException("Invalid form can't be submitted.");
+
             var ad = new Ad(
                 authorId: UserId,
                 buildingId: BuildingId,
