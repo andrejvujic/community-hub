@@ -21,7 +21,7 @@ namespace CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests
 
         public DateTime? AssignedDate { get; }
 
-        public RentalRequestStatus Status { get; }
+        public RentalRequestStatus Status { get; private set; }
 
         public CommonRoomRentalRequest(
             long residentId,
@@ -58,6 +58,8 @@ namespace CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests
             RequestedEndDate = ProposedEndDate ?? RequestedEndDate;
             ProposedStartDate = null;
             ProposedEndDate = null;
+
+            Status = RentalRequestStatus.Waiting;
         }
 
         public CommonRoomRentalRequest CopyWith(

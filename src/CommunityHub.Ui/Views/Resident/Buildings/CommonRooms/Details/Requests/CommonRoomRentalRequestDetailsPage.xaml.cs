@@ -1,31 +1,26 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
+﻿using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.ComponentModel;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
 using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class CommonRoomRentalRequestDetailsPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
+    public partial class CommonRoomRentalRequestDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
     {
-        public CommonRoomRentalRequest Request { get; set; }
-
-        private readonly CommonRoomRentalRequestRepository _rentalRequestRepository = new();
-
+        private readonly CommonRoomRentalRequestDetailsViewModel _viewModel;
         public CommonRoomRentalRequestDetailsPage(CommonRoomRentalRequest request)
         {
-            Request = request;
-
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new CommonRoomRentalRequestDetailsViewModel(request);
+            DataContext = _viewModel;
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
 
-        private void CancelRequest()
+        private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
         {
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
@@ -37,47 +32,17 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                     .AddOption("Otkaži")
                     .AddOption("Nastavi",
                         () => {
-                                _rentalRequestRepository.Delete(Request.Id);
-                                Pop();
-                            }
-                        )
+                            _viewModel.CancelRequest();
+                            Pop();
+                        }
+                    )
                 );
         }
-
-        private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
-            => CancelRequest();
 
         private void AcceptProposedDateRangeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!Request.HasProposedDateRange)
-            {
-                ShowErrorAlert();
-                return;
-            }
+            _viewModel.AcceptProposedRequestDateRange();
 
-            Request.AcceptProposedDateRange();
-            Request = Request.CopyWith(status: RentalRequestStatus.Waiting);
-            _rentalRequestRepository.Update(Request);
-            OnPropertyChanged(nameof(Request));
-
-            ShowSuccessAlert();
-        }
-
-        private void ShowErrorAlert()
-        {
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        title: "Greška",
-                        content: "Nije bilo moguće prihvatiti promjenu opsega datuma jer ga upravnik nije postavio.",
-                        type: AlertType.Error
-                    )
-                    .AddOption("U redu")
-                );
-        }
-
-        private void ShowSuccessAlert()
-        {
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
@@ -88,9 +53,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                     .AddOption("U redu")
                 );
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
