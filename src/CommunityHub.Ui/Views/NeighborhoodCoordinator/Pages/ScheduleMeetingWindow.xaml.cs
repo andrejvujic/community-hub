@@ -10,7 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Neighborhoods;
 
