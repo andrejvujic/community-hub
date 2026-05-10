@@ -1,72 +1,39 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Domain;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
 using System.Windows.Controls;
-
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
-    public partial class SelectCountryPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class SelectCountryPage : MainNavigatorConsumerPage
     {
-        private readonly CountryRepository _repository;
-        private readonly Action<Country?> _onCountrySelected;
-        public Country? SelectedCountry { get; private set; }
-        public ObservableCollection<Country> Countries { get; } = new ObservableCollection<Country>();
+        private readonly SelectCountryViewModel _viewModel;
 
-        public string SearchText { get; set; } = string.Empty;
-        private CountrySearchParameters GetSearchParameters() => new CountrySearchParameters(name: SearchText);
 
-        public SelectCountryPage(Action<Country?> onCountrySelected, Country? selectedCountry = null)
+        public SelectCountryPage(Action<Country?> setCountry, Country? selectedCountry = null)
         {
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new SelectCountryViewModel(
+                setCountry: setCountry,
+                selectedCountry: selectedCountry
+            );
+            DataContext = _viewModel;
 
-            _repository = new CountryRepository();
-            _onCountrySelected = onCountrySelected;
-            SelectedCountry = selectedCountry;
-
-            UpdateSearchResults();
+            _viewModel.UpdateSearchResults();
         }
 
-        private void UpdateSearchResults()
-        {
-            MainContent.Visibility = Visibility.Hidden;
-            EmptyContent.Visibility = Visibility.Hidden;
+        private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
-            LoadSearchResults();
-
-            if (Countries.Count > 0)
-            {
-                MainContent.Visibility = Visibility.Visible;
-                return;
-            }
-
-            EmptyContent.Visibility = Visibility.Visible;
-        }
-
-        private void LoadSearchResults()
-        {
-            var countries = _repository.Search(GetSearchParameters());
-            Countries.Clear();
-            foreach (var country in countries)
-                Countries.Add(country);
-        }
-
-        private void BackButton_Click(object sender, System.Windows.Input.MouseButtonEventArgs e) => Pop();
-
-        private void SearchButton_Click(object sender, System.Windows.Input.MouseButtonEventArgs e) => UpdateSearchResults();
+        private void SearchButton_Click(object sender, MouseButtonEventArgs e) => _viewModel.UpdateSearchResults();
 
         private void CountrySearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SearchText))
-                UpdateSearchResults();
+            if (!_viewModel.HasSetSearchText)
+                _viewModel.UpdateSearchResults();
         }
 
-        private void CountryItem_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void CountryItem_Click(object sender, MouseButtonEventArgs e)
         {
             var element = sender as Grid;
             if (element == null) return;
@@ -74,21 +41,14 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var country = element.DataContext as Country;
             if (country == null) return;
 
-            if (country == SelectedCountry)
+            if (_viewModel.IsCountrySelected(country))
             {
-                // If the selected city is clicked again, it should be deselcted.
-                SelectedCountry = null;
-                OnPropertyChanged(nameof(SelectedCountry));
-                _onCountrySelected.Invoke(null);
+                _viewModel.ResetSelectedCountry();
                 return;
             }
 
-            _onCountrySelected.Invoke(country);
+            _viewModel.UpdateSelectedCountry(country);
             Pop();
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
