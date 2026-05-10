@@ -36,7 +36,18 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             SelectedCountry = selectedCountry;
         }
 
-        public string SearchText { get; set; } = string.Empty;
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText == value) return;
+                _searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+                OnPropertyChanged(nameof(HasSetSearchText));
+            }
+        }
         public bool HasSetSearchText => !string.IsNullOrEmpty(SearchText);
 
         private CountrySearchParameters GetSearchParameters() => new CountrySearchParameters(name: SearchText);
@@ -61,7 +72,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         }
 
         public void UpdateSelectedCountry(Country country)
-            => _setCountry.Invoke(country);
+        {
+            SelectedCountry = country;
+            _setCountry.Invoke(SelectedCountry);
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

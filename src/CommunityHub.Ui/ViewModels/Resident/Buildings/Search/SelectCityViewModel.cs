@@ -40,7 +40,18 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             SelectedCity = selectedCity;
         }
 
-        public string SearchText { get; set; } = string.Empty;
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText == value) return;
+                _searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+                OnPropertyChanged(nameof(HasSetSearchText));
+            }
+        }
         public bool HasSetSearchText => !string.IsNullOrEmpty(SearchText);
 
         private CitySearchParameters GetSearchParameters() => new CitySearchParameters(
@@ -67,8 +78,11 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             _setCity.Invoke(null);
         }
 
-        public void UpdateSelectedCity(City City)
-            => _setCity.Invoke(City);
+        public void UpdateSelectedCity(City city)
+        {
+            SelectedCity = city;
+            _setCity.Invoke(SelectedCity);
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

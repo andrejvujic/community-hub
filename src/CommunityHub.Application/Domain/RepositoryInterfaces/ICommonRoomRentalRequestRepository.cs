@@ -13,10 +13,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces
 
         public List<DateTime> GetReservedDates(long commonRoomId, long buildingId);
 
-        // Koristiti Update(CommonRoomRentalRequest request) - definisano iznad.
         public int UpdateStatusAndAssignedDate(long requestId, RentalRequestStatus newStatus, DateTime? assignedDate);
         public int UpdateStatusAndRange(long requestId, RentalRequestStatus newStatus, DateTime proposedStartDate, DateTime proposedEndDate);
-
-        public bool HasPendingRequest(long userId, long commonRoomId);
     }
 }

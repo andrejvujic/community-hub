@@ -1,122 +1,24 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Buildings.CommonRooms;
-using CommunityHub.Application.Domain.Buildings.CommonRooms.RentalRequests;
-using CommunityHub.Application.Modules.Shared.Database.Repositories.Users;
+﻿using CommunityHub.Application.Domain.Buildings.CommonRooms;
+using CommunityHub.Application.Modules.Buildings.Core.Services.CommonRooms;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.ComponentModel;
-using System.Globalization;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
 using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public enum RentalRequestValidationResult
+    public partial class RequestCommonRoomRentalPage : MainNavigatorConsumerPage, IAlertConsumer
     {
-        Valid,
-        PendingRequestExists
-    }
-
-    public partial class RequestCommonRoomRentalPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
-    {
-        private readonly long _userId;
-        private readonly CultureInfo _culture = new("sr-Latn-RS");
-        private readonly DateTime _today = DateTime.Today;
-
-        private readonly UserRepository _userRepository = new();
-        private  readonly CommonRoomRentalRequestRepository _rentalRequestRepository = new();
-
-        public CommonRoom CommonRoom { get; }
+        private readonly RequestCommonRoomRentalViewModel _viewModel;
 
         public RequestCommonRoomRentalPage(long userId, CommonRoom commonRoom)
         {
-            _userId = userId;
-            CommonRoom = commonRoom;
-
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new RequestCommonRoomRentalViewModel(userId, commonRoom);
+            DataContext = _viewModel;
         }
 
-        // The start date can't be in the past.
-        public DateTime MinStartDate => _today;
-
-        // The start date can't be after the end date.
-        public DateTime? MaxStartDate => SelectedEndDate;
-
-        // The end date can't be before the start date
-        // (or in the past if the start date hasn't been
-        // selected yet).
-        public DateTime MinEndDate => SelectedStartDate ?? _today;
-
-
-        private DateTime? _selectedStartDate;
-        public DateTime? SelectedStartDate
-        {
-            get => _selectedStartDate;
-            set
-            {
-                if (_selectedStartDate == value) return;
-                _selectedStartDate = value is null ? null : value.Value.Date;
-
-                OnPropertyChanged(nameof(SelectedStartDate));
-                OnPropertyChanged(nameof(SelectedStartDateText));
-                OnPropertyChanged(nameof(SelectedDateRangeText));
-
-                OnPropertyChanged(nameof(MinEndDate));
-
-                OnPropertyChanged(nameof(IsSelectedDateRangeValid));
-            }
-        }
-        public string SelectedStartDateText
-            => SelectedStartDate is null ?
-                "Izaberite..." :
-                SelectedStartDate.Value.ToString("d. MMMM", _culture);
-
-
-        private DateTime? _selectedEndDate;
-        public DateTime? SelectedEndDate
-        {
-            get => _selectedEndDate;
-            set
-            {
-                if (_selectedEndDate == value) return;
-                _selectedEndDate = value is null ? null : value.Value.Date;
-
-                OnPropertyChanged(nameof(SelectedEndDate));
-                OnPropertyChanged(nameof(SelectedEndDateText));
-                OnPropertyChanged(nameof(SelectedDateRangeText));
-
-                OnPropertyChanged(nameof(MaxStartDate));
-
-                OnPropertyChanged(nameof(IsSelectedDateRangeValid));
-            }
-        }
-
-        public string SelectedEndDateText
-            => SelectedEndDate is null ?
-                "Izaberite..." :
-                SelectedEndDate.Value.ToString("d. MMMM", _culture);
-
-        public string SelectedDateRangeText
-        {
-            get
-            {
-                if (SelectedStartDate is null || SelectedEndDate is null) return "Izaberite...";
-                return $"{SelectedStartDateText} — {SelectedEndDateText}";
-            }
-        }
-
-        public bool IsSelectedDateRangeValid
-        {
-            get
-            {
-                if (SelectedStartDate is null || SelectedEndDate is null) return false;
-                if (SelectedStartDate.Value < _today) return false;
-                if (SelectedEndDate.Value < SelectedStartDate.Value) return false;
-
-                return true;
-            }
-        }
         private void ShowSuccessAlert()
         {
             if (this is IAlertConsumer consumer)
@@ -130,7 +32,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                 );
         }
 
-        private void ShowRentalRequestValidationResult(RentalRequestValidationResult result)
+        private void ShowValidationResult(RentalRequestValidationResult result)
         {
             if (this is not IAlertConsumer consumer)
                 return;
@@ -147,48 +49,21 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
                               .AddOption("U redu")
                           );
                     break;
-
             }
-        }
-
-        RentalRequestValidationResult ValidateRentalRequest()
-        {
-            if (_rentalRequestRepository.HasPendingRequest(_userId, CommonRoom.Id))
-                return RentalRequestValidationResult.PendingRequestExists;
-
-            return RentalRequestValidationResult.Valid;
-        }
-
-        CommonRoomRentalRequest? CreateRentalRequest()
-        {
-            var resident = _userRepository.Get(_userId);
-
-            if (resident is null) return null;
-
-           return new CommonRoomRentalRequest(
-                resident: resident,
-                commonRoom: CommonRoom,
-                requestedStartDate: SelectedStartDate!.Value,
-                requestedEndDate: SelectedEndDate!.Value
-            );
         }
 
         private void CreateRentalRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            var request = CreateRentalRequest();
+            var result = _viewModel.ValidateRentalRequest();
 
-            if (request is null) return;
-
-            var validationResult = ValidateRentalRequest();
-
-            if (validationResult == RentalRequestValidationResult.Valid)
+            if (result is RentalRequestValidationResult.Valid)
             {
-                _rentalRequestRepository.Create(request);
+                _viewModel.CreateRentalRequest();
                 ShowSuccessAlert();
                 return;
             }
 
-            ShowRentalRequestValidationResult(validationResult);
+            ShowValidationResult(result);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
@@ -212,9 +87,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         private void ToggleEndDatePickerButton_Click(object sender, EventArgs e)
             => ToggleOverlayVisibility(EndDatePicker);
 
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
