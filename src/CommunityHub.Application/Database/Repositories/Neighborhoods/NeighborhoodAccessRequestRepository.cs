@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Helpers.Sorting;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 {
     public class NeighborhoodAccessRequestRepository
     {

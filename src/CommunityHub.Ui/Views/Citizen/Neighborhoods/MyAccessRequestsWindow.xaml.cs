@@ -1,10 +1,10 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
-using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Helpers.Sorting;
 using System.Windows.Data;
 using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Database.Repositories.Neighborhoods;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
