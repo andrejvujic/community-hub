@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.NeighborhoodBudget;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Domain.NeighborhoodBudget;
