@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods;
 
-namespace CommunityHub.Application.Domain.NeighborhoodBudget
+namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget
 {
     public class BudgetCategoryBalance
     {

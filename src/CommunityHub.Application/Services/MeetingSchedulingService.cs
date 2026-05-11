@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Database.Repositories.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.NeighborhoodMeetings;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 
 namespace CommunityHub.Application.Services
 {

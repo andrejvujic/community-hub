@@ -13,8 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
-using CommunityHub.Application.Domain.CityFacility;
 using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.CityFacility;
 using CommunityHub.Application.Services;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages

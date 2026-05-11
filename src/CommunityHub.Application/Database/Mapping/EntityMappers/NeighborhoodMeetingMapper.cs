@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.Neighborhoods;
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

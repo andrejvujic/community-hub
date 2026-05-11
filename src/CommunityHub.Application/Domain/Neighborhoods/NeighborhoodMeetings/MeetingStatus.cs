@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CommunityHub.Application.Domain.NeighborhoodMeetings
+namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings
 {
     public enum MeetingStatus
     {

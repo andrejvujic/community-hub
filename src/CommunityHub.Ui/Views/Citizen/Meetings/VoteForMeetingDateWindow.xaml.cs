@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.NeighborhoodMeetings;
+﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using System.Windows;
 
 namespace CommunityHub.Ui.Views.Citizen.Meetings
