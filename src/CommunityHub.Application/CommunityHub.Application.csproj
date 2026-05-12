@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Domain\TrustRecords\RepositoryInterfaces\" />
+    <Folder Include="Services\Dtos\Neighborhoods\" />
   </ItemGroup>
 
 </Project>
