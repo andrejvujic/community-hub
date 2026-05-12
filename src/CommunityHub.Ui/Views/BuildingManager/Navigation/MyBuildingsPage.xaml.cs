@@ -1,49 +1,36 @@
-﻿using CommunityHub.Application.Database.Repositories.Buildings;
-using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Domain.Users;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Ui.ViewModels.BuildingManager.Navigation;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class MyBuildingsPage : Page
     {
-        private readonly User _user;
-        private readonly BuildingRepository _buildingRepository = new();
-        public ObservableCollection<Building> Buildings { get; } = new();
+        private readonly MyBuildingsPageViewModel _viewModel;
+        private readonly BuildingMapper _buildingMapper = new();
         public MyBuildingsPage(User user)
         {
             InitializeComponent();
-            DataContext = this;
-            _user = user;
+            _viewModel = new MyBuildingsPageViewModel(user);
+            DataContext = _viewModel;
         }
-        private void MyBuildingsPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            Buildings.Clear();
-
-            var buildings = _buildingRepository.GetByManagerId(_user.Id);
-            
-            foreach (var building in buildings)
-                Buildings.Add(building);
-        }
+        private void MyBuildingsPage_Loaded(object sender, RoutedEventArgs e) => _viewModel.LoadBuildings();
         private void Details_Click(object sender, MouseButtonEventArgs e)
         {
             var tb = sender as TextBlock;
             if (tb == null) return;
 
-            var building = tb.DataContext as Building;
-            if (building == null) return;
+            var buildingDto = tb.DataContext as BuildingDto;
+            if (buildingDto == null) return;
 
             var window = Window.GetWindow(this) as HomeWindow;
 
             if (window != null)
-                window.HomeFrame.Navigate(new BuildingDetailsPage(_user, building));
+                window.HomeFrame.Navigate(new BuildingDetailsPage(_viewModel.User, _buildingMapper.MapToDomain(buildingDto)));
         }
     }
 }
