@@ -1,4 +1,5 @@
-﻿using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Domain.TrustRecords;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces
 {
