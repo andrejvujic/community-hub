@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Addresses;
 
 namespace CommunityHub.Application.Services.Dtos.Addresses
 {
@@ -9,6 +8,21 @@ namespace CommunityHub.Application.Services.Dtos.Addresses
         public int StartNumber { get; set; }
         public int EndNumber { get; set; }
         public ParityType Side { get; set; }
-        public StreetDto Street { get; set; } = new StreetDto();
+        public StreetDto Street { get; set; }
+
+        public StreetSectionDto(
+            long id,
+            int startNumber,
+            int endNumber,
+            ParityType side,
+            StreetDto street
+        )
+        {
+            Id = id;
+            StartNumber = startNumber;
+            EndNumber = endNumber;
+            Side = side;
+            Street = street;
+        }
     }
 }

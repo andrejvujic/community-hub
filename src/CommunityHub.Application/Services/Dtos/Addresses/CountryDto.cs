@@ -3,6 +3,12 @@
     public class CountryDto
     {
         public long Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
+
+        public CountryDto(long id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }
