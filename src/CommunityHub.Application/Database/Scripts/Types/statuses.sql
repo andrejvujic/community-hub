@@ -1,1 +1,0 @@
-﻿CREATE TYPE statuses AS ENUM ('waiting', 'accepted', 'rejected');
