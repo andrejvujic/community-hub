@@ -18,7 +18,7 @@ using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Services;
 using CommunityHub.Ui.Helpers.Converters;
-using CommunityHub.Ui.ViewModels;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 {

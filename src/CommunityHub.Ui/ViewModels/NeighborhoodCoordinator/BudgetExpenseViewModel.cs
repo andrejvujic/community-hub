@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 
-namespace CommunityHub.Ui.ViewModels
+namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
 {
     public class BudgetExpenseViewModel
     {

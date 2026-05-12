@@ -1,1 +1,0 @@
-CREATE TYPE meeting_statuses AS ENUM ('in_preparation', 'scheduled', 'cancelled');
