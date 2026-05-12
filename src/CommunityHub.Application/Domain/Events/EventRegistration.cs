@@ -1,7 +1,7 @@
 using CommunityHub.Application.Domain.Users;
 using System;
 
-namespace CommunityHub.Application.Domain;
+namespace CommunityHub.Application.Domain.Events;
 
 public class EventRegistration
 {

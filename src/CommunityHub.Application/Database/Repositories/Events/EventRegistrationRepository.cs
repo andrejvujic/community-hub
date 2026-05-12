@@ -1,10 +1,11 @@
 using CommunityHub.Application.Database.Mapping;
 using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Events
 {
-    public class EventRegistrationRepository
+    public class EventRegistrationRepository : IEventRegistrationRepository
     {
         private readonly EventRegistrationMapper _mapper = new EventRegistrationMapper();
 

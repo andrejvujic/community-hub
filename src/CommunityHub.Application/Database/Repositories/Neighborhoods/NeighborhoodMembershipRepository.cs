@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
+using CommunityHub.Application.Domain.TrustRecords;
 using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods

@@ -17,4 +17,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain\TrustRecords\RepositoryInterfaces\" />
+  </ItemGroup>
+
 </Project>

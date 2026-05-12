@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Collections.Generic;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.TrustRecords;
 
 namespace CommunityHub.Ui.Helpers.Converters
 {

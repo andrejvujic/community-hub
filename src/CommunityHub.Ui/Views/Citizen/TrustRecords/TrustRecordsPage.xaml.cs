@@ -2,6 +2,7 @@ using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain;
 using System.Windows.Controls;
 using System.Windows;
+using CommunityHub.Application.Database.Repositories.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.TrustRecords
 {
