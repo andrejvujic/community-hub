@@ -8,13 +8,14 @@ namespace CommunityHub.Application.MappersDto.Addresses
         public StreetDto MapToDto(Street street)
         {
             if (street == null) throw new ArgumentNullException(nameof(street));
+
             return new StreetDto(street.Id, street.Name);
         }
-
-        public Street MapToDomain(StreetDto streetDto)
+        public Street MapToDomain(StreetDto dto)
         {
-            if (streetDto == null) throw new ArgumentNullException(nameof(streetDto));
-            return new Street(streetDto.Id, streetDto.Name);
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            return new Street(dto.Id, dto.Name);
         }
     }
 } 

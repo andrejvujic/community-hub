@@ -3,14 +3,10 @@
     public class AdTimeSlotReservationDto
     {
         public long Id { get; set; }
-
         public long OfferTimeSlotId { get; set; }
         public long RequestTimeSlotId { get; set; }
-
         public AdDto? OfferAd { get; set; }
         public AdDto? RequestAd { get; set; }
-
-        public AdTimeSlotReservationDto() { }
 
         public AdTimeSlotReservationDto(
             long id,

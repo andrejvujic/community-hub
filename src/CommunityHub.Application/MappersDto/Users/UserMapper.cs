@@ -8,6 +8,7 @@ namespace CommunityHub.Application.MappersDto.Users
         public UserDto MapToDto(User user)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
+
             return new UserDto(
                 user.Id,
                 user.Username,
@@ -17,17 +18,17 @@ namespace CommunityHub.Application.MappersDto.Users
                 user.Role
             );
         }
-
-        public User MapToDomain(UserDto userDto)
+        public User MapToDomain(UserDto dto)
         {
-            if (userDto == null) throw new ArgumentNullException(nameof(userDto));
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
             return new User(
-                userDto.Id,
-                userDto.Username,
-                userDto.Password,
-                userDto.Name,
-                userDto.Surname,
-                userDto.Role
+                dto.Id,
+                dto.Username,
+                dto.Password,
+                dto.Name,
+                dto.Surname,
+                dto.Role
             );
         }
     }

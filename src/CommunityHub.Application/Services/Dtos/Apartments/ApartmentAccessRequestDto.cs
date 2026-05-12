@@ -14,8 +14,6 @@ namespace CommunityHub.Application.Services.Dtos.Apartments
         public Status Status { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public ApartmentAccessRequestDto() { }
-
         public ApartmentAccessRequestDto(
             long id,
             long applicantId,

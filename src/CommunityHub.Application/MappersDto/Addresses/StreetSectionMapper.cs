@@ -6,10 +6,10 @@ namespace CommunityHub.Application.MappersDto.Addresses
     public class StreetSectionMapper : IMapper<StreetSection, StreetSectionDto>
     {
         private readonly StreetMapper _streetMapper = new();
-
         public StreetSectionDto MapToDto(StreetSection streetSection)
         {
             if (streetSection == null) throw new ArgumentNullException(nameof(streetSection));
+
             return new StreetSectionDto(
                 streetSection.Id,
                 streetSection.StartNumber,
@@ -18,16 +18,16 @@ namespace CommunityHub.Application.MappersDto.Addresses
                 _streetMapper.MapToDto(streetSection.Street)
             );
         }
-
-        public StreetSection MapToDomain(StreetSectionDto streetSectionDto)
+        public StreetSection MapToDomain(StreetSectionDto dto)
         {
-            if (streetSectionDto == null) throw new ArgumentNullException(nameof(streetSectionDto));
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
             return new StreetSection(
-                streetSectionDto.StartNumber,
-                streetSectionDto.EndNumber,
-                streetSectionDto.Side,
-                _streetMapper.MapToDomain(streetSectionDto.Street),
-                streetSectionDto.Id
+                dto.StartNumber,
+                dto.EndNumber,
+                dto.Side,
+                _streetMapper.MapToDomain(dto.Street),
+                dto.Id
             );
         }
     }

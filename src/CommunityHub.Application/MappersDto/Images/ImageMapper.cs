@@ -8,6 +8,7 @@ namespace CommunityHub.Application.MappersDto.Images
         public ImageDto MapToDto(Image image)
         {
             if (image == null) throw new ArgumentNullException(nameof(image));
+
             return new ImageDto(
                 image.Id,
                 image.Path,
@@ -16,22 +17,20 @@ namespace CommunityHub.Application.MappersDto.Images
                 image.JobListingId
             );
         }
-
-        public Image MapToDomain(ImageDto imageDto)
+        public Image MapToDomain(ImageDto dto)
         {
-            if (imageDto == null) throw new ArgumentNullException(nameof(imageDto));
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            if (imageDto.BuildingId.HasValue)
-                return Image.ForBuilding(imageDto.Id, imageDto.Path, imageDto.BuildingId.Value);
+            if (dto.BuildingId.HasValue)
+                return Image.ForBuilding(dto.Id, dto.Path, dto.BuildingId.Value);
 
-            if (imageDto.NeighborhoodId.HasValue)
-                return Image.ForNeighborhood(imageDto.Id, imageDto.Path, imageDto.NeighborhoodId.Value);
+            if (dto.NeighborhoodId.HasValue)
+                return Image.ForNeighborhood(dto.Id, dto.Path, dto.NeighborhoodId.Value);
 
-            if (imageDto.JobListingId.HasValue)
-                return Image.ForJobListing(imageDto.Id, imageDto.Path, imageDto.JobListingId.Value);
+            if (dto.JobListingId.HasValue)
+                return Image.ForJobListing(dto.Id, dto.Path, dto.JobListingId.Value);
 
-            throw new Exception($"Couldn't read image '{imageDto.Id}' because building_id = neighborhood_id = job_listing_id = NULL");
+            throw new Exception($"Couldn't read image '{dto.Id}' because building_id = neighborhood_id = job_listing_id = NULL");
         }
     }
 }
-

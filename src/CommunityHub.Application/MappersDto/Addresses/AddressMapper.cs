@@ -3,7 +3,7 @@ using CommunityHub.Application.Services.Dtos.Addresses;
 
 namespace CommunityHub.Application.MappersDto.Addresses
 {
-    public class AddressesMapper : IMapper<Address, AddressDto>
+    public class AddressMapper : IMapper<Address, AddressDto>
     {
         private readonly StreetMapper _streetMapper = new();
         private readonly CityMapper _cityMapper = new();
@@ -21,17 +21,17 @@ namespace CommunityHub.Application.MappersDto.Addresses
                 _countryMapper.MapToDto(address.Country)
             );
         }
-
-        public Address MapToDomain(AddressDto addressDto)
+        public Address MapToDomain(AddressDto dto)
         {
-            if (addressDto == null) throw new ArgumentNullException(nameof(addressDto));
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+
             return new Address(
-                addressDto.Id,
-                _streetMapper.MapToDomain(addressDto.Street),
-                addressDto.StreetNumber,
-                addressDto.Neighborhood,
-                _cityMapper.MapToDomain(addressDto.City),
-                _countryMapper.MapToDomain(addressDto.Country)
+                dto.Id,
+                _streetMapper.MapToDomain(dto.Street),
+                dto.StreetNumber,
+                dto.Neighborhood,
+                _cityMapper.MapToDomain(dto.City),
+                _countryMapper.MapToDomain(dto.Country)
             );
         }
     }
