@@ -10,6 +10,7 @@ using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
+using CommunityHub.Application.Domain.Events;
 
 namespace CommunityHub.Application.Database;
 

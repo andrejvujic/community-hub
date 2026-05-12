@@ -1,5 +1,5 @@
 using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Events;
 using CommunityHub.Ui.Views.Citizen.Donations;
 using CommunityHub.Ui.Views.Citizen.Events;
 using CommunityHub.Ui.Views.Citizen.LocalFacilities;

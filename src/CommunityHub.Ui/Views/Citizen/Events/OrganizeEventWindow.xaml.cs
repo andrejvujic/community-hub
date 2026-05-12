@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Globalization;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {

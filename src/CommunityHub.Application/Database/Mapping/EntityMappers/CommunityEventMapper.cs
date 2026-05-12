@@ -1,4 +1,4 @@
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Users;
 using System;

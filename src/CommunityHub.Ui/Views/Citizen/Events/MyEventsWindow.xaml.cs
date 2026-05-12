@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {

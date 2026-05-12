@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Issues;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;

@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain.Users;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CommunityHub.Application.Domain;
+namespace CommunityHub.Application.Domain.Events;
 
 public class CommunityEvent
 {

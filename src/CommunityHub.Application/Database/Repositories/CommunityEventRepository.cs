@@ -1,9 +1,10 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class CommunityEventRepository
+    public class CommunityEventRepository : ICommunityEventRepository
     {
         private readonly CommunityEventMapper _eventMapper = new CommunityEventMapper();
         private readonly EventItemMapper _itemMapper = new EventItemMapper();
