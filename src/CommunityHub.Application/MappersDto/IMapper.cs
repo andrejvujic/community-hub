@@ -8,17 +8,17 @@ namespace CommunityHub.Application.MappersDto
         TDto MapToDto(TDomain domain);
         TDomain MapToDomain(TDto dto);
 
-        IEnumerable<TDto> MapToDto(IEnumerable<TDomain> domains)
+        IEnumerable<TDto> MapToDto(IEnumerable<TDomain>? domains)
         {
             if (domains == null)
-                return Enumerable.Empty<TDto>();
+                throw new ArgumentNullException(nameof(domains));
 
             return domains.Select(MapToDto).ToList();
         }
-        IEnumerable<TDomain> MapToDomain(IEnumerable<TDto> dtos)
+        IEnumerable<TDomain> MapToDomain(IEnumerable<TDto>? dtos)
         {
             if (dtos == null)
-                return Enumerable.Empty<TDomain>();
+                throw new ArgumentNullException(nameof(dtos));
 
             return dtos.Select(MapToDomain).ToList();
         }
