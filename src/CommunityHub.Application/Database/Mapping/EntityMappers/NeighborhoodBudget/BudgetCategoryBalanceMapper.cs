@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using CommunityHub.Application.Domain.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget
 {

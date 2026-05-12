@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CommunityHub.Application.Domain.NeighborhoodBudget
+namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget
 {
     public enum BudgetCategory
     {

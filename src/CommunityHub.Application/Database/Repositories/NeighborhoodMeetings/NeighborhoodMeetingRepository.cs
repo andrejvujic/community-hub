@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.NeighborhoodMeetings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories.NeighborhoodMeetings
 {

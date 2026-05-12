@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.CityFacility;
+using CommunityHub.Application.Domain.Neighborhoods.CityFacility;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {

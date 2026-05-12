@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.NeighborhoodMeetings.RepositoryInterfaces
+﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
+
+namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces
 {
     public interface IMeetingDateVoteRepository
     {

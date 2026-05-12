@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.NeighborhoodBudget;
+﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 
 namespace CommunityHub.Ui.ViewModels
 {

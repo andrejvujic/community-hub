@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods;
 
-namespace CommunityHub.Application.Domain.CityFacility
+namespace CommunityHub.Application.Domain.Neighborhoods.CityFacility
 {
     public class FacilityReservation
     {
