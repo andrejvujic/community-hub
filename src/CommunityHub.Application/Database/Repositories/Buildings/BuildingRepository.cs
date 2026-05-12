@@ -98,7 +98,9 @@ namespace CommunityHub.Application.Database.Repositories.Buildings
 
         public List<Building> GetByManagerId(long managerId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                @"SELECT
                 building.id AS building_id,
                 building.floor_count,
@@ -143,8 +145,10 @@ namespace CommunityHub.Application.Database.Repositories.Buildings
            .AddParameter("building_manager_id", managerId);
 
             Dictionary<long, Building> buildings = new();
-            query.ExecuteReader(reader => {
-                Building newBuilding = _buildingMapper.MapToEntity(reader);
+            connection.ExecuteReader(query, reader => {
+                Building? newBuilding = _buildingMapper.MapToEntity(reader);
+
+                if (newBuilding == null) return;
 
                 if (!buildings.TryGetValue(newBuilding.Id, out Building? existingBuilding))
                 {

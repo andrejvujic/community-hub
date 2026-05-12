@@ -29,13 +29,19 @@ namespace CommunityHub.Application.MappersDto.Buildings
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            return new Building(
+            var images = dto.Images?.Select(_imageMapper.MapToDomain).ToList();
+
+            var building = new Building(
                 dto.FloorCount,
                 dto.ApartmentCount,
                 _userMapper.MapToDomain(dto.Manager),
                 _addressMapper.MapToDomain(dto.Address),
                 dto.Id
             );
+
+            return images is { Count: > 0 }
+                ? building.CopyWith(images: images)
+                : building;
         }
     }
 }

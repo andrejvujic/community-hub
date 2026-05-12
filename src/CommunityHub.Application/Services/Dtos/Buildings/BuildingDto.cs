@@ -13,6 +13,8 @@ namespace CommunityHub.Application.Services.Dtos.Buildings
         public AddressDto Address { get; set; }
         public string DisplayAddress { get; set; }
         public List<ImageDto> Images { get; set; } = new();
+        public bool HasImages { get => Images.Count > 0; }
+        public ImageDto? CoverImage { get => HasImages ? Images.First() : null; }
 
         public BuildingDto(
             long id,
