@@ -8,5 +8,8 @@ namespace CommunityHub.Application.Domain.Events.RepositoryInterfaces
         public List<CommunityEvent> GetByOrganizerId(long organizerId);
         public List<CommunityEvent> GetByVolunteerCitizenId(long citizenId);
         public List<CommunityEvent> GetByNeighborhoodId(long neighborhoodId);
+        public CommunityEvent? GetById(long eventId);
+        public void UpdateStatus(long eventId, EventStatus status);
+        public int GetOrganizedEventsCount(long organizerId);
     }
 }
