@@ -7,14 +7,14 @@ namespace CommunityHub.Application.MappersDto.Addresses
     {
         public StreetDto MapToDto(Street street)
         {
-            if (street == null) return null!;
+            if (street == null) throw new ArgumentNullException(nameof(street));
             return new StreetDto(street.Id, street.Name);
         }
 
         public Street MapToDomain(StreetDto streetDto)
         {
-            if (streetDto == null) return null!;
+            if (streetDto == null) throw new ArgumentNullException(nameof(streetDto));
             return new Street(streetDto.Id, streetDto.Name);
         }
     }
-}
+} 

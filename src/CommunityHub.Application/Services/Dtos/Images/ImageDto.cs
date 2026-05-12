@@ -1,5 +1,4 @@
-﻿
-namespace CommunityHub.Application.Services.Dtos.Images
+﻿namespace CommunityHub.Application.Services.Dtos.Images
 {
     public class ImageDto
     {

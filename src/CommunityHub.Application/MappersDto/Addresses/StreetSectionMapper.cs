@@ -5,11 +5,11 @@ namespace CommunityHub.Application.MappersDto.Addresses
 {
     public class StreetSectionMapper : IMapper<StreetSection, StreetSectionDto>
     {
-        private readonly StreetMapper _streetMapper = new StreetMapper();
+        private readonly StreetMapper _streetMapper = new();
 
         public StreetSectionDto MapToDto(StreetSection streetSection)
         {
-            if (streetSection == null) return null!;
+            if (streetSection == null) throw new ArgumentNullException(nameof(streetSection));
             return new StreetSectionDto(
                 streetSection.Id,
                 streetSection.StartNumber,
@@ -21,7 +21,7 @@ namespace CommunityHub.Application.MappersDto.Addresses
 
         public StreetSection MapToDomain(StreetSectionDto streetSectionDto)
         {
-            if (streetSectionDto == null) return null!;
+            if (streetSectionDto == null) throw new ArgumentNullException(nameof(streetSectionDto));
             return new StreetSection(
                 streetSectionDto.StartNumber,
                 streetSectionDto.EndNumber,

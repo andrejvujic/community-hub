@@ -1,5 +1,4 @@
-﻿
-namespace CommunityHub.Application.Services.Dtos.Addresses
+﻿namespace CommunityHub.Application.Services.Dtos.Addresses
 {
     public class AddressDto
     {
