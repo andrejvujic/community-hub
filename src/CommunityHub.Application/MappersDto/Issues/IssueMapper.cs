@@ -5,7 +5,7 @@ using CommunityHub.Application.MappersDto.Buildings;
 
 namespace CommunityHub.Application.MappersDto.Issues
 {
-    public class IssuesMapper : IMapper<Issue, IssueDto>
+    public class IssueMapper : IMapper<Issue, IssueDto>
     {
         private readonly UserMapper _userMapper = new();
         private readonly BuildingMapper _buildingMapper = new();
