@@ -2,6 +2,7 @@ using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
 using System.Windows;
 using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Database.Repositories.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {

@@ -1,4 +1,5 @@
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Domain.TrustRecords;
 using System.Windows;
 

@@ -3,16 +3,20 @@ using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Events
 {
-    public class EventRegistrationRepository : IEventRegistrationRepository
+    public class EventItemAssignmentRepository : IEventItemAssignmentRepository
     {
-        private readonly EventRegistrationMapper _mapper = new EventRegistrationMapper();
+        private readonly EventItemAssignmentMapper _mapper = new EventItemAssignmentMapper();
 
-        public List<EventRegistration> GetByEventId(long eventId)
+        public List<EventItemAssignment> GetByEventId(long eventId)
         {
             var query = PostgresQuery.Create(
                 @"SELECT
+                a.id AS event_item_assignment_id,
+                a.registration_id AS event_item_assignment_registration_id,
+                a.event_item_id AS event_item_assignment_event_item_id,
+
                 r.id AS registration_id,
                 r.attended AS registration_attended,
                 r.event_id AS registration_event_id,
@@ -50,9 +54,14 @@ namespace CommunityHub.Application.Database.Repositories
                 nb_coord.password AS registration_citizen_coordinator_password,
                 nb_coord.name AS registration_citizen_coordinator_name,
                 nb_coord.surname AS registration_citizen_coordinator_surname,
-                nb_coord.user_role AS registration_citizen_coordinator_user_role
+                nb_coord.user_role AS registration_citizen_coordinator_user_role,
 
-                FROM event_registrations r
+                ei.id AS event_item_id,
+                ei.name AS event_item_name,
+                ei.event_id AS event_item_event_id
+
+                FROM event_item_assignments a
+                INNER JOIN event_registrations r ON a.registration_id = r.id
                 INNER JOIN citizens c ON r.citizen_id = c.id
                 INNER JOIN addresses addr ON c.address_id = addr.id
                 INNER JOIN streets st ON addr.street_id = st.id
@@ -61,49 +70,30 @@ namespace CommunityHub.Application.Database.Repositories
                 LEFT JOIN neighborhood_memberships mem ON c.membership_id = mem.id
                 LEFT JOIN neighborhoods mem_nb ON mem.neighborhood_id = mem_nb.id
                 LEFT JOIN users nb_coord ON mem_nb.coordinator_id = nb_coord.id
-                WHERE r.event_id = @event_id"
+                INNER JOIN event_items ei ON a.event_item_id = ei.id
+                WHERE ei.event_id = @event_id"
             ).AddParameter("event_id", eventId);
 
-            var items = new List<EventRegistration>();
+            var list = new List<EventItemAssignment>();
             query.ExecuteReader(reader =>
             {
-                var reg = _mapper.MapToEntity(reader);
-                if (reg is not null) items.Add(reg);
+                var assign = _mapper.MapToEntity(reader);
+                if (assign != null) list.Add(assign);
             });
 
-            return items;
+            return list;
         }
 
-        public EventRegistration Create(EventRegistration registration)
+        public EventItemAssignment Create(EventItemAssignment assignment)
         {
             var query = PostgresQuery.Create(
-                @"INSERT INTO event_registrations (attended, event_id, citizen_id)
-                  VALUES (@attended, @event_id, @citizen_id)
+                @"INSERT INTO event_item_assignments (registration_id, event_item_id)
+                  VALUES (@registration_id, @event_item_id)
                   RETURNING id"
-            ).ExtendParameters(_mapper.MapToQueryParameters(registration));
+            ).ExtendParameters(_mapper.MapToQueryParameters(assignment));
 
             long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
-            return registration.CopyWith(id: id);
-        }
-
-        public void UpdateAttendance(long registrationId, bool? attended)
-        {
-            var query = PostgresQuery.Create(
-                "UPDATE event_registrations SET attended = @attended WHERE id = @id"
-            )
-            .AddParameter("id", registrationId)
-            .AddParameter("attended", attended);
-
-            query.GetRowsAffectedCount();
-        }
-
-        public int GetConfirmedVolunteerCount(long citizenId)
-        {
-            var query = PostgresQuery.Create(
-                "SELECT COUNT(*) FROM event_registrations WHERE citizen_id = @citizenId AND attended = TRUE"
-            ).AddParameter("citizenId", citizenId);
-
-            return query.ExecuteScalar<int>(Convert.ToInt32);
+            return assignment.CopyWith(id: id);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Globalization;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Database.Repositories.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {
