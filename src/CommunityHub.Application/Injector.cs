@@ -29,6 +29,8 @@ using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application
 {
@@ -67,7 +69,10 @@ namespace CommunityHub.Application
             { typeof(INeighborhoodMeetingRepository), new NeighborhoodMeetingRepository() },
             { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() },
             { typeof(IMapper<Neighborhood, NeighborhoodDto>), new NeighborhoodMapper() },
-            { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() }
+            { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() },
+            { typeof(IMapper<Citizen, CitizenDto>), new CitizenMapper() },
+            { typeof(IMapper<NeighborhoodMembership, NeighborhoodMembershipDto>), new NeighborhoodMembershipMapper() }
+
         };
 
         public static T CreateInstance<T>()
