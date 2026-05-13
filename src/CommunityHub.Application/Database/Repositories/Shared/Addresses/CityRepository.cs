@@ -11,7 +11,9 @@ public class CityRepository : ICityRepository
 
     public List<City> GetByCountryId(long id)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT 
             city.id as city_id, city.name as city_name FROM cities city
             INNER JOIN countries country
@@ -20,7 +22,7 @@ public class CityRepository : ICityRepository
         ).AddParameter("id", id);
 
         List<City> cities = new List<City>();
-        query.ExecuteReader(reader => cities.Add(_cityMapper.MapToEntity(reader)));
+        connection.ExecuteReader(query, reader => cities.Add(_cityMapper.MapToEntity(reader)));
         return cities;
     }
 

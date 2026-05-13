@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Apartments;
 
 namespace CommunityHub.Application.Services.Apartments
 {
@@ -8,6 +9,9 @@ namespace CommunityHub.Application.Services.Apartments
             = Injector.CreateInstance<IApartmentRepository>();  
 
         public long? FindIdByBuildingAndNumber(long buildingId, int apartmentNumber)
-            => _apartmentRepository.FindIdByBuildingAndNumber(buildingId, apartmentNumber);       
+            => _apartmentRepository.FindIdByBuildingAndNumber(buildingId, apartmentNumber);  
+        
+        public Apartment Create(Apartment apartment)
+            => _apartmentRepository.Create(apartment);
     }
 }

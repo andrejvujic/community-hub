@@ -11,9 +11,13 @@ public class CountryRepository : ICountryRepository
 
     public List<Country> GetAll()
     {
-        var query = PostgresQuery.Create("SELECT id AS country_id, name AS country_name FROM countries");
-        List<Country> countries = new List<Country>();
-        query.ExecuteReader(reader => countries.Add(_countryMapper.MapToEntity(reader)));
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create("SELECT id AS country_id, name AS country_name FROM countries");
+
+        List<Country> countries = [];
+        connection.ExecuteReader(query, reader => countries.Add(_countryMapper.MapToEntity(reader)));
+
         return countries;
     }
 

@@ -10,5 +10,8 @@ namespace CommunityHub.Application.Services.Addresses
 
         public List<Country> Search(CountrySearchParameters searchParameters)
             => _countryRepository.Search(searchParameters);
+
+        public List<Country> GetAll()
+            => _countryRepository.GetAll();
     }
 }
