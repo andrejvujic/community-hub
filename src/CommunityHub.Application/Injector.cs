@@ -72,7 +72,8 @@ namespace CommunityHub.Application
             { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() },
             { typeof(IMapper<Citizen, CitizenDto>), new CitizenMapper() },
             { typeof(IMapper<NeighborhoodMembership, NeighborhoodMembershipDto>), new NeighborhoodMembershipMapper() },
-            { typeof(IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto>), new NeighborhoodAccessRequestMapper()  }
+            { typeof(IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto>), new NeighborhoodAccessRequestMapper() },
+            { typeof(IMapper<User, UserDto>), new UserMapper() }
 
         };
 

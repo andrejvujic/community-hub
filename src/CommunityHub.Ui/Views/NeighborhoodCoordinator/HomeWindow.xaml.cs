@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
@@ -10,17 +11,27 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
     /// </summary>
     public partial class HomeWindow : Window
     {
-        private readonly UserRepository _userRepository;
+        private readonly HomeWindowViewModel _homeWindowViewModel = new();
         private readonly long _userId;
-        private User _user;
 
         public HomeWindow(long userId)
         {
             InitializeComponent();
-            _userRepository = new UserRepository();
             _userId = userId;
-            LoadUser();
+            if (!_homeWindowViewModel.LoadUser(userId))
+            {
+                MessageBox.Show("Korisnik nije pronađen.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+                return;
+            }
 
+            UserInfoTextBlock.Text = _homeWindowViewModel.UserDisplayName;
+            InitializeTabs();
+        }
+
+        private void InitializeTabs()
+        {
             NeighborhoodsTab.Initialize(_userId);
             RequestsTab.Initialize(_userId);
             ServiceCenterTab.Initialize(_userId);
@@ -28,20 +39,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             CityFacilitiesTab.Initialize(_userId);
             NeighborhoodBudgetTab.Initialize(_userId);
         }
-
-        private void LoadUser()
-        {
-            User? user = _userRepository.Get(_userId);
-            if (user == null)
-            {
-                MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
-                return;
-            }
-            _user = user;
-            UserInfoTextBlock.Text = $"{_user.Name} {_user.Surname} - Koordinator kvarta";
-        }
-
+ 
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
