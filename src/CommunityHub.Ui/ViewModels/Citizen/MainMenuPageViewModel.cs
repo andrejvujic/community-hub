@@ -1,5 +1,3 @@
-using CommunityHub.Application;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Users;
 using System.ComponentModel;
@@ -10,7 +8,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 {
     public class MainMenuPageViewModel : INotifyPropertyChanged
     {
-        private readonly CitizenService _citizenService;
+        private readonly CitizenService _citizenService = new();
         private readonly long _userId;
         private readonly DispatcherTimer _timer;
         private readonly CultureInfo _culture = new("sr-Latn-RS");
@@ -57,9 +55,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         public MainMenuPageViewModel(long userId)
         {
             _userId = userId;
-            var citizenRepository = Injector.CreateInstance<ICitizenRepository>();
-            _citizenService = new CitizenService(citizenRepository);
-
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += Timer_Tick;
 

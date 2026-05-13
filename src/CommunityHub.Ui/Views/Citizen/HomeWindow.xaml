@@ -148,12 +148,12 @@
                 <TextBlock x:Name="StatusBarUserTextBlock" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="Korisnik: {0} {1}">
-                            <Binding Path="Name" TargetNullValue="N/A" FallbackValue="N/A"/>
-                            <Binding Path="Surname" TargetNullValue="" FallbackValue=""/>
+                            <Binding Path="CurrentUser.Name" TargetNullValue="N/A" FallbackValue="N/A"/>
+                            <Binding Path="CurrentUser.Surname" TargetNullValue="" FallbackValue=""/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <TextBlock x:Name="StatusBarTabTextBlock" Grid.Column="1" Text="Kartica: Glavni meni" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusBarTabTextBlock" Grid.Column="1" Text="{Binding StatusBarText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock Text="Pritisnite Ctrl+H za pomoć" VerticalAlignment="Center" Margin="0,0,10,0"/>

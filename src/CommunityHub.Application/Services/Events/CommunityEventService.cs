@@ -1,16 +1,26 @@
+using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
+using CommunityHub.Application.MappersDto;
+using CommunityHub.Application.MappersDto.Events;
+using CommunityHub.Application.Services.Dtos.Events;
 
 namespace CommunityHub.Application.Services.Events
 {
     public class CommunityEventService
     {
-        private readonly ICommunityEventRepository _eventRepository;
+        private readonly ICommunityEventRepository _eventRepository = new CommunityEventRepository();
+        private readonly IMapper<CommunityEvent, CommunityEventDto> _eventMapper = new CommunityEventMapper();
 
-        public CommunityEventService(ICommunityEventRepository eventRepository)
-        {
-            _eventRepository = eventRepository;
-        }
+        public List<CommunityEventDto> GetByNeighborhoodId(long neighborhoodId)
+            => _eventRepository.GetByNeighborhoodId(neighborhoodId)
+                .Select(_eventMapper.MapToDto)
+                .ToList();
+
+        public CommunityEventDto? GetById(long eventId)
+            => _eventRepository.GetById(eventId) is CommunityEvent @event
+                ? _eventMapper.MapToDto(@event)
+                : null;
 
         public void UpdateEventStatusesForNeighborhood(long neighborhoodId)
         {

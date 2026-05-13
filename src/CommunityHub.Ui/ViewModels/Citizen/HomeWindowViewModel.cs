@@ -1,6 +1,3 @@
-using CommunityHub.Application;
-using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
@@ -11,8 +8,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 {
     public class HomeWindowViewModel : INotifyPropertyChanged
     {
-        private readonly CitizenService _citizenService;
-        private readonly CommunityEventService _communityEventService;
+        private readonly CitizenService _citizenService = new();
+        private readonly CommunityEventService _communityEventService = new();
         private readonly long _userId;
         private CitizenDto? _currentUser;
         private string _statusBarText = "Kartica: Glavni meni";
@@ -57,12 +54,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         public HomeWindowViewModel(long userId)
         {
             _userId = userId;
-            var citizenRepository = Injector.CreateInstance<ICitizenRepository>();
-            var eventRepository = Injector.CreateInstance<ICommunityEventRepository>();
-
-            _citizenService = new CitizenService(citizenRepository);
-            _communityEventService = new CommunityEventService(eventRepository);
-
             LoadCurrentUser();
             UpdateEventStatusesIfReady();
         }

@@ -15,6 +15,7 @@ using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
 using CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Images;
 using CommunityHub.Application.Domain.Issues.RepositoryInterfaces;
@@ -30,6 +31,7 @@ using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application
@@ -71,10 +73,10 @@ namespace CommunityHub.Application
             { typeof(IMapper<Neighborhood, NeighborhoodDto>), new NeighborhoodMapper() },
             { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() },
             { typeof(IMapper<Citizen, CitizenDto>), new CitizenMapper() },
+            { typeof(IMapper<CommunityEvent, CommunityEventDto>), new CommunityEventMapper() },
             { typeof(IMapper<NeighborhoodMembership, NeighborhoodMembershipDto>), new NeighborhoodMembershipMapper() },
             { typeof(IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto>), new NeighborhoodAccessRequestMapper() },
             { typeof(IMapper<User, UserDto>), new UserMapper() }
-
         };
 
         public static T CreateInstance<T>()
