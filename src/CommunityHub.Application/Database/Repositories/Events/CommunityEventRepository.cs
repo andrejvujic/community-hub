@@ -7,17 +7,18 @@ namespace CommunityHub.Application.Database.Repositories.Events
     public class CommunityEventRepository : ICommunityEventRepository
     {
         private readonly CommunityEventMapper _eventMapper = new CommunityEventMapper();
-        private readonly EventItemMapper _itemMapper = new EventItemMapper();
 
         public CommunityEvent Create(CommunityEvent communityEvent)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO community_events (name, description, event_date, start_time, duration_minutes, min_volunteers, status, neighborhood_id, organizer_citizen_id)
                   VALUES (@name, @description, @event_date, @start_time, @duration_minutes, @min_volunteers, @status, @neighborhood_id, @organizer_citizen_id)
                   RETURNING id"
             ).ExtendParameters(_eventMapper.MapToQueryParameters(communityEvent));
 
-            long eventId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long eventId = connection.ExecuteScalar<long>(query, value => Convert.ToInt64(value));
 
             var createdItems = new List<EventItem>();
 
@@ -33,7 +34,9 @@ namespace CommunityHub.Application.Database.Repositories.Events
 
         public List<CommunityEvent> GetByOrganizerId(long organizerId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 community_event.id AS community_event_id,
                 community_event.name AS community_event_name,
@@ -117,21 +120,28 @@ namespace CommunityHub.Application.Database.Repositories.Events
             ).AddParameter("organizerId", organizerId);
 
             var events = new List<CommunityEvent>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var ev = _eventMapper.MapToEntity(reader);
                 if (ev != null) events.Add(ev);
             });
+
+            if (events.Count == 0) return events;
 
             var itemRepo = new EventItemRepository();
             var regRepo = new EventRegistrationRepository();
             var assignRepo = new EventItemAssignmentRepository();
 
+            var eventIds = events.Select(e => e.Id).ToList();
+            var allItems = itemRepo.GetByEventIds(eventIds, connection);
+            var allRegs = regRepo.GetByEventIds(eventIds, connection);
+            var allAssigns = assignRepo.GetByEventIds(eventIds, connection);
+
             var result = new List<CommunityEvent>();
             foreach (var ev in events)
             {
-                var items = itemRepo.GetByEventId(ev.Id);
-                var regs = regRepo.GetByEventId(ev.Id);
-                var assigns = assignRepo.GetByEventId(ev.Id);
+                var items = allItems.Where(i => i.EventId == ev.Id).ToList();
+                var regs = allRegs.Where(r => r.EventId == ev.Id).ToList();
+                var assigns = allAssigns.Where(a => a.Registration.EventId == ev.Id).ToList();
 
                 result.Add(ev.CopyWith(items: items, registrations: regs, assignments: assigns));
             }
@@ -141,7 +151,9 @@ namespace CommunityHub.Application.Database.Repositories.Events
 
         public List<CommunityEvent> GetByVolunteerCitizenId(long citizenId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 community_event.id AS community_event_id,
                 community_event.name AS community_event_name,
@@ -226,21 +238,28 @@ namespace CommunityHub.Application.Database.Repositories.Events
             ).AddParameter("citizenId", citizenId);
 
             var events = new List<CommunityEvent>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var ev = _eventMapper.MapToEntity(reader);
                 if (ev != null) events.Add(ev);
             });
+
+            if (events.Count == 0) return events;
 
             var itemRepo = new EventItemRepository();
             var regRepo = new EventRegistrationRepository();
             var assignRepo = new EventItemAssignmentRepository();
 
+            var eventIds = events.Select(e => e.Id).ToList();
+            var allItems = itemRepo.GetByEventIds(eventIds, connection);
+            var allRegs = regRepo.GetByEventIds(eventIds, connection);
+            var allAssigns = assignRepo.GetByEventIds(eventIds, connection);
+
             var result = new List<CommunityEvent>();
             foreach (var ev in events)
             {
-                var items = itemRepo.GetByEventId(ev.Id);
-                var regs = regRepo.GetByEventId(ev.Id);
-                var assigns = assignRepo.GetByEventId(ev.Id);
+                var items = allItems.Where(i => i.EventId == ev.Id).ToList();
+                var regs = allRegs.Where(r => r.EventId == ev.Id).ToList();
+                var assigns = allAssigns.Where(a => a.Registration.EventId == ev.Id).ToList();
 
                 result.Add(ev.CopyWith(items: items, registrations: regs, assignments: assigns));
             }
@@ -250,7 +269,9 @@ namespace CommunityHub.Application.Database.Repositories.Events
 
         public List<CommunityEvent> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 community_event.id AS community_event_id,
                 community_event.name AS community_event_name,
@@ -334,21 +355,28 @@ namespace CommunityHub.Application.Database.Repositories.Events
             ).AddParameter("neighborhoodId", neighborhoodId);
 
             var events = new List<CommunityEvent>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var ev = _eventMapper.MapToEntity(reader);
                 if (ev != null) events.Add(ev);
             });
+
+            if (events.Count == 0) return events;
 
             var itemRepo = new EventItemRepository();
             var regRepo = new EventRegistrationRepository();
             var assignRepo = new EventItemAssignmentRepository();
 
+            var eventIds = events.Select(e => e.Id).ToList();
+            var allItems = itemRepo.GetByEventIds(eventIds, connection);
+            var allRegs = regRepo.GetByEventIds(eventIds, connection);
+            var allAssigns = assignRepo.GetByEventIds(eventIds, connection);
+
             var result = new List<CommunityEvent>();
             foreach (var ev in events)
             {
-                var items = itemRepo.GetByEventId(ev.Id);
-                var regs = regRepo.GetByEventId(ev.Id);
-                var assigns = assignRepo.GetByEventId(ev.Id);
+                var items = allItems.Where(i => i.EventId == ev.Id).ToList();
+                var regs = allRegs.Where(r => r.EventId == ev.Id).ToList();
+                var assigns = allAssigns.Where(a => a.Registration.EventId == ev.Id).ToList();
 
                 result.Add(ev.CopyWith(items: items, registrations: regs, assignments: assigns));
             }
@@ -358,7 +386,9 @@ namespace CommunityHub.Application.Database.Repositories.Events
 
         public CommunityEvent? GetById(long eventId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     community_event.id AS community_event_id,
                     community_event.name AS community_event_name,
@@ -442,7 +472,7 @@ namespace CommunityHub.Application.Database.Repositories.Events
             ).AddParameter("eventId", eventId);
 
             CommunityEvent? ev = null;
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var mapped = _eventMapper.MapToEntity(reader);
                 if (mapped != null) ev = mapped;
             });
@@ -452,30 +482,34 @@ namespace CommunityHub.Application.Database.Repositories.Events
             var itemRepo = new EventItemRepository();
             var regRepo = new EventRegistrationRepository();
             var assignRepo = new EventItemAssignmentRepository();
-            var items = itemRepo.GetByEventId(ev.Id);
-            var regs = regRepo.GetByEventId(ev.Id);
-            var assigns = assignRepo.GetByEventId(ev.Id);
+            var items = itemRepo.GetByEventId(ev.Id, connection);
+            var regs = regRepo.GetByEventId(ev.Id, connection);
+            var assigns = assignRepo.GetByEventId(ev.Id, connection);
             return ev.CopyWith(items: items, registrations: regs, assignments: assigns);
         }
 
         public void UpdateStatus(long eventId, EventStatus status)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 "UPDATE community_events SET status = @status WHERE id = @id"
             ).AddParameter("status", status)
              .AddParameter("id", eventId);
-            query.GetRowsAffectedCount();
+            connection.Execute(query);
         }
 
         public int GetOrganizedEventsCount(long organizerId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 "SELECT COUNT(*) FROM community_events WHERE organizer_citizen_id = @organizerId AND status = @status"
             )
             .AddParameter("organizerId", organizerId)
             .AddParameter("status", EventStatus.Finished);
 
-            return query.ExecuteScalar<int>(Convert.ToInt32);
+            return connection.ExecuteScalar<int>(query, Convert.ToInt32);
         }
     }
 }
