@@ -6,10 +6,12 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
 {
     public class StreetRepository : IStreetRepository
     {
-        private readonly StreetMapper _streetMapper = new StreetMapper();
+        private readonly StreetMapper _streetMapper = new();
         public List<Street> GetByCityId(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 street.id as street_id, street.name as street_name FROM streets street
                 INNER JOIN cities city
@@ -18,9 +20,8 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
             ).AddParameter("id", id);
     
             List<Street> streets = new List<Street>();
-            query.ExecuteReader(reader => streets.Add(_streetMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => streets.Add(_streetMapper.MapToEntity(reader)));
             return streets;
         }
-
     }
 }

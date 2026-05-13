@@ -6,158 +6,72 @@ using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Ui.ViewModels.BuildingManager.Navigation;
+using CommunityHub.Application.MappersDto.Addresses;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using CommunityHub.Application.Services.Addresses;
+using CommunityHub.Application.Services.Buildings;
+using CommunityHub.Application.Services.Images;
+using CommunityHub.Application.Services.Apartments;
+using System.Windows.Media;
 using DomainImage = CommunityHub.Application.Domain.Image;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
-    public partial class RegistrationPage : Page, INotifyPropertyChanged
+    public partial class RegistrationPage : Page
     {
+        private readonly StreetMapper _streetMapper = new();
+        private readonly CountryMapper _countryMapper = new();
+        private readonly CityMapper _cityMapper = new();
+
+        private readonly AddressService _addressService = new();
+        private readonly BuildingService _buildingService = new();
+        private readonly ImageService _imageService = new();
+        private readonly ApartmentService _apartmentService = new();
+
+        private readonly RegistrationPageViewModel _viewModel;
         private readonly User _user;
-        public ObservableCollection<string> SelectedImagePaths { get; set; }
-        public ObservableCollection<Country> Countries { get; }
-        public ObservableCollection<City> Cities { get; }
-        public ObservableCollection<Street> Streets { get; }
         public ObservableCollection<int> ApartmentNumbers { get; }
-
         private List<(int Number, int Floor)> _apartmentEntries = new();
-        private readonly CountryRepository _countryRepository = new();
-        private readonly CityRepository _cityRepository = new();
-        private readonly StreetRepository _streetRepository = new();
-        private readonly AddressRepository _addressRepository = new();
-        private readonly StreetSectionRepository _streetSectionRepository = new();
-        private readonly BuildingRepository _buildingRepository = new();
-        private readonly ImageRepository _imageRepository = new();
-        private readonly ApartmentRepository _apartmentRepository = new();
-
-        private string _imageErrorMessage = string.Empty;
-        public string ImageErrorMessage
-        {
-            get => _imageErrorMessage;
-            set
-            {
-                _imageErrorMessage = value;
-                OnPropertyChanged(nameof(ImageErrorMessage));
-            }
-        }
-        private int StartNumber { get; set; }
-        private int EndNumber { get; set; }
-        private List<int>? OccupiedNumbers { get; set; }
-        private long? StreetId { get; set; }
-        private long? CityId { get; set; }
-
 
         public RegistrationPage(User user)
         {
             InitializeComponent();
+            _viewModel = new RegistrationPageViewModel();
+            _viewModel.UpdateImageValidation();
+            DataContext = _viewModel;
+
             _user = user;
             ApartmentNumbers = new ObservableCollection<int>();
-            SelectedImagePaths = new ObservableCollection<string>();
-            Countries = new ObservableCollection<Country>();
-            Cities = new ObservableCollection<City>();
-            Streets = new ObservableCollection<Street>();
-            DataContext = this;
-
         }
         private void RegistrationPage_Loaded(object sender, RoutedEventArgs e)
         {
             floorsStackPanel.Children.Add(CreateFloor(1));
-            UpdateImagesValidation();
-            LoadCountries();
+            _viewModel.LoadCountries();
         }
-        private void LoadCountries()
+
+        private void ChooseImage_Click(object sender, RoutedEventArgs e)
         {
-            Countries.Clear();
-            var countries = _countryRepository.GetAll();
-
-            foreach (var country in countries)
-                Countries.Add(country);
-
-            countryComboBox.ItemsSource = Countries;
-        }
-        private void CountryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => LoadCities();
-        private void LoadCities()
-        {
-            Cities.Clear();
-
-            var selectedCountry = countryComboBox.SelectedItem as Country;
-            if (selectedCountry == null)
+            var dialog = new OpenFileDialog
             {
-                cityComboBox.ItemsSource = null;
-                cityComboBox.IsEnabled = false;
-                return;
-            }
+                Multiselect = true,
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;",
+                Title = "Izaberite slike zgrade"
+            };
 
-            var cities = _cityRepository.GetByCountryId(selectedCountry.Id);
-            foreach (var city in cities)
-                Cities.Add(city);
-
-
-            cityComboBox.ItemsSource = Cities;
-            cityComboBox.IsEnabled = Cities.Count > 0;
+            if (dialog.ShowDialog() == true)
+                _viewModel.AddImages(dialog.FileNames);
         }
-        private void CityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RemoveImage_Click(object sender, RoutedEventArgs e)
         {
-            LoadStreets();
-            CityId = (long?)cityComboBox.SelectedValue;
+            if (sender is Button button && button.Tag is string filePath)
+                _viewModel.RemoveImage(filePath);
         }
-        private void LoadStreets()
-        {
-            Streets.Clear();
 
-            var selectedCity = cityComboBox.SelectedItem as City;
-            if (selectedCity == null)
-            {
-                streetComboBox.ItemsSource = null;
-                streetComboBox.IsEnabled = false;
-                return;
-            }
-
-            var streets = _streetRepository.GetByCityId(selectedCity.Id);
-            foreach (var street in streets)
-                Streets.Add(street);
-
-            streetComboBox.ItemsSource = Streets;
-            streetComboBox.IsEnabled = Streets.Count > 0;
-        }
-        private void StreetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            streetNumberTextBox.IsEnabled = streetComboBox.SelectedItem != null;
-            streetNumberTextBox.Text = string.Empty;
-
-            StreetId = (long?)streetComboBox.SelectedValue;
-            StartNumber = _streetSectionRepository.GetStartNumber(StreetId, CityId);
-            EndNumber = _streetSectionRepository.GetEndNumber(StreetId, CityId);
-            OccupiedNumbers = _addressRepository.GetOccupiedStreetNumbers(StreetId, CityId);
-        }
-        private bool IsStreetNumberValid()
-        {
-            var text = streetNumberTextBox.Text?.Trim();
-
-            if (string.IsNullOrEmpty(text))
-                return ShowError("Unesite broj zgrade.");
-
-            if (!int.TryParse(text, out var number))
-                return ShowError("Niste uneli validan podatak za broj ulice.");
-
-            if (number < StartNumber || number > EndNumber)
-                return ShowError($"Raspon ulice je od broja {StartNumber} do {EndNumber}.");
-
-            if (OccupiedNumbers != null && OccupiedNumbers.Contains(number))
-                return ShowError("Uneli ste postojeći broj zgrade.");
-
-            return true;
-        }
-        private bool ShowError(string message)
-        {
-            MessageBox.Show(message);
-            return false;
-        }
         private void FloorsUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (floorsStackPanel == null) return;
@@ -169,6 +83,8 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 AddFloors(currentCount, newValue);
             else
                 RemoveFloors(newValue);
+
+            ValidateApartments();
         }
         private void AddFloors(int from, int to)
         {
@@ -180,6 +96,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             while (floorsStackPanel.Children.Count > targetCount)
                 floorsStackPanel.Children.RemoveAt(floorsStackPanel.Children.Count - 1);
         }
+
         private GroupBox CreateFloor(int number)
         {
             var apartmentsPanel = CreateApartmentsPanel();
@@ -202,7 +119,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
         }
         private TextBox CreateApartmentTextBox()
         {
-            return new TextBox
+            var textBox = new TextBox
             {
                 Width = 45,
                 Height = 45,
@@ -210,6 +127,9 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 TextAlignment = TextAlignment.Center,
                 Margin = new Thickness(0, 0, 7, 0),
             };
+
+            textBox.TextChanged += ApartmentTextBox_TextChanged;
+            return textBox;
         }
         private ScrollViewer CreateApartmentsScroll(StackPanel apartmentsPanel)
         {
@@ -230,6 +150,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             {
                 apartmentsPanel.Children.Add(CreateApartmentTextBox());
                 apartmentsPanel.Tag = apartmentsPanel.Children.Count;
+                ValidateApartments();
             };
 
             var removeButton = RemoveApartmentButton();
@@ -239,6 +160,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 {
                     apartmentsPanel.Children.RemoveAt(apartmentsPanel.Children.Count - 1);
                     apartmentsPanel.Tag = apartmentsPanel.Children.Count;
+                    ValidateApartments();
                 }
             };
 
@@ -281,124 +203,122 @@ namespace CommunityHub.Ui.Views.BuildingManager
             row.Children.Add(buttonPanel);
             return row;
         }
-        private bool AreApartmentNumbersValid()
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                NavigationService.GoBack();
+        }
+
+        private void MarkApartmentTextBox(TextBox textBox, bool isValid)
+        {
+            textBox.BorderBrush = isValid ? SystemColors.ControlDarkBrush : Brushes.Red;
+            textBox.BorderThickness = isValid ? new Thickness(1) : new Thickness(2);
+        }
+        private bool ValidateApartmentTextBox(TextBox textBox)
+        {
+            var text = textBox.Text?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrEmpty(text))
+            {
+                MarkApartmentTextBox(textBox, false);
+                return false;
+            }
+
+            if (!int.TryParse(text, out var number))
+            {
+                MarkApartmentTextBox(textBox, false);
+                return false;
+            }
+
+            if (number < 1)
+            {
+                MarkApartmentTextBox(textBox, false);
+                return false;
+            }
+
+            MarkApartmentTextBox(textBox, true);
+            return true;
+        }
+        private bool ValidateApartments()
         {
             ApartmentNumbers.Clear();
             _apartmentEntries.Clear();
+
+            bool allValid = true;
+
             foreach (GroupBox floorGroup in floorsStackPanel.Children)
             {
-                if (floorGroup.Content is Grid grid && grid.Children.OfType<ScrollViewer>().FirstOrDefault()?.Content is StackPanel apartmentsPanel)
+                if (floorGroup.Content is Grid grid &&
+                    grid.Children.OfType<ScrollViewer>().FirstOrDefault()?.Content is StackPanel apartmentsPanel)
                 {
                     int floorNumber = (int)floorGroup.Tag;
+
                     foreach (TextBox apartmentTextBox in apartmentsPanel.Children.OfType<TextBox>())
                     {
-                        if (!IsApartmentNumberValid(apartmentTextBox.Text))
-                            return false;
+                        if (!ValidateApartmentTextBox(apartmentTextBox))
+                        {
+                            allValid = false;
+                            continue;
+                        }
 
-                        int num = int.Parse(apartmentTextBox.Text);
+                        int num = int.Parse(apartmentTextBox.Text.Trim());
                         ApartmentNumbers.Add(num);
                         _apartmentEntries.Add((Number: num, Floor: floorNumber));
                     }
                 }
             }
 
-            if (!IsApartmentNumbersUnique()) return false;
+            if (!ValidateApartmentNumbersUnique())
+                allValid = false;
 
-            return true;
+            _viewModel.AreApartmentsValid = allValid;
+            return allValid;
         }
-        private bool IsApartmentNumberValid(string text)
+        private bool ValidateApartmentNumbersUnique()
         {
-            if (string.IsNullOrEmpty(text.Trim()))
-                return ShowError("Unesite broj stana.");
+            bool unique = true;
 
-            if (!int.TryParse(text, out var number))
-                return ShowError("Niste uneli validan podatak za broj stana.");
-
-            if (number < 1)
-                return ShowError("Broj stana mora biti pozitivan.");
-
-            return true;
-        }
-        private bool IsApartmentNumbersUnique()
-        {
-            foreach (var number in ApartmentNumbers)
-                if (ApartmentNumbers.Count(n => n == number) > 1)
+            foreach (GroupBox floorGroup in floorsStackPanel.Children)
+            {
+                if (floorGroup.Content is Grid grid &&
+                    grid.Children.OfType<ScrollViewer>().FirstOrDefault()?.Content is StackPanel apartmentsPanel)
                 {
-                    MessageBox.Show("Brojevi stanova moraju biti jedinstveni.");
-                    return false;
+                    foreach (TextBox apartmentTextBox in apartmentsPanel.Children.OfType<TextBox>())
+                    {
+                        var text = apartmentTextBox.Text?.Trim();
+
+                        if (!int.TryParse(text, out var current))
+                            continue;
+
+                        int count = ApartmentNumbers.Count(n => n == current);
+                        if (count > 1)
+                        {
+                            MarkApartmentTextBox(apartmentTextBox, false);
+                            unique = false;
+                        }
+                    }
                 }
-
-            return true;
-        }
-        private void ChooseImage_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = "Image Files|*.jpg;*.jpeg;*.png;",
-                Title = "Izaberite slike zgrade"
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                foreach (string filePath in dialog.FileNames)
-                {
-                    if (!SelectedImagePaths.Contains(filePath))
-                        SelectedImagePaths.Add(filePath);
-                }
-
-                UpdateImagesValidation();
             }
+
+            return unique;
         }
-        private void UpdateImagesValidation()
+        private void ApartmentTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ImageErrorMessage = SelectedImagePaths.Count == 0 ? "Morate izabrati bar jednu sliku zgrade." : string.Empty;
+            ValidateApartments();
         }
-        private void RemoveImage_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is string filePath)
-            {
-                SelectedImagePaths.Remove(filePath);
-                UpdateImagesValidation();
-            }
-        }
-        private bool IsFormValid()
-        {
-            if (!IsCountrySelected()) return false;
-            if (!IsCitySelected()) return false;
-            if (!IsStreetSelected()) return false;
-            if (!IsStreetNumberValid()) return false;
-            if (!IsNeighborhoodEntered()) return false;
-            if (!AreApartmentNumbersValid()) return false;
-            if (!IsImageSelected()) return false;
-            return true;
-        }
-        private bool IsCountrySelected() =>
-            countryComboBox.SelectedItem != null || ShowError("Niste odabrali državu.");
-        private bool IsCitySelected() =>
-            cityComboBox.SelectedItem != null || ShowError("Niste odabrali grad.");
-        private bool IsStreetSelected() =>
-            streetComboBox.SelectedItem != null || ShowError("Niste odabrali ulicu.");
-        private bool IsNeighborhoodEntered() =>
-            !string.IsNullOrWhiteSpace(neighborhoodTextBox.Text) || ShowError("Niste uneli naziv naselja.");
-        private bool IsImageSelected() =>
-            SelectedImagePaths.Count > 0 || ShowError("Morate izabrati bar jednu sliku zgrade.");
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                NavigationService.GoBack();
-        }
+
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsFormValid()) return;
+            if (!_viewModel.CanConfirm) return;
 
             if (!MessageBox.Show("Da li ste sigurni da želite da potvrdite registraciju zgrade?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question).Equals(MessageBoxResult.Yes))
                 return;
 
-            var address = CreateAndSaveAddress();
-            var building = CreateAndSaveBuilding(address);
-            CreateAndSaveImages(building);
-            CreateAndSaveApartments(building);
+            var address = CreateAddress();
+            var building = CreateBuilding(address);
+            CreateImages(building);
+            CreateApartments(building);
             
             MessageBox.Show("Uspešno ste registrovali zgradu.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -407,20 +327,20 @@ namespace CommunityHub.Ui.Views.BuildingManager
             if (homeWindow != null)
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_user));
         }
-        private Address CreateAndSaveAddress()
+        private Address CreateAddress()
         {
             var address = new Address(
                 id: 0,
-                street: (streetComboBox.SelectedItem as Street)!,
-                streetNumber: streetNumberTextBox.Text.Trim(),
-                neighborhood: neighborhoodTextBox.Text.Trim(),
-                city: (cityComboBox.SelectedItem as City)!,
-                country: (countryComboBox.SelectedItem as Country)!
+                street: (_streetMapper.MapToDomain(_viewModel.SelectedStreet!)),
+                streetNumber: _viewModel.StreetNumber,
+                neighborhood: _viewModel.Neighborhood,
+                city: (_cityMapper.MapToDomain(_viewModel.SelectedCity!)),
+                country: (_countryMapper.MapToDomain(_viewModel.SelectedCountry!))
             );
 
-            return _addressRepository.Create(address);
+            return _addressService.Create(address);
         }
-        private Building CreateAndSaveBuilding(Address address)
+        private Building CreateBuilding(Address address)
         {
             var building = new Building(
                 floorCount: floorsUpDown.Value ?? 1,
@@ -429,11 +349,11 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 address: address
             );
 
-            return _buildingRepository.Create(building);
+            return _buildingService.Create(building);
         }
-        private void CreateAndSaveImages(Building building)
+        private void CreateImages(Building building)
         {
-            foreach (string imagePath in SelectedImagePaths)
+            foreach (string imagePath in _viewModel.SelectedImagePaths)
             {
                 DomainImage image = DomainImage.ForBuilding(
                     id: 0,
@@ -441,10 +361,10 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     buildingId: building.Id
                 );
 
-                _imageRepository.Create(image);
+                _imageService.Create(image);
             }
         }
-        private void CreateAndSaveApartments(Building building)
+        private void CreateApartments(Building building)
         {
             foreach (var entry in _apartmentEntries)
             {
@@ -455,14 +375,8 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     building: building
                 );
 
-                _apartmentRepository.Create(apartment);
+                _apartmentService.Create(apartment);
             }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

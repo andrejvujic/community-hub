@@ -9,6 +9,9 @@ namespace CommunityHub.Application.Services.Addresses
         private readonly ICityRepository _cityRepository = Injector.CreateInstance<ICityRepository>();
 
         public List<City> Search(CitySearchParameters searchParameters) 
-            => _cityRepository.Search(searchParameters);    
+            => _cityRepository.Search(searchParameters);
+        
+        public List<City> GetByCountryId(long countryId) 
+            => _cityRepository.GetByCountryId(countryId);
     }
 }
