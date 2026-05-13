@@ -6,10 +6,12 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
 {
     public class AddressRepository : IAddressRepository
     {
-        private readonly AddressMapper _addressMapper = new AddressMapper();
+        private readonly AddressMapper _addressMapper = new();
         public List<int> GetOccupiedStreetNumbers(long? streetId, long? cityId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT street_number FROM
                   buildings INNER JOIN addresses ON
                   buildings.address_id = addresses.id
@@ -18,9 +20,9 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
             .AddParameter("streetId", streetId)
             .AddParameter("cityId", cityId);
 
-            List<int> occupiedStreetNumbers = new List<int>();
+            List<int> occupiedStreetNumbers = [];
            
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var value = reader.GetValue(0);
                 if (value != null && int.TryParse(value.ToString(), out var number))
@@ -32,7 +34,9 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
 
         public Address Create(Address address)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO addresses 
                 (street_number, neighborhood, street_id, city_id) 
                 VALUES 
@@ -40,7 +44,8 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
                 RETURNING id"
             )
             .ExtendParameters(_addressMapper.MapToQueryParameters(address));
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            long generatedId = connection.ExecuteScalar(query, value => Convert.ToInt64(value));
             return address.CopyWith(id: generatedId);
         }
     }

@@ -10,14 +10,16 @@ public class ApartmentRepository : IApartmentRepository
 
     public Apartment Create(Apartment apartment)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"INSERT INTO apartments (apartment_number, floor_number, building_id) 
                 VALUES (@apartment_number, @floor_number, @building_id) 
                 RETURNING id"
         )
         .ExtendParameters(_apartmentMapper.MapToQueryParameters(apartment));
 
-        long id = query.ExecuteScalar(Convert.ToInt64);
+        long id = connection.ExecuteScalar(query, id => Convert.ToInt64(id));
 
         return apartment.CopyWith(id: id);
     }

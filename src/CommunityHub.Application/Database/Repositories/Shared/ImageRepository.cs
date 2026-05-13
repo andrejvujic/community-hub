@@ -10,14 +10,16 @@ namespace CommunityHub.Application.Database.Repositories.Shared
 
         public Image Create(Image image)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO images (path, building_id, neighborhood_id, job_listing_id) 
                 VALUES (@path, @image_building_id, @image_neighborhood_id, @image_job_listing_id) 
                 RETURNING id"
             )
             .ExtendParameters(_imageMapper.MapToQueryParameters(image));
 
-            long id = query.ExecuteScalar(Convert.ToInt64);
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return image.CopyWith(id: id);
         }

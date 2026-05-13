@@ -13,14 +13,16 @@ namespace CommunityHub.Application.Database.Repositories.Buildings
 
         public Building Create(Building building)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO buildings (floor_count, apartment_count, building_manager_id, address_id) 
                 VALUES (@floor_count, @apartment_count, @building_manager_id, @address_id)
                 RETURNING id"
             )
             .ExtendParameters(_buildingMapper.MapToQueryParameters(building));
 
-            long id = query.ExecuteScalar(Convert.ToInt64);
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return building.CopyWith(id: id);
         }
