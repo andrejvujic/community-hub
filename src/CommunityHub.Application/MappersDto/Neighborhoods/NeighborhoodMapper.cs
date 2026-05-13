@@ -35,9 +35,6 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            var sections = dto.StreetSections?.Select(_streetSectionMapper.MapToDomain).ToList();
-            var images = dto.Images?.Select(_imageMapper.MapToDomain).ToList();
-
             return new Neighborhood(
                 dto.Name,
                 dto.Description,
@@ -46,8 +43,8 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods
                 _countryMapper.MapToDomain(dto.Country),
                 _userMapper.MapToDomain(dto.Coordinator),
                 dto.Id,
-                sections,
-                images
+                dto.StreetSections?.Select(_streetSectionMapper.MapToDomain).ToList(),
+                dto.Images?.Select(_imageMapper.MapToDomain).ToList()
             );
         }
     }
