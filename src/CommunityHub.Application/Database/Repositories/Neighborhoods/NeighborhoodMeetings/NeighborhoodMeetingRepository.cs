@@ -2,7 +2,7 @@
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 
-namespace CommunityHub.Application.Database.Repositories.NeighborhoodMeetings
+namespace CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings
 {
     public class NeighborhoodMeetingRepository : INeighborhoodMeetingRepository
     {

@@ -7,7 +7,6 @@ using CommunityHub.Application.Database.Repositories.CommonRooms;
 using CommunityHub.Application.Database.Repositories.Issues;
 using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
-using CommunityHub.Application.Database.Repositories.NeighborhoodMeetings;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Database.Repositories.Shared.Notifications;
