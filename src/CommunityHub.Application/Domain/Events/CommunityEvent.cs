@@ -82,4 +82,18 @@ public class CommunityEvent
             assignments ?? Assignments
         );
     }
+
+    public bool ShouldBeCancelled()
+    {
+        var timeToEvent = EventStart - DateTime.Now;
+        bool enoughVolunteers = Registrations.Count >= MinVolunteers;
+        bool allItemsAssigned = AllItemsAssigned;
+
+        return timeToEvent.TotalHours < 12 && (!enoughVolunteers || !allItemsAssigned);
+    }
+
+    public bool HasFinished()
+    {
+        return DateTime.Now > EventStart.AddMinutes(DurationMinutes);
+    }
 }
