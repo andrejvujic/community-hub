@@ -11,5 +11,11 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public List<NeighborhoodAccessRequest> GetByCoordinatorAndStatus(long coordinatorId, Status? status)
             => _neighborhoodAccessRequestRepository.GetByCoordinatorIdAndStatus(coordinatorId, status);
+
+        public void Reject(NeighborhoodAccessRequest request, string comment)
+        {
+            request.Reject(comment);
+            _neighborhoodAccessRequestRepository.Update(request);
+        }
     }
 }
