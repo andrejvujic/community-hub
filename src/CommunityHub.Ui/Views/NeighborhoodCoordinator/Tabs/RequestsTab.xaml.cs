@@ -1,26 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
-namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
+namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
-    /// <summary>
-    /// Interaction logic for RequestsPage.xaml
-    /// </summary>
-    public partial class RequestsPage : UserControl
+    public partial class RequestsTab : UserControl
     {
         private long _coordinatorId;
         private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
@@ -29,7 +18,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         
         public ObservableCollection<NeighborhoodAccessRequest> Requests { get; set; } = new ObservableCollection<NeighborhoodAccessRequest>();
 
-        public RequestsPage()
+        public RequestsTab()
         {
             InitializeComponent();
             DataContext = this;
@@ -79,7 +68,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
         {
             if (RequestsDataGrid.SelectedItem is NeighborhoodAccessRequest request)
             {
-                var dialog = new RejectDialog(request.Citizen.Name, request.Citizen.Surname, request.Neighborhood.Name);
+                var dialog = new RejectRequestWindow(request.Citizen.Name, request.Citizen.Surname, request.Neighborhood.Name);
                 dialog.Owner = Window.GetWindow(this);
 
                 if (dialog.ShowDialog() == true)

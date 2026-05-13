@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain.Users;
-using CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {

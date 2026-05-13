@@ -22,6 +22,7 @@ using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
 
 namespace CommunityHub.Application
 {

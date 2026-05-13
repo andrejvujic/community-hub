@@ -1,6 +1,7 @@
-﻿<Window x:Class="CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages.RejectDialog"
+﻿<Window x:Class="CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows.RejectRequestWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
         Title="Odbijanje zahteva" Height="250" Width="400" WindowStartupLocation="CenterOwner">
     <Grid Margin="15">
         <Grid.RowDefinitions>

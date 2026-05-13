@@ -1,24 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.CityFacility;
 using CommunityHub.Application.Services;
 
-namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
+namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
-    /// <summary>
-    /// Interaction logic for FacilityBookingWindow.xaml
-    /// </summary>
     public partial class FacilityBookingWindow : Window
     {
         private readonly CityFacility _facility;

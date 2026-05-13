@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using CommunityHub.Application.Domain;
 
-namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
+namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
-    /// <summary>
-    /// Interaction logic for BookingConfirmationWindow.xaml
-    /// </summary>
     public partial class BookingConfirmationWindow : Window
     {
         public bool Confirmed { get; private set; }

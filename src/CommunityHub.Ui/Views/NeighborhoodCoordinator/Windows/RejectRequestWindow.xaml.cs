@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
-namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
+namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
-    public partial class RejectDialog : Window
+    public partial class RejectRequestWindow : Window
     {
         public string Comment { get; private set; }
 
-        public RejectDialog(string ime, string prezime, string kvart)
+        public RejectRequestWindow(string ime, string prezime, string kvart)
         {
             InitializeComponent();
             MessageLabel.Text = $"Napišite razlog odbijanja zahteva korisnika {ime} {prezime} za pristup kvartu {kvart}:";

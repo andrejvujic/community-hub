@@ -1,30 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudget;
-using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Services;
 using CommunityHub.Ui.Helpers.Converters;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
 
-namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
+namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
-    /// <summary>
-    /// Interaction logic for NeighborhoodBudgetTab.xaml
-    /// </summary>
     public partial class NeighborhoodBudgetTab : UserControl
     {
         private long _coordinatorId;

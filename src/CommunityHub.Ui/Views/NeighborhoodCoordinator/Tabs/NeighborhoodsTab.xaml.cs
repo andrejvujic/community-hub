@@ -1,26 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
-namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
+namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
-    /// <summary>
-    /// Interaction logic for NeighborhoodsPage.xaml
-    /// </summary>
-    public partial class NeighborhoodsPage : UserControl
+    public partial class NeighborhoodsTab : UserControl
     {
         private long _coordinatorId;
         private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
@@ -29,7 +18,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages
 
         public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
 
-        public NeighborhoodsPage()
+        public NeighborhoodsTab()
         {
             InitializeComponent();
             DataContext = this;
