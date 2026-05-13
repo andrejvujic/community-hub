@@ -68,12 +68,14 @@ namespace CommunityHub.Application
             { typeof(INeighborhoodMembershipRepository), new NeighborhoodMembershipRepository() },
             { typeof(INeighborhoodMeetingRepository), new NeighborhoodMeetingRepository() },
             { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() },
+            { typeof(IStreetSectionRepository), new StreetSectionRepository() },
             { typeof(IMapper<Neighborhood, NeighborhoodDto>), new NeighborhoodMapper() },
             { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() },
             { typeof(IMapper<Citizen, CitizenDto>), new CitizenMapper() },
             { typeof(IMapper<NeighborhoodMembership, NeighborhoodMembershipDto>), new NeighborhoodMembershipMapper() },
             { typeof(IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto>), new NeighborhoodAccessRequestMapper() },
-            { typeof(IMapper<User, UserDto>), new UserMapper() }
+            { typeof(IMapper<User, UserDto>), new UserMapper() },
+            { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() }
 
         };
 
