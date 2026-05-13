@@ -1,4 +1,5 @@
-﻿using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Services.Neighborhoods
@@ -11,5 +12,14 @@ namespace CommunityHub.Application.Services.Neighborhoods
         public List<Citizen> GetCitizensByNeighborhood(long neighborhoodId)
             => _neighborhoodMembershipRepository.GetCitizensByNeighborhoodId(neighborhoodId);
         
+        public NeighborhoodMembership Register(Neighborhood neighborhood)
+        {
+            var membership = new NeighborhoodMembership(
+                0,
+                DateTime.Now,
+                neighborhood
+            );
+            return _neighborhoodMembershipRepository.Create(membership);
+        }
     }
 }
