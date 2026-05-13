@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator"
-        xmlns:pages="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+        xmlns:tabs="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
         mc:Ignorable="d"
         Title="Neighborhood Coordinator App"
         WindowStartupLocation="CenterScreen"
@@ -90,27 +90,27 @@
             </TabItem>
 
             <TabItem Header="Kvartovi i članstva (F2)">
-                <pages:NeighborhoodsPage x:Name="NeighborhoodsTab" />
+                <tabs:NeighborhoodsTab x:Name="NeighborhoodsTab" />
             </TabItem>
 
             <TabItem Header="Zahtevi za pristup (F3)">
-                <pages:RequestsPage x:Name="RequestsTab" />
+                <tabs:RequestsTab x:Name="RequestsTab" />
             </TabItem>
 
             <TabItem Header="Statistika i sastanci (F4)">
-                <pages:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
+                <tabs:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
             </TabItem>
 
             <TabItem Header="Servisni centar (F5)">
-                <pages:ServiceCenterTab x:Name="ServiceCenterTab" />
+                <tabs:ServiceCenterTab x:Name="ServiceCenterTab" />
             </TabItem>
 
             <TabItem Header="Gradski objekti (F6)">
-                <pages:CityFacilitiesTab x:Name="CityFacilitiesTab" />
+                <tabs:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
             <TabItem Header="Budžet (F7)">
-                <pages:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
+                <tabs:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
             </TabItem>
 
             <TabItem Header="Profil (F8)">

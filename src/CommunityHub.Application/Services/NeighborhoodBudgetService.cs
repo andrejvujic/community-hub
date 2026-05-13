@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.NeighborhoodBudget;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
+using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Users;
 

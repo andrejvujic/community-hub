@@ -7,7 +7,6 @@ using CommunityHub.Application.Database.Repositories.CommonRooms;
 using CommunityHub.Application.Database.Repositories.Issues;
 using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
-using CommunityHub.Application.Database.Repositories.NeighborhoodMeetings;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Database.Repositories.Shared.Notifications;
@@ -23,6 +22,7 @@ using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
 
 namespace CommunityHub.Application
 {
