@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
-        xmlns:domain="clr-namespace:CommunityHub.Application.Domain.NeighborhoodMeetings;assembly=CommunityHub.Application"
+        xmlns:domain="clr-namespace:CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;assembly=CommunityHub.Application"
         mc:Ignorable="d"
         Title="Zakazivanje sastanka" 
         Height="370" Width="450"
