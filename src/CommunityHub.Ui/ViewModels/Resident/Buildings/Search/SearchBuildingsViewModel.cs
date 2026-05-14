@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
     {
         public long UserId { get; }
 
-        private readonly BuildingService _buildingService = new BuildingService(Injector.CreateInstance<IBuildingRepository>());
+        private readonly BuildingService _buildingService = new BuildingService();
 
         public ObservableCollection<Building> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;

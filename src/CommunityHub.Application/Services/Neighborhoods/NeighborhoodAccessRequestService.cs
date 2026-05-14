@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.MappersDto;
+using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 
 namespace CommunityHub.Application.Services.Neighborhoods
@@ -15,8 +16,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
             = Injector.CreateInstance<INeighborhoodMembershipRepository> ();
         private readonly ICitizenRepository _citizenRepository
             = Injector.CreateInstance<ICitizenRepository> ();
-        private readonly IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto> _neighborhoodAccessRequestMapper
-            = Injector.CreateInstance<IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto>>();
+        private readonly NeighborhoodAccessRequestMapper _neighborhoodAccessRequestMapper = new();
 
 
         public List<NeighborhoodAccessRequestDto> GetByCoordinatorAndStatus(long coordinatorId, Status? status)
