@@ -20,9 +20,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
         private readonly StreetSectionMapper _streetSectionMapper = new();
         private readonly AddressMapper _addressMapper = new();
 
-        private readonly ImageService _imageService = new();
-        private readonly StreetSectionService _streetSectionService = new();
-
+        
         public List<NeighborhoodDto> GetByCoordinator(long coordinatorId)
             => _neighborhoodRepository.GetByCoordinatorId(coordinatorId).Select(_neighborhoodMapper.MapToDto).ToList();
 
@@ -31,18 +29,9 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
             var created = _neighborhoodRepository.Create(neighborhood);
 
-            foreach (var imageDto in neighborhoodDto.Images)
-            {
-                _imageService.CreateForNeighborhood(imageDto.Path, created.Id);
-            }
-
-            foreach (var sectionDto in neighborhoodDto.StreetSections)
-            {
-                _streetSectionService.Create(sectionDto, created.Id);
-            }
-
             return _neighborhoodMapper.MapToDto(created);
         }
+
 
         public List<NeighborhoodDto> Search(NeighborhoodSearchParameters? searchParameters)
         {

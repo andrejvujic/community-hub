@@ -8,6 +8,7 @@ using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Services.Dtos.Images;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Services.Images;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
 
@@ -20,6 +21,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         private readonly CityService _cityService = new();
         private readonly StreetService _streetService = new();
         private readonly UserService _userService = new();
+        private readonly ImageService _imageService = new();
+        private readonly StreetSectionService _streetSectionService = new();
+
 
         public UserDto? Coordinator { get; private set; }
 
@@ -222,12 +226,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 0,
                 SelectedCity!,
                 SelectedCountry!,
-                Coordinator!,
-                new(AddedStreetSections),
-                new(SelectedImagePaths.Select(p => new ImageDto(0, p, null, 0, null)))
+                Coordinator!
             );
 
-            _neighborhoodService.Create(neighborhoodDto);
+            var createdNeighborhood = _neighborhoodService.Create(neighborhoodDto);
+            foreach (var section in AddedStreetSections)
+                _streetSectionService.Create(section, createdNeighborhood.Id);
+            foreach (var path in SelectedImagePaths)
+                _imageService.CreateForNeighborhood(path, createdNeighborhood.Id);
             return null;
         }
 

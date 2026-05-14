@@ -1,9 +1,6 @@
-﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Neighborhoods;
+﻿using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
-using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
@@ -17,17 +14,19 @@ namespace CommunityHub.Application.Services.Neighborhoods
             = Injector.CreateInstance<INeighborhoodMembershipRepository>();
         private readonly ICitizenRepository _citizenRepository
             = Injector.CreateInstance<ICitizenRepository>();
-        private readonly IMapper<Citizen, CitizenDto> _citizenMapper
-            = Injector.CreateInstance<IMapper<Citizen, CitizenDto>>();
-        private readonly IMapper<Neighborhood, NeighborhoodDto> _neighborhoodMapper
-            = Injector.CreateInstance<IMapper<Neighborhood, NeighborhoodDto>>();
-        private readonly IMapper<NeighborhoodMembership, NeighborhoodMembershipDto> _neighborhoodMembershipMapper
-            = Injector.CreateInstance<IMapper<NeighborhoodMembership, NeighborhoodMembershipDto>>();
+        private readonly CitizenMapper _citizenMapper
+            = new CitizenMapper();
+        private readonly NeighborhoodMapper _neighborhoodMapper
+            = new NeighborhoodMapper();
+        private readonly NeighborhoodMembershipMapper _neighborhoodMembershipMapper
+            = new NeighborhoodMembershipMapper();
 
         public List<CitizenDto> GetCitizensByNeighborhood(long neighborhoodId)
-            => _neighborhoodMembershipRepository.GetCitizensByNeighborhoodId(neighborhoodId).Select(_citizenMapper.MapToDto).ToList();
+            => _neighborhoodMembershipRepository.GetCitizensByNeighborhoodId(neighborhoodId)
+                .Select(_citizenMapper.MapToDto)
+                .ToList();
 
-        public NeighborhoodMembershipDto Register(NeighborhoodDto neighborhoodDto)
+        public NeighborhoodMembershipDto Create(NeighborhoodDto neighborhoodDto)
         {
             var membership = new NeighborhoodMembership(
                 0,
