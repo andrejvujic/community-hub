@@ -2,7 +2,7 @@ using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using System.ComponentModel;
 
-namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
+namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 {
     public class SearchCriteriaViewModel : INotifyPropertyChanged
     {

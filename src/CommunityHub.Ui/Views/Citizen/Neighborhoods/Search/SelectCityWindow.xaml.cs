@@ -1,6 +1,6 @@
 using System.Windows;
 using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
+using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {

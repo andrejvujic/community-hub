@@ -4,7 +4,7 @@ using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
+namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 {
     public class SelectCityViewModel : INotifyPropertyChanged
     {

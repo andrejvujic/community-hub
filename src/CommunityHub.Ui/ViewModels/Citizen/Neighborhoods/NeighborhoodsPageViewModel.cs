@@ -75,6 +75,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public NeighborhoodMembershipDto? Membership => CurrentUser?.Membership;
 
+        public NeighborhoodSearchParameters? LastSearchParameters => _searchParameters;
+
         public NeighborhoodsPageViewModel(long userId)
         {
             _userId = userId;
@@ -84,48 +86,25 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         private void LoadCurrentUser()
         {
-            try
-            {
-                CurrentUser = _citizenService.GetCitizenById(_userId);
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = "Greška pri učitavanju korisnika.";
-            }
+            CurrentUser = _citizenService.GetCitizenById(_userId);
         }
 
         public void LoadNeighborhoods()
         {
-            try
-            {
-                IsBusy = true;
-                ErrorMessage = string.Empty;
+            IsBusy = true;
+            ErrorMessage = string.Empty;
 
-                var neighborhoods = _neighborhoodService.Search(_searchParameters);
-                Neighborhoods.Clear();
-                foreach (var neighborhood in neighborhoods)
-                    Neighborhoods.Add(neighborhood);
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = "Greška pri učitavanju kvartova.";
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            var neighborhoods = _neighborhoodService.Search(_searchParameters);
+            Neighborhoods.Clear();
+            foreach (var neighborhood in neighborhoods)
+                Neighborhoods.Add(neighborhood);
+
+            IsBusy = false;
         }
 
         private void LoadStreetSections(NeighborhoodDto neighborhood)
         {
-            try
-            {
-                _neighborhoodService.LoadStreetSections(neighborhood);
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = "Greška pri učitavanju ulica.";
-            }
+            _neighborhoodService.LoadStreetSections(neighborhood);
         }
 
         public void PerformSearch(NeighborhoodSearchParameters? searchParameters)
@@ -142,47 +121,29 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 return false;
             }
 
-            try
+            IsBusy = true;
+            ErrorMessage = string.Empty;
+
+            if (_neighborhoodAccessRequestService.HasPendingRequest(_userId, selectedNeighborhood.Id))
             {
-                IsBusy = true;
-                ErrorMessage = string.Empty;
-
-                // Check if already has pending request
-                if (_neighborhoodAccessRequestService.HasPendingRequest(_userId, selectedNeighborhood.Id))
-                {
-                    ErrorMessage = "Već postoji zahtev za pristup ovom kvartu.";
-                    return false;
-                }
-
-                // Check if citizen's address is in the neighborhood
-                if (_neighborhoodService.AddressIsInNeighborhood(selectedNeighborhood, CurrentUser.Address))
-                {
-                    // Create membership directly
-                    _neighborhoodMembershipService.CreateMembershipAndUpdate(CurrentUser, selectedNeighborhood);
-
-                    // Auto-reject other pending requests
-                    _neighborhoodAccessRequestService.AutoRejectOtherRequests(CurrentUser, selectedNeighborhood.Id);
-
-                    // Reload current user to get updated membership
-                    LoadCurrentUser();
-
-                    return true;
-                }
-                else
-                {
-                    // Create access request
-                    _neighborhoodAccessRequestService.CreateAccessRequest(CurrentUser, selectedNeighborhood);
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = "Greška pri kreiranju zahteva.";
+                ErrorMessage = "Već postoji zahtev za pristup ovom kvartu.";
+                IsBusy = false;
                 return false;
             }
-            finally
+
+            if (_neighborhoodService.AddressIsInNeighborhood(selectedNeighborhood, CurrentUser.Address))
             {
+                _neighborhoodMembershipService.CreateMembershipAndUpdate(CurrentUser, selectedNeighborhood);
+                _neighborhoodAccessRequestService.AutoRejectOtherRequests(CurrentUser, selectedNeighborhood.Id);
+                LoadCurrentUser();
                 IsBusy = false;
+                return true;
+            }
+            else
+            {
+                _neighborhoodAccessRequestService.CreateAccessRequest(CurrentUser, selectedNeighborhood);
+                IsBusy = false;
+                return true;
             }
         }
 
