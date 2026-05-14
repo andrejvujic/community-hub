@@ -1,8 +1,8 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
+using CommunityHub.Application.Domain;
 
 namespace CommunityHub.Application.Database.Repositories.Apartments
 {
@@ -213,7 +213,9 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             Status? status = null
         )
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 request.id as request_id,
                 request.status,
@@ -273,11 +275,9 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
 
             List<ApartmentAccessRequest> requests = new();
 
-            query.ExecuteReader(
-                reader => requests.Add(
-                    _apartmentAccessRequestMapper.MapToEntity(reader)
-                )
-            );
+            connection.ExecuteReader(query, reader => requests.Add(
+                _apartmentAccessRequestMapper.MapToEntity(reader)
+            ));
 
             return requests;
         }
@@ -299,18 +299,20 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             return query.ExecuteScalar(Convert.ToBoolean);
         }
 
-        public int UpdateStatus(long requestId, Status newStatus, string comment)
+        public int Update(ApartmentAccessRequest request)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE apartment_access_requests
-                SET status = @new_status, comment = @comment
+                SET status = @status, comment = @comment
                 WHERE id = @request_id"
             )
-            .AddParameter("new_status", newStatus)
-            .AddParameter("request_id", requestId)
-            .AddParameter("comment", comment);
+            .AddParameter("status", request.Status)
+            .AddParameter("request_id", request.Id)
+            .AddParameter("comment", request.Comment);
 
-            return query.GetRowsAffectedCount();
+            return connection.GetRowsAffectedCount(query);
         }
     }
 }

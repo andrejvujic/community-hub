@@ -1,29 +1,27 @@
-﻿
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.Views.BuildingManager.BuildingPages;
+using CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class BuildingDetailsPage : Page
     {
-        private readonly Building _building;
-        private readonly User _user;
+        private readonly BuildingDetailsPageViewModel _viewModel;
         private Grid? _selectedSideBarItem = null;
-        private CommonRoomRentalRequestsPage _commonRoomRentalRequestsPage;
+        private readonly CommonRoomRentalRequestsPage _commonRoomRentalRequestsPage;
 
         public BuildingDetailsPage(User user, Building building)
         {
             InitializeComponent();
-            _building = building;
-            _user = user;
-            _commonRoomRentalRequestsPage = new CommonRoomRentalRequestsPage(_user, _building);
+            _viewModel = new BuildingDetailsPageViewModel(user, building);
+            DataContext = _viewModel;
+            _commonRoomRentalRequestsPage = new CommonRoomRentalRequestsPage(_viewModel.User, _viewModel.Building);
             _commonRoomRentalRequestsPage.CheckAndUpdateRentalDateStatuses();
-            _user = user;
-            BuildingFrame.Navigate(new BuildingInfoPage(_user, _building));
+            BuildingFrame.Navigate(new BuildingInfoPage(_viewModel.User, _viewModel.Building));
         }
         private void SideBarItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -50,27 +48,27 @@ namespace CommunityHub.Ui.Views.BuildingManager
             switch (tag)
             {
                 case "Info":
-                    BuildingFrame.Navigate(new BuildingInfoPage(_user, _building));
+                    BuildingFrame.Navigate(new BuildingInfoPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "ApartmentAccessRequest":
-                    BuildingFrame.Navigate(new ApartmentAccessRequestsPage(_user, _building));
+                    BuildingFrame.Navigate(new ApartmentAccessRequestsPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "ApartmentMembership":
-                    BuildingFrame.Navigate(new ApartmentMembershipsPage(_user, _building));
+                    BuildingFrame.Navigate(new ApartmentMembershipsPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "CommonRoom":
-                    BuildingFrame.Navigate(new CommonRoomsPage(_user, _building));
+                    BuildingFrame.Navigate(new CommonRoomsPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "CommonRoomRentalRequest":
-                    BuildingFrame.Navigate(new CommonRoomRentalRequestsPage(_user, _building));
+                    BuildingFrame.Navigate(_commonRoomRentalRequestsPage);
                     break;
                 case "NoticeBoard":
-                    BuildingFrame.Navigate(new NoticeBoardPage(_user, _building));
+                    BuildingFrame.Navigate(new NoticeBoardPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "SchedulingAssembly":
                     break;
                 case "ReportedIssue":
-                    BuildingFrame.Navigate(new ReportedIssuesPage(_user, _building));
+                    BuildingFrame.Navigate(new ReportedIssuesPage(_viewModel.User, _viewModel.Building));
                     break;
             }
         }

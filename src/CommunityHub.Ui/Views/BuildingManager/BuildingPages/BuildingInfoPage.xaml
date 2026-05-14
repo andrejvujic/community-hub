@@ -62,7 +62,10 @@
                     </Grid>
 
                     <Grid Grid.Column="1">
-                        <Image x:Name="displayedImage" Stretch="Uniform" />
+                        <Image
+                            x:Name="displayedImage"
+                            Source="{Binding CurrentImage}"
+                            Stretch="Uniform" />
                     </Grid>
 
                     <Grid Grid.Column="2">
@@ -83,7 +86,8 @@
                         Margin="0,10,0,0"
                         HorizontalAlignment="Center"
                         FontSize="20"
-                        FontWeight="Bold" />
+                        FontWeight="Bold"
+                        Text="{Binding ImageCounterText}" />
                 </Grid>
             </Grid>
         </Grid>
@@ -126,8 +130,8 @@
                             <TextBlock FontSize="20">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="Address.Street.Name" />
-                                        <Binding Path="Address.StreetNumber" />
+                                        <Binding Path="BuildingDto.Address.Street.Name" />
+                                        <Binding Path="BuildingDto.Address.StreetNumber" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
@@ -157,7 +161,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 FontSize="20"
-                                Text="{Binding Address.Neighborhood}" />
+                                Text="{Binding BuildingDto.Address.Neighborhood}" />
                         </Grid>
                     </Grid>
 
@@ -184,7 +188,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 FontSize="20"
-                                Text="{Binding Address.City.Name}" />
+                                Text="{Binding BuildingDto.Address.City.Name}" />
                         </Grid>
                     </Grid>
 
@@ -222,7 +226,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 FontSize="20"
-                                Text="{Binding Address.Country.Name}" />
+                                Text="{Binding BuildingDto.Address.Country.Name}" />
                         </Grid>
                     </Grid>
 
@@ -249,7 +253,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 FontSize="20"
-                                Text="{Binding FloorCount}" />
+                                Text="{Binding BuildingDto.FloorCount}" />
                         </Grid>
                     </Grid>
 
@@ -276,7 +280,7 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 FontSize="20"
-                                Text="{Binding ApartmentCount}" />
+                                Text="{Binding BuildingDto.ApartmentCount}" />
                         </Grid>
                     </Grid>
 

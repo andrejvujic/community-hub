@@ -18,8 +18,6 @@ namespace CommunityHub.Ui.Views.BuildingManager
             DataContext = _viewModel;
             HomeFrame.Navigate(new HomePage(user));
         }
-        private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
-        private void SetUserName() => userNameTextBlock.Text = _viewModel.UserName;
         private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
         {
             var clicked = sender as Grid;

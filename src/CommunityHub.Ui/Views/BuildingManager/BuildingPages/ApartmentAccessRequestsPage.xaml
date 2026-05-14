@@ -48,7 +48,8 @@
                     Margin="15,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    FontSize="21" />
+                    FontSize="21"
+                    Text="{Binding StreetInfo}" />
             </Grid>
         </Grid>
 
@@ -61,7 +62,7 @@
                 VerticalContentAlignment="Center"
                 Cursor="Hand"
                 FontSize="20"
-                SelectionChanged="StatusComboBox_SelectionChanged">
+                SelectedIndex="{Binding StatusFilterSelectedIndex, Mode=TwoWay}">
                 <ComboBoxItem Content="Svi" IsSelected="True" />
                 <ComboBoxItem Content="Čeka odobrenje" />
                 <ComboBoxItem Content="Prihvaćen" />
@@ -84,7 +85,7 @@
                 RowHeight="40"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SelectionChanged="RequestsDataGrid_SelectionChanged"
+                SelectedItem="{Binding SelectedRequest, Mode=TwoWay}"
                 SelectionMode="Single"
                 SelectionUnit="FullRow">
 
@@ -160,7 +161,7 @@
             <Grid
                 x:Name="changeStatusGrid"
                 Margin="20,0,0,0"
-                IsEnabled="False">
+                IsEnabled="{Binding IsChangeStatusEnabled}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -190,7 +191,7 @@
                             Width="200"
                             Cursor="Hand"
                             FontSize="19"
-                            SelectionChanged="ChangeStatusComboBox_SelectionChanged">
+                            SelectedIndex="{Binding ChangeStatusSelectedIndex, Mode=TwoWay}">
                             <ComboBoxItem Content="Čeka odobrenje" IsSelected="True" />
                             <ComboBoxItem Content="Prihvaćen" />
                             <ComboBoxItem Content="Odbijen" />
@@ -235,7 +236,8 @@
                             Height="100"
                             AcceptsReturn="True"
                             FontSize="22"
-                            IsEnabled="False"
+                            IsEnabled="{Binding IsCommentEnabled}"
+                            Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
                             TextWrapping="Wrap" />
                     </Grid>
                 </Grid>

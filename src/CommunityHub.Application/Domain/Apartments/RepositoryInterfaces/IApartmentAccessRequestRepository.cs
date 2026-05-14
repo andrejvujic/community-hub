@@ -24,7 +24,7 @@ namespace CommunityHub.Application.Domain.Apartments.RepositoryInterfaces
             Status? status = null
         );
         public bool HasPendingRequest(long userId, long apartmentId);
-        public int UpdateStatus(long requestId, Status newStatus, string comment);
+        public int Update(ApartmentAccessRequest request);
         
     }
 }

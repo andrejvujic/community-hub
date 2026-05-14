@@ -9,9 +9,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
     public class MyBuildingsPageViewModel
     {
         private readonly BuildingService _buildingService;
-        private readonly BuildingMapper _buildingMapper = new();
         public User User { get; }
-        public ObservableCollection<BuildingDto> Buildings { get; } = new();
+        public ObservableCollection<BuildingDto> Buildings { get; } = [];
         public MyBuildingsPageViewModel(User user)
         {
             User = user;
@@ -24,7 +23,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             var buildings = _buildingService.GetByManagerId(User.Id);
 
             foreach (var building in buildings)
-                Buildings.Add(_buildingMapper.MapToDto(building));
+                Buildings.Add(building);
         }
     }
 }

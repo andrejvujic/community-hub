@@ -8,7 +8,6 @@
     Title="Building Manager"
     Margin="0,0,0,0"
     FontFamily="{StaticResource AppFontFamily}"
-    Loaded="HomeWindow_Loaded"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
@@ -349,7 +348,8 @@
                             Margin="0,0,0,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            FontSize="16" />
+                            FontSize="16"
+                            Text="{Binding Username}" />
                     </Grid>
                 </Grid>
             </Grid>
