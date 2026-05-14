@@ -5,12 +5,14 @@ using CommunityHub.Application.Domain.Issues.RepositoryInterfaces;
 namespace CommunityHub.Application.Database.Repositories.Issues
 {
 	public class IssueRepository : IIssueRepository
-    {
+	{
 		private readonly IssueMapper _issueMapper = new();
 
 		public List<Issue> GetAllByBuilding(long buildingId)
 		{
-			var query = PostgresQuery.Create(
+			using var connection = DatabaseConnection.Create();
+
+			var query = DatabaseQuery.Create(
 				@"SELECT
 					reported_issue.id AS reported_issue_id,
 					reported_issue.description,
@@ -33,17 +35,17 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 				)
 				.AddParameter("@building_id", buildingId);
 
-			List<Issue> issues = new List<Issue>();
+			List<Issue> issues = [];
 
-			query.ExecuteReader(reader => issues.Add(_issueMapper.MapToEntity(reader)));
+			connection.ExecuteReader(query, reader => issues.Add(_issueMapper.MapToEntity(reader)));
 
 			return issues;
 		}
 
 		public List<Issue> GetAllByBuildingAndResident(long buildingId, long residentId)
 		{
-            var query = PostgresQuery.Create(
-                @"SELECT
+			var query = PostgresQuery.Create(
+				@"SELECT
 					issue.id AS reported_issue_id,
 					issue.description,
 					issue.reported_date,
@@ -64,32 +66,37 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 				INNER JOIN users resident ON issue.resident_id = resident.id 
 				WHERE issue.building_id = @building_id AND	
 					  issue.resident_id = @resident_id"
-            )
+			)
 			.AddParameter("building_id", buildingId)
 			.AddParameter("resident_id", residentId);
 
 			List<Issue> issues = new();
 
-            query.ExecuteReader(
+			query.ExecuteReader(
 				reader => issues.Add(
 					_issueMapper.MapToEntity(reader)
 				)
 			);
 
-            return issues;
-        }
-
-		public int UpdateStatus(long issueId, IssueStatus newStatus)
-		{
-			var query = PostgresQuery.Create(
-				@"UPDATE reported_issues
-				  SET status = @new_status
-				  WHERE id = @issue_id;"
-			)
-			.AddParameter("@new_status", newStatus)
-			.AddParameter("@issue_id", issueId);
-
-			return query.GetRowsAffectedCount();
+			return issues;
 		}
-    }
+
+		public int Update(Issue issue)
+		{
+			using var connection = DatabaseConnection.Create();
+
+			var query = DatabaseQuery.Create(
+                @"UPDATE reported_issues
+				  SET status = @status, description = @description, priority = @priority, reported_date = @reported_date
+				  WHERE id = @issue_id;"
+            )
+			.AddParameter("@status", issue.Status)
+			.AddParameter("@description", issue.Description)
+			.AddParameter("@priority", issue.Priority)
+			.AddParameter("@reported_date", issue.ReportedAt)
+			.AddParameter("@issue_id", issue.Id);
+
+			return connection.GetRowsAffectedCount(query);
+		}
+	}
 }

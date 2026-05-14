@@ -40,5 +40,30 @@ namespace CommunityHub.Application.Domain.Issues
             Building = building;
             Id = id;
         }
+
+        public Issue CopyWith(
+            long? id = null,
+            string? description = null,
+            DateTime? reportedAt = null,
+            IssuePriority? priority = null,
+            IssueStatus? status = null,
+            long? residentId = null,
+            User? resident = null,
+            long? buildingId = null,
+            Building? building = null
+        )
+        {
+            return new Issue(
+                description ?? Description,
+                reportedAt ?? ReportedAt,
+                priority ?? Priority,
+                status ?? Status,
+                residentId ?? ResidentId,
+                buildingId ?? BuildingId,
+                resident ?? Resident,
+                building ?? Building,
+                id ?? Id
+            );
+        }
     }
 }
