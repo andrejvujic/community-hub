@@ -1,8 +1,7 @@
-﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 
-namespace CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudget
+namespace CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudgets
 {
     public class BudgetCategoryBalanceRepository
     {

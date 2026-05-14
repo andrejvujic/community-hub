@@ -1,4 +1,4 @@
-﻿namespace CommunityHub.Application.Domain.Neighborhoods.CityFacility
+﻿namespace CommunityHub.Application.Domain.Neighborhoods.CityFacilities
 {
     public class AvailableFacilitySlot
     {

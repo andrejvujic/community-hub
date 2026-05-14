@@ -3,7 +3,7 @@ using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Services;
 
-namespace CommunityHub.Application.Database.Repositories;
+namespace CommunityHub.Application.Database.Repositories.Services;
 
 public class JobListingRepository
 {

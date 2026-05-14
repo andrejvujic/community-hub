@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Database.Repositories;
+﻿using CommunityHub.Application.Database.Repositories.ServiceForums;
 using CommunityHub.Application.Domain.ServiceForums;
 using CommunityHub.Application.Domain.Users;
 

@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget
+namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets
 {
     public class BudgetExpense
     {

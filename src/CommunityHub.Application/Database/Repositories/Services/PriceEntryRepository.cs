@@ -2,7 +2,7 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Services;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Services
 {
     public class PriceEntryRepository
     {

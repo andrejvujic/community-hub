@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.ServiceForums;
 
-namespace CommunityHub.Application.Database.Repositories;
+namespace CommunityHub.Application.Database.Repositories.ServiceForums;
 
 public class ProviderForumRepository
 {

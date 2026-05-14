@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Database.Repositories.ServiceBookings;
 using CommunityHub.Application.Domain.ServiceBookings;
 using CommunityHub.Ui.ViewModels;
 

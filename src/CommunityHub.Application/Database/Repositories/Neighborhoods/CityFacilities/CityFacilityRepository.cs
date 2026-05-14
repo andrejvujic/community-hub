@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacility;
+using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
 
-namespace CommunityHub.Application.Database.Repositories
+namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities
 {
     public class CityFacilityRepository
     {
