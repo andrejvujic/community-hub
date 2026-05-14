@@ -16,6 +16,7 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             InitializeComponent();
             _viewModel = new ReportedIssuesPageViewModel(user, building);
             DataContext = _viewModel;
+            _viewModel.LoadReportedIssues();
         }
         private void LeftArrow_Click(object sender, MouseButtonEventArgs e)
         {

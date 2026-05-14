@@ -23,7 +23,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
-            LoadReportedIssues();
         }
         public string StreetInfo
         {
