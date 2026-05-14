@@ -26,16 +26,16 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Naziv kvarta:" VerticalAlignment="Center" FontSize="14"/>
-        <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="NameTextBox" Grid.Row="0" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" VerticalContentAlignment="Center" Text="{Binding NameFilter}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Adresa:" VerticalAlignment="Center" FontSize="14"/>
-        <TextBox x:Name="AddressTextBox" Grid.Row="2" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="AddressTextBox" Grid.Row="2" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" VerticalContentAlignment="Center" Text="{Binding AddressFilter}"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Država:" VerticalAlignment="Center" FontSize="14"/>
-        <Button x:Name="SelectCountryButton" Grid.Row="4" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" Click="SelectCountryButton_Click">Izaberite državu</Button>
+        <Button x:Name="SelectCountryButton" Grid.Row="4" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" Click="SelectCountryButton_Click" Content="{Binding CountryButtonContent}"/>
 
         <TextBlock Grid.Row="6" Grid.Column="0" Text="Grad:" VerticalAlignment="Center" FontSize="14"/>
-        <Button x:Name="SelectCityButton" Grid.Row="6" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" Click="SelectCityButton_Click">Izaberite grad</Button>
+        <Button x:Name="SelectCityButton" Grid.Row="6" Grid.Column="2" Height="30" FontSize="14" Padding="6,0" Click="SelectCityButton_Click" Content="{Binding CityButtonContent}" IsEnabled="{Binding IsCityEnabled}"/>
 
         <StackPanel Grid.Row="8" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
             <Button Content="Otkaži" Width="120" Height="34" Click="CancelButton_Click" IsCancel="True" Margin="0,0,8,0"/>

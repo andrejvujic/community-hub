@@ -21,7 +21,7 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
         private void SearchButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var window = new SearchCriteriaWindow(null);
+            var window = new SearchCriteriaWindow(_viewModel?.LastSearchParameters);
             if (window.ShowDialog() == true)
             {
                 _viewModel?.PerformSearch(window.Result);

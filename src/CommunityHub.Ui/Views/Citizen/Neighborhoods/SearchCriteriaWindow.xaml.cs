@@ -1,64 +1,43 @@
 using System.Windows;
-using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Helpers.Search;
+using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class SearchCriteriaWindow : Window
     {
+        private readonly SearchCriteriaViewModel _viewModel;
         public NeighborhoodSearchParameters? Result { get; private set; }
-
-        private Country? _selectedCountry;
-        private City? _selectedCity;
-        private const string SelectCountryPrompt = "Izaberite državu";
-        private const string SelectCityPrompt = "Izaberite grad";
 
         public SearchCriteriaWindow(NeighborhoodSearchParameters? initial = null)
         {
             InitializeComponent();
-            SelectCityButton.IsEnabled = false;
-
-            if (initial != null)
-            {
-                NameTextBox.Text = initial.Name;
-                AddressTextBox.Text = initial.Address;
-
-                _selectedCountry = initial.Country;
-                _selectedCity = initial.City;
-            }
-
-            UpdateSelectButtons();
+            _viewModel = new SearchCriteriaViewModel(initial);
+            DataContext = _viewModel;
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            string? name = string.IsNullOrWhiteSpace(NameTextBox.Text) ? null : NameTextBox.Text.Trim();
-            string? address = string.IsNullOrWhiteSpace(AddressTextBox.Text) ? null : AddressTextBox.Text.Trim();
-
-            Result = new NeighborhoodSearchParameters(_selectedCountry, _selectedCity, name, address);
+            Result = _viewModel.BuildSearchParameters();
             DialogResult = true;
             Close();
         }
 
         private void SelectCountryButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = new SelectCountryWindow(_selectedCountry);
-            if (window.ShowDialog() != true) return;
-
-            _selectedCountry = window.SelectedCountry;
-            if (_selectedCountry == null)
-                _selectedCity = null;
-
-            UpdateSelectButtons();
+            var window = new SelectCountryWindow(_viewModel.SelectedCountry);
+            if (window.ShowDialog() == true)
+            {
+                _viewModel.SelectedCountry = window.SelectedCountry;
+            }
         }
 
         private void SelectCityButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = new SelectCityWindow(_selectedCountry);
+            var window = new SelectCityWindow(_viewModel.SelectedCountry);
             if (window.ShowDialog() == true)
             {
-                _selectedCity = window.SelectedCity;
-                UpdateSelectButtons();
+                _viewModel.SelectedCity = window.SelectedCity;
             }
         }
 
@@ -69,22 +48,9 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            NameTextBox.Text = string.Empty;
-            AddressTextBox.Text = string.Empty;
-            _selectedCountry = null;
-            _selectedCity = null;
-
-            UpdateSelectButtons();
-
+            _viewModel.Clear();
             Result = null;
             DialogResult = true;
-        }
-
-        private void UpdateSelectButtons()
-        {
-            SelectCountryButton.Content = _selectedCountry?.Name ?? SelectCountryPrompt;
-            SelectCityButton.Content = _selectedCity?.Name ?? SelectCityPrompt;
-            SelectCityButton.IsEnabled = _selectedCountry != null;
         }
     }
 }

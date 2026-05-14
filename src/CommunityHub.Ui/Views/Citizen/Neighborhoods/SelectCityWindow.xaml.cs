@@ -1,38 +1,29 @@
 using System.Windows;
-using CommunityHub.Application.Helpers.Search;
-using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class SelectCityWindow : Window
     {
-        private readonly CityRepository _cityRepository = new CityRepository();
+        private readonly SelectCityViewModel _viewModel;
         public City? SelectedCity { get; private set; }
-        private Country? _selectedCountry;
 
         public SelectCityWindow(Country? selectedCountry = null)
         {
             InitializeComponent();
-            _selectedCountry = selectedCountry;
-            CitiesList.ItemsSource = _selectedCountry == null
-                ? _cityRepository.Search(new CitySearchParameters())
-                : _cityRepository.GetByCountryId(_selectedCountry.Id);
+            _viewModel = new SelectCityViewModel(selectedCountry);
+            DataContext = _viewModel;
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            var q = SearchTextBox.Text?.Trim();
-            var results = string.IsNullOrWhiteSpace(q)
-                ? (_selectedCountry == null ? _cityRepository.Search(new CitySearchParameters()) : _cityRepository.GetByCountryId(_selectedCountry.Id))
-                : _cityRepository.Search(new CitySearchParameters(_selectedCountry, q));
-
-            CitiesList.ItemsSource = results;
+            _viewModel.Search();
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            SelectedCity = CitiesList.SelectedItem as City;
+            SelectedCity = _viewModel.SelectedCity;
             DialogResult = true;
         }
 

@@ -16,11 +16,11 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox x:Name="SearchTextBox" Grid.Column="0" Height="26" VerticalContentAlignment="Center" />
+            <TextBox x:Name="SearchTextBox" Grid.Column="0" Height="26" VerticalContentAlignment="Center" Text="{Binding SearchQuery}" />
             <Button Grid.Column="1" Content="Pretraži" Width="80" Height="26" Margin="8,0,0,0" Click="SearchButton_Click"/>
         </Grid>
 
-        <ListBox x:Name="CountriesList" Grid.Row="2" DisplayMemberPath="Name" />
+        <ListBox x:Name="CountriesList" Grid.Row="2" DisplayMemberPath="Name" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" />
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
             <Button Content="Otkaži" Width="100" Click="Cancel_Click"/>
