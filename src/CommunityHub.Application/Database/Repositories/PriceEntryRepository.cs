@@ -1,6 +1,6 @@
 ﻿using System.Net.NetworkInformation;
 using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Services;
 
 namespace CommunityHub.Application.Database.Repositories
 {

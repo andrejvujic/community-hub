@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.ServiceBookings;
 
 namespace CommunityHub.Application.Database.Repositories
 {

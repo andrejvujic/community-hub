@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Citizen\" />
-    <Folder Include="ViewModels\NeighborhoodCoordinator\Windows\" />
     <Folder Include="ViewModels\Resident\Buildings\Ads\Browse\" />
     <Folder Include="ViewModels\Resident\Buildings\Create\" />
     <Folder Include="ViewModels\Shared\" />

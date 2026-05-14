@@ -1,7 +1,8 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.Domain.ServiceBookings;
+using CommunityHub.Application.Domain.Services;
 
-namespace CommunityHub.Application.Domain
+namespace CommunityHub.Application.Domain.Users
 {
     public class ServiceProvider : User
     {

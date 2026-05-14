@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain
+﻿using CommunityHub.Application.Domain.Users;
+
+namespace CommunityHub.Application.Domain.ServiceBookings
 {
     public class CoverageOffer
     {

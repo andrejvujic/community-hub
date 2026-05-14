@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Services;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {

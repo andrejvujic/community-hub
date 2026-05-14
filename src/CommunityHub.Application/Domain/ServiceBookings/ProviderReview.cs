@@ -1,6 +1,7 @@
-﻿using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain
+namespace CommunityHub.Application.Domain.ServiceBookings
 {
     public class ProviderReview
     {

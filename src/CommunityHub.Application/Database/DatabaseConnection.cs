@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.Events;
@@ -7,6 +8,7 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.Services;
 using CommunityHub.Application.Domain.Users;
 using Npgsql;
 using System.Data;

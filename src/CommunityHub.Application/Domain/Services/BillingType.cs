@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CommunityHub.Application.Domain
+namespace CommunityHub.Application.Domain.Services
 {
     public enum BillingType
     {

@@ -1,6 +1,8 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain
+namespace CommunityHub.Application.Domain.ServiceBookings
 {
     public class BookedJob
     {

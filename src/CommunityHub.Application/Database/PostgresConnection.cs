@@ -11,6 +11,8 @@ using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Addresses;
 
 namespace CommunityHub.Application.Database;
 

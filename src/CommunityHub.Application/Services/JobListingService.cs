@@ -2,6 +2,8 @@
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Services;
 
