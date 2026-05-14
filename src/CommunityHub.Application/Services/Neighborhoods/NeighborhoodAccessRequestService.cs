@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.MappersDto.Users;
@@ -30,6 +31,21 @@ namespace CommunityHub.Application.Services.Neighborhoods
             => _neighborhoodAccessRequestRepository.GetByCoordinatorIdAndStatus(coordinatorId, status)
                 .Select(_neighborhoodAccessRequestMapper.MapToDto)
                 .ToList();
+
+        public List<NeighborhoodAccessRequestDto> GetByCitizenId(long citizenId, RequestOrder order = RequestOrder.Unspecified, bool filterByStatus = false)
+        {
+            var requests = _neighborhoodAccessRequestRepository.GetByCitizenId(citizenId, order)
+                .Select(_neighborhoodAccessRequestMapper.MapToDto)
+                .ToList();
+
+            if (!filterByStatus)
+                return requests;
+
+            return requests
+                .OrderBy(r => r.Status)
+                .ThenBy(r => order == RequestOrder.CreationDateDescending ? -r.CreationDate.Ticks : r.CreationDate.Ticks)
+                .ToList();
+        }
 
         public bool HasPendingRequest(long citizenId, long neighborhoodId)
             => _neighborhoodAccessRequestRepository.HasPendingRequest(citizenId, neighborhoodId);
@@ -80,5 +96,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
                 _neighborhoodAccessRequestRepository.Update(updated);
             }
         }
+
+        public void Delete(long citizenId, long neighborhoodId)
+            => _neighborhoodAccessRequestRepository.Delete(citizenId, neighborhoodId);
     }
 }

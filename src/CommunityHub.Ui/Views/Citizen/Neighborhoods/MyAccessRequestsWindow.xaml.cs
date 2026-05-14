@@ -1,73 +1,43 @@
 using System.Windows;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
 using CommunityHub.Application.Helpers.Sorting;
-using System.Windows.Data;
-using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Database.Repositories.Neighborhoods;
+using CommunityHub.Application.Services.Dtos.Neighborhoods;
+using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class MyAccessRequestsWindow : Window
     {
-        public long CitizenId { get; }
-        private readonly NeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository = new NeighborhoodAccessRequestRepository();
-        public ObservableCollection<NeighborhoodAccessRequest> Requests { get; } = new ObservableCollection<NeighborhoodAccessRequest>();
+        private MyAccessRequestsWindowViewModel? _viewModel;
 
         public MyAccessRequestsWindow(long citizenId)
         {
-            CitizenId = citizenId;
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new MyAccessRequestsWindowViewModel(citizenId);
+            DataContext = _viewModel;
             KeyDown += MyAccessRequestsWindow_KeyDown;
-            Loaded += MyAccessRequestsWindow_Loaded;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
 
         private void DeleteRequest_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement fe && fe.DataContext is NeighborhoodAccessRequest request)
+            if (sender is FrameworkElement fe && fe.DataContext is NeighborhoodAccessRequestDto request)
             {
                 var result = MessageBox.Show("Da li ste sigurni da želite da obrišete ovaj zahtev?", "Potvrda brisanja", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result != MessageBoxResult.Yes) return;
 
-                _neighborhoodAccessRequestRepository.Delete(request.Citizen.Id, request.Neighborhood.Id);
-                Requests.Remove(request);
+                _viewModel?.DeleteRequest(request);
             }
-        }
-
-        private void MyAccessRequestsWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadRequests();
-        }
-
-        private void LoadRequests()
-        {
-            Requests.Clear();
-            var order = NewestToggle?.IsChecked == true ? RequestOrder.CreationDateDescending : RequestOrder.CreationDateAscending;
-            bool filterByStatus = GroupByStatusToggle?.IsChecked == true;
-            var items = _neighborhoodAccessRequestRepository.GetByCitizenId(CitizenId, order, filterByStatus);
-            foreach (var r in items) Requests.Add(r);
-            ApplyGrouping();
-        }
-
-        private void ApplyGrouping()
-        {
-            var view = CollectionViewSource.GetDefaultView(Requests);
-            if (view == null) return;
-
-            view.GroupDescriptions.Clear();
-            if (GroupByStatusToggle?.IsChecked == true)
-                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(NeighborhoodAccessRequest.Status)));
         }
 
         private void Toggle_Changed(object sender, RoutedEventArgs e)
         {
-            LoadRequests();
+            if (_viewModel == null) return;
+
+            var order = NewestToggle?.IsChecked == true ? RequestOrder.CreationDateDescending : RequestOrder.CreationDateAscending;
+            _viewModel.SelectedOrder = order;
+
+            var filterByStatus = GroupByStatusToggle?.IsChecked == true;
+            _viewModel.FilterByStatus = filterByStatus;
         }
 
         private void MyAccessRequestsWindow_KeyDown(object sender, KeyEventArgs e)
@@ -97,6 +67,5 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
                 return;
             }
         }
-
     }
 }

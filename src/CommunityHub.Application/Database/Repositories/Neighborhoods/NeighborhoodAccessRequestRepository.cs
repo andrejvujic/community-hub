@@ -69,18 +69,8 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             return requests;
         }
 
-        private static string GetOrderByClause(RequestOrder order, bool filterByStatus)
+        private static string GetOrderByClause(RequestOrder order)
         {
-            if (filterByStatus)
-            {
-                return order switch
-                {
-                    RequestOrder.CreationDateAscending => "ORDER BY neighborhood_access_requests.status ASC, neighborhood_access_requests.creation_date ASC",
-                    RequestOrder.CreationDateDescending => "ORDER BY neighborhood_access_requests.status ASC, neighborhood_access_requests.creation_date DESC",
-                    _ => "ORDER BY neighborhood_access_requests.status ASC"
-                };
-            }
-
             return order switch
             {
                 RequestOrder.CreationDateAscending => "ORDER BY neighborhood_access_requests.creation_date ASC",
@@ -89,7 +79,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             };
         }
 
-        public List<NeighborhoodAccessRequest> GetByCitizenId(long citizenId, RequestOrder order = RequestOrder.Unspecified, bool filterByStatus = false)
+        public List<NeighborhoodAccessRequest> GetByCitizenId(long citizenId, RequestOrder order = RequestOrder.Unspecified)
         {
             var query = PostgresQuery.Create(
                 $@"SELECT 
@@ -145,7 +135,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
                 WHERE
                     neighborhood_access_requests.citizen_id = @citizenId
-                {GetOrderByClause(order, filterByStatus)}"
+                {GetOrderByClause(order)}"
             )
             .AddParameter("citizenId", citizenId)
             ;

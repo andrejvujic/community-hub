@@ -105,7 +105,7 @@
             </StackPanel>
         </Grid>
 
-        <ListBox Grid.Row="2" x:Name="RequestsList" ItemsSource="{Binding Requests}" VerticalContentAlignment="Top" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+        <ListBox Grid.Row="2" ItemsSource="{Binding RequestsView}" VerticalContentAlignment="Top" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
