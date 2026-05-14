@@ -16,5 +16,8 @@ namespace CommunityHub.Application.Services.Users
             => _citizenRepository.GetById(citizenId) is Citizen citizen
                 ? _citizenMapper.MapToDto(citizen)
                 : null;
+
+        public void UpdateMembership(long citizenId, long membershipId)
+            => _citizenRepository.UpdateMembership(citizenId, membershipId);
     }
 }

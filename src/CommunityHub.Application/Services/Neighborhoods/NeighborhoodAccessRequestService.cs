@@ -1,9 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
-using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
@@ -15,10 +13,6 @@ namespace CommunityHub.Application.Services.Neighborhoods
     {
         private readonly INeighborhoodAccessRequestRepository _neighborhoodAccessRequestRepository
             = Injector.CreateInstance<INeighborhoodAccessRequestRepository>();
-        private readonly INeighborhoodMembershipRepository _neighborhoodMembershipRepository
-            = Injector.CreateInstance<INeighborhoodMembershipRepository>();
-        private readonly ICitizenRepository _citizenRepository
-            = Injector.CreateInstance<ICitizenRepository>();
         private readonly NeighborhoodAccessRequestMapper _neighborhoodAccessRequestMapper = new();
         private readonly CitizenMapper _citizenMapper = new();
         private readonly NeighborhoodMapper _neighborhoodMapper = new();
@@ -58,13 +52,6 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var request = _neighborhoodAccessRequestMapper.MapToDomain(requestDto);
             request.Accept();
             _neighborhoodAccessRequestRepository.Update(request);
-            var membership = new NeighborhoodMembership(
-                0,
-                DateTime.Now,
-                request.Neighborhood
-            );
-            var createdMembership = _neighborhoodMembershipRepository.Create(membership);
-            _citizenRepository.UpdateMembership(request.Citizen.Id, createdMembership.Id);
         }
 
         public void CreateAccessRequest(CitizenDto citizenDto, NeighborhoodDto neighborhoodDto)
