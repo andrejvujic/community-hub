@@ -24,7 +24,6 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.Reposit
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.MappersDto;
@@ -33,6 +32,10 @@ using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.MappersDto.Neighborhoods;
+using CommunityHub.Application.MappersDto.Users;
+using CommunityHub.Application.MappersDto.Addresses;
+using CommunityHub.Application.MappersDto.Events;
 
 namespace CommunityHub.Application
 {
@@ -71,6 +74,7 @@ namespace CommunityHub.Application
             { typeof(INeighborhoodMeetingRepository), new NeighborhoodMeetingRepository() },
             { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() },
             { typeof(IMapper<Neighborhood, NeighborhoodDto>), new NeighborhoodMapper() },
+            { typeof(IMapper<Address, AddressDto>), new AddressMapper() },
             { typeof(IMapper<StreetSection, StreetSectionDto>), new StreetSectionMapper() },
             { typeof(IMapper<Citizen, CitizenDto>), new CitizenMapper() },
             { typeof(IMapper<CommunityEvent, CommunityEventDto>), new CommunityEventMapper() },
