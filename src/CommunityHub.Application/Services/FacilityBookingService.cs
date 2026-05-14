@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Database.Repositories;
+﻿using CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacility;
+using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
 
 namespace CommunityHub.Application.Services
 {

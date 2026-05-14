@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudget;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 
 namespace CommunityHub.Ui.Helpers.Converters
 {

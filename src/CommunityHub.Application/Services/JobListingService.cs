@@ -1,7 +1,10 @@
-﻿using CommunityHub.Application.Database.Repositories;
+﻿using CommunityHub.Application.Database.Repositories.ServiceBookings;
+using CommunityHub.Application.Database.Repositories.Services;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Services;
 
