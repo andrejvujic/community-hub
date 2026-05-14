@@ -29,34 +29,37 @@
 
             <StackPanel Grid.Row="0" Margin="0,0,0,10">
                 <TextBlock Text="Naziv kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
-                <TextBox x:Name="NameTextBox" Padding="8" />
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="8" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Margin="0,0,0,15">
                 <TextBlock Text="Opis kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
-                <TextBox x:Name="DescriptionTextBox" Padding="5" AcceptsReturn="True" TextWrapping="Wrap" />
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Padding="5" AcceptsReturn="True" TextWrapping="Wrap" />
             </StackPanel>
 
             <GroupBox Grid.Row="2" Header="Lokacija" Margin="0,0,0,10" Padding="10">
                 <UniformGrid Columns="2">
                     <StackPanel Margin="0,0,5,0">
                         <TextBlock Text="Država:" Margin="0,0,0,3"/>
-                        <ComboBox x:Name="CountryComboBox" 
+                        <ComboBox x:Name="CountryComboBox"
                                   ItemsSource="{Binding Countries}"
+                                  SelectedItem="{Binding SelectedCountry}"
                                   DisplayMemberPath="Name"
+                                  IsEnabled="{Binding IsCountryEnabled}"
+                                  ToolTip="{Binding LocationLockTooltip}"
                                   ToolTipService.ShowOnDisabled="True"
-                                  Padding="5"
-                                  SelectionChanged="CountryComboBox_SelectionChanged" />
+                                  Padding="5" />
                     </StackPanel>
                     <StackPanel Margin="5,0,0,0">
                         <TextBlock Text="Grad:" Margin="0,0,0,3"/>
-                        <ComboBox x:Name="CityComboBox" 
+                        <ComboBox x:Name="CityComboBox"
                                   ItemsSource="{Binding Cities}"
+                                  SelectedItem="{Binding SelectedCity}"
                                   DisplayMemberPath="Name"
+                                  IsEnabled="{Binding IsCityEnabled}"
+                                  ToolTip="{Binding LocationLockTooltip}"
                                   ToolTipService.ShowOnDisabled="True"
-                                  IsEnabled="False" 
-                                  Padding="5"
-                                  SelectionChanged="CityComboBox_SelectionChanged"/>
+                                  Padding="5" />
                     </StackPanel>
                 </UniformGrid>
             </GroupBox>
@@ -64,12 +67,13 @@
             <GroupBox Grid.Row="3" Header="Dodavanje ulica" Padding="10">
                 <StackPanel>
                     <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
-                    <ComboBox x:Name="StreetComboBox" 
+                    <ComboBox x:Name="StreetComboBox"
                               ItemsSource="{Binding Streets}"
+                              SelectedItem="{Binding SelectedStreet}"
                               DisplayMemberPath="Name"
-                              IsEnabled="False" 
-                              Padding="5" 
-                              Margin="0,0,0,10"/>
+                              IsEnabled="{Binding IsStreetEnabled}"
+                              Padding="5"
+                              Margin="0,0,0,10" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -197,11 +201,11 @@
                         Margin="0,0,10,0" 
                         Padding="20,10" 
                         Cursor="Hand"/>
-                <Button Content="Registruj Kvart" 
+                <Button Content="Registruj Kvart"
                         Click="RegisterButton_Click"
-                        Padding="25,10" 
-                        FontWeight="Bold" 
-                        Cursor="Hand"/>
+                        Padding="25,10"
+                        FontWeight="Bold"
+                        Cursor="Hand" />
             </StackPanel>
         </Grid>
     </ScrollViewer>
