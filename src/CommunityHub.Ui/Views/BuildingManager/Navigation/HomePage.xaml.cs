@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using CommunityHub.Application.Domain.Users;
-using CommunityHub.Ui.ViewModels.BuildingManager;
 using CommunityHub.Ui.ViewModels.BuildingManager.Navigation;
 
 namespace CommunityHub.Ui.Views.BuildingManager

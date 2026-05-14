@@ -1,6 +1,4 @@
-﻿using CommunityHub.Application;
-using CommunityHub.Application.MappersDto.Buildings;
-using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
+﻿using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Services.Buildings;
 using CommunityHub.Application.Services.Dtos.Buildings;
@@ -17,7 +15,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
         public MyBuildingsPageViewModel(User user)
         {
             User = user;
-            _buildingService = new BuildingService(Injector.CreateInstance<IBuildingRepository>());
+            _buildingService = new BuildingService();
         }
         public void LoadBuildings()
         {

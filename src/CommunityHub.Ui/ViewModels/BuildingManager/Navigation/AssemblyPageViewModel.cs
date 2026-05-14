@@ -1,5 +1,4 @@
-﻿
-using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 {
