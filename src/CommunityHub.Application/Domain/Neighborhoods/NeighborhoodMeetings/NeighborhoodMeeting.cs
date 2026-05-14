@@ -27,6 +27,16 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings
             }
         }
 
+        public static DateOnly? ResolveScheduledDate(Dictionary<DateOnly, int> voteCounts)
+        {
+            if (voteCounts.Count == 0) return null;
+
+            int maxVotes = voteCounts.Values.Max();
+            var topDates = voteCounts.Where(v => v.Value == maxVotes).Select(v => v.Key).ToList();
+
+            return topDates.Count == 1 ? topDates[0] : null;
+        }
+
         public NeighborhoodMeeting(
             Neighborhood neighborhood,
             MeetingTheme theme,
