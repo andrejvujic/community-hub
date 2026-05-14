@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using CommunityHub.Application.Services;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
+using CommunityHub.Application.Services.Images;
 using CommunityHub.Application.Services.Neighborhoods;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
