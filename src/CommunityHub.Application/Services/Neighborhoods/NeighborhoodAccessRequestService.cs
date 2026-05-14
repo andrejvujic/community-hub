@@ -43,15 +43,15 @@ namespace CommunityHub.Application.Services.Neighborhoods
         public void Reject(NeighborhoodAccessRequestDto requestDto, string comment)
         {
             var request = _neighborhoodAccessRequestMapper.MapToDomain(requestDto);
-            request.Reject(comment);
-            _neighborhoodAccessRequestRepository.Update(request);
+            var rejected = request.Reject(comment);
+            _neighborhoodAccessRequestRepository.Update(rejected);
         }
 
         public void Accept(NeighborhoodAccessRequestDto requestDto)
         {
             var request = _neighborhoodAccessRequestMapper.MapToDomain(requestDto);
-            request.Accept();
-            _neighborhoodAccessRequestRepository.Update(request);
+            var accepted = request.Accept();
+            _neighborhoodAccessRequestRepository.Update(accepted);
         }
 
         public void CreateAccessRequest(CitizenDto citizenDto, NeighborhoodDto neighborhoodDto)
