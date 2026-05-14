@@ -37,6 +37,13 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings
             return topDates.Count == 1 ? topDates[0] : null;
         }
 
+        public static bool HasTiedDates(Dictionary<DateOnly, int> voteCounts)
+        {
+            if (voteCounts.Count == 0) return false;
+            int maxVotes = voteCounts.Values.Max();
+            return voteCounts.Count(v => v.Value == maxVotes) > 1;
+        }
+
         public NeighborhoodMeeting(
             Neighborhood neighborhood,
             MeetingTheme theme,
