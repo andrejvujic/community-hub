@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Services.Dtos.Users;
@@ -25,6 +26,30 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public RegisterNeighborhoodWindowViewModel(long coordinatorId)
         {
             Coordinator = _userService.Get(coordinatorId);
+        }
+
+        public void LoadCountries()
+        {
+            Countries.Clear();
+            var countries = _countryService.GetAllCountries();
+            foreach (var country in countries)
+                Countries.Add(country);
+        }
+
+        public void LoadCities(long countryId)
+        {
+            Cities.Clear();
+            var cities = _cityService.GetByCountry(countryId);
+            foreach (var city in cities)
+                Cities.Add(city);
+        }
+
+        public void LoadStreets(long cityId)
+        {
+            Streets.Clear();
+            var streets = _streetService.GetByCity(cityId);
+            foreach (var street in streets)
+                Streets.Add(street);
         }
     }
 }
