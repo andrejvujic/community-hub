@@ -75,7 +75,9 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
 
         public List<DateTime> GetReservedDates(long commonRoomId, long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
                           common_room_rental_request.common_room_id AS common_room_rental_request_common_room_id,
                           common_room_rental_request.resident_id AS common_room_rental_request_resident_id,
@@ -114,7 +116,7 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
 
             var reservedDates = new List<DateTime>();
 
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader => 
             {
                 var commonRoomRentalRequest = _commonRoomRentalRequestMapper.MapToEntity(reader);
 

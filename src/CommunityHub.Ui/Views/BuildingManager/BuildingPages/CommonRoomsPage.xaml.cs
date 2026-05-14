@@ -1,123 +1,80 @@
-﻿using CommunityHub.Application.Database.Repositories.CommonRooms;
-using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+﻿using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Application.Domain.Users;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages;
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 {
     public partial class CommonRoomsPage : Page
     {
-        private readonly CommonRoomRepository _commonRoomRepository = new();
-        private readonly CommonRoomRentalRequestRepository _commonRoomRentalRequestRepository = new();
-        private readonly Building _building;
-        private readonly User _user;
-        public ObservableCollection<CommonRoom> CommonRooms { get; set; } = [];
+        private readonly CommonRoomsPageViewModel _viewModel;
+        private bool _isSyncingCalendar = false;
         public CommonRoomsPage(User user, Building building)
         {
             InitializeComponent();
-            DataContext = this;
-            _user = user;
-            _building = building;
-            SetStreetInfo();
+            _viewModel = new CommonRoomsPageViewModel(user, building);
+            DataContext = _viewModel;
         }
-        private void CommonRoomsPage_Loaded(object sender, RoutedEventArgs e) => RefreshCommonRoomsPage();
-        private void RefreshCommonRoomsPage()
+        private void CommonRoomsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            CommonRooms.Clear();
-            var commonRooms = _commonRoomRepository.GetByBuilding(_building.Id);
-
-            foreach (var commonRoom in commonRooms)
-                CommonRooms.Add(commonRoom);
-
-            floorsUpDown.Maximum = _building.FloorCount;
+            _viewModel.LoadCommonRooms();
+            SyncCalendar();
         }
         private void LeftArrow_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var homeWindow = Window.GetWindow(this) as HomeWindow;
 
             if (homeWindow != null)
-                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_user));
+                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
         }
-        private void SetStreetInfo() => streetInfo.Text = $"{_building.Address.Street.Name} {_building.Address.StreetNumber}";
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Da li želite da otkažete kreiranje zajedničke prostorije?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.No) return;
 
-            ResetForm();
-        }
-        private void ResetForm()
-        {
-            nameTextBox.Text = string.Empty;
-            descriptionTextBox.Text = string.Empty;
-            floorsUpDown.Value = 1;
-            rentalTypeComboBox.SelectedIndex = 0;
+            _viewModel.ResetForm();
         }
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsFormValid()) return;
+            if (!_viewModel.ValidateForm()) return;
 
             var result = MessageBox.Show("Da li želite da kreirate zajedničku prostoriju?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.No) return;
 
-            CreateCommonRoom();
-            ResetForm();
-            RefreshCommonRoomsPage();
+            _viewModel.CreateCommonRoom();
+            _viewModel.ResetForm();
+            _viewModel.LoadCommonRooms();
 
             MessageBox.Show("Zajednička prostorija je uspešno kreirana.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        private bool IsFormValid()
-        {
-            if (nameTextBox.Text.Trim() == "") return ShowError("Niste uneli naziv prostorije.");
-            if (descriptionTextBox.Text.Trim() == "") return ShowError("Niste uneli opis prostorije.");
-
-            return true;
-        }
-        private bool ShowError(string message)
-        {
-            MessageBox.Show(message, "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
-            return false;
-        }
-        private void CreateCommonRoom()
-        {
-            var commonRoom = new CommonRoom(
-                buildingId: _building.Id,
-                name: nameTextBox.Text.Trim(),
-                description: descriptionTextBox.Text.Trim(),
-                floorNumber: (int)floorsUpDown.Value!,
-                rentalType: GetSelectedRentalType()
-            );
-
-            _commonRoomRepository.Create(commonRoom);
-        }
-        private RentalType GetSelectedRentalType()
-        {
-            return rentalTypeComboBox.SelectedIndex switch
-            {
-                0 => RentalType.OneDay,
-                1 => RentalType.MultiDay,
-                _ => throw new InvalidOperationException("Nepoznat tip iznajmljivanja.")
-            };
-        }
         private void CommonRoomsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedCommonRoom = (CommonRoom)commonRoomsDataGrid.SelectedItem;
+            var selectedCommonRoom = commonRoomsDataGrid.SelectedItem as CommonRoomDto;
 
-            if (selectedCommonRoom == null) return;
-
-            var reservedDates = _commonRoomRentalRequestRepository.GetReservedDates(selectedCommonRoom.Id, _building.Id);
+            _viewModel.HandleSelectedCommonRoomChanged(selectedCommonRoom);
+            SyncCalendar();
+        }
+        private void SyncCalendar()
+        {
+            _isSyncingCalendar = true;
 
             calendar.SelectedDates.Clear();
-            foreach (var date in reservedDates)
+            foreach (var date in _viewModel.ReservedDates)
                 calendar.SelectedDates.Add(date);
 
-            calendar.Visibility = Visibility.Visible;
+            calendar.Visibility = _viewModel.IsCalendarVisible ? Visibility.Visible : Visibility.Collapsed;
+
+            _isSyncingCalendar = false;
+        }
+        private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(_isSyncingCalendar) return;
+
+            SyncCalendar();
         }
     }
 }

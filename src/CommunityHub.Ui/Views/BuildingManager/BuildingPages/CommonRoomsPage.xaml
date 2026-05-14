@@ -16,6 +16,7 @@
 
     <Page.Resources>
         <conv:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Page.Resources>
 
     <Grid Margin="10,25,40,0">
@@ -48,7 +49,8 @@
                     Margin="15,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    FontSize="21" />
+                    FontSize="21"
+                    Text="{Binding StreetInfo}" />
             </Grid>
         </Grid>
 
@@ -120,6 +122,9 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
                             <Grid
@@ -134,11 +139,26 @@
                                 Grid.Row="1"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
-                                <TextBox x:Name="nameTextBox" Width="400" />
+                                <TextBox
+                                    x:Name="nameTextBox"
+                                    Width="400"
+                                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 
                             <Grid
                                 Grid.Row="2"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="Red"
+                                    Text="{Binding NameError}"
+                                    Visibility="{Binding IsNameErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="3"
                                 Margin="0,15,0,8"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
@@ -146,7 +166,7 @@
                             </Grid>
 
                             <Grid
-                                Grid.Row="3"
+                                Grid.Row="4"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
                                 <TextBox
@@ -155,29 +175,20 @@
                                     Height="60"
                                     AcceptsReturn="True"
                                     FontSize="15"
+                                    Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                                     TextWrapping="Wrap" />
                             </Grid>
 
                             <Grid
-                                Grid.Row="4"
-                                Margin="0,15,0,8"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock Text="Sprat:" />
-                            </Grid>
-
-                            <Grid
                                 Grid.Row="5"
+                                Margin="0,5,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
-                                <xctk:IntegerUpDown
-                                    x:Name="floorsUpDown"
-                                    Width="70"
-                                    Increment="1"
-                                    Maximum="20"
-                                    Minimum="1"
-                                    TextAlignment="Center"
-                                    Value="1" />
+                                <TextBlock
+                                    FontSize="13"
+                                    Foreground="Red"
+                                    Text="{Binding DescriptionError}"
+                                    Visibility="{Binding IsDescriptionErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </Grid>
 
                             <Grid
@@ -185,24 +196,47 @@
                                 Margin="0,15,0,8"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
-                                <TextBlock Text="Način iznajmljivanja:" />
+                                <TextBlock Text="Sprat:" />
                             </Grid>
 
                             <Grid
                                 Grid.Row="7"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center">
+                                <xctk:IntegerUpDown
+                                    x:Name="floorsUpDown"
+                                    Width="70"
+                                    Increment="1"
+                                    Maximum="{Binding FloorMaximum}"
+                                    Minimum="1"
+                                    TextAlignment="Center"
+                                    Value="{Binding SelectedFloor, Mode=TwoWay}" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="8"
+                                Margin="0,15,0,8"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
+                                <TextBlock Text="Način iznajmljivanja:" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Row="9"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center">
                                 <ComboBox
                                     x:Name="rentalTypeComboBox"
                                     Padding="10,4,10,4"
-                                    Cursor="Hand">
+                                    Cursor="Hand"
+                                    SelectedIndex="{Binding SelectedRentalTypeIndex, Mode=TwoWay}">
                                     <ComboBoxItem Content="jedan dan" IsSelected="True" />
                                     <ComboBoxItem Content="više dana" />
                                 </ComboBox>
                             </Grid>
 
                             <Grid
-                                Grid.Row="9"
+                                Grid.Row="11"
                                 Margin="0,30,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center">
@@ -305,7 +339,9 @@
                     <Viewbox>
                         <Calendar
                             x:Name="calendar"
+                            DisplayMode="Month"
                             IsEnabled="True"
+                            SelectedDatesChanged="Calendar_SelectedDatesChanged"
                             SelectionMode="MultipleRange"
                             Visibility="Hidden" />
                     </Viewbox>

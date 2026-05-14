@@ -10,21 +10,25 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
 
         public CommonRoom Create(CommonRoom commonRoom)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO common_rooms (building_id, name, description, floor_number, rental_type) 
                 VALUES (@building_id, @name, @description, @floor_number, @rental_type)
                 RETURNING id"
             )
             .ExtendParameters(_commonRoomMapper.MapToQueryParameters(commonRoom));
 
-            long generatedId = query.ExecuteScalar<long>(result => Convert.ToInt64(result));
+            long generatedId = connection.ExecuteScalar(query, result => Convert.ToInt64(result));
 
             return commonRoom.CopyWith(id: generatedId);
         }
 
         public List<CommonRoom> GetByBuilding(long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
 	                common_room.id AS common_room_id,
 	                common_room.building_id,
@@ -38,10 +42,9 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
             )
             .AddParameter("building_id", buildingId);
 
-            List<CommonRoom> commonRooms = new();
+            List<CommonRoom> commonRooms = [];
 
-            query.ExecuteReader(
-                reader => commonRooms.Add(
+            connection.ExecuteReader(query, reader => commonRooms.Add(
                     _commonRoomMapper.MapToEntity(reader)
                 )
             );
