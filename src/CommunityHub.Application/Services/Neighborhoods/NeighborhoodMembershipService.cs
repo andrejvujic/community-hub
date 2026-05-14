@@ -2,8 +2,10 @@
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.MappersDto.Neighborhoods;
+using CommunityHub.Application.MappersDto.TrustRecords;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
+using CommunityHub.Application.Services.Dtos.TrustRecords;
 using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Application.Services.Neighborhoods
@@ -20,6 +22,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
             = new NeighborhoodMapper();
         private readonly NeighborhoodMembershipMapper _neighborhoodMembershipMapper
             = new NeighborhoodMembershipMapper();
+        private readonly CitizenTrustRecordMapper _citizenTrustRecordMapper
+            = new CitizenTrustRecordMapper();
 
         public List<CitizenDto> GetCitizensByNeighborhood(long neighborhoodId)
             => _neighborhoodMembershipRepository.GetCitizensByNeighborhoodId(neighborhoodId)
@@ -49,5 +53,10 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var createdMembership = _neighborhoodMembershipRepository.Create(membership);
             _citizenRepository.UpdateMembership(citizenDto.Id, createdMembership.Id);
         }
+
+        public List<CitizenTrustRecordDto> GetTrustRecordsByNeighborhood(long neighborhoodId)
+            => _neighborhoodMembershipRepository.GetTrustRecordsByNeighborhoodId(neighborhoodId)
+                .Select(_citizenTrustRecordMapper.MapToDto)
+                .ToList();
     }
 }
