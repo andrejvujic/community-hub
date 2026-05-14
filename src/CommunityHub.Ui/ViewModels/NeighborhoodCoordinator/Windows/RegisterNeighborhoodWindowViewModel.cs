@@ -31,7 +31,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public void LoadCountries()
         {
             Countries.Clear();
-            var countries = _countryService.GetAllCountries();
+            var countries = _countryService.GetAll();
             foreach (var country in countries)
                 Countries.Add(country);
         }
@@ -39,7 +39,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public void LoadCities(long countryId)
         {
             Cities.Clear();
-            var cities = _cityService.GetByCountry(countryId);
+            var cities = _cityService.GetByCountryId(countryId);
             foreach (var city in cities)
                 Cities.Add(city);
         }
@@ -47,7 +47,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public void LoadStreets(long cityId)
         {
             Streets.Clear();
-            var streets = _streetService.GetByCity(cityId);
+            var streets = _streetService.GetByCityId(cityId);
             foreach (var street in streets)
                 Streets.Add(street);
         }

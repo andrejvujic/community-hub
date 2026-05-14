@@ -9,15 +9,20 @@ namespace CommunityHub.Application.Services.Addresses
     public class CountryService
     {
         private readonly ICountryRepository _countryRepository = Injector.CreateInstance<ICountryRepository>();
-        private readonly CountryMapper _countruMapper = new();
+        private readonly CountryMapper _countryMapper = new();
 
         public List<Country> Search(CountrySearchParameters searchParameters)
             => _countryRepository.Search(searchParameters);
 
-        public List<Country> GetAll()
-            => _countryRepository.GetAll();
+        public List<CountryDto> GetAll()
+        {
+            List<Country> countries = _countryRepository.GetAll();
+            List<CountryDto> countriesDto = [];
 
-        public List<CountryDto> GetAllCountries()
-            => _countryRepository.GetAll().Select(_countruMapper.MapToDto).ToList();
+            foreach (Country country in countries)
+                countriesDto.Add(_countryMapper.MapToDto(country));
+
+            return countriesDto;
+        }
     }
 }

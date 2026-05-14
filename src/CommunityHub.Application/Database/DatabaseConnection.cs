@@ -79,6 +79,14 @@ namespace CommunityHub.Application.Database
             while (reader.Read())
                 callback.Invoke(reader);
         }
+        public int GetRowsAffectedCount(DatabaseQuery query)
+        {
+            if (!IsOpen)
+                throw new InvalidOperationException("Connection is not open.");
+
+            using IDbCommand command = query.CreateCommand(_connection);
+            return command.ExecuteNonQuery();
+        }
 
         public object? ExecuteScalar(DatabaseQuery query)
         {

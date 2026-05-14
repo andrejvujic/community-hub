@@ -1,8 +1,4 @@
-﻿using CommunityHub.Application.Database.Repositories.Apartments;
-using CommunityHub.Application.Database.Repositories.Buildings;
-using CommunityHub.Application.Database.Repositories.Shared;
-using CommunityHub.Application.Database.Repositories.Shared.Addresses;
-using CommunityHub.Application.Domain.Addresses;
+﻿using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Domain.Users;
@@ -34,18 +30,16 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private readonly ApartmentService _apartmentService = new();
 
         private readonly RegistrationPageViewModel _viewModel;
-        private readonly User _user;
         public ObservableCollection<int> ApartmentNumbers { get; }
         private List<(int Number, int Floor)> _apartmentEntries = new();
 
         public RegistrationPage(User user)
         {
             InitializeComponent();
-            _viewModel = new RegistrationPageViewModel();
+            _viewModel = new RegistrationPageViewModel(user);
             _viewModel.UpdateImageValidation();
             DataContext = _viewModel;
 
-            _user = user;
             ApartmentNumbers = new ObservableCollection<int>();
         }
         private void RegistrationPage_Loaded(object sender, RoutedEventArgs e)
@@ -325,7 +319,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             HomeWindow? homeWindow = Window.GetWindow(this) as HomeWindow;
 
             if (homeWindow != null)
-                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_user));
+                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
         }
         private Address CreateAddress()
         {
@@ -345,7 +339,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             var building = new Building(
                 floorCount: floorsUpDown.Value ?? 1,
                 apartmentCount: ApartmentNumbers.Count,
-                manager: _user,
+                manager: _viewModel.User,
                 address: address
             );
 

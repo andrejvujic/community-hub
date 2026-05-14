@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.MappersDto.Addresses;
+﻿using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using System.Collections.ObjectModel;
@@ -14,15 +14,21 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
         private readonly StreetService _streetService;
         private readonly AddressService _addressService;
         private readonly StreetSectionService _streetSectionService;
-
-        private readonly CountryMapper _countryMapper = new();
-        private readonly CityMapper _cityMapper = new();
-        private readonly StreetMapper _streetMapper = new();
-
+        public User User { get; }
         public ObservableCollection<CountryDto> Countries { get; } = [];
         public ObservableCollection<CityDto> Cities { get; } = [];
         public ObservableCollection<StreetDto> Streets { get; } = [];
         public ObservableCollection<string> SelectedImagePaths { get; } = [];
+
+        public RegistrationPageViewModel(User user)
+        {
+            User = user;
+            _countryService = new CountryService();
+            _cityService = new CityService();
+            _streetService = new StreetService();
+            _addressService = new AddressService();
+            _streetSectionService = new StreetSectionService();
+        }
 
         private CountryDto? _selectedCountry;
         public CountryDto? SelectedCountry
@@ -182,14 +188,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             IsImageValid &&
             AreApartmentsValid;
 
-        public RegistrationPageViewModel()
-        {
-            _countryService = new CountryService();
-            _cityService = new CityService();
-            _streetService = new StreetService();
-            _addressService = new AddressService();
-            _streetSectionService = new StreetSectionService();
-        }
         public void LoadCountries()
         {
             Countries.Clear();
@@ -199,7 +197,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 
             var countries = _countryService.GetAll();
             foreach (var country in countries)
-                Countries.Add(_countryMapper.MapToDto(country));
+                Countries.Add(country);
 
             OnPropertyChanged(nameof(IsCityEnabled));
         }
@@ -219,7 +217,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 
             var cities = _cityService.GetByCountryId(SelectedCountry.Id);
             foreach (var city in cities)
-                Cities.Add(_cityMapper.MapToDto(city));
+                Cities.Add(city);
 
             OnPropertyChanged(nameof(IsCityEnabled));
             OnPropertyChanged(nameof(IsStreetEnabled));
@@ -236,7 +234,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             }
             var streets = _streetService.GetByCityId(SelectedCity.Id);
             foreach (var street in streets)
-                Streets.Add(_streetMapper.MapToDto(street));
+                Streets.Add(street);
 
             OnPropertyChanged(nameof(IsStreetEnabled));
         }

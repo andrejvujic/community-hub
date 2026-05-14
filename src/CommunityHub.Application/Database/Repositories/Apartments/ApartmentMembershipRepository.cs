@@ -10,7 +10,9 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
 
         public ApartmentMembership Create(ApartmentMembership membership)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO apartment_memberships
                 (building_resident_id, apartment_id, acceptance_date)
                 VALUES
@@ -20,7 +22,7 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
                 _apartmentMembershipMapper.MapToQueryParameters(membership)
             );
 
-            long id = query.ExecuteScalar(Convert.ToInt64);
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
             return membership.CopyWith(id: id);
         }
 
@@ -178,7 +180,9 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
 
         public List<ApartmentMembership> GetByUserAndBuilding(long userId, long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 membership.id as membership_id,
                 membership.acceptance_date,
@@ -232,14 +236,14 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             .AddParameter("userId", userId)
             .AddParameter("buildingId", buildingId);
 
-
             List<ApartmentMembership> memberships = new();
 
-            query.ExecuteReader(
-                reader => memberships.Add(
+            connection.ExecuteReader(query, reader =>
+            {
+                memberships.Add(
                     _apartmentMembershipMapper.MapToEntity(reader)
-                )
-            );
+                );
+            });
 
             return memberships;
         }

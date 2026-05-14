@@ -15,8 +15,8 @@
             <TextBlock FontSize="20" Margin="0,0,0,5">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="Korisnik: {0} {1}">
-                        <Binding Path="Name" TargetNullValue="N/A" FallbackValue="N/A" />
-                        <Binding Path="Surname" TargetNullValue="" FallbackValue="" />
+                        <Binding Path="CurrentUser.Name" TargetNullValue="N/A" FallbackValue="N/A" />
+                        <Binding Path="CurrentUser.Surname" TargetNullValue="" FallbackValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
@@ -24,8 +24,8 @@
             <TextBlock FontSize="20" Margin="0,0,0,5">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="Adresa: {0} {1}">
-                        <Binding Path="Address.Street.Name" TargetNullValue="N/A" FallbackValue="N/A" />
-                        <Binding Path="Address.StreetNumber" TargetNullValue="" FallbackValue="" />
+                        <Binding Path="CurrentUser.Address.Street.Name" TargetNullValue="N/A" FallbackValue="N/A" />
+                        <Binding Path="CurrentUser.Address.StreetNumber" TargetNullValue="" FallbackValue="" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
@@ -35,21 +35,21 @@
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Membership}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding CurrentUser.Membership}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <TextBlock Text="{Binding Membership.Neighborhood.Name, StringFormat='Kvart: \{0\}'}" FontSize="20" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding Membership.AcceptanceDate, StringFormat='Član od \{0:d.M.yyyy.\}'}" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding CurrentUser.Membership.Neighborhood.Name, StringFormat='Kvart: \{0\}'}" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding CurrentUser.Membership.AcceptanceDate, StringFormat='Član od \{0:d.M.yyyy.\}'}" FontSize="20" Margin="0,0,0,5"/>
             </StackPanel>
             <TextBlock Text="Nema registrovanih članstava u kvartovima" FontSize="20">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Membership}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding CurrentUser.Membership}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -59,8 +59,8 @@
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <TextBlock x:Name="DateTextBlock" FontSize="20"/>
-            <TextBlock x:Name="TimeTextBlock" FontSize="20"/>
+            <TextBlock Text="{Binding CurrentDate}" FontSize="20"/>
+            <TextBlock Text="{Binding CurrentTime}" FontSize="20"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -10,14 +10,19 @@ namespace CommunityHub.Application.Services.Addresses
     {
         private readonly ICityRepository _cityRepository = Injector.CreateInstance<ICityRepository>();
         private readonly CityMapper _cityMapper = new();
-
         public List<City> Search(CitySearchParameters searchParameters) 
             => _cityRepository.Search(searchParameters);
         
-        public List<City> GetByCountryId(long countryId) 
-            => _cityRepository.GetByCountryId(countryId);
+        public List<CityDto> GetByCountryId(long countryId)
+        {
+            List<City> cities = _cityRepository.GetByCountryId(countryId);
+            List<CityDto> citiesDto = [];
 
-        public List<CityDto> GetByCountry(long countryId) 
-            => _cityRepository.GetByCountryId(countryId).Select(_cityMapper.MapToDto).ToList();
+            foreach (City city in cities)
+                citiesDto.Add(_cityMapper.MapToDto(city));
+
+            return citiesDto;
+        }
+         
     }
 }
