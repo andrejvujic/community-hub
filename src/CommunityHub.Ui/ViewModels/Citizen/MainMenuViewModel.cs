@@ -6,7 +6,7 @@ using System.Windows.Threading;
 
 namespace CommunityHub.Ui.ViewModels.Citizen
 {
-    public class MainMenuPageViewModel : INotifyPropertyChanged
+    public class MainMenuViewModel : INotifyPropertyChanged
     {
         private readonly CitizenService _citizenService = new();
         private readonly long _userId;
@@ -52,7 +52,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             }
         }
 
-        public MainMenuPageViewModel(long userId)
+        public MainMenuViewModel(long userId)
         {
             _userId = userId;
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };

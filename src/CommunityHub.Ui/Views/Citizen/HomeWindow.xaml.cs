@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.Views.Citizen
     public partial class HomeWindow : Window
     {
         private readonly long _userId;
-        private HomeWindowViewModel? _viewModel;
+        private HomeViewModel? _viewModel;
         private SolidColorBrush? _activeTabColor;
         private SolidColorBrush? _inactiveTabColor;
 
@@ -36,7 +36,7 @@ namespace CommunityHub.Ui.Views.Citizen
             _activeTabColor = (SolidColorBrush)FindResource("ActiveTabBrush");
             _inactiveTabColor = Brushes.White;
 
-            _viewModel = new HomeWindowViewModel(_userId);
+            _viewModel = new HomeViewModel(_userId);
             _viewModel.Initialize(_activeTabColor!);
             DataContext = _viewModel;
 
@@ -56,7 +56,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(HomeWindowViewModel.SelectedTabTag))
+            if (e.PropertyName == nameof(HomeViewModel.SelectedTabTag))
             {
                 UpdateTabVisuals(_viewModel?.SelectedTabTag ?? "");
             }

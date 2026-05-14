@@ -8,20 +8,20 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class NeighborhoodsPage : Page
     {
-        private NeighborhoodsPageViewModel? _viewModel;
+        private NeighborhoodsViewModel? _viewModel;
         private long _userId;
 
         public NeighborhoodsPage(long userId)
         {
             InitializeComponent();
             _userId = userId;
-            _viewModel = new NeighborhoodsPageViewModel(userId);
+            _viewModel = new NeighborhoodsViewModel(userId);
             this.DataContext = _viewModel;
         }
 
         private void SearchButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var window = new SearchCriteriaWindow(null);
+            var window = new SearchCriteriaWindow(_viewModel?.LastSearchParameters);
             if (window.ShowDialog() == true)
             {
                 _viewModel?.PerformSearch(window.Result);

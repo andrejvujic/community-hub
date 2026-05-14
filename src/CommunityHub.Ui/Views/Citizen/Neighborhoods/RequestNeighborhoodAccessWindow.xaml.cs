@@ -1,29 +1,33 @@
 using System.Windows;
+using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class RequestNeighborhoodAccessWindow : Window
     {
-        public bool Confirmed { get; private set; }
-        public string NeighborhoodName { get; }
+        private RequestNeighborhoodAccessViewModel? _viewModel;
+
+        public bool Confirmed => _viewModel?.Confirmed ?? false;
 
         public RequestNeighborhoodAccessWindow(string neighborhoodName)
         {
-            NeighborhoodName = neighborhoodName;
-            DataContext = this;
+            _viewModel = new RequestNeighborhoodAccessViewModel(neighborhoodName);
+            DataContext = _viewModel;
             InitializeComponent();
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
-            Confirmed = true;
+            if (_viewModel != null)
+                _viewModel.Confirmed = true;
             DialogResult = true;
             Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            Confirmed = false;
+            if (_viewModel != null)
+                _viewModel.Confirmed = false;
             DialogResult = false;
             Close();
         }

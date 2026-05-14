@@ -7,7 +7,7 @@ namespace CommunityHub.Ui.Views.Citizen
     public partial class MainMenuPage : Page
     {
         private readonly long _userId;
-        private MainMenuPageViewModel? _viewModel;
+        private MainMenuViewModel? _viewModel;
 
         public MainMenuPage(long userId)
         {
@@ -20,7 +20,7 @@ namespace CommunityHub.Ui.Views.Citizen
 
         private void MainMenuPage_Loaded(object sender, RoutedEventArgs e)
         {
-            _viewModel = new MainMenuPageViewModel(_userId);
+            _viewModel = new MainMenuViewModel(_userId);
             DataContext = _viewModel;
         }
 
