@@ -8,12 +8,12 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 {
     public partial class MyAccessRequestsWindow : Window
     {
-        private MyAccessRequestsWindowViewModel? _viewModel;
+        private MyAccessRequestsViewModel? _viewModel;
 
         public MyAccessRequestsWindow(long citizenId)
         {
             InitializeComponent();
-            _viewModel = new MyAccessRequestsWindowViewModel(citizenId);
+            _viewModel = new MyAccessRequestsViewModel(citizenId);
             DataContext = _viewModel;
             KeyDown += MyAccessRequestsWindow_KeyDown;
         }

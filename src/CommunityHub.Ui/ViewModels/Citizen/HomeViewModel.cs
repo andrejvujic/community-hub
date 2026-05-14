@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace CommunityHub.Ui.ViewModels.Citizen
 {
-    public class HomeWindowViewModel : INotifyPropertyChanged
+    public class HomeViewModel : INotifyPropertyChanged
     {
         private readonly CitizenService _citizenService = new();
         private readonly CommunityEventService _communityEventService = new();
@@ -51,7 +51,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             }
         }
 
-        public HomeWindowViewModel(long userId)
+        public HomeViewModel(long userId)
         {
             _userId = userId;
             LoadCurrentUser();

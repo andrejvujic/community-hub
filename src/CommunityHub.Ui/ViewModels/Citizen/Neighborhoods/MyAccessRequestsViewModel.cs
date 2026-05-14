@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 {
-    public class MyAccessRequestsWindowViewModel : INotifyPropertyChanged
+    public class MyAccessRequestsViewModel : INotifyPropertyChanged
     {
         private readonly NeighborhoodAccessRequestService _accessRequestService = new();
         private readonly long _userId;
@@ -46,7 +46,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public MyAccessRequestsWindowViewModel(long userId)
+        public MyAccessRequestsViewModel(long userId)
         {
             _userId = userId;
             RequestsView = CollectionViewSource.GetDefaultView(Requests);

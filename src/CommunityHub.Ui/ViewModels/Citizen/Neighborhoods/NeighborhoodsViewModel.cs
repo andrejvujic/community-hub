@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 {
-    public class NeighborhoodsPageViewModel : INotifyPropertyChanged
+    public class NeighborhoodsViewModel : INotifyPropertyChanged
     {
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly NeighborhoodAccessRequestService _neighborhoodAccessRequestService = new();
@@ -77,7 +77,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public NeighborhoodSearchParameters? LastSearchParameters => _searchParameters;
 
-        public NeighborhoodsPageViewModel(long userId)
+        public NeighborhoodsViewModel(long userId)
         {
             _userId = userId;
             LoadCurrentUser();
