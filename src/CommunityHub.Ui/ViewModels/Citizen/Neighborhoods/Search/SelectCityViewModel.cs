@@ -1,6 +1,7 @@
-using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
+using CommunityHub.Application.MappersDto.Addresses;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -9,14 +10,16 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
     public class SelectCityViewModel : INotifyPropertyChanged
     {
         private readonly CityRepository _cityRepository = new();
-        private Country? _selectedCountry;
-        private City? _selectedCity;
+        private readonly CountryMapper _countryMapper = new();
+        private readonly CityMapper _cityMapper = new();
+        private CountryDto? _selectedCountry;
+        private CityDto? _selectedCity;
         private string _searchQuery = string.Empty;
         private bool _isCitiesEnabled = false;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public Country? SelectedCountry
+        public CountryDto? SelectedCountry
         {
             get => _selectedCountry;
             set
@@ -29,7 +32,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             }
         }
 
-        public City? SelectedCity
+        public CityDto? SelectedCity
         {
             get => _selectedCity;
             set
@@ -62,9 +65,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             }
         }
 
-        public ObservableCollection<City> Cities { get; } = new();
+        public ObservableCollection<CityDto> Cities { get; } = new();
 
-        public SelectCityViewModel(Country? selectedCountry = null)
+        public SelectCityViewModel(CountryDto? selectedCountry = null)
         {
             if (selectedCountry != null)
             {
@@ -79,12 +82,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             if (SelectedCountry == null)
                 return;
 
+            var countryDomain = _countryMapper.MapToDomain(SelectedCountry);
             var results = string.IsNullOrWhiteSpace(searchQuery)
                 ? _cityRepository.GetByCountryId(SelectedCountry.Id)
-                : _cityRepository.Search(new CitySearchParameters(SelectedCountry, searchQuery));
+                : _cityRepository.Search(new CitySearchParameters(countryDomain, searchQuery));
 
             foreach (var city in results)
-                Cities.Add(city);
+                Cities.Add(_cityMapper.MapToDto(city));
         }
 
         public void Search()

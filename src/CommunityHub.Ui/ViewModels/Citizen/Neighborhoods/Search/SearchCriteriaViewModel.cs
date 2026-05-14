@@ -1,15 +1,18 @@
-using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Helpers.Search;
+using CommunityHub.Application.MappersDto.Addresses;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 {
     public class SearchCriteriaViewModel : INotifyPropertyChanged
     {
+        private readonly CountryMapper _countryMapper = new();
+        private readonly CityMapper _cityMapper = new();
         private string _nameFilter = string.Empty;
         private string _addressFilter = string.Empty;
-        private Country? _selectedCountry;
-        private City? _selectedCity;
+        private CountryDto? _selectedCountry;
+        private CityDto? _selectedCity;
         private string _countryButtonContent = "Izaberite državu";
         private string _cityButtonContent = "Izaberite grad";
         private bool _isCityEnabled = false;
@@ -38,7 +41,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             }
         }
 
-        public Country? SelectedCountry
+        public CountryDto? SelectedCountry
         {
             get => _selectedCountry;
             set
@@ -55,7 +58,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             }
         }
 
-        public City? SelectedCity
+        public CityDto? SelectedCity
         {
             get => _selectedCity;
             set
@@ -106,8 +109,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             {
                 NameFilter = initial.Name ?? string.Empty;
                 AddressFilter = initial.Address ?? string.Empty;
-                SelectedCountry = initial.Country;
-                SelectedCity = initial.City;
+                SelectedCountry = initial.Country != null ? _countryMapper.MapToDto(initial.Country) : null;
+                SelectedCity = initial.City != null ? _cityMapper.MapToDto(initial.City) : null;
             }
 
             UpdateCountryButtonContent();
@@ -120,7 +123,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             string? name = string.IsNullOrWhiteSpace(NameFilter) ? null : NameFilter.Trim();
             string? address = string.IsNullOrWhiteSpace(AddressFilter) ? null : AddressFilter.Trim();
 
-            return new NeighborhoodSearchParameters(SelectedCountry, SelectedCity, name, address);
+            var countryDomain = SelectedCountry != null ? _countryMapper.MapToDomain(SelectedCountry) : null;
+            var cityDomain = SelectedCity != null ? _cityMapper.MapToDomain(SelectedCity) : null;
+
+            return new NeighborhoodSearchParameters(countryDomain, cityDomain, name, address);
         }
 
         public void Clear()

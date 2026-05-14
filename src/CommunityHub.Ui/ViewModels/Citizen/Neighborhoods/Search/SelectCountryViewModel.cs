@@ -1,6 +1,7 @@
-using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
+using CommunityHub.Application.MappersDto.Addresses;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -9,12 +10,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
     public class SelectCountryViewModel : INotifyPropertyChanged
     {
         private readonly CountryRepository _countryRepository = new();
-        private Country? _selectedCountry;
+        private readonly CountryMapper _countryMapper = new();
+        private CountryDto? _selectedCountry;
         private string _searchQuery = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public Country? SelectedCountry
+        public CountryDto? SelectedCountry
         {
             get => _selectedCountry;
             set
@@ -36,9 +38,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             }
         }
 
-        public ObservableCollection<Country> Countries { get; } = new();
+        public ObservableCollection<CountryDto> Countries { get; } = new();
 
-        public SelectCountryViewModel(Country? initial = null)
+        public SelectCountryViewModel(CountryDto? initial = null)
         {
             SelectedCountry = initial;
             LoadCountries();
@@ -52,7 +54,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
                 : _countryRepository.Search(new CountrySearchParameters(searchQuery));
 
             foreach (var country in results)
-                Countries.Add(country);
+                Countries.Add(_countryMapper.MapToDto(country));
         }
 
         public void Search()

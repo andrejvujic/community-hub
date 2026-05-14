@@ -1,5 +1,5 @@
 using System.Windows;
-using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
@@ -7,9 +7,9 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
     public partial class SelectCityWindow : Window
     {
         private readonly SelectCityViewModel _viewModel;
-        public City? SelectedCity { get; private set; }
+        public CityDto? SelectedCity { get; private set; }
 
-        public SelectCityWindow(Country? selectedCountry = null)
+        public SelectCityWindow(CountryDto? selectedCountry = null)
         {
             InitializeComponent();
             _viewModel = new SelectCityViewModel(selectedCountry);
