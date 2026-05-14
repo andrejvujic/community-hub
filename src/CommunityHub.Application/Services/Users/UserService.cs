@@ -1,6 +1,5 @@
-﻿using CommunityHub.Application.Domain.Users;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
-using CommunityHub.Application.MappersDto;
+﻿using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Application.Services.Users
@@ -9,8 +8,7 @@ namespace CommunityHub.Application.Services.Users
     {
         private readonly IUserRepository _userRepository
             = Injector.CreateInstance<IUserRepository>();
-        private readonly IMapper<User, UserDto> _userMapper
-            = Injector.CreateInstance<IMapper<User, UserDto>>();
+        private readonly UserMapper _userMapper = new();
 
         public UserDto? Get(long id)
         {

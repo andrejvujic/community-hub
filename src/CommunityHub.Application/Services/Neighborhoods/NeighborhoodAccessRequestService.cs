@@ -1,7 +1,6 @@
 ﻿using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.MappersDto;
@@ -20,12 +19,9 @@ namespace CommunityHub.Application.Services.Neighborhoods
             = Injector.CreateInstance<INeighborhoodMembershipRepository>();
         private readonly ICitizenRepository _citizenRepository
             = Injector.CreateInstance<ICitizenRepository>();
-        private readonly IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto> _neighborhoodAccessRequestMapper
-            = Injector.CreateInstance<IMapper<NeighborhoodAccessRequest, NeighborhoodAccessRequestDto>>();
-        private readonly IMapper<Citizen, CitizenDto> _citizenMapper
-            = Injector.CreateInstance<IMapper<Citizen, CitizenDto>>();
-        private readonly IMapper<Neighborhood, NeighborhoodDto> _neighborhoodMapper
-            = Injector.CreateInstance<IMapper<Neighborhood, NeighborhoodDto>>();
+        private readonly NeighborhoodAccessRequestMapper _neighborhoodAccessRequestMapper = new();
+        private readonly CitizenMapper _citizenMapper = new();
+        private readonly NeighborhoodMapper _neighborhoodMapper = new();
 
         public List<NeighborhoodAccessRequestDto> GetByCoordinatorAndStatus(long coordinatorId, Status? status)
             => _neighborhoodAccessRequestRepository.GetByCoordinatorIdAndStatus(coordinatorId, status)

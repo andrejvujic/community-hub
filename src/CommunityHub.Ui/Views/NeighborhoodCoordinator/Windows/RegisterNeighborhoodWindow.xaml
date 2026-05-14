@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
-        xmlns:domain="clr-namespace:CommunityHub.Application.Domain;assembly=CommunityHub.Application"
+        xmlns:domain="clr-namespace:CommunityHub.Application.Domain.Addresses;assembly=CommunityHub.Application"
         mc:Ignorable="d"
         Title="Registracija kvarta" Height="800" Width="600"
         ResizeMode="NoResize"

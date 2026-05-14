@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacility;
+using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows

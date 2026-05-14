@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain;
+﻿using CommunityHub.Application.Domain.Services;
 using System.Globalization;
 using System.Windows.Data;
 

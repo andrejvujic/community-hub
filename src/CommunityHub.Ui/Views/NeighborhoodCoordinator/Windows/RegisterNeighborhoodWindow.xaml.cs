@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Users;

@@ -1,4 +1,6 @@
-﻿using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application;
+using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Buildings;
 using System.Collections.ObjectModel;
@@ -10,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
     {
         public long UserId { get; }
 
-        private readonly BuildingService _buildingService = new();
+        private readonly BuildingService _buildingService = new BuildingService();
 
         public ObservableCollection<Building> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;
