@@ -25,5 +25,8 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
 
         public void UpdateStatus(long meetingId, MeetingStatus newStatus)
             => _neighborhoodMeetingRepository.UpdateStatus(meetingId, newStatus);
+
+        public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate)
+            => _neighborhoodMeetingRepository.UpdateScheduledDate(meetingId, scheduledDate);
     }
 }
