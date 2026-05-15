@@ -48,7 +48,8 @@
                     Margin="15,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    FontSize="21" />
+                    FontSize="21"
+                    Text="{Binding StreetInfo}" />
             </Grid>
         </Grid>
 
@@ -56,7 +57,8 @@
             Grid.Row="1"
             Margin="35,30,45,30"
             BorderBrush="Black"
-            BorderThickness="2">
+            BorderThickness="2"
+            MouseLeftButtonDown="RentalRequestCard_Click">
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -225,7 +227,8 @@
                             Foreground="Black"
                             Text="Morate odabrati prostoriju da bi se prikazale funkcionalnosti!"
                             TextAlignment="Center"
-                            TextWrapping="Wrap" />
+                            TextWrapping="Wrap"
+                            Visibility="{Binding DefaultActionTextVisibility}" />
 
                         <TextBlock
                             x:Name="approvedActionText"
@@ -236,7 +239,7 @@
                             Text="Prostorija je slobodna u datom opsegu. Zahtev je automatski odobren!"
                             TextAlignment="Center"
                             TextWrapping="Wrap"
-                            Visibility="Collapsed" />
+                            Visibility="{Binding ApprovedActionTextVisibility}" />
 
                         <TextBlock
                             x:Name="rejectedActionText"
@@ -247,7 +250,7 @@
                             Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"
                             TextAlignment="Center"
                             TextWrapping="Wrap"
-                            Visibility="Collapsed" />
+                            Visibility="{Binding RejectedActionTextVisibility}" />
 
                         <TextBlock
                             x:Name="waitingDateChangeActionText"
@@ -258,12 +261,9 @@
                             Text="Akcija je već odrađena, zahtev je u stanju promene termina!"
                             TextAlignment="Center"
                             TextWrapping="Wrap"
-                            Visibility="Collapsed" />
+                            Visibility="{Binding WaitingDateChangeActionTextVisibility}" />
 
-                        <StackPanel
-                            x:Name="oneDayPanel"
-                            Margin="15,0,15,0"
-                            Visibility="Collapsed">
+                        <StackPanel Margin="15,0,15,0" Visibility="{Binding OneDayPanelVisibility}">
 
                             <TextBlock
                                 Margin="0,0,0,25"
@@ -273,7 +273,21 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
 
-                            <StackPanel x:Name="freeDaysPanel" />
+                            <ItemsControl ItemsSource="{Binding SuggestedOneDayDates}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0,6,0,6"
+                                            Padding="10,6,10,6"
+                                            Click="OneDaySuggestionButton_Click"
+                                            Cursor="Hand"
+                                            FontSize="15"
+                                            Tag="{Binding}">
+                                            <TextBlock Text="{Binding StringFormat={}{0:dd.MM.yyyy.}}" />
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
                             <TextBlock
                                 Margin="0,20,0,0"
@@ -284,10 +298,7 @@
                                 TextWrapping="Wrap" />
                         </StackPanel>
 
-                        <StackPanel
-                            x:Name="multiDayPanel"
-                            Margin="15,0,15,0"
-                            Visibility="Collapsed">
+                        <StackPanel Margin="15,0,15,0" Visibility="{Binding MultiDayPanelVisibility}">
 
                             <TextBlock
                                 Margin="0,0,0,25"
@@ -297,7 +308,20 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
 
-                            <StackPanel x:Name="suggestedRangesPanel" />
+                            <ItemsControl ItemsSource="{Binding SuggestedMultiDayRanges}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0,6,0,6"
+                                            Padding="10,6,10,6"
+                                            Click="MultiDaySuggestionButton_Click"
+                                            Content="{Binding DisplayText}"
+                                            Cursor="Hand"
+                                            FontSize="15"
+                                            Tag="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
                             <TextBlock
                                 Margin="0,20,0,0"
