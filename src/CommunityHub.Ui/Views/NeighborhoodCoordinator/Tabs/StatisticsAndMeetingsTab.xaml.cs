@@ -1,242 +1,73 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Neighborhoods;
-using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.TrustRecords;
-using CommunityHub.Application.Services;
+using CommunityHub.Application.Services.Dtos.Neighborhoods;
+using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
     public partial class StatisticsAndMeetingsTab : UserControl
     {
-        private long _coordinatorId;
-        private Neighborhood? _selectedNeighborhood;
-
-        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
-        private readonly NeighborhoodMembershipRepository _membershipRepository = new NeighborhoodMembershipRepository();
-        private readonly NeighborhoodMeetingRepository _meetingRepository = new NeighborhoodMeetingRepository();
-
-        private readonly MeetingSchedulingService _meetingSchedulingService = new MeetingSchedulingService(new NeighborhoodMeetingRepository(), new MeetingDateVoteRepository());
-
-        public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
-        public ObservableCollection<NeighborhoodMeeting> Meetings { get; set; } = new ObservableCollection<NeighborhoodMeeting>();
+        private StatisticsAndMeetingsTabViewModel _viewModel = null!;
 
         public StatisticsAndMeetingsTab()
         {
             InitializeComponent();
-            DataContext = this;
         }
 
         public void Initialize(long coordinatorId)
         {
-            _coordinatorId = coordinatorId;
-            LoadNeighborhoods();
-        }
-
-        private void LoadNeighborhoods()
-        {
-            Neighborhoods.Clear();
-            var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
-            foreach (var n in neighborhoods)
-            {
-                Neighborhoods.Add(n);
-            }
+            _viewModel = new StatisticsAndMeetingsTabViewModel(coordinatorId);
+            DataContext = _viewModel;
+            _viewModel.LoadNeighborhoods();
         }
 
         private void NeighborhoodsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selectedNeighborhood = NeighborhoodsListBox.SelectedItem as Neighborhood;
-            if (_selectedNeighborhood == null) return;
-
-            LoadAndDisplayStatistics();
-            LoadMeetings();
-            StatisticsAndMeetingsPanel.Visibility = Visibility.Visible;
+            _viewModel.SelectedNeighborhood = NeighborhoodsListBox.SelectedItem as NeighborhoodDto;
         }
 
-        private void LoadAndDisplayStatistics()
+        private void MeetingsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var trustRecords = _membershipRepository.GetTrustRecordsByNeighborhoodId(_selectedNeighborhood!.Id);
+            _viewModel.SelectedMeeting = MeetingsDataGrid.SelectedItem as NeighborhoodMeetingDto;
 
-            if (trustRecords.Count == 0) return;
-
-            DisplayTrustStatusCounts(trustRecords);
+            if (_viewModel.HasTiedDates)
+                MessageBox.Show(
+                    "Postoji izjednačen broj glasova. Odaberite jedan od termina.",
+                    "Izjednačeni termini",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
         }
 
-        private void LoadMeetings()
+        private void ConfirmTermButton_Click(object sender, RoutedEventArgs e)
         {
-            Meetings.Clear();
-            var meetings = _meetingRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
-            _meetingSchedulingService.ProcessMeetingsInPreparation(meetings);
-            var updatedMeetings = _meetingRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
-            foreach (var m in updatedMeetings) Meetings.Add(m);
-        }
-
-        private void DisplayTrustStatusCounts(List<CitizenTrustRecord> trustRecords)
-        {
-            int total = trustRecords.Count;
-            TotalCitizensTxt.Text = total.ToString();
-
-            UpdateRow(NewCitizensTxt, NewCitizensPercentTxt, trustRecords, TrustStatus.New, total);
-            UpdateRow(InactiveCitizensTxt, InactiveCitizensPercentTxt, trustRecords, TrustStatus.Inactive, total);
-            UpdateRow(ActiveCitizensTxt, ActiveCitizensPercentTxt, trustRecords, TrustStatus.Active, total);
-            UpdateRow(ProminentCitizensTxt, ProminentCitizensPercentTxt, trustRecords, TrustStatus.Prominent, total);
-            UpdateRow(TrustworthyCitizensTxt, TrustworthyCitizensPercentTxt, trustRecords, TrustStatus.Trustworthy, total);
-
-            UpdateRecommendationUI(trustRecords);
-        }
-
-        private void UpdateRow(TextBlock countTxt, TextBlock percentTxt, List<CitizenTrustRecord> trustRecords, TrustStatus status, int total)
-        {
-            int count = trustRecords.Count(r => r.TrustStatus == status);
-            double percent = Math.Round((double)count / total * 100, 1);
-
-            countTxt.Text = count.ToString();
-            percentTxt.Text = $"({percent}%)";
-        }
-
-        private void UpdateRecommendationUI(List<CitizenTrustRecord> trustRecords)
-        {
-            ResetRecommendationUI();
-            if (trustRecords.Count == 0) return;
-
-            int newCount = trustRecords.Count(r => r.TrustStatus == TrustStatus.New);
-            int inactiveCount = trustRecords.Count(r => r.TrustStatus == TrustStatus.Inactive);
-            int maxCount = GetMaxTrustCount(trustRecords);
-
-            if (maxCount == newCount) ShowWelcomeRecommendation();
-            else if (maxCount == inactiveCount) ShowMotivationRecommendation();
-        }
-
-        private int GetMaxTrustCount(List<CitizenTrustRecord> records)
-        {
-            int newCount = records.Count(r => r.TrustStatus == TrustStatus.New);
-            int inactiveCount = records.Count(r => r.TrustStatus == TrustStatus.Inactive);
-            int activeCount = records.Count(r => r.TrustStatus == TrustStatus.Active);
-            int prominentCount = records.Count(r => r.TrustStatus == TrustStatus.Prominent);
-            int trustworthyCount = records.Count(r => r.TrustStatus == TrustStatus.Trustworthy);
-
-            int maxNew = Math.Max(newCount, inactiveCount);
-            int maxInactive = Math.Max(activeCount, prominentCount);
-            return Math.Max(maxNew, Math.Max(maxInactive, trustworthyCount));
-        }
-
-        private void ResetRecommendationUI()
-        {
-            RecommendationContainer.Visibility = Visibility.Collapsed;
-            WelcomeRecommendationText.Visibility = Visibility.Collapsed;
-            WelcomeMeetingButton.Visibility = Visibility.Collapsed;
-            MotivationRecommendationText.Visibility = Visibility.Collapsed;
-            MotivationMeetingButton.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowWelcomeRecommendation()
-        {
-            RecommendationContainer.Visibility = Visibility.Visible;
-            WelcomeRecommendationText.Visibility = Visibility.Visible;
-            WelcomeMeetingButton.Visibility = Visibility.Visible;
-            WelcomeNeighborhoodNameRun.Text = _selectedNeighborhood!.Name;
-        }
-
-        private void ShowMotivationRecommendation()
-        {
-            RecommendationContainer.Visibility = Visibility.Visible;
-            MotivationRecommendationText.Visibility = Visibility.Visible;
-            MotivationMeetingButton.Visibility = Visibility.Visible;
-            MotivationNeighborhoodNameRun.Text = _selectedNeighborhood!.Name;
-        }
-
-        private void WelcomeMeetingButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenScheduleWindow(MeetingTheme.Welcome);
-        }
-
-        private void MotivationMeetingButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenScheduleWindow(MeetingTheme.Motivation);
-        }
-
-        private void ScheduleNewMeetingButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenScheduleWindow(null);
+            _viewModel.ConfirmTiedDate();
+            MessageBox.Show("Termin je uspešno zakazan.", "Uspeh",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void OpenScheduleWindow(MeetingTheme? theme)
         {
-            var window = new ScheduleMeetingWindow(_selectedNeighborhood!, theme)
+            if (_viewModel.SelectedNeighborhood is null) return;
+
+            var window = new ScheduleMeetingWindow(_viewModel.SelectedNeighborhood, theme)
             {
                 Owner = Window.GetWindow(this)
             };
 
             if (window.ShowDialog() == true)
-            {
-                LoadMeetings();
-            }
+                _viewModel.LoadMeetings();
         }
 
-        private void MeetingsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selected = MeetingsDataGrid.SelectedItem as NeighborhoodMeeting;
+        private void WelcomeMeetingButton_Click(object sender, RoutedEventArgs e)
+            => OpenScheduleWindow(MeetingTheme.Welcome);
 
-            TiedDatesPanel.Visibility = Visibility.Collapsed;
-            TiedDatesComboBox.ItemsSource = null;
+        private void MotivationMeetingButton_Click(object sender, RoutedEventArgs e)
+            => OpenScheduleWindow(MeetingTheme.Motivation);
 
-            if (selected is null) return;
-
-            var now = DateOnly.FromDateTime(DateTime.Today);
-            bool isVotingTimeOver = now >= selected.DateRangeStart.AddDays(-1);
-            bool isStillInPrep = selected.Status == MeetingStatus.InPreparation;
-
-            if (!isVotingTimeOver || !isStillInPrep) return;
-
-            CheckAndShowTiedDates(selected);
-        }
-
-        private void CheckAndShowTiedDates(NeighborhoodMeeting meeting)
-        {
-            bool hasTied = _meetingSchedulingService.HasTiedDates(meeting.Id);
-            if (!hasTied) return;
-
-            var tiedDates = _meetingSchedulingService.GetTiedDates(meeting.Id);
-
-            TiedDatesComboBox.ItemsSource = tiedDates
-                .Select(d => new { Date = d, Display = d.ToString("dd.MM.yyyy.") })
-                .ToList();
-            TiedDatesComboBox.DisplayMemberPath = "Display";
-            TiedDatesComboBox.SelectedValuePath = "Date";
-
-            TiedDatesPanel.Visibility = Visibility.Visible;
-            ConfirmTermButton.IsEnabled = false;
-        }
-
-        private void TiedDatesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ConfirmTermButton.IsEnabled = TiedDatesComboBox.SelectedValue != null;
-        }
-
-        private void ConfirmTermButton_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = MeetingsDataGrid.SelectedItem as NeighborhoodMeeting;
-            if (selected is null) return;
-
-            if (TiedDatesComboBox.SelectedValue is not DateOnly chosenDate)
-            {
-                MessageBox.Show("Odaberite termin.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            _meetingRepository.UpdateScheduledDate(selected.Id, chosenDate);
-            _meetingRepository.UpdateStatus(selected.Id, MeetingStatus.Scheduled);
-
-            MessageBox.Show($"Uspešno ste zakazali termin za {chosenDate:dd.MM.yyyy.}.");
-
-            TiedDatesPanel.Visibility = Visibility.Collapsed;
-            LoadMeetings();
-        }
+        private void ScheduleNewMeetingButton_Click(object sender, RoutedEventArgs e)
+            => OpenScheduleWindow(null);
     }
 }

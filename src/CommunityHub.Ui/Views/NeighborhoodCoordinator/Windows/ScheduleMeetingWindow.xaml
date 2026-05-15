@@ -26,8 +26,13 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
             <TextBlock Text="Tema sastanka: " FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
-            <TextBlock x:Name="FixedThemeTxt" FontSize="20" VerticalAlignment="Center" Visibility="Collapsed" />
-            <ComboBox x:Name="ThemeComboBox" FontSize="20" Width="200" Height="30" Visibility="Collapsed">
+            <TextBlock Text="{Binding FixedThemeDisplay}"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       Visibility="{Binding FixedThemeVisibility}"/>
+            <ComboBox x:Name="ThemeComboBox"
+                      FontSize="20" Width="200" Height="30"
+                      Visibility="{Binding SelectableThemeVisibility}">
                 <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Welcome}" 
                       Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}" />
                 <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Motivation}" 
@@ -37,9 +42,13 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
             <TextBlock Text="Vreme održavanja: " FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
-            <TextBox x:Name="HourTxt" FontSize="20" Width="40" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MaxLength="2" Text="20"/>
+            <TextBox x:Name="HourTxt" FontSize="20" Width="40" Height="30" 
+                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                     MaxLength="2" Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text=" : " FontSize="20" VerticalAlignment="Center"/>
-            <TextBox x:Name="MinuteTxt" FontSize="20" Width="40" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" MaxLength="2" Text="00"/>
+            <TextBox x:Name="MinuteTxt" FontSize="20" Width="40" Height="30" 
+                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                     MaxLength="2" Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text=" h" FontSize="20" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
 
@@ -51,7 +60,8 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="0,0,10,0">
                 <TextBlock Text="Od" FontSize="20" Margin="0,0,0,5"/>
-                <DatePicker x:Name="FromDatePicker" FontSize="20" Height="35">
+                <DatePicker x:Name="FromDatePicker" FontSize="20" Height="35"
+                            SelectedDate="{Binding FromDate}">
                     <DatePicker.Resources>
                         <Style TargetType="DatePickerTextBox">
                             <Setter Property="IsReadOnly" Value="True"/>
@@ -61,7 +71,8 @@
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Do" FontSize="20" Margin="0,0,0,5"/>
-                <DatePicker x:Name="ToDatePicker" FontSize="20" Height="35">
+                <DatePicker x:Name="ToDatePicker" FontSize="20" Height="35"
+                            SelectedDate="{Binding ToDate}">
                     <DatePicker.Resources>
                         <Style TargetType="DatePickerTextBox">
                             <Setter Property="IsReadOnly" Value="True"/>
