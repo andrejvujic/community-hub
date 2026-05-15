@@ -28,5 +28,33 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
 
         public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate)
             => _neighborhoodMeetingRepository.UpdateScheduledDate(meetingId, scheduledDate);
+
+        public void ProcessPendingMeetings(long neighborhoodId, Dictionary<long, Dictionary<DateOnly, int>> voteCounts)
+        {
+            var meetings = _neighborhoodMeetingRepository.GetByNeighborhoodId(neighborhoodId);
+
+            foreach (var meeting in meetings.Where(m => m.IsTied || m.IsExpired))
+                ProcessSingleMeeting(meeting, voteCounts[meeting.Id]);
+        }
+
+        private void ProcessSingleMeeting(NeighborhoodMeeting meeting, Dictionary<DateOnly, int> voteCounts)
+        {
+            switch (meeting.DetermineOutcome(voteCounts))
+            {
+                case MeetingOutcome.Cancelled:
+                    _neighborhoodMeetingRepository.UpdateStatus(meeting.Id, MeetingStatus.Cancelled);
+                    break;
+
+                case MeetingOutcome.Resolved:
+                    var date = NeighborhoodMeeting.ResolveScheduledDate(voteCounts)!.Value;
+                    _neighborhoodMeetingRepository.UpdateScheduledDate(meeting.Id, date);
+                    _neighborhoodMeetingRepository.UpdateStatus(meeting.Id, MeetingStatus.Scheduled);
+                    break;
+
+                case MeetingOutcome.Tied:
+                case MeetingOutcome.TooEarly:
+                    break;
+            }
+        }
     }
 }

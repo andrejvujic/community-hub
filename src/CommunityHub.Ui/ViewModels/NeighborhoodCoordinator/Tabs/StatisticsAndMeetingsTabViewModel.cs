@@ -223,53 +223,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedNeighborhood is null) return;
 
             var meetings = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
-            ProcessMeetingsInPreparation(meetings);
+            var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
+            _meetingService.ProcessPendingMeetings(SelectedNeighborhood.Id, voteCounts);
 
             var updated = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
             Meetings.Clear();
             SelectedMeeting = null;
             foreach (var m in updated)
                 Meetings.Add(m);
-        }
-
-        private void ProcessMeetingsInPreparation(List<NeighborhoodMeetingDto> meetings)
-        {
-            foreach (var m in meetings.Where(m => m.IsTied))
-                ProcessSingleMeeting(m);
-        }
-
-        private void ProcessSingleMeeting(NeighborhoodMeetingDto meeting)
-        {
-            if (IsExpiredUnresolved(meeting))
-            {
-                _meetingService.UpdateStatus(meeting.Id, MeetingStatus.Cancelled);
-                return;
-            }
-
-            var voteCounts = _voteService.GetVoteCountsForMeeting(meeting.Id);
-
-            if (voteCounts.Count == 0)
-            {
-                _meetingService.UpdateStatus(meeting.Id, MeetingStatus.Cancelled);
-                return;
-            }
-
-            TryAutoSchedule(meeting, voteCounts);
-        }
-
-        private static bool IsExpiredUnresolved(NeighborhoodMeetingDto meeting)
-        {
-            var startMoment = meeting.DateRangeStart.ToDateTime(meeting.MeetingTime);
-            return DateTime.Now >= startMoment;
-        }
-
-        private void TryAutoSchedule(NeighborhoodMeetingDto meeting, Dictionary<DateOnly, int> voteCounts)
-        {
-            var scheduled = NeighborhoodMeeting.ResolveScheduledDate(voteCounts);
-            if (!scheduled.HasValue) return;
-
-            _meetingService.UpdateScheduledDate(meeting.Id, scheduled.Value);
-            _meetingService.UpdateStatus(meeting.Id, MeetingStatus.Scheduled);
         }
 
         private void LoadStatistics()

@@ -4,6 +4,7 @@ BEGIN;
 
 CREATE TYPE roles AS ENUM ('building_manager', 'building_resident', 'neighborhood_coordinator', 'citizen', 'neighborhood_service_provider');
 CREATE TYPE statuses AS ENUM ('waiting', 'accepted', 'rejected');
+CREATE TYPE neighborhood_access_request_statuses AS ENUM ('waiting', 'accepted', 'rejected');
 CREATE TYPE parity_types AS ENUM ('even', 'odd', 'both');
 CREATE TYPE billing_types AS ENUM ('per_hour', 'per_job');
 CREATE TYPE rental_types AS ENUM ('one_day','multi_day');
@@ -232,7 +233,7 @@ CREATE TABLE citizens (
 CREATE TABLE neighborhood_access_requests (
 	citizen_id BIGINT REFERENCES citizens(id),
 	neighborhood_id BIGINT REFERENCES neighborhoods(id),
-	status statuses NOT NULL,
+	status neighborhood_access_request_statuses NOT NULL,
 	creation_date DATE NOT NULL,
 	comment VARCHAR(300),
 	PRIMARY KEY (citizen_id, neighborhood_id)

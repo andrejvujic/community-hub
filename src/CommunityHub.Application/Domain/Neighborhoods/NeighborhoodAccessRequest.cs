@@ -6,14 +6,14 @@ namespace CommunityHub.Application.Domain.Neighborhoods
     {
         public Citizen Citizen { get; private set; }
         public Neighborhood Neighborhood { get; private set; }
-        public Status Status { get; private set; }
+        public NeighborhoodAccessRequestStatus Status { get; private set; }
         public DateTime CreationDate { get; private set; }
         public string? Comment { get; private set; }
 
         public NeighborhoodAccessRequest(
             Citizen citizen,
             Neighborhood neighborhood,
-            Status status,
+            NeighborhoodAccessRequestStatus status,
             DateTime creationDate,
             string? comment = null
         )
@@ -28,7 +28,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods
         public NeighborhoodAccessRequest CopyWith(
             Citizen? citizen = null,
             Neighborhood? neighborhood = null,
-            Status? status = null,
+            NeighborhoodAccessRequestStatus? status = null,
             DateTime? creationDate = null,
             string? comment = null
         )
@@ -44,12 +44,12 @@ namespace CommunityHub.Application.Domain.Neighborhoods
 
         public NeighborhoodAccessRequest Accept()
         {
-            return CopyWith(status: Status.Accepted);
+            return CopyWith(status: NeighborhoodAccessRequestStatus.Accepted);
         }
 
         public NeighborhoodAccessRequest Reject(string comment)
         {
-            return CopyWith(status: Status.Rejected, comment: comment);
+            return CopyWith(status: NeighborhoodAccessRequestStatus.Rejected, comment: comment);
         }
     }
 }

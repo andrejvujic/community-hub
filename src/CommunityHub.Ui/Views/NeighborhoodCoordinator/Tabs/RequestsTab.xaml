@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
-        xmlns:domain="clr-namespace:CommunityHub.Application.Domain;assembly=CommunityHub.Application"
+        xmlns:neighborhoods="clr-namespace:CommunityHub.Application.Domain.Neighborhoods;assembly=CommunityHub.Application"
         mc:Ignorable="d">
 
     <UserControl.Resources>
-        <conv:StatusToStringConverter x:Key="StatusToStringConverter" />
-        <conv:StatusToIconCodeConverter x:Key="StatusToIconCodeConverter" />
+        <conv:NeighborhoodAccessRequestStatusToStringConverter x:Key="NeighborhoodAccessRequestStatusToStringConverter" />
+        <conv:NeighborhoodAccessRequestStatusToIconCodeConverter x:Key="NeighborhoodAccessRequestStatusToIconCodeConverter" />
     </UserControl.Resources>
 
     <Grid Margin="20">
@@ -37,12 +37,12 @@
                       Width="140" 
                       FontSize="16">
                 <ComboBoxItem Content="Svi" />
-                <ComboBoxItem Tag="{x:Static domain:Status.Waiting}" 
-                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource StatusToStringConverter}}" />
-                <ComboBoxItem Tag="{x:Static domain:Status.Accepted}" 
-                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource StatusToStringConverter}}" />
-                <ComboBoxItem Tag="{x:Static domain:Status.Rejected}" 
-                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource StatusToStringConverter}}" />
+                <ComboBoxItem Tag="{x:Static neighborhoods:NeighborhoodAccessRequestStatus.Waiting}" 
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}" />
+                <ComboBoxItem Tag="{x:Static neighborhoods:NeighborhoodAccessRequestStatus.Accepted}" 
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}" />
+                <ComboBoxItem Tag="{x:Static neighborhoods:NeighborhoodAccessRequestStatus.Rejected}" 
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}" />
             </ComboBox>
         </StackPanel>
 
@@ -81,11 +81,11 @@
                     <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}" 
+                                <TextBlock Text="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToIconCodeConverter}}" 
                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
                                            VerticalAlignment="Center"
                                            Margin="5,0"/>
-                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusToStringConverter}}"/>
+                                <TextBlock Text="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

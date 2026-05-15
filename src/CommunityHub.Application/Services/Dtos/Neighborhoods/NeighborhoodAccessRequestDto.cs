@@ -1,4 +1,4 @@
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Application.Services.Dtos.Neighborhoods
@@ -7,14 +7,14 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods
     {
         public CitizenDto Citizen { get; set; }
         public NeighborhoodDto Neighborhood { get; set; }
-        public Status Status { get; set; }
+        public NeighborhoodAccessRequestStatus Status { get; set; }
         public DateTime CreationDate { get; set; }
         public string? Comment { get; set; }
 
         public NeighborhoodAccessRequestDto(
             CitizenDto citizen,
             NeighborhoodDto neighborhood,
-            Status status,
+            NeighborhoodAccessRequestStatus status,
             DateTime creationDate,
             string? comment = null
         )
