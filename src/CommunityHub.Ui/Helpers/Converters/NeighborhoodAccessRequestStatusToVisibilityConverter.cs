@@ -1,0 +1,21 @@
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+
+namespace CommunityHub.Ui.Helpers.Converters
+{
+    public class NeighborhoodAccessRequestStatusToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not NeighborhoodAccessRequestStatus status) return Visibility.Collapsed;
+            return status == NeighborhoodAccessRequestStatus.Waiting ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}
