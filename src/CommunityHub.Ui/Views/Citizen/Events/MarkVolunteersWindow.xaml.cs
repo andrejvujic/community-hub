@@ -1,41 +1,35 @@
 using System.Windows;
 using System.Windows.Controls;
-using CommunityHub.Application.Database.Repositories.Events;
-using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Services.Dtos.Events;
+using CommunityHub.Ui.ViewModels.Citizen.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {
     public partial class MarkVolunteersWindow : Window
     {
-        private CommunityEvent _event;
-        private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
+        private readonly MarkVolunteersViewModel _viewModel;
 
-        public MarkVolunteersWindow(CommunityEvent communityEvent)
+        public MarkVolunteersWindow(CommunityEventDto eventDto)
         {
             InitializeComponent();
-            _event = communityEvent;
-            DataContext = _event;
+            _viewModel = new MarkVolunteersViewModel(eventDto);
+            DataContext = _viewModel;
         }
 
         private void PresenceCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox cb && cb.DataContext is EventRegistration reg)
+            if (sender is CheckBox cb && cb.DataContext is EventRegistrationDto reg)
             {
                 bool newValue = cb.IsChecked == true;
-                _eventRegistrationRepository.UpdateAttendance(reg.Id, newValue);
+                _viewModel.UpdateAttendance(reg.Id, newValue);
             }
         }
 
         protected override void OnClosed(System.EventArgs e)
         {
             base.OnClosed(e);
-            foreach (var reg in _event.Registrations)
-            {
-                if (reg.Attended == null)
-                {
-                    _eventRegistrationRepository.UpdateAttendance(reg.Id, false);
-                }
-            }
+            _viewModel.MarkUnattendedAsAbsent();
         }
     }
 }
+

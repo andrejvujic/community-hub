@@ -13,6 +13,7 @@ namespace CommunityHub.Application.Services.Events
     {
         private readonly ICommunityEventRepository _eventRepository = new CommunityEventRepository();
         private readonly ICitizenRepository _citizenRepository = new CitizenRepository();
+        private readonly IEventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
         private readonly IMapper<CommunityEvent, CommunityEventDto> _eventMapper = new CommunityEventMapper();
 
         public List<CommunityEventDto> GetByNeighborhoodId(long neighborhoodId)
@@ -100,8 +101,7 @@ namespace CommunityHub.Application.Services.Events
 
         public void UpdateEventRegistrationAttendance(long registrationId, bool attended)
         {
-            var regRepository = new EventRegistrationRepository();
-            regRepository.UpdateAttendance(registrationId, attended);
+            _eventRegistrationRepository.UpdateAttendance(registrationId, attended);
         }
     }
 }
