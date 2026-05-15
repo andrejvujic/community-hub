@@ -17,6 +17,11 @@ namespace CommunityHub.Application.Services.Users
                 ? _citizenMapper.MapToDto(citizen)
                 : null;
 
+        public List<CitizenDto> GetCitizensByNeighborhoodId(long neighborhoodId)
+            => _citizenRepository.GetByNeighborhoodId(neighborhoodId)
+                .Select(_citizenMapper.MapToDto)
+                .ToList();
+
         public void UpdateMembership(long citizenId, long membershipId)
             => _citizenRepository.UpdateMembership(citizenId, membershipId);
     }

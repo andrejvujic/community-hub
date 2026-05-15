@@ -1,4 +1,3 @@
-using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 using CommunityHub.Application.Domain.TrustRecords;
@@ -38,6 +37,26 @@ namespace CommunityHub.Application.Services.TrustRecords
         {
             var citizen = _citizenService.GetCitizenById(userId);
             return citizen?.Membership?.Neighborhood.Id;
+        }
+
+        public List<CitizenTrustRecordDto> GetNeighborhoodTrustRecords(long neighborhoodId, long excludeUserId)
+        {
+            var citizens = _citizenService.GetCitizensByNeighborhoodId(neighborhoodId);
+            var trustRecords = new List<CitizenTrustRecordDto>();
+
+            foreach (var citizen in citizens)
+            {
+                if (citizen.Id == excludeUserId) continue;
+
+                int organized = _communityEventRepository.GetOrganizedEventsCount(citizen.Id);
+                int volunteered = _eventRegistrationRepository.GetConfirmedVolunteerCount(citizen.Id);
+
+                var citizenDomain = _citizenMapper.MapToDomain(citizen);
+                var trustRecord = new CitizenTrustRecord(citizenDomain, organized, volunteered);
+                trustRecords.Add(_trustRecordMapper.MapToDto(trustRecord));
+            }
+
+            return trustRecords;
         }
     }
 }
