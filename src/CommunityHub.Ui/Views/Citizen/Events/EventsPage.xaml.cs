@@ -3,6 +3,7 @@ using CommunityHub.Application.Database.Repositories;
 using System.Windows;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Database.Repositories.Events;
+using CommunityHub.Application.Services.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {
@@ -12,11 +13,13 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly CommunityEventRepository _eventRepository = new CommunityEventRepository();
         private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
+        private readonly CommunityEventService _eventService = new();
 
         public EventsPage(long userId)
         {
             InitializeComponent();
             _userId = userId;
+
             var citizen = _citizenRepository.GetById(_userId);
             this.DataContext = citizen;
 

@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Input;
-using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Ui.ViewModels.Citizen.Events;
 

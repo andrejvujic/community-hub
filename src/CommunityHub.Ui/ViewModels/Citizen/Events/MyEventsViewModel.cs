@@ -9,7 +9,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
     public class MyEventsViewModel : INotifyPropertyChanged
     {
         private readonly long _userId;
-        private readonly CommunityEventService _eventService;
+        private readonly CommunityEventService _eventService = new();
 
         public long UserId => _userId;
 
@@ -18,7 +18,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public MyEventsViewModel(long userId)
         {
             _userId = userId;
-            _eventService = new CommunityEventService();
             _organizerEvents = new ObservableCollection<CommunityEventDto>();
             _volunteerEvents = new ObservableCollection<CommunityEventDto>();
             LoadEvents();

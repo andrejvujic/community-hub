@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using CommunityHub.Application;
 using CommunityHub.Application.Domain.Events;
-using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 using CommunityHub.Application.Services.Events;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
@@ -10,14 +8,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
     public class OrganizeEventViewModel : INotifyPropertyChanged
     {
         private readonly long _userId;
-        private readonly CommunityEventService _eventService;
+        private readonly CommunityEventService _eventService = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public OrganizeEventViewModel(long userId)
         {
             _userId = userId;
-            _eventService = new CommunityEventService();
             _items = new ObservableCollection<string>();
         }
 
