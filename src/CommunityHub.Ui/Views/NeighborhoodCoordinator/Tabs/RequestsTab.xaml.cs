@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
