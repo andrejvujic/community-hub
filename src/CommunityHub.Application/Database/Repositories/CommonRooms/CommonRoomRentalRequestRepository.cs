@@ -138,7 +138,9 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
 
         public List<CommonRoomRentalRequest> GetAllByBuildingId(long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                  @"SELECT common_room_rental_request.id as common_room_rental_request_id, 
                         common_room_rental_request.common_room_id AS common_room_rental_request_common_room_id,
                         common_room_rental_request.resident_id AS common_room_rental_request_resident_id,
@@ -170,45 +172,13 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
             .AddParameter("building_id", buildingId);
 
             var rentalRequests = new List<CommonRoomRentalRequest>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var commonRoomRentalRequest = _commonRoomRentalRequestMapper.MapToEntity(reader);
                 rentalRequests.Add(commonRoomRentalRequest);
             });
 
             return rentalRequests;
-        }
-
-        public int UpdateStatusAndAssignedDate(long requestId, RentalRequestStatus newStatus, DateTime? assignedDate)
-        {
-            var query = PostgresQuery.Create(
-                @"UPDATE common_room_rental_requests
-                  SET rental_status = @new_status, 
-                      assigned_date = @assigned_date
-                  WHERE id = @request_id;"
-            )
-            .AddParameter("new_status", newStatus)
-            .AddParameter("assigned_date", assignedDate)
-            .AddParameter("request_id", requestId);
-
-            return query.GetRowsAffectedCount();
-        }
-
-        public int UpdateStatusAndRange(long requestId, RentalRequestStatus newStatus, DateTime proposedStartDate, DateTime proposedEndDate)
-        {
-            var query = PostgresQuery.Create(
-                @"UPDATE common_room_rental_requests
-                  SET rental_status = @new_status, 
-                      proposed_start_date = @proposed_start_date,
-                      proposed_end_date = @proposed_end_date
-                  WHERE id = @request_id;"
-            )
-            .AddParameter("new_status", newStatus)
-            .AddParameter("proposed_start_date", proposedStartDate)
-            .AddParameter("proposed_end_date", proposedEndDate)
-            .AddParameter("request_id", requestId);
-
-            return query.GetRowsAffectedCount();
         }
 
         public List<CommonRoomRentalRequest> GetByResidentAndCommonRoom(long residentId, long commonRoomId)

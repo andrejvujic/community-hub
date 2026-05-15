@@ -12,15 +12,15 @@ namespace CommunityHub.Ui.Views.BuildingManager
     {
         private readonly BuildingDetailsPageViewModel _viewModel;
         private Grid? _selectedSideBarItem = null;
-        private readonly CommonRoomRentalRequestsPage _commonRoomRentalRequestsPage;
+        private readonly CommonRoomRentalRequestsPageViewModel _rentalRequestsViewModel;
 
         public BuildingDetailsPage(User user, Building building)
         {
             InitializeComponent();
             _viewModel = new BuildingDetailsPageViewModel(user, building);
             DataContext = _viewModel;
-            _commonRoomRentalRequestsPage = new CommonRoomRentalRequestsPage(_viewModel.User, _viewModel.Building);
-            _commonRoomRentalRequestsPage.CheckAndUpdateRentalDateStatuses();
+            _rentalRequestsViewModel = new CommonRoomRentalRequestsPageViewModel(_viewModel.User, _viewModel.Building);
+            _rentalRequestsViewModel.CheckAndUpdateRentalDateStatuses();
             BuildingFrame.Navigate(new BuildingInfoPage(_viewModel.User, _viewModel.Building));
         }
         private void SideBarItem_Click(object sender, MouseButtonEventArgs e)
@@ -60,7 +60,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                     BuildingFrame.Navigate(new CommonRoomsPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "CommonRoomRentalRequest":
-                    BuildingFrame.Navigate(_commonRoomRentalRequestsPage);
+                    BuildingFrame.Navigate(new CommonRoomRentalRequestsPage(_viewModel.User, _viewModel.Building));
                     break;
                 case "NoticeBoard":
                     BuildingFrame.Navigate(new NoticeBoardPage(_viewModel.User, _viewModel.Building));

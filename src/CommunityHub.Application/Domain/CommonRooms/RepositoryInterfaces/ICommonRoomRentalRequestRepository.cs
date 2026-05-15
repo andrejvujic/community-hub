@@ -12,8 +12,5 @@ namespace CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces
         public List<CommonRoomRentalRequest> GetByResidentAndCommonRoom(long residentId, long commonRoomId);
 
         public List<DateTime> GetReservedDates(long commonRoomId, long buildingId);
-
-        public int UpdateStatusAndAssignedDate(long requestId, RentalRequestStatus newStatus, DateTime? assignedDate);
-        public int UpdateStatusAndRange(long requestId, RentalRequestStatus newStatus, DateTime proposedStartDate, DateTime proposedEndDate);
     }
 }
