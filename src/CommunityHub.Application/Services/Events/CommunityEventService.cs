@@ -1,6 +1,8 @@
+using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
+using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.MappersDto.Events;
 using CommunityHub.Application.Services.Dtos.Events;
@@ -10,6 +12,7 @@ namespace CommunityHub.Application.Services.Events
     public class CommunityEventService
     {
         private readonly ICommunityEventRepository _eventRepository = new CommunityEventRepository();
+        private readonly ICitizenRepository _citizenRepository = new CitizenRepository();
         private readonly IMapper<CommunityEvent, CommunityEventDto> _eventMapper = new CommunityEventMapper();
 
         public List<CommunityEventDto> GetByNeighborhoodId(long neighborhoodId)
@@ -17,10 +20,49 @@ namespace CommunityHub.Application.Services.Events
                 .Select(_eventMapper.MapToDto)
                 .ToList();
 
+        public List<CommunityEventDto> GetByOrganizerId(long organizerId)
+            => _eventRepository.GetByOrganizerId(organizerId)
+                .Select(_eventMapper.MapToDto)
+                .ToList();
+
+        public List<CommunityEventDto> GetByVolunteerCitizenId(long citizenId)
+            => _eventRepository.GetByVolunteerCitizenId(citizenId)
+                .Select(_eventMapper.MapToDto)
+                .ToList();
+
         public CommunityEventDto? GetById(long eventId)
             => _eventRepository.GetById(eventId) is CommunityEvent @event
                 ? _eventMapper.MapToDto(@event)
                 : null;
+
+        public CommunityEventDto CreateEvent(
+            long organizerId,
+            string name,
+            string description,
+            DateTime eventStart,
+            int durationMinutes,
+            int minVolunteers,
+            List<string> itemNames)
+        {
+            var organizer = _citizenRepository.GetById(organizerId);
+            var items = itemNames.Distinct().Select(name => EventItem.CreateFormatted(name)).ToList();
+
+            var newEvent = new CommunityEvent(
+                id: 0,
+                name: name.Trim(),
+                description: description.Trim(),
+                eventStart: eventStart,
+                durationMinutes: durationMinutes,
+                minVolunteers: minVolunteers,
+                status: EventStatus.Preparation,
+                neighborhood: organizer!.Membership!.Neighborhood,
+                organizer: organizer,
+                items: items
+            );
+
+            var createdEvent = _eventRepository.Create(newEvent);
+            return _eventMapper.MapToDto(createdEvent);
+        }
 
         public void UpdateEventStatusesForNeighborhood(long neighborhoodId)
         {
@@ -54,6 +96,12 @@ namespace CommunityHub.Application.Services.Events
                     _eventRepository.UpdateStatus(ev.Id, EventStatus.Finished);
                 }
             }
+        }
+
+        public void UpdateEventRegistrationAttendance(long registrationId, bool attended)
+        {
+            var regRepository = new EventRegistrationRepository();
+            regRepository.UpdateAttendance(registrationId, attended);
         }
     }
 }
