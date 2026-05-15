@@ -24,7 +24,7 @@
             </Button>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0">
             <StackPanel>
                 <TextBlock Text="Događaji koje organizujem:" FontWeight="Bold" Margin="0,12,0,8">
                     <TextBlock.Style>

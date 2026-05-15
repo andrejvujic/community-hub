@@ -19,6 +19,8 @@ namespace CommunityHub.Application.Services.Dtos.Events
         public List<EventRegistrationDto> Registrations { get; set; }
         public List<EventItemAssignmentDto> Assignments { get; set; }
 
+        public int RegisteredCount => Registrations?.Count ?? 0;
+
         public CommunityEventDto(
             long id,
             string name,

@@ -22,9 +22,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public CitizenDto? Citizen => _citizen;
-        public string EventName => _event?.Name ?? string.Empty;
-        public DateTime EventStart => _event?.EventStart ?? DateTime.MinValue;
+        public CitizenDto? Citizen
+        {
+            get => _citizen;
+            private set
+            {
+                if (_citizen == value) return;
+                _citizen = value;
+                OnPropertyChanged(nameof(Citizen));
+            }
+        }
+
+        public string EventName
+        {
+            get => _event?.Name ?? string.Empty;
+        }
+
+        public DateTime EventStart
+        {
+            get => _event?.EventStart ?? DateTime.MinValue;
+        }
 
         public ObservableCollection<EventItemSelection> Items { get; } = new();
         public List<long> AlreadyAssignedItemIds { get; } = new();
@@ -39,12 +56,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         private void LoadData()
         {
             _event = _eventService.GetById(_eventId);
-            _citizen = _citizenService.GetCitizenById(_userId);
+            Citizen = _citizenService.GetCitizenById(_userId);
 
             PopulateItems();
             OnPropertyChanged(nameof(EventName));
             OnPropertyChanged(nameof(EventStart));
-            OnPropertyChanged(nameof(Citizen));
         }
 
         private void PopulateItems()
@@ -53,20 +69,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
             foreach (var id in _assignmentService.GetByEventId(_eventId).Select(a => a.Item.Id))
                 AlreadyAssignedItemIds.Add(id);
-        }
-
-        public string? ValidateRegistration()
-        {
-            if (_event == null)
-                return "Događaj nije pronađen.";
-
-            if (_event.Status != EventStatus.Preparation)
-                return "Prijava je dozvoljena samo dok je događaj u pripremi.";
-
-            if (_registrationService.IsAlreadyRegistered(_citizen!.Id, _eventId))
-                return "Već ste se prijavili za ovaj događaj.";
-
-            return null;
         }
 
         public void Register()

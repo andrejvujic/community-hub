@@ -21,13 +21,6 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            var validationError = _viewModel.ValidateRegistration();
-            if (validationError != null)
-            {
-                MessageBox.Show(validationError, "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             _viewModel.Register();
             this.DialogResult = true;
         }
