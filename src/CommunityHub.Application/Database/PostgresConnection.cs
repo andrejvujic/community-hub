@@ -13,6 +13,7 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Services;
 using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Neighborhoods;
 
 namespace CommunityHub.Application.Database;
 
@@ -50,6 +51,7 @@ public static class PostgresConnection
         builder.MapEnum<AdEventType>("ad_event_types");
         builder.MapEnum<IssuePriority>("reported_issue_priorities");
         builder.MapEnum<IssueStatus>("reported_issue_statuses");
+        builder.MapEnum<NeighborhoodAccessRequestStatus>("neighborhood_access_request_statuses");
     }   
 
     private static string LoadConnectionString()
