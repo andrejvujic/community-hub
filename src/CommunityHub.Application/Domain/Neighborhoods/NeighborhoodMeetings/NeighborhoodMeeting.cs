@@ -12,19 +12,27 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings
         public DateOnly DateRangeEnd { get; private set; }
         public DateOnly? ScheduledDate { get; private set; }
         public MeetingStatus Status { get; private set; }
-        public bool IsTied 
-            => Status == MeetingStatus.InPreparation && DateOnly.FromDateTime(DateTime.Today) >= DateRangeStart.AddDays(-1);
 
-        public string DisplayDate
+        public bool IsTied
+            => Status == MeetingStatus.InPreparation &&
+               DateTime.Now >= DateRangeStart.ToDateTime(MeetingTime).AddHours(-24);
+
+        public bool IsExpired
+            => Status == MeetingStatus.InPreparation &&
+               DateTime.Now >= DateRangeStart.ToDateTime(MeetingTime);
+
+        public MeetingOutcome DetermineOutcome(Dictionary<DateOnly, int> voteCounts)
         {
-            get
-            {
-                if (Status == MeetingStatus.Scheduled && ScheduledDate.HasValue)
-                {
-                    return ScheduledDate.Value.ToString("dd.MM.yyyy.");
-                }
-                return $"{DateRangeStart:dd.MM.yyyy.} - {DateRangeEnd:dd.MM.yyyy.}";
-            }
+            if (!IsTied && !IsExpired)
+                return MeetingOutcome.TooEarly;
+
+            if (voteCounts.Count == 0 || IsExpired)
+                return MeetingOutcome.Cancelled;
+
+            int maxVotes = voteCounts.Values.Max();
+            bool hasTie = voteCounts.Count(v => v.Value == maxVotes) > 1;
+
+            return hasTie ? MeetingOutcome.Tied : MeetingOutcome.Resolved;
         }
 
         public static DateOnly? ResolveScheduledDate(Dictionary<DateOnly, int> voteCounts)
