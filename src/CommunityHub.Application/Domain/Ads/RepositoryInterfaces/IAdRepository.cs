@@ -19,5 +19,6 @@ namespace CommunityHub.Application.Domain.Ads.RepositoryInterfaces
         public List<(AdCategory, int)> GetActiveAdsByCategory(long buildingId);
         public int GetAdsCountByStatus(long buildingId, AdStatus status);
         public string GetMostHelpfulResident(long buildingId);
+        public List<string> GetDistinctYears();
     }
 }

@@ -2,6 +2,8 @@
 using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Ads.Services;
 using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Application.MappersDto.Ads;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
@@ -16,10 +18,12 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         private readonly IAdRepository _adRepository;
         private readonly AdTimeSlotService _adTimeSlotService;
         private readonly AdTimeSlotGenerator _adTimeSlotGenerator;
+        private readonly AdMapper _adMapper = new();
         public AdService(
             IAdRepository adRepository,
             IAdTimeSlotRepository adTimeSlotRepository
-        ) {
+        )
+        {
             _adRepository = adRepository;
             _adTimeSlotService = new(adTimeSlotRepository);
             _adTimeSlotGenerator = new();
@@ -99,5 +103,32 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
                 .Distinct()
                 .ToList();
         }
+
+        public int GetAdsCountByStatus(long buildingId, AdStatus status)
+            => _adRepository.GetAdsCountByStatus(buildingId, status);
+
+        public string GetMostHelpfulResident(long buildingId)
+            => _adRepository.GetMostHelpfulResident(buildingId);
+
+        public List<AdDto> GetAllByBuildingId(long buildingId)
+        {
+            var ads = _adRepository.GetByBuilding(buildingId);
+            return ads.Select(_adMapper.MapToDto).ToList();
+        }
+
+        public int GetAdsCountByDateAndType(long buildingId, AdType type, int year, int? month)
+            => _adRepository.GetAdsCountByDateAndType(buildingId, type, year, month);
+
+        public List<(AdCategory Category, int OfferCount, int RequestCount)> GetAdStatsByCategory(long buildingId, int year, int? month)
+            => _adRepository.GetAdStatsByCategory(buildingId, year, month);
+
+        public List<(AdCategory Category, int ActiveAdsCount)> GetActiveAdsByCategory(long buildingId)
+            => _adRepository.GetActiveAdsByCategory(buildingId);
+
+        public List<string> GetDistinctYears()
+        {
+            List<string> years = _adRepository.GetDistinctYears();
+            return years;
+        }            
     }
 }
