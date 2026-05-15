@@ -37,7 +37,7 @@
             </StackPanel>
         </Grid>
 
-            <StackPanel Grid.Row="1" Margin="0,12,0,12">
+        <StackPanel Grid.Row="1" Margin="0,12,0,12">
             <TextBlock Text="Opis:"/>
             <Grid>
                 <TextBox x:Name="DescriptionBox" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="4" TextChanged="Input_Changed"/>
@@ -62,7 +62,7 @@
                 <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Margin="0,0,12,0">
+            <Grid Grid.Column="0" Margin="0,18,12,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="140" />
                     <ColumnDefinition Width="*" />
@@ -106,20 +106,22 @@
 
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Potrebne stvari:" />
-                <Grid>
-                    <TextBox x:Name="ItemsBox" Height="160" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" Padding="4" TextChanged="Input_Changed"/>
-                    <TextBlock Text="Unesite potrebne stvari, odvojene zarezom" Foreground="#888" Margin="6,6,6,6" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Top">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=ItemsBox}" Value="">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                <Grid Margin="0,4,0,0" Height="160">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="60" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="ItemInputBox" Grid.Column="0" Height="26" VerticalContentAlignment="Center" Padding="4,0,0,0" Margin="0,0,8,0" KeyDown="ItemInputBox_KeyDown"/>
+                        <Button Grid.Column="1" x:Name="AddItemButton" Height="26" Content="Dodaj" Click="AddItemButton_Click" />
+                    </Grid>
+
+                    <ListBox Grid.Row="1" x:Name="ItemsListBox" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0,-22" />
                 </Grid>
             </StackPanel>
         </Grid>

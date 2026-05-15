@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Globalization;
+using System.Windows.Input;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Database.Repositories.Events;
@@ -20,10 +22,13 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private int? _cachedMinVolunteers;
         private List<string>? _cachedItemNames;
 
+        private ObservableCollection<string> _items = new ObservableCollection<string>();
+
         public OrganizeEventWindow(long userId)
         {
             InitializeComponent();
             _userId = userId;
+            ItemsListBox.ItemsSource = _items;
         }
 
         private void Input_Changed(object sender, System.EventArgs e)
@@ -38,8 +43,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             if (TryGetEventStart(out var es)) _cachedEventStart = es; else _cachedEventStart = null;
             if (TryGetDuration(out var dm)) _cachedDurationMinutes = dm; else _cachedDurationMinutes = null;
             if (TryGetMinVolunteers(out var mv)) _cachedMinVolunteers = mv; else _cachedMinVolunteers = null;
-            var items = ParseItems(ItemsBox.Text);
-            _cachedItemNames = items.Count > 0 ? items : null;
+            _cachedItemNames = _items.Count > 0 ? _items.ToList() : null;
 
             SaveButton.IsEnabled = hasName && hasDesc && _cachedEventStart.HasValue && _cachedDurationMinutes.HasValue && _cachedMinVolunteers.HasValue && _cachedItemNames != null;
         }
@@ -76,7 +80,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         {
             minVol = 0;
             if (!int.TryParse(VolunteersBox.Text, out var v)) return false;
-            if (v < 0) return false;
+            if (v <= 0) return false;
             minVol = v;
             return true;
         }
@@ -84,6 +88,44 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private void DiscardButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void AddItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddItemFromInput();
+        }
+
+        private void ItemInputBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                AddItemFromInput();
+                e.Handled = true;
+            }
+        }
+
+        private void AddItemFromInput()
+        {
+            string input = ItemInputBox.Text.Trim();
+            if (string.IsNullOrEmpty(input))
+                return;
+
+            string formatted = FormatItem(input);
+
+            if (!_items.Contains(formatted))
+            {
+                _items.Add(formatted);
+                ItemInputBox.Clear();
+                ValidateInputs();
+            }
+        }
+
+        private string FormatItem(string item)
+        {
+            var parts = item.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var normalized = string.Join(" ", parts);
+            if (normalized.Length == 0) return normalized;
+            return char.ToUpper(normalized[0]) + normalized.Substring(1).ToLower();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -118,20 +160,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private List<string> ParseItems(string? raw)
         {
-            if (string.IsNullOrWhiteSpace(raw)) return new List<string>();
-
-            var separators = new[] { '\n', '\r', ',' };
-            var parts = raw.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            var result = new List<string>();
-            foreach (var p in parts)
-            {
-                var s = p.Trim();
-                if (string.IsNullOrEmpty(s)) continue;
-                s = string.Join(" ", s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-                s = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
-                if (!result.Contains(s)) result.Add(s);
-            }
-            return result;
+            return _items.ToList();
         }
     }
 }
