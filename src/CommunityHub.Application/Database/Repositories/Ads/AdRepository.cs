@@ -123,9 +123,10 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             connection.ExecuteReader(
                 query,
-                reader => {
+                reader =>
+                {
                     ad = _adMapper.MapToEntity(reader);
-                }    
+                }
             );
 
             return ad;
@@ -162,7 +163,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             connection.ExecuteReader(
                 query,
-                reader => {
+                reader =>
+                {
                     var ad = _adMapper.MapToEntity(reader);
                     if (ad is null) return;
                     ads.Add(ad);
@@ -210,7 +212,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             connection.ExecuteReader(
                 query,
-                reader => {
+                reader =>
+                {
                     var ad = _adMapper.MapToEntity(reader);
                     if (ad == null) return;
                     ads.Add(ad);
@@ -256,7 +259,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             connection.ExecuteReader(
                 query,
-                reader => {
+                reader =>
+                {
                     var ad = _adMapper.MapToEntity(reader);
                     if (ad == null) return;
                     ads.Add(ad);
@@ -268,7 +272,9 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
         public int GetAdsCountByDateAndType(long buildingId, AdType type, int year, int? month)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"  SELECT COUNT(*)
                     FROM ads ad
                     WHERE ad.building_id = @building_id
@@ -280,12 +286,14 @@ namespace CommunityHub.Application.Database.Repositories.Ads
              .AddParameter("year", year)
              .AddParameter("month", month);
 
-            return query.ExecuteScalar<int>(result => Convert.ToInt32(result));
+            return connection.ExecuteScalar(query, Convert.ToInt32);
         }
 
         public List<(AdCategory, int, int)> GetAdStatsByCategory(long buildingId, int year, int? month)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     ad.ad_category,
                     COUNT(*) FILTER (WHERE ad.ad_type = 'offer')   AS offer_count,
@@ -303,21 +311,23 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             var result = new List<(AdCategory, int, int)>();
 
-            query.ExecuteReader(reader =>
-            {
-                var category = Enum.Parse<AdCategory>(reader["ad_category"].ToString()!);
-                var offerCount = Convert.ToInt32(reader["offer_count"]);
-                var requestCount = Convert.ToInt32(reader["request_count"]);
+            connection.ExecuteReader(query, reader =>
+           {
+               var category = Enum.Parse<AdCategory>(reader["ad_category"].ToString()!);
+               var offerCount = Convert.ToInt32(reader["offer_count"]);
+               var requestCount = Convert.ToInt32(reader["request_count"]);
 
-                result.Add((category, offerCount, requestCount));
-            });
+               result.Add((category, offerCount, requestCount));
+           });
 
             return result;
         }
 
         public List<(AdCategory, int)> GetActiveAdsByCategory(long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     ad.ad_category,
                     COUNT(*) FILTER (WHERE ad.ad_status = 'active') AS active_ads
@@ -330,32 +340,36 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             var result = new List<(AdCategory, int)>();
 
-            query.ExecuteReader(reader =>
-            {
-                var category = Enum.Parse<AdCategory>(reader["ad_category"].ToString()!);
-                var offerCount = Convert.ToInt32(reader["active_ads"]);
+            connection.ExecuteReader(query, reader =>
+           {
+               var category = Enum.Parse<AdCategory>(reader["ad_category"].ToString()!);
+               var offerCount = Convert.ToInt32(reader["active_ads"]);
 
-                result.Add((category, offerCount));
-            });
+               result.Add((category, offerCount));
+           });
 
             return result;
         }
 
         public int GetAdsCountByStatus(long buildingId, AdStatus status)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT COUNT(*)
                     FROM ads ad
                     WHERE ad.building_id = @building_id
                     AND ad.ad_status = @status;"
             ).AddParameter("building_id", buildingId)
              .AddParameter("status", status);
-            return query.ExecuteScalar<int>(result => Convert.ToInt32(result));
+            return connection.ExecuteScalar(query, Convert.ToInt32);
         }
 
         public string GetMostHelpfulResident(long buildingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT u.name, u.surname, COUNT(*) AS busy_time_slots
                     FROM ad_time_slots ts
                     INNER JOIN ads a   ON ts.ad_id = a.id
@@ -371,7 +385,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads
 
             string? resident = null;
 
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var username = reader["name"].ToString();
                 var surname = reader["surname"].ToString();
@@ -379,6 +393,30 @@ namespace CommunityHub.Application.Database.Repositories.Ads
             });
 
             return resident ?? "N/A";
+        }
+
+        public List<string> GetDistinctYears()
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT DISTINCT
+                    generate_series(
+                        EXTRACT(YEAR FROM start_date)::int,
+                        EXTRACT(YEAR FROM end_date)::int
+                    ) AS year
+                    FROM ads
+                    ORDER BY year;"
+            );
+
+            var years = new List<string>();
+
+            connection.ExecuteReader(query, reader =>
+            {
+                years.Add(reader["year"].ToString()!);
+            });
+            
+            return years;
         }
     }
 }
