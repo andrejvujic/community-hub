@@ -257,10 +257,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             TryAutoSchedule(meeting, voteCounts);
         }
 
-        /// <summary>
-        /// Vraća true ako je prošao trenutak početnog datuma u opsegu,
-        /// a sastanak još nije zakazan — koordinator nije odabrao termin na vreme.
-        /// </summary>
         private static bool IsExpiredUnresolved(NeighborhoodMeetingDto meeting)
         {
             var startMoment = meeting.DateRangeStart.ToDateTime(meeting.MeetingTime);
@@ -270,7 +266,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void TryAutoSchedule(NeighborhoodMeetingDto meeting, Dictionary<DateOnly, int> voteCounts)
         {
             var scheduled = NeighborhoodMeeting.ResolveScheduledDate(voteCounts);
-            if (!scheduled.HasValue) return; // izjednačeno — koordinator bira
+            if (!scheduled.HasValue) return;
 
             _meetingService.UpdateScheduledDate(meeting.Id, scheduled.Value);
             _meetingService.UpdateStatus(meeting.Id, MeetingStatus.Scheduled);

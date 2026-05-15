@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <conv:MeetingStatusToStringConverter x:Key="MeetingStatusConverter"/>
         <conv:MeetingThemeToStringConverter x:Key="MeetingThemeConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
     <Grid Background="#F5F6FA">
@@ -35,6 +36,7 @@
                      Grid.Row="1" 
                      Margin="10,0,10,10"
                      ItemsSource="{Binding Neighborhoods}"
+                     SelectedItem="{Binding SelectedNeighborhood}"
                      Style="{StaticResource NeighborhoodListBoxStyle}"
                      ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
                      ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
@@ -44,7 +46,8 @@
         </Border>
 
         <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
-            <Grid x:Name="StatisticsAndMeetingsPanel" Visibility="Collapsed" Margin="0,15,15,15">
+            <Grid Margin="0,15,15,15"
+                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibility}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="2*" />
@@ -63,37 +66,38 @@
                             <UniformGrid Columns="1">
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Ukupan broj građana: " FontSize="15"/>
-                                    <TextBlock x:Name="TotalCitizensTxt" FontSize="15" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding TotalCitizensText}" FontSize="15" FontWeight="Bold"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj novih građana: " FontSize="15"/>
-                                    <TextBlock x:Name="NewCitizensTxt" FontSize="15" Margin="5,0"/>
-                                    <TextBlock x:Name="NewCitizensPercentTxt" FontSize="15"/>
+                                    <TextBlock Text="{Binding NewCountText}" FontSize="15" Margin="5,0"/>
+                                    <TextBlock Text="{Binding NewPercentText}" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj neaktivnih građana: " FontSize="15"/>
-                                    <TextBlock x:Name="InactiveCitizensTxt" FontSize="15" Margin="5,0"/>
-                                    <TextBlock x:Name="InactiveCitizensPercentTxt" FontSize="15"/>
+                                    <TextBlock Text="{Binding InactiveCountText}" FontSize="15" Margin="5,0"/>
+                                    <TextBlock Text="{Binding InactivePercentText}" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj aktivnih građana: " FontSize="15"/>
-                                    <TextBlock x:Name="ActiveCitizensTxt" FontSize="15" Margin="5,0"/>
-                                    <TextBlock x:Name="ActiveCitizensPercentTxt" FontSize="15"/>
+                                    <TextBlock Text="{Binding ActiveCountText}" FontSize="15" Margin="5,0"/>
+                                    <TextBlock Text="{Binding ActivePercentText}" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj istaknutih građana: " FontSize="15"/>
-                                    <TextBlock x:Name="ProminentCitizensTxt" Text="0" FontSize="15" Margin="5,0"/>
-                                    <TextBlock x:Name="ProminentCitizensPercentTxt" Text="(0%)" FontSize="15"/>
+                                    <TextBlock Text="{Binding ProminentCountText}" FontSize="15" Margin="5,0"/>
+                                    <TextBlock Text="{Binding ProminentPercentText}" FontSize="15"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj građana od poverenja: " FontSize="15"/>
-                                    <TextBlock x:Name="TrustworthyCitizensTxt" Text="0" FontSize="15" Margin="5,0"/>
-                                    <TextBlock x:Name="TrustworthyCitizensPercentTxt" Text="(0%)" FontSize="15"/>
+                                    <TextBlock Text="{Binding TrustworthyCountText}" FontSize="15" Margin="5,0"/>
+                                    <TextBlock Text="{Binding TrustworthyPercentText}" FontSize="15"/>
                                 </StackPanel>
                             </UniformGrid>
                         </StackPanel>
 
-                        <Grid Grid.Row="1" x:Name="RecommendationContainer" Visibility="Collapsed">
+                        <Grid Grid.Row="1"
+                              Visibility="{Binding ShowAnyRecommendation, Converter={StaticResource BoolToVisibility}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*" />
                                 <RowDefinition Height="1*" />
@@ -115,25 +119,17 @@
                                         <TextBlock Text="Preporuka sistema" FontSize="18" VerticalAlignment="Center"/>
                                     </StackPanel>
 
-                                    <TextBlock x:Name="WelcomeRecommendationText" TextWrapping="Wrap" FontSize="16" LineHeight="20" Visibility="Collapsed">
-                                        <Run Text="U kvartu "/>
-                                        <Run x:Name="WelcomeNeighborhoodNameRun" Text="NazivKvarta" FontWeight="Bold"/>
-                                        <Run Text=" je primećeno da je najveći broj "/>
-                                        <Run Text="novih" FontWeight="Bold"/>
-                                        <Run Text=" građana."/>
-                                        <LineBreak/> <Run Text="Predlažemo vam da zakažete sastanak "/>
-                                        <Run Text="dobrodošlice." FontWeight="Bold"/>
-                                    </TextBlock>
+                                    <TextBlock Text="{Binding WelcomeRecommendationText}"
+                                               TextWrapping="Wrap"
+                                               FontSize="16"
+                                               LineHeight="20"
+                                               Visibility="{Binding ShowWelcomeRecommendation, Converter={StaticResource BoolToVisibility}}"/>
 
-                                    <TextBlock x:Name="MotivationRecommendationText" TextWrapping="Wrap" FontSize="16" LineHeight="20" Visibility="Collapsed">
-                                        <Run Text="U kvartu "/>
-                                        <Run x:Name="MotivationNeighborhoodNameRun" Text="NazivKvarta" FontWeight="Bold"/>
-                                        <Run Text=" je primećeno da je najveći broj "/>
-                                        <Run Text="neaktivnih" FontWeight="Bold"/>
-                                        <Run Text=" građana."/>
-                                        <LineBreak/> <Run Text="Predlažemo vam da zakažete sastanak "/>
-                                        <Run Text="motivacije." FontWeight="Bold"/>
-                                    </TextBlock>
+                                    <TextBlock Text="{Binding MotivationRecommendationText}"
+                                               TextWrapping="Wrap"
+                                               FontSize="16"
+                                               LineHeight="20"
+                                               Visibility="{Binding ShowMotivationRecommendation, Converter={StaticResource BoolToVisibility}}"/>
                                 </StackPanel>
                             </Border>
 
@@ -142,7 +138,7 @@
                                     Margin="0,10,0,0"
                                     Height="40"
                                     Cursor="Hand"
-                                    Visibility="Collapsed"
+                                    Visibility="{Binding ShowWelcomeRecommendation, Converter={StaticResource BoolToVisibility}}"
                                     Click="WelcomeMeetingButton_Click">
                                 <TextBlock Text="Zakaži sastanak dobrodošlice"/>
                             </Button>
@@ -152,7 +148,7 @@
                                     Margin="0,10,0,0"
                                     Height="40"
                                     Cursor="Hand"
-                                    Visibility="Collapsed"
+                                    Visibility="{Binding ShowMotivationRecommendation, Converter={StaticResource BoolToVisibility}}"
                                     Click="MotivationMeetingButton_Click">
                                 <TextBlock Text="Zakaži sastanak motivacije"/>
                             </Button>
@@ -182,6 +178,7 @@
 
                         <DataGrid x:Name="MeetingsDataGrid"
                                   ItemsSource="{Binding Meetings}"
+                                  SelectedItem="{Binding SelectedMeeting}"
                                   Grid.Row="1" 
                                   AutoGenerateColumns="False" 
                                   CanUserAddRows="False" 
@@ -206,7 +203,7 @@
                             </DataGrid.RowStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="130"/>
-                                <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTime}" Width="100"/>
+                                <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTimeDisplay}" Width="100"/>
                                 <DataGridTextColumn Header="Datum-opseg" Binding="{Binding DisplayDate}" Width="1.5*"/>
                                 <DataGridTextColumn Header="Stanje" Binding="{Binding Status, Converter={StaticResource MeetingStatusConverter}}" Width="120"/>
                             </DataGrid.Columns>
@@ -220,12 +217,13 @@
 
                             <StackPanel x:Name="TiedDatesPanel" 
                                         Grid.Row="0"
-                                        Orientation="Vertical" 
-                                        Visibility="Collapsed"
-                                        Margin="0,10,0,0">
+                                        Orientation="Vertical"
+                                        Margin="0,10,0,0"
+                                        Visibility="{Binding HasTiedDates, Converter={StaticResource BoolToVisibility}}">
                                 <TextBlock Text="Odredite konačan termin" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                <ComboBox x:Name="TiedDatesComboBox"
-                                          SelectionChanged="TiedDatesComboBox_SelectionChanged"
+                                <ComboBox ItemsSource="{Binding TiedDateOptions}"
+                                          SelectedItem="{Binding SelectedTiedDateOption}"
+                                          DisplayMemberPath="Display"
                                           HorizontalAlignment="Center"
                                           Width="150"
                                           FontSize="14"
@@ -240,7 +238,7 @@
                                     VerticalAlignment="Bottom"
                                     Padding="15,8"
                                     Cursor="Hand"
-                                    IsEnabled="False"
+                                    IsEnabled="{Binding CanConfirmTiedDate}"
                                     Click="ConfirmTermButton_Click"/>
                         </Grid>
                     </Grid>
