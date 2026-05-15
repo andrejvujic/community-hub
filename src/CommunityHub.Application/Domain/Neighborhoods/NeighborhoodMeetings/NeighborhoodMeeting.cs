@@ -44,7 +44,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings
             return voteCounts.Count(v => v.Value == maxVotes) > 1;
         }
 
-        public List<DateOnly> GetTiedDates(Dictionary<DateOnly, int> voteCounts)
+        public static List<DateOnly> GetTiedDates(Dictionary<DateOnly, int> voteCounts)
         {
             if (voteCounts.Count == 0) return new List<DateOnly>();
             int maxVotes = voteCounts.Values.Max();
