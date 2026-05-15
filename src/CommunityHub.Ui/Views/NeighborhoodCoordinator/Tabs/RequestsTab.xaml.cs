@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
@@ -28,7 +27,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (_viewModel == null) return;
  
-            NeighborhoodAccessRequestStatus? selectedStatus = (StatusFilterComboBox.SelectedItem as ComboBoxItem)?.Tag as Status?;
+            NeighborhoodAccessRequestStatus? selectedStatus = (StatusFilterComboBox.SelectedItem as ComboBoxItem)?.Tag as NeighborhoodAccessRequestStatus?;
             _viewModel.LoadRequests(selectedStatus);
         }
  
