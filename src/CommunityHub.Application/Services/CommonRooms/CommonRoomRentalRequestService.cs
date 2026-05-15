@@ -69,7 +69,7 @@ namespace CommunityHub.Application.Services.CommonRooms
             return rentalRequests.Select(_rentalRequestMapper.MapToDto).ToList();
         }
 
-        public void CheckAndUpdateRentalDateStatuses(long buildingId)
+        public void AutoProcessRentalRequestStatuses(long buildingId)
         {
             var rentalRequests = _rentalRequestRepository.GetAllByBuildingId(buildingId);
 

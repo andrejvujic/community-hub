@@ -20,7 +20,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
             _viewModel = new BuildingDetailsPageViewModel(user, building);
             DataContext = _viewModel;
             _rentalRequestsViewModel = new CommonRoomRentalRequestsPageViewModel(_viewModel.User, _viewModel.Building);
-            _rentalRequestsViewModel.CheckAndUpdateRentalDateStatuses();
+            _rentalRequestsViewModel.AutoProcessRentalRequestStatuses();
             BuildingFrame.Navigate(new BuildingInfoPage(_viewModel.User, _viewModel.Building));
         }
         private void SideBarItem_Click(object sender, MouseButtonEventArgs e)

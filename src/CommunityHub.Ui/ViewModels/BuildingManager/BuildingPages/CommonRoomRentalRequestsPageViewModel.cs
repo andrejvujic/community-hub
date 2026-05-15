@@ -89,9 +89,9 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             foreach (var request in rentalRequests)
                 RentalRequests.Add(request);
         }
-        public void CheckAndUpdateRentalDateStatuses()
+        public void AutoProcessRentalRequestStatuses()
         {
-            _rentalRequestService.CheckAndUpdateRentalDateStatuses(Building.Id);
+            _rentalRequestService.AutoProcessRentalRequestStatuses(Building.Id);
         }
         private void ShowManagerAction(CommonRoomRentalRequestDto? request)
         {
@@ -159,7 +159,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (result == MessageBoxResult.No) return;
 
             _rentalRequestService.ApproveOneDaySuggestion(SelectedRentalRequest, day);
-            CheckAndUpdateRentalDateStatuses();
+            AutoProcessRentalRequestStatuses();
             RefreshRentalRequests();
             OneDayPanelVisibility = Visibility.Collapsed;
         }
@@ -173,7 +173,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (result == MessageBoxResult.No) return;
 
             _rentalRequestService.AcceptMultiDaySuggestion(SelectedRentalRequest, proposedStartDate, proposedEndDate);
-            CheckAndUpdateRentalDateStatuses();
+            AutoProcessRentalRequestStatuses();
             RefreshRentalRequests();
             MultiDayPanelVisibility = Visibility.Collapsed;
         }
