@@ -55,5 +55,8 @@ namespace CommunityHub.Application.Services.CommonRooms
             );
             return requests.Any(request => request.IsPending);
         }
+
+        public List<DateTime> GetReservedDates(long commonRoomId, long buildingId)
+            => _rentalRequestRepository.GetReservedDates(commonRoomId, buildingId);
     }
 }

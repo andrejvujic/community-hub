@@ -161,7 +161,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Grid Grid.Column="0">
-                                                    <TextBlock FontSize="17" Text="{Binding CommonRoom.Type, Converter={StaticResource RentalTypeConverter}, StringFormat='Način iznajmljivanja: {0}'}" />
+                                                    <TextBlock FontSize="17" Text="{Binding CommonRoom.RentalType, Converter={StaticResource RentalTypeConverter}, StringFormat='Način iznajmljivanja: {0}'}" />
                                                 </Grid>
 
                                                 <Grid Grid.Column="1">
@@ -244,7 +244,7 @@
                             VerticalAlignment="Center"
                             FontSize="22"
                             Foreground="Black"
-                            Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"  
+                            Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"
                             TextAlignment="Center"
                             TextWrapping="Wrap"
                             Visibility="Collapsed" />

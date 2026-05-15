@@ -6,7 +6,6 @@ namespace CommunityHub.Application.Domain.Issues.RepositoryInterfaces
     {
         public List<Issue> GetAllByBuilding(long buildingId);
         public List<Issue> GetAllByBuildingAndResident(long buildingId, long residentId);
-
-        public int UpdateStatus(long issueId, IssueStatus newStatus);
+        public int Update(Issue issue);
     }
 }

@@ -10,7 +10,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontFamily="{StaticResource AppFontFamily}"
-    Loaded="ReportedIssuesPage_Loaded"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -49,7 +48,8 @@
                     Margin="15,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    FontSize="21" />
+                    FontSize="21"
+                    Text="{Binding StreetInfo}" />
 
                 <Button
                     Grid.Column="2"
