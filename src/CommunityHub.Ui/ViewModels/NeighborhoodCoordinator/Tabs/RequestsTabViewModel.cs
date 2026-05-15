@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
@@ -31,14 +31,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         }
 
         public bool CanActOnRequest =>
-            SelectedRequest != null && SelectedRequest.Status == Status.Waiting;
+            SelectedRequest != null && SelectedRequest.Status == NeighborhoodAccessRequestStatus.Waiting;
 
         public RequestsTabViewModel(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
         }
 
-        public void LoadRequests(Status? status)
+        public void LoadRequests(NeighborhoodAccessRequestStatus? status)
         {
             Requests.Clear();
             var requests = _neighborhoodAccessRequestService.GetByCoordinatorAndStatus(_coordinatorId, status);
@@ -50,7 +50,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public bool Reject(string comment)
         {
-            if (SelectedRequest == null || SelectedRequest.Status != Status.Waiting)
+            if (SelectedRequest == null || SelectedRequest.Status != NeighborhoodAccessRequestStatus.Waiting)
                 return false;
 
             _neighborhoodAccessRequestService.Reject(SelectedRequest, comment);
@@ -61,7 +61,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 var updatedRequest = new NeighborhoodAccessRequestDto(
                     SelectedRequest.Citizen,
                     SelectedRequest.Neighborhood,
-                    Status.Rejected,
+                    NeighborhoodAccessRequestStatus.Rejected,
                     SelectedRequest.CreationDate,
                     comment
                 );
@@ -75,7 +75,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public bool Accept()
         {
-            if (SelectedRequest == null || SelectedRequest.Status != Status.Waiting)
+            if (SelectedRequest == null || SelectedRequest.Status != NeighborhoodAccessRequestStatus.Waiting)
                 return false;
 
             _neighborhoodAccessRequestService.Accept(SelectedRequest);
@@ -88,7 +88,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 var updatedRequest = new NeighborhoodAccessRequestDto(
                     SelectedRequest.Citizen,
                     SelectedRequest.Neighborhood,
-                    Status.Accepted,
+                    NeighborhoodAccessRequestStatus.Accepted,
                     SelectedRequest.CreationDate
                 );
                 Requests[index] = updatedRequest;

@@ -17,7 +17,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
         private readonly CitizenMapper _citizenMapper = new();
         private readonly NeighborhoodMapper _neighborhoodMapper = new();
 
-        public List<NeighborhoodAccessRequestDto> GetByCoordinatorAndStatus(long coordinatorId, Status? status)
+        public List<NeighborhoodAccessRequestDto> GetByCoordinatorAndStatus(long coordinatorId, NeighborhoodAccessRequestStatus? status)
             => _neighborhoodAccessRequestRepository.GetByCoordinatorIdAndStatus(coordinatorId, status)
                 .Select(_neighborhoodAccessRequestMapper.MapToDto)
                 .ToList();
@@ -62,7 +62,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var request = new NeighborhoodAccessRequest(
                 citizen,
                 neighborhood,
-                Status.Waiting,
+                NeighborhoodAccessRequestStatus.Waiting,
                 DateTime.Now,
                 null
             );
@@ -75,7 +75,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var pending = _neighborhoodAccessRequestRepository.GetWaitingByCitizenId(citizenDto.Id);
             foreach (var r in pending.Where(r => r.Neighborhood.Id != approvedNeighborhoodId))
             {
-                var updated = r.CopyWith(status: Status.Rejected, comment: "Automatski odbijen: građanin je pridružen drugom kvartu.");
+                var updated = r.CopyWith(status: NeighborhoodAccessRequestStatus.Rejected, comment: "Automatski odbijen: građanin je pridružen drugom kvartu.");
                 _neighborhoodAccessRequestRepository.Update(updated);
             }
         }

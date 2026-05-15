@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (_viewModel == null) return;
  
-            Status? selectedStatus = (StatusFilterComboBox.SelectedItem as ComboBoxItem)?.Tag as Status?;
+            NeighborhoodAccessRequestStatus? selectedStatus = (StatusFilterComboBox.SelectedItem as ComboBoxItem)?.Tag as Status?;
             _viewModel.LoadRequests(selectedStatus);
         }
  
