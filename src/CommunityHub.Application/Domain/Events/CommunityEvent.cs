@@ -96,4 +96,60 @@ public class CommunityEvent
     {
         return DateTime.Now > EventStart.AddMinutes(DurationMinutes);
     }
+
+    public static bool TryParseEventStart(
+        DateTime? selectedDate,
+        string hour,
+        string minute,
+        out DateTime eventStart)
+    {
+        eventStart = default;
+
+        if (!selectedDate.HasValue)
+            return false;
+
+        if (!int.TryParse(hour, out var h) || h < 0 || h > 23)
+            return false;
+
+        if (!int.TryParse(minute, out var m) || m < 0 || m > 59)
+            return false;
+
+        var date = selectedDate.Value.Date;
+        eventStart = DateTime.SpecifyKind(date + new TimeSpan(h, m, 0), DateTimeKind.Unspecified);
+
+        return eventStart > DateTime.Now.AddHours(12);
+    }
+
+    public static bool TryParseDuration(
+        string durationHour,
+        string durationMinute,
+        out int durationMinutes)
+    {
+        durationMinutes = 0;
+
+        if (!int.TryParse(durationHour, out var dh) || dh < 0)
+            return false;
+
+        if (!int.TryParse(durationMinute, out var dm) || dm < 0 || dm > 59)
+            return false;
+
+        durationMinutes = dh * 60 + dm;
+        return durationMinutes > 0;
+    }
+
+    public static bool TryParseMinVolunteers(
+        string volunteers,
+        out int minVolunteers)
+    {
+        minVolunteers = 0;
+
+        if (!int.TryParse(volunteers, out var v))
+            return false;
+
+        if (v <= 0)
+            return false;
+
+        minVolunteers = v;
+        return true;
+    }
 }

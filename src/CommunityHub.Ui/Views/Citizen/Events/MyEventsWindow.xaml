@@ -24,14 +24,14 @@
             </Button>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0">
             <StackPanel>
                 <TextBlock Text="Događaji koje organizujem:" FontWeight="Bold" Margin="0,12,0,8">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Items.Count, ElementName=OrganizerEventsList}" Value="0">
+                                <DataTrigger Binding="{Binding OrganizerEvents.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -39,7 +39,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <ListBox x:Name="OrganizerEventsList" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="OrganizerEventsList" ItemsSource="{Binding OrganizerEvents}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -79,7 +79,7 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Items.Count, ElementName=VolunteerEventsList}" Value="0">
+                                <DataTrigger Binding="{Binding VolunteerEvents.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -87,7 +87,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <ListBox x:Name="VolunteerEventsList" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="VolunteerEventsList" ItemsSource="{Binding VolunteerEvents}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

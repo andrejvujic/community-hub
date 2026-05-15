@@ -1,4 +1,3 @@
-using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 using System.Windows;
