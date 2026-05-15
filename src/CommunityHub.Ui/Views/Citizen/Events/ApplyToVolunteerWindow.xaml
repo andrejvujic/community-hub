@@ -63,7 +63,14 @@
                 </Grid>
             </Grid>
 
-            <TextBlock x:Name="CitizenTextBlock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding CitizenName}" FontSize="16" FontWeight="Bold" Margin="10,10,2,-4" />
+            <TextBlock x:Name="CitizenTextBlock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" FontWeight="Bold" Margin="10,10,2,-4">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="Građanin: {0} {1}">
+                        <Binding Path="Citizen.Name" TargetNullValue="N/A" FallbackValue="N/A"/>
+                        <Binding Path="Citizen.Surname" TargetNullValue="" FallbackValue=""/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </Grid>
 
         <TextBlock Grid.Row="1" TextWrapping="Wrap" Margin="6,12,6,8">
@@ -77,7 +84,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <ListBox x:Name="ItemsListBox" Grid.Row="0" SelectionMode="Single" BorderThickness="0" HorizontalContentAlignment="Stretch">
+                <ListBox x:Name="ItemsListBox" Grid.Row="0" SelectionMode="Single" BorderThickness="0" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Items}" Tag="{Binding AlreadyAssignedItemIds}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0" Height="40">

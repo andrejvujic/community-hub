@@ -13,8 +13,10 @@ namespace CommunityHub.Application.Services.Events
     {
         private readonly ICommunityEventRepository _eventRepository = new CommunityEventRepository();
         private readonly ICitizenRepository _citizenRepository = new CitizenRepository();
-        private readonly IEventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
+        private readonly IEventItemRepository _eventItemRepository = new EventItemRepository();
         private readonly IMapper<CommunityEvent, CommunityEventDto> _eventMapper = new CommunityEventMapper();
+        private readonly EventRegistrationService _registrationService = new();
+        private readonly EventItemAssignmentService _assignmentService = new();
 
         public List<CommunityEventDto> GetByNeighborhoodId(long neighborhoodId)
             => _eventRepository.GetByNeighborhoodId(neighborhoodId)
@@ -101,7 +103,26 @@ namespace CommunityHub.Application.Services.Events
 
         public void UpdateEventRegistrationAttendance(long registrationId, bool attended)
         {
-            _eventRegistrationRepository.UpdateAttendance(registrationId, attended);
+            _registrationService.UpdateAttendance(registrationId, attended);
+        }
+
+        public void UpdateEventStatusIfReady(long eventId)
+        {
+            var currentEvent = _eventRepository.GetById(eventId);
+            if (currentEvent == null)
+                return;
+
+            var registrations = _registrationService.GetByEventId(eventId);
+            var assignments = _assignmentService.GetByEventId(eventId);
+            var items = _eventItemRepository.GetByEventId(eventId);
+
+            bool enoughVolunteers = registrations.Count >= currentEvent.MinVolunteers;
+            bool allItemsAssigned = items.All(i => assignments.Any(a => a.Item.Id == i.Id));
+
+            if (enoughVolunteers && allItemsAssigned && currentEvent.Status == EventStatus.Preparation)
+            {
+                _eventRepository.UpdateStatus(eventId, EventStatus.Scheduled);
+            }
         }
     }
 }

@@ -12,8 +12,8 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         private readonly long _userId;
         private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly CommunityEventRepository _eventRepository = new CommunityEventRepository();
-        private readonly EventRegistrationRepository _eventRegistrationRepository = new EventRegistrationRepository();
         private readonly CommunityEventService _eventService = new();
+        private readonly EventRegistrationService _registrationService = new();
 
         public EventsPage(long userId)
         {
@@ -50,20 +50,27 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void ApplyToVolunteerButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var selected = EventsGrid.SelectedItem as CommunityEvent;
-            if (selected == null)
+            var selectedEvent = EventsGrid.SelectedItem as CommunityEvent;
+            if (selectedEvent == null)
             {
                 MessageBox.Show("Izaberite događaj pre prijave.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (selected.Status != EventStatus.Preparation)
+            var eventDto = _eventService.GetById(selectedEvent.Id);
+            if (eventDto == null)
+            {
+                MessageBox.Show("Događaj nije pronađen.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (eventDto.Status != EventStatus.Preparation)
             {
                 MessageBox.Show("Prijava je dozvoljena samo dok je događaj u pripremi.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            var registrations = _eventRegistrationRepository.GetByEventId(selected.Id);
+            var registrations = _registrationService.GetByEventId(selectedEvent.Id);
             var citizen = _citizenRepository.GetById(_userId);
             if (registrations.Any(r => r.Citizen.Id == citizen!.Id))
             {
@@ -71,7 +78,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                 return;
             }
 
-            var wnd = new ApplyToVolunteerWindow(_userId, selected);
+            var wnd = new ApplyToVolunteerWindow(_userId, selectedEvent.Id);
             wnd.Owner = Window.GetWindow(this);
             var result = wnd.ShowDialog();
             if (result == true)
