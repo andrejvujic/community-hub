@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages;
+using CommunityHub.Application.Database.Repositories.Shared;
+using CommunityHub.Application.Domain.Users;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
@@ -20,40 +11,55 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
     /// </summary>
     public partial class HomeWindow : Window
     {
-        private readonly UserRepository _userRepository;
+        private readonly HomeWindowViewModel _homeWindowViewModel = new();
         private readonly long _userId;
-        private User _user;
 
         public HomeWindow(long userId)
         {
             InitializeComponent();
-            _userRepository = new UserRepository();
             _userId = userId;
-            LoadUser();
-
-            NeighborhoodsTab.Initialize(_userId);
-            RequestsTab.Initialize(_userId);
-        }
-
-        private void LoadUser()
-        {
-            User? user = _userRepository.GetById(_userId);
-            if (user == null)
+            if (!_homeWindowViewModel.LoadUser(userId))
             {
-                MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Korisnik nije pronađen.", "Greška",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
                 return;
             }
-            _user = user;
-            UserInfoTextBlock.Text = $"{_user.Name} {_user.Surname} - Koordinator kvarta";
+
+            UserInfoTextBlock.Text = _homeWindowViewModel.UserDisplayName;
+            InitializeTabs();
         }
 
+        private void InitializeTabs()
+        {
+            NeighborhoodsTab.Initialize(_userId);
+            RequestsTab.Initialize(_userId);
+            ServiceCenterTab.Initialize(_userId);
+            StatisticsAndMeetingsTab.Initialize(_userId);
+            CityFacilitiesTab.Initialize(_userId);
+            NeighborhoodBudgetTab.Initialize(_userId);
+        }
+ 
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
 
         private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ThemeComboBox.SelectedItem is not ComboBoxItem selected) return;
+
+            string themePath = selected.Content.ToString() == "Tamna"
+                ? "/Resources/Themes/DarkTheme.xaml"
+                : "/Resources/Themes/LightTheme.xaml";
+
+            var themeDict = new ResourceDictionary
+            {
+                Source = new Uri(themePath, UriKind.Relative)
+            };
+
+            var mergedDicts = System.Windows.Application.Current.Resources.MergedDictionaries;
+
+            mergedDicts[0] = themeDict;
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace CommunityHub.Ui.Helpers.Navigation;
 
@@ -27,7 +28,7 @@ namespace CommunityHub.Ui.Helpers.Navigation;
             if (Frame.CanGoBack) {
                 Frame.RemoveBackEntry();
                 if (_entries.Count > 0)
-                    _entries.Pop(); // TODO: check if onPop should shoudl be called here
+                    _entries.Pop(); // TODO: check if onPop should should be called here
         }
 
             _entries.Push(new NavigationEntry(page.Id));
@@ -36,18 +37,21 @@ namespace CommunityHub.Ui.Helpers.Navigation;
         public void Pop(object? returnValue = null)
         {
             if (Frame == null || !Frame.CanGoBack)
-                return;
+                    return;
 
             Frame.GoBack();
 
             if (_entries.Count > 0)
             {
                 var entry = _entries.Pop();
-                entry.OnPop?.Invoke(returnValue);
+                Frame.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Background,
+                    new Action(() => entry.OnPop?.Invoke(returnValue))
+                );
             }
         }
 
-        public void PopAll()
+    public void PopAll()
         {
             if (Frame == null) return;
             while (Frame.CanGoBack)

@@ -1,4 +1,6 @@
 ﻿using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.ServiceBookings;
+using CommunityHub.Application.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers

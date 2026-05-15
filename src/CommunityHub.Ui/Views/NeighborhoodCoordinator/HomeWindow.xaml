@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator"
-        xmlns:pages="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Pages"
+        xmlns:tabs="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
         mc:Ignorable="d"
         Title="Neighborhood Coordinator App"
         WindowStartupLocation="CenterScreen"
@@ -59,7 +59,7 @@
                     <Label Content="Tema: (Ctrl + T)" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="20"/>
 
                     <ComboBox x:Name="ThemeComboBox"
-                              Width="80"
+                              Width="85"
                               Height="30"
                               SelectedIndex="0"
                               SelectionChanged="ThemeComboBox_SelectionChanged"
@@ -90,23 +90,27 @@
             </TabItem>
 
             <TabItem Header="Kvartovi i članstva (F2)">
-                <pages:NeighborhoodsPage x:Name="NeighborhoodsTab" />
+                <tabs:NeighborhoodsTab x:Name="NeighborhoodsTab" />
             </TabItem>
 
             <TabItem Header="Zahtevi za pristup (F3)">
-                <pages:RequestsPage x:Name="RequestsTab" />
+                <tabs:RequestsTab x:Name="RequestsTab" />
             </TabItem>
 
             <TabItem Header="Statistika i sastanci (F4)">
+                <tabs:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
             </TabItem>
 
             <TabItem Header="Servisni centar (F5)">
+                <tabs:ServiceCenterTab x:Name="ServiceCenterTab" />
             </TabItem>
 
             <TabItem Header="Gradski objekti (F6)">
+                <tabs:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
             <TabItem Header="Budžet (F7)">
+                <tabs:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
             </TabItem>
 
             <TabItem Header="Profil (F8)">

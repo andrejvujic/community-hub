@@ -1,5 +1,7 @@
 ﻿using System.Data;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
@@ -7,13 +9,13 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
     {
         private readonly CityMapper _cityMapper = new CityMapper();
         private readonly CountryMapper _countryMapper = new CountryMapper();
-        private readonly UserMapper _userMapper = new UserMapper();
+        private readonly UserMapper? _userMapper = new UserMapper();
 
         public override Neighborhood MapToEntity(IDataReader reader)
         {
             City city = _cityMapper.MapToEntity(reader);
             Country country = _countryMapper.MapToEntity(reader);
-            User coordinator = _userMapper.MapToEntity(reader.WithPrefix("coordinator"));
+            User? coordinator = (_userMapper?.MapToEntity(reader.WithPrefix("coordinator"))) ?? throw new Exception("Couldn't read Neighborhood from database because of missing data");
 
             long id = reader.GetInt64(reader.GetOrdinal("neighborhood_id"));
             string name = reader.GetString(reader.GetOrdinal("neighborhood_name"));

@@ -1,0 +1,339 @@
+﻿<Page
+    x:Class="CommunityHub.Ui.Views.BuildingManager.BuildingPages.CommonRoomRentalRequestsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="CommonRoomRentalRequestsPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="{StaticResource AppFontFamily}"
+    Loaded="CommonRoomRentalRequestsPage_Loaded"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:RentalTypeToStringConverter x:Key="RentalTypeConverter" />
+        <conv:RentalRequestStatusToStringConverter x:Key="RentalStatusConverter" />
+    </Page.Resources>
+
+    <Grid Margin="10,25,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBlock
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Cursor="Hand"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    FontSize="28"
+                    MouseLeftButtonDown="LeftArrow_Click"
+                    Text="&#xf060;" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <TextBlock
+                    x:Name="streetInfo"
+                    Margin="15,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="21"
+                    Text="{Binding StreetInfo}" />
+            </Grid>
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Margin="35,30,45,30"
+            BorderBrush="Black"
+            BorderThickness="2"
+            MouseLeftButtonDown="RentalRequestCard_Click">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="700" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Grid.Column="0"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,2,0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                        <ItemsControl ItemsSource="{Binding RentalRequests}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Width="600"
+                                        Height="160"
+                                        Margin="20,15,20,15"
+                                        HorizontalAlignment="Center"
+                                        BorderBrush="Black"
+                                        BorderThickness="2"
+                                        CornerRadius="3"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="RentalRequestCard_Click">
+
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="White" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="LightGray" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid Margin="20,14,20,14">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Row="0">
+                                                <TextBlock FontSize="20">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}Prostorija: {0}">
+                                                            <Binding Path="CommonRoom.Name" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+
+                                            <Grid Grid.Row="1" Margin="0,12,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.Column="0">
+                                                    <TextBlock FontSize="17">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}Stanar: {0} {1}">
+                                                                <Binding Path="Resident.Name" />
+                                                                <Binding Path="Resident.Surname" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Grid>
+
+                                                <Grid Grid.Column="1">
+                                                    <TextBlock FontSize="17">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="{Binding RequestedStartDate, StringFormat='Početni datum: {0:dd.MM.yyyy.}'}" />
+                                                                <Style.Triggers>
+                                                                    <MultiDataTrigger>
+                                                                        <MultiDataTrigger.Conditions>
+                                                                            <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
+                                                                            <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
+                                                                        </MultiDataTrigger.Conditions>
+                                                                        <Setter Property="Text" Value="{Binding ProposedStartDate, StringFormat='Predloženi početak: {0:dd.MM.yyyy.}'}" />
+                                                                    </MultiDataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid Grid.Row="2" Margin="0,12,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.Column="0">
+                                                    <TextBlock FontSize="17" Text="{Binding CommonRoom.RentalType, Converter={StaticResource RentalTypeConverter}, StringFormat='Način iznajmljivanja: {0}'}" />
+                                                </Grid>
+
+                                                <Grid Grid.Column="1">
+                                                    <TextBlock FontSize="17">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Text" Value="{Binding RequestedEndDate, StringFormat='Krajnji datum: {0:dd.MM.yyyy.}'}" />
+                                                                <Style.Triggers>
+                                                                    <MultiDataTrigger>
+                                                                        <MultiDataTrigger.Conditions>
+                                                                            <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
+                                                                            <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
+                                                                        </MultiDataTrigger.Conditions>
+                                                                        <Setter Property="Text" Value="{Binding ProposedEndDate, StringFormat='Predloženi kraj: {0:dd.MM.yyyy.}'}" />
+                                                                    </MultiDataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid Grid.Row="3" Margin="0,12,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.Column="1">
+                                                    <TextBlock FontSize="16" Text="{Binding Status, Converter={StaticResource RentalStatusConverter}, StringFormat='Status: {0}'}" />
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,20,0,20">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="29"
+                            Text="Akcija upravnika" />
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <TextBlock
+                            x:Name="defaultActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Morate odabrati prostoriju da bi se prikazale funkcionalnosti!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding DefaultActionTextVisibility}" />
+
+                        <TextBlock
+                            x:Name="approvedActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Prostorija je slobodna u datom opsegu. Zahtev je automatski odobren!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding ApprovedActionTextVisibility}" />
+
+                        <TextBlock
+                            x:Name="rejectedActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="U zadatom opsegu ne postoji slobodan dan. Zahtev je automatski odbijen!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding RejectedActionTextVisibility}" />
+
+                        <TextBlock
+                            x:Name="waitingDateChangeActionText"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Akcija je već odrađena, zahtev je u stanju promene termina!"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"
+                            Visibility="{Binding WaitingDateChangeActionTextVisibility}" />
+
+                        <StackPanel Margin="15,0,15,0" Visibility="{Binding OneDayPanelVisibility}">
+
+                            <TextBlock
+                                Margin="0,0,0,25"
+                                HorizontalAlignment="Center"
+                                FontSize="22"
+                                Text="U nastavku su prikazani slobodni dani za iznajmljivanje prostorije:"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+
+                            <ItemsControl ItemsSource="{Binding SuggestedOneDayDates}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0,6,0,6"
+                                            Padding="10,6,10,6"
+                                            Click="OneDaySuggestionButton_Click"
+                                            Cursor="Hand"
+                                            FontSize="15"
+                                            Tag="{Binding}">
+                                            <TextBlock Text="{Binding StringFormat={}{0:dd.MM.yyyy.}}" />
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <TextBlock
+                                Margin="0,20,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="20"
+                                Text="Odaberite neki od datuma klikom na dugme sa željenim datumom."
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Margin="15,0,15,0" Visibility="{Binding MultiDayPanelVisibility}">
+
+                            <TextBlock
+                                Margin="0,0,0,25"
+                                HorizontalAlignment="Center"
+                                FontSize="22"
+                                Text="Izabrani opseg nije slobodan, predlažemo Vam neki od ovih opsega:"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+
+                            <ItemsControl ItemsSource="{Binding SuggestedMultiDayRanges}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Margin="0,6,0,6"
+                                            Padding="10,6,10,6"
+                                            Click="MultiDaySuggestionButton_Click"
+                                            Content="{Binding DisplayText}"
+                                            Cursor="Hand"
+                                            FontSize="15"
+                                            Tag="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <TextBlock
+                                Margin="0,20,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="20"
+                                Text="Odaberite neki od opsega klikom na dugme sa željenim datumom."
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

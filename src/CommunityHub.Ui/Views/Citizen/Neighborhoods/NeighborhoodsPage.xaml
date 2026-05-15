@@ -36,7 +36,9 @@
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True" SelectionChanged="NeighborhoodsGrid_SelectionChanged">
+                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True"
+                      ItemsSource="{Binding Neighborhoods}"
+                      SelectedItem="{Binding SelectedNeighborhood}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Naziv kvarta" Binding="{Binding Name, Mode=OneWay}" Width="*"/>
                     <DataGridTextColumn Header="Grad" Binding="{Binding City.Name, Mode=OneWay}" Width="*"/>
@@ -53,7 +55,7 @@
                 <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
                     <Grid>
                         <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center"
-                                    Visibility="{Binding SelectedItem, ElementName=NeighborhoodsGrid, Converter={StaticResource NullToVisibility}}">
+                                    Visibility="{Binding SelectedNeighborhood, Converter={StaticResource NullToVisibility}}">
                             <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
                                 Pritisnite Ctrl+S da pretražite kvartove. Izaberite željeni kvart klikom miša ili koristeći strelice gore/dole.
 
@@ -62,7 +64,7 @@
                         </StackPanel>
 
                         <StackPanel x:Name="DetailsPanel"
-                                    Visibility="{Binding SelectedItem, ElementName=NeighborhoodsGrid, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+                                    Visibility="{Binding SelectedNeighborhood, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -70,19 +72,19 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                    <TextBlock Text="{Binding SelectedItem.Name, ElementName=NeighborhoodsGrid, TargetNullValue=''}" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+                                    <TextBlock Text="{Binding SelectedNeighborhood.Name, TargetNullValue=''}" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
                                     <TextBlock FontSize="14" Foreground="#666" Margin="0,0,0,8">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0}, {1}">
-                                                <Binding ElementName="NeighborhoodsGrid" Path="SelectedItem.City.Name" TargetNullValue="" />
-                                                <Binding ElementName="NeighborhoodsGrid" Path="SelectedItem.Country.Name" TargetNullValue="" />
+                                                <Binding Path="SelectedNeighborhood.City.Name" TargetNullValue="" />
+                                                <Binding Path="SelectedNeighborhood.Country.Name" TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <TextBlock Text="{Binding SelectedItem.Description, ElementName=NeighborhoodsGrid, TargetNullValue=''}" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
+                                    <TextBlock Text="{Binding SelectedNeighborhood.Description, TargetNullValue=''}" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
 
                                     <TextBlock Text="Ulice:" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <ListBox ItemsSource="{Binding SelectedItem.StreetSections, ElementName=NeighborhoodsGrid}" MinHeight="275">
+                                    <ListBox ItemsSource="{Binding SelectedNeighborhood.StreetSections}" MinHeight="275">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock>
@@ -100,7 +102,7 @@
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1">
-                                    <ItemsControl ItemsSource="{Binding SelectedItem.Images, ElementName=NeighborhoodsGrid}">
+                                    <ItemsControl ItemsSource="{Binding SelectedNeighborhood.Images}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Vertical" />

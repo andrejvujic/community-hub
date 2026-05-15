@@ -2,6 +2,7 @@
 
 namespace CommunityHub.Application.Database
 {
+    [Obsolete("Use DatabaseQuery instead.")]
     public class PostgresQuery
     {
         private readonly string _sql;
@@ -46,7 +47,7 @@ namespace CommunityHub.Application.Database
         {
             using IDbConnection connection = PostgresConnection.CreateConnection();
             using IDbCommand command = CreateCommand(connection);
-            using IDataReader reader = command.ExecuteReader();;
+            using IDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
                 callback.Invoke(reader);
@@ -57,6 +58,13 @@ namespace CommunityHub.Application.Database
             using IDbConnection connection = PostgresConnection.CreateConnection();
             using IDbCommand command = CreateCommand(connection);
             return command.ExecuteScalar();
+        }
+
+        public void Execute()
+        {
+            using IDbConnection connection = PostgresConnection.CreateConnection();
+            using IDbCommand command = CreateCommand(connection);
+            command.ExecuteNonQuery();
         }
 
         public T ExecuteScalar<T>(Func<object?, T> convert)

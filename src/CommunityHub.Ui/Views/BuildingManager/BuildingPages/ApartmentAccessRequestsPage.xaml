@@ -1,0 +1,271 @@
+﻿<Page
+    x:Class="CommunityHub.Ui.Views.BuildingManager.ApartmentAccessRequestsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ApartmentAccessRequestsPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="{StaticResource AppFontFamily}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:StatusToStringConverter x:Key="RequestStatusConverter" />
+    </Page.Resources>
+
+    <Grid Margin="10,25,40,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBlock
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Cursor="Hand"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    FontSize="28"
+                    MouseLeftButtonDown="LeftArrow_Click"
+                    Text="&#xf060;" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <TextBlock
+                    x:Name="streetInfo"
+                    Margin="15,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="21"
+                    Text="{Binding StreetInfo}" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,0,40,0">
+            <ComboBox
+                x:Name="statusComboBox"
+                Width="180"
+                HorizontalAlignment="Right"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Cursor="Hand"
+                FontSize="20"
+                SelectedIndex="{Binding StatusFilterSelectedIndex, Mode=TwoWay}">
+                <ComboBoxItem Content="Svi" IsSelected="True" />
+                <ComboBoxItem Content="Čeka odobrenje" />
+                <ComboBoxItem Content="Prihvaćen" />
+                <ComboBoxItem Content="Odbijen" />
+            </ComboBox>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="50,0,40,0">
+            <DataGrid
+                x:Name="requestsDataGrid"
+                MaxHeight="292"
+                Margin="0,15,0,0"
+                VerticalAlignment="Top"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                FontSize="20"
+                HeadersVisibility="Column"
+                IsReadOnly="True"
+                ItemsSource="{Binding ApartmentAccessRequests}"
+                RowHeight="40"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                SelectedItem="{Binding SelectedRequest, Mode=TwoWay}"
+                SelectionMode="Single"
+                SelectionUnit="FullRow">
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="IsHitTestVisible" Value="False" />
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="waiting">
+                                <Setter Property="IsHitTestVisible" Value="True" />
+                                <Setter Property="Background" Value="White" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Applicant.Name}"
+                        CanUserSort="False"
+                        Header="Ime stanara" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Applicant.Surname}"
+                        CanUserSort="False"
+                        Header="Prezime stanara" />
+                    <DataGridTextColumn
+                        Width="Auto"
+                        Binding="{Binding Apartment.Number}"
+                        CanUserSort="False"
+                        Header="Broj stana">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Right" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding CreationDate, StringFormat='dd.MM.yyyy.'}"
+                        Header="Datum kreiranja">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Right" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Status, Converter={StaticResource RequestStatusConverter}}"
+                        CanUserSort="False"
+                        Header="Status" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Border
+            x:Name="changeStatusBorder"
+            Grid.Row="3"
+            Height="220"
+            Margin="50,20,40,20"
+            VerticalAlignment="Bottom"
+            BorderBrush="black"
+            BorderThickness="2"
+            CornerRadius="4">
+            <Grid
+                x:Name="changeStatusGrid"
+                Margin="20,0,0,0"
+                IsEnabled="{Binding IsChangeStatusEnabled}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,20,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <TextBlock
+                            Margin="10,0,25,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Text="Status:" />
+                    </Grid>
+                    <Grid
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                        <ComboBox
+                            x:Name="changeStatusComboBox"
+                            Width="200"
+                            Cursor="Hand"
+                            FontSize="19"
+                            SelectedIndex="{Binding ChangeStatusSelectedIndex, Mode=TwoWay}">
+                            <ComboBoxItem Content="Čeka odobrenje" IsSelected="True" />
+                            <ComboBoxItem Content="Prihvaćen" />
+                            <ComboBoxItem Content="Odbijen" />
+                        </ComboBox>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                Text="(opcionalno)" />
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <TextBlock
+                                Margin="10,0,15,0"
+                                HorizontalAlignment="Left"
+                                FontSize="22"
+                                Text="Obrazloženje:" />
+                        </Grid>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1" HorizontalAlignment="Left">
+                        <TextBox
+                            x:Name="commentTextBox"
+                            Width="400"
+                            Height="100"
+                            AcceptsReturn="True"
+                            FontSize="22"
+                            IsEnabled="{Binding IsCommentEnabled}"
+                            Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="0,10,0,10">
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            x:Name="cancelButton"
+                            Width="100"
+                            Margin="0,0,15,0"
+                            Click="CancelButton_Click"
+                            Cursor="Hand"
+                            FontSize="20">
+                            Otkaži
+                        </Button>
+                        <Button
+                            x:Name="confirmButton"
+                            Width="100"
+                            Margin="0,0,15,0"
+                            Click="ConfirmButton_Click"
+                            Cursor="Hand"
+                            FontSize="20"
+                            IsEnabled="True">
+                            Potvrdi
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

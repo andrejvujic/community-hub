@@ -1,1 +1,0 @@
-﻿CREATE TYPE roles AS ENUM ('building_manager', 'building_resident', 'neighborhood_coordinator', 'citizen', 'neighborhood_service_provider');

@@ -1,1 +1,0 @@
-CREATE TYPE parity_types AS ENUM ('even', 'odd', 'both');

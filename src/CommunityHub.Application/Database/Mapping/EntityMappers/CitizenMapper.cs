@@ -1,17 +1,19 @@
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class CitizenMapper : EntityMapper<Citizen>
     {
-        private readonly UserMapper _userMapper = new UserMapper();
+        private readonly UserMapper? _userMapper = new UserMapper();
         private readonly AddressMapper _addressMapper = new AddressMapper();
         private readonly NeighborhoodMembershipMapper _membershipMapper = new NeighborhoodMembershipMapper();
 
         public override Citizen MapToEntity(IDataReader reader)
         {
-            User baseUser = _userMapper.MapToEntity(reader);
+            User? baseUser = (_userMapper?.MapToEntity(reader)) ?? throw new Exception("Couldn't read Citizen from database because of missing data");
             Address address = _addressMapper.MapToEntity(reader);
 
             int membershipIdOrdinal = reader.GetOrdinal("membership_id");
@@ -31,7 +33,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
         public override Dictionary<string, object?> MapToQueryParameters(Citizen entity)
         {
-            var parameters = _userMapper.MapToQueryParameters(entity);
+            var parameters = (_userMapper?.MapToQueryParameters(entity)) ?? throw new Exception("Couldn't map Citizen to query parameters because of missing data");
 
             parameters.Add("address_id", entity.Address.Id);
             parameters.Add("membership_id", entity.Membership?.Id);

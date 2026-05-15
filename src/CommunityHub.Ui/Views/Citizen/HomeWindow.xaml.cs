@@ -1,122 +1,120 @@
+using CommunityHub.Ui.ViewModels.Citizen;
+using CommunityHub.Ui.Views.Citizen.Donations;
+using CommunityHub.Ui.Views.Citizen.Events;
+using CommunityHub.Ui.Views.Citizen.LocalFacilities;
+using CommunityHub.Ui.Views.Citizen.Meetings;
+using CommunityHub.Ui.Views.Citizen.Neighborhoods;
+using CommunityHub.Ui.Views.Citizen.TrustRecords;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Ui.Views.Citizen.Neighborhoods;
-using CommunityHub.Ui.Views.Citizen.Donations;
-using CommunityHub.Ui.Views.Citizen.TrustRecords;
-using CommunityHub.Ui.Views.Citizen.Meetings;
-using CommunityHub.Ui.Views.Citizen.LocalFacilities;
-using CommunityHub.Ui.Views.Citizen.Events;
 
 namespace CommunityHub.Ui.Views.Citizen
 {
     public partial class HomeWindow : Window
     {
-        private readonly CitizenRepository _citizenRepository = new CitizenRepository();
         private readonly long _userId;
-        private Border? _selectedTab;
-        private readonly SolidColorBrush _activeTabColor;
+        private HomeViewModel? _viewModel;
+        private SolidColorBrush? _activeTabColor;
+        private SolidColorBrush? _inactiveTabColor;
 
         public HomeWindow(long userId)
         {
             InitializeComponent();
             _userId = userId;
 
-            _activeTabColor = (SolidColorBrush)FindResource("ActiveTabBrush");
-
             Loaded += HomeWindow_Loaded;
             KeyDown += Window_KeyDown;
+            Unloaded += HomeWindow_Unloaded;
 
             MainFrame.Navigate(new MainMenuPage(_userId));
         }
 
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var citizen = _citizenRepository.GetById(_userId);
-            if (citizen != null)
+            _activeTabColor = (SolidColorBrush)FindResource("ActiveTabBrush");
+            _inactiveTabColor = Brushes.White;
+
+            _viewModel = new HomeViewModel(_userId);
+            _viewModel.Initialize(_activeTabColor!);
+            DataContext = _viewModel;
+
+            _viewModel.TabNavigationRequested += ViewModel_TabNavigationRequested;
+            _viewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void HomeWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (_viewModel != null)
             {
-                DataContext = citizen;
+                _viewModel.TabNavigationRequested -= ViewModel_TabNavigationRequested;
+                _viewModel.PropertyChanged -= ViewModel_PropertyChanged;
             }
-            _selectedTab = TabMainMenu;
+            _viewModel = null;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(HomeViewModel.SelectedTabTag))
+            {
+                UpdateTabVisuals(_viewModel?.SelectedTabTag ?? "");
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.T)
             {
-                if (TooltipToggleCheckBox != null)
-                {
-                    TooltipToggleCheckBox.IsChecked = !TooltipToggleCheckBox.IsChecked;
-                }
+                TooltipToggleCheckBox.IsChecked = !TooltipToggleCheckBox.IsChecked;
                 e.Handled = true;
                 return;
             }
 
             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.H)
             {
-                // TODO: implement help system
                 e.Handled = true;
                 return;
             }
 
-            switch (e.Key)
-            {
-                case Key.F1: ActivateTab(TabMainMenu); break;
-                case Key.F2: ActivateTab(TabNeighborhoods); break;
-                case Key.F3: ActivateTab(TabEvents); break;
-                case Key.F4: ActivateTab(TabTrustRecords); break;
-                case Key.F5: ActivateTab(TabMeetings); break;
-                case Key.F6: ActivateTab(TabLocalFacilities); break;
-                case Key.F7: ActivateTab(TabDonations); break;
-            }
+            _viewModel?.HandleKeyDown(e.Key);
         }
 
         private void Tab_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Border clickedTab)
+            if (sender is Border tab && tab.Tag is string tabTag && !string.IsNullOrEmpty(tabTag))
             {
-                ActivateTab(clickedTab);
+                _viewModel?.HandleTabClick(tabTag);
             }
         }
 
-        private void ActivateTab(Border newTab)
+        private void ViewModel_TabNavigationRequested(object? sender, TabNavigationEventArgs e)
         {
-            if (newTab == null || _selectedTab == newTab) 
-                return;
-
-            ChangeTabColorAndSelection(newTab);
-            UpdateStatusBarForTab(newTab);
-            NavigateToTab(newTab);
+            NavigateToTab(e.TabTag);
         }
 
-        private void ChangeTabColorAndSelection(Border newTab)
+        private void UpdateTabVisuals(string selectedTabTag)
         {
-            if (_selectedTab != null)
+            var tabs = new Dictionary<string, Border>
             {
-                _selectedTab.Background = Brushes.White;
-            }
+                { "Main Menu", TabMainMenu },
+                { "Neighborhoods", TabNeighborhoods },
+                { "Events", TabEvents },
+                { "Trust Records", TabTrustRecords },
+                { "Meetings", TabMeetings },
+                { "Local Facilities", TabLocalFacilities },
+                { "Donations", TabDonations },
+            };
 
-            _selectedTab = newTab;
-            _selectedTab.Background = _activeTabColor;
-        }
-
-        private void UpdateStatusBarForTab(Border tab)
-        {
-            string displayName = tab.Uid ?? tab.Tag?.ToString() ?? "";
-
-            if (StatusBarTabTextBlock != null)
+            foreach (var (tag, border) in tabs)
             {
-                StatusBarTabTextBlock.Text = $"Kartica: {displayName}";
+                border.Background = tag == selectedTabTag ? _activeTabColor : _inactiveTabColor;
             }
         }
 
-        private void NavigateToTab(Border tab)
+        private void NavigateToTab(string tabTag)
         {
-            string tag = tab.Tag?.ToString() ?? string.Empty;
-
-            Page? page = tag switch
+            Page? page = tabTag switch
             {
                 "Main Menu" => new MainMenuPage(_userId),
                 "Neighborhoods" => new NeighborhoodsPage(_userId),
@@ -128,10 +126,7 @@ namespace CommunityHub.Ui.Views.Citizen
                 _ => null,
             };
 
-            if (page is null)
-                MainFrame.Content = null;
-            else
-                MainFrame.Navigate(page);
+            MainFrame.Navigate(page);
         }
     }
 }
