@@ -21,6 +21,12 @@ namespace CommunityHub.Application.Services.ServiceBookings
             return review is null ? null : _providerReviewMapper.MapToDto(review);
         }
 
+        public Dictionary<long, ProviderReviewDto> GetAllByNeighborhood(long neighborhoodId)
+            => _providerReviewRepository.GetAllByNeighborhood(neighborhoodId)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => _providerReviewMapper.MapToDto(kvp.Value));
+
         public ProviderReviewDto Create(BookedJobDto bookedJobDto, UserDto coordinatorDto, 
             int quality, int communication, string? comment)
         {
