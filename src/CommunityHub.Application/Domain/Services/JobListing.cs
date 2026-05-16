@@ -71,6 +71,104 @@ namespace CommunityHub.Application.Domain.Services
             _workSamples.AddRange(images);
         }
 
+        public AvailableJobSlot? FindFirstAvailableSlot(
+            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupiedSlots,
+            int? durationHours)
+        {
+            if (BillingType == BillingType.PerHour && durationHours is null) return null;
+            if (BillingType == BillingType.PerHour && durationHours > 12) return null;
+
+            var prices = _priceList.OrderBy(p => p.ValidFrom).ToList();
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            for (int i = 1; i < 60; i++)
+            {
+                var candidate = today.AddDays(i);
+                var slot = FindSlotOnDay(candidate, durationHours, occupiedSlots, prices);
+                if (slot is not null) return slot;
+            }
+
+            return null;
+        }
+
+        private AvailableJobSlot? FindSlotOnDay(
+            DateOnly candidate,
+            int? durationHours,
+            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupied,
+            List<PriceEntry> prices)
+        {
+            var priceEntry = prices.FirstOrDefault(p => p.IsActiveOn(candidate));
+            if (priceEntry is null) return null;
+
+            bool isPriceChanged = CurrentPriceEntry is null || priceEntry.Id != CurrentPriceEntry.Id;
+
+            return BillingType == BillingType.PerJob
+                ? FindPerJobSlot(candidate, occupied, priceEntry.Amount, isPriceChanged)
+                : FindPerHourSlot(candidate, durationHours!.Value, occupied, priceEntry.Amount, isPriceChanged);
+        }
+
+        private static AvailableJobSlot? FindPerJobSlot(
+            DateOnly candidate,
+            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupied,
+            decimal price,
+            bool isPriceChanged)
+        {
+            bool isOccupied = occupied.Any(o => o.Date == candidate);
+            if (isOccupied) return null;
+
+            return new AvailableJobSlot(candidate, price, isPriceChanged);
+        }
+
+        private static AvailableJobSlot? FindPerHourSlot(
+            DateOnly candidate,
+            int durationHours,
+            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupied,
+            decimal price,
+            bool isPriceChanged)
+        {
+            var occupiedOnDay = occupied
+                .Where(o => o.Date == candidate && o.Time.HasValue)
+                .Select(o => (
+                    Start: o.Time!.Value, 
+                    End: o.Time.Value.AddHours(o.DurationHours ?? 1)))
+                .OrderBy(o => o.Start)
+                .ToList();
+
+            var freeTime = FindFreeHourSlot(occupiedOnDay, durationHours);
+            if (freeTime is null) return null;
+
+            return new AvailableJobSlot(candidate, price, isPriceChanged, time: freeTime, durationHours: durationHours);
+        }
+
+        private static TimeOnly? FindFreeHourSlot(
+            List<(TimeOnly Start, TimeOnly End)> occupied,
+            int durationHours)
+        {
+            const int workStartMinutes = 8 * 60;
+            const int workEndMinutes = 22 * 60;
+
+            if (durationHours * 60 > workEndMinutes - workStartMinutes) return null;
+
+            int candidateMinutes = workStartMinutes;
+
+            foreach (var slot in occupied)
+            {
+                int slotStartMinutes = slot.Start.Hour * 60 + slot.Start.Minute;
+                int slotEndMinutes = slot.End.Hour * 60 + slot.End.Minute;
+
+                if (candidateMinutes + durationHours * 60 <= slotStartMinutes)
+                    return new TimeOnly(candidateMinutes / 60, candidateMinutes % 60);
+
+                if (slotEndMinutes > candidateMinutes)
+                    candidateMinutes = slotEndMinutes;
+            }
+
+            if (candidateMinutes + durationHours * 60 <= workEndMinutes)
+                return new TimeOnly(candidateMinutes / 60, candidateMinutes % 60);
+
+            return null;
+        }
+
         public JobListing CopyWith(
             long? id = null,
             string? serviceName = null,
