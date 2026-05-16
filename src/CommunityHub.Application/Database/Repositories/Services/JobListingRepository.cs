@@ -2,10 +2,11 @@
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Services.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories.Services;
 
-public class JobListingRepository
+public class JobListingRepository : IJobListingRepository
 {
     private readonly JobListingMapper _mapper = new JobListingMapper();
     private readonly PriceEntryMapper _priceMapper = new PriceEntryMapper();

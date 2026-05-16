@@ -1,9 +1,10 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.ServiceBookings;
+using CommunityHub.Application.Domain.ServiceBookings.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories.ServiceBookings;
 
-public class ProviderReviewRepository
+public class ProviderReviewRepository : IProviderReviewRepository
 {
     private readonly ProviderReviewMapper _mapper = new ProviderReviewMapper();
 
