@@ -65,7 +65,9 @@ namespace CommunityHub.Application
             { typeof(INeighborhoodMeetingRepository), new NeighborhoodMeetingRepository() },
             { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() },
             { typeof(IJobListingRepository), new JobListingRepository()  },
-            { typeof(IBookedJobRepository), new BookedJobRepository() }
+            { typeof(IBookedJobRepository), new BookedJobRepository() },
+            { typeof(IProviderReviewRepository), new ProviderReviewRepository() }
+
         };
 
         public static T CreateInstance<T>()
