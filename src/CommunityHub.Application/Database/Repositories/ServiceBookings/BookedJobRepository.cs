@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using CommunityHub.Application.Database.Mapping.EntityMappers;
+﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.ServiceBookings;
+using CommunityHub.Application.Domain.ServiceBookings.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories.ServiceBookings
 {
-    public class BookedJobRepository
+    public class BookedJobRepository : IBookedJobRepository
     {
         private readonly BookedJobMapper _bookedJobMapper = new BookedJobMapper();
 
