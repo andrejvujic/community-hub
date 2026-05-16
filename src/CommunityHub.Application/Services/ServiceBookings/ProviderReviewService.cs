@@ -15,8 +15,13 @@ namespace CommunityHub.Application.Services.ServiceBookings
         private readonly UserMapper _userMapper = new();
         private readonly BookedJobMapper _bookedJobMapper = new();
 
+        public ProviderReviewDto? GetByBookedJobId(long bookedJobId)
+        {
+            var review = _providerReviewRepository.GetByBookedJobId(bookedJobId);
+            return review is null ? null : _providerReviewMapper.MapToDto(review);
+        }
 
-        public ProviderReviewDto Create(BookedJobDto bookedJobDto, UserDto coordinatorDto,
+        public ProviderReviewDto Create(BookedJobDto bookedJobDto, UserDto coordinatorDto, 
             int quality, int communication, string? comment)
         {
             var bookedJob = _bookedJobMapper.MapToDomain(bookedJobDto);
@@ -33,6 +38,18 @@ namespace CommunityHub.Application.Services.ServiceBookings
 
             var created = _providerReviewRepository.Create(review);
             return _providerReviewMapper.MapToDto(created);
+        }
+
+        public ProviderReviewDto Update(ProviderReviewDto providerReviewDto, int quality, int communication, string? comment)
+        {
+            var review = _providerReviewMapper.MapToDomain(providerReviewDto);
+            var updated = review.CopyWith(
+                qualityRating: quality,
+                communicationRating: communication,
+                comment: comment);
+
+            var saved = _providerReviewRepository.Update(updated);
+            return _providerReviewMapper.MapToDto(saved);
         }
     }
 }
