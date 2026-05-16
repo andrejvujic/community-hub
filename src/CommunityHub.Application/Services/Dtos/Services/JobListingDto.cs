@@ -13,7 +13,7 @@ namespace CommunityHub.Application.Services.Dtos.Services
         public BillingType BillingType { get; set; }
         public CityDto City { get; set; }
         public CountryDto Country { get; set; }
-        public UserDto Provider { get; set; }
+        public ServiceProviderDto Provider { get; set; }
         public List<PriceEntryDto> PriceList { get; set; }
         public List<ImageDto> WorkSamples { get; set; }
 
@@ -27,7 +27,7 @@ namespace CommunityHub.Application.Services.Dtos.Services
             BillingType billingType,
             CityDto city,
             CountryDto country,
-            UserDto provider,
+            ServiceProviderDto provider,
             List<PriceEntryDto>? priceList = null,
             List<ImageDto>? workSamples = null)
         {
