@@ -4,6 +4,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.Rep
 {
     public interface INeighborhoodMeetingRepository
     {
+        public NeighborhoodMeeting? GetById(long meetingId);
         public List<NeighborhoodMeeting> GetByNeighborhoodId(long neighborhoodId);
         public void UpdateStatus(long meetingId, MeetingStatus newStatus);
         public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate);
