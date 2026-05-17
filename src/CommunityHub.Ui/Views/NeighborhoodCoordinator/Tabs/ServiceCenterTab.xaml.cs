@@ -65,7 +65,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
         private void BookIfConfirmed(AvailableJobSlotDto availableJobSlotDto)
         {
-            /*
             var window = new BookingConfirmationWindow(_viewModel.SelectedListing!, availableJobSlotDto)
             { Owner = Window.GetWindow(this) };
 
@@ -74,7 +73,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             var booked = _viewModel.Book(availableJobSlotDto);
             MessageBox.Show($"Termin je uspešno zakazan za {booked!.ScheduledDate:dd.MM.yyyy.}.",
                 "Zakazano", MessageBoxButton.OK, MessageBoxImage.Information);
-            */
         }
 
         private void ScheduledServicesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
