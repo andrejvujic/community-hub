@@ -250,15 +250,8 @@ namespace CommunityHub.Ui.Views.BuildingManager
 
                     foreach (TextBox apartmentTextBox in apartmentsPanel.Children.OfType<TextBox>())
                     {
-                        if (!ValidateApartmentTextBox(apartmentTextBox))
-                        {
+                        if(!ProcessApartmentTextBox(apartmentTextBox, floorNumber))
                             allValid = false;
-                            continue;
-                        }
-
-                        int num = int.Parse(apartmentTextBox.Text.Trim());
-                        ApartmentNumbers.Add(num);
-                        _apartmentEntries.Add((Number: num, Floor: floorNumber));
                     }
                 }
             }
@@ -268,6 +261,17 @@ namespace CommunityHub.Ui.Views.BuildingManager
 
             _viewModel.AreApartmentsValid = allValid;
             return allValid;
+        }
+        private bool ProcessApartmentTextBox(TextBox apartmentTextBox, int floorNumber)
+        {
+            if (!ValidateApartmentTextBox(apartmentTextBox))
+                return false;
+
+            int num = int.Parse(apartmentTextBox.Text.Trim());
+            ApartmentNumbers.Add(num);
+            _apartmentEntries.Add((Number: num, Floor: floorNumber));
+
+            return true;
         }
         private bool ValidateApartmentNumbersUnique()
         {
