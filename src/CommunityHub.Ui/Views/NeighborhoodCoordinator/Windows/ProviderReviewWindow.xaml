@@ -22,6 +22,7 @@
 
         <TextBlock x:Name="TitleTextBlock"
                    Grid.Row="0"
+                   Text="{Binding Title}"
                    FontSize="16"
                    TextWrapping="Wrap"
                    Margin="0,0,0,20"/>
@@ -31,7 +32,7 @@
                        FontSize="14"
                        VerticalAlignment="Center"
                        Width="200"/>
-            <ComboBox x:Name="QualityRatingComboBox" Width="70" FontSize="14">
+            <ComboBox SelectedIndex="{Binding SelectedQualityIndex}" Width="70" FontSize="14">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
                 <ComboBoxItem Content="3"/>
@@ -45,7 +46,7 @@
                        FontSize="14"
                        VerticalAlignment="Center"
                        Width="200"/>
-            <ComboBox x:Name="CommunicationRatingComboBox" Width="70" FontSize="14">
+            <ComboBox SelectedIndex="{Binding SelectedCommunicationIndex}" Width="70" FontSize="14">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
                 <ComboBoxItem Content="3"/>
@@ -65,7 +66,8 @@
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto"
-                 Margin="0,0,0,16"/>
+                 Margin="0,0,0,16"
+                 Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
