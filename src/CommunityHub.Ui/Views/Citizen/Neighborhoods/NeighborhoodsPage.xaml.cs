@@ -45,12 +45,10 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
                 if (_viewModel.CurrentUser?.Membership != null)
                 {
                     MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
-                    MessageBox.Show("Uspešno ste pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
                     MessageBox.Show("Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
-                    MessageBox.Show("Zahtev za pristup kvartu je uspešno kreiran.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             else if (!string.IsNullOrEmpty(_viewModel?.ErrorMessage))

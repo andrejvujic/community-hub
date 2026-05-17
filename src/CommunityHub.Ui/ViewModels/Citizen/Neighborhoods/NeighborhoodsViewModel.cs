@@ -19,7 +19,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         private CitizenDto? _currentUser;
         private NeighborhoodDto? _selectedNeighborhood;
         private NeighborhoodSearchParameters? _searchParameters;
-        private bool _isBusy = false;
         private string _errorMessage = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -48,17 +47,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 OnPropertyChanged(nameof(SelectedNeighborhood));
                 if (value != null)
                     LoadStreetSections(value);
-            }
-        }
-
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set
-            {
-                if (_isBusy == value) return;
-                _isBusy = value;
-                OnPropertyChanged(nameof(IsBusy));
             }
         }
 
@@ -91,15 +79,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public void LoadNeighborhoods()
         {
-            IsBusy = true;
             ErrorMessage = string.Empty;
 
             var neighborhoods = _neighborhoodService.Search(_searchParameters);
             Neighborhoods.Clear();
             foreach (var neighborhood in neighborhoods)
                 Neighborhoods.Add(neighborhood);
-
-            IsBusy = false;
         }
 
         private void LoadStreetSections(NeighborhoodDto neighborhood)
@@ -121,13 +106,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 return false;
             }
 
-            IsBusy = true;
             ErrorMessage = string.Empty;
 
             if (_neighborhoodAccessRequestService.HasPendingRequest(_userId, selectedNeighborhood.Id))
             {
                 ErrorMessage = "Već postoji zahtev za pristup ovom kvartu.";
-                IsBusy = false;
                 return false;
             }
 
@@ -136,15 +119,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 _neighborhoodMembershipService.CreateMembershipAndUpdate(CurrentUser, selectedNeighborhood);
                 _neighborhoodAccessRequestService.AutoRejectOtherRequests(CurrentUser, selectedNeighborhood.Id);
                 LoadCurrentUser();
-                IsBusy = false;
-                return true;
             }
             else
             {
                 _neighborhoodAccessRequestService.CreateAccessRequest(CurrentUser, selectedNeighborhood);
-                IsBusy = false;
-                return true;
             }
+
+            return true;
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
