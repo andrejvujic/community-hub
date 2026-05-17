@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
+﻿using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
 using System.Windows;
 
 namespace CommunityHub.Ui.Views.Citizen.Meetings
@@ -7,7 +7,7 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
     {
         public DateOnly SelectedDate { get; private set; }
 
-        public VoteForMeetingDateWindow(NeighborhoodMeeting meeting)
+        public VoteForMeetingDateWindow(NeighborhoodMeetingDto meeting)
         {
             InitializeComponent();
             DataContext = meeting;

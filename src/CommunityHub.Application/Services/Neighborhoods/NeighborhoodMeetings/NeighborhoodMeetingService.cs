@@ -14,8 +14,8 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
         public List<NeighborhoodMeetingDto> GetByNeighborhood(long neighborhoodId)
             => _neighborhoodMeetingRepository.GetByNeighborhoodId(neighborhoodId)
                 .Select(_neighborhoodMeetingMapper.MapToDto)
-                .
-            ToList();
+                .ToList();
+
         public NeighborhoodMeetingDto Create(NeighborhoodMeetingDto neighborhoodMeetingDto)
         {
             var neighborhoodMeeting = _neighborhoodMeetingMapper.MapToDomain(neighborhoodMeetingDto);
