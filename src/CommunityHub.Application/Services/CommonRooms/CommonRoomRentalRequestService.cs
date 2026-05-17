@@ -153,20 +153,8 @@ namespace CommunityHub.Application.Services.CommonRooms
             while (foundCount < 3)
             {
                 DateTime candidateEnd = candidateStart.AddDays(duration - 1);
-                bool isFree = true;
-                DateTime day = candidateStart;
-
-                while (day <= candidateEnd)
-                {
-                    if (reservedDates.Contains(day))
-                    {
-                        isFree = false;
-                        break;
-                    }
-                    day = day.AddDays(1);
-                }
-
-                if (isFree)
+                
+                if (IsRangeFree(candidateStart, candidateEnd, reservedDates))
                 {
                     suggestedRanges.Add((candidateStart, candidateEnd));
                     foundCount++;
@@ -177,6 +165,23 @@ namespace CommunityHub.Application.Services.CommonRooms
 
             return suggestedRanges;
         }
+
+        private bool IsRangeFree(DateTime startDate, DateTime endDate, List<DateTime> reservedDates)
+        {
+            DateTime day = startDate;
+
+            while (day <= endDate)
+            {
+                if (reservedDates.Contains(day))
+                {
+                    return false;
+                }
+                day = day.AddDays(1);
+            }
+
+            return true;
+        }
+
         public void ApproveOneDaySuggestion(CommonRoomRentalRequestDto request, DateTime day)
         {
             var domainRequest = _rentalRequestMapper.MapToDomain(request);
