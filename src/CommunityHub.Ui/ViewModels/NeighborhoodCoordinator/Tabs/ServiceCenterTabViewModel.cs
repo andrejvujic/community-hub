@@ -203,8 +203,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public void UpdateReview(BookedJobWithReviewDto bookedJobWithReviewDto, ProviderReviewDto providerReview)
         {
             bookedJobWithReviewDto.SetReview(providerReview);
+
             int index = ScheduledServices.IndexOf(bookedJobWithReviewDto);
-            if (index >= 0) ScheduledServices[index] = bookedJobWithReviewDto;
+            if (index >= 0)
+            {
+                ScheduledServices.RemoveAt(index);
+                ScheduledServices.Insert(index, bookedJobWithReviewDto);
+            }
+
             OnPropertyChanged(nameof(CanReview));
             OnPropertyChanged(nameof(CanEditReview));
         }
