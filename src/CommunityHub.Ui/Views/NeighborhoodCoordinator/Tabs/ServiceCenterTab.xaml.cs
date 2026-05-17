@@ -103,7 +103,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
         private void OpenReviewWindow(BookedJobWithReviewDto selected)
         {
-            /*
             if (_viewModel.Coordinator is null) return;
 
             var window = new ProviderReviewWindow(selected, _viewModel.Coordinator)
@@ -113,7 +112,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             if (window.ShowDialog() == true)
                 _viewModel.UpdateReview(selected, window.SavedReview!);
-            */
         }
     }
 }
