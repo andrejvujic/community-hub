@@ -1,0 +1,385 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Ads.Create.CreateAdPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Ads.Create"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      Title="Objavljivanje oglasa"
+      FontFamily="{StaticResource AppFontFamily}"
+      xml:lang="sr-Latn-RS">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <ResourceDictionary>
+            <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
+            <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme
+                    BaseTheme="Light"
+                    PrimaryColor="Grey"
+                    SecondaryColor="LightBlue" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </navigation:MainNavigatorConsumerPage.Resources>
+    <Grid>
+        <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="#dedede">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid
+                         Grid.Column="0"
+                         MouseLeftButtonDown="BackButton_Click"
+                         Background="Transparent">
+                        <TextBlock
+                             Text="&#xf177;"
+                             FontSize="24"
+                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <TextBlock
+                         Grid.Column="1"
+                         Text="Objavljivanje oglasa"
+                         FontSize="20"
+                         VerticalAlignment="Center">
+                    </TextBlock>
+                </Grid>
+
+                <Grid Margin="8" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="8"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Vrsta oglasa" FontSize="18" Grid.Row="0"/>
+
+                    <Border
+                        Grid.Row="1" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectTypeButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedType, Converter={StaticResource AdTypeToStringConverter}, ConverterParameter='Izaberite...'}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Label Content="Kategorija" FontSize="18" Grid.Row="3"/>
+
+                    <Border
+                        Grid.Row="4" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCategoryButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedCategory, Converter={StaticResource AdCategoryToStringConverter}, ConverterParameter='Izaberite...'}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+
+                    <Label Content="Opis" FontSize="18" Grid.Row="6"/>
+
+                    <TextBox
+                        Grid.Row="7"
+                        FontSize="18"
+                        Height="192"
+                        Padding="4"
+                        MaxLength="200"
+                        TextWrapping="Wrap"
+                        Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Content="Opseg datuma" FontSize="18" Grid.Row="9"/>
+
+                    <Border
+                        Grid.Row="10" 
+                        Background="#dedede"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleSelectDateRangeMenuButton_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Column="0"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding SelectedDateRangeText}"
+                                FontSize="18"
+                                Padding="4"/>
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="&#xf178;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                Margin="4,4,8,4"
+                                Padding="0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+
+
+            <Button
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,16"
+                IsEnabled="{Binding IsFormValid}"
+                Click="PublishAdButton_Click"
+                Content="Objavi oglas"
+                FontSize="18"
+                Width="192"
+                Height="72"/>
+
+            <!-- Overlay za biranje opsega datuma u kojem oglas vazi. -->
+            <Grid
+                x:Name="SelectDateRangeOverlay"
+                Visibility="Collapsed"
+                Background="#bb000000">
+                <Border
+                    Margin="16"
+                    Padding="8"
+                    Background="White"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            FontSize="18"
+                            TextWrapping="Wrap"
+                            Text="Odaberite opseg datuma za važenje oglasa"/>
+
+                        <Separator Grid.Row="1" Height="12"/>
+
+                        <TextBlock
+                            Grid.Row="2"
+                            FontSize="18"
+                            TextWrapping="Wrap"
+                            Text="Početni datum"/>
+
+                        <Border
+                            Grid.Row="4" 
+                            Background="#dedede"
+                            BorderBrush="Gray"
+                            BorderThickness="1">
+                            <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleStartDatePickerButton_Click">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label
+                                    Grid.Column="0"
+                                    VerticalContentAlignment="Center"
+                                    Content="{Binding SelectedStartDateText}"
+                                    FontSize="18"
+                                    Padding="4"/>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Text="&#xf178;"
+                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    Margin="0,0,8,0"/>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock
+                            Grid.Row="6"
+                            FontSize="18"
+                            TextWrapping="Wrap"
+                            Text="Krajnji datum"/>
+
+                        <Border
+                            Grid.Row="8" 
+                            Background="#dedede"
+                            BorderBrush="Gray"
+                            BorderThickness="1">
+                            <Grid Background="#dedede" Height="48"  MouseLeftButtonDown="ToggleEndDatePickerButton_Click">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label
+                                    Grid.Column="0"
+                                    VerticalContentAlignment="Center"
+                                    Content="{Binding SelectedEndDateText}"
+                                    FontSize="18"
+                                    Padding="4"/>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Text="&#xf178;"
+                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                    VerticalAlignment="Center"
+                                    FontSize="24"
+                                    Margin="0,0,8,0"/>
+                            </Grid>
+                        </Border>
+
+                        <Separator Grid.Row="9" Height="24"/>
+
+                        <Button
+                            Grid.Row="10"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="ToggleSelectDateRangeMenuButton_Click"
+                            IsEnabled="{Binding IsSelectedDateRangeValid}"
+                            Content="Potvrdi"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Kalendar za biranje pocetnog datuma. -->
+            <Grid
+                x:Name="StartDatePicker"
+                Visibility="Collapsed"
+                Background="#33000000">
+                <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                            <Viewbox Stretch="Uniform">
+                                <Calendar
+                                    materialDesign:CalendarAssist.HeaderBackground="White"
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    DisplayDateStart="{Binding MinStartDate, Mode=OneWay}"
+                                    DisplayDateEnd="{Binding MaxStartDate, Mode=OneWay}"
+                                    SelectedDate="{Binding SelectedStartDate}"
+                                    Style="{StaticResource MaterialDesignCalendarPortrait}"/>
+                            </Viewbox>
+                        </Border>
+
+                        <Button
+                            Grid.Row="2"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="ToggleStartDatePickerButton_Click"
+                            Content="Potvrdi"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Kalendar za biranje krajnjeg datuma. -->
+            <Grid
+                x:Name="EndDatePicker"
+                Visibility="Collapsed"
+                Background="#33000000">
+                <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+
+                        <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                            <Viewbox Stretch="Uniform">
+                                <Calendar
+                                    materialDesign:CalendarAssist.HeaderBackground="White"
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    DisplayDateStart="{Binding MinEndDate, Mode=OneWay}"
+                                    SelectedDate="{Binding SelectedEndDate}"
+                                    Style="{StaticResource MaterialDesignCalendarPortrait}"/>
+                            </Viewbox>
+                        </Border>
+                        <Button
+                            Grid.Row="2"
+                            Height="48"
+                            FontSize="18"
+                            HorizontalAlignment="Stretch"
+                            Click="ToggleEndDatePickerButton_Click"
+                            Content="Potvrdi"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</navigation:MainNavigatorConsumerPage>

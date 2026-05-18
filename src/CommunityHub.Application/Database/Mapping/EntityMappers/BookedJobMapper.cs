@@ -1,4 +1,7 @@
-﻿using CommunityHub.Application.Domain;
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.ServiceBookings;
+using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
@@ -25,7 +28,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             int timeOrdinal = reader.GetOrdinal("scheduled_time");
             TimeOnly? scheduledTime = reader.IsDBNull(timeOrdinal)
                 ? null
-                : TimeOnly.FromTimeSpan((TimeSpan)reader.GetValue(timeOrdinal));
+                : (TimeOnly)reader.GetValue(timeOrdinal);
 
             int durationOrdinal = reader.GetOrdinal("duration_hours");
             int? durationHours = reader.IsDBNull(durationOrdinal)

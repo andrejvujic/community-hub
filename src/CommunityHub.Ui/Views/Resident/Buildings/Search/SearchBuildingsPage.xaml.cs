@@ -1,9 +1,8 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
-using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
 using CommunityHub.Ui.Views.Resident.Apartments;
-using System.Collections.ObjectModel;
+using CommunityHub.Ui.Views.Resident.Buildings.Browse;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,68 +11,34 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 
     public partial class SearchBuildingsPage : MainNavigatorConsumerPage
     {
-        private readonly long _userId;
-        private readonly BuildingRepository _repository;
-        private BuildingSearchParameters? _searchParameters;
-        public ObservableCollection<Building> Buildings { get; } = new ObservableCollection<Building>();
-
+        private readonly SearchBuildingsViewModel _viewModel;
         public SearchBuildingsPage(long userId)
         {
             InitializeComponent();
-            DataContext = this;
-
-            _userId = userId;
-            _repository = new BuildingRepository();
-
-            UpdateSearchResults();
+            _viewModel = new SearchBuildingsViewModel(userId);
+            DataContext = _viewModel;
+            _viewModel.UpdateSearchResults();
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
         private void SearchButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(
+        {
+            Push(
                 new SearchCriteriaPage(
-                        OnSearchParametersApplied,
-                        initialSearchParameters: _searchParameters
-                    )
-               );
+                    setSearchParameters: _viewModel.SetSearchParameters,
+                    initialSearchParameters: _viewModel.SearchParameters
+                ),
+                onPop: _ => _viewModel.UpdateSearchResults()
+            );
+        }
         
-        private void OnSearchParametersApplied(BuildingSearchParameters searchParameters)
-        {
-            _searchParameters = searchParameters;
-            UpdateSearchResults();
-        }
-
-        private void LoadSearchResults()
-        {
-            var buildings = _repository.Search(_searchParameters ?? BuildingSearchParameters.Empty());
-            Buildings.Clear();
-            foreach (var building in buildings)
-                Buildings.Add(building);
-        }   
-
-        private void UpdateSearchResults()
-        {
-            BuildingsScrollViewer.ScrollToTop();
-            ResetSearchButton.Visibility = _searchParameters == null ? Visibility.Hidden : Visibility.Visible;
-
-            MainContent.Visibility = Visibility.Hidden;
-            EmptyContent.Visibility = Visibility.Hidden;
-
-            LoadSearchResults();
-
-            if (Buildings.Count > 0) {
-                MainContent.Visibility = Visibility.Visible;
-                return;
-            }
-
-            EmptyContent.Visibility = Visibility.Visible;
-        }
 
         private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            _searchParameters = null;
-            UpdateSearchResults();
+            _viewModel.ResetSearchParameters();
+            _viewModel.UpdateSearchResults();
+            BuildingsScrollViewer.ScrollToTop();
         }
 
         private void OpenBuildingDetailsPageButton_Click(object sender, RoutedEventArgs e)
@@ -95,7 +60,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var building = element.DataContext as Building;
             if (building == null) return;
 
-            Push(new RequestApartmentAccessPage(_userId, building));
+            Push(new RequestApartmentAccessPage(_viewModel.UserId, building));
         }
     }
 }

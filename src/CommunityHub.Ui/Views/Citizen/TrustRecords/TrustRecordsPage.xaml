@@ -1,6 +1,7 @@
 <Page x:Class="CommunityHub.Ui.Views.Citizen.TrustRecords.TrustRecordsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
@@ -8,10 +9,99 @@
       Language="sr-Latn-RS"
       Title="Evidencije poverenja">
 
+    <Page.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+        <converters:TrustStatusToStringConverter x:Key="TrustStatusToStringConverter" />
+        <converters:TrustStatusToIconConverter x:Key="TrustStatusToIconConverter" />
+    </Page.Resources>
+
     <Grid Margin="40,20,40,40">
-        <TextBlock Text="Evidencije poverenja"
-                   FontSize="24" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"/>
+        <Grid Visibility="{Binding TrustRecord.Citizen.Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Moja evidencija poverenja" FontSize="48" Margin="0,50,0,40"/>
+                <TextBlock FontSize="20" Margin="0,0,0,5">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Korisnik: {0} {1}">
+                            <Binding Path="TrustRecord.Citizen.Name" TargetNullValue="N/A" FallbackValue="N/A" />
+                            <Binding Path="TrustRecord.Citizen.Surname" TargetNullValue="" FallbackValue="" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock FontSize="20" Margin="0,0,0,5">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Adresa: {0} {1}">
+                            <Binding Path="TrustRecord.Citizen.Address.Street.Name" TargetNullValue="N/A" FallbackValue="N/A" />
+                            <Binding Path="TrustRecord.Citizen.Address.StreetNumber" TargetNullValue="" FallbackValue="" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <StackPanel>
+                    <TextBlock Text="{Binding TrustRecord.Citizen.Membership.Neighborhood.Name, StringFormat='Kvart: {0}'}" FontSize="20" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding TrustRecord.Citizen.Membership.AcceptanceDate, StringFormat='Član od {0:d.M.yyyy.}'}" FontSize="20" Margin="0,0,0,5"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,50">
+                <TextBlock Text="{Binding TrustRecord.Organized, StringFormat='Organizovanih događaja: {0}'}" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding TrustRecord.Volunteered, StringFormat='Broj potvrđenih volontiranja: {0}'}" FontSize="20" Margin="0,0,0,5"/>
+            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.8*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="1" Height="220" Width="300" Background="#FFE5E5E5" BorderBrush="Black" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,0">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <ItemsControl ItemsSource="{Binding TrustRecord.TrustStatus, Converter={StaticResource TrustStatusToIconConverter}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="56" Margin="4,10,4,10" HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="★"/>
+                                                <Setter Property="Foreground" Value="Gold"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding StarType}" Value="Empty">
+                                                        <Setter Property="Text" Value="☆"/>
+                                                        <Setter Property="Foreground" Value="Gray"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StarType}" Value="Black">
+                                                        <Setter Property="Text" Value="★"/>
+                                                        <Setter Property="Foreground" Value="Black"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"
+                                   Text="{Binding TrustRecord.TrustStatus, Converter={StaticResource TrustStatusToStringConverter}}"/>
+                    </StackPanel>
+                </Border>
+                <Button x:Name="ShowOtherMembersTrustRecordsButton" Grid.Row="1"  Grid.Column="2" Height="66" HorizontalAlignment="Stretch" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2" Margin="0,1,10,0" Click="ShowOtherMembersTrustButton_Click">
+                    <TextBlock TextAlignment="Center" TextWrapping="Wrap">
+                        Evidencije poverenja ostalih<LineBreak/>članova kvarta<LineBreak/>(Ctrl + 1)
+                    </TextBlock>
+                </Button>
+            </Grid>
+        </Grid>
+        <Border Visibility="{Binding TrustRecord.Citizen.Membership, Converter={StaticResource NullToVisibility}}" Background="Transparent" Padding="40">
+            <Grid>
+                <TextBlock TextAlignment="Center" FontSize="20" Foreground="#333" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700">
+                    Da biste videli evidencije poverenja u vašem kvartu, morate prvo imati članstvo u kvartu. Možete podneti zahtev za pridruživanje novom kvartu u tabu Kvartovi.
+                </TextBlock>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

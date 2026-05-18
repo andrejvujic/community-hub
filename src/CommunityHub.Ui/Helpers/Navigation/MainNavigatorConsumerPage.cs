@@ -5,7 +5,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
 {
     public class MainNavigatorConsumerPage : Page
     {
-        public string Id { get; } = new Guid().ToString();
+        public string Id { get; } = Guid.NewGuid().ToString();
 
         protected void Push(MainNavigatorConsumerPage page, Action<object?>? onPop = null)
         {
@@ -19,10 +19,12 @@ namespace CommunityHub.Ui.Helpers.Navigation
                 window.PushReplacement(page);
         }
 
-        protected void Pop()
+        protected void Pop(object? returnValue = null)
         {
             if (Window.GetWindow(this) is MainNavigatorHostWindow window)
-                window.Pop();
+                window.Pop(
+                    returnValue: returnValue
+                );
         }
 
         protected void PopAll()

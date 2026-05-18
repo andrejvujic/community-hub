@@ -1,0 +1,228 @@
+﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests.CommonRoomRentalRequestDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      mc:Ignorable="d"
+      Title="Detalji o zahtjevu"
+      FontFamily="{StaticResource AppFontFamily}">
+    <navigation:MainNavigatorConsumerPage.Resources>
+        <converters:RentalRequestStatusToStringConverter x:Key="RentalRequestStatusToStringConverter"/>
+        <converters:RentalRequestStatusToIconCodeConverter x:Key="RentalRequestStatusToIconCodeConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </navigation:MainNavigatorConsumerPage.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#dedede">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="64"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid
+                    Grid.Column="0"
+                    MouseLeftButtonDown="BackButton_Click"
+                    Background="Transparent">
+                    <TextBlock
+                        Text="&#xf177;"
+                        FontSize="24"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                </Grid>
+
+                <TextBlock
+                    Grid.Column="1"
+                    Text="Detalji o zahtjevu"
+                    FontSize="20"
+                    VerticalAlignment="Center">
+                </TextBlock>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="8">
+                    <TextBlock Grid.Row="0" FontSize="20" VerticalAlignment="Center" TextWrapping="Wrap">
+                        <Run Text="Zahtjev za iznajmljivanje zajedničke prostorije —"/>
+                        <Run Text="{Binding Request.CommonRoom.Name, StringFormat='{}{0}', Mode=OneWay}"  FontWeight="Bold"/>
+                    </TextBlock>
+
+                    <Separator Grid.Row="2" Margin="0,8"/>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf133;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Traženi opseg datuma" FontSize="14"/>
+                                <TextBlock FontSize="18" FontWeight="Bold">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                            <Binding Path="Request.RequestedStartDate"/>
+                                            <Binding Path="Request.RequestedEndDate"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="{Binding Request.Status, Converter={StaticResource RentalRequestStatusToIconCodeConverter}}"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Status" FontSize="14"/>
+                                <TextBlock
+                                    Text="{Binding Request.Status, Converter={StaticResource RentalRequestStatusToStringConverter}}"
+                                    FontSize="18"
+                                    FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Visibility="{Binding Request.IsApproved, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock FontSize="16" TextWrapping="Wrap" Foreground="Gray" Margin="0,0,0,8">
+                            <Run
+                                Text="&#xf05a;"
+                                FontSize="14"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                BaselineAlignment="Center"/>
+                            <Run Text="Zahtjev je odobren. Upravnik je dodijelio termin koji možete pogledati ispod."/>
+                        </TextBlock>
+
+                        <Border
+                            Visibility="{Binding Request.IsApproved, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                Grid.Column="0"
+                                Text="&#xf274;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="22"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="Dodijeljeni termin" FontSize="14"/>
+                                    <TextBlock
+                                    FontSize="18"
+                                    Text="{Binding Request.AssignedDate, StringFormat='{}{0:d. MMMM}', ConverterCulture='sr-Latn-RS'}"
+                                    FontWeight="Bold"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Visibility="{Binding Request.HasProposedDateRange, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                        <TextBlock FontSize="16" TextWrapping="Wrap" Foreground="Gray" Margin="0,0,0,8">
+                            <Run
+                                Text="&#xf05a;"
+                                FontSize="14"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                BaselineAlignment="Center"/>
+                            <Run Text="Traženi opseg datuma nije dostupan. Upravnik je predložio novi opseg koji možete pogledati ispod."/>
+                        </TextBlock>
+
+                        <Border
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Padding="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Text="&#xf133;"
+                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                    FontSize="22"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="Predloženi opseg datuma" FontSize="14"/>
+                                    <TextBlock
+                                        FontSize="18"
+                                        FontWeight="Bold">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:d. MMMM} — {1:d. MMMM}" ConverterCulture="sr-Latn-RS">
+                                                <Binding Path="Request.ProposedStartDate"/>
+                                                <Binding Path="Request.ProposedEndDate"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <StackPanel 
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="8">
+
+            <Button
+                Visibility="{Binding Request.HasProposedDateRange, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Click="AcceptProposedDateRangeButton_Click"
+                Content="Prihvati"
+                FontSize="18"
+                Padding="64, 24"
+                Margin="8,0"/>
+
+            <Button
+                Visibility="{Binding Request.IsPending, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Click="CancelRequestButton_Click"
+                Content="Otkaži"
+                FontSize="18"
+                Padding="64, 24"
+                Margin="8,0"/>
+        </StackPanel>
+
+    </Grid>
+</navigation:MainNavigatorConsumerPage>

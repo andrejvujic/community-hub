@@ -2,22 +2,22 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Users;
+using CommunityHub.Ui.ViewModels.BuildingManager;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class HomeWindow : Window
     {
-        private readonly User _user;
+        private readonly HomeWindowViewModel _viewModel;
         private Grid? _selectedNavBarItem = null;
         public HomeWindow(User user)
         {
             InitializeComponent();
-            _user = user;
+            _viewModel = new HomeWindowViewModel(user);
+            DataContext = _viewModel;
             HomeFrame.Navigate(new HomePage(user));
         }
-        private void HomeWindow_Loaded(object sender, RoutedEventArgs e) => SetUserName();
-        private void SetUserName() => userNameTextBlock.Text = _user.Name;
         private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
         {
             var clicked = sender as Grid;
@@ -43,16 +43,16 @@ namespace CommunityHub.Ui.Views.BuildingManager
             switch (tag)
             {
                 case "Home":
-                    HomeFrame.Navigate(new HomePage(_user));
+                    HomeFrame.Navigate(new HomePage(_viewModel.User));
                     break;
                 case "Assembly":
-                    HomeFrame.Navigate(new AssemblyPage(_user));
+                    HomeFrame.Navigate(new AssemblyPage(_viewModel.User));
                     break;
                 case "MyBuildings":
-                    HomeFrame.Navigate(new MyBuildingsPage(_user));
+                    HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
                     break;
                 case "Registration":
-                    HomeFrame.Navigate(new RegistrationPage(_user));
+                    HomeFrame.Navigate(new RegistrationPage(_viewModel.User));
                     break;
                 case "Help":
                     //TODO: Implementirati Help Page
@@ -64,9 +64,9 @@ namespace CommunityHub.Ui.Views.BuildingManager
         }
         private void HandleLogOut()
         {
-            MessageBoxResult dialogResult = MessageBox.Show("Da li ste sigurni da želite da se odjavite?", "Pažnja", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Da li ste sigurni da želite da se odjavite?", "Pažnja", MessageBoxButton.YesNo);
 
-            if (dialogResult == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.Yes)
             {
                 LogInForm logInForm = new LogInForm();
                 logInForm.Show();

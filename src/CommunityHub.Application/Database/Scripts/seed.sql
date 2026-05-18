@@ -1,4 +1,6 @@
-
+-- ako pokretanje skripte baci exception pokreni ROLLBACK;
+-- popravi gresku i pokusaj ponovo
+BEGIN;
 
 INSERT INTO users (id, username, user_role, password, name, surname) VALUES
 (1,  'milan.jovanovic',    'building_manager',         '123', 'Milan',      'Jovanović'),
@@ -108,11 +110,11 @@ INSERT INTO street_sections (id, start_number, end_number, street_id, neighborho
 (15, 1,  98,  8,  15, 'both');
 
 INSERT INTO addresses (id, street_number, neighborhood, city_id, street_id) VALUES
-(1,  '17', 'Vračar',        1,  6),
+(1,  '17', 'Vračar',         1,  6),
 (2,  '128', 'Blok 45',       1,  2),
 (3,  '97',  'Grbavica',      2,  3),
 (4,  '14',  'Centar',        3,  7),
-(5,  '32', 'Aerodrom',      4,  8),
+(5,  '32', 'Aerodrom',       4,  8),
 (6,  '18',  'Mali Bajmok',   5,  9),
 (7,  '44',  'Strelište',     6,  10),
 (8,  '27',  'Ljubić',        7,  11),
@@ -243,7 +245,7 @@ INSERT INTO apartment_access_requests (creation_date, status, comment, apartment
 ('2026-03-08', 'waiting',  NULL,                                  23,  18),
 ('2026-03-09', 'accepted', NULL,                                  125, 19),
 ('2026-03-10', 'waiting',  NULL,                                  126, 20),
-('2026-03-11', 'rejected', 'Neusaglašeni podaci.',               127,  6),
+('2026-03-11', 'rejected', 'Neusaglašeni podaci.',                127,  6),
 ('2026-03-12', 'accepted', NULL,                                  128,  7),
 ('2026-03-13', 'waiting',  NULL,                                  129,  8),
 ('2026-03-14', 'accepted', NULL,                                  210,  9),
@@ -274,7 +276,12 @@ INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALU
 (7,  '2025-09-02', 2),
 (8,  '2025-09-03', 8),
 (9,  '2025-09-04', 4),
-(10, '2025-09-05', 10);
+(10, '2025-09-05', 10),
+(11, '2025-09-06', 1),
+(12, '2025-09-06', 2),
+(13, '2025-09-06', 3),
+(14, '2025-09-06', 4),
+(15, '2025-09-06', 5);
 
 INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
 (101, 'petar.simic',       'citizen', '123', 'Petar',   'Simić',       1,  1),
@@ -291,7 +298,12 @@ INSERT INTO citizens (id, username, user_role, password, name, surname, address_
 (112, 'ognjen.mitrovic',   'citizen', '123', 'Ognjen',  'Mitrović',    12, NULL),
 (113, 'maja.jaksic',       'citizen', '123', 'Maja',    'Jaksić',      13, NULL),
 (114, 'filip.atanasov',    'citizen', '123', 'Filip',   'Atanasov',    14, NULL),
-(115, 'jana.popovic',      'citizen', '123', 'Jana',    'Popović',     15, NULL);
+(115, 'jana.popovic',      'citizen', '123', 'Jana',    'Popović',     15, NULL),
+(116, 'stefan.milovanovic', 'citizen', '123', 'Stefan',  'Milovanović', 1, 11),
+(117, 'marina.knezevic',   'citizen', '123', 'Marina',  'Knežević',     2, 12),
+(118, 'nemanja.stojanovic', 'citizen', '123', 'Nemanja', 'Stojanović',  3, 13),
+(119, 'teodora.ristic',    'citizen', '123', 'Teodora', 'Ristić',       4, 14),
+(120, 'aleksandar.ivanovic','citizen','123','Aleksandar','Ivanović',    5, 15);
 
 INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date, comment) VALUES
 (101, 2,  'waiting',  '2026-03-01', NULL),
@@ -310,10 +322,470 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (114, 9,  'rejected', '2026-03-23', 'Nepotpuna prijava.'),
 (115, 10, 'rejected', '2026-03-24', 'Neusaglašeni podaci o prebivalištu.');
 
-SELECT setval(pg_get_serial_sequence('neighborhood_memberships', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhood_memberships;
-SELECT setval(pg_get_serial_sequence('neighborhoods', 'id'), coalesce(max(id), 0) + 1, false) FROM neighborhoods;
-SELECT setval(pg_get_serial_sequence('images', 'id'), coalesce(max(id), 0) + 1, false) FROM images;
-SELECT setval(pg_get_serial_sequence('street_sections', 'id'), coalesce(max(id), 0) + 1, false) FROM street_sections;
+INSERT INTO community_events (id, name, description, event_date, start_time, duration_minutes, min_volunteers, status, neighborhood_id, organizer_citizen_id) VALUES
+(1, 'Žurka', 'Zabavna mesečna proslava u parku.', '2026-05-20', '09:00', 180, 10, 'preparation', 1, 101),
+(2, 'Bazar', 'Ulični bazar za razmenu i prodaju raznih stvari.', '2026-05-15', '10:00', 240, 20, 'preparation', 2, 102),
+(3, 'Seminar o reciklaži', 'Edukativni seminar za građane o pravilnom odvajanju otpada.', '2026-04-01', '18:00', 90, 5, 'finished', 3, 103),
+(4, 'Humanitarna akcija', 'Prikupljanje i pakovanje pomoći za porodice u potrebi.', '2026-05-30', '08:00', 300, 30, 'preparation', 4, 104),
+(5, 'Letnja proslava', 'Druženje i kulturni program na otvorenom za stanovnike naselja.', '2026-07-10', '19:00', 240, 15, 'cancelled', 5, 105),
+(6, 'Sportski dan', 'Organizacija sportskih aktivnosti i turnira za sve uzraste.', '2026-06-15', '14:00', 180, 25, 'preparation', 1, 116),
+(7, 'Kreativne radionice', 'Radionice za decu i odrasle sa različitim temama i tehnikama.', '2026-05-25', '16:00', 120, 10, 'preparation', 2, 117),
+(8, 'Filmsko veče', 'Projekcija filmova na otvorenom uz diskusiju i druženje.', '2026-06-20', '20:00', 150, 20, 'preparation', 3, 118),
+(9, 'Zdravstveni seminar', 'Besplatne zdravstvene provere i edukacija o zdravlju.', '2026-07-05', '09:00', 240, 15, 'preparation', 4, 119),
+(10, 'Eko akcija', 'Čišćenje i uređenje javnih površina u naselju.', '2026-06-10', '08:00', 180, 30, 'preparation', 5, 120);
+
+INSERT INTO event_items (id, name, event_id) VALUES
+(1, 'Ozvučenje', 1),
+(2, 'Stolice', 1),
+(3, 'Voda', 1),
+(4, 'Hrana', 1),
+(5, 'Sok', 1),
+(6, 'Šatori', 2),
+(7, 'Stolovi', 2),
+(8, 'Projektor', 3),
+(9, 'Letci o reciklaži', 3),
+(10, 'Kutije za pakovanje', 4),
+(11, 'Transportne torbe', 4),
+(12, 'Bina', 5),
+(13, 'Osvetljenje', 5),
+(14, 'Sportska oprema', 6),
+(15, 'Označavanje terena', 6),
+(16, 'Osveženje', 6),
+(17, 'Lopte', 6),
+(18, 'Radni materijal', 7),
+(19, 'Platno za projekciju', 8),
+(20, 'Projektor', 8),
+(21, 'Edukativni materijali', 9),
+(22, 'Vreće za otpad', 10),
+(23, 'Medicinski sto', 9);
+
+INSERT INTO event_registrations (id, attended, event_id, citizen_id) VALUES
+(1, NULL, 2, 107),
+(2, NULL, 7, 107),
+(3, TRUE, 3, 102),
+(4, FALSE,3, 103),
+(5, NULL, 8, 102),
+(6, NULL, 8, 103),
+(7, NULL, 4, 104),
+(8, NULL, 4, 109),
+(9, NULL, 9, 104),
+(10, NULL, 9, 109);
+
+INSERT INTO event_item_assignments (id, registration_id, event_item_id) VALUES
+(1, 1, 6),
+(2, 2, 18),
+(3, 3, 8),
+(4, 4, 9),
+(5, 5, 19),
+(6, 6, 20),
+(7, 7, 10),
+(8, 8, 11),
+(9, 9, 21),
+(10, 10, 23);
+
+INSERT INTO users (id, username, user_role, password, name, surname) VALUES
+(21, 'zoran.milanovic',   'neighborhood_service_provider', '123', 'Zoran',   'Milanović'),
+(22, 'ana.djordjevic',   'neighborhood_service_provider', '123', 'Ana',    'Đorđević'),
+(23, 'una.jacimovic',    'neighborhood_service_provider', '123', 'Una',   'Jaćimović'),
+(24, 'nina.petrovic',     'neighborhood_service_provider', '123', 'Nina',    'Petrović'),
+(25, 'boris.todorovic',   'neighborhood_service_provider', '123', 'Boris',   'Todorović');
+ 
+INSERT INTO service_providers (id, city_id, country_id) VALUES
+(21, 1, 1),
+(22, 1, 1),
+(23, 2, 1),
+(24, 3, 1),
+(25, 4, 1);
+ 
+INSERT INTO job_listings (id, service_name, description, billing_type, city_id, country_id, provider_id) VALUES
+(1,  'Održavanje lifta',          'Redovno servisiranje i popravka liftova u stambenim zgradama.',                          'per_job',  1, 1, 21),
+(2,  'Košenje trave',             'Košenje i uređenje travnatih površina u dvorištima i parkovima.',                        'per_hour', 1, 1, 21),
+(3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
+ 
+INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
+(1,  15000.00, '2025-01-01', '2025-06-30', 1),
+(2,  16500.00, '2025-07-01', '2026-12-31', 1),
+(3,   1200.00, '2025-01-01', '2025-05-31', 2),
+(4,   1400.00, '2025-06-01', '2026-12-31', 2),
+(5,  12000.00, '2025-01-01', '2025-12-31', 3),
+(6, 13500.00, '2026-01-01', '2026-12-31', 3);
+ 
+INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
+(1,  '2026-02-10', NULL,    NULL, 16500.00, FALSE, 1,  1,  NULL),
+(2,  '2026-03-05', NULL,    NULL, 16500.00, FALSE, 1,  2,  NULL),
+(3,  '2026-03-20', '09:00', 3,    1400.00,  FALSE, 2,  1,  NULL),
+(4,  '2026-04-10', '08:00', 4,    1400.00,  FALSE, 2,  2,  NULL),
+(8,  '2026-02-20', NULL,    NULL, 13500.00, FALSE, 3,  3,  NULL),
+(9,  '2026-04-01', NULL,    NULL, 13500.00, FALSE, 3,  4,  NULL);
+ 
+INSERT INTO leave_requests (id, start_date, end_date, status, created_at, provider_id) VALUES
+(1, '2026-04-20', '2026-04-27', 'accepted', '2026-04-05 10:00:00', 21),
+(2, '2026-05-05', '2026-05-09', 'waiting',  '2026-04-15 09:30:00', 22),
+(3, '2026-04-28', '2026-05-02', 'rejected', '2026-04-12 14:00:00', 23);
+ 
+INSERT INTO coverage_offers (id, status, leave_request_id, booked_job_id, covering_provider_id) VALUES
+(1, 'accepted', 1, 3, 22),
+(2, 'waiting',  2, 4, 21),
+(3, 'rejected', 3, 8, 25);
+ 
+INSERT INTO provider_forums (id, title, description, is_closed, created_at, created_by_id) VALUES
+(1, 'Iskustva sa održavanjem liftova',
+   'Delim iskustvo sa ugovaranjem servisa liftova u višespratnicama — šta je važno proveriti pre potpisivanja ugovora sa kvartalnom koordinacijom.',
+   FALSE, '2026-01-15 10:30:00', 21),
+(2, 'Pitanje oko cenovnika za 2026.',
+   'Kako se nosite sa rastom cena materijala? Da li ste povećali cene usluga klijentima za ovu godinu?',
+   FALSE, '2026-02-03 09:15:00', 23),
+(3, 'Arhiva: Zimske intervencije',
+   'Forum o iskustvima iz zimskog perioda — tema je zatvorena jer je sezona prošla.',
+   TRUE,  '2025-12-01 08:00:00', 21),
+(4, 'Kako se organizujete za zamenu kolega?',
+   'Zanima me kako ostali rešavaju situacije kada moraju da pokriju kolegu na odmoru. Tražim savete za organizaciju.',
+   FALSE, '2026-02-20 11:00:00', 24);
+ 
+INSERT INTO forum_posts (id, content, posted_at, forum_id, author_id) VALUES
+(1,  'Uvek tražim pisanu specifikaciju rezervnih delova pre potpisivanja. Koordinatori cene transparentnost.',
+     '2026-01-16 09:00:00', 1, 22),
+(2,  'Slažem se. Kod mene su ključni rokovi odaziva — zapisujem u ugovor max 4 sata za hitne kvarove.',
+     '2026-01-17 11:30:00', 1, 23),
+(3,  'Koristim foto-dokumentaciju pre i posle svakog servisa. Izbegavam sporove sa koordinatorima.',
+     '2026-01-18 15:00:00', 1, 24),
+(4,  'Povećao sam cene za 15% od januara. Objasnio koordinatorima rast cena energenata i materijala.',
+     '2026-02-04 09:30:00', 2, 21),
+(5,  'Ja sam zadržao iste cene ali uveo minimalnu naknadu za izlazak — 30 minuta uvek se naplaćuje.',
+     '2026-02-05 12:00:00', 2, 22),
+(6,  'Slično kao Boris — uveo sam putni trošak za kvartove van centra grada.',
+     '2026-02-06 16:00:00', 2, 25),
+(7,  'Trudim se da imam uvek slobodan dan rezervisan kada znam da kolega planira odmor. Komunikacija je ključ.',
+     '2026-02-21 10:00:00', 4, 22),
+(8, 'Napravio sam grupni chat sa kolegama na istoj lokaciji. Brže se reaguje nego čekanjem sistema.',
+     '2026-02-22 14:00:00', 4, 23);
+ 
+INSERT INTO post_reactions (id, is_upvote, post_id, reactor_id) VALUES
+(1,  TRUE,  1,  21),
+(2,  TRUE,  1,  23),
+(3,  TRUE,  2,  21),
+(4,  FALSE, 2,  25),
+(5,  TRUE,  3,  22),
+(6,  TRUE,  3,  25),
+(7,  TRUE,  4,  22),
+(8,  TRUE,  4,  23),
+(9,  FALSE, 5,  21),
+(10, TRUE,  6,  24),
+(11, TRUE,  6,  25),
+(12, TRUE,  7,  21),
+(13, TRUE,  7,  24),
+(14, FALSE, 8,  22);
+ 
+INSERT INTO provider_reviews (id, quality_rating, communication_rating, comment, created_at, updated_at, booked_job_id, coordinator_id) VALUES
+(1,  5, 5, 'Odličan servis lifta, stigli tačno na vreme i sve popravili u jednoj poseti.',
+    '2026-02-15 12:00:00', NULL, 1, 11),
+(2,  4, 5, 'Brzo i uredno košenje. Malo skuplje nego prošle godine, ali kvalitet je tu.',
+    '2026-03-28 10:30:00', NULL, 3, 12),
+(3,  5, 5, 'Fantastičan posao na igralištu. Deca su oduševljena novom opremom.',
+    '2026-03-02 11:00:00', NULL, 8, 13);
+ 
+INSERT INTO common_rooms (building_id, name, description, floor_number, rental_type) VALUES
+(1,  'Sala za sastanke',      'Manja sala za sastanke kucnog saveta i okupljanja stanara.', 1, 'one_day'),
+(1,  'Teretana',              'Zajednička teretana za stanare zgrade.', 1, 'multi_day'),
+(3,  'Vešernica',             'Prostorija za sušenje vesa i odlaganje daski za peglanje.', 1, 'multi_day'),
+(4,  'Ostava',                'Zajednička ostava za odlaganje sezonskih stvari.', 1, 'multi_day'),
+(5,  'Hobi radionica',        'Prostor za sitne popravke, rad sa alatom i uradi sam aktivnosti.', 1, 'one_day'),
+(6,  'Prostorija za bicikle', 'Zaključana prostorija za odlaganje bicikala.', 1, 'multi_day'),
+(7,  'Soba za proslave',      'Zajednička prostorija za proslave rođendana i okupljanja.', 1, 'one_day'),
+(8,  'Čitaonica',             'Mirna prostorija namenjena učenju i radu.', 1, 'one_day'),
+(9,  'Multimedijalna sala',   'Sala sa projektorom za prezentacije i zajedničke aktivnosti.', 1, 'one_day'),
+(10, 'Ostava za alat',        'Prostorija za čuvanje zajedničkog alata i opreme.', 1, 'multi_day'),
+(11, 'Prostorija za sastanke','Veća prostorija za sastanke stanara i radionice.', 1, 'one_day'),
+(12, 'Vešernica',             'Zajednička vešernica za sušenje.', 1, 'multi_day'),
+(13, 'Klub stanara',          'Prostorija za druzenje, sah i manje dogadjaje.', 1, 'one_day'),
+(14, 'Prostorija za bicikle', 'Prostor za bicikle..', 1, 'multi_day'),
+(15, 'Soba za proslave',      'Sala namenjena manjim porodicnim proslavama.', 1, 'one_day');
+
+INSERT INTO common_room_rental_requests
+(common_room_id, requested_start_date, requested_end_date, proposed_start_date, proposed_end_date, rental_status, resident_id, assigned_date) VALUES
+(2, '2026-05-12', '2026-05-15', NULL, NULL, 'waiting', 6, NULL),
+(2, '2026-05-18', '2026-05-20', NULL, NULL, 'waiting', 6, NULL),
+(2, '2026-05-15', '2026-05-16', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-18', '2026-05-20', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-21', '2026-05-21', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-19', '2026-05-22', NULL, NULL, 'waiting', 6, NULL),
+(1, '2026-05-19', '2026-05-20', NULL, NULL, 'waiting', 6, NULL);
+
+INSERT INTO ads
+(building_id, resident_id, ad_type, ad_category, ad_status, description, start_date, end_date) VALUES
+(1,  6, 'offer',   'moving',       'active',   'Mogu da pomognem oko iznosenja kutija i lakseg namestaja tokom popodneva.', '2026-05-05', '2026-05-08'),
+(1,  7, 'request', 'moving',       'active',   'Potrebna pomoc da se prenese ugaona garnitura iz kombija do stana na drugom spratu.', '2026-05-06', '2026-05-07'),
+(1,  8, 'offer',   'cleaning',     'active',   'Mogu da pomognem oko generalnog ciscenja stana i pranja prozora.', '2026-05-08', '2026-05-10'),
+(1,  9, 'request', 'cleaning',     'active',   'Potrebna pomoc oko ciscenja stana posle molerskih radova.', '2026-05-09', '2026-05-10'),
+(1, 10, 'offer',   'repairs',      'active',   'Mogu da pogledam manje kvarove na slavini, vodokotlicu i bravama.', '2026-05-11', '2026-05-14'),
+(1, 16, 'request', 'repairs',      'active',   'Vrata od kupatila se tesko zatvaraju i potrebna je manja popravka.', '2026-05-12', '2026-05-13'),
+(1, 17, 'offer',   'shopping',     'active',   'Mogu da odem u nabavku za komsije kojima treba pomoc oko nosenja kesa.', '2026-05-07', '2026-05-09'),
+(1, 18, 'request', 'shopping',     'active',   'Potrebna pomoc oko kupovine namirnica i donosenja do stana.', '2026-05-08', '2026-05-08'),
+(1, 19, 'offer',   'tech_support', 'active',   'Pomazem oko podesavanja rutera, stampaca i osnovnih problema sa laptopom.', '2026-05-15', '2026-05-17'),
+(1, 20, 'request', 'tech_support', 'active',   'Potrebna pomoc oko povezivanja televizora na internet i aplikacije.', '2026-05-16', '2026-05-17'),
+(1,  6, 'request', 'borrowing',    'active',   'Potreban mi je udarni busac na jedno popodne za montazu polica.', '2026-05-18', '2026-05-19'),
+(1,  7, 'offer',   'borrowing',    'active',   'Mogu da pozajmim merdevine i osnovni alat za sitne radove u stanu.', '2026-05-18', '2026-05-20'),
+(1,  8, 'request', 'pet_care',     'active',   'Potrebno je da neko proseta psa u subotu uvece zbog puta van grada.', '2026-05-20', '2026-05-21'),
+(1,  9, 'offer',   'pet_care',     'active',   'Mogu da prosetam psa ili nahranim macku kada komsije nisu kod kuce.', '2026-05-20', '2026-05-22'),
+(1, 10, 'request', 'delivery',     'active',   'Treba mi pomoc da se preuzme paket sa pumpe i donese do zgrade.', '2026-05-23', '2026-05-23'),
+(1, 16, 'offer',   'delivery',     'active',   'Mogu da preuzmem manje pakete i ostavim ih komsijama u dogovoreno vreme.', '2026-05-23', '2026-05-24'),
+(1, 17, 'request', 'tutoring',     'active',   'Potrebna pomoc detetu oko matematike za kontrolni zadatak iz razlomaka.', '2026-05-26', '2026-05-28'),
+(1, 18, 'offer',   'tutoring',     'active',   'Mogu da drzim casove matematike za osnovce u vecernjim terminima.', '2026-05-26', '2026-05-29'),
+(1, 19, 'request', 'transport',    'active',   'Treba mi pomoc da se prevezu dve vece kutije do novog stana.', '2026-05-29', '2026-05-30'),
+(1, 20, 'offer',   'transport',    'active',   'Mogu da pomognem prevozom manjih stvari po gradu vikendom.', '2026-05-29', '2026-05-31'),
+(1,  6, 'offer',   'gardening',    'archived', 'Pomagala sam oko sredjivanja saksija i cveca na ulazu zgrade.', '2026-04-01', '2026-04-03'),
+(1, 17, 'offer',   'cleaning',     'archived', 'Mogla sam da pomognem oko sredjivanja podruma pre vikenda.', '2026-04-10', '2026-04-12');
+
+INSERT INTO ad_time_slots (ad_id, start_time, end_time) VALUES
+(1, '2026-05-05 16:00:00', '2026-05-05 17:00:00'),
+(1, '2026-05-05 17:00:00', '2026-05-05 18:00:00'),
+(1, '2026-05-05 18:00:00', '2026-05-05 19:00:00'),
+(1, '2026-05-05 19:00:00', '2026-05-05 20:00:00'),
+(1, '2026-05-06 16:00:00', '2026-05-06 17:00:00'),
+(1, '2026-05-06 17:00:00', '2026-05-06 18:00:00'),
+(1, '2026-05-06 18:00:00', '2026-05-06 19:00:00'),
+(1, '2026-05-06 19:00:00', '2026-05-06 20:00:00'),
+(1, '2026-05-07 16:00:00', '2026-05-07 17:00:00'),
+(1, '2026-05-07 17:00:00', '2026-05-07 18:00:00'),
+(1, '2026-05-07 18:00:00', '2026-05-07 19:00:00'),
+(1, '2026-05-07 19:00:00', '2026-05-07 20:00:00'),
+(1, '2026-05-08 16:00:00', '2026-05-08 17:00:00'),
+(1, '2026-05-08 17:00:00', '2026-05-08 18:00:00'),
+(1, '2026-05-08 18:00:00', '2026-05-08 19:00:00'),
+(1, '2026-05-08 19:00:00', '2026-05-08 20:00:00'),
+(2, '2026-05-06 16:00:00', '2026-05-06 17:00:00'),
+(2, '2026-05-06 17:00:00', '2026-05-06 18:00:00'),
+(2, '2026-05-06 18:00:00', '2026-05-06 19:00:00'),
+(2, '2026-05-06 19:00:00', '2026-05-06 20:00:00'),
+(2, '2026-05-07 16:00:00', '2026-05-07 17:00:00'),
+(2, '2026-05-07 17:00:00', '2026-05-07 18:00:00'),
+(2, '2026-05-07 18:00:00', '2026-05-07 19:00:00'),
+(2, '2026-05-07 19:00:00', '2026-05-07 20:00:00'),
+(3, '2026-05-08 16:00:00', '2026-05-08 17:00:00'),
+(3, '2026-05-08 17:00:00', '2026-05-08 18:00:00'),
+(3, '2026-05-08 18:00:00', '2026-05-08 19:00:00'),
+(3, '2026-05-08 19:00:00', '2026-05-08 20:00:00'),
+(3, '2026-05-09 16:00:00', '2026-05-09 17:00:00'),
+(3, '2026-05-09 17:00:00', '2026-05-09 18:00:00'),
+(3, '2026-05-09 18:00:00', '2026-05-09 19:00:00'),
+(3, '2026-05-09 19:00:00', '2026-05-09 20:00:00'),
+(3, '2026-05-10 16:00:00', '2026-05-10 17:00:00'),
+(3, '2026-05-10 17:00:00', '2026-05-10 18:00:00'),
+(3, '2026-05-10 18:00:00', '2026-05-10 19:00:00'),
+(3, '2026-05-10 19:00:00', '2026-05-10 20:00:00'),
+(4, '2026-05-09 16:00:00', '2026-05-09 17:00:00'),
+(4, '2026-05-09 17:00:00', '2026-05-09 18:00:00'),
+(4, '2026-05-09 18:00:00', '2026-05-09 19:00:00'),
+(4, '2026-05-09 19:00:00', '2026-05-09 20:00:00'),
+(4, '2026-05-10 16:00:00', '2026-05-10 17:00:00'),
+(4, '2026-05-10 17:00:00', '2026-05-10 18:00:00'),
+(4, '2026-05-10 18:00:00', '2026-05-10 19:00:00'),
+(4, '2026-05-10 19:00:00', '2026-05-10 20:00:00'),
+(5, '2026-05-11 16:00:00', '2026-05-11 17:00:00'),
+(5, '2026-05-11 17:00:00', '2026-05-11 18:00:00'),
+(5, '2026-05-11 18:00:00', '2026-05-11 19:00:00'),
+(5, '2026-05-11 19:00:00', '2026-05-11 20:00:00'),
+(5, '2026-05-12 16:00:00', '2026-05-12 17:00:00'),
+(5, '2026-05-12 17:00:00', '2026-05-12 18:00:00'),
+(5, '2026-05-12 18:00:00', '2026-05-12 19:00:00'),
+(5, '2026-05-12 19:00:00', '2026-05-12 20:00:00'),
+(5, '2026-05-13 16:00:00', '2026-05-13 17:00:00'),
+(5, '2026-05-13 17:00:00', '2026-05-13 18:00:00'),
+(5, '2026-05-13 18:00:00', '2026-05-13 19:00:00'),
+(5, '2026-05-13 19:00:00', '2026-05-13 20:00:00'),
+(5, '2026-05-14 16:00:00', '2026-05-14 17:00:00'),
+(5, '2026-05-14 17:00:00', '2026-05-14 18:00:00'),
+(5, '2026-05-14 18:00:00', '2026-05-14 19:00:00'),
+(5, '2026-05-14 19:00:00', '2026-05-14 20:00:00'),
+(6, '2026-05-12 16:00:00', '2026-05-12 17:00:00'),
+(6, '2026-05-12 17:00:00', '2026-05-12 18:00:00'),
+(6, '2026-05-12 18:00:00', '2026-05-12 19:00:00'),
+(6, '2026-05-12 19:00:00', '2026-05-12 20:00:00'),
+(6, '2026-05-13 16:00:00', '2026-05-13 17:00:00'),
+(6, '2026-05-13 17:00:00', '2026-05-13 18:00:00'),
+(6, '2026-05-13 18:00:00', '2026-05-13 19:00:00'),
+(6, '2026-05-13 19:00:00', '2026-05-13 20:00:00'),
+(7, '2026-05-07 16:00:00', '2026-05-07 17:00:00'),
+(7, '2026-05-07 17:00:00', '2026-05-07 18:00:00'),
+(7, '2026-05-07 18:00:00', '2026-05-07 19:00:00'),
+(7, '2026-05-07 19:00:00', '2026-05-07 20:00:00'),
+(7, '2026-05-08 16:00:00', '2026-05-08 17:00:00'),
+(7, '2026-05-08 17:00:00', '2026-05-08 18:00:00'),
+(7, '2026-05-08 18:00:00', '2026-05-08 19:00:00'),
+(7, '2026-05-08 19:00:00', '2026-05-08 20:00:00'),
+(7, '2026-05-09 16:00:00', '2026-05-09 17:00:00'),
+(7, '2026-05-09 17:00:00', '2026-05-09 18:00:00'),
+(7, '2026-05-09 18:00:00', '2026-05-09 19:00:00'),
+(7, '2026-05-09 19:00:00', '2026-05-09 20:00:00'),
+(8, '2026-05-08 16:00:00', '2026-05-08 17:00:00'),
+(8, '2026-05-08 17:00:00', '2026-05-08 18:00:00'),
+(8, '2026-05-08 18:00:00', '2026-05-08 19:00:00'),
+(8, '2026-05-08 19:00:00', '2026-05-08 20:00:00'),
+(9, '2026-05-15 16:00:00', '2026-05-15 17:00:00'),
+(9, '2026-05-15 17:00:00', '2026-05-15 18:00:00'),
+(9, '2026-05-15 18:00:00', '2026-05-15 19:00:00'),
+(9, '2026-05-15 19:00:00', '2026-05-15 20:00:00'),
+(9, '2026-05-16 16:00:00', '2026-05-16 17:00:00'),
+(9, '2026-05-16 17:00:00', '2026-05-16 18:00:00'),
+(9, '2026-05-16 18:00:00', '2026-05-16 19:00:00'),
+(9, '2026-05-16 19:00:00', '2026-05-16 20:00:00'),
+(9, '2026-05-17 16:00:00', '2026-05-17 17:00:00'),
+(9, '2026-05-17 17:00:00', '2026-05-17 18:00:00'),
+(9, '2026-05-17 18:00:00', '2026-05-17 19:00:00'),
+(9, '2026-05-17 19:00:00', '2026-05-17 20:00:00'),
+(10, '2026-05-16 16:00:00', '2026-05-16 17:00:00'),
+(10, '2026-05-16 17:00:00', '2026-05-16 18:00:00'),
+(10, '2026-05-16 18:00:00', '2026-05-16 19:00:00'),
+(10, '2026-05-16 19:00:00', '2026-05-16 20:00:00'),
+(10, '2026-05-17 16:00:00', '2026-05-17 17:00:00'),
+(10, '2026-05-17 17:00:00', '2026-05-17 18:00:00'),
+(10, '2026-05-17 18:00:00', '2026-05-17 19:00:00'),
+(10, '2026-05-17 19:00:00', '2026-05-17 20:00:00'),
+(11, '2026-05-18 16:00:00', '2026-05-18 17:00:00'),
+(11, '2026-05-18 17:00:00', '2026-05-18 18:00:00'),
+(11, '2026-05-18 18:00:00', '2026-05-18 19:00:00'),
+(11, '2026-05-18 19:00:00', '2026-05-18 20:00:00'),
+(11, '2026-05-19 16:00:00', '2026-05-19 17:00:00'),
+(11, '2026-05-19 17:00:00', '2026-05-19 18:00:00'),
+(11, '2026-05-19 18:00:00', '2026-05-19 19:00:00'),
+(11, '2026-05-19 19:00:00', '2026-05-19 20:00:00'),
+(12, '2026-05-18 16:00:00', '2026-05-18 17:00:00'),
+(12, '2026-05-18 17:00:00', '2026-05-18 18:00:00'),
+(12, '2026-05-18 18:00:00', '2026-05-18 19:00:00'),
+(12, '2026-05-18 19:00:00', '2026-05-18 20:00:00'),
+(12, '2026-05-19 16:00:00', '2026-05-19 17:00:00'),
+(12, '2026-05-19 17:00:00', '2026-05-19 18:00:00'),
+(12, '2026-05-19 18:00:00', '2026-05-19 19:00:00'),
+(12, '2026-05-19 19:00:00', '2026-05-19 20:00:00'),
+(12, '2026-05-20 16:00:00', '2026-05-20 17:00:00'),
+(12, '2026-05-20 17:00:00', '2026-05-20 18:00:00'),
+(12, '2026-05-20 18:00:00', '2026-05-20 19:00:00'),
+(12, '2026-05-20 19:00:00', '2026-05-20 20:00:00'),
+(13, '2026-05-20 16:00:00', '2026-05-20 17:00:00'),
+(13, '2026-05-20 17:00:00', '2026-05-20 18:00:00'),
+(13, '2026-05-20 18:00:00', '2026-05-20 19:00:00'),
+(13, '2026-05-20 19:00:00', '2026-05-20 20:00:00'),
+(13, '2026-05-21 16:00:00', '2026-05-21 17:00:00'),
+(13, '2026-05-21 17:00:00', '2026-05-21 18:00:00'),
+(13, '2026-05-21 18:00:00', '2026-05-21 19:00:00'),
+(13, '2026-05-21 19:00:00', '2026-05-21 20:00:00'),
+(14, '2026-05-20 16:00:00', '2026-05-20 17:00:00'),
+(14, '2026-05-20 17:00:00', '2026-05-20 18:00:00'),
+(14, '2026-05-20 18:00:00', '2026-05-20 19:00:00'),
+(14, '2026-05-20 19:00:00', '2026-05-20 20:00:00'),
+(14, '2026-05-21 16:00:00', '2026-05-21 17:00:00'),
+(14, '2026-05-21 17:00:00', '2026-05-21 18:00:00'),
+(14, '2026-05-21 18:00:00', '2026-05-21 19:00:00'),
+(14, '2026-05-21 19:00:00', '2026-05-21 20:00:00'),
+(14, '2026-05-22 16:00:00', '2026-05-22 17:00:00'),
+(14, '2026-05-22 17:00:00', '2026-05-22 18:00:00'),
+(14, '2026-05-22 18:00:00', '2026-05-22 19:00:00'),
+(14, '2026-05-22 19:00:00', '2026-05-22 20:00:00'),
+(15, '2026-05-23 16:00:00', '2026-05-23 17:00:00'),
+(15, '2026-05-23 17:00:00', '2026-05-23 18:00:00'),
+(15, '2026-05-23 18:00:00', '2026-05-23 19:00:00'),
+(15, '2026-05-23 19:00:00', '2026-05-23 20:00:00'),
+(16, '2026-05-23 16:00:00', '2026-05-23 17:00:00'),
+(16, '2026-05-23 17:00:00', '2026-05-23 18:00:00'),
+(16, '2026-05-23 18:00:00', '2026-05-23 19:00:00'),
+(16, '2026-05-23 19:00:00', '2026-05-23 20:00:00'),
+(16, '2026-05-24 16:00:00', '2026-05-24 17:00:00'),
+(16, '2026-05-24 17:00:00', '2026-05-24 18:00:00'),
+(16, '2026-05-24 18:00:00', '2026-05-24 19:00:00'),
+(16, '2026-05-24 19:00:00', '2026-05-24 20:00:00'),
+(17, '2026-05-26 16:00:00', '2026-05-26 17:00:00'),
+(17, '2026-05-26 17:00:00', '2026-05-26 18:00:00'),
+(17, '2026-05-26 18:00:00', '2026-05-26 19:00:00'),
+(17, '2026-05-26 19:00:00', '2026-05-26 20:00:00'),
+(17, '2026-05-27 16:00:00', '2026-05-27 17:00:00'),
+(17, '2026-05-27 17:00:00', '2026-05-27 18:00:00'),
+(17, '2026-05-27 18:00:00', '2026-05-27 19:00:00'),
+(17, '2026-05-27 19:00:00', '2026-05-27 20:00:00'),
+(17, '2026-05-28 16:00:00', '2026-05-28 17:00:00'),
+(17, '2026-05-28 17:00:00', '2026-05-28 18:00:00'),
+(17, '2026-05-28 18:00:00', '2026-05-28 19:00:00'),
+(17, '2026-05-28 19:00:00', '2026-05-28 20:00:00'),
+(18, '2026-05-26 16:00:00', '2026-05-26 17:00:00'),
+(18, '2026-05-26 17:00:00', '2026-05-26 18:00:00'),
+(18, '2026-05-26 18:00:00', '2026-05-26 19:00:00'),
+(18, '2026-05-26 19:00:00', '2026-05-26 20:00:00'),
+(18, '2026-05-27 16:00:00', '2026-05-27 17:00:00'),
+(18, '2026-05-27 17:00:00', '2026-05-27 18:00:00'),
+(18, '2026-05-27 18:00:00', '2026-05-27 19:00:00'),
+(18, '2026-05-27 19:00:00', '2026-05-27 20:00:00'),
+(18, '2026-05-28 16:00:00', '2026-05-28 17:00:00'),
+(18, '2026-05-28 17:00:00', '2026-05-28 18:00:00'),
+(18, '2026-05-28 18:00:00', '2026-05-28 19:00:00'),
+(18, '2026-05-28 19:00:00', '2026-05-28 20:00:00'),
+(18, '2026-05-29 16:00:00', '2026-05-29 17:00:00'),
+(18, '2026-05-29 17:00:00', '2026-05-29 18:00:00'),
+(18, '2026-05-29 18:00:00', '2026-05-29 19:00:00'),
+(18, '2026-05-29 19:00:00', '2026-05-29 20:00:00'),
+(19, '2026-05-29 16:00:00', '2026-05-29 17:00:00'),
+(19, '2026-05-29 17:00:00', '2026-05-29 18:00:00'),
+(19, '2026-05-29 18:00:00', '2026-05-29 19:00:00'),
+(19, '2026-05-29 19:00:00', '2026-05-29 20:00:00'),
+(19, '2026-05-30 16:00:00', '2026-05-30 17:00:00'),
+(19, '2026-05-30 17:00:00', '2026-05-30 18:00:00'),
+(19, '2026-05-30 18:00:00', '2026-05-30 19:00:00'),
+(19, '2026-05-30 19:00:00', '2026-05-30 20:00:00'),
+(20, '2026-05-29 16:00:00', '2026-05-29 17:00:00'),
+(20, '2026-05-29 17:00:00', '2026-05-29 18:00:00'),
+(20, '2026-05-29 18:00:00', '2026-05-29 19:00:00'),
+(20, '2026-05-29 19:00:00', '2026-05-29 20:00:00'),
+(20, '2026-05-30 16:00:00', '2026-05-30 17:00:00'),
+(20, '2026-05-30 17:00:00', '2026-05-30 18:00:00'),
+(20, '2026-05-30 18:00:00', '2026-05-30 19:00:00'),
+(20, '2026-05-30 19:00:00', '2026-05-30 20:00:00'),
+(20, '2026-05-31 16:00:00', '2026-05-31 17:00:00'),
+(20, '2026-05-31 17:00:00', '2026-05-31 18:00:00'),
+(20, '2026-05-31 18:00:00', '2026-05-31 19:00:00'),
+(20, '2026-05-31 19:00:00', '2026-05-31 20:00:00'),
+(21, '2026-04-01 16:00:00', '2026-04-01 17:00:00'),
+(21, '2026-04-01 17:00:00', '2026-04-01 18:00:00'),
+(21, '2026-04-01 18:00:00', '2026-04-01 19:00:00'),
+(21, '2026-04-01 19:00:00', '2026-04-01 20:00:00'),
+(21, '2026-04-02 16:00:00', '2026-04-02 17:00:00'),
+(21, '2026-04-02 17:00:00', '2026-04-02 18:00:00'),
+(21, '2026-04-02 18:00:00', '2026-04-02 19:00:00'),
+(21, '2026-04-02 19:00:00', '2026-04-02 20:00:00'),
+(21, '2026-04-03 16:00:00', '2026-04-03 17:00:00'),
+(21, '2026-04-03 17:00:00', '2026-04-03 18:00:00'),
+(21, '2026-04-03 18:00:00', '2026-04-03 19:00:00'),
+(21, '2026-04-03 19:00:00', '2026-04-03 20:00:00'),
+(22, '2026-04-10 16:00:00', '2026-04-10 17:00:00'),
+(22, '2026-04-10 17:00:00', '2026-04-10 18:00:00'),
+(22, '2026-04-10 18:00:00', '2026-04-10 19:00:00'),
+(22, '2026-04-10 19:00:00', '2026-04-10 20:00:00'),
+(22, '2026-04-11 16:00:00', '2026-04-11 17:00:00'),
+(22, '2026-04-11 17:00:00', '2026-04-11 18:00:00'),
+(22, '2026-04-11 18:00:00', '2026-04-11 19:00:00'),
+(22, '2026-04-11 19:00:00', '2026-04-11 20:00:00'),
+(22, '2026-04-12 16:00:00', '2026-04-12 17:00:00'),
+(22, '2026-04-12 17:00:00', '2026-04-12 18:00:00'),
+(22, '2026-04-12 18:00:00', '2026-04-12 19:00:00'),
+(22, '2026-04-12 19:00:00', '2026-04-12 20:00:00');
+
+INSERT INTO ad_time_slot_reservations (offer_ad_time_slot_id, request_ad_time_slot_id) VALUES
+(1,  5),   
+(3,  6),   
+(7,  10), 
+(12, 15), 
+(13, 16),  
+(17, 19),  
+(20, 22), 
+(21, 23), 
+(24, 25), 
+(26, 27), 
+(28, 30),  
+(31, 32);
+
+INSERT INTO reported_issues (description, reported_date, priority, status, resident_id, building_id) VALUES
+('Lift ne radi već 3 dana, stanari sa višim spratovima imaju problem.', '2026-03-10', 'urgent', 'open', 1, 1),
+('Sijalica u hodniku na 2. spratu je pregorela.', '2026-03-18', 'can_wait', 'resolved', 2, 1),
+('Curenje vode iz cevi u podrumu, mokri zidovi.', '2026-04-01', 'should_be_resolved_soon', 'potentially_resolved', 3, 1),
+('Interfon na glavnom ulazu ne funkcioniše.', '2026-04-15', 'should_be_resolved_soon', 'open', 4, 1),
+('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1);
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
@@ -409,114 +881,324 @@ INSERT INTO images (path, neighborhood_id) VALUES
 ('/Resources/Images/neighborhood_1.jpg', 15),
 ('/Resources/Images/neighborhood_2.jpg', 15);
 
+INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
+(1,  'welcome',    '19:00', '2026-05-01', '2026-05-05', '2026-05-03', 'scheduled',      1),
+(2,  'motivation', '18:00', '2026-05-10', '2026-05-14', '2026-05-12', 'scheduled',      2),
+(3,  'welcome',    '20:00', '2026-05-15', '2026-05-19', NULL,         'in_preparation', 3),
+(4,  'motivation', '17:00', '2026-05-20', '2026-05-24', NULL,         'in_preparation', 4),
+(5,  'welcome',    '19:00', '2026-04-01', '2026-04-05', '2026-04-02', 'scheduled',      5),
+(6,  'motivation', '18:00', '2026-03-10', '2026-03-14', NULL,         'cancelled',      6),
+(7,  'welcome',    '20:00', '2026-05-22', '2026-05-26', NULL,         'in_preparation', 7),
+(8,  'motivation', '19:00', '2026-05-01', '2026-05-05', '2026-05-04', 'scheduled',      8),
+(9,  'welcome',    '17:00', '2026-06-01', '2026-06-05', NULL,         'in_preparation', 9),
+(10, 'motivation', '20:00', '2026-04-15', '2026-04-19', '2026-04-17', 'scheduled',      10);
 
-INSERT INTO users (id, username, user_role, password, name, surname) VALUES
-(21, 'zoran.milanovic',   'neighborhood_service_provider', '123', 'Zoran',   'Milanović'),
-(22, 'ana.djordjevic',   'neighborhood_service_provider', '123', 'Ana',    'Đorđević'),
-(23, 'una.jacimovic',    'neighborhood_service_provider', '123', 'Una',   'Jaćimović'),
-(24, 'nina.petrovic',     'neighborhood_service_provider', '123', 'Nina',    'Petrović'),
-(25, 'boris.todorovic',   'neighborhood_service_provider', '123', 'Boris',   'Todorović');
- 
-INSERT INTO service_providers (id, city_id, country_id) VALUES
-(21, 1, 1),
-(22, 1, 1),
-(23, 2, 1),
-(24, 3, 1),
-(25, 4, 1);
- 
-INSERT INTO job_listings (id, service_name, description, billing_type, city_id, country_id, provider_id) VALUES
-(1,  'Održavanje lifta',          'Redovno servisiranje i popravka liftova u stambenim zgradama.',                          'per_job',  1, 1, 21),
-(2,  'Košenje trave',             'Košenje i uređenje travnatih površina u dvorištima i parkovima.',                        'per_hour', 1, 1, 21),
-(3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
- 
-INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
--- Održavanje lifta (per_job)
-(1,  15000.00, '2025-01-01', '2025-06-30', 1),
-(2,  16500.00, '2025-07-01', '2026-12-31', 1),
--- Košenje trave (per_hour)
-(3,   1200.00, '2025-01-01', '2025-05-31', 2),
-(4,   1400.00, '2025-06-01', '2026-12-31', 2),
--- Popravka igrališta (per_job)
-(5,  12000.00, '2025-01-01', '2025-12-31', 3),
-(6, 13500.00, '2026-01-01', '2026-12-31', 3);
- 
-INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
--- Zoran: održavanje lifta (per_job, nema sate)
-(1,  '2026-02-10', NULL,    NULL, 16500.00, FALSE, 1,  1,  NULL),
-(2,  '2026-03-05', NULL,    NULL, 16500.00, FALSE, 1,  2,  NULL),
--- Zoran: košenje trave (per_hour)
-(3,  '2026-03-20', '09:00', 3,    1400.00,  FALSE, 2,  1,  NULL),
-(4,  '2026-04-10', '08:00', 4,    1400.00,  FALSE, 2,  2,  NULL),
--- Goran: popravka igrališta (per_job)
-(8,  '2026-02-20', NULL,    NULL, 13500.00, FALSE, 3,  3,  NULL),
-(9,  '2026-04-01', NULL,    NULL, 13500.00, FALSE, 3,  4,  NULL);
- 
-INSERT INTO leave_requests (id, start_date, end_date, status, created_at, provider_id) VALUES
-(1, '2026-04-20', '2026-04-27', 'accepted', '2026-04-05 10:00:00', 21),
-(2, '2026-05-05', '2026-05-09', 'waiting',  '2026-04-15 09:30:00', 22),
-(3, '2026-04-28', '2026-05-02', 'rejected', '2026-04-12 14:00:00', 23);
- 
-INSERT INTO coverage_offers (id, status, leave_request_id, booked_job_id, covering_provider_id) VALUES
-(1, 'accepted', 1, 3, 22),
-(2, 'waiting',  2, 5, 21),
-(3, 'rejected', 3, 8, 25);
- 
-INSERT INTO provider_forums (id, title, description, is_closed, created_at, created_by_id) VALUES
-(1, 'Iskustva sa održavanjem liftova',
-   'Delim iskustvo sa ugovaranjem servisa liftova u višespratnicama — šta je važno proveriti pre potpisivanja ugovora sa kvartalnom koordinacijom.',
-   FALSE, '2026-01-15 10:30:00', 21),
-(2, 'Pitanje oko cenovnika za 2026.',
-   'Kako se nosite sa rastom cena materijala? Da li ste povećali cene usluga klijentima za ovu godinu?',
-   FALSE, '2026-02-03 09:15:00', 23),
-(3, 'Arhiva: Zimske intervencije',
-   'Forum o iskustvima iz zimskog perioda — tema je zatvorena jer je sezona prošla.',
-   TRUE,  '2025-12-01 08:00:00', 21),
-(4, 'Kako se organizujete za zamenu kolega?',
-   'Zanima me kako ostali rešavaju situacije kada moraju da pokriju kolegu na odmoru. Tražim savete za organizaciju.',
-   FALSE, '2026-02-20 11:00:00', 24);
- 
-INSERT INTO forum_posts (id, content, posted_at, forum_id, author_id) VALUES
--- Forum 1: Iskustva sa liftovima
-(1,  'Uvek tražim pisanu specifikaciju rezervnih delova pre potpisivanja. Koordinatori cene transparentnost.',
-     '2026-01-16 09:00:00', 1, 22),
-(2,  'Slažem se. Kod mene su ključni rokovi odaziva — zapisujem u ugovor max 4 sata za hitne kvarove.',
-     '2026-01-17 11:30:00', 1, 23),
-(3,  'Koristim foto-dokumentaciju pre i posle svakog servisa. Izbegavam sporove sa koordinatorima.',
-     '2026-01-18 15:00:00', 1, 24),
--- Forum 2: Cenovnik
-(4,  'Povećao sam cene za 15% od januara. Objasnio koordinatorima rast cena energenata i materijala.',
-     '2026-02-04 09:30:00', 2, 21),
-(5,  'Ja sam zadržao iste cene ali uveo minimalnu naknadu za izlazak — 30 minuta uvek se naplaćuje.',
-     '2026-02-05 12:00:00', 2, 22),
-(6,  'Slično kao Boris — uveo sam putni trošak za kvartove van centra grada.',
-     '2026-02-06 16:00:00', 2, 25),
--- Forum 5: Zamena kolega
-(7,  'Trudim se da imam uvek slobodan dan rezervisan kada znam da kolega planira odmor. Komunikacija je ključ.',
-     '2026-02-21 10:00:00', 4, 22),
-(8, 'Napravio sam grupni chat sa kolegama na istoj lokaciji. Brže se reaguje nego čekanjem sistema.',
-     '2026-02-22 14:00:00', 4, 23);
- 
-INSERT INTO post_reactions (id, is_upvote, post_id, reactor_id) VALUES
-(1,  TRUE,  1,  21),
-(2,  TRUE,  1,  23),
-(3,  TRUE,  2,  21),
-(4,  FALSE, 2,  25),
-(5,  TRUE,  3,  22),
-(6,  TRUE,  3,  25),
-(7,  TRUE,  4,  22),
-(8,  TRUE,  4,  23),
-(9,  FALSE, 5,  21),
-(10, TRUE,  6,  24),
-(11, TRUE,  6,  25),
-(12, TRUE,  7,  21),
-(13, TRUE,  7,  24),
-(14, FALSE, 8,  22);
- 
-INSERT INTO provider_reviews (id, quality_rating, communication_rating, comment, created_at, updated_at, booked_job_id, coordinator_id) VALUES
-(1,  5, 5, 'Odličan servis lifta, stigli tačno na vreme i sve popravili u jednoj poseti.',
-    '2026-02-15 12:00:00', NULL, 1, 11),
-(2,  4, 5, 'Brzo i uredno košenje. Malo skuplje nego prošle godine, ali kvalitet je tu.',
-    '2026-03-28 10:30:00', NULL, 3, 12),
-(3,  5, 5, 'Fantastičan posao na igralištu. Deca su oduševljena novom opremom.',
-    '2026-03-02 11:00:00', NULL, 8, 13);
- 
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(1, '2026-05-03', 1, 105),
+(2, '2026-05-03', 1, 116),
+(3, '2026-05-12', 2, 117),
+(4, '2026-05-15', 3, 118),
+(5, '2026-05-20', 4, 104),
+(6, '2026-05-20', 4, 119),
+(7, '2026-04-02', 5, 105),
+(8, '2026-03-12', 6, 106),
+(9, '2026-05-22', 7, 107),
+(10, '2026-05-04', 8, 108);
+
+INSERT INTO city_facilities (id, name, city_id) VALUES
+(1,  'Bioskop Fontana',         1),
+(2,  'Gradski bazen Tašmajdan', 1),
+(3,  'Luna park Ušće',          1),
+(4,  'Gradska biblioteka NS',   2),
+(5,  'Sportski centar Vojvodina',2),
+(6,  'Zoološki vrt Niš',        3),
+(7,  'Aqua park Kragujevac',    4),
+(8,  'Planetarijum Subotica',   5),
+(9,  'Gradski park Pančevo',    6),
+(10, 'Kulturni centar Čačak',   7);
+
+INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id, neighborhood_id) VALUES
+(1,  '2026-03-05 10:00:00', '2026-03-05 13:00:00', 1,  1),
+(2,  '2026-03-12 14:00:00', '2026-03-12 17:00:00', 2,  2),
+(3,  '2026-03-20 09:00:00', '2026-03-20 12:00:00', 3,  3),
+(4,  '2026-04-02 11:00:00', '2026-04-02 14:00:00', 4,  4),
+(5,  '2026-04-10 15:00:00', '2026-04-10 18:00:00', 5,  5),
+(6,  '2026-04-18 10:00:00', '2026-04-18 12:00:00', 1,  6),
+(7,  '2026-04-25 13:00:00', '2026-04-25 16:00:00', 6,  7),
+(8,  '2026-05-03 09:00:00', '2026-05-03 11:00:00', 7,  8),
+(9,  '2026-05-14 14:00:00', '2026-05-14 17:00:00', 8,  9),
+(10, '2026-05-22 10:00:00', '2026-05-22 13:00:00', 9,  10),
+(11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
+(12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
+
+INSERT INTO budget_category_balances (category, neighborhood_id, total_amount) VALUES
+('street_maintenance', 1, 200000.00),
+('park_maintenance',   1, 150000.00),
+('lighting',           1, 80000.00),
+('cleanliness',        1, 120000.00),
+('greenery',           1, 100000.00),
+('emergency_repairs',  1, 100000.00),
+('playgrounds',        1, 50000.00),
+('sports_facilities',  1, 50000.00),
+('street_maintenance', 6, 100000.00),
+('park_maintenance',   6, 50000.00),
+('lighting',           6, 40000.00),
+('cleanliness',        6, 80000.00),
+('greenery',           6, 50000.00),
+('emergency_repairs',  6, 60000.00),
+('playgrounds',        6, 20000.00),
+('sports_facilities',  6, 20000.00),
+('street_maintenance', 11, 120000.00),
+('park_maintenance',   11, 60000.00),
+('lighting',           11, 50000.00),
+('cleanliness',        11, 70000.00),
+('greenery',           11, 50000.00),
+('emergency_repairs',  11, 80000.00),
+('playgrounds',        11, 20000.00),
+('sports_facilities',  11, 20000.00);
+
+INSERT INTO budget_expenses (amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
+(12500.50, 'Popravka ulične svetiljke u Njegoševoj', '2026-04-20', 3, 11),
+(45000.00, 'Asfaltiranje udarne rupe kod hrama', '2026-04-25', 1, 11),
+(8200.00,  'Nove sadnice za Karađorđev park', '2026-05-01', 5, 11),
+(5600.00,  'Zamena peska u peskarniku na igralištu', '2026-04-15', 15, 11),
+(15000.00, 'Hitna sanacija vodovodne cevi', '2026-04-28', 14, 11),
+(22000.00, 'Farbanje klupa u glavnom parku', '2026-05-02', 18, 11),
+(3100.00,  'Nabavka kesa za komunalni otpad', '2026-04-10', 20, 11);
+
+INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
+(16, '2026-04-01', 1), (17, '2026-04-01', 1), (18, '2026-04-01', 1), (19, '2026-04-01', 1), (20, '2026-04-01', 1), (21, '2026-04-01', 1),
+(22, '2026-04-01', 6), (23, '2026-04-01', 6), (24, '2026-04-01', 6), (25, '2026-04-01', 6), (26, '2026-04-01', 6), (27, '2026-04-01', 6),
+(28, '2026-04-01', 11), (29, '2026-04-01', 11), (30, '2026-04-01', 11), (31, '2026-04-01', 11), (32, '2026-04-01', 11), (33, '2026-04-01', 11);
+
+INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
+(121, 'c1.1', 'citizen', '123', 'Ivan', 'Ivić', 1, 16), (122, 'c1.2', 'citizen', '123', 'Ana', 'Anić', 1, 17), (123, 'c1.3', 'citizen', '123', 'Luka', 'Lukić', 1, 18), (124, 'c1.4', 'citizen', '123', 'Maja', 'Majić', 1, 19), (125, 'c1.5', 'citizen', '123', 'Sava', 'Savić', 1, 20), (126, 'c1.6', 'citizen', '123', 'Sara', 'Sarić', 1, 21),
+(127, 'c6.1', 'citizen', '123', 'Marko', 'Marković', 6, 22), (128, 'c6.2', 'citizen', '123', 'Jana', 'Janić', 6, 23), (129, 'c6.3', 'citizen', '123', 'Igor', 'Igorić', 6, 24), (130, 'c6.4', 'citizen', '123', 'Tea', 'Teić', 6, 25), (131, 'c6.5', 'citizen', '123', 'Vuk', 'Vukić', 6, 26), (132, 'c6.6', 'citizen', '123', 'Mina', 'Minić', 6, 27),
+(133, 'c11.1', 'citizen', '123', 'Pera', 'Perić', 11, 28), (134, 'c11.2', 'citizen', '123', 'Neda', 'Nedić', 11, 29), (135, 'c11.3', 'citizen', '123', 'Uroš', 'Urošić', 11, 30), (136, 'c11.4', 'citizen', '123', 'Mira', 'Mirić', 11, 31), (137, 'c11.5', 'citizen', '123', 'Bane', 'Banić', 11, 32), (138, 'c11.6', 'citizen', '123', 'Ena', 'Enić', 11, 33);
+
+INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date) VALUES
+(121, 1, 'accepted', '2026-03-25'), (122, 1, 'accepted', '2026-03-25'), (123, 1, 'accepted', '2026-03-25'), (124, 1, 'accepted', '2026-03-25'), (125, 1, 'accepted', '2026-03-25'), (126, 1, 'accepted', '2026-03-25'),
+(127, 6, 'accepted', '2026-03-25'), (128, 6, 'accepted', '2026-03-25'), (129, 6, 'accepted', '2026-03-25'), (130, 6, 'accepted', '2026-03-25'), (131, 6, 'accepted', '2026-03-25'), (132, 6, 'accepted', '2026-03-25'),
+(133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
+
+INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
+(11, 'welcome', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 1),
+(12, 'motivation', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 1),
+(13, 'welcome', '11:00', '2026-05-15', '2026-05-19', NULL, 'in_preparation', 1),
+(14, 'welcome', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 6),
+(15, 'motivation', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 6),
+(16, 'welcome', '11:00', '2026-05-15', '2026-05-19', NULL, 'in_preparation', 6),
+(17, 'welcome', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 11),
+(18, 'motivation', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 11),
+(19, 'welcome', '11:00', '2026-05-15', '2026-05-19', NULL, 'in_preparation', 11);
+
+INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
+(11, '2026-05-16', 11, 121), (12, '2026-05-17', 11, 122),
+(13, '2026-05-16', 12, 123), (14, '2026-05-18', 12, 124),
+(15, '2026-05-15', 13, 125), (16, '2026-05-16', 13, 126),
+(17, '2026-05-16', 14, 127), (18, '2026-05-17', 14, 128),
+(19, '2026-05-16', 15, 129), (20, '2026-05-18', 15, 130),
+(21, '2026-05-15', 16, 131), (22, '2026-05-16', 16, 132),
+(23, '2026-05-16', 17, 133), (24, '2026-05-17', 17, 134),
+(25, '2026-05-16', 18, 135), (26, '2026-05-18', 18, 136),
+(27, '2026-05-15', 19, 137), (28, '2026-05-16', 19, 138);
+
+SELECT setval(
+    pg_get_serial_sequence('public.users', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.users), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.countries', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.countries), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.cities', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.cities), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhoods', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhoods), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.streets', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.streets), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.street_sections', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.street_sections), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.addresses', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.addresses), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.buildings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.buildings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhood_memberships', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhood_memberships), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.citizens', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.citizens), 0),
+    true
+);
+
+SELECT setval( 
+    pg_get_serial_sequence('public.community_events', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.community_events), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.event_items', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.event_items), 0), 
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.event_registrations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.event_registrations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.event_item_assignments', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.event_item_assignments), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.meeting_date_votes', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.meeting_date_votes), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.service_providers', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.service_providers), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.job_listings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.job_listings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.price_entries', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.price_entries), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.booked_jobs', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.booked_jobs), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.leave_requests', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.leave_requests), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.coverage_offers', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.coverage_offers), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.provider_forums', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.provider_forums), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.forum_posts', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.forum_posts), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.post_reactions', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.post_reactions), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.provider_reviews', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.provider_reviews), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.common_rooms', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.common_rooms), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.common_room_rental_requests', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.common_room_rental_requests), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.ads', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.ads), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.ad_time_slots', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.ad_time_slots), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.ad_time_slot_reservations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.ad_time_slot_reservations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.reported_issues', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.reported_issues), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.images', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.images), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.neighborhood_meetings', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.neighborhood_meetings), 0),
+    true
+);
+
+COMMIT;

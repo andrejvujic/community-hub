@@ -1,15 +1,18 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories
 {
-    public class CitizenRepository
+    public class CitizenRepository : ICitizenRepository
     {
         private readonly CitizenMapper _citizenMapper = new CitizenMapper();
 
         public List<Citizen> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 citizen.id AS user_id,
                 citizen.username,
@@ -59,14 +62,16 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("neighborhoodId", neighborhoodId);
 
             List<Citizen> citizens = new List<Citizen>();
-            query.ExecuteReader(reader => citizens.Add(_citizenMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => citizens.Add(_citizenMapper.MapToEntity(reader)));
 
             return citizens;
         }
 
         public Citizen? GetById(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 citizen.id AS user_id,
                 citizen.username,
@@ -116,20 +121,26 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("id", id);
 
             Citizen? citizen = null;
-            query.ExecuteReader(reader => citizen = _citizenMapper.MapToEntity(reader));
+            connection.ExecuteReader(query, reader =>
+            {
+                if (citizen == null)
+                    citizen = _citizenMapper.MapToEntity(reader);
+            });
 
             return citizen;
         }
 
         public void UpdateMembership(long citizenId, long? membershipId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 "UPDATE citizens SET membership_id = @membershipId WHERE id = @citizenId"
             )
             .AddParameter("membershipId", membershipId)
             .AddParameter("citizenId", citizenId);
 
-            query.GetRowsAffectedCount();
+            connection.Execute(query);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Database.Repositories.Shared;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Ui.Views;
 
@@ -43,7 +43,7 @@ public partial class LogInForm : Window
             return;
         }
 
-        User user = (_userRepository.GetById(userId.Value))!;
+        User user = (_userRepository.Get(userId.Value))!;
 
         switch (role)
         {

@@ -1,4 +1,5 @@
-﻿using CommunityHub.Ui.Helpers.Alerts;
+﻿using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ namespace CommunityHub.Ui.Views.Resident
         {
             InitializeComponent();
             _userId = userId;
+
             MainFrame.Navigate(new HomePage(_userId));
         }
 

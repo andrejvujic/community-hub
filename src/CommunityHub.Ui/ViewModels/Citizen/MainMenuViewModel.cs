@@ -1,0 +1,89 @@
+using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Services.Users;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows.Threading;
+
+namespace CommunityHub.Ui.ViewModels.Citizen
+{
+    public class MainMenuViewModel : INotifyPropertyChanged
+    {
+        private readonly CitizenService _citizenService = new();
+        private readonly long _userId;
+        private readonly DispatcherTimer _timer;
+        private readonly CultureInfo _culture = new("sr-Latn-RS");
+
+        private CitizenDto? _currentUser;
+        private string _currentDate = "";
+        private string _currentTime = "";
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public CitizenDto? CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                if (_currentUser == value) return;
+                _currentUser = value;
+                OnPropertyChanged(nameof(CurrentUser));
+            }
+        }
+
+        public string CurrentDate
+        {
+            get => _currentDate;
+            set
+            {
+                if (_currentDate == value) return;
+                _currentDate = value;
+                OnPropertyChanged(nameof(CurrentDate));
+            }
+        }
+
+        public string CurrentTime
+        {
+            get => _currentTime;
+            set
+            {
+                if (_currentTime == value) return;
+                _currentTime = value;
+                OnPropertyChanged(nameof(CurrentTime));
+            }
+        }
+
+        public MainMenuViewModel(long userId)
+        {
+            _userId = userId;
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            _timer.Tick += Timer_Tick;
+
+            LoadCurrentUser();
+            UpdateDateTime();
+            _timer.Start();
+        }
+
+        public void Cleanup()
+        {
+            _timer.Tick -= Timer_Tick;
+            _timer.Stop();
+        }
+
+        private void LoadCurrentUser()
+        {
+            CurrentUser = _citizenService.GetCitizenById(_userId);
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e) => UpdateDateTime();
+
+        private void UpdateDateTime()
+        {
+            DateTime now = DateTime.Now;
+            CurrentDate = now.ToString("dddd, d.M.yyyy.", _culture);
+            CurrentTime = now.ToString("HH:mm", _culture);
+        }
+
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+}

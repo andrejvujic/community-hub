@@ -1,4 +1,5 @@
-using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.Users;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
@@ -13,7 +14,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             Citizen citizen = _citizenMapper.MapToEntity(reader);
             Neighborhood neighborhood = _neighborhoodMapper.MapToEntity(reader);
 
-            Status status = (Status)reader.GetValue(reader.GetOrdinal("status"));
+            NeighborhoodAccessRequestStatus status = (NeighborhoodAccessRequestStatus)reader.GetValue(reader.GetOrdinal("status"));
             
             DateTime creationDate = reader.GetDateTime(reader.GetOrdinal("creation_date"));
             

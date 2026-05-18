@@ -7,8 +7,8 @@
         Language="sr-Latn-RS">
 
     <Window.Resources>
-        <conv:StatusToStringConverter x:Key="StatusToStringConverter" />
-        <conv:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter" />
+        <conv:NeighborhoodAccessRequestStatusToStringConverter x:Key="NeighborhoodAccessRequestStatusToStringConverter" />
+        <conv:NeighborhoodAccessRequestStatusToVisibilityConverter x:Key="NeighborhoodAccessRequestStatusToVisibilityConverter" />
     </Window.Resources>
 
     <Grid Margin="12">
@@ -105,7 +105,7 @@
             </StackPanel>
         </Grid>
 
-        <ListBox Grid.Row="2" x:Name="RequestsList" ItemsSource="{Binding Requests}" VerticalContentAlignment="Top" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+        <ListBox Grid.Row="2" ItemsSource="{Binding RequestsView}" VerticalContentAlignment="Top" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -116,7 +116,7 @@
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
                             <Border Background="#F3F6FA" Padding="6" Margin="0,0,0,6" CornerRadius="4">
-                                <TextBlock Text="{Binding Name, Converter={StaticResource StatusToStringConverter}}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Name, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}" FontWeight="Bold" />
                             </Border>
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
@@ -162,12 +162,12 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Status, Converter={StaticResource StatusToStringConverter}, StringFormat='Status: {0}', TargetNullValue='', FallbackValue=''}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}, StringFormat='Status: {0}', TargetNullValue='', FallbackValue=''}" HorizontalAlignment="Center" />
                                     <TextBlock Text="{Binding CreationDate, StringFormat='Datum: {0:d}', TargetNullValue=''}" HorizontalAlignment="Center" />
                                 </StackPanel>
 
                                 <Button Grid.Row="1" Width="36" Height="36" Margin="0,8,0,0" HorizontalAlignment="Right" Click="DeleteRequest_Click"
-                                        Visibility="{Binding Status, Converter={StaticResource StatusToVisibilityConverter}}" ToolTip="Brisanje zahteva">
+                                        Visibility="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToVisibilityConverter}}" ToolTip="Brisanje zahteva">
                                     <TextBlock Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Button>
                             </Grid>
