@@ -77,23 +77,23 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
         private void LoadData()
         {
             var citizen = _citizenService.GetCitizenById(_userId);
-            if (citizen?.Membership?.Neighborhood.Id != null)
-            {
-                var neighborhoodId = citizen.Membership.Neighborhood.Id;
-                var meetings = _meetingService.GetByNeighborhood(neighborhoodId);
 
-                var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
-                _meetingService.ProcessPendingMeetings(neighborhoodId, voteCounts);
-
-                var updated = _meetingService.GetByNeighborhood(neighborhoodId);
-                Meetings = new ObservableCollection<NeighborhoodMeetingDto>(updated);
-                Membership = citizen.Membership;
-            }
-            else
+            if (citizen?.Membership?.Neighborhood.Id == null)
             {
                 Meetings = new ObservableCollection<NeighborhoodMeetingDto>();
                 Membership = null;
+                return;
             }
+
+            var neighborhoodId = citizen.Membership.Neighborhood.Id;
+
+            var meetings = _meetingService.GetByNeighborhood(neighborhoodId);
+            var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
+            _meetingService.ProcessPendingMeetings(neighborhoodId, voteCounts);
+
+            var updated = _meetingService.GetByNeighborhood(neighborhoodId);
+            Meetings = new ObservableCollection<NeighborhoodMeetingDto>(updated);
+            Membership = citizen.Membership;
         }
 
         private void UpdateCurrentVote()

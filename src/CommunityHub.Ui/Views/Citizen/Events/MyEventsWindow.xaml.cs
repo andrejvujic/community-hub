@@ -25,7 +25,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             var dialogResult = wnd.ShowDialog();
             if (dialogResult == true)
             {
-                _viewModel.RefreshAfterOrganizeWindow();
+                _viewModel.LoadEvents();
                 this.DialogResult = true;
             }
         }
@@ -48,7 +48,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                 wnd.ShowDialog();
                 e.Handled = true;
 
-                _viewModel.RefreshAfterMarkVolunteersWindow();
+                _viewModel.LoadEvents();
             }
         }
     }

@@ -1,5 +1,6 @@
 using CommunityHub.Application.Services.Dtos.TrustRecords;
 using CommunityHub.Application.Services.TrustRecords;
+using CommunityHub.Application.Services.Users;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
@@ -8,6 +9,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
     {
         private readonly long _userId;
         private readonly CitizenTrustRecordService _trustRecordService = new();
+        private readonly CitizenService _citizenService = new();
 
         private CitizenTrustRecordDto? _trustRecord;
         private long? _neighborhoodId;
@@ -45,7 +47,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         private void LoadData()
         {
             TrustRecord = _trustRecordService.GetTrustRecord(_userId);
-            NeighborhoodId = _trustRecordService.GetNeighborhoodIdForUser(_userId);
+            NeighborhoodId = _citizenService.GetNeighborhoodIdForCitizen(_userId);
         }
 
         protected void OnPropertyChanged(string propertyName)

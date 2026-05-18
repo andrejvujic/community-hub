@@ -33,12 +33,6 @@ namespace CommunityHub.Application.Services.TrustRecords
             return _trustRecordMapper.MapToDto(trustRecord);
         }
 
-        public long? GetNeighborhoodIdForUser(long userId)
-        {
-            var citizen = _citizenService.GetCitizenById(userId);
-            return citizen?.Membership?.Neighborhood.Id;
-        }
-
         public List<CitizenTrustRecordDto> GetNeighborhoodTrustRecords(long neighborhoodId, long excludeUserId)
         {
             var citizens = _citizenService.GetCitizensByNeighborhoodId(neighborhoodId);

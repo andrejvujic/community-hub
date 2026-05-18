@@ -17,6 +17,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         private CitizenDto? _citizen;
         private ObservableCollection<CommunityEventDto> _events = new();
+        private object? _membership;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -33,9 +34,15 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         public ObservableCollection<CommunityEventDto> Events => _events;
 
-        public bool HasMembership
+        public object? Membership
         {
-            get => _citizen?.Membership != null;
+            get => _membership;
+            private set
+            {
+                if (_membership == value) return;
+                _membership = value;
+                OnPropertyChanged(nameof(Membership));
+            }
         }
 
         public EventsViewModel(long userId)
@@ -48,12 +55,15 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         {
             Citizen = _citizenService.GetCitizenById(_userId);
 
-            if (HasMembership)
+            if (_citizen?.Membership != null)
             {
                 RefreshEvents();
+                Membership = _citizen.Membership;
             }
-
-            OnPropertyChanged(nameof(HasMembership));
+            else
+            {
+                Membership = null;
+            }
         }
 
         public void RefreshEvents()

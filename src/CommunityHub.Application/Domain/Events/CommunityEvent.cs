@@ -92,6 +92,14 @@ public class CommunityEvent
         return timeToEvent.TotalHours < 12 && (!enoughVolunteers || !allItemsAssigned);
     }
 
+    public bool CanBeScheduled()
+    {
+        bool enoughVolunteers = Registrations.Count >= MinVolunteers;
+        bool allItemsAssigned = AllItemsAssigned;
+
+        return enoughVolunteers && allItemsAssigned && Status == EventStatus.Preparation;
+    }
+
     public bool HasFinished()
     {
         return DateTime.Now > EventStart.AddMinutes(DurationMinutes);

@@ -68,16 +68,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             return domainEvent.Status == EventStatus.Finished && domainEvent.Organizer.Id == _userId;
         }
 
-        public void RefreshAfterOrganizeWindow()
-        {
-            LoadEvents();
-        }
-
-        public void RefreshAfterMarkVolunteersWindow()
-        {
-            LoadEvents();
-        }
-
         public CommunityEventDto? GetEventDto(long eventId)
         {
             return _eventService.GetById(eventId);
