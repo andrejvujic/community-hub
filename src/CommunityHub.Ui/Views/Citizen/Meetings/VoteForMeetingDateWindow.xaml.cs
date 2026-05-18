@@ -1,25 +1,26 @@
-﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
+﻿using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Ui.ViewModels.Citizen.Meetings;
 using System.Windows;
 
 namespace CommunityHub.Ui.Views.Citizen.Meetings
 {   
     public partial class VoteForMeetingDateWindow : Window
     {
-        public DateOnly SelectedDate { get; private set; }
+        private readonly VoteForMeetingDateViewModel _viewModel;
 
-        public VoteForMeetingDateWindow(NeighborhoodMeeting meeting)
+        public DateOnly SelectedDate => _viewModel.SelectedDateAsDateOnly;
+
+        public VoteForMeetingDateWindow(NeighborhoodMeetingDto meeting)
         {
             InitializeComponent();
-            DataContext = meeting;
-
-            VoteDatePicker.DisplayDateStart = meeting.DateRangeStart.ToDateTime(TimeOnly.MinValue);
-            VoteDatePicker.DisplayDateEnd = meeting.DateRangeEnd.ToDateTime(TimeOnly.MinValue);
+            _viewModel = new VoteForMeetingDateViewModel(meeting);
+            DataContext = _viewModel;
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectedDate = DateOnly.FromDateTime(VoteDatePicker.SelectedDate!.Value);
-            this.DialogResult = true;
+            if (_viewModel.SelectedDate.HasValue)
+                this.DialogResult = true;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

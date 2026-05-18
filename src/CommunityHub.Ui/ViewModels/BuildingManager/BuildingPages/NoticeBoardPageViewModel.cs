@@ -310,17 +310,12 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 
             CategoryBarChartVisibility = Visibility.Visible;
 
-           CreateBarChart(categoryStats);
-
-            CategoryYAxes = new[]
-            {
-                new Axis
-                {
-                    MinLimit = 0,
-                    MaxLimit = categoryStats.Max(s => Math.Max(s.OfferCount, s.RequestCount))
-                }
-            };
-
+            CreateBarChart(categoryStats);
+            ConfigureCategoryAxes(categoryStats, labels);
+            LoadCategoryDataGrid(categoryStats);
+        }
+        private void ConfigureCategoryAxes(List<(AdCategory Category, int OfferCount, int RequestCount)> categoryStats, string[] labels)
+        {
             CategoryXAxes = new[]
             {
                 new Axis
@@ -331,8 +326,14 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                     Padding = new LiveChartsCore.Drawing.Padding(4)
                 }
             };
-
-            LoadCategoryDataGrid(categoryStats);
+            CategoryYAxes = new[]
+            {
+                new Axis
+                {
+                    MinLimit = 0,
+                    MaxLimit = categoryStats.Max(s => Math.Max(s.OfferCount, s.RequestCount))
+                }
+            };
         }
         private void LoadCategoryDataGrid(List<(AdCategory Category, int OfferCount, int RequestCount)> categoryStats)
         {

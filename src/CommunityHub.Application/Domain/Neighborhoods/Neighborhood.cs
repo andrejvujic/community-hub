@@ -70,8 +70,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods
 
             foreach (var s in StreetSections)
             {
-                if (s.Street == null) continue;
-                if (s.Street.Id != address.Street.Id) continue;
+                if (s.Street == null || s.Street.Id != address.Street.Id) continue;
                 if (streetNumber < s.StartNumber || streetNumber > s.EndNumber) continue;
 
                 var side = s.Side;

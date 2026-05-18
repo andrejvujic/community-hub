@@ -403,20 +403,20 @@ INSERT INTO job_listings (id, service_name, description, billing_type, city_id, 
 (3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
  
 INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
-(1,  15000.00, '2025-01-01', '2025-06-30', 1),
-(2,  16500.00, '2025-07-01', '2026-12-31', 1),
-(3,   1200.00, '2025-01-01', '2025-05-31', 2),
-(4,   1400.00, '2025-06-01', '2026-12-31', 2),
-(5,  12000.00, '2025-01-01', '2025-12-31', 3),
-(6, 13500.00, '2026-01-01', '2026-12-31', 3);
+(1,  15000.00, '2025-01-01', '2026-05-20', 1),
+(2,  16500.00, '2026-05-21', '2026-12-31', 1),
+(3,   1200.00, '2025-01-01', '2026-05-20', 2),
+(4,   1400.00, '2026-05-21', '2026-12-31', 2),
+(5,  12000.00, '2025-01-01', '2026-05-20', 3),
+(6, 13500.00, '2026-05-21', '2026-12-31', 3);
  
 INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
-(1,  '2026-02-10', NULL,    NULL, 16500.00, FALSE, 1,  1,  NULL),
-(2,  '2026-03-05', NULL,    NULL, 16500.00, FALSE, 1,  2,  NULL),
-(3,  '2026-03-20', '09:00', 3,    1400.00,  FALSE, 2,  1,  NULL),
-(4,  '2026-04-10', '08:00', 4,    1400.00,  FALSE, 2,  2,  NULL),
-(8,  '2026-02-20', NULL,    NULL, 13500.00, FALSE, 3,  3,  NULL),
-(9,  '2026-04-01', NULL,    NULL, 13500.00, FALSE, 3,  4,  NULL);
+(1,  '2026-02-10', NULL,    NULL, 15000.00, FALSE, 1,  1,  NULL),
+(2,  '2026-03-05', NULL,    NULL, 15000.00, FALSE, 1,  2,  NULL),
+(3,  '2026-03-20', '09:00', 3,    1200.00,  FALSE, 2,  1,  NULL),
+(4,  '2026-04-10', '08:00', 4,    1200.00,  FALSE, 2,  2,  NULL),
+(8,  '2026-02-20', NULL,    NULL, 12000.00, FALSE, 3,  3,  NULL),
+(9,  '2026-04-01', NULL,    NULL, 12000.00, FALSE, 3,  4,  NULL);
  
 INSERT INTO leave_requests (id, start_date, end_date, status, created_at, provider_id) VALUES
 (1, '2026-04-20', '2026-04-27', 'accepted', '2026-04-05 10:00:00', 21),
@@ -982,26 +982,149 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
 
 INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
-(11, 'welcome', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 1),
-(12, 'motivation', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 1),
-(13, 'welcome', '11:00', '2026-05-15', '2026-05-19', NULL, 'in_preparation', 1),
-(14, 'welcome', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 6),
-(15, 'motivation', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 6),
-(16, 'welcome', '11:00', '2026-05-15', '2026-05-19', NULL, 'in_preparation', 6),
-(17, 'welcome', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 11),
-(18, 'motivation', '11:00', '2026-05-16', '2026-05-20', NULL, 'in_preparation', 11),
-(19, 'welcome', '11:00', '2026-05-15', '2026-05-19', NULL, 'in_preparation', 11);
+(11, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 1),
+(12, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 1),
+(13, 'welcome', '11:00', '2026-05-18', '2026-05-23', NULL, 'in_preparation', 1),
+(14, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 6),
+(15, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 6),
+(16, 'welcome', '11:00', '2026-05-18', '2026-05-22', NULL, 'in_preparation', 6),
+(17, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 11),
+(18, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 11),
+(19, 'welcome', '11:00', '2026-05-18', '2026-05-22', NULL, 'in_preparation', 11);
 
 INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
-(11, '2026-05-16', 11, 121), (12, '2026-05-17', 11, 122),
-(13, '2026-05-16', 12, 123), (14, '2026-05-18', 12, 124),
-(15, '2026-05-15', 13, 125), (16, '2026-05-16', 13, 126),
-(17, '2026-05-16', 14, 127), (18, '2026-05-17', 14, 128),
-(19, '2026-05-16', 15, 129), (20, '2026-05-18', 15, 130),
-(21, '2026-05-15', 16, 131), (22, '2026-05-16', 16, 132),
-(23, '2026-05-16', 17, 133), (24, '2026-05-17', 17, 134),
-(25, '2026-05-16', 18, 135), (26, '2026-05-18', 18, 136),
-(27, '2026-05-15', 19, 137), (28, '2026-05-16', 19, 138);
+(11, '2026-05-19', 11, 121), (12, '2026-05-20', 11, 122),
+(13, '2026-05-19', 12, 123), (14, '2026-05-21', 12, 124),
+(15, '2026-05-18', 13, 125), (16, '2026-05-19', 13, 126),
+(17, '2026-05-19', 14, 127), (18, '2026-05-20', 14, 128),
+(19, '2026-05-19', 15, 129), (20, '2026-05-21', 15, 130),
+(21, '2026-05-18', 16, 131), (22, '2026-05-19', 16, 132),
+(23, '2026-05-19', 17, 133), (24, '2026-05-20', 17, 134),
+(25, '2026-05-19', 18, 135), (26, '2026-05-21', 18, 136),
+(27, '2026-05-18', 19, 137), (28, '2026-05-19', 19, 138);
+
+INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
+(34, '2026-04-15', 1),
+(35, '2026-04-20', 1),
+(36, '2026-05-01', 1),
+(37, '2026-05-10', 1);
+ 
+INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
+(139, 'c1.7', 'citizen', '123', 'Jovan',   'Jovanić',   1, 34),
+(140, 'c1.8', 'citizen', '123', 'Milena',  'Milenić',   1, 35),
+(141, 'c1.9', 'citizen', '123', 'Darko',   'Darkić',    1, 36),
+(142, 'c1.10','citizen', '123', 'Vesna',   'Vesnić',    1, 37);
+ 
+INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date) VALUES
+(139, 1, 'accepted', '2026-04-10'),
+(140, 1, 'accepted', '2026-04-15'),
+(141, 1, 'accepted', '2026-04-25'),
+(142, 1, 'accepted', '2026-05-05');
+ 
+-- ============================================================
+-- 4. KVART 6 (Mali Bajmok) — NAJVIŠE NEAKTIVNIH građana
+--    Membership stariji od godinu dana + totalEvents < 5 → Inactive
+--    Dodajemo membership-e sa datumom pre 2025-05-18 (pre godinu dana)
+--    i NE dodajemo event registrations → organized=0, volunteered=0 < 5
+-- ============================================================
+INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
+(38, '2024-03-01', 6),
+(39, '2024-04-01', 6),
+(40, '2024-05-01', 6),
+(41, '2024-06-01', 6),
+(42, '2024-07-01', 6),
+(43, '2024-08-01', 6),
+(44, '2024-08-01', 6),
+(45, '2024-08-01', 6),
+(46, '2024-08-01', 6);
+ 
+INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
+(143, 'c6.7',  'citizen', '123', 'Dragan',  'Draganić',  6, 38),
+(144, 'c6.8',  'citizen', '123', 'Bojana',  'Bojanić',   6, 39),
+(145, 'c6.9',  'citizen', '123', 'Nikola',  'Nikolić',   6, 40),
+(146, 'c6.10', 'citizen', '123', 'Tamara',  'Tamarić',   6, 41),
+(147, 'c6.11', 'citizen', '123', 'Goran',   'Goranić',   6, 42),
+(148, 'c6.12', 'citizen', '123', 'Sonja',   'Sonjić',    6, 43),
+(149, 'c6.12', 'citizen', '123', 'Sonja',   'Sonjić',    6, 44),
+(150, 'c6.12', 'citizen', '123', 'Sonja',   'Sonjić',    6, 45),
+(151, 'c6.12', 'citizen', '123', 'Sonja',   'Sonjić',    6, 46);
+ 
+INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date) VALUES
+(143, 6, 'accepted', '2024-02-20'),
+(144, 6, 'accepted', '2024-03-20'),
+(145, 6, 'accepted', '2024-04-20'),
+(146, 6, 'accepted', '2024-05-20'),
+(147, 6, 'accepted', '2024-06-20'),
+(148, 6, 'accepted', '2024-07-20'),
+(149, 6, 'accepted', '2024-07-20'),
+(150, 6, 'accepted', '2024-07-20'),
+(151, 6, 'accepted', '2024-07-20');
+
+INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
+(47, '2024-02-01', 11),
+(48, '2024-03-01', 11),
+(49, '2024-04-01', 11),
+(50, '2024-05-01', 11),
+(51, '2024-05-01', 11),
+(52, '2024-05-01', 11),
+(53, '2024-05-01', 11);
+ 
+INSERT INTO citizens (id, username, user_role, password, name, surname, address_id, membership_id) VALUES
+(152, 'c11.7',  'citizen', '123', 'Zoran',   'Zoranić',  11, 47),
+(153, 'c11.8',  'citizen', '123', 'Ivana',   'Ivanić',   11, 48),
+(154, 'c11.9',  'citizen', '123', 'Mirko',   'Mirkić',   11, 49),
+(155, 'c11.10', 'citizen', '123', 'Jelena',  'Jelenić',  11, 50),
+(156, 'c11.10', 'citizen', '123', 'Jelena',  'Jelenić',  11, 51),
+(157, 'c11.10', 'citizen', '123', 'Jelena',  'Jelenić',  11, 52),
+(158, 'c11.10', 'citizen', '123', 'Jelena',  'Jelenić',  11, 53);
+ 
+INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, creation_date) VALUES
+(152, 11, 'accepted', '2024-01-20'),
+(153, 11, 'accepted', '2024-02-20'),
+(154, 11, 'accepted', '2024-03-20'),
+(155, 11, 'accepted', '2024-04-20'),
+(156, 11, 'accepted', '2024-04-20'),
+(157, 11, 'accepted', '2024-04-20'),
+(158, 11, 'accepted', '2024-04-20');
+ 
+INSERT INTO community_events (id, name, description, event_date, start_time, duration_minutes, min_volunteers, status, neighborhood_id, organizer_citizen_id) VALUES
+(11, 'Čišćenje parka',    'Akcija čišćenja', '2025-06-01', '09:00', 120, 5, 'finished', 11, 152),
+(12, 'Eko akcija 11',     'Eko akcija',      '2025-06-15', '10:00', 90,  5, 'finished', 11, 152),
+(13, 'Sportski dan 11',   'Sport',           '2025-07-01', '14:00', 180, 5, 'finished', 11, 152),
+(14, 'Kulturni program',  'Kultura',         '2025-08-01', '18:00', 120, 5, 'finished', 11, 152),
+(15, 'Humanitarna 11',    'Humanitarna',     '2025-09-01', '09:00', 240, 5, 'finished', 11, 152),
+(16, 'Proslava naselja',  'Proslava',        '2025-10-01', '17:00', 180, 5, 'finished', 11, 153),
+(17, 'Čišćenje parka',    'Akcija čišćenja', '2025-06-01', '10:00', 120, 5, 'finished', 11, 153),
+(18, 'Eko akcija 11',     'Eko akcija',      '2025-06-15', '11:00', 90,  5, 'finished', 11, 153),
+(19, 'Sportski dan 11',   'Sport',           '2025-07-01', '15:00', 180, 5, 'finished', 11, 153),
+(20, 'Kulturni program',  'Kultura',         '2025-08-01', '19:00', 120, 5, 'finished', 11, 153),
+(21, 'Humanitarna 11',    'Humanitarna',     '2025-09-01', '12:00', 240, 5, 'finished', 11, 154),
+(22, 'Proslava naselja',  'Proslava',        '2025-10-01', '19:00', 180, 5, 'finished', 11, 154),
+(23, 'Čišćenje parka',    'Akcija čišćenja', '2025-06-01', '10:00', 120, 5, 'finished', 11, 154),
+(24, 'Eko akcija 11',     'Eko akcija',      '2025-06-15', '10:00', 90,  5, 'finished', 11, 154),
+(25, 'Sportski dan 11',   'Sport',           '2025-07-01', '14:00', 180, 5, 'finished', 11, 154),
+(26, 'Kulturni program',  'Kultura',         '2025-08-01', '18:00', 120, 5, 'finished', 11, 155),
+(27, 'Humanitarna 11',    'Humanitarna',     '2025-09-01', '09:00', 240, 5, 'finished', 11, 155),
+(28, 'Proslava naselja',  'Proslava',        '2025-10-01', '17:00', 180, 5, 'finished', 11, 155),
+(29, 'Čišćenje parka',    'Akcija čišćenja', '2025-06-01', '09:00', 120, 5, 'finished', 11, 155),
+(30, 'Eko akcija 11',     'Eko akcija',      '2025-06-15', '10:00', 90,  5, 'finished', 11, 155),
+(31, 'Sportski dan 11',   'Sport',           '2025-07-01', '14:00', 180, 5, 'finished', 11, 156),
+(32, 'Kulturni program',  'Kultura',         '2025-08-01', '18:00', 120, 5, 'finished', 11, 156),
+(33, 'Humanitarna 11',    'Humanitarna',     '2025-09-01', '09:00', 240, 5, 'finished', 11, 156),
+(34, 'Proslava naselja',  'Proslava',        '2025-10-01', '17:00', 180, 5, 'finished', 11, 156),
+(35, 'Proslava naselja',  'Proslava',        '2025-10-01', '17:00', 180, 5, 'finished', 11, 156);
+ 
+INSERT INTO event_registrations (id, attended, event_id, citizen_id) VALUES
+(11, TRUE, 11, 157),
+(12, TRUE, 12, 157),
+(13, TRUE, 13, 157),
+(14, TRUE, 14, 157),
+(15, TRUE, 15, 157),
+(16, TRUE, 16, 158),
+(17, TRUE, 17, 158),
+(18, TRUE, 18, 158),
+(19, TRUE, 19, 158),
+(20, TRUE, 20, 158);
 
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),

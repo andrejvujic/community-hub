@@ -253,39 +253,28 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
         }
         public void ValidateStreetNumberLive()
         {
-            ErrorMessage = null;
-
+            ErrorMessage = GetStreetNumberValidationError();
+        }
+        private string? GetStreetNumberValidationError()
+        {
             if (SelectedStreet == null)
-            {
-                ErrorMessage = null;
-                return;
-            }
+                return null;
 
             var text = StreetNumber?.Trim();
 
             if (string.IsNullOrEmpty(text))
-            {
-                ErrorMessage = "Niste uneli broj ulice.";
-                return;
-            }
+                return "Niste uneli broj ulice.";
 
             if (!int.TryParse(text, out var number))
-            {
-                ErrorMessage = "Neispravan format broja ulice.";
-                return;
-            }
+                return "Neispravan format broja ulice.";
 
             if (number < StartNumber || number > EndNumber)
-            {
-                ErrorMessage = $"Raspon ulice je od broja {StartNumber} do {EndNumber}.";
-                return;
-            }
+                return $"Raspon ulice je od broja {StartNumber} do {EndNumber}.";
 
             if (OccupiedNumbers != null && OccupiedNumbers.Contains(number))
-            {
-                ErrorMessage = "Uneli ste postojeći broj zgrade.";
-                return;
-            }
+                return "Uneli ste postojeći broj zgrade.";
+
+            return null;
         }
         private bool IsStreetNumberValid()
         {

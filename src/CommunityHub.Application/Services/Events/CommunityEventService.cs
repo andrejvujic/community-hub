@@ -112,14 +112,7 @@ namespace CommunityHub.Application.Services.Events
             if (currentEvent == null)
                 return;
 
-            var registrations = _registrationService.GetByEventId(eventId);
-            var assignments = _assignmentService.GetByEventId(eventId);
-            var items = _eventItemRepository.GetByEventId(eventId);
-
-            bool enoughVolunteers = registrations.Count >= currentEvent.MinVolunteers;
-            bool allItemsAssigned = items.All(i => assignments.Any(a => a.Item.Id == i.Id));
-
-            if (enoughVolunteers && allItemsAssigned && currentEvent.Status == EventStatus.Preparation)
+            if (currentEvent.CanBeScheduled())
             {
                 _eventRepository.UpdateStatus(eventId, EventStatus.Scheduled);
             }

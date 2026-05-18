@@ -1,10 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Domain.Users;
+using CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages;
+using CommunityHub.Ui.Views.BuildingManager;
+using CommunityHub.Ui.Views.BuildingManager.BuildingPages;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Domain.Users;
-using CommunityHub.Ui.Views.BuildingManager.BuildingPages;
-using CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
@@ -13,7 +14,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private readonly BuildingDetailsPageViewModel _viewModel;
         private Grid? _selectedSideBarItem = null;
         private readonly CommonRoomRentalRequestsPageViewModel _rentalRequestsViewModel;
-
+        private readonly Dictionary<string, Func<Page>> _navigationMap;
         public BuildingDetailsPage(User user, Building building)
         {
             InitializeComponent();
@@ -22,6 +23,18 @@ namespace CommunityHub.Ui.Views.BuildingManager
             _rentalRequestsViewModel = new CommonRoomRentalRequestsPageViewModel(_viewModel.User, _viewModel.Building);
             _rentalRequestsViewModel.AutoProcessRentalRequestStatuses();
             BuildingFrame.Navigate(new BuildingInfoPage(_viewModel.User, _viewModel.Building));
+
+
+            _navigationMap = new Dictionary<string, Func<Page>>
+            {
+                ["Info"] = () => new BuildingInfoPage(_viewModel.User, _viewModel.Building),
+                ["ApartmentAccessRequest"] = () => new ApartmentAccessRequestsPage(_viewModel.User, _viewModel.Building),
+                ["ApartmentMembership"] = () => new ApartmentMembershipsPage(_viewModel.User, _viewModel.Building),
+                ["CommonRoom"] = () => new CommonRoomsPage(_viewModel.User, _viewModel.Building),
+                ["CommonRoomRentalRequest"] = () => new CommonRoomRentalRequestsPage(_viewModel.User, _viewModel.Building),
+                ["NoticeBoard"] = () => new NoticeBoardPage(_viewModel.User, _viewModel.Building),
+                ["ReportedIssue"] = () => new ReportedIssuesPage(_viewModel.User, _viewModel.Building)
+            };
         }
         private void SideBarItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -45,31 +58,9 @@ namespace CommunityHub.Ui.Views.BuildingManager
         }
         private void NavigateTo(string? tag)
         {
-            switch (tag)
+            if (tag != null && _navigationMap.TryGetValue(tag, out var createPage))
             {
-                case "Info":
-                    BuildingFrame.Navigate(new BuildingInfoPage(_viewModel.User, _viewModel.Building));
-                    break;
-                case "ApartmentAccessRequest":
-                    BuildingFrame.Navigate(new ApartmentAccessRequestsPage(_viewModel.User, _viewModel.Building));
-                    break;
-                case "ApartmentMembership":
-                    BuildingFrame.Navigate(new ApartmentMembershipsPage(_viewModel.User, _viewModel.Building));
-                    break;
-                case "CommonRoom":
-                    BuildingFrame.Navigate(new CommonRoomsPage(_viewModel.User, _viewModel.Building));
-                    break;
-                case "CommonRoomRentalRequest":
-                    BuildingFrame.Navigate(new CommonRoomRentalRequestsPage(_viewModel.User, _viewModel.Building));
-                    break;
-                case "NoticeBoard":
-                    BuildingFrame.Navigate(new NoticeBoardPage(_viewModel.User, _viewModel.Building));
-                    break;
-                case "SchedulingAssembly":
-                    break;
-                case "ReportedIssue":
-                    BuildingFrame.Navigate(new ReportedIssuesPage(_viewModel.User, _viewModel.Building));
-                    break;
+                BuildingFrame.Navigate(createPage());
             }
         }
     }

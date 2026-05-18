@@ -23,6 +23,10 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.Reposit
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Application.Domain.Services.RepositoryInterfaces;
+using CommunityHub.Application.Database.Repositories.Services;
+using CommunityHub.Application.Database.Repositories.ServiceBookings;
+using CommunityHub.Application.Domain.ServiceBookings.RepositoryInterfaces;
 
 namespace CommunityHub.Application
 {
@@ -59,7 +63,11 @@ namespace CommunityHub.Application
             { typeof(INeighborhoodRepository), new NeighborhoodRepository() },
             { typeof(INeighborhoodMembershipRepository), new NeighborhoodMembershipRepository() },
             { typeof(INeighborhoodMeetingRepository), new NeighborhoodMeetingRepository() },
-            { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() }
+            { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() },
+            { typeof(IJobListingRepository), new JobListingRepository()  },
+            { typeof(IBookedJobRepository), new BookedJobRepository() },
+            { typeof(IProviderReviewRepository), new ProviderReviewRepository() }
+
         };
 
         public static T CreateInstance<T>()
