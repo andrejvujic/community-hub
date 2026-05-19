@@ -1021,12 +1021,6 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (141, 1, 'accepted', '2026-04-25'),
 (142, 1, 'accepted', '2026-05-05');
  
--- ============================================================
--- 4. KVART 6 (Mali Bajmok) — NAJVIŠE NEAKTIVNIH građana
---    Membership stariji od godinu dana + totalEvents < 5 → Inactive
---    Dodajemo membership-e sa datumom pre 2025-05-18 (pre godinu dana)
---    i NE dodajemo event registrations → organized=0, volunteered=0 < 5
--- ============================================================
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (38, '2024-03-01', 6),
 (39, '2024-04-01', 6),

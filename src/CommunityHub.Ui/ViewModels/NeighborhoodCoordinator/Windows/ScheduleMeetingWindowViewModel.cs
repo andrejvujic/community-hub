@@ -28,6 +28,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public Visibility SelectableThemeVisibility => HasFixedTheme ? Visibility.Collapsed : Visibility.Visible;
 
         public DateTime MinDate { get; } = DateTime.Today.AddDays(2);
+        public DateTime MaxDate { get; } = DateTime.Today.AddDays(8);
 
         private string _hour = "20";
         public string Hour
@@ -64,7 +65,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             }
         }
 
-        private DateTime _fromDate;
+        private DateTime _fromDate = DateTime.Today.AddDays(2);
         public DateTime FromDate
         {
             get => _fromDate;
@@ -76,7 +77,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             }
         }
 
-        private DateTime _toDate;
+        private DateTime _toDate = DateTime.Today.AddDays(8);
         public DateTime ToDate
         {
             get => _toDate;
@@ -95,8 +96,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         {
             _neighborhood = neighborhood;
             FixedTheme = fixedTheme;
-            _fromDate = MinDate;
-            _toDate = DateTime.Today.AddDays(8);
         }
 
         public NeighborhoodMeetingDto? CreatedMeeting { get; private set; }

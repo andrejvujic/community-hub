@@ -19,6 +19,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
             _viewModel = new ScheduleMeetingWindowViewModel(neighborhood, fixedTheme);
             DataContext = _viewModel;
 
+            FromDatePicker.DisplayDateStart = _viewModel.MinDate;
+            FromDatePicker.DisplayDateEnd = _viewModel.MaxDate;
+
+            ToDatePicker.DisplayDateStart = _viewModel.MinDate;
+            ToDatePicker.DisplayDateEnd = _viewModel.MaxDate;
+
             if (!_viewModel.HasFixedTheme)
                 ThemeComboBox.SelectedIndex = 0;
         }
