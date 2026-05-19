@@ -23,10 +23,11 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.Reposit
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.Services.RepositoryInterfaces;
-using CommunityHub.Application.Database.Repositories.Services;
-using CommunityHub.Application.Database.Repositories.ServiceBookings;
-using CommunityHub.Application.Domain.ServiceBookings.RepositoryInterfaces;
+using CommunityHub.Application.Database.Repositories.JobListings;
+using CommunityHub.Application.Database.Repositories.JobListingBookings;
+using CommunityHub.Application.Domain.JobListingBookings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.JobListingBookings;
+using CommunityHub.Application.Domain.JobListings.RepositoryInterfaces;
 
 namespace CommunityHub.Application
 {

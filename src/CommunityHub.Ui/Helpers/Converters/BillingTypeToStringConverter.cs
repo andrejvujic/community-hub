@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Services;
+﻿using CommunityHub.Application.Domain.JobListings;
 using System.Globalization;
 using System.Windows.Data;
 

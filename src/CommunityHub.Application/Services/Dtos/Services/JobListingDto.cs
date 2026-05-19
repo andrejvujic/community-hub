@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Services;
+﻿using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Services.Dtos.Images;
 using CommunityHub.Application.Services.Dtos.Users;

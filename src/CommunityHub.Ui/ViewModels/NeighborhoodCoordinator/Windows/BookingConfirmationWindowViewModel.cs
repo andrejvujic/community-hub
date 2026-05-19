@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Services.Dtos.Services;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows

@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Services;
+﻿using CommunityHub.Application.Domain.JobListings;
 using System.Data;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers
