@@ -29,21 +29,20 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void ApplyToVolunteerButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedEvent = EventsGrid.SelectedItem as CommunityEventDto;
-            if (selectedEvent == null)
+            if (_viewModel.SelectedEvent == null)
             {
                 MessageBox.Show("Izaberite događaj pre prijave.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var validationError = _viewModel.CanApplyToVolunteer(selectedEvent.Id);
+            var validationError = _viewModel.CanApplyToVolunteer(_viewModel.SelectedEvent.Id);
             if (validationError != null)
             {
                 MessageBox.Show(validationError, "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var wnd = new ApplyToVolunteerWindow(_viewModel.Citizen!.Id, selectedEvent.Id);
+            var wnd = new ApplyToVolunteerWindow(_viewModel.Citizen!.Id, _viewModel.SelectedEvent.Id);
             wnd.Owner = Window.GetWindow(this);
             var result = wnd.ShowDialog();
             if (result == true)

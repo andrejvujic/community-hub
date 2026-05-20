@@ -10,8 +10,13 @@
       Title="Događaji">
 
     <Page.Resources>
-        <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
-        <converters:EventStatusToStringConverter x:Key="EventStatusToString" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+            <converters:EventStatusToStringConverter x:Key="EventStatusToString" />
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
@@ -21,38 +26,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Margin="0,0,0,20" Height="34">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="500"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="40" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid Grid.Column="0">
-                        <TextBox x:Name="SearchBox" Width="460" Height="34" VerticalContentAlignment="Center" Padding="10,0" Text="" Foreground="#000" BorderBrush="Gray" BorderThickness="1" Background="White"/>
-                        <TextBlock Margin="14,0,0,0" VerticalAlignment="Center" Foreground="#666" IsHitTestVisible="False" Text="Pretraži događaje">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Grid>
-
-                    <Button Grid.Column="1" Width="34" Height="34" Margin="6,0,0,0" Content="🔍" FontSize="14" Background="#F0F0F0" BorderBrush="Gray" BorderThickness="1"/>
+            <Grid Grid.Row="0" Margin="0,0,0,12" Height="34" Width="500" HorizontalAlignment="Left">
+                <Grid>
+                    <TextBox x:Name="SearchBox" Style="{StaticResource SearchBarStyle}"/>
+                    <Button Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,2,0" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}" Cursor="Hand">
+                        <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Button>
                 </Grid>
             </Grid>
 
@@ -64,7 +43,7 @@
                 </Grid.ColumnDefinitions>
 
                 <DataGrid x:Name="EventsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                          BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True" ItemsSource="{Binding Events}">
+                          Style="{StaticResource PrimaryDataGrid}" ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}" RowStyle="{StaticResource DataGridRowStyle}" CellStyle="{StaticResource DataGridCellStyle}" IsReadOnly="True" ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Naziv događaja" Binding="{Binding Name}" Width="*"/>
                         <DataGridTextColumn Header="Datum" Binding="{Binding EventStart, StringFormat=d}" Width="*"/>
@@ -79,16 +58,16 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
+                    <Border Grid.Row="0" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource AlternatingRowBrush}" Padding="16">
                         <Grid>
-                            <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center" Visibility="{Binding SelectedItem, ElementName=EventsGrid, Converter={StaticResource NullToVisibility}}">
+                            <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center" Visibility="{Binding SelectedEvent, Converter={StaticResource NullToVisibility}}">
                                 <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
                                     Pritisnite Ctrl+S da pretražite događaje. Izaberite željeni događaj klikom miša ili koristeći strelice gore/dole.
 
                                     Detalji o izabranom događaju biće prikazani ovde.
                                 </TextBlock>
                             </StackPanel>
-                            <StackPanel x:Name="DetailsPanel" Visibility="{Binding SelectedItem, ElementName=EventsGrid, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+                            <StackPanel x:Name="DetailsPanel" Visibility="{Binding SelectedEvent, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -101,41 +80,41 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
-                                        <Viewbox Width="26" Height="26" Margin="0,0,12,0" VerticalAlignment="Center">
+                                        <Viewbox Width="32" Height="32" Margin="0,0,12,0" VerticalAlignment="Center">
                                             <Path Data="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" Fill="Black"/>
                                         </Viewbox>
                                         <StackPanel>
-                                            <TextBlock Text="{Binding SelectedItem.Name, ElementName=EventsGrid, TargetNullValue=''}" FontSize="18" FontWeight="Bold" />
-                                            <TextBlock Text="{Binding SelectedItem.Status, ElementName=EventsGrid, Converter={StaticResource EventStatusToString}}" FontSize="12" Foreground="#666" />
+                                            <TextBlock Text="{Binding SelectedEvent.Name, TargetNullValue=''}" FontSize="22" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding SelectedEvent.Status, Converter={StaticResource EventStatusToString}}" FontSize="15" Foreground="#666" />
                                         </StackPanel>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,24,8">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4" VerticalAlignment="Center">
-                                            <Viewbox Width="16" Height="16" Margin="0,0,8,0">
+                                            <Viewbox Width="20" Height="20" Margin="0,0,8,0">
                                                 <Path Data="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" Fill="#333"/>
                                             </Viewbox>
-                                            <TextBlock Text="{Binding SelectedItem.EventStart, ElementName=EventsGrid, StringFormat=d}" FontSize="12" Foreground="#333" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding SelectedEvent.EventStart, StringFormat=d}" FontSize="15" Foreground="#333" VerticalAlignment="Center"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4" VerticalAlignment="Center">
-                                            <Viewbox Width="16" Height="16" Margin="0,0,8,0">
+                                            <Viewbox Width="20" Height="20" Margin="0,0,8,0">
                                                 <Path Data="M12 20c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm-.5-13h1v5l4.25 2.52-.5.86L11.5 12V7z" Fill="#333"/>
                                             </Viewbox>
-                                            <TextBlock Text="{Binding SelectedItem.EventStart, ElementName=EventsGrid, StringFormat=t}" FontSize="12" Foreground="#333" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding SelectedEvent.EventStart, StringFormat=t}" FontSize="15" Foreground="#333" VerticalAlignment="Center"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Viewbox Width="16" Height="16" Margin="0,0,8,0">
-                                                <TextBlock Text="⏳" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            <Viewbox Width="20" Height="20" Margin="0,0,8,0">
+                                                <TextBlock Text="⏳" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                             </Viewbox>
-                                            <TextBlock Text="{Binding SelectedItem.DurationMinutes, ElementName=EventsGrid, StringFormat={}{0} min}" FontSize="12" Foreground="#333" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding SelectedEvent.DurationMinutes, StringFormat={}{0} min}" FontSize="15" Foreground="#333" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SelectedItem.Description, ElementName=EventsGrid, TargetNullValue=''}" TextWrapping="Wrap" MinHeight="80" Margin="0,8,0,12" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SelectedEvent.Description, TargetNullValue=''}" TextWrapping="Wrap" MinHeight="80" Margin="0,8,0,12" FontSize="16" />
 
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,-20,12,0">
-                                        <TextBlock Text="Potrebno:" FontWeight="Bold" Margin="0,0,0,4" />
-                                        <ListBox ItemsSource="{Binding SelectedItem.Items, ElementName=EventsGrid}" MinHeight="275">
+                                        <TextBlock Text="Potrebno:" FontWeight="Bold" Margin="0,0,0,4" FontSize="14" />
+                                        <ListBox ItemsSource="{Binding SelectedEvent.Items}" MinHeight="275" Style="{StaticResource PrimaryListBox}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
@@ -148,8 +127,8 @@
 
                                     <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <StackPanel Width="200" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding SelectedItem.MinVolunteers, ElementName=EventsGrid, StringFormat='Volontera potrebno: {0}'}" TextAlignment="Center" />
-                                            <TextBlock Text="{Binding SelectedItem.RegisteredCount, ElementName=EventsGrid, StringFormat='Prijavljeno volontera: {0}'}" TextAlignment="Center" Margin="0,6,0,0" />
+                                            <TextBlock Text="{Binding SelectedEvent.MinVolunteers, StringFormat='Volontera potrebno: {0}'}" TextAlignment="Center" FontSize="16" />
+                                            <TextBlock Text="{Binding SelectedEvent.RegisteredCount, StringFormat='Prijavljeno volontera: {0}'}" TextAlignment="Center" Margin="0,6,0,0" FontSize="16" />
                                         </StackPanel>
                                     </StackPanel>
                                 </Grid>
@@ -164,17 +143,17 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="0,0,8,0" Click="ApplyToVolunteerButton_Click">
-                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
+                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Click="ApplyToVolunteerButton_Click">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
                         </Button>
 
-                        <Button Grid.Column="1" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="4,0,4,0">
-                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Štampaj izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
+                        <Button Grid.Column="1" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="4,0,4,0">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Štampaj izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
                         </Button>
 
-                    <Button x:Name="MyEventsButton" Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Margin="8,0,0,0" Click="MyEventsButton_Click">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Moji događaji<LineBreak/>(Ctrl + 3)</TextBlock>
-                    </Button>
+                        <Button x:Name="MyEventsButton" Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Click="MyEventsButton_Click">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Moji događaji<LineBreak/>(Ctrl + 3)</TextBlock>
+                        </Button>
                     </Grid>
                 </Grid>
 

@@ -86,7 +86,7 @@
 
                                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
                                     <TextBlock Text="{Binding SelectedNeighborhood.Name, TargetNullValue=''}" FontSize="22" FontWeight="Bold" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}"/>
-                                    <TextBlock FontSize="16" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8">
+                                    <TextBlock FontSize="16" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" Opacity="0.7">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0}, {1}">
                                                 <Binding Path="SelectedNeighborhood.City.Name" TargetNullValue="" />
@@ -144,17 +144,17 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="RequestAccessButton_Click"
+                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="RequestAccessButton_Click"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
 
-                    <Button x:Name="CoordinatorButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}"
+                    <Button x:Name="CoordinatorButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
-                    <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="MyAccessRequestsButton_Click">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">
+                    <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="MyAccessRequestsButton_Click">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                             Moji zahtevi za pristup<LineBreak/>(Ctrl + 2)
                         </TextBlock>
                     </Button>
