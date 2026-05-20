@@ -26,8 +26,8 @@ namespace CommunityHub.Application.Services.JobListingBookings
         public AvailableJobSlotDto? FindFirstAvailableSlot(JobListingDto jobListing, int? durationHours)
         {
             var joblisting = _jobListingMapper.MapToDomain(jobListing);
-            var occupied = _bookedJobRepository.GetOccupiedSlots(joblisting.Id);
-            var availableSlot = joblisting.FindFirstAvailableSlot(occupied, durationHours);
+            var bookedJobs = _bookedJobRepository.GetByServiceProviderId(joblisting.Provider.Id);
+            var availableSlot = joblisting.FindFirstAvailableSlot(bookedJobs, durationHours);
             return availableSlot != null ? _availableJobSlotMapper.MapToDto(availableSlot) : null;
         }
 

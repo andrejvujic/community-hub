@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.JobListingBookings;
 using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Domain.JobListings
@@ -72,11 +73,11 @@ namespace CommunityHub.Application.Domain.JobListings
         }
 
         public AvailableJobSlot? FindFirstAvailableSlot(
-            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupiedSlots,
+            List<BookedJob> bookedJobs,
             int? durationHours)
         {
             if (BillingType == BillingType.PerHour && durationHours is null) return null;
-            if (BillingType == BillingType.PerHour && durationHours > 12) return null;
+            if (BillingType == BillingType.PerHour && durationHours > 14) return null;
 
             var prices = _priceList.OrderBy(p => p.ValidFrom).ToList();
             var today = DateOnly.FromDateTime(DateTime.Today);
@@ -84,7 +85,7 @@ namespace CommunityHub.Application.Domain.JobListings
             for (int i = 1; i < 60; i++)
             {
                 var candidate = today.AddDays(i);
-                var slot = FindSlotOnDay(candidate, durationHours, occupiedSlots, prices);
+                var slot = FindSlotOnDay(candidate, durationHours, bookedJobs, prices);
                 if (slot is not null) return slot;
             }
 
@@ -94,7 +95,7 @@ namespace CommunityHub.Application.Domain.JobListings
         private AvailableJobSlot? FindSlotOnDay(
             DateOnly candidate,
             int? durationHours,
-            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupied,
+            List<BookedJob> bookedJobs,
             List<PriceEntry> prices)
         {
             var priceEntry = prices.FirstOrDefault(p => p.IsActiveOn(candidate));
@@ -103,17 +104,17 @@ namespace CommunityHub.Application.Domain.JobListings
             bool isPriceChanged = CurrentPriceEntry is null || priceEntry.Id != CurrentPriceEntry.Id;
 
             return BillingType == BillingType.PerJob
-                ? FindPerJobSlot(candidate, occupied, priceEntry.Amount, isPriceChanged)
-                : FindPerHourSlot(candidate, durationHours!.Value, occupied, priceEntry.Amount, isPriceChanged);
+               ? FindPerJobSlot(candidate, bookedJobs, priceEntry.Amount, isPriceChanged)
+               : FindPerHourSlot(candidate, durationHours!.Value, bookedJobs, priceEntry.Amount, isPriceChanged);
         }
 
         private static AvailableJobSlot? FindPerJobSlot(
             DateOnly candidate,
-            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupied,
+            List<BookedJob> bookedJobs,
             decimal price,
             bool isPriceChanged)
         {
-            bool isOccupied = occupied.Any(o => o.Date == candidate);
+            bool isOccupied = bookedJobs.Any(b => b.ScheduledDate == candidate);
             if (isOccupied) return null;
 
             return new AvailableJobSlot(candidate, price, isPriceChanged);
@@ -122,18 +123,19 @@ namespace CommunityHub.Application.Domain.JobListings
         private static AvailableJobSlot? FindPerHourSlot(
             DateOnly candidate,
             int durationHours,
-            List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> occupied,
+            List<BookedJob> bookedJobs,
             decimal price,
             bool isPriceChanged)
         {
-            var occupiedOnDay = occupied
-                .Where(o => o.Date == candidate && o.Time.HasValue)
+
+            var occupiedOnDay = bookedJobs
+                .Where(o => o.ScheduledDate == candidate && o.ScheduledTime.HasValue)
                 .Select(o => (
-                    Start: o.Time!.Value, 
-                    End: o.Time.Value.AddHours(o.DurationHours ?? 1)))
+                    Start: o.ScheduledTime!.Value,
+                    End: o.ScheduledTime.Value.AddHours(o.DurationHours ?? 1)))
                 .OrderBy(o => o.Start)
                 .ToList();
-
+            
             var freeTime = FindFreeHourSlot(occupiedOnDay, durationHours);
             if (freeTime is null) return null;
 
@@ -162,7 +164,7 @@ namespace CommunityHub.Application.Domain.JobListings
                 if (slotEndMinutes > candidateMinutes)
                     candidateMinutes = slotEndMinutes;
             }
-
+            
             if (candidateMinutes + durationHours * 60 <= workEndMinutes)
                 return new TimeOnly(candidateMinutes / 60, candidateMinutes % 60);
 
