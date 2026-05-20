@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.ServiceBookings;
-using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.JobListingBookings;
+using CommunityHub.Application.Domain.JobListings;
 
 namespace CommunityHub.Application.Domain.Users
 {

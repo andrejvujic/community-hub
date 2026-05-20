@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using CommunityHub.Application.Database.Repositories.Shared;
-using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
@@ -36,8 +34,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             RequestsTab.Initialize(_userId);
             ServiceCenterTab.Initialize(_userId);
             StatisticsAndMeetingsTab.Initialize(_userId);
-            CityFacilitiesTab.Initialize(_userId);
-            NeighborhoodBudgetTab.Initialize(_userId);
         }
  
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

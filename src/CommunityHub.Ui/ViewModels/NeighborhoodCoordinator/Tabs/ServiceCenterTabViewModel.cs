@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Services;
 using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Services.JobListingBookings;
+using CommunityHub.Application.Services.JobListings;
 using CommunityHub.Application.Services.Neighborhoods;
-using CommunityHub.Application.Services.ServiceBookings;
-using CommunityHub.Application.Services.Services;
 using CommunityHub.Application.Services.Users;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs

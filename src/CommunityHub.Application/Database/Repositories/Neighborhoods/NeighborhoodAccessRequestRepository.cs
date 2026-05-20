@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Domain.JobListingBookings;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods

@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Domain.Users;
 using System.Data;
 

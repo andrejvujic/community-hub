@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Users;
-using CommunityHub.Application.Services.ServiceBookings;
+using CommunityHub.Application.Services.JobListingBookings;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {

@@ -1,8 +1,8 @@
-﻿using CommunityHub.Application.Database.Repositories.ServiceBookings;
-using CommunityHub.Application.Database.Repositories.Services;
+﻿using CommunityHub.Application.Database.Repositories.JobListingBookings;
+using CommunityHub.Application.Database.Repositories.JobListings;
+using CommunityHub.Application.Domain.JobListingBookings;
+using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.ServiceBookings;
-using CommunityHub.Application.Domain.Services;
 
 namespace CommunityHub.Application.Services
 {

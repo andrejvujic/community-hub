@@ -106,11 +106,9 @@
             </TabItem>
 
             <TabItem Header="Gradski objekti (F6)">
-                <tabs:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
             <TabItem Header="Budžet (F7)">
-                <tabs:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
             </TabItem>
 
             <TabItem Header="Profil (F8)">

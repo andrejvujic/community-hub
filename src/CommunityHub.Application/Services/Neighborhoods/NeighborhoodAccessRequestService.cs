@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.JobListingBookings;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.MappersDto.Users;
