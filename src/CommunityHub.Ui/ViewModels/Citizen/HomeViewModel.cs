@@ -103,7 +103,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
                 "Main Menu" => "Glavni meni",
                 "Neighborhoods" => "Kvartovi",
                 "Events" => "Događaji",
-                "Trust Records" => "Rekord povjerenja",
+                "Trust Records" => "Evidencije poverenja",
                 "Meetings" => "Sastanci",
                 "Local Facilities" => "Lokalni objekti",
                 "Donations" => "Donacije",
