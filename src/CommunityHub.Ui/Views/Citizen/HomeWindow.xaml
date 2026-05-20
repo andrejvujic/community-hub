@@ -10,10 +10,11 @@
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         WindowStyle="None">
     <Window.Resources>
-        <SolidColorBrush x:Key="BackgroundBrush" Color="#F4F1EA" />
-        <SolidColorBrush x:Key="TextBrush" Color="#1A1917" />
-        <SolidColorBrush x:Key="AccentBrush" Color="#A0B99B" />
-        <SolidColorBrush x:Key="ActiveTabBrush" Color="#A0B99B" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <Grid Background="{StaticResource BackgroundBrush}">

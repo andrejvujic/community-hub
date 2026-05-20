@@ -8,11 +8,19 @@
       Language="sr-Latn-RS"
       Title="Glavni Meni">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid Margin="40,20,40,40">
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBlock Text="Dobrodošli nazad!" FontSize="48" Margin="0,50,0,40"/>
+            <TextBlock Text="Dobro došli nazad!" FontSize="60" Margin="0,50,0,40" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
 
-            <TextBlock FontSize="20" Margin="0,0,0,5">
+            <TextBlock FontSize="28" Margin="0,0,0,5" Foreground="{StaticResource TextBrush}">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="Korisnik: {0} {1}">
                         <Binding Path="CurrentUser.Name" TargetNullValue="N/A" FallbackValue="N/A" />
@@ -21,7 +29,7 @@
                 </TextBlock.Text>
             </TextBlock>
 
-            <TextBlock FontSize="20" Margin="0,0,0,5">
+            <TextBlock FontSize="28" Margin="0,0,0,5" Foreground="{StaticResource TextBrush}">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="Adresa: {0} {1}">
                         <Binding Path="CurrentUser.Address.Street.Name" TargetNullValue="N/A" FallbackValue="N/A" />
@@ -41,10 +49,10 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <TextBlock Text="{Binding CurrentUser.Membership.Neighborhood.Name, StringFormat='Kvart: \{0\}'}" FontSize="20" Margin="0,0,0,5"/>
-                <TextBlock Text="{Binding CurrentUser.Membership.AcceptanceDate, StringFormat='Član od \{0:d.M.yyyy.\}'}" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding CurrentUser.Membership.Neighborhood.Name, StringFormat='Kvart: \{0\}'}" FontSize="28" Margin="0,0,0,5" Foreground="{StaticResource TextBrush}"/>
+                <TextBlock Text="{Binding CurrentUser.Membership.AcceptanceDate, StringFormat='Član od \{0:d.M.yyyy.\}'}" FontSize="28" Margin="0,0,0,5" Foreground="{StaticResource TextBrush}"/>
             </StackPanel>
-            <TextBlock Text="Nema registrovanih članstava u kvartovima" FontSize="20">
+            <TextBlock Text="Nema registrovanih članstava u kvartovima" FontSize="28" Foreground="{StaticResource TextBrush}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Collapsed" />
@@ -58,9 +66,16 @@
             </TextBlock>
         </StackPanel>
 
+        <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,120,0" BorderBrush="{StaticResource TextBrush}" BorderThickness="3" Padding="30">
+            <StackPanel Width="280" VerticalAlignment="Center">
+                <TextBlock Text="Ponovo pokreni čarobnjaka&#10;za pomoć&#10;(Ctrl + W)" TextAlignment="Center" FontSize="20" Margin="0,0,0,20" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
+                <Button Content="Čarobnjak za pomoć" Style="{StaticResource PrimaryButton}"/>
+            </StackPanel>
+        </Border>
+
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <TextBlock Text="{Binding CurrentDate}" FontSize="20"/>
-            <TextBlock Text="{Binding CurrentTime}" FontSize="20"/>
+            <TextBlock Text="{Binding CurrentDate}" FontSize="22" Foreground="{StaticResource TextBrush}"/>
+            <TextBlock Text="{Binding CurrentTime}" FontSize="22" Foreground="{StaticResource TextBrush}"/>
         </StackPanel>
     </Grid>
 </Page>
