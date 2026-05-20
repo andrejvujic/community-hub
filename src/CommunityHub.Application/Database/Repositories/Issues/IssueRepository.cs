@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Issues;
-using CommunityHub.Application.Domain.Issues.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
 
 namespace CommunityHub.Application.Database.Repositories.Issues
 {

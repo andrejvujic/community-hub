@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 
-namespace CommunityHub.Application.Domain.Images
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Images
 {
     public interface IImageRepository
     {

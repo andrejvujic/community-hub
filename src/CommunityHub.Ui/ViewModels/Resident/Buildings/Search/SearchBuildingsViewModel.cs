@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Buildings;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Buildings;
 using System.Collections.ObjectModel;

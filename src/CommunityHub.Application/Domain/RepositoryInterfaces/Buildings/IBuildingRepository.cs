@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Application.Domain.Buildings.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Buildings
 {
     public interface IBuildingRepository
     {

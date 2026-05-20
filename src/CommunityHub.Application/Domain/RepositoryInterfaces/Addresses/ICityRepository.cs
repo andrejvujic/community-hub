@@ -1,6 +1,7 @@
-﻿using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Application.Domain.Addresses.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Addresses
 {
     public interface ICityRepository
     {

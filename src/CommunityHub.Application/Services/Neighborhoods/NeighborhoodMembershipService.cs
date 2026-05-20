@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.MappersDto.TrustRecords;
 using CommunityHub.Application.MappersDto.Users;

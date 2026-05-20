@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
-using CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
 using CommunityHub.Application.MappersDto.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 

@@ -18,6 +18,7 @@
         <conv:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
         <conv:AdStatusToStringConverter x:Key="AdStatusToStringConverter" />
         <conv:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
+        <conv:UserToNameSurnameConverter x:Key="UserToNameSurnameConverter" />
     </Page.Resources>
 
     <ScrollViewer>
@@ -364,7 +365,7 @@
                             <TextBlock
                                 x:Name="mostHelpfulResidentTextBlock"
                                 FontSize="40"
-                                Text="{Binding MostHelpfulResident}" />
+                                Text="{Binding MostHelpfulResident, Converter={StaticResource UserToNameSurnameConverter}}" />
                         </Grid>
                     </Grid>
                 </Border>

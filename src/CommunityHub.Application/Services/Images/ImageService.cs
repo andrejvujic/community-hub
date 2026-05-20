@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Images;
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces.Images;
 using CommunityHub.Application.MappersDto.Images;
 using CommunityHub.Application.Services.Dtos.Images;
 using DomainImage = CommunityHub.Application.Domain.Image;

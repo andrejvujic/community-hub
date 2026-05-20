@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Issues;
 
-namespace CommunityHub.Application.Domain.Issues.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Issues
 {
     public interface IIssueRepository
     {

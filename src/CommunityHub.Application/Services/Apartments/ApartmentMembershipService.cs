@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 using CommunityHub.Application.MappersDto.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
 using System.Collections.ObjectModel;

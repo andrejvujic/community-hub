@@ -2,7 +2,7 @@
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Helpers.Search;
-using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Buildings;
 
 namespace CommunityHub.Application.Database.Repositories.Buildings
 {

@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Ads.TimeSlots;
 
-namespace CommunityHub.Application.Domain.Ads.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Ads
 {
     public interface IAdTimeSlotRepository
     {

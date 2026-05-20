@@ -2,7 +2,7 @@ using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
 using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.MappersDto.Events;
 using CommunityHub.Application.Services.Dtos.Events;

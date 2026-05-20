@@ -1,10 +1,10 @@
 ﻿using CommunityHub.Application.Domain.Apartments.AccessRequests;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.MappersDto.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 
 namespace CommunityHub.Application.Services.Apartments
 {

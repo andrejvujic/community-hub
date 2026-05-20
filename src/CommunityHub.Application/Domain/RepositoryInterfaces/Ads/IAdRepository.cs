@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain.Ads.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Ads
 {
     public interface IAdRepository
     {
@@ -18,7 +19,7 @@ namespace CommunityHub.Application.Domain.Ads.RepositoryInterfaces
         public List<(AdCategory, int, int)> GetAdStatsByCategory(long buildingId, int year, int? month);
         public List<(AdCategory, int)> GetActiveAdsByCategory(long buildingId);
         public int GetAdsCountByStatus(long buildingId, AdStatus status);
-        public string GetMostHelpfulResident(long buildingId);
+        public User? GetMostHelpfulResident(long buildingId);
         public List<string> GetDistinctYears();
     }
 }

@@ -1,8 +1,8 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 
 namespace CommunityHub.Application.Database.Repositories.Apartments
 {

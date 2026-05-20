@@ -1,6 +1,6 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
 using CommunityHub.Application.Domain.Users;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Database.Repositories.Shared;
 

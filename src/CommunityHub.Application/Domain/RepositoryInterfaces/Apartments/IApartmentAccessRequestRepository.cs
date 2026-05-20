@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
 
-namespace CommunityHub.Application.Domain.Apartments.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Apartments
 {
     public interface IApartmentAccessRequestRepository
     {

@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 
 namespace CommunityHub.Application.Database.Repositories.Apartments
 {

@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Addresses.RepositoryInterfaces;
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
 using CommunityHub.Application.MappersDto.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 

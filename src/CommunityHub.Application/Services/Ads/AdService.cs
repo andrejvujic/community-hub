@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Ads.Services;
 using CommunityHub.Application.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Application.MappersDto.Ads;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
@@ -107,7 +108,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public int GetAdsCountByStatus(long buildingId, AdStatus status)
             => _adRepository.GetAdsCountByStatus(buildingId, status);
 
-        public string GetMostHelpfulResident(long buildingId)
+        public User? GetMostHelpfulResident(long buildingId)
             => _adRepository.GetMostHelpfulResident(buildingId);
 
         public List<AdDto> GetAllByBuildingId(long buildingId)

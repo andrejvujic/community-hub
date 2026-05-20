@@ -1,6 +1,6 @@
 using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain.Users.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Users
 {
     public interface ICitizenRepository
     {

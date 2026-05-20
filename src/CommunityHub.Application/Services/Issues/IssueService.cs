@@ -1,7 +1,7 @@
-﻿using CommunityHub.Application.Domain.Issues.RepositoryInterfaces;
-using CommunityHub.Application.MappersDto.Issues;
+﻿using CommunityHub.Application.MappersDto.Issues;
 using CommunityHub.Application.Services.Dtos.Issues;
 using CommunityHub.Application.Domain.Issues;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
 
 namespace CommunityHub.Application.Services.Issues
 {

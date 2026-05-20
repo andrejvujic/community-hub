@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.Addresses.RepositoryInterfaces
+﻿using CommunityHub.Application.Domain.Addresses;
+
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Addresses
 {
     public interface IStreetSectionRepository
     {

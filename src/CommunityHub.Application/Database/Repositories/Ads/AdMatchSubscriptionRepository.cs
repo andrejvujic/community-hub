@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories.Ads

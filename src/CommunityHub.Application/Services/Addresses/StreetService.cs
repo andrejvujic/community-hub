@@ -1,7 +1,7 @@
-﻿using CommunityHub.Application.Domain.Addresses.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Addresses;
+﻿using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.MappersDto.Addresses;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
 
 namespace CommunityHub.Application.Services.Addresses
 {

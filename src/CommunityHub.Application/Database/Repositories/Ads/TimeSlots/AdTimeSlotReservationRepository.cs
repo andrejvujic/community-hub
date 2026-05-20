@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots

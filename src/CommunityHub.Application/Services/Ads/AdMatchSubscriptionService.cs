@@ -1,8 +1,8 @@
 ﻿using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {

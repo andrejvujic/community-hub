@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Apartments;
 
-namespace CommunityHub.Application.Domain.Apartments.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Apartments
 {
     public interface IApartmentRepository
     {

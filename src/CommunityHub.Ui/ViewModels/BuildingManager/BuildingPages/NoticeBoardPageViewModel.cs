@@ -106,8 +106,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             set { _archivedAdsCount = value; OnPropertyChanged(); }
         }
 
-        private string _mostHelpfulResident = string.Empty;
-        public string MostHelpfulResident
+        private User? _mostHelpfulResident;
+        public User? MostHelpfulResident
         {
             get => _mostHelpfulResident;
             set { _mostHelpfulResident = value; OnPropertyChanged(); }

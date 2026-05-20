@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
+﻿using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
 namespace CommunityHub.Application.Domain.Ads.Services
 {

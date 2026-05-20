@@ -1,12 +1,15 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
+using CommunityHub.Application.Database.Mapping;
 using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
+using CommunityHub.Application.Domain.Users;
 
 namespace CommunityHub.Application.Database.Repositories.Ads
 {
     public class AdRepository : IAdRepository
     {
         private readonly AdMapper _adMapper = new();
+        private readonly UserMapper _userMapper = new();
 
         public Ad Create(Ad ad)
         {
@@ -365,34 +368,39 @@ namespace CommunityHub.Application.Database.Repositories.Ads
             return connection.ExecuteScalar(query, Convert.ToInt32);
         }
 
-        public string GetMostHelpfulResident(long buildingId)
+        public User? GetMostHelpfulResident(long buildingId)
         {
             using var connection = DatabaseConnection.Create();
 
             var query = DatabaseQuery.Create(
-                @"SELECT u.name, u.surname, COUNT(*) AS busy_time_slots
+                @"SELECT 
+                    u.id AS author_user_id,
+                    u.username AS author_username,
+                    u.password AS author_password,
+                    u.name AS author_name,
+                    u.surname AS author_surname,
+                    u.user_role AS author_user_role,
+                    COUNT(*) AS busy_time_slots
                     FROM ad_time_slots ts
                     INNER JOIN ads a   ON ts.ad_id = a.id
                     INNER JOIN users u ON a.resident_id = u.id
                     INNER JOIN ad_time_slot_reservations r ON r.offer_ad_time_slot_id = ts.id
                     WHERE a.building_id = @building_id
                     AND a.ad_type = 'offer'
-                    GROUP BY u.id, u.username, u.surname
+                    GROUP BY u.id, u.username, u.password, u.name, u.surname, u.user_role
                     ORDER BY busy_time_slots DESC
                     LIMIT 1;"
             )
             .AddParameter("building_id", buildingId);
 
-            string? resident = null;
+            User? resident = null;
 
             connection.ExecuteReader(query, reader =>
             {
-                var username = reader["name"].ToString();
-                var surname = reader["surname"].ToString();
-                resident = $"{username} {surname}";
+                resident = _userMapper.MapToEntity(reader.WithPrefix("author"));
             });
 
-            return resident ?? "N/A";
+            return resident;
         }
 
         public List<string> GetDistinctYears()
