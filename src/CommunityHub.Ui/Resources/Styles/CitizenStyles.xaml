@@ -5,15 +5,17 @@
     <SolidColorBrush x:Key="TextBrush" Color="#1A1917" />
     <SolidColorBrush x:Key="AccentBrush" Color="#A0B99B" />
     <SolidColorBrush x:Key="ActiveTabBrush" Color="#A0B99B" />
+    <SolidColorBrush x:Key="AlternatingRowBrush" Color="#EBE7DE" />
+    <SolidColorBrush x:Key="GridLineBrush" Color="#1A1917" Opacity="0.3" />
 
     <Style TargetType="Button" x:Key="PrimaryButton">
         <Setter Property="Background" Value="{StaticResource AccentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Padding" Value="4,2" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="Cursor" Value="Hand" />
     </Style>
 
@@ -22,23 +24,86 @@
         <Setter Property="FontSize" Value="11" />
     </Style>
 
+    <Style TargetType="Button" x:Key="CompactButton" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="LargeButton" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
     <Style TargetType="DataGrid" x:Key="PrimaryDataGrid">
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="GridLinesVisibility" Value="Horizontal" />
-        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource AccentBrush}" />
-        <Setter Property="RowHeight" Value="28" />
+        <Setter Property="GridLinesVisibility" Value="All" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource GridLineBrush}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource GridLineBrush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="RowHeight" Value="32" />
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource AlternatingRowBrush}" />
+    </Style>
+
+    <Style TargetType="DataGridRow" x:Key="DataGridRowStyle">
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource BackgroundBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="DataGridCell" x:Key="DataGridCellStyle">
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource BackgroundBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="DataGridColumnHeader" x:Key="DataGridHeaderStyle">
         <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         <Setter Property="Padding" Value="8,4" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
-        <Setter Property="BorderThickness" Value="0,0,1,1" />
+        <Setter Property="BorderThickness" Value="0,0,2,2" />
+    </Style>
+
+    <Style TargetType="ListBox" x:Key="PrimaryListBox">
+        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="8" />
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="SearchBarStyle">
+        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Padding" Value="8,6,40,6" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="CaretBrush" Value="{StaticResource TextBrush}" />
     </Style>
 
 </ResourceDictionary>
