@@ -3,14 +3,13 @@
 
     <DataTemplate x:Key="NeighborhoodListItemTemplate">
         <StackPanel Margin="3">
-            <TextBlock Text="{Binding Name}" 
-                       FontSize="18" 
-                       FontWeight="SemiBold" />
-            <TextBlock FontSize="14" Opacity="0.7">
+            <TextBlock Text="{Binding Name}"
+                       FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock FontSize="14" Opacity="0.75">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}{0}, {1}">
-                        <Binding Path="City.Name" />
-                        <Binding Path="Country.Name" />
+                        <Binding Path="City.Name"/>
+                        <Binding Path="Country.Name"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
@@ -46,26 +45,32 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border x:Name="ItemBorder"
                             BorderBrush="{DynamicResource ItemBorderBrush}"
-                            BorderThickness="2.5" 
+                            BorderThickness="2.5"
                             CornerRadius="12"
                             Background="{TemplateBinding Background}"
                             Padding="{TemplateBinding Padding}">
-                        <ContentPresenter />
+                        <ContentPresenter/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource PrimaryTextBrush}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource PanelBackgroundBrush}"/>
-                            <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryTextBrush}"/>
+                            <Setter TargetName="ItemBorder" Property="Background"
+                                    Value="{DynamicResource SelectedItemBrush}"/>
+                            <Setter Property="Foreground"
+                                    Value="{DynamicResource SelectedItemForegroundBrush}"/>
+                            <Setter TargetName="ItemBorder" Property="BorderBrush"
+                                    Value="{DynamicResource SelectedItemBrush}"/>
+                            <Setter TargetName="ItemBorder" Property="BorderThickness"
+                                    Value="3"/>
                         </Trigger>
-
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
                                 <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryTextBrush}"/>
-                            <Setter TargetName="ItemBorder" Property="BorderThickness" Value="3"/>
+                            <Setter TargetName="ItemBorder" Property="BorderBrush"
+                                    Value="{DynamicResource AccentBrush}"/>
+                            <Setter TargetName="ItemBorder" Property="BorderThickness"
+                                    Value="3"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
