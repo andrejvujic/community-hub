@@ -126,4 +126,23 @@
         <Setter Property="CaretBrush" Value="{StaticResource TextBrush}" />
     </Style>
 
+    <Style TargetType="DatePicker" x:Key="PrimaryDatePicker">
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="TextBox" x:Key="DatePickerTextBoxStyle">
+        <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderThickness" Value="2,2,0,2" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="CaretBrush" Value="{StaticResource TextBrush}" />
+    </Style>
+
 </ResourceDictionary>
