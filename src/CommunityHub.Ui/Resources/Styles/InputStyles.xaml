@@ -73,12 +73,12 @@
     </Style>
 
     <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
-        <Setter Property="Background"        Value="{DynamicResource PanelBackgroundBrush}"/>
-        <Setter Property="Foreground"        Value="{DynamicResource PrimaryTextBrush}"/>
-        <Setter Property="BorderBrush"       Value="{DynamicResource ItemBorderBrush}"/>
-        <Setter Property="BorderThickness"   Value="1"/>
-        <Setter Property="Padding"           Value="8,6"/>
-        <Setter Property="FontSize"          Value="15"/>
+        <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ItemBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}"/>
         <Setter Property="Template">
             <Setter.Value>
