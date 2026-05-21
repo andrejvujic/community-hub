@@ -94,6 +94,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
             var updated = _meetingService.GetByNeighborhood(neighborhoodId);
             Meetings = new ObservableCollection<NeighborhoodMeetingDto>(updated);
             Membership = citizen.Membership;
+
+            if (Meetings.Count > 0)
+            {
+                SelectedMeeting = Meetings[0];
+            }
         }
 
         private void UpdateCurrentVote()

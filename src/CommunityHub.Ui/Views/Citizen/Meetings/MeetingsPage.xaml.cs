@@ -19,11 +19,6 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
             DataContext = _viewModel;
         }
 
-        private void MeetingsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _viewModel.SelectedMeeting = MeetingsGrid.SelectedItem as NeighborhoodMeetingDto;
-        }
-
         private void VoteButton_Click(object sender, RoutedEventArgs e)
         {
             var selected = _viewModel.SelectedMeeting;
