@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search;
 
@@ -14,6 +15,18 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             InitializeComponent();
             _viewModel = new SearchCriteriaViewModel(initial);
             DataContext = _viewModel;
+        }
+
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)

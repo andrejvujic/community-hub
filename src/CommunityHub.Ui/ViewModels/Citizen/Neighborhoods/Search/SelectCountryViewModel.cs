@@ -42,8 +42,15 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public SelectCountryViewModel(CountryDto? initial = null)
         {
-            SelectedCountry = initial;
             LoadCountries();
+            if (initial != null)
+            {
+                SelectedCountry = initial;
+            }
+            else if (Countries.Count > 0)
+            {
+                SelectedCountry = Countries[0];
+            }
         }
 
         public void LoadCountries(string? searchQuery = null)
@@ -55,6 +62,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
             foreach (var country in results)
                 Countries.Add(_countryMapper.MapToDto(country));
+
+            if (SelectedCountry == null && Countries.Count > 0)
+            {
+                SelectedCountry = Countries[0];
+            }
         }
 
         public void Search()
