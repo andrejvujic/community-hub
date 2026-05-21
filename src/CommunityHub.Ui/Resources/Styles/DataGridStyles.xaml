@@ -17,7 +17,6 @@
         <Setter Property="HeadersVisibility" Value="Column"/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="CanUserSortColumns" Value="False"/>
     </Style>
 
     <Style x:Key="DataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
@@ -27,6 +26,7 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SidebarBorderBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="BorderThickness" Value="0,0,1,3"/>
     </Style>
 
