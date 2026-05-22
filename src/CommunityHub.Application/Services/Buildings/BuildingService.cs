@@ -24,19 +24,17 @@ namespace CommunityHub.Application.Services.Buildings
             List<Building> buildings = _buildingRepository.GetByManagerId(managerId);
             List<BuildingDto> buildingsDto = [];
 
-            foreach(Building building in buildings)
+            foreach (Building building in buildings)
                 buildingsDto.Add(_buildingMapper.MapToDto(building));
 
             return buildingsDto;
         }
 
-        public BuildingDto Create(BuildingDto building)
+        public Building Create(Building building)
         {
-           var newBuilding = _buildingRepository.Create(
-               MapToEntity(building)
-           );
+            var newBuilding = _buildingRepository.Create(building);
 
-            return MapToDto(newBuilding);
+            return newBuilding;
         }
     }
 }
