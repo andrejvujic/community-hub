@@ -3,10 +3,13 @@ using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
+using CommunityHub.Application.MappersDto.Ads;
+using CommunityHub.Application.Services;
+using CommunityHub.Application.Services.Dtos.Ads;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
-    public class AdMatchSubscriptionService
+    public class AdMatchSubscriptionService : BaseService<AdMatchSubscription, AdMatchSubscriptionDto>
     {
         private readonly IAdMatchSubscriptionRepository _adMatchSubscriptionRepository;
         private readonly INotificationRepository _notificationRepository;
@@ -17,19 +20,21 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             IAdMatchSubscriptionRepository adMatchSubscriptionRepository,
             IAdTimeSlotRepository adTimeSlotRepository,
             INotificationRepository notificationRepository
-        )
+        ) : base(mapper: new AdMatchSubscriptionMapper())
         {
             _adMatchSubscriptionRepository = adMatchSubscriptionRepository;
             _notificationRepository = notificationRepository;
             _adService = new(adRepository, adTimeSlotRepository);
         }
 
-        public void Create(AdMatchSubscription subscription)
-            => _adMatchSubscriptionRepository.Create(subscription);
+        public void Create(AdMatchSubscriptionDto subscription)
+            => _adMatchSubscriptionRepository.Create(
+                    MapToEntity(subscription)
+                );
 
         public bool IsSubscribed(long adId) => _adMatchSubscriptionRepository.ExistsWithAdId(adId);
 
-        public void NotifyAuthorsOfSubscribedMatchingAds(Ad referenceAd)
+        public void NotifyAuthorsOfSubscribedMatchingAds(AdDto referenceAd)
         {
             var ads = _adService.GetMatchingAds(referenceAd);
             var authorIds = ads.Select(ad => ad.AuthorId).Distinct();

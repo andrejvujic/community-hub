@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Create;
@@ -62,7 +63,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
                 ),
                 onPop: (object? value) =>
                 {
-                    if (value is Ad publishedAd)
+                    if (value is AdDto publishedAd)
                     {
                         UpdateAds();
                         Push(new MatchingAdsPage(_userId, publishedAd));
@@ -78,7 +79,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
 
             if (element.DataContext is not Ad ad) return;
 
-            if (ad.Author.Id == _userId)
+            if (ad.AuthorId == _userId)
             {
                 Push(new MyAdDetailsPage(_userId, ad));
                 return;

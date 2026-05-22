@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -10,12 +11,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
     {
         private readonly CityService _cityService = new();
 
-        private readonly Action<City?> _setCity;
+        private readonly Action<CityDto?> _setCity;
 
-        public Country SelectedCountry { get; }
+        public CountryDto SelectedCountry { get; }
 
-        private City? _selectedCity;
-        public City? SelectedCity
+        private CityDto? _selectedCity;
+        public CityDto? SelectedCity
         {
             get => _selectedCity;
             set
@@ -26,13 +27,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             }
         }
 
-        public ObservableCollection<City> SearchResults { get; } = new();
+        public ObservableCollection<CityDto> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;
 
         public SelectCityViewModel(
-            Action<City?> setCity,
-            Country selectedCountry,
-            City? selectedCity = null
+            Action<CityDto?> setCity,
+            CountryDto selectedCountry,
+            CityDto? selectedCity = null
         )
         {
             _setCity = setCity;
@@ -55,7 +56,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public bool HasSetSearchText => !string.IsNullOrEmpty(SearchText);
 
         private CitySearchParameters GetSearchParameters() => new CitySearchParameters(
-            country: SelectedCountry,
+            countryId: SelectedCountry.Id,
             name: SearchText
         );
 
@@ -69,7 +70,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public bool IsCitySelected(City City)
+        public bool IsCitySelected(CityDto City)
             => SelectedCity == City;
 
         public void ResetSelectedCity()
@@ -78,7 +79,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             _setCity.Invoke(null);
         }
 
-        public void UpdateSelectedCity(City city)
+        public void UpdateSelectedCity(CityDto city)
         {
             SelectedCity = city;
             _setCity.Invoke(SelectedCity);

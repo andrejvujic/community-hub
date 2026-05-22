@@ -17,7 +17,7 @@ namespace CommunityHub.Application.Services.Apartments
         PendingRequestExists
     }
 
-    public class ApartmentAccessRequestService
+    public class ApartmentAccessRequestService : BaseService<ApartmentAccessRequest, ApartmentAccessRequestDto>
     {
         private readonly IApartmentRepository _apartmentRepository = Injector.CreateInstance<IApartmentRepository>();
         private readonly IApartmentAccessRequestRepository _apartmentAccessRequestRepository
@@ -26,8 +26,15 @@ namespace CommunityHub.Application.Services.Apartments
         private readonly ApartmentMembershipService _apartmentMembershipService = new();
         private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new();
 
-        public void Create(ApartmentAccessRequest request)
-            => _apartmentAccessRequestRepository.Create(request);
+
+        public ApartmentAccessRequestService() : base(mapper: new ApartmentAccessRequestMapper()) { }
+
+        public void Create(ApartmentAccessRequestDto request)
+        {
+           _apartmentAccessRequestRepository.Create(
+               MapToEntity(request)
+           );
+        }
 
         public void Cancel(ApartmentAccessRequest request)
         {

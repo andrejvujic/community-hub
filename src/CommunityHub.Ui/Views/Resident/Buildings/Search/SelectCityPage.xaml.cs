@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
 using System.ComponentModel;
@@ -13,9 +14,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
         private readonly SelectCityViewModel _viewModel;
 
         public SelectCityPage(
-            Action<City?> setCity,
-            Country selectedCountry,
-            City? selectedCity = null
+            Action<CityDto?> setCity,
+            CountryDto selectedCountry,
+            CityDto? selectedCity = null
         )
         {
             InitializeComponent();
@@ -44,7 +45,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var element = sender as FrameworkElement;
             if (element == null) return;
 
-            var city = element.DataContext as City;
+            var city = element.DataContext as CityDto;
             if (city == null) return;
 
             if (_viewModel.IsCitySelected(city))

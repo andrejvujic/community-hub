@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Apartments.AccessRequests;
-using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Services.Apartments;
+using CommunityHub.Application.Services.Dtos.Apartments;
+using CommunityHub.Application.Services.Dtos.Buildings;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
@@ -12,9 +12,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
         private readonly ApartmentService _apartmentService = new();
 
         public long UserId { get; }
-        public Building Building { get; }
+        public BuildingDto Building { get; }
 
-        public RequestApartmentAccessViewModel(long userId, Building building) {
+        public RequestApartmentAccessViewModel(long userId, BuildingDto building) {
             UserId = userId;
             Building = building;
         }
@@ -63,11 +63,11 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
                 throw new ArgumentException("ApartmentId can't be null.");
 
             _apartmentAccessRequestService.Create(
-                new ApartmentAccessRequest(
+                new ApartmentAccessRequestDto(
                     applicantId: UserId,
                     apartmentId: apartmentId!.Value,
                     status: Status.Waiting,
-                    DateTime.Now
+                    creationDate: DateTime.Now
                 )
             );
         }

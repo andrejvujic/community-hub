@@ -13,14 +13,14 @@ namespace CommunityHub.Application.MappersDto.Apartments
             if (apartmentAccessRequest == null) throw new ArgumentNullException(nameof(apartmentAccessRequest));
 
             return new ApartmentAccessRequestDto(
-                apartmentAccessRequest.Id,
-                apartmentAccessRequest.ApplicantId,
-                apartmentAccessRequest.Applicant != null ? _userMapper.MapToDto(apartmentAccessRequest.Applicant) : null,
-                apartmentAccessRequest.ApartmentId,
-                apartmentAccessRequest.Apartment != null ? _apartmentMapper.MapToDto(apartmentAccessRequest.Apartment) : null,
-                apartmentAccessRequest.Comment,
-                apartmentAccessRequest.Status,
-                apartmentAccessRequest.CreationDate
+                id: apartmentAccessRequest.Id,
+                applicantId: apartmentAccessRequest.ApplicantId,
+                applicant: apartmentAccessRequest.Applicant is not null ? _userMapper.MapToDto(apartmentAccessRequest.Applicant) : null,
+                apartmentId: apartmentAccessRequest.ApartmentId,
+                apartment: apartmentAccessRequest.Apartment is not null ? _apartmentMapper.MapToDto(apartmentAccessRequest.Apartment) : null,
+                comment: apartmentAccessRequest.Comment,
+                status: apartmentAccessRequest.Status,
+                creationDate: apartmentAccessRequest.CreationDate
             );
         }
         public ApartmentAccessRequest MapToDomain(ApartmentAccessRequestDto dto)

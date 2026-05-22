@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
 using CommunityHub.Ui.Views.Resident.Apartments;
@@ -46,7 +47,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var element = sender as FrameworkElement;
             if (element == null) return;
 
-            var building = element.DataContext as Building;
+            var building = element.DataContext as BuildingDto;
             if (building == null) return;
 
             Push(new BuildingDetailsPage(building));
@@ -57,7 +58,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var element = sender as FrameworkElement;
             if (element == null) return;
 
-            var building = element.DataContext as Building;
+            var building = element.DataContext as BuildingDto;
             if (building == null) return;
 
             Push(new RequestApartmentAccessPage(_viewModel.UserId, building));

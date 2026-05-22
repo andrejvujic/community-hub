@@ -6,13 +6,24 @@ using CommunityHub.Application.Services.Dtos.Addresses;
 
 namespace CommunityHub.Application.Services.Addresses
 {
-    public class CountryService
+    public class CountryService : BaseService<Country, CountryDto>
     {
         private readonly ICountryRepository _countryRepository = Injector.CreateInstance<ICountryRepository>();
         private readonly CountryMapper _countryMapper = new();
 
-        public List<Country> Search(CountrySearchParameters searchParameters)
-            => _countryRepository.Search(searchParameters);
+        public CountryService() : base(mapper: new CountryMapper()) {}
+
+        public CountryDto? GetById(long id)
+        { 
+            var country = _countryRepository.GetById(id);
+            if (country is null) return null;
+            return MapToDto(country);
+        }
+
+        public List<CountryDto> Search(CountrySearchParameters searchParameters)
+            => MapToDto(
+                    _countryRepository.Search(searchParameters)
+               );
 
         public List<CountryDto> GetAll()
         {

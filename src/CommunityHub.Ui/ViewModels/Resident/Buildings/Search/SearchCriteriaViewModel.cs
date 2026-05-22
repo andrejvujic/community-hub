@@ -1,5 +1,6 @@
-﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Helpers.Search;
+using CommunityHub.Application.Services.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
@@ -7,6 +8,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
     public class SearchCriteriaViewModel : INotifyPropertyChanged
     {
         private readonly Action<BuildingSearchParameters> _setSerachParameters;
+        private readonly CityService _cityService = new();
+        private readonly CountryService _countryService = new();
 
         public SearchCriteriaViewModel(
             Action<BuildingSearchParameters> setSearchParameters,
@@ -18,26 +21,38 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         private void ApplyInitialSearchParameters(BuildingSearchParameters? initialSearchParameters)
         {
             if (initialSearchParameters == null) return;
-            City = initialSearchParameters.City;
-            Country = initialSearchParameters.Country;
+            LoadInitialCity(initialSearchParameters.CityId);
+            LoadInitialCountry(initialSearchParameters.CountryId);
             StreetName = initialSearchParameters.StreetName;
             Neighborhood = initialSearchParameters.Neighborhood;
+        }
+        
+        private void LoadInitialCountry(long? initialCountryId)
+        {
+            if (initialCountryId is null) return;
+            Country = _countryService.GetById(initialCountryId.Value);
+        }
+
+        public void LoadInitialCity(long? initialCityId)
+        {
+            if (initialCityId is null) return;
+            City = _cityService.GetById(initialCityId.Value);
         }
 
         public void ApplySearchParameters()
         {
             _setSerachParameters.Invoke(
                 new BuildingSearchParameters(
-                    country: Country,
-                    city: City,
+                    countryId: Country?.Id,
+                    cityId: City?.Id,
                     streetName: StreetName,
                     neighborhood: Neighborhood
                 )
              );
         }
 
-        private Country? _country;
-        public Country? Country
+        private CountryDto? _country;
+        public CountryDto? Country
         {
             get => _country;
             private set {
@@ -52,8 +67,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public string SelectedCountryText { get => Country == null ? "Izaberite..." : Country.Name; }
         public bool IsCountrySelected => Country is not null;
 
-        private City? _city;
-        public City? City
+        private CityDto? _city;
+        public CityDto? City
         {
             get => _city;
             set
@@ -69,13 +84,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public string StreetName { get; set; } = string.Empty;
         public string Neighborhood { get; set; } = string.Empty;
 
-        public void SetCountry(Country? country)
+        public void SetCountry(CountryDto? country)
         {
             Country = country;
             City = null;
         }
 
-        public void SetCity(City? city) => City = city;
+        public void SetCity(CityDto? city) => City = city;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

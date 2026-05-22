@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create;
@@ -74,7 +75,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
             }
         }
 
-        private void ShowSuccessAlert(Ad publishedAd)
+        private void ShowSuccessAlert(AdDto publishedAd)
         {
             if (this is IAlertConsumer consumer)
                 consumer.ShowAlert(

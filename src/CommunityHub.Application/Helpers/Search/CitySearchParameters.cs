@@ -5,12 +5,12 @@ namespace CommunityHub.Application.Helpers.Search
 
     public class CitySearchParameters
     {
-        public Country? Country { get; set; } 
+        public long? CountryId { get; set; } 
         public string Name { get; } = string.Empty;
 
-        public CitySearchParameters(Country? country = null, string? name = null)
+        public CitySearchParameters(long? countryId = null, string? name = null)
         {
-            Country = country;
+            CountryId = countryId;
             Name = name ?? string.Empty;
         }
 
@@ -20,7 +20,7 @@ namespace CommunityHub.Application.Helpers.Search
         {
             return new Dictionary<string, object?>
             {
-                { "country_id", Country?.Id },
+                { "country_id", CountryId },
                 { "city_name", Name},
             };
         }

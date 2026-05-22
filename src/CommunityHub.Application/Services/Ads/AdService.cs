@@ -5,6 +5,7 @@ using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Application.MappersDto.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.Services;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
@@ -14,7 +15,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         DuplicateAdExists,
     }
 
-    public class AdService
+    public class AdService : BaseService<Ad, AdDto>
     {
         private readonly IAdRepository _adRepository;
         private readonly AdTimeSlotService _adTimeSlotService;
@@ -23,24 +24,26 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public AdService(
             IAdRepository adRepository,
             IAdTimeSlotRepository adTimeSlotRepository
-        )
+        ) : base(mapper: new AdMapper())
         {
             _adRepository = adRepository;
             _adTimeSlotService = new(adTimeSlotRepository);
             _adTimeSlotGenerator = new();
         }
 
-        public Ad Publish(Ad ad)
+        public AdDto Publish(AdDto ad)
         {
-            var publishedAd = _adRepository.Create(ad);
+            var publishedAd = _adRepository.Create(
+                MapToEntity(ad)
+            );
 
             var timeSlots = _adTimeSlotGenerator.GenerateTimeSlots(publishedAd);
             _adTimeSlotService.CreateMany(timeSlots);
 
-            return publishedAd;
+            return MapToDto(publishedAd);
         }
 
-        public PublishmentValidationResult ValidatePublishment(Ad ad)
+        public PublishmentValidationResult ValidatePublishment(AdDto ad)
         {
             if (HasDuplicateAds(authorId: ad.AuthorId, referenceAd: ad))
                 return PublishmentValidationResult.DuplicateAdExists;
@@ -80,23 +83,30 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
             => _adRepository.GetByAuthorAndBuilding(authorId, buildingId);
 
-        public bool HasDuplicateAds(long authorId, Ad referenceAd)
+        public bool HasDuplicateAds(long authorId, AdDto referenceAd)
         {
             var ads = _adRepository.GetByAuthorAndBuilding(authorId, referenceAd.BuildingId);
             return ads.Any(
-                ad => ad.IsDuplicateOf(referenceAd)
+                ad => ad.IsDuplicateOf(
+                    MapToEntity(referenceAd)
+                )
             );
         }
 
-        public List<Ad> GetMatchingAds(Ad referenceAd)
+        public List<AdDto> GetMatchingAds(AdDto referenceAd)
         {
             var ads = _adRepository.GetByBuilding(referenceAd.BuildingId);
-            return ads.Where(
-                ad => ad.Matches(referenceAd)
+
+            var matchingAds = ads.Where(
+                ad => ad.Matches(
+                    MapToEntity(referenceAd)
+                )
             ).ToList();
+
+            return MapToDto(matchingAds);
         }
 
-        public List<long> GetAuthorIdsOfMatchingAds(Ad referenceAd)
+        public List<long> GetAuthorIdsOfMatchingAds(AdDto referenceAd)
         {
             var ads = GetMatchingAds(referenceAd);
             return ads

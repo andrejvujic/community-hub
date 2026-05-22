@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Browse;
 using System.Windows;
@@ -10,7 +10,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
     {
         private readonly BuildingDetailsViewModel _viewModel;
 
-        public BuildingDetailsPage(Building building)
+        public BuildingDetailsPage(BuildingDto building)
         {
             InitializeComponent();
             _viewModel = new BuildingDetailsViewModel(building);

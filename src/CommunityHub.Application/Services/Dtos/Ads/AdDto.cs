@@ -22,16 +22,16 @@ namespace CommunityHub.Application.Services.Dtos.Ads
         public DateTime EndDate { get; set; }
 
         public AdDto(
-            long id,
             long authorId,
-            UserDto? author,
             long buildingId,
             AdType type,
             AdCategory category,
             AdStatus status,
             string description,
             DateTime startDate,
-            DateTime endDate
+            DateTime endDate,
+            UserDto? author = null,
+            long id = 0
         )
         {
             Id = id;

@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Collections.ObjectModel;
@@ -17,11 +18,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
         private readonly AdService _adService;
         private readonly AdMatchSubscriptionService _adMatchSubscriptionService;
 
-        public Ad Ad { get; }
-        public ObservableCollection<Ad> MatchingAds { get; set; } = new();
+        public AdDto Ad { get; }
+        public ObservableCollection<AdDto> MatchingAds { get; set; } = new();
         public bool HasMatchingAds => MatchingAds.Count > 0;
 
-        public MatchingAdsPage(long userId, Ad ad)
+        public MatchingAdsPage(long userId, AdDto ad)
         {
             _adService = new(
                 Injector.CreateInstance<IAdRepository>(),
@@ -55,7 +56,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
 
         private void CreateAdMatchSubscription()
             => _adMatchSubscriptionService.Create(
-                new AdMatchSubscription(
+                new AdMatchSubscriptionDto(
                     subscribedAd: Ad,
                     subscribedAdId: Ad.Id
                 )

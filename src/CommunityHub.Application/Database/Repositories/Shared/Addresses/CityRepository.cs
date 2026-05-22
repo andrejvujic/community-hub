@@ -9,6 +9,26 @@ public class CityRepository : ICityRepository
 {
     private readonly CityMapper _cityMapper = new();
 
+    public City? GetById(long id)
+    {
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
+            @"SELECT 
+            city.id as city_id, city.name as city_name FROM cities city
+            WHERE city.id = @id"
+        ).AddParameter("id", id);
+
+        City? city = null;
+
+        connection.ExecuteReader(
+            query,
+            reader => city = _cityMapper.MapToEntity(reader)
+        );
+
+        return city;
+    }
+
     public List<City> GetByCountryId(long id)
     {
         using var connection = DatabaseConnection.Create();
