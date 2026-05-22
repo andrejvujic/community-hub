@@ -43,17 +43,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
 
             UserId = userId;
             Notification = notification;
-            Ad = LoadAd();
+            Ad = _adService.Get(NotificationDetails.AdId);
         }
-
-        private Ad? LoadAd() => _adService.Get(NotificationDetails.AdId);
 
         public AdAvailability GetAdAvailability()
         {
             if (Ad == null)
                 return AdAvailability.NotFound;
 
-            if (!Ad.IsActive && NotificationDetails.EventType == AdEventType.MatchingAdCreated)
+            if (!Ad.IsActive && NotificationDetails.EventType is AdEventType.MatchingAdCreated)
                 return AdAvailability.Expired;
 
             return AdAvailability.Available;

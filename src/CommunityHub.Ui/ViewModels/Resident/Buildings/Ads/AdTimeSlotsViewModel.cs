@@ -55,7 +55,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 
             _notificationService.Create(
                 Notification.Create(
-                    Ad.Author.Id,
+                    Ad.AuthorId,
                     "Nova rezervacija",
                     "Napravljena je nova rezervacija za vaš oglas.",
                     NotificationType.AdEvent,
