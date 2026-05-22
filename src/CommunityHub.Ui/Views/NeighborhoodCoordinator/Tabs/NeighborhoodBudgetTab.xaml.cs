@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.Neighborhoods;
@@ -34,6 +35,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public NeighborhoodBudgetTab()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
             DataContext = this;
             ExpenseDatePicker.SelectedDate = DateTime.Now;
         }
