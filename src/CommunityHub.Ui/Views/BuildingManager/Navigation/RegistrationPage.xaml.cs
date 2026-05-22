@@ -1,35 +1,15 @@
-﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.ViewModels.BuildingManager.Navigation;
-using CommunityHub.Application.MappersDto.Addresses;
-using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
-using CommunityHub.Application.Services.Addresses;
-using CommunityHub.Application.Services.Buildings;
-using CommunityHub.Application.Services.Images;
-using CommunityHub.Application.Services.Apartments;
 using System.Windows.Media;
-using DomainImage = CommunityHub.Application.Domain.Image;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class RegistrationPage : Page
     {
-        private readonly StreetMapper _streetMapper = new();
-        private readonly CountryMapper _countryMapper = new();
-        private readonly CityMapper _cityMapper = new();
-
-        private readonly AddressService _addressService = new();
-        private readonly BuildingService _buildingService = new();
-        private readonly ImageService _imageService = new();
-        private readonly ApartmentService _apartmentService = new();
-
         private readonly RegistrationPageViewModel _viewModel;
         public ObservableCollection<int> ApartmentNumbers { get; }
         private List<(int Number, int Floor)> _apartmentEntries = new();
@@ -38,7 +18,6 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             InitializeComponent();
             _viewModel = new RegistrationPageViewModel(user);
-            _viewModel.UpdateImageValidation();
             DataContext = _viewModel;
 
             ApartmentNumbers = new ObservableCollection<int>();
@@ -46,27 +25,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private void RegistrationPage_Loaded(object sender, RoutedEventArgs e)
         {
             floorsStackPanel.Children.Add(CreateFloor(1));
-            _viewModel.LoadCountries();
         }
-
-        private void ChooseImage_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = "Image Files|*.jpg;*.jpeg;*.png;",
-                Title = "Izaberite slike zgrade"
-            };
-
-            if (dialog.ShowDialog() == true)
-                _viewModel.AddImages(dialog.FileNames);
-        }
-        private void RemoveImage_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is string filePath)
-                _viewModel.RemoveImage(filePath);
-        }
-
         private void FloorsUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (floorsStackPanel == null) return;
@@ -91,7 +50,6 @@ namespace CommunityHub.Ui.Views.BuildingManager
             while (floorsStackPanel.Children.Count > targetCount)
                 floorsStackPanel.Children.RemoveAt(floorsStackPanel.Children.Count - 1);
         }
-
         private GroupBox CreateFloor(int number)
         {
             var apartmentsPanel = CreateApartmentsPanel();
@@ -210,12 +168,6 @@ namespace CommunityHub.Ui.Views.BuildingManager
             row.Children.Add(buttonPanel);
             return row;
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                NavigationService.GoBack();
-        }
         private void MarkApartmentTextBox(TextBox textBox, bool isValid)
         {
             textBox.BorderBrush = isValid ? SystemColors.ControlDarkBrush : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C43D5A")); ;
@@ -317,76 +269,26 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             ValidateApartments();
         }
-
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!_viewModel.CanConfirm) return;
-
-            if (!MessageBox.Show("Da li ste sigurni da želite da potvrdite registraciju zgrade?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question).Equals(MessageBoxResult.Yes))
+            if (!_viewModel.CanConfirm)
                 return;
 
-            var address = CreateAddress();
-            var building = CreateBuilding(address);
-            CreateImages(building);
-            CreateApartments(building);
-            
-            MessageBox.Show("Uspešno ste registrovali zgradu.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (!ValidateApartments())
+                return;
+
+            bool success = _viewModel.ConfirmRegistration(
+                floorsUpDown.Value ?? 1,
+                _apartmentEntries
+            );
+
+            if (!success)
+                return;
 
             HomeWindow? homeWindow = Window.GetWindow(this) as HomeWindow;
 
             if (homeWindow != null)
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
-        }
-        private Address CreateAddress()
-        {
-            var address = new Address(
-                id: 0,
-                street: (_streetMapper.MapToDomain(_viewModel.SelectedStreet!)),
-                streetNumber: _viewModel.StreetNumber,
-                neighborhood: _viewModel.Neighborhood,
-                city: (_cityMapper.MapToDomain(_viewModel.SelectedCity!)),
-                country: (_countryMapper.MapToDomain(_viewModel.SelectedCountry!))
-            );
-
-            return _addressService.Create(address);
-        }
-        private Building CreateBuilding(Address address)
-        {
-            var building = new Building(
-                floorCount: floorsUpDown.Value ?? 1,
-                apartmentCount: ApartmentNumbers.Count,
-                manager: _viewModel.User,
-                address: address
-            );
-
-            return _buildingService.Create(building);
-        }
-        private void CreateImages(Building building)
-        {
-            foreach (string imagePath in _viewModel.SelectedImagePaths)
-            {
-                DomainImage image = DomainImage.ForBuilding(
-                    id: 0,
-                    path: imagePath,
-                    buildingId: building.Id
-                );
-
-                _imageService.Create(image);
-            }
-        }
-        private void CreateApartments(Building building)
-        {
-            foreach (var entry in _apartmentEntries)
-            {
-                Apartment apartment = new Apartment(
-                    id: 0,
-                    number: entry.Number,
-                    floorNumber: entry.Floor,
-                    building: building
-                );
-
-                _apartmentService.Create(apartment);
-            }
         }
     }
 }

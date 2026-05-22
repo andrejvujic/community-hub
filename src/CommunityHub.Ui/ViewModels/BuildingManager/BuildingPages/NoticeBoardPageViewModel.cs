@@ -16,6 +16,7 @@ using CommunityHub.Application.Database.Repositories.Ads.TimeSlots;
 using System.Windows;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.MappersDto.Buildings;
+using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -106,8 +107,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             set { _archivedAdsCount = value; OnPropertyChanged(); }
         }
 
-        private User? _mostHelpfulResident;
-        public User? MostHelpfulResident
+        private UserDto? _mostHelpfulResident;
+        public UserDto? MostHelpfulResident
         {
             get => _mostHelpfulResident;
             set { _mostHelpfulResident = value; OnPropertyChanged(); }

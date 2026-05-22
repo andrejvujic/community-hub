@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="RegistrationPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -18,7 +18,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DropShadowEffect x:Key="DepthShadow" BlurRadius="4" Opacity="0.2" ShadowDepth="2" />
+            <DropShadowEffect
+                x:Key="DepthShadow"
+                BlurRadius="4"
+                Opacity="0.2"
+                ShadowDepth="2" />
 
             <Style x:Key="GroupBoxHeaderStyle" TargetType="GroupBox">
                 <Setter Property="Template">
@@ -397,7 +401,7 @@
                                         Width="220"
                                         Background="#0F5AA6"
                                         BorderBrush="#0F5AA6"
-                                        Click="ChooseImage_Click"
+                                        Command="{Binding ChooseImageCommand}"
                                         Content="Odaberite sliku"
                                         Cursor="Hand"
                                         FontWeight="SemiBold"
@@ -467,10 +471,10 @@
                                                             VerticalAlignment="Top"
                                                             Background="White"
                                                             BorderBrush="Black"
-                                                            Click="RemoveImage_Click"
+                                                            Command="{Binding DataContext.RemoveImageCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                            CommandParameter="{Binding}"
                                                             Cursor="Hand"
-                                                            Style="{x:Null}"
-                                                            Tag="{Binding}">
+                                                            Style="{x:Null}">
                                                             <TextBlock
                                                                 FontSize="14"
                                                                 FontWeight="Bold"
@@ -496,7 +500,8 @@
                                         Margin="0,0,15,0"
                                         Background="#0F5AA6"
                                         BorderBrush="#0F5AA6"
-                                        Click="CancelButton_Click"
+                                        Command="{Binding CancelCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=NavigationService}"
                                         Cursor="Hand"
                                         Foreground="White">
                                         Otkaži
