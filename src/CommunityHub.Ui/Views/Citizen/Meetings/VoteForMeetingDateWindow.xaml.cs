@@ -14,9 +14,20 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
         public VoteForMeetingDateWindow(NeighborhoodMeetingDto meeting)
         {
             InitializeComponent();
+
             _viewModel = new VoteForMeetingDateViewModel(meeting);
+            _viewModel.ConfirmRequested += (_, _) => 
+            {
+                this.DialogResult = true;
+            };
+            _viewModel.CancelRequested += (_, _) => 
+            {
+                this.DialogResult = false;
+            };
+            _viewModel.CloseRequested += (_, _) => Close();
+            _viewModel.ToggleCalendarRequested += (_, _) => CalendarPopup.IsOpen = !CalendarPopup.IsOpen;
+
             DataContext = _viewModel;
-            VoteDateTextBox.TextChanged += (s, e) => _viewModel.ParseAndSetDate(VoteDateTextBox.Text);
             Loaded += (s, e) => 
             {
                 VoteDateTextBox.Focus();
@@ -30,30 +41,14 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
                 DragMove();
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void VoteDateTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            Close();
-        }
-
-        private void CalendarButton_Click(object sender, RoutedEventArgs e)
-        {
-            CalendarPopup.IsOpen = !CalendarPopup.IsOpen;
+            _viewModel.ParseAndSetDate(VoteDateTextBox.Text);
         }
 
         private void VoteCalendar_SelectedDatesChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             CalendarPopup.IsOpen = false;
-        }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_viewModel.SelectedDate.HasValue)
-                this.DialogResult = true;
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = false;
         }
     }
 }

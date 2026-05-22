@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Input;
-using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.ViewModels.Citizen.TrustRecords;
 
 namespace CommunityHub.Ui.Views.Citizen.TrustRecords
@@ -9,13 +8,11 @@ namespace CommunityHub.Ui.Views.Citizen.TrustRecords
     {
         private readonly OtherMembersTrustViewModel _viewModel;
 
-        public ICommand CloseCommand { get; }
-
         public OtherMembersTrustWindow(long userId, long neighborhoodId)
         {
             InitializeComponent();
-            CloseCommand = new RelayCommand<object>(_ => Close());
             _viewModel = new OtherMembersTrustViewModel(userId, neighborhoodId);
+            _viewModel.CloseRequested += (_, _) => Close();
             DataContext = _viewModel;
         }
 

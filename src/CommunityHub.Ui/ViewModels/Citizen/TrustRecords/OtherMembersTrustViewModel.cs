@@ -1,7 +1,9 @@
 using CommunityHub.Application.Services.Dtos.TrustRecords;
 using CommunityHub.Application.Services.TrustRecords;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
 {
@@ -14,6 +16,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         private ObservableCollection<CitizenTrustRecordDto> _trustRecords = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? CloseRequested;
+
+        public ICommand CloseCommand { get; }
 
         public ObservableCollection<CitizenTrustRecordDto> TrustRecords
         {
@@ -30,6 +35,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         {
             _userId = userId;
             _neighborhoodId = neighborhoodId;
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
             LoadData();
         }
 
@@ -37,6 +43,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         {
             var records = _trustRecordService.GetNeighborhoodTrustRecords(_neighborhoodId, _userId);
             TrustRecords = new ObservableCollection<CitizenTrustRecordDto>(records);
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnPropertyChanged(string propertyName)
