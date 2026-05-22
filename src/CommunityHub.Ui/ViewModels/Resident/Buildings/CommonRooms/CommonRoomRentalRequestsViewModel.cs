@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Services.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -11,14 +11,14 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         private readonly CommonRoomRentalRequestService _rentalRequestService = new();
 
         public long UserId { get; }
-        public CommonRoom CommonRoom { get; }
+        public CommonRoomDto CommonRoom { get; }
 
-        public CommonRoomRentalRequestsViewModel(long userId, CommonRoom commonRoom)
+        public CommonRoomRentalRequestsViewModel(long userId, CommonRoomDto commonRoom)
         {
             UserId = userId;
             CommonRoom = commonRoom;
         }
-        public ObservableCollection<CommonRoomRentalRequest> RentalRequests { get; } = new();
+        public ObservableCollection<CommonRoomRentalRequestDto> RentalRequests { get; } = new();
         public bool HasRentalRequests => RentalRequests.Count > 0;
 
 

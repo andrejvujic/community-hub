@@ -1,6 +1,4 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+﻿using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
 using System.Windows;
@@ -12,7 +10,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
     {
         private readonly CommonRoomRentalRequestsViewModel _viewModel;
 
-        public CommonRoomRentalRequestsPage(long userId, CommonRoom commonRoom)
+        public CommonRoomRentalRequestsPage(long userId, CommonRoomDto commonRoom)
         {
             InitializeComponent();
             _viewModel = new CommonRoomRentalRequestsViewModel(userId, commonRoom);
@@ -34,7 +32,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not CommonRoomRentalRequest request) return;
+            if (element.DataContext is not CommonRoomRentalRequestDto request) return;
 
             Push(
                 new CommonRoomRentalRequestDetailsPage(request),

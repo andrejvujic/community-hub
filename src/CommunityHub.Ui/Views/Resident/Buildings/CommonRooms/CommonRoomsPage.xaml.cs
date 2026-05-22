@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
 using System.Windows;
@@ -24,7 +25,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not CommonRoom commonRoom) return;
+            if (element.DataContext is not CommonRoomDto commonRoom) return;
 
             Push(new CommonRoomDetailsPage(_viewModel.UserId, commonRoom));
         }

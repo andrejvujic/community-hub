@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests;
@@ -10,9 +11,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
     {
         private readonly long _userId;
 
-        public CommonRoom CommonRoom { get; }
+        public CommonRoomDto CommonRoom { get; }
 
-        public CommonRoomDetailsPage(long userId, CommonRoom commonRoom)
+        public CommonRoomDetailsPage(long userId, CommonRoomDto commonRoom)
         {
             _userId = userId;
             CommonRoom = commonRoom;
