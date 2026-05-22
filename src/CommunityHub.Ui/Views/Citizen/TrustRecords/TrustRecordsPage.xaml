@@ -9,6 +9,10 @@
       Language="sr-Latn-RS"
       Title="Evidencije poverenja">
 
+    <Page.InputBindings>
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ShowOtherMembersTrustCommand}" />
+    </Page.InputBindings>
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -94,7 +98,7 @@
                                    Text="{Binding TrustRecord.TrustStatus, Converter={StaticResource TrustStatusToStringConverter}}"/>
                     </StackPanel>
                 </Border>
-                <Button x:Name="ShowOtherMembersTrustRecordsButton" Grid.Row="1" Grid.Column="2" Height="66" Width="280" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" Margin="0,0,0,0" Click="ShowOtherMembersTrustButton_Click">
+                <Button x:Name="ShowOtherMembersTrustRecordsButton" Grid.Row="1" Grid.Column="2" Height="66" Width="280" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" Margin="0,0,0,0" Command="{Binding ShowOtherMembersTrustCommand}">
                     <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                         Evidencije poverenja ostalih<LineBreak/>članova kvarta<LineBreak/>(Ctrl + 1)
                     </TextBlock>

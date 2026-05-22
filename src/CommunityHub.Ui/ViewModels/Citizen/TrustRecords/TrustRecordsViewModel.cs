@@ -1,7 +1,9 @@
 using CommunityHub.Application.Services.Dtos.TrustRecords;
 using CommunityHub.Application.Services.TrustRecords;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
 {
@@ -15,6 +17,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         private long? _neighborhoodId;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ShowOtherMembersTrustRequested;
 
         public CitizenTrustRecordDto? TrustRecord
         {
@@ -38,9 +41,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
             }
         }
 
+        public ICommand ShowOtherMembersTrustCommand { get; }
+
         public TrustRecordsViewModel(long userId)
         {
             _userId = userId;
+            ShowOtherMembersTrustCommand = new RelayCommand<object>(_ => ShowOtherMembersTrustRequested?.Invoke(this, EventArgs.Empty));
             LoadData();
         }
 
