@@ -161,4 +161,63 @@
         </Setter>
     </Style>
 
+    <Style x:Key="DatePickerStyle" TargetType="DatePicker">
+        <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ItemBorderBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DatePicker">
+                    <Border x:Name="Bd" 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="36"/>
+                            </Grid.ColumnDefinitions>
+                            <DatePickerTextBox x:Name="PART_TextBox" 
+                                               Background="Transparent"
+                                               BorderThickness="0" 
+                                               Foreground="{TemplateBinding Foreground}"
+                                               IsReadOnly="True"/>
+                            <Button x:Name="PART_Button" 
+                                    Grid.Column="1"
+                                    Background="Transparent" 
+                                    BorderThickness="0" 
+                                    Focusable="False">
+                                <TextBlock Text="&#xf073;" 
+                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                           Foreground="{DynamicResource SecondaryTextBrush}" 
+                                           FontSize="13"/>
+                            </Button>
+                            <Popup x:Name="PART_Popup" 
+                                   AllowsTransparency="True" 
+                                   StaysOpen="False"
+                                   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border Background="{DynamicResource PanelBackgroundBrush}"
+                                        BorderBrush="{DynamicResource ItemBorderBrush}" BorderThickness="1" CornerRadius="6">
+                                    <Calendar x:Name="PART_Calendar" 
+                                              Foreground="{DynamicResource PrimaryTextBrush}"
+                                              Background="{DynamicResource PanelBackgroundBrush}"/>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            <Setter TargetName="Bd" Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
