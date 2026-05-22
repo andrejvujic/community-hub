@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using CommunityHub.Ui.ViewModels.Citizen.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
@@ -23,6 +24,19 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         {
             _viewModel.Register();
             this.DialogResult = true;
+        }
+
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }

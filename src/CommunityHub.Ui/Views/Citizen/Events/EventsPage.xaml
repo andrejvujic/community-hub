@@ -45,10 +45,10 @@
                 <DataGrid x:Name="EventsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
                           Style="{StaticResource PrimaryDataGrid}" ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}" RowStyle="{StaticResource DataGridRowStyle}" CellStyle="{StaticResource DataGridCellStyle}" IsReadOnly="True" ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Naziv događaja" Binding="{Binding Name}" Width="*"/>
-                        <DataGridTextColumn Header="Datum" Binding="{Binding EventStart, StringFormat=d}" Width="*"/>
-                        <DataGridTextColumn Header="Vreme" Binding="{Binding EventStart, StringFormat=t}" Width="*"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource EventStatusToString}}" Width="*"/>
+                        <DataGridTextColumn Header="Naziv događaja" Binding="{Binding Name}" Width="1*"/>
+                        <DataGridTextColumn Header="Datum" Binding="{Binding EventStart, StringFormat=d}" Width="0.6*"/>
+                        <DataGridTextColumn Header="Vreme" Binding="{Binding EventStart, StringFormat=t}" Width="0.6*"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource EventStatusToString}}" Width="0.6*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
