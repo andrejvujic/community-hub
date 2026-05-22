@@ -66,7 +66,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not Ad ad) return;
+            if (element.DataContext is not AdDto ad) return;
 
             Push(
                 new AdDetailsPage(_userId, ad),

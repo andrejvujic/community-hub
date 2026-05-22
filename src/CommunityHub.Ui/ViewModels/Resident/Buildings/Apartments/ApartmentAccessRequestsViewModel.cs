@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.Services.Apartments;
+using CommunityHub.Application.Services.Dtos.Apartments;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -12,7 +13,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
         private readonly ApartmentAccessRequestService _accessRequestService = new();
         public long UserId { get; set; }
 
-        public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new();
+        public ObservableCollection<ApartmentAccessRequestDto> Requests { get; private set; } = new();
         public bool HasRequests { get => Requests.Count > 0; }
 
         public ApartmentAccessRequestsViewModel(long userId)

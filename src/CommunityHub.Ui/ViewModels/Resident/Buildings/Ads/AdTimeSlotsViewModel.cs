@@ -6,6 +6,7 @@ using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Application.Services.Notifications;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,15 +21,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         private readonly AdTimeSlotReservationService _timeSlotReservationService;
 
         public long UserId { get; }
-        public Ad Ad { get; }
+        public AdDto Ad { get; }
 
         public bool HasReservableTimeSlots { get => ReservableTimeSlotGroups.Count > 0; }
         public ObservableCollection<AdTimeSlotGroup> ReservableTimeSlotGroups { get; } = new();
 
         public bool HasSelectedTimeSlots => SelectedTimeSlots.Count > 0;
-        public ObservableCollection<AdTimeSlot> SelectedTimeSlots { get; } = new();
+        public ObservableCollection<AdTimeSlotDto> SelectedTimeSlots { get; } = new();
 
-        public AdTimeSlotsViewModel(long userId, Ad ad) {
+        public AdTimeSlotsViewModel(long userId, AdDto ad) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -79,7 +80,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 ReservableTimeSlotGroups.Add(group);
         }
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlot> timeSlots)
+        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 
@@ -91,12 +92,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                     ).ToList();
         }
 
-        public bool IsTimeSlotSelected(AdTimeSlot timeSlot)
+        public bool IsTimeSlotSelected(AdTimeSlotDto timeSlot)
         {
             return SelectedTimeSlots.Contains(timeSlot);
         }
 
-        public void SelectTimeSlot(AdTimeSlot timeSlot)
+        public void SelectTimeSlot(AdTimeSlotDto timeSlot)
         {
             SelectedTimeSlots.Add(timeSlot);
 
@@ -104,7 +105,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasSelectedTimeSlots));
         }
 
-        public void DeselectTimeSlot(AdTimeSlot timeSlot)
+        public void DeselectTimeSlot(AdTimeSlotDto timeSlot)
         {
             if (!IsTimeSlotSelected(timeSlot))
                 throw new ArgumentException("Time slot is not selected.");

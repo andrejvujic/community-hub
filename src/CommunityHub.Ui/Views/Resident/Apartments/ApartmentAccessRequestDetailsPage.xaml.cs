@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.Apartments.AccessRequests;
+﻿using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Services.Apartments;
+using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows;
@@ -12,9 +12,9 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
     {
         private readonly ApartmentAccessRequestService _apartmentAccessService = new();
 
-        public ApartmentAccessRequest Request { get; }
+        public ApartmentAccessRequestDto Request { get; }
 
-        public ApartmentAccessRequestDetailsPage(ApartmentAccessRequest request)
+        public ApartmentAccessRequestDetailsPage(ApartmentAccessRequestDto request)
         {
             InitializeComponent();
             DataContext = this;

@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Apartments.AccessRequests;
+using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments;
 using System.Windows;
@@ -25,7 +26,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not ApartmentAccessRequest request) return;
+            if (element.DataContext is not ApartmentAccessRequestDto request) return;
 
             Push(
                 new ApartmentAccessRequestDetailsPage(request),

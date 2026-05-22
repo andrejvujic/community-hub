@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.Ads.TimeSlots;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -15,8 +16,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         public ObservableCollection<AdReservation> Reservations { get; } = new();
         public bool HasReservations { get => Reservations.Count > 0; }
 
-        public Ad Ad { get; }
-        public MyAdTimeSlotsViewModel(Ad ad)
+        public AdDto Ad { get; }
+        public MyAdTimeSlotsViewModel(AdDto ad)
         {
             _timeSlotService = new(
                 Injector.CreateInstance<IAdTimeSlotRepository>()
@@ -37,7 +38,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasReservations));
         }   
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlot> timeSlots)
+        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 
@@ -49,7 +50,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                     ).ToList();
         }
 
-        private List<AdReservation> GroupTimeSlotsByAd(List<AdTimeSlot> timeSlots)
+        private List<AdReservation> GroupTimeSlotsByAd(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => {
                 var reservation = timeSlot.Reservation!;

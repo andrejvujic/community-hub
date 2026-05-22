@@ -51,11 +51,14 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             return PublishmentValidationResult.Valid;
         }
 
-        public Ad Archive(Ad ad)
+        public AdDto Archive(AdDto ad)
         {
-            ad.Archive();
-            _adRepository.Update(ad);
-            return ad;
+            var targetAd = MapToEntity(ad);
+            targetAd.Archive();
+
+            _adRepository.Update(targetAd);
+
+            return MapToDto(targetAd);
         }
 
         public void ArchiveExpiredAds()
@@ -71,17 +74,25 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             _adRepository.UpdateMany(expiredAds);
         }
 
-        public Ad? Get(long adId)
-            => _adRepository.Get(adId);
+        public AdDto? Get(long adId)
+        {
+            var ad = _adRepository.Get(adId);
+            if (ad is null) return null;
+            return MapToDto(ad);
+        }
 
-        public List<Ad> GetByBuilding(long buildingId, AdStatus? status = null)
-            => _adRepository.GetByBuilding(
-                buildingId,
-                status: status
+        public List<AdDto> GetByBuilding(long buildingId, AdStatus? status = null)
+            => MapToDto(
+                _adRepository.GetByBuilding(
+                    buildingId,
+                    status: status
+                )
             );
 
-        public List<Ad> GetByAuthorAndBuilding(long authorId, long buildingId)
-            => _adRepository.GetByAuthorAndBuilding(authorId, buildingId);
+        public List<AdDto> GetByAuthorAndBuilding(long authorId, long buildingId)
+            => MapToDto(
+                _adRepository.GetByAuthorAndBuilding(authorId, buildingId)
+            );
 
         public bool HasDuplicateAds(long authorId, AdDto referenceAd)
         {

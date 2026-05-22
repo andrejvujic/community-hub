@@ -20,7 +20,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
 
         private readonly AdService _adService; 
 
-        public ObservableCollection<Ad> Ads { get; } = new();
+        public ObservableCollection<AdDto> Ads { get; } = new();
         public bool HasAds => Ads.Count > 0;
 
         public AdsPage(long userId, long buildingId)
@@ -77,14 +77,14 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not Ad ad) return;
+            if (element.DataContext is not AdDto ad) return;
 
             if (ad.AuthorId == _userId)
             {
                 Push(new MyAdDetailsPage(_userId, ad));
                 return;
             }
-
+            
             Push(new AdDetailsPage(_userId, ad));
         }
     }

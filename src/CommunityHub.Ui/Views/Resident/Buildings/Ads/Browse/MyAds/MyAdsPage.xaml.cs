@@ -18,7 +18,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
         private readonly long _userId, _buildingId;
         private readonly AdService _adService;
 
-        public ObservableCollection<Ad> Ads { get; } = new();
+        public ObservableCollection<AdDto> Ads { get; } = new();
         public bool HasAds => Ads.Count > 0; 
 
         public MyAdsPage(long userId, long buildingId)
@@ -40,7 +40,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
         private void UpdateAds()
         {
             Ads.Clear();
-            List<Ad> ads = _adService.GetByAuthorAndBuilding(_userId, _buildingId);
+            var ads = _adService.GetByAuthorAndBuilding(_userId, _buildingId);
             foreach (var ad in ads)
                 Ads.Add(ad);
 
@@ -70,7 +70,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not Ad ad) return;
+            if (element.DataContext is not AdDto ad) return;
 
             Push(
                 new MyAdDetailsPage(_userId, ad),

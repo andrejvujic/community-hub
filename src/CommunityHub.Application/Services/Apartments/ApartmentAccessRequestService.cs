@@ -36,7 +36,7 @@ namespace CommunityHub.Application.Services.Apartments
            );
         }
 
-        public void Cancel(ApartmentAccessRequest request)
+        public void Cancel(ApartmentAccessRequestDto request)
         {
             if (!request.IsPending)
                 throw new InvalidOperationException("Only pendning requests can be cancelled.");
@@ -45,15 +45,17 @@ namespace CommunityHub.Application.Services.Apartments
         }
 
 
-        public List<ApartmentAccessRequest> GetByApplicant(
+        public List<ApartmentAccessRequestDto> GetByApplicant(
             long applicantId,
             Status? status = null,
             RequestOrder order = RequestOrder.Unspecified
-        ) => _apartmentAccessRequestRepository.GetByApplicant(
+        ) => MapToDto(
+            _apartmentAccessRequestRepository.GetByApplicant(
                 applicantId,
                 status: status,
                 order: order
-              );
+              )
+            );
 
         public AccessRequestValidationResult ValidateAccessRequest(long residentId, long buildingId, int apartmentNumber)
         {

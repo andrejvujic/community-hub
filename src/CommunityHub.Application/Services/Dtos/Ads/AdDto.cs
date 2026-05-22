@@ -45,5 +45,11 @@ namespace CommunityHub.Application.Services.Dtos.Ads
             StartDate = startDate;
             EndDate = endDate;
         }
+
+        public bool IsOffer => Type is AdType.Offer;
+        public bool IsRequest => Type is AdType.Request;
+
+        public bool IsActive => Status is AdStatus.Active;
+        public bool IsArchived => Status is AdStatus.Archived;
     }
 }

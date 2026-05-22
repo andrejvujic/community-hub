@@ -34,5 +34,7 @@ namespace CommunityHub.Application.Services.Dtos.Apartments
             Status = status;
             CreationDate = creationDate;
         }
+
+        public bool IsPending => Status == Status.Waiting;
     }
 }
