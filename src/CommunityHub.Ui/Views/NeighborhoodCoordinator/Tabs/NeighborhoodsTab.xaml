@@ -132,6 +132,7 @@
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
                                   CellStyle="{StaticResource DataGridCellStyle}"
+                                  CanUserSortColumns="False"
                                   Margin="0,0,0,25">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Naziv ulice" Binding="{Binding Street.Name}" Width="*"/>
@@ -149,7 +150,8 @@
                                   Style="{StaticResource DataGridStyle}"
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
-                                  CellStyle="{StaticResource DataGridCellStyle}">
+                                  CellStyle="{StaticResource DataGridCellStyle}"
+                                  CanUserSortColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Ime" Binding="{Binding Name}" Width="0.9*"/>
                                 <DataGridTextColumn Header="Prezime" Binding="{Binding Surname}" Width="0.9*"/>

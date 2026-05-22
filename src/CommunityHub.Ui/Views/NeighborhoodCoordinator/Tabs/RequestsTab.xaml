@@ -61,9 +61,9 @@
                   SelectionChanged="RequestsDataGrid_SelectionChanged">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Ime" Binding="{Binding Citizen.Name}" Width="*" />
-                <DataGridTextColumn Header="Prezime" Binding="{Binding Citizen.Surname}" Width="*" />
-                <DataGridTextColumn Header="Adresa" Width="2*">
+                <DataGridTextColumn Header="Ime" Binding="{Binding Citizen.Name}" CanUserSort="False" Width="*" />
+                <DataGridTextColumn Header="Prezime" Binding="{Binding Citizen.Surname}" CanUserSort="False" Width="*" />
+                <DataGridTextColumn Header="Adresa" CanUserSort="False" Width="2*">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}, {2}">
                             <Binding Path="Citizen.Address.Street.Name" />
@@ -72,14 +72,15 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Kvart" Binding="{Binding Neighborhood.Name}" Width="*" />
+                <DataGridTextColumn Header="Kvart" Binding="{Binding Neighborhood.Name}" CanUserSort="False" Width="*" />
 
                 <DataGridTextColumn Header="Datum" 
                                     Binding="{Binding CreationDate, StringFormat=\{0:dd.MM.yyyy.\}}"
                                     Width="150"
-                                    SortMemberPath="CreationDate"/>
+                                    SortMemberPath="CreationDate"
+                                    CanUserSort="True"/>
 
-                <DataGridTemplateColumn Header="Status" Width="*">
+                <DataGridTemplateColumn Header="Status" CanUserSort="False" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
