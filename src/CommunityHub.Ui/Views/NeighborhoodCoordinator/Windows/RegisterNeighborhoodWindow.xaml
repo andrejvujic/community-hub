@@ -9,14 +9,17 @@
         mc:Ignorable="d"
         Title="Registracija kvarta" Height="800" Width="600"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}">
 
     <Window.Resources>
         <conv:ParityToStringConverter x:Key="ParityConverter" />
     </Window.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="25">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  Background="{DynamicResource WindowBackgroundBrush}">
+        <Grid Margin="25"
+              TextElement.Foreground="{DynamicResource PrimaryTextBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -29,22 +32,31 @@
 
             <StackPanel Grid.Row="0" Margin="0,0,0,10">
                 <TextBlock Text="Naziv kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="8" />
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{StaticResource TextBoxStyle}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Margin="0,0,0,15">
                 <TextBlock Text="Opis kvarta:" FontWeight="Bold" Margin="0,0,0,3"/>
-                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Padding="5" AcceptsReturn="True" TextWrapping="Wrap" />
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" 
+                         Style="{StaticResource TextBoxStyle}"
+                         AcceptsReturn="True" 
+                         TextWrapping="Wrap"/>
             </StackPanel>
 
-            <GroupBox Grid.Row="2" Header="Lokacija" Margin="0,0,0,10" Padding="10">
+            <GroupBox Grid.Row="2" 
+                      Header="Lokacija" 
+                      Foreground="{DynamicResource PrimaryTextBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"
+                      Margin="0,0,0,10" 
+                      Padding="10">
                 <UniformGrid Columns="2">
                     <StackPanel Margin="0,0,5,0">
                         <TextBlock Text="Država:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CountryComboBox"
+                                  Style="{StaticResource ComboBoxStyle}"
                                   ItemsSource="{Binding Countries}"
                                   SelectedItem="{Binding SelectedCountry}"
-                                  DisplayMemberPath="Name"
                                   IsEnabled="{Binding IsCountryEnabled}"
                                   ToolTip="{Binding LocationLockTooltip}"
                                   ToolTipService.ShowOnDisabled="True"
@@ -53,9 +65,9 @@
                     <StackPanel Margin="5,0,0,0">
                         <TextBlock Text="Grad:" Margin="0,0,0,3"/>
                         <ComboBox x:Name="CityComboBox"
+                                  Style="{StaticResource ComboBoxStyle}"
                                   ItemsSource="{Binding Cities}"
                                   SelectedItem="{Binding SelectedCity}"
-                                  DisplayMemberPath="Name"
                                   IsEnabled="{Binding IsCityEnabled}"
                                   ToolTip="{Binding LocationLockTooltip}"
                                   ToolTipService.ShowOnDisabled="True"
@@ -64,13 +76,17 @@
                 </UniformGrid>
             </GroupBox>
 
-            <GroupBox Grid.Row="3" Header="Dodavanje ulica" Padding="10">
+            <GroupBox Grid.Row="3" 
+                      Header="Dodavanje ulica"
+                      Foreground="{DynamicResource PrimaryTextBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}" 
+                      Padding="10">
                 <StackPanel>
                     <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
                     <ComboBox x:Name="StreetComboBox"
+                              Style="{StaticResource ComboBoxStyle}"
                               ItemsSource="{Binding Streets}"
                               SelectedItem="{Binding SelectedStreet}"
-                              DisplayMemberPath="Name"
                               IsEnabled="{Binding IsStreetEnabled}"
                               Padding="5"
                               Margin="0,0,0,10" />
@@ -85,16 +101,24 @@
 
                         <StackPanel Grid.Column="0" Margin="0,0,5,0">
                             <TextBlock Text="Od broja:" Margin="0,0,0,3"/>
-                            <TextBox x:Name="StartNumberTextBox" Padding="5"/>
+                            <TextBox x:Name="StartNumberTextBox" 
+                                     Style="{StaticResource TextBoxStyle}"
+                                     TextAlignment="Right"
+                                     Height="35"
+                                     Padding="0"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="5,0,5,0">
                             <TextBlock Text="Do broja:" Margin="0,0,0,3"/>
-                            <TextBox x:Name="EndNumberTextBox" Padding="5"/>
+                            <TextBox x:Name="EndNumberTextBox" 
+                                     Style="{StaticResource TextBoxStyle}"
+                                     TextAlignment="Right"
+                                     Height="35"
+                                     Padding="0"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Margin="5,0,5,0">
                             <TextBlock Text="Strana:" Margin="0,0,0,3"/>
                             <ComboBox x:Name="SideComboBox" 
-                                      Padding="4"
+                                      Style="{StaticResource ComboBoxStyle}"
                                       SelectedIndex="0">
                                 <ComboBoxItem Tag="{x:Static domain:ParityType.Both}" 
                                               Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
@@ -104,14 +128,28 @@
                                               Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
                             </ComboBox>
                         </StackPanel>
-                        <Button Content="Dodaj ulicu" Grid.Column="3" VerticalAlignment="Bottom" Padding="15,7" Margin="5,0,0,0" Cursor="Hand" Click="AddStreetSection_Click"/>
+                        <Button Content="Dodaj ulicu" 
+                                Grid.Column="3" 
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                VerticalAlignment="Bottom" 
+                                Margin="5,0,0,0" 
+                                Click="AddStreetSection_Click"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Row="4" Header="Dodate ulice" Margin="0,15,0,0" Padding="5" Height="150">
+            <GroupBox Grid.Row="4" 
+                      Header="Dodate ulice" 
+                      Foreground="{DynamicResource PrimaryTextBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"
+                      Margin="0,15,0,0" 
+                      Padding="5" 
+                      Height="150">
                 <ListBox x:Name="StreetSectionsListBox" 
                          ItemsSource="{Binding AddedStreetSections}"
+                         Background="{DynamicResource PanelBackgroundBrush}"
+                         Foreground="{DynamicResource PrimaryTextBrush}"
+                         VerticalContentAlignment="Center"
                          ScrollViewer.VerticalScrollBarVisibility="Auto" 
                          Height="110">
                     <ListBox.ItemTemplate>
@@ -134,24 +172,40 @@
                                         </TextBlock.Text>
                                     </TextBlock>
                                 </StackPanel>
-                                <Button Grid.Column="1" Content="Ukloni" Click="RemoveStreetSection_Click" Tag="{Binding}" />
+                                <Button Grid.Column="1" 
+                                        Content="Ukloni" 
+                                        Style="{StaticResource SecondaryButtonStyle}"
+                                        Padding="8,0"
+                                        Click="RemoveStreetSection_Click" 
+                                        Tag="{Binding}" 
+                                        Margin="10,0,0,0"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </GroupBox>
 
-            <GroupBox Grid.Row="5" Header="Slike kvarta" Margin="0,20,0,10" Padding="10">
+            <GroupBox Grid.Row="5"
+                      Header="Slike kvarta"
+                      Foreground="{DynamicResource PrimaryTextBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"
+                      Margin="0,20,0,10"
+                      Padding="10">
                 <StackPanel>
-                    <Button Content="Odaberi slike..." 
-                            HorizontalAlignment="Left" 
-                            Padding="15,5" 
-                            Margin="0,0,0,10" 
-                            Click="SelectImages_Click" 
-                            Cursor="Hand"/>
+                    <Button Content="Odaberi slike..."
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            HorizontalAlignment="Left"
+                            Padding="15,5"
+                            Margin="0,0,0,10"
+                            Click="SelectImages_Click"/>
 
-                    <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="3" Background="#F9F9F9">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Padding="5">
+                    <Border BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Background="{DynamicResource SurfaceBackgroundBrush}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                      VerticalScrollBarVisibility="Disabled" 
+                                      Padding="5">
                             <ListBox x:Name="ImagesListBox" 
                                      ItemsSource="{Binding SelectedImagePaths}"
                                      BorderThickness="0" 
@@ -165,10 +219,10 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border Margin="8" 
-                                                BorderBrush="#BDC3C7" 
+                                                BorderBrush="{DynamicResource ItemBorderBrush}"
                                                 BorderThickness="1" 
                                                 CornerRadius="5" 
-                                                Background="White"
+                                                Background="{DynamicResource PanelBackgroundBrush}"
                                                 Width="140">
                                             <StackPanel Margin="5">
                                                 <Border CornerRadius="3" ClipToBounds="True" Margin="0,0,0,5">
@@ -177,14 +231,12 @@
                                                            Height="125" 
                                                            Stretch="UniformToFill" />
                                                 </Border>
-
-                                                <Button Content="Ukloni" 
-                                                        Click="RemoveImage_Click" 
+                                                <Button Content="Ukloni"
+                                                        Style="{StaticResource SecondaryButtonStyle}"
+                                                        Click="RemoveImage_Click"
                                                         Tag="{Binding}"
                                                         FontSize="11"
-                                                        Padding="0,3"
-                                                        Cursor="Hand">
-                                                </Button>
+                                                        Padding="0,3"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
@@ -195,17 +247,20 @@
                 </StackPanel>
             </GroupBox>
 
-            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                <Button Content="Odustani" 
+            <StackPanel Grid.Row="6"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,0,0">
+                <Button Content="Odustani"
+                        Style="{StaticResource SecondaryButtonStyle}"
                         Click="CancelButton_Click"
-                        Margin="0,0,10,0" 
-                        Padding="20,10" 
-                        Cursor="Hand"/>
+                        Margin="0,0,10,0"
+                        Padding="20,10"/>
                 <Button Content="Registruj Kvart"
+                        Style="{StaticResource PrimaryButtonStyle}"
                         Click="RegisterButton_Click"
                         Padding="25,10"
-                        FontWeight="Bold"
-                        Cursor="Hand" />
+                        FontWeight="Bold"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>

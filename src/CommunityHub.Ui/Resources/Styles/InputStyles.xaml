@@ -80,6 +80,13 @@
         <Setter Property="Padding" Value="8,6"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}"/>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
