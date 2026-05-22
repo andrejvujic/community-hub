@@ -18,6 +18,19 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             OrganizerEventsList.PreviewKeyDown += OrganizerEventsList_PreviewKeyDown;
         }
 
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void OrganizeButton_Click(object sender, RoutedEventArgs e)
         {
             var wnd = new OrganizeEventWindow(_viewModel.UserId);

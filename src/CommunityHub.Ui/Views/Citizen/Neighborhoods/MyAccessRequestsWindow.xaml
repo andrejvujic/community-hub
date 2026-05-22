@@ -3,178 +3,202 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         xmlns:domain="clr-namespace:CommunityHub.Application.Domain;assembly=CommunityHub.Application"
-        Title="Moji zahtevi za pristup" Height="560" Width="720" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
+        Height="600" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
 
     <Window.Resources>
-        <conv:NeighborhoodAccessRequestStatusToStringConverter x:Key="NeighborhoodAccessRequestStatusToStringConverter" />
-        <conv:NeighborhoodAccessRequestStatusToVisibilityConverter x:Key="NeighborhoodAccessRequestStatusToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:NeighborhoodAccessRequestStatusToStringConverter x:Key="NeighborhoodAccessRequestStatusToStringConverter" />
+            <conv:NeighborhoodAccessRequestStatusToVisibilityConverter x:Key="NeighborhoodAccessRequestStatusToVisibilityConverter" />
+            <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Margin="12">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <Border Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Moji zahtevi za pristup" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" Width="32" Height="32" Click="CloseButton_Click" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                        <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
+                    </Button>
+                </Grid>
+            </Border>
 
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Sortiraj po (Ctrl + 1):</TextBlock>
-                <RadioButton x:Name="NewestToggle" Content="Najnovije" IsChecked="True" GroupName="SortGroup" Width="96" Margin="0,0,6,0" Checked="Toggle_Changed">
-                    <RadioButton.Style>
-                        <Style TargetType="RadioButton">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="RadioButton">
-                                        <Border x:Name="Bd" CornerRadius="6" BorderBrush="Black" BorderThickness="1" Background="White" Padding="6,4">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#3388FF" />
-                                                <Setter Property="Foreground" Value="White" />
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#F0F8FF" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+            <Grid Grid.Row="1" Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,0" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource TextBrush}" FontSize="16">Sortiraj po (Ctrl + 1):</TextBlock>
+                        <RadioButton x:Name="NewestToggle" Content="Najnovije" FontSize="16" IsChecked="True" GroupName="SortGroup" Width="100" Margin="0,0,8,0" Checked="Toggle_Changed" Foreground="{StaticResource TextBrush}">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+                                                <Border x:Name="Bd" CornerRadius="4" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource BackgroundBrush}" Padding="6,4">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RadioButton.Style>
+                        </RadioButton>
+
+                        <RadioButton x:Name="OldestToggle" Content="Najstarije" FontSize="16" GroupName="SortGroup" Width="100" Checked="Toggle_Changed" Foreground="{StaticResource TextBrush}">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+                                                <Border x:Name="Bd" CornerRadius="4" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource BackgroundBrush}" Padding="6,4">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RadioButton.Style>
+                        </RadioButton>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource TextBrush}" FontSize="16">Filtriraj po statusu (Ctrl + 2):</TextBlock>
+                        <CheckBox x:Name="GroupByStatusToggle" VerticalAlignment="Center" IsChecked="False" Cursor="Hand" Checked="Toggle_Changed" Unchecked="Toggle_Changed">
+                            <CheckBox.Style>
+                                <Style TargetType="CheckBox">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="CheckBox">
+                                                <Border x:Name="Track" Width="50" Height="26" CornerRadius="13" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource BackgroundBrush}">
+                                                    <Ellipse x:Name="Thumb" Width="18" Height="18" Fill="{StaticResource BackgroundBrush}" Stroke="{StaticResource TextBrush}" StrokeThickness="2" HorizontalAlignment="Left" Margin="2,0,0,0"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="Track" Property="Background" Value="{StaticResource AccentBrush}"/>
+                                                        <Setter TargetName="Thumb" Property="Fill" Value="{StaticResource AccentBrush}"/>
+                                                        <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
+                                                        <Setter TargetName="Thumb" Property="Margin" Value="0,0,2,0"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+                    </StackPanel>
+                </Grid>
+
+                <ListBox Grid.Row="2" ItemsSource="{Binding RequestsView}" VerticalContentAlignment="Top" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         </Style>
-                    </RadioButton.Style>
-                </RadioButton>
-
-                <RadioButton x:Name="OldestToggle" Content="Najstarije" GroupName="SortGroup" Width="96" Checked="Toggle_Changed">
-                    <RadioButton.Style>
-                        <Style TargetType="RadioButton">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="RadioButton">
-                                        <Border x:Name="Bd" CornerRadius="6" BorderBrush="Black" BorderThickness="1" Background="White" Padding="6,4">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#3388FF" />
-                                                <Setter Property="Foreground" Value="White" />
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="Bd" Property="Background" Value="#F0F8FF" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </RadioButton.Style>
-                </RadioButton>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Filtriraj po statusu (Ctrl + 2):</TextBlock>
-                <CheckBox x:Name="GroupByStatusToggle" VerticalAlignment="Center" IsChecked="False" Cursor="Hand" Checked="Toggle_Changed" Unchecked="Toggle_Changed">
-                    <CheckBox.Style>
-                        <Style TargetType="CheckBox">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="CheckBox">
-                                        <Border x:Name="Track" Width="50" Height="26" CornerRadius="13" BorderBrush="Black" BorderThickness="2" Background="White">
-                                            <Ellipse x:Name="Thumb" Width="18" Height="18" Fill="White" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Left" Margin="2,0,0,0"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter TargetName="Track" Property="Background" Value="#3388FF"/>
-                                                <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
-                                                <Setter TargetName="Thumb" Property="Margin" Value="0,0,2,0"/>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </CheckBox.Style>
-                </CheckBox>
-            </StackPanel>
-        </Grid>
-
-        <ListBox Grid.Row="2" ItemsSource="{Binding RequestsView}" VerticalContentAlignment="Top" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource AccentBrush}" Padding="6" Margin="0,8,0,6" CornerRadius="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="1">
+                                        <TextBlock Text="{Binding Name, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}" FontWeight="Bold" FontSize="16" Foreground="{StaticResource TextBrush}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListBox.GroupStyle>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="#F3F6FA" Padding="6" Margin="0,0,0,6" CornerRadius="4">
-                                <TextBlock Text="{Binding Name, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}}" FontWeight="Bold" />
+                            <Border BorderBrush="{StaticResource TextBrush}" BorderThickness="1" CornerRadius="2" Padding="12" Margin="0,0,0,8" Background="{StaticResource AlternatingRowBrush}" HorizontalAlignment="Stretch" MinHeight="80">
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="280" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Viewbox Grid.Column="0" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Path Data="M246.125,195.063v-82.688h-63v82.688h-7.875V17.823h-23.625V2.125h-47.25v15.698H80.75v177.24h-7.875V80.875h-63v114.188H2v11.813h252v-11.813H246.125z
+                                              M47.281,177.344H35.469v-11.813h11.813V177.344z M47.281,145.844H35.469v-11.813h11.813V145.844zM47.281,114.344H35.469v-11.813h11.813V114.344z
+                                              M119.141,174.391h-11.813v-11.813h11.813V174.391z M119.141,142.891h-11.813 v-11.813h11.813V142.891z M119.141,111.391h-11.813V99.578h11.813V111.391z M119.141,
+                                              79.891h-11.813V68.078h11.813V79.891zM150.641,174.391h-11.813v-11.813h11.813V174.391z M150.641,142.891h-11.813v-11.813h11.813V142.891z M150.641,111.391h-11.813 V99.578h11.813V111.391z
+                                              M150.641,79.891h-11.813V68.078h11.813V79.891z M220.531,177.344h-11.813v-11.813h11.813V177.344z M220.531,145.844h-11.813v-11.813h11.813V145.844z" Fill="{StaticResource TextBrush}"/>
+                                    </Viewbox>
+
+                                    <Grid Grid.Column="1" Margin="20,0,0,0">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Neighborhood.Name}" FontWeight="Bold" FontSize="18" Foreground="{StaticResource TextBrush}" />
+                                            <TextBlock FontSize="14" Foreground="{StaticResource SecondaryTextBrush}">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}, {1}">
+                                                        <Binding Path="Neighborhood.City.Name" TargetNullValue="" />
+                                                        <Binding Path="Neighborhood.Country.Name" TargetNullValue="" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Comment}" FontSize="14" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" MaxHeight="48" TextTrimming="CharacterEllipsis" Visibility="{Binding Comment, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Inverse}" Margin="0,6,0,0" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Grid.Column="2" Margin="12,0,0,0" HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="50" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}, StringFormat='Status: {0}', TargetNullValue='', FallbackValue=''}" HorizontalAlignment="Center" Foreground="{StaticResource TextBrush}" FontSize="16"/>
+                                            <TextBlock Text="{Binding CreationDate, StringFormat='Datum: {0:d}', TargetNullValue=''}" HorizontalAlignment="Center" Foreground="{StaticResource SecondaryTextBrush}" FontSize="16" />
+                                        </StackPanel>
+
+                                        <Button Grid.Column="1" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Click="DeleteRequest_Click"
+                                                Visibility="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToVisibilityConverter}}" ToolTip="Brisanje zahteva"
+                                                Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}" Cursor="Hand">
+                                            <TextBlock Text="✕" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" />
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </Border>
                         </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </ListBox.GroupStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,8" Background="White" HorizontalAlignment="Stretch" MinHeight="80">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Viewbox Grid.Column="0" Width="36" Height="36">
-                                <Path Data="M246.125,195.063v-82.688h-63v82.688h-7.875V17.823h-23.625V2.125h-47.25v15.698H80.75v177.24h-7.875V80.875h-63v114.188H2v11.813h252v-11.813H246.125z
-                                      M47.281,177.344H35.469v-11.813h11.813V177.344z M47.281,145.844H35.469v-11.813h11.813V145.844zM47.281,114.344H35.469v-11.813h11.813V114.344z
-                                      M119.141,174.391h-11.813v-11.813h11.813V174.391z M119.141,142.891h-11.813 v-11.813h11.813V142.891z M119.141,111.391h-11.813V99.578h11.813V111.391z M119.141,
-                                      79.891h-11.813V68.078h11.813V79.891zM150.641,174.391h-11.813v-11.813h11.813V174.391z M150.641,142.891h-11.813v-11.813h11.813V142.891z M150.641,111.391h-11.813 V99.578h11.813V111.391z
-                                      M150.641,79.891h-11.813V68.078h11.813V79.891z M220.531,177.344h-11.813v-11.813h11.813V177.344z M220.531,145.844h-11.813v-11.813h11.813V145.844z" Fill="Black"/>
-                            </Viewbox>
-
-                            <Grid Grid.Column="1" Margin="8,0,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Neighborhood.Name}" FontWeight="Bold" FontSize="14" />
-                                    <TextBlock FontSize="12" Foreground="#666">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}, {1}">
-                                                <Binding Path="Neighborhood.City.Name" TargetNullValue="" />
-                                                <Binding Path="Neighborhood.Country.Name" TargetNullValue="" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                    <TextBlock Text="{Binding Comment}" FontSize="12" Foreground="#444" TextWrapping="Wrap" MaxHeight="48" TextTrimming="CharacterEllipsis" />
-                                </StackPanel>
-                            </Grid>
-
-                            <Grid Grid.Column="2" Margin="0,0,0,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToStringConverter}, StringFormat='Status: {0}', TargetNullValue='', FallbackValue=''}" HorizontalAlignment="Center" />
-                                    <TextBlock Text="{Binding CreationDate, StringFormat='Datum: {0:d}', TargetNullValue=''}" HorizontalAlignment="Center" />
-                                </StackPanel>
-
-                                <Button Grid.Row="1" Width="36" Height="36" Margin="0,8,0,0" HorizontalAlignment="Right" Click="DeleteRequest_Click"
-                                        Visibility="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToVisibilityConverter}}" ToolTip="Brisanje zahteva">
-                                    <TextBlock Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>
