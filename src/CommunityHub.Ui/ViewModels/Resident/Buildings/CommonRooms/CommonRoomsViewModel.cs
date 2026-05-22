@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms;
 using CommunityHub.Application.Services.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -12,7 +13,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         public long UserId { get; }
         public long BuildingId { get; }
 
-        public ObservableCollection<CommonRoom> CommonRooms { get; } = new();
+        public ObservableCollection<CommonRoomDto> CommonRooms { get; } = new();
         public bool HasCommonRooms => CommonRooms.Count > 0;
 
         public CommonRoomsViewModel(long userId, long buildingId) {
