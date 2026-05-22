@@ -6,12 +6,87 @@
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="RegistrationPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
+    FontFamily="{StaticResource InterFontFamily}"
     Loaded="RegistrationPage_Loaded"
     mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DropShadowEffect x:Key="DepthShadow" BlurRadius="4" Opacity="0.2" ShadowDepth="2" />
+
+            <Style x:Key="GroupBoxHeaderStyle" TargetType="GroupBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GroupBox">
+                            <Border
+                                BorderBrush="Black"
+                                BorderThickness="2"
+                                CornerRadius="3">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Border
+                                        Grid.Row="0"
+                                        Padding="10,5,10,5"
+                                        Background="{StaticResource NavBarDefaultBackgroundBrush}">
+                                        <TextBlock
+                                            FontSize="{TemplateBinding FontSize}"
+                                            Foreground="White"
+                                            Text="{TemplateBinding Header}" />
+                                    </Border>
+                                    <Border Grid.Row="1" Background="White">
+                                        <ContentPresenter Margin="0" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="FloorGroupBoxStyle" TargetType="GroupBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GroupBox">
+                            <Border
+                                BorderBrush="Black"
+                                BorderThickness="2"
+                                CornerRadius="0"
+                                SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Border
+                                        Grid.Row="0"
+                                        Padding="10,5,10,5"
+                                        Background="{StaticResource NavBarDefaultBackgroundBrush}">
+                                        <TextBlock
+                                            FontSize="{TemplateBinding FontSize}"
+                                            Foreground="White"
+                                            Text="{TemplateBinding Header}" />
+                                    </Border>
+                                    <Border Grid.Row="1" Background="White">
+                                        <ContentPresenter />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <Grid>
 
@@ -30,13 +105,14 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontSize="32"
+                    Foreground="{StaticResource PageTitleBrush}"
                     Text="Registracija nove zgrade" />
             </Grid>
 
             <Grid Grid.Row="1">
                 <Border
                     Margin="0,5,450,0"
-                    BorderBrush="Black"
+                    BorderBrush="#8E8A80"
                     BorderThickness="0,2,0,0" />
             </Grid>
 
@@ -82,7 +158,8 @@
                         BorderBrush="Black"
                         BorderThickness="2"
                         FontSize="22"
-                        Header="Podaci">
+                        Header="Podaci"
+                        Style="{StaticResource GroupBoxHeaderStyle}">
 
                         <Grid Margin="25,20,10,15">
                             <Grid.RowDefinitions>
@@ -224,7 +301,7 @@
                                         <TextBlock
                                             Padding="0,10,0,0"
                                             FontSize="22"
-                                            Foreground="Red"
+                                            Foreground="{StaticResource ErrorMessageBrush}"
                                             Text="{Binding ErrorMessage}">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -283,9 +360,11 @@
 
                             <Grid Grid.Row="5" Margin="0,20,0,0">
                                 <Border
-                                    BorderBrush="Black"
-                                    BorderThickness="2"
-                                    CornerRadius="4">
+                                    Background="#F5F5F5"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Effect="{StaticResource DepthShadow}">
                                     <ScrollViewer Height="280" VerticalScrollBarVisibility="Visible">
                                         <StackPanel x:Name="floorsStackPanel" />
                                     </ScrollViewer>
@@ -305,25 +384,33 @@
 
                                 <Grid Grid.Column="0">
                                     <TextBlock
-                                        Margin="0,0,15,0"
+                                        Margin="0,0,8,0"
                                         VerticalAlignment="Center"
                                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                         FontSize="22"
+                                        Foreground="#0F5AA6"
                                         Text="&#xf0c6;" />
                                 </Grid>
 
                                 <Grid Grid.Column="1">
                                     <Button
                                         Width="220"
+                                        Background="#0F5AA6"
+                                        BorderBrush="#0F5AA6"
                                         Click="ChooseImage_Click"
                                         Content="Odaberite sliku"
-                                        Cursor="Hand" />
+                                        Cursor="Hand"
+                                        FontWeight="SemiBold"
+                                        Foreground="White" />
                                 </Grid>
 
-                                <Grid Grid.Column="2" Margin="15,0,0,0">
+                                <Grid
+                                    Grid.Column="2"
+                                    Margin="15,0,0,0"
+                                    VerticalAlignment="Center">
                                     <TextBlock
                                         FontSize="22"
-                                        Foreground="Red"
+                                        Foreground="{StaticResource ErrorMessageBrush}"
                                         Text="{Binding ImageErrorMessage}">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
@@ -343,9 +430,11 @@
                                 Grid.Row="7"
                                 Margin="0,25,0,20"
                                 HorizontalAlignment="Left"
-                                BorderBrush="Black"
-                                BorderThickness="2"
-                                CornerRadius="3">
+                                Background="#F5F5F5"
+                                BorderBrush="#CCCCCC"
+                                BorderThickness="1"
+                                CornerRadius="3"
+                                Effect="{StaticResource DepthShadow}">
                                 <ScrollViewer
                                     Width="600"
                                     HorizontalScrollBarVisibility="Visible"
@@ -377,9 +466,10 @@
                                                             HorizontalAlignment="Right"
                                                             VerticalAlignment="Top"
                                                             Background="White"
-                                                            BorderBrush="Transparent"
+                                                            BorderBrush="Black"
                                                             Click="RemoveImage_Click"
                                                             Cursor="Hand"
+                                                            Style="{x:Null}"
                                                             Tag="{Binding}">
                                                             <TextBlock
                                                                 FontSize="14"
@@ -404,16 +494,22 @@
                                         x:Name="cancelButton"
                                         Width="100"
                                         Margin="0,0,15,0"
+                                        Background="#0F5AA6"
+                                        BorderBrush="#0F5AA6"
                                         Click="CancelButton_Click"
-                                        Cursor="Hand">
+                                        Cursor="Hand"
+                                        Foreground="White">
                                         Otkaži
                                     </Button>
                                     <Button
                                         x:Name="confirmButton"
                                         Width="100"
                                         Margin="0,0,15,0"
+                                        Background="#0F5AA6"
+                                        BorderBrush="#0F5AA6"
                                         Click="ConfirmButton_Click"
                                         Cursor="Hand"
+                                        Foreground="White"
                                         IsEnabled="{Binding CanConfirm}">
                                         Potvrdi
                                     </Button>

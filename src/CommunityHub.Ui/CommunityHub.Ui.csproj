@@ -16,6 +16,8 @@
     <None Remove="Resources\Images\building_1.jpg" />
     <None Remove="Resources\Images\building_2.jpg" />
     <None Remove="Resources\Images\neighborhood_1.jpg" />
+    <None Remove="Resources\Inter\InterDisplay-Italic.ttf" />
+    <None Remove="Resources\Inter\InterDisplay-Regular.ttf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +27,7 @@
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.3.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.3.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +49,8 @@
     <Resource Include="Resources\Images\neighborhood_1.jpg" />
     <Resource Include="Resources\Images\neighborhood_2.jpg" />
     <Resource Include="Resources\Images\neighborhood_0.jpg" />
+    <Resource Include="Resources\Inter\InterDisplay-Italic.ttf" />
+    <Resource Include="Resources\Inter\InterDisplay-Regular.ttf" />
   </ItemGroup>
 
   <ItemGroup>

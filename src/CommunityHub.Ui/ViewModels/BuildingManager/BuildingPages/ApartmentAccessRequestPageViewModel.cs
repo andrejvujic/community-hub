@@ -5,10 +5,11 @@ using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
+using System.Windows;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -26,6 +27,10 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
+            LoadAccessRequests(null);
+
+            CancelCommand = new RelayCommand<object>(_ => Cancel());
+            ConfirmCommand = new RelayCommand<object>(_ => Confirm(), _ => CanConfirm());
         }
 
         public string StreetInfo
@@ -46,6 +51,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                     OnPropertyChanged(nameof(IsChangeStatusEnabled));
                     Comment = string.Empty;
                     ChangeStatusSelectedIndex = 0;
+                    ConfirmCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -64,6 +70,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                     
                     if (!IsCommentEnabled)
                         Comment = string.Empty;
+
+                    ConfirmCommand.RaiseCanExecuteChanged();
 
                 }
             }
@@ -102,6 +110,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 }
             }
         }
+        public RelayCommand<object> CancelCommand { get; }
+        public RelayCommand<object> ConfirmCommand { get; }
         public void LoadAccessRequests(Status? status)
         {
             ApartmentAccessRequests.Clear();
@@ -159,7 +169,35 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             ResetSelectionAndForm();
             return true;
         }
+        private void Cancel()
+        {
+            var result = MessageBox.Show("Da li ste sigurni da želite otkazati promenu statusa zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+                ResetSelectionAndForm();
+        }
+        private bool CanConfirm()
+        {
+            return SelectedRequest != null && GetSelectedStatus() != null;
+        }
+        private void Confirm()
+        {
+            var result = MessageBox.Show(
+                "Da li ste sigurni da želite promeniti status zahteva?",
+                "Potvrda",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.No)
+                return;
+
+            bool success = ConfirmStatusChange();
+
+            if (success)
+                MessageBox.Show("Status zahteva je uspešno promenjen.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {

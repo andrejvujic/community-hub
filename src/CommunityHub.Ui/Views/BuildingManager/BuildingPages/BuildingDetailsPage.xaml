@@ -5,11 +5,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="BuildingDetailsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid>
 
         <!--  Icons: https://fontawesome.com/search?ip=classic&ic=free-collection  -->
@@ -39,14 +49,28 @@
                     <Grid
                         x:Name="sideBarInfoItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="Info">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Info"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="Info">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -82,14 +106,28 @@
                     <Grid
                         x:Name="sideBarApartmentAccessRequestItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="ApartmentAccessRequest">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="ApartmentAccessRequest"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="ApartmentAccessRequest">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -125,14 +163,28 @@
                     <Grid
                         x:Name="sideBarApartmentMembershipItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="ApartmentMembership">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="ApartmentMembership"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="ApartmentMembership">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -168,14 +220,28 @@
                     <Grid
                         x:Name="sideBarCommonRoomItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="CommonRoom">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="CommonRoom"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="CommonRoom">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -211,14 +277,28 @@
                     <Grid
                         x:Name="sideBarCommonRoomRentalRequestItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="CommonRoomRentalRequest">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="CommonRoomRentalRequest"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="CommonRoomRentalRequest">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -254,14 +334,28 @@
                     <Grid
                         x:Name="sideBarNoticeBoardItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="NoticeBoard">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="NoticeBoard"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="NoticeBoard">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -297,13 +391,17 @@
                     <Grid
                         x:Name="sideBarSchedulingAssemblyItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
+                        Opacity="0.5"
                         Tag="SchedulingAssembly">
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -333,7 +431,6 @@
                     </Grid>
                 </Border>
 
-
                 <Border
                     Grid.Row="7"
                     BorderBrush="Gray"
@@ -341,14 +438,28 @@
                     <Grid
                         x:Name="sideBarReportedIssueItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="SideBarItem_Click"
                         Tag="ReportedIssue">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="ReportedIssue"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource SideBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="ReportedIssue">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
@@ -379,10 +490,11 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="1">
             <Frame
                 x:Name="BuildingFrame"
                 Grid.Row="1"
+                Content="{Binding CurrentPage, Mode=TwoWay}"
                 NavigationUIVisibility="Hidden" />
         </Grid>
 

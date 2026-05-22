@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Domain.Users;
@@ -27,6 +26,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
+            LoadApartmentMemberships();
         }
         public void LoadApartmentMemberships()
         {

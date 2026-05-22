@@ -1,13 +1,38 @@
-﻿<Application x:Class="CommunityHub.Ui.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="/Views/LogInForm.xaml">
+﻿<Application
+    x:Class="CommunityHub.Ui.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    StartupUri="/Views/LogInForm.xaml">
 
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="AppFontFamily">
                 /Resources/Fonts/GoogleSans.ttf#Google Sans
             </FontFamily>
+
+            <FontFamily x:Key="InterFontFamily">/Resources/Inter/#Inter</FontFamily>
+
+            <SolidColorBrush x:Key="AppBackgroundBrush" Color="#EBEBEB" />
+
+            <SolidColorBrush x:Key="NavBarDefaultBackgroundBrush" Color="#0F5AA6" />
+            <SolidColorBrush x:Key="NavBarDefaultForegroundBrush" Color="#F4F7FA" />
+
+            <SolidColorBrush x:Key="NavBarHoverBackgroundBrush" Color="#DCE8D8" />
+            <SolidColorBrush x:Key="NavBarHoverForegroundBrush" Color="#123B63" />
+
+            <SolidColorBrush x:Key="SideBarDefaultBackgroundBrush" Color="#E8EEF5" />
+            <SolidColorBrush x:Key="SideBarDefaultForegroundBrush" Color="#1E3A5F" />
+
+            <SolidColorBrush x:Key="SideBarHoverBackgroundBrush" Color="#BAD7F5" />
+            <SolidColorBrush x:Key="SideBarHoverForegroundBrush" Color="#0F3E7D" />
+
+            <SolidColorBrush x:Key="FooterBackgroundBrush" Color="#0F5AA6" />
+            <SolidColorBrush x:Key="FooterForegroundBrush" Color="#F4F7FA" />
+
+            <SolidColorBrush x:Key="ErrorMessageBrush" Color="#C43D5A" />
+            <SolidColorBrush x:Key="PageTitleBrush" Color="#000000" />
+
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Themes/LightTheme.xaml" />
@@ -16,4 +41,3 @@
         </ResourceDictionary>
     </Application.Resources>
 </Application>
-    

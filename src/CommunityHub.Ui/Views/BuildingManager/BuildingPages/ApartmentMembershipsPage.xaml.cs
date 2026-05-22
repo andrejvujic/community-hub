@@ -23,6 +23,5 @@ namespace CommunityHub.Ui.Views.BuildingManager
             if (homeWindow != null)
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
         }
-        private void ApartmentMembershipsPage_Loaded(object sender, RoutedEventArgs e) => _viewModel.LoadApartmentMemberships();
     }
 }

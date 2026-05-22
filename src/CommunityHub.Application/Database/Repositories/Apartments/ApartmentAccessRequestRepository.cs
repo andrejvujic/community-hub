@@ -267,7 +267,8 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
                 INNER JOIN cities city ON address.city_id = city.id
                 INNER JOIN countries country ON city.country_id = country.id
                 WHERE building_manager.id = @userId AND building.id = @buildingId AND
-                (request.status = @status OR @status IS NULL);"
+                (request.status = @status OR @status IS NULL)
+                ORDER BY request_id;"
             )
             .AddParameter("userId", userId)
             .AddParameter("buildingId", buildingId)

@@ -7,18 +7,23 @@
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
     xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="NoticeBoardPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
-    Loaded="NoticeBoardPage_Loaded"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <conv:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
-        <conv:AdStatusToStringConverter x:Key="AdStatusToStringConverter" />
-        <conv:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
-        <conv:UserToNameSurnameConverter x:Key="UserToNameSurnameConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
+            <conv:AdStatusToStringConverter x:Key="AdStatusToStringConverter" />
+            <conv:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
+            <conv:UserToNameSurnameConverter x:Key="UserToNameSurnameConverter" />
+        </ResourceDictionary>
     </Page.Resources>
 
     <ScrollViewer>
@@ -61,21 +66,26 @@
                     Text="{Binding StreetInfo}" />
             </Grid>
 
-            <Grid Grid.Row="1" Margin="60,15,40,20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="1"
+                Margin="60,15,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="28"
+                Text="Statistika" />
 
-                <TextBlock
-                    Grid.Row="0"
-                    Margin="10,15,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    FontSize="28"
-                    Text="Statistika" />
-
-                <Grid Grid.Row="1" Margin="10,35,0,0">
+            <Border
+                Grid.Row="1"
+                Margin="60,50,40,20"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="2">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -83,30 +93,47 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
+
                     <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="4"
+                        Margin="0,0,0,15"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Text="Statistika" />
+
+
+                    <TextBlock
+                        Grid.Row="1"
                         Grid.Column="0"
                         Margin="0,0,15,0"
-                        FontSize="22"
+                        VerticalAlignment="Center"
+                        FontSize="20"
                         Text="Godina:" />
 
                     <ComboBox
                         x:Name="yearComboBox"
+                        Grid.Row="1"
                         Grid.Column="1"
                         Width="180"
-                        Margin="0,0,15,0"
+                        Margin="0,0,40,0"
                         Cursor="Hand"
                         FontSize="18"
                         ItemsSource="{Binding Years}"
                         SelectedItem="{Binding SelectedYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock
+                        Grid.Row="1"
                         Grid.Column="2"
                         Margin="0,0,15,0"
-                        FontSize="22"
+                        VerticalAlignment="Center"
+                        FontSize="20"
                         Text="Mesec:" />
 
                     <ComboBox
                         x:Name="monthComboBox"
+                        Grid.Row="1"
                         Grid.Column="3"
                         Width="180"
                         HorizontalAlignment="Left"
@@ -114,64 +141,75 @@
                         FontSize="18"
                         ItemsSource="{Binding Months}"
                         SelectedItem="{Binding SelectedMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </Grid>
-            </Grid>
 
-            <Grid Grid.Row="2" Margin="60,40,40,0">
+
+                    <Grid
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="4"
+                        Margin="0,60,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <lvc:PieChart
+                            x:Name="offerRequestPieChart"
+                            Grid.Column="0"
+                            Width="250"
+                            Height="250"
+                            Margin="0,0,30,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Cursor="Hand"
+                            Series="{Binding OfferRequestPieSeries}"
+                            TooltipPosition="Center"
+                            Visibility="{Binding OfferRequestPieChartVisibility}" />
+
+                        <ScrollViewer
+                            Grid.Column="1"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Disabled">
+                            <lvc:CartesianChart
+                                x:Name="categoryBarChart"
+                                Width="700"
+                                Height="250"
+                                Series="{Binding CategoryBarSeries}"
+                                Visibility="{Binding CategoryBarChartVisibility}"
+                                XAxes="{Binding CategoryXAxes}"
+                                YAxes="{Binding CategoryYAxes}" />
+                        </ScrollViewer>
+
+                        <TextBlock
+                            x:Name="noDataTextBlock"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            Foreground="Black"
+                            Text="Ne postoje kreirani oglasi za ovaj period."
+                            Visibility="{Binding NoDataVisibility}" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="3" Margin="0,70,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="280" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <lvc:PieChart
-                    x:Name="offerRequestPieChart"
-                    Grid.Column="0"
-                    Width="250"
-                    Height="250"
-                    Margin="0,0,20,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Cursor="Hand"
-                    Series="{Binding OfferRequestPieSeries}"
-                    TooltipPosition="Center"
-                    Visibility="{Binding OfferRequestPieChartVisibility}" />
 
-                <ScrollViewer
-                    Grid.Column="1"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Disabled">
-                    <lvc:CartesianChart
-                        x:Name="categoryBarChart"
-                        Width="700"
-                        Height="250"
-                        Series="{Binding CategoryBarSeries}"
-                        Visibility="{Binding CategoryBarChartVisibility}"
-                        XAxes="{Binding CategoryXAxes}"
-                        YAxes="{Binding CategoryYAxes}" />
-                </ScrollViewer>
-
-                <TextBlock
-                    x:Name="noDataTextBlock"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="22"
-                    Foreground="Black"
-                    Text="Ne postoje kreirani oglasi za ovaj period."
-                    Visibility="{Binding NoDataVisibility}" />
-            </Grid>
-
-            <Grid
-                Grid.Row="3"
-                Margin="0,70,0,0"
-                HorizontalAlignment="Center">
                 <DataGrid
                     x:Name="categoryDataGrid"
-                    MaxHeight="180"
-                    HorizontalAlignment="Center"
+                    Grid.Column="0"
+                    MaxHeight="200"
+                    Margin="30,0,15,0"
+                    HorizontalAlignment="Stretch"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
+                    CanUserResizeColumns="False"
                     FontSize="16"
                     HeadersVisibility="Column"
                     HorizontalScrollBarVisibility="Disabled"
@@ -179,26 +217,217 @@
                     ItemsSource="{Binding CategoryData}"
                     RowHeight="38"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Visibility="{Binding CategoryDataGridVisibility}">
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F0F2F5" />
+                            <Setter Property="Foreground" Value="#1C1E21" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="Padding" Value="12,8,12,8" />
+                            <Setter Property="BorderBrush" Value="#DDDFE2" />
+                            <Setter Property="BorderThickness" Value="0,0,1,1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="12,0,12,0" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#000000" />
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+                    </DataGrid.CellStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="#1C1E21" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#DCE8D8" />
+                                    <Setter Property="Foreground" Value="#123B63" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            Width="250"
+                            Width="*"
                             Binding="{Binding Category}"
-                            Header="Kategorija" />
+                            Header="Kategorija">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Left" />
+                                    <Setter Property="Margin" Value="12,0,0,0" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
                             Width="Auto"
                             Binding="{Binding OfferCount}"
-                            Header="Nudi pomoć" />
+                            Header="Nudi pomoć">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
                             Width="Auto"
                             Binding="{Binding RequestCount}"
-                            Header="Traži pomoć" />
+                            Header="Traži pomoć">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
                             Width="Auto"
                             Binding="{Binding Sum}"
-                            Header="Ukupno" />
+                            Header="Ukupno">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+                <DataGrid
+                    x:Name="categoryActiveAdsDataGrid"
+                    Grid.Column="1"
+                    MaxHeight="200"
+                    Margin="15,0,30,0"
+                    HorizontalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserResizeColumns="False"
+                    FontSize="16"
+                    HeadersVisibility="Column"
+                    HorizontalScrollBarVisibility="Disabled"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding CategoryActiveAdsData}"
+                    RowHeight="38"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F0F2F5" />
+                            <Setter Property="Foreground" Value="#1C1E21" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="Padding" Value="12,8,12,8" />
+                            <Setter Property="BorderBrush" Value="#DDDFE2" />
+                            <Setter Property="BorderThickness" Value="0,0,1,1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="12,0,12,0" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#000000" />
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+                    </DataGrid.CellStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="#1C1E21" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#DCE8D8" />
+                                    <Setter Property="Foreground" Value="#123B63" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Category}"
+                            Header="Kategorija">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Left" />
+                                    <Setter Property="Margin" Value="12,0,0,0" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn
+                            Width="Auto"
+                            Binding="{Binding ActiveAdsCount}"
+                            Header="Trenutno aktivni oglasi">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -212,7 +441,7 @@
 
             <Grid
                 Grid.Row="5"
-                Margin="30,15,30,40"
+                Margin="30,15,0,40"
                 HorizontalAlignment="Center">
                 <DataGrid
                     x:Name="adsDataGrid"
@@ -220,54 +449,184 @@
                     VerticalAlignment="Top"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
-                    FontSize="20"
+                    CanUserResizeColumns="False"
+                    FontSize="18"
                     HeadersVisibility="Column"
                     IsReadOnly="True"
                     ItemsSource="{Binding Ads}"
-                    RowHeight="40"
+                    RowHeight="38"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     SelectionMode="Single"
                     SelectionUnit="FullRow">
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F0F2F5" />
+                            <Setter Property="Foreground" Value="#1C1E21" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="Padding" Value="12,8,12,8" />
+                            <Setter Property="BorderBrush" Value="#DDDFE2" />
+                            <Setter Property="BorderThickness" Value="0,0,1,1" />
+                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="12,0,12,0" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#000000" />
+                            <Setter Property="Background" Value="Transparent" />
                         </Style>
                     </DataGrid.CellStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="#1C1E21" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="#DCE8D8" />
+                                    <Setter Property="Foreground" Value="#123B63" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="*"
                             Binding="{Binding Author.Name}"
-                            Header="Ime stanara" />
+                            Header="Ime stanara">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Left" />
+                                    <Setter Property="Margin" Value="12,0,0,0" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
                             Width="*"
                             Binding="{Binding Author.Surname}"
-                            Header="Prezime stanara" />
+                            Header="Prezime stanara">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Left" />
+                                    <Setter Property="Margin" Value="12,0,0,0" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
-                            Width="Auto"
+                            Width="*"
                             Binding="{Binding Type, Converter={StaticResource AdTypeToStringConverter}}"
-                            Header="Tip pomoći" />
+                            Header="Tip pomoći">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
-                            Width="Auto"
+                            Width="*"
                             Binding="{Binding StartDate, StringFormat='dd.MM.yyyy.'}"
-                            Header="Početni datum" />
+                            Header="Početni datum">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
-                            Width="Auto"
+                            Width="*"
                             Binding="{Binding EndDate, StringFormat='dd.MM.yyyy.'}"
-                            Header="Krajnji datum" />
+                            Header="Krajnji datum">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
-                            Width="Auto"
+                            Width="*"
                             Binding="{Binding Category, Converter={StaticResource AdCategoryToStringConverter}}"
-                            Header="Kategorija" />
+                            Header="Kategorija">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn
-                            Width="Auto"
+                            Width="*"
                             Binding="{Binding Status, Converter={StaticResource AdStatusToStringConverter}}"
-                            Header="Status" />
+                            Header="Status">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                            <Setter Property="Foreground" Value="#123B63" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
 
-            <Grid Grid.Row="6" Margin="25,30,25,0">
+            <Grid Grid.Row="6" Margin="25,30,25,50">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -276,11 +635,13 @@
 
                 <Border
                     Grid.Column="0"
-                    Width="200"
+                    Width="220"
                     Height="200"
                     Margin="0,0,30,0"
-                    BorderBrush="Black"
-                    BorderThickness="2">
+                    Background="#BAD7F5"
+                    BorderBrush="#1F2A44"
+                    BorderThickness="2"
+                    CornerRadius="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -290,7 +651,9 @@
                         <Grid Grid.Row="0" HorizontalAlignment="Left">
                             <TextBlock
                                 Margin="15,15,0,0"
-                                FontSize="20"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="#1F2A44"
                                 Text="Broj trenutno&#x0a;aktivnih oglasa" />
                         </Grid>
 
@@ -300,7 +663,9 @@
                             VerticalAlignment="Center">
                             <TextBlock
                                 x:Name="activeAdsTextBlock"
-                                FontSize="40"
+                                FontSize="48"
+                                FontWeight="Bold"
+                                Foreground="#1F2A44"
                                 Text="{Binding ActiveAdsCount}" />
                         </Grid>
                     </Grid>
@@ -308,11 +673,13 @@
 
                 <Border
                     Grid.Column="1"
-                    Width="200"
+                    Width="220"
                     Height="200"
                     Margin="0,0,30,0"
-                    BorderBrush="Black"
-                    BorderThickness="2">
+                    Background="#BAD7F5"
+                    BorderBrush="#1F2A44"
+                    BorderThickness="2"
+                    CornerRadius="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -322,7 +689,9 @@
                         <Grid Grid.Row="0" HorizontalAlignment="Left">
                             <TextBlock
                                 Margin="15,15,0,0"
-                                FontSize="20"
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="#1F2A44"
                                 Text="Broj trenutno&#x0a;arhiviranih oglasa" />
                         </Grid>
 
@@ -332,7 +701,9 @@
                             VerticalAlignment="Center">
                             <TextBlock
                                 x:Name="archivedAdsTextBlock"
-                                FontSize="40"
+                                FontSize="48"
+                                FontWeight="Bold"
+                                Foreground="#1F2A44"
                                 Text="{Binding ArchivedAdsCount}" />
                         </Grid>
                     </Grid>
@@ -340,11 +711,13 @@
 
                 <Border
                     Grid.Column="2"
-                    Width="500"
+                    Width="420"
                     Height="200"
                     Margin="0,0,0,0"
-                    BorderBrush="Black"
-                    BorderThickness="2">
+                    Background="#BAD7F5"
+                    BorderBrush="#1F2A44"
+                    BorderThickness="2"
+                    CornerRadius="5">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -354,8 +727,10 @@
                         <Grid Grid.Row="0" HorizontalAlignment="Left">
                             <TextBlock
                                 Margin="15,15,0,0"
-                                FontSize="20"
-                                Text="Stanar koji je najviše pomogao odnsosno koji&#x0a;je ponudio najviše pomoći ostalima" />
+                                FontSize="18"
+                                FontWeight="SemiBold"
+                                Foreground="#1F2A44"
+                                Text="Stanar koji je najviše pomogao&#x0a;ponudio pomoći ostalima" />
                         </Grid>
 
                         <Grid
@@ -364,61 +739,13 @@
                             VerticalAlignment="Center">
                             <TextBlock
                                 x:Name="mostHelpfulResidentTextBlock"
-                                FontSize="40"
+                                FontSize="32"
+                                FontWeight="Bold"
+                                Foreground="#1F2A44"
                                 Text="{Binding MostHelpfulResident, Converter={StaticResource UserToNameSurnameConverter}}" />
                         </Grid>
                     </Grid>
                 </Border>
-            </Grid>
-
-            <Grid Grid.Row="7">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0">
-                        <TextBlock
-                            Margin="25,30,0,20"
-                            FontSize="25"
-                            Text="Kategorije" />
-                    </Grid>
-
-                    <DataGrid
-                        x:Name="categoryActiveAdsDataGrid"
-                        Grid.Row="1"
-                        MaxHeight="180"
-                        Margin="35,0,0,20"
-                        HorizontalAlignment="Left"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False"
-                        FontSize="16"
-                        HeadersVisibility="Column"
-                        HorizontalScrollBarVisibility="Disabled"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding CategoryActiveAdsData}"
-                        RowHeight="38"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                Width="250"
-                                Binding="{Binding Category}"
-                                Header="Kategorija" />
-                            <DataGridTextColumn
-                                Width="Auto"
-                                Binding="{Binding ActiveAdsCount}"
-                                Header="Trenutno aktivni oglasi" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
             </Grid>
         </Grid>
     </ScrollViewer>

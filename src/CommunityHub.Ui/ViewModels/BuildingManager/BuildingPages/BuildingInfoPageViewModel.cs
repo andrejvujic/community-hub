@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Application.MappersDto.Buildings;
+using System.Windows.Input;
+using CommunityHub.Ui.Helpers.Commands;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -19,6 +21,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
+            PreviousImageCommand = new RelayCommand<object?>(_ => PreviousImage());
+            NextImageCommand = new RelayCommand<object?>(_ => NextImage());
         }
 
         private int _currentImageIndex = 0;
@@ -58,6 +62,9 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 return $"{CurrentImageIndex + 1} / {BuildingDto.Images.Count}";
             }
         }
+        
+        public ICommand PreviousImageCommand { get; }
+        public ICommand NextImageCommand { get; }
 
         public void NextImage()
         {

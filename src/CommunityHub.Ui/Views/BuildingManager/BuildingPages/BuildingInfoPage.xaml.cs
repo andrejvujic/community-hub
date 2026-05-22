@@ -23,7 +23,5 @@ namespace CommunityHub.Ui.Views.BuildingManager
             if (homeWindow != null)
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
         }
-        private void PreviousImage_Click(object sender, MouseButtonEventArgs e) => _viewModel.PreviousImage();
-        private void NextImage_Click(object sender, MouseButtonEventArgs e) => _viewModel.NextImage();
     }
 }

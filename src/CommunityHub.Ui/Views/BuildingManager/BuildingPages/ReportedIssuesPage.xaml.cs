@@ -4,7 +4,6 @@ using CommunityHub.Application.Domain.Buildings;
 using System.Windows.Input;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages;
-using CommunityHub.Application.Services.Dtos.Issues;
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 {
@@ -16,7 +15,6 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             InitializeComponent();
             _viewModel = new ReportedIssuesPageViewModel(user, building);
             DataContext = _viewModel;
-            _viewModel.LoadReportedIssues();
         }
         private void LeftArrow_Click(object sender, MouseButtonEventArgs e)
         {
@@ -24,18 +22,6 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             if (homeWindow != null)
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
-        }
-        private void SolveIssue_Click(object sender, MouseButtonEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Da li želite da označite ovaj problem kao rešen?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.No) return;
-
-            var reportedIssue = (sender as Grid)?.DataContext as IssueDto;
-
-            if (reportedIssue == null) return;
-            
-            _viewModel.MarkIssueAsResolved(reportedIssue);
         }
     }
 }
