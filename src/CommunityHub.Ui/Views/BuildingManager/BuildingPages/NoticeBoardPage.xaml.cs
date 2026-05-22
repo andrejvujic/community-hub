@@ -22,9 +22,5 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             if (homeWindow != null)
                 homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
         }
-        private void NoticeBoardPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            _viewModel.LoadPageData();
-        }
     }
 }

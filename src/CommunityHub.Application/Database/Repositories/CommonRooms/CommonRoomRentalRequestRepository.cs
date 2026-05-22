@@ -167,7 +167,8 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
                    common_room_rental_request.common_room_id = common_room.id
                    INNER JOIN users resident ON
                    common_room_rental_request.resident_id = resident.id
-                   WHERE common_room.building_id = @building_id;"
+                   WHERE common_room.building_id = @building_id
+                   ORDER BY common_room_rental_request_id;"
             )
             .AddParameter("building_id", buildingId);
 

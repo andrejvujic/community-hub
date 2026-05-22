@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Buildings;
@@ -96,14 +97,18 @@ namespace CommunityHub.Ui.Views.BuildingManager
             var apartmentsPanel = CreateApartmentsPanel();
             var contentRow = CreateFloorContentRow(apartmentsPanel);
 
-            return new GroupBox
+            var groupBox = new GroupBox
             {
                 Header = $"Sprat {number} - stanovi",
                 Tag = number,
+                FontSize = 14,
                 Margin = new Thickness(15, 10, 15, 20),
                 Height = 140,
                 Content = contentRow
             };
+
+            groupBox.Style = (Style)FindResource("FloorGroupBoxStyle");
+            return groupBox;
         }
         private StackPanel CreateApartmentsPanel()
         {
@@ -167,19 +172,27 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             return new Button
             {
+                Style = null,
                 Content = "+",
                 Width = 30,
                 Height = 30,
-                Margin = new Thickness(4, 0, 0, 0)
+                Margin = new Thickness(4, 0, 0, 0),
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0F5AA6")),
+                Foreground = new SolidColorBrush(Colors.White),
+                Cursor = Cursors.Hand
             };
         }
         private Button RemoveApartmentButton()
         {
             return new Button
             {
+                Style = null,
                 Content = "-",
                 Width = 30,
                 Height = 30,
+                Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0F5AA6")),
+                Foreground = new SolidColorBrush(Colors.White),
+                Cursor = Cursors.Hand
             };
         }
         private Grid CreateFloorContentRow(StackPanel apartmentsPanel)
@@ -203,10 +216,9 @@ namespace CommunityHub.Ui.Views.BuildingManager
             if (MessageBox.Show("Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 NavigationService.GoBack();
         }
-
         private void MarkApartmentTextBox(TextBox textBox, bool isValid)
         {
-            textBox.BorderBrush = isValid ? SystemColors.ControlDarkBrush : Brushes.Red;
+            textBox.BorderBrush = isValid ? SystemColors.ControlDarkBrush : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C43D5A")); ;
             textBox.BorderThickness = isValid ? new Thickness(1) : new Thickness(2);
         }
         private bool ValidateApartmentTextBox(TextBox textBox)

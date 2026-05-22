@@ -5,14 +5,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="ApartmentMembershipsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
-    Loaded="ApartmentMembershipsPage_Loaded"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
-    <Grid Margin="10,25,40,0">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Margin="10,25,40,0" Background="{StaticResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -50,63 +58,156 @@
         <Grid Grid.Row="1" Margin="50,0,40,0">
             <DataGrid
                 x:Name="membershipsDataGrid"
-                MaxHeight="400"
-                Margin="0,15,0,0"
+                Height="500"
+                Margin="0,35,0,0"
                 VerticalAlignment="Top"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                FontSize="20"
+                CanUserDeleteRows="False"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="True"
+                FontSize="18"
                 HeadersVisibility="Column"
                 IsReadOnly="True"
                 ItemsSource="{Binding ApartmentMemberships}"
-                RowHeight="40"
+                RowHeight="44"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectionMode="Single"
                 SelectionUnit="FullRow">
 
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F0F2F5" />
+                        <Setter Property="Foreground" Value="#1C1E21" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Padding" Value="12,8,12,8" />
+                        <Setter Property="BorderBrush" Value="#DDDFE2" />
+                        <Setter Property="BorderThickness" Value="0,0,1,1" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Padding" Value="12,0,12,0" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="BorderBrush" Value="#000000" />
+                        <Setter Property="Background" Value="Transparent" />
                     </Style>
                 </DataGrid.CellStyle>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Foreground" Value="#1C1E21" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="#DCE8D8" />
+                                <Setter Property="Foreground" Value="#123B63" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"
                         Binding="{Binding Resident.Name}"
-                        Header="Ime stanara" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Resident.Surname}"
-                        Header="Prezime stanara" />
-                    <DataGridTextColumn
-                        Width="Auto"
-                        Binding="{Binding Apartment.FloorNumber}"
-                        Header="Broj sprata">
+                        CanUserSort="False"
+                        Header="Ime stanara">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Right" />
+                                <Setter Property="TextAlignment" Value="Left" />
+                                <Setter Property="Margin" Value="12,0,0,0" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
-                        Width="Auto"
+                        Width="*"
+                        Binding="{Binding Resident.Surname}"
+                        CanUserSort="False"
+                        Header="Prezime stanara">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Left" />
+                                <Setter Property="Margin" Value="12,0,0,0" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Apartment.FloorNumber}"
+                        CanUserSort="False"
+                        Header="Broj sprata">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn
+                        Width="*"
                         Binding="{Binding Apartment.Number}"
+                        CanUserSort="False"
                         Header="Broj stana">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Right" />
+                                <Setter Property="TextAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="*"
                         Binding="{Binding AcceptanceDate, StringFormat='dd.MM.yyyy.'}"
+                        CanUserSort="False"
                         Header="Datum učlanjenja">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Right" />
+                                <Setter Property="TextAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>

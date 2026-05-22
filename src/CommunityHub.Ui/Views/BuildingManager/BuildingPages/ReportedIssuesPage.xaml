@@ -6,15 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="ReportedIssuesPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <conv:IssuePriorityToStringConverter x:Key="ReportedIssuePriorityToStringConverter" />
-        <conv:IssueStatusToStringConverter x:Key="ReportedIssueStatusToStringConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:IssuePriorityToStringConverter x:Key="ReportedIssuePriorityToStringConverter" />
+            <conv:IssueStatusToStringConverter x:Key="ReportedIssueStatusToStringConverter" />
+
+            <Style x:Key="IssueItemStyle" TargetType="Border">
+                <Setter Property="Background" Value="#FCFBF7" />
+                <Setter Property="BorderBrush" Value="#A8A39B" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                        <Setter Property="BorderBrush" Value="#0F1F35" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
 
     <ScrollViewer>
@@ -53,12 +70,16 @@
 
                 <Button
                     Grid.Column="2"
-                    Padding="5"
+                    Padding="14,6,14,6"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
+                    Background="#0F5AA6"
+                    BorderBrush="#0F5AA6"
                     Content="Generiši izveštaj"
                     Cursor="Hand"
-                    FontSize="10" />
+                    FontSize="15"
+                    FontWeight="SemiBold"
+                    Foreground="White" />
             </Grid>
 
             <Grid Grid.Row="1" Margin="30,30,0,0">
@@ -83,8 +104,10 @@
                                     Width="480"
                                     Height="200"
                                     Margin="0,20,15,0"
-                                    BorderBrush="Black"
-                                    BorderThickness="2">
+                                    BorderThickness="1"
+                                    ClipToBounds="True"
+                                    CornerRadius="12"
+                                    Style="{StaticResource IssueItemStyle}">
                                     <Grid Margin="15,15,15,15">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
@@ -143,31 +166,46 @@
                                                 <TextBlock FontSize="17" Text="{Binding Priority, Converter={StaticResource ReportedIssuePriorityToStringConverter}, StringFormat='Prioritet: {0}'}" />
                                             </Grid>
 
-                                            <Grid
+                                            <Button
                                                 Grid.Column="1"
+                                                Padding="6"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
-                                                Cursor="Hand"
-                                                MouseLeftButtonDown="SolveIssue_Click">
-                                                <TextBlock Padding="5" FontSize="17">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Status}" Value="Open">
-                                                                    <Setter Property="Visibility" Value="Visible" />
-                                                                </DataTrigger>
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.SolveIssueCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"
+                                                Cursor="Hand">
 
-                                                                <Trigger Property="IsMouseOver" Value="True">
-                                                                    <Setter Property="Background" Value="LightGray" />
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Open">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#FFFFFF" />
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+
+                                                <TextBlock FontSize="17">
                                                     <Run FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" Text="&#xf0ad;" />
                                                     <Run Text=" Popravi" />
                                                 </TextBlock>
-                                            </Grid>
+                                            </Button>
                                         </Grid>
                                     </Grid>
                                 </Border>

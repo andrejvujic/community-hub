@@ -1,10 +1,12 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Services.Dtos.Issues;
-using CommunityHub.Application.Services.Issues;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Application.Services.Dtos.Issues;
+using CommunityHub.Application.Services.Issues;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -17,12 +19,16 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
         public Building Building { get; }
         public BuildingDto BuildingDto { get; }
         public ObservableCollection<IssueDto> ReportedIssues { get; } = [];
+        public RelayCommand<IssueDto> SolveIssueCommand { get; }
 
         public ReportedIssuesPageViewModel(User user, Building building)
         {
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
+
+            SolveIssueCommand = new RelayCommand<IssueDto>(SolveIssue);
+            LoadReportedIssues();
         }
         public string StreetInfo
         {
@@ -41,6 +47,22 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
         {
             _issueService.MarkIssueAsResolved(issue);
             LoadReportedIssues();
+        }
+        private void SolveIssue(IssueDto? issue)
+        {
+            if (issue == null)
+                return;
+
+            MessageBoxResult result = MessageBox.Show(
+                "Da li želite da označite ovaj problem kao rešen?",
+                "Potvrda",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.No)
+                return;
+
+            MarkIssueAsResolved(issue);
         }
     }
 }
