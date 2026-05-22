@@ -1,7 +1,9 @@
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
 using System.Globalization;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace CommunityHub.Ui.ViewModels.Citizen
@@ -18,6 +20,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         private string _currentTime = "";
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? WizardHelperRequested;
 
         public CitizenDto? CurrentUser
         {
@@ -52,11 +55,15 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             }
         }
 
+        public ICommand WizardHelperCommand { get; }
+
         public MainMenuViewModel(long userId)
         {
             _userId = userId;
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += Timer_Tick;
+
+            WizardHelperCommand = new RelayCommand<object>(_ => WizardHelperRequested?.Invoke(this, EventArgs.Empty));
 
             LoadCurrentUser();
             UpdateDateTime();
