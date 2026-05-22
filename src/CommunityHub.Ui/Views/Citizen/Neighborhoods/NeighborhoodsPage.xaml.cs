@@ -1,4 +1,3 @@
-using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,17 +7,25 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
     public partial class NeighborhoodsPage : Page
     {
         private NeighborhoodsViewModel? _viewModel;
-        private long _userId;
+        private readonly long _userId;
 
         public NeighborhoodsPage(long userId)
         {
             InitializeComponent();
             _userId = userId;
-            _viewModel = new NeighborhoodsViewModel(userId);
-            this.DataContext = _viewModel;
+
+            Loaded += (_, _) =>
+            {
+                _viewModel = new NeighborhoodsViewModel(userId);
+                _viewModel.SearchRequested += (_, _) => HandleSearch();
+                _viewModel.RequestAccessRequested += (_, _) => HandleRequestAccess();
+                _viewModel.CoordinatorRequested += (_, _) => HandleCoordinator();
+                _viewModel.MyAccessRequestsRequested += (_, _) => HandleMyAccessRequests();
+                DataContext = _viewModel;
+            };
         }
 
-        private void SearchButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void HandleSearch()
         {
             var window = new SearchCriteriaWindow(_viewModel?.LastSearchParameters);
             if (window.ShowDialog() == true)
@@ -27,37 +34,50 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             }
         }
 
-        private void RequestAccessButton_Click(object sender, RoutedEventArgs e)
+        private void HandleRequestAccess()
         {
-            var selected = NeighborhoodsGrid.SelectedItem as NeighborhoodDto;
-            if (selected == null)
+            if (_viewModel?.SelectedNeighborhood == null)
             {
                 MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            var dlg = new RequestNeighborhoodAccessWindow(selected.Name ?? string.Empty);
+            var dlg = new RequestNeighborhoodAccessWindow(_viewModel.SelectedNeighborhood.Name ?? string.Empty);
             dlg.Owner = Window.GetWindow(this);
-            if (!(dlg.ShowDialog() == true && dlg.Confirmed)) return;
+            if (dlg.ShowDialog() != true || !dlg.Confirmed)
+                return;
 
-            if (_viewModel?.RequestNeighborhoodAccess(selected) == true)
+            if (_viewModel.RequestNeighborhoodAccess(_viewModel.SelectedNeighborhood))
             {
-                if (_viewModel.CurrentUser?.Membership != null)
-                {
-                    MessageBox.Show("Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                var message = _viewModel.GetAccessResultMessage(_viewModel.SelectedNeighborhood);
+                MessageBox.Show(message, "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else if (!string.IsNullOrEmpty(_viewModel?.ErrorMessage))
+            else if (!string.IsNullOrEmpty(_viewModel.ErrorMessage))
             {
                 MessageBox.Show(_viewModel.ErrorMessage, "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void MyAccessRequestsButton_Click(object sender, RoutedEventArgs e)
+        private void HandleCoordinator()
+        {
+            if (_viewModel?.SelectedNeighborhood == null)
+            {
+                MessageBox.Show("Izaberite kvart.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var coordinatorInfo = _viewModel.GetCoordinatorInfo(_viewModel.SelectedNeighborhood);
+            if (coordinatorInfo == null)
+            {
+                MessageBox.Show("Ovaj kvart nema koordinatora.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(coordinatorInfo, "Koordinator", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void HandleMyAccessRequests()
         {
             var wnd = new MyAccessRequestsWindow(_userId);
             wnd.Owner = Window.GetWindow(this);

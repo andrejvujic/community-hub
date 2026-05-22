@@ -9,6 +9,12 @@
       Language="sr-Latn-RS"
       Title="Kvartovi">
 
+    <Page.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SearchCommand}" />
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding AccessOrCoordinatorCommand}" />
+        <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding MyAccessRequestsCommand}" />
+    </Page.InputBindings>
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -38,7 +44,7 @@
                     <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Button>
             </Grid>
-            <Button Grid.Column="2" Content="Parametri pretrage (Ctrl+S)" Height="34" Style="{StaticResource CompactButton}" Click="SearchButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextBrush}"/>
+            <Button Grid.Column="2" Content="Parametri pretrage (Ctrl+S)" Height="34" Style="{StaticResource CompactButton}" Command="{Binding SearchCommand}" HorizontalAlignment="Stretch" Foreground="{StaticResource TextBrush}"/>
         </Grid>
 
         <Grid Grid.Row="2">
@@ -144,16 +150,16 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="RequestAccessButton_Click"
+                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding AccessOrCoordinatorCommand}"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
 
-                    <Button x:Name="CoordinatorButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}"
+                    <Button x:Name="CoordinatorButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding AccessOrCoordinatorCommand}"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
-                    <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="MyAccessRequestsButton_Click">
+                    <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding MyAccessRequestsCommand}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                             Moji zahtevi za pristup<LineBreak/>(Ctrl + 2)
                         </TextBlock>
