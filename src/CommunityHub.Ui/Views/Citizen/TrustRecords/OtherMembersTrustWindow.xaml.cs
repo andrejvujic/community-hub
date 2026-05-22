@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using CommunityHub.Ui.ViewModels.Citizen.TrustRecords;
 
 namespace CommunityHub.Ui.Views.Citizen.TrustRecords
@@ -11,20 +12,15 @@ namespace CommunityHub.Ui.Views.Citizen.TrustRecords
         {
             InitializeComponent();
             _viewModel = new OtherMembersTrustViewModel(userId, neighborhoodId);
+            _viewModel.CloseRequested += (_, _) => Close();
             DataContext = _viewModel;
         }
 
-        private void Header_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
+            if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
-            }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }
+
