@@ -7,6 +7,7 @@ using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Application.Services.Notifications;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -55,15 +56,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             );
 
             _notificationService.Create(
-                Notification.Create(
-                    Ad.AuthorId,
-                    "Nova rezervacija",
-                    "Napravljena je nova rezervacija za vaš oglas.",
-                    NotificationType.AdEvent,
-                    details: new AdEventNotificationDetails(
+                new NotificationDto(
+                    recipientId: Ad.AuthorId,
+                    title: "Nova rezervacija",
+                    message: "Napravljena je nova rezervacija za vaš oglas.",
+                    type: NotificationType.AdEvent,
+                    details: new AdEventNotificationDetailsDto(
                         Ad.Id,
                         AdEventType.AdTimeSlotsReserved
-                    )
+                    ),
+                    sentAt: DateTime.Now
                 )
             );
         }

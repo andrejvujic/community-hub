@@ -40,7 +40,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             var authorIds = ads.Select(ad => ad.AuthorId).Distinct();
 
             var notifications = authorIds.Select(
-                authorId => Notification.Create(
+                authorId => new Notification(
                         recipientId: authorId,
                         title: "Pronađen kompatibilan oglas",
                         message: "Na oglasnoj tabli se pojavio oglas sa odgovarajućom kategorijom i podudarnim datumima.",
@@ -48,7 +48,8 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
                         details: new AdEventNotificationDetails(
                             referenceAd.Id,
                             AdEventType.MatchingAdCreated
-                        )
+                        ),
+                        sentAt: DateTime.Now
                 )
             ).ToList();
 

@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Application.Services.Notifications;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications.Details;
@@ -16,7 +17,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
         private readonly long _userId;
         private readonly NotificationService _notificationService;
 
-        public ObservableCollection<Notification> Notifications { get; } = new();
+        public ObservableCollection<NotificationDto> Notifications { get; } = new();
         public bool HasNotifications => Notifications.Count > 0;
 
         public NotificationsPage(long userId)
@@ -44,7 +45,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
             OnPropertyChanged(nameof(HasNotifications));
         }
 
-        private void OpenNotificationDetailsPage(Notification notification)
+        private void OpenNotificationDetailsPage(NotificationDto notification)
         {
             switch (notification.Type)
             {
@@ -61,7 +62,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not Notification notification) return;
+            if (element.DataContext is not NotificationDto notification) return;
 
             if (!notification.IsRead)
                 _notificationService.MarkAsRead(notification);

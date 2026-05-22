@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Notifications;
@@ -13,7 +14,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
     {
         private readonly AdEventNotificationDetailsViewModel _viewModel;
 
-        public AdEventNotificationDetailsPage(long userId, Notification notification)
+        public AdEventNotificationDetailsPage(long userId, NotificationDto notification)
         {
             InitializeComponent();
             _viewModel = new AdEventNotificationDetailsViewModel(userId, notification);

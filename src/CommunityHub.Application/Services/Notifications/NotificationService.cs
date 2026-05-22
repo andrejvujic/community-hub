@@ -1,28 +1,36 @@
 ﻿using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
+using CommunityHub.Application.MappersDto.Notifications;
+using CommunityHub.Application.Services.Dtos.Notifications;
 
 namespace CommunityHub.Application.Services.Notifications
 {
-    public class NotificationService
+    public class NotificationService: BaseService<Notification, NotificationDto>
     {
         private readonly INotificationRepository _notificationRepository;
 
-        public NotificationService(INotificationRepository notificationRepository)
+        public NotificationService(INotificationRepository notificationRepository) 
+            : base(mapper: new NotificationMapper())
         {
             _notificationRepository = notificationRepository;
         }
 
-        public void Create(Notification notification) => _notificationRepository.Create(notification);
+        public void Create(NotificationDto notification)
+            => _notificationRepository.Create(
+                MapToEntity(notification)    
+            );
 
-        public List<Notification> GetNotificationsForUser(
+        public List<NotificationDto> GetNotificationsForUser(
             long userId,
             NotificationOrder order = NotificationOrder.SentAtDescending,
             NotificationStatus? status = null
-        ) => _notificationRepository.GetByUserId(
-                userId,
-                order: order,
-                status: status
+        ) => MapToDto(
+                _notificationRepository.GetByUserId(
+                    userId,
+                    order: order,
+                    status: status
+                )
             );
 
         public int GetNotificationCountForUser(long userId, NotificationStatus? status = null)
@@ -34,11 +42,14 @@ namespace CommunityHub.Application.Services.Notifications
             return notifications.Count;
         }
 
-        public Notification MarkAsRead(Notification notification)
+        public NotificationDto MarkAsRead(NotificationDto notification)
         {
-            notification.MarkAsRead();
-            _notificationRepository.Update(notification);
-            return notification;
+            var targetNotification = MapToEntity(notification);
+
+            targetNotification.MarkAsRead();
+            _notificationRepository.Update(targetNotification);
+
+            return MapToDto(targetNotification);
         }
     }
 }
