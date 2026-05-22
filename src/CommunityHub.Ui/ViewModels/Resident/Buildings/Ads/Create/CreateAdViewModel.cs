@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -12,10 +13,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
     {
         public PublishmentValidationResult ValidationResult { get; }
 
-        private readonly Ad? _ad;
-        public Ad PublishedAd => _ad ?? throw new InvalidOperationException("Submission wasn't successful.");
+        private readonly AdDto? _ad;
+        public AdDto PublishedAd => _ad ?? throw new InvalidOperationException("Submission wasn't successful.");
 
-        public SubmissionResult(PublishmentValidationResult validationResult, Ad? ad = null)
+        public SubmissionResult(PublishmentValidationResult validationResult, AdDto? ad = null)
         {
             ValidationResult = validationResult;
             _ad = ad;
@@ -58,7 +59,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
             if (!IsFormValid)
                 throw new InvalidOperationException("Invalid form can't be submitted.");
 
-            var ad = new Ad(
+            var ad = new AdDto(
                 authorId: UserId,
                 buildingId: BuildingId,
                 type: SelectedType!.Value,

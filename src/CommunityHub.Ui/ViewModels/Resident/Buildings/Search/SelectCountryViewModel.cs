@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -10,10 +10,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
     {
         private readonly CountryService _countryService = new();
 
-        private readonly Action<Country?> _setCountry;
+        private readonly Action<CountryDto?> _setCountry;
 
-        private Country? _selectedCountry;
-        public Country? SelectedCountry
+        private CountryDto? _selectedCountry;
+        public CountryDto? SelectedCountry
         {
             get => _selectedCountry;
             set
@@ -24,12 +24,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             }
         }
 
-        public ObservableCollection<Country> SearchResults { get; } = new();
+        public ObservableCollection<CountryDto> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;
 
         public SelectCountryViewModel(
-            Action<Country?> setCountry,
-            Country? selectedCountry = null
+            Action<CountryDto?> setCountry,
+            CountryDto? selectedCountry = null
         )
         {
             _setCountry = setCountry;
@@ -62,7 +62,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public bool IsCountrySelected(Country country)
+        public bool IsCountrySelected(CountryDto country)
             => SelectedCountry == country;
 
         public void ResetSelectedCountry()
@@ -71,7 +71,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             _setCountry.Invoke(null);
         }
 
-        public void UpdateSelectedCountry(Country country)
+        public void UpdateSelectedCountry(CountryDto country)
         {
             SelectedCountry = country;
             _setCountry.Invoke(SelectedCountry);

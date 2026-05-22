@@ -1,15 +1,16 @@
-﻿using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Services.Dtos.Apartments;
+using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Application.Domain.Buildings
 {
     public class BuildingMembershipGroup
     {
-        public User Resident;
-        public Building Building { get; set; }
-        public List<ApartmentMembership> Memberships { get; set; } = [];
+        public UserDto Resident;
+        public BuildingDto Building { get; set; }
+        public List<ApartmentMembershipDto> Memberships { get; set; } = [];
 
-        public BuildingMembershipGroup(Building building, User resident)
+        public BuildingMembershipGroup(BuildingDto building, UserDto resident)
         {
             Resident = resident;
             Building = building;

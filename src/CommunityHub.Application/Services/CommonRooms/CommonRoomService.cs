@@ -6,15 +6,17 @@ using CommunityHub.Application.Services.Dtos.CommonRooms;
 
 namespace CommunityHub.Application.Services.CommonRooms
 {
-    public class CommonRoomService
+    public class CommonRoomService: BaseService<CommonRoom, CommonRoomDto>
     {
         private readonly ICommonRoomRepository _commonRoomRepository
             = Injector.CreateInstance<ICommonRoomRepository>();
 
         private readonly CommonRoomMapper _commonRoomMapper = new();
 
-        public List<CommonRoom> GetByBuilding(long buildingId)
-            => _commonRoomRepository.GetByBuilding(buildingId);
+        public CommonRoomService() : base(new CommonRoomMapper()) {}
+
+        public List<CommonRoomDto> GetByBuilding(long buildingId)
+            => MapToDto(_commonRoomRepository.GetByBuilding(buildingId));
 
         public List<CommonRoomDto> GetAllByBuilding(long buildingId)
         {

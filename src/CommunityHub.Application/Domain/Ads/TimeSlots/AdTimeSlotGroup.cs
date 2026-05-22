@@ -1,11 +1,13 @@
-﻿namespace CommunityHub.Application.Domain.Ads.TimeSlots
+﻿using CommunityHub.Application.Services.Dtos.Ads;
+
+namespace CommunityHub.Application.Domain.Ads.TimeSlots
 {
     public class AdTimeSlotGroup
     {
         public DateTime Day { get; }
-        public IReadOnlyList<AdTimeSlot> TimeSlots { get; }
+        public IReadOnlyList<AdTimeSlotDto> TimeSlots { get; }
 
-        public AdTimeSlotGroup(DateTime day, List<AdTimeSlot> timeSlots) {
+        public AdTimeSlotGroup(DateTime day, List<AdTimeSlotDto> timeSlots) {
             Day = day;
             TimeSlots = timeSlots.AsReadOnly();
         }

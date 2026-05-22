@@ -2,16 +2,20 @@
 using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 using CommunityHub.Application.MappersDto.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
-using System.Collections.ObjectModel;
 
 namespace CommunityHub.Application.Services.Apartments
 {
-    public class ApartmentMembershipService
+    public class ApartmentMembershipService : BaseService<ApartmentMembership, ApartmentMembershipDto>
     {
         private readonly IApartmentMembershipRepository _apartmentMembershipRepository = Injector.CreateInstance<IApartmentMembershipRepository>();
         private readonly ApartmentMembershipMapper _apartmentMembershipMapper = new();
-        public List<ApartmentMembership> GetMemberships(long residentId)
-            => _apartmentMembershipRepository.GetByResident(residentId);
+        
+        public ApartmentMembershipService() : base(mapper: new ApartmentMembershipMapper()) { }
+        
+        public List<ApartmentMembershipDto> GetMemberships(long residentId)
+            => MapToDto(
+                _apartmentMembershipRepository.GetByResident(residentId)
+            );
 
         public bool IsMember(long residentId, long apartmentId)
         {

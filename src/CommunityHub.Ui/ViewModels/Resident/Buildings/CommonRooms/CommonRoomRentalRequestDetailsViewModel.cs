@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Services.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,9 +12,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
     {
         private readonly CommonRoomRentalRequestService _commonRentalRequestService = new();
 
-        public CommonRoomRentalRequest Request { get; private set; }
+        public CommonRoomRentalRequestDto Request { get; private set; }
 
-        public CommonRoomRentalRequestDetailsViewModel(CommonRoomRentalRequest request)
+        public CommonRoomRentalRequestDetailsViewModel(CommonRoomRentalRequestDto request)
         {
             Request = request;
         }

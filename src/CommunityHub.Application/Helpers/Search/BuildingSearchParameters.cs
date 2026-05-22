@@ -1,24 +1,22 @@
-﻿using CommunityHub.Application.Domain.Addresses;
-
-namespace CommunityHub.Application.Helpers.Search
+﻿namespace CommunityHub.Application.Helpers.Search
 {
 
     public class BuildingSearchParameters
     {
-        public Country? Country { get; }
-        public City? City { get; }
+        public long? CountryId { get; }
+        public long? CityId { get; }
         public string StreetName { get; } = string.Empty;
         public string Neighborhood { get; } = string.Empty;
 
         public BuildingSearchParameters(
-            Country? country = null,
-            City? city = null,
+            long? countryId = null,
+            long? cityId = null,
             string? streetName = null,
             string? neighborhood = null
         )
         {
-            Country = country;
-            City = city;
+            CountryId = countryId;
+            CityId = cityId;
             StreetName = streetName ?? string.Empty;
             Neighborhood = neighborhood ?? string.Empty;
         }
@@ -29,8 +27,8 @@ namespace CommunityHub.Application.Helpers.Search
         {
             return new Dictionary<string, object?>
             {
-                { "country_id", Country?.Id },
-                { "city_id", City?.Id },
+                { "country_id", CountryId },
+                { "city_id", CityId },
                 { "street_name", StreetName },
                 { "neighborhood", Neighborhood }
             };

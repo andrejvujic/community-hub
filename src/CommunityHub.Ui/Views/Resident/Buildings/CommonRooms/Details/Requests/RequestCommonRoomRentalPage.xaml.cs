@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Services.CommonRooms;
+﻿using CommunityHub.Application.Services.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
     {
         private readonly RequestCommonRoomRentalViewModel _viewModel;
 
-        public RequestCommonRoomRentalPage(long userId, CommonRoom commonRoom)
+        public RequestCommonRoomRentalPage(long userId, CommonRoomDto commonRoom)
         {
             InitializeComponent();
             _viewModel = new RequestCommonRoomRentalViewModel(userId, commonRoom);

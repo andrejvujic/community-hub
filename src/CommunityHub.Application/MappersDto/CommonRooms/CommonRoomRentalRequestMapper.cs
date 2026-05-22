@@ -10,25 +10,25 @@ namespace CommunityHub.Application.MappersDto.CommonRooms
         private readonly UserMapper _userMapper = new();
         public CommonRoomRentalRequestDto MapToDto(CommonRoomRentalRequest rentalRequest)
         {
-            if (rentalRequest == null) throw new ArgumentNullException(nameof(rentalRequest));
+            if (rentalRequest == null) throw new ArgumentNullException("Couldn't convert null reference to CommonRoomRentalRequestDto");
 
             return new CommonRoomRentalRequestDto(
-                rentalRequest.Id,
-                rentalRequest.CommonRoomId,
-                rentalRequest.CommonRoom != null ? _commonRoomMapper.MapToDto(rentalRequest.CommonRoom) : null,
-                rentalRequest.ResidentId,
-                rentalRequest.Resident != null ? _userMapper.MapToDto(rentalRequest.Resident) : null,
-                rentalRequest.RequestedStartDate,
-                rentalRequest.RequestedEndDate,
-                rentalRequest.ProposedStartDate,
-                rentalRequest.ProposedEndDate,
-                rentalRequest.AssignedDate,
-                rentalRequest.Status
+                id: rentalRequest.Id,
+                commonRoomId: rentalRequest.CommonRoomId,
+                commonRoom: rentalRequest.CommonRoom is not null ? _commonRoomMapper.MapToDto(rentalRequest.CommonRoom) : null,
+                residentId: rentalRequest.ResidentId,
+                resident: rentalRequest.Resident is not null ? _userMapper.MapToDto(rentalRequest.Resident) : null,
+                requestedStartDate: rentalRequest.RequestedStartDate,
+                requestedEndDate: rentalRequest.RequestedEndDate,
+                proposedStartDate: rentalRequest.ProposedStartDate,
+                proposedEndDate: rentalRequest.ProposedEndDate,
+                assignedDate: rentalRequest.AssignedDate,
+                status: rentalRequest.Status
             );
         }
         public CommonRoomRentalRequest MapToDomain(CommonRoomRentalRequestDto dto)
         {
-            if (dto == null) throw new ArgumentNullException(nameof(dto));
+            if (dto == null) throw new ArgumentNullException("Couldn't convert null reference to CommonRoomRentalRequest");
 
             return new CommonRoomRentalRequest(
                 dto.ResidentId,

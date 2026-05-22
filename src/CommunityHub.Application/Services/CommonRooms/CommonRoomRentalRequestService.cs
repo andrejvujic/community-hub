@@ -11,20 +11,27 @@ namespace CommunityHub.Application.Services.CommonRooms
         PendingRequestExists
     }
 
-    public class CommonRoomRentalRequestService
+    public class CommonRoomRentalRequestService : BaseService<CommonRoomRentalRequest, CommonRoomRentalRequestDto>
     {
         private readonly ICommonRoomRentalRequestRepository _rentalRequestRepository 
             = Injector.CreateInstance<ICommonRoomRentalRequestRepository>();
 
         private readonly CommonRoomRentalRequestMapper _rentalRequestMapper = new();
 
-        public void Create(CommonRoomRentalRequest request)
-            => _rentalRequestRepository.Create(request);
+        public CommonRoomRentalRequestService() : base(new  CommonRoomRentalRequestMapper()) { }
 
-        public List<CommonRoomRentalRequest> GetByResidentAndCommonRoom(long residentId, long commonRoomId)
-            => _rentalRequestRepository.GetByResidentAndCommonRoom(residentId, commonRoomId);
+        public void Create(CommonRoomRentalRequestDto request)
+            => _rentalRequestRepository.Create(MapToEntity(request));
 
-        public void Cancel(CommonRoomRentalRequest request)
+        public List<CommonRoomRentalRequestDto> GetByResidentAndCommonRoom(long residentId, long commonRoomId)
+            => MapToDto(
+                    _rentalRequestRepository.GetByResidentAndCommonRoom(
+                        residentId,
+                        commonRoomId
+                    )
+              );
+
+        public void Cancel(CommonRoomRentalRequestDto request)
         {
             if (!request.IsPending)
                 throw new InvalidOperationException("Only pending requests can be cancelled.");
@@ -32,15 +39,16 @@ namespace CommunityHub.Application.Services.CommonRooms
             _rentalRequestRepository.Delete(request.Id);
         }
 
-        public CommonRoomRentalRequest AcceptProposedDateRange(CommonRoomRentalRequest request)
+        public CommonRoomRentalRequestDto AcceptProposedDateRange(CommonRoomRentalRequestDto request)
         {
-            if (!request.HasProposedDateRange)
+            var targetRequest = MapToEntity(request);
+            if (!targetRequest.HasProposedDateRange)
                 throw new InvalidOperationException("Request doesn't have a proposed date range.");
 
-            request.AcceptProposedDateRange();
-            _rentalRequestRepository.Update(request);
+            targetRequest.AcceptProposedDateRange();
+            _rentalRequestRepository.Update(targetRequest);
 
-            return request;
+            return MapToDto(targetRequest);
         }
 
         public RentalRequestValidationResult ValidateRentalRequest(long residentId, long commonRoomId)

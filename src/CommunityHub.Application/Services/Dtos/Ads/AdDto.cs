@@ -22,16 +22,16 @@ namespace CommunityHub.Application.Services.Dtos.Ads
         public DateTime EndDate { get; set; }
 
         public AdDto(
-            long id,
             long authorId,
-            UserDto? author,
             long buildingId,
             AdType type,
             AdCategory category,
             AdStatus status,
             string description,
             DateTime startDate,
-            DateTime endDate
+            DateTime endDate,
+            UserDto? author = null,
+            long id = 0
         )
         {
             Id = id;
@@ -45,5 +45,11 @@ namespace CommunityHub.Application.Services.Dtos.Ads
             StartDate = startDate;
             EndDate = endDate;
         }
+
+        public bool IsOffer => Type is AdType.Offer;
+        public bool IsRequest => Type is AdType.Request;
+
+        public bool IsActive => Status is AdStatus.Active;
+        public bool IsArchived => Status is AdStatus.Archived;
     }
 }

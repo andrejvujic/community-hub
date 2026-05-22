@@ -83,12 +83,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
                 return;
 
             var countryDomain = _countryMapper.MapToDomain(SelectedCountry);
+            /*
             var results = string.IsNullOrWhiteSpace(searchQuery)
                 ? _cityRepository.GetByCountryId(SelectedCountry.Id)
                 : _cityRepository.Search(new CitySearchParameters(countryDomain, searchQuery));
 
             foreach (var city in results)
                 Cities.Add(_cityMapper.MapToDto(city));
+            */
 
             if (SelectedCity == null && Cities.Count > 0)
             {

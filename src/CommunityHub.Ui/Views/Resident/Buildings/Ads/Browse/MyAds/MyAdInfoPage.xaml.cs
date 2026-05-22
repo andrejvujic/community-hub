@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.ComponentModel;
@@ -13,9 +14,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
     {
         private readonly AdService _adService;
 
-        public Ad Ad { get; }
+        public AdDto Ad { get; }
 
-        public MyAdInfoPage(Ad ad)
+        public MyAdInfoPage(AdDto ad)
         {
             _adService = new(
                 Injector.CreateInstance<IAdRepository>(),

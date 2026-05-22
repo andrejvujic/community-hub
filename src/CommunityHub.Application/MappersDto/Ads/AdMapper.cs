@@ -11,16 +11,16 @@ namespace CommunityHub.Application.MappersDto.Ads
             if (ad == null) throw new ArgumentNullException(nameof(ad));
 
             return new AdDto(
-                ad.Id,
-                ad.AuthorId,
-                ad.Author != null ? _userMapper.MapToDto(ad.Author) : null,
-                ad.BuildingId,
-                ad.Type,
-                ad.Category,
-                ad.Status,
-                ad.Description,
-                ad.StartDate,
-                ad.EndDate
+                id: ad.Id,
+                authorId: ad.AuthorId,
+                author: ad.Author != null ? _userMapper.MapToDto(ad.Author) : null,
+                buildingId: ad.BuildingId,
+                type: ad.Type,
+                category: ad.Category,
+                status: ad.Status,
+                description: ad.Description,
+                startDate: ad.StartDate,
+                endDate: ad.EndDate
             );
         }
         public Ad MapToDomain(AdDto dto)
@@ -36,7 +36,7 @@ namespace CommunityHub.Application.MappersDto.Ads
                 dto.Description,
                 dto.StartDate,
                 dto.EndDate,
-                dto.Author != null ? _userMapper.MapToDomain(dto.Author) : null,
+                dto.Author is not null ? _userMapper.MapToDomain(dto.Author) : null,
                 dto.Id
             );
         }

@@ -52,22 +52,5 @@ namespace CommunityHub.Application.Domain.Notifications
             Status = status;
             Details = details;
         }
-
-        public static Notification Create(
-            long recipientId,
-            string title,
-            string message,
-            NotificationType type,
-            NotificationDetails? details = null)
-        {
-            return new Notification(
-                recipientId,
-                title,
-                message,
-                DateTime.Now,
-                type,
-                details: details
-            );
-        }
     }
 }

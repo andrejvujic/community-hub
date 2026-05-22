@@ -1,14 +1,14 @@
-﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Application.Services.Dtos.Images;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 {
     public class BuildingDetailsViewModel : INotifyPropertyChanged
     {
-        public Building Building { get; }
+        public BuildingDto Building { get; }
 
-        public BuildingDetailsViewModel(Building building)
+        public BuildingDetailsViewModel(BuildingDto building)
         {
             Building = building;
         }
@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
             }
         }
 
-        public Image? CurrentImage
+        public ImageDto? CurrentImage
         {
             get
             {

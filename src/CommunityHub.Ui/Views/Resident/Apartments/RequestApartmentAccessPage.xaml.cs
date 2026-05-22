@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Services.Apartments;
+﻿using CommunityHub.Application.Services.Apartments;
+using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments;
@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
     {
         private readonly RequestApartmentAccessViewModel _viewModel;
 
-        public RequestApartmentAccessPage(long userId, Building building)
+        public RequestApartmentAccessPage(long userId, BuildingDto building)
         {
             InitializeComponent();
             _viewModel = new RequestApartmentAccessViewModel(userId, building);

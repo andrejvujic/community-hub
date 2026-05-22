@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
 using System.Windows.Controls;
@@ -10,7 +11,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
     {
         private readonly SelectCountryViewModel _viewModel;
 
-        public SelectCountryPage(Action<Country?> setCountry, Country? selectedCountry = null)
+        public SelectCountryPage(Action<CountryDto?> setCountry, CountryDto? selectedCountry = null)
         {
             InitializeComponent();
             _viewModel = new SelectCountryViewModel(
@@ -37,7 +38,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var element = sender as Grid;
             if (element == null) return;
 
-            var country = element.DataContext as Country;
+            var country = element.DataContext as CountryDto;
             if (country == null) return;
 
             if (_viewModel.IsCountrySelected(country))

@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
@@ -13,7 +14,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
         private readonly long _userId;
         private readonly MyAdTimeSlotsViewModel _viewModel;
 
-        public MyAdTimeSlotsPage(long userId, Ad ad)
+        public MyAdTimeSlotsPage(long userId, AdDto ad)
         {
             _viewModel = new MyAdTimeSlotsViewModel(ad);
             _userId = userId;

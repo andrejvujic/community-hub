@@ -6,13 +6,18 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.Buildings;
 
 namespace CommunityHub.Application.Services.Buildings
 {
-    public class BuildingService
+    public class BuildingService : BaseService<Building, BuildingDto>
     {
         private readonly IBuildingRepository _buildingRepository = Injector.CreateInstance<IBuildingRepository>();
         private readonly BuildingMapper _buildingMapper = new();
 
-        public List<Building> Search(BuildingSearchParameters serachParameters)
-            => _buildingRepository.Search(serachParameters);
+        public BuildingService() : base(mapper: new BuildingMapper()) { }
+
+        public List<BuildingDto> Search(BuildingSearchParameters serachParameters)
+        {
+            var buildings = _buildingRepository.Search(serachParameters);
+            return MapToDto(buildings);
+        }
 
         public List<BuildingDto> GetByManagerId(long managerId)
         {
@@ -25,7 +30,13 @@ namespace CommunityHub.Application.Services.Buildings
             return buildingsDto;
         }
 
-        public Building Create(Building building)
-            => _buildingRepository.Create(building);
+        public BuildingDto Create(BuildingDto building)
+        {
+           var newBuilding = _buildingRepository.Create(
+               MapToEntity(building)
+           );
+
+            return MapToDto(newBuilding);
+        }
     }
 }

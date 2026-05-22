@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Services.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -14,9 +15,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         private readonly CommonRoomRentalRequestService _commonRoomRentalRequestService = new();
 
         public long UserId { get; }
-        public CommonRoom CommonRoom { get; }
+        public CommonRoomDto CommonRoom { get; }
 
-        public RequestCommonRoomRentalViewModel(long userId, CommonRoom commonRoom)
+        public RequestCommonRoomRentalViewModel(long userId, CommonRoomDto commonRoom)
         {
             UserId = userId;
             CommonRoom = commonRoom;
@@ -27,11 +28,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 
         public void CreateRentalRequest()
             => _commonRoomRentalRequestService.Create(
-                new CommonRoomRentalRequest(
+                new CommonRoomRentalRequestDto(
                     residentId: UserId,
                     commonRoomId: CommonRoom.Id,
                     requestedStartDate: SelectedStartDate!.Value,
-                    requestedEndDate: SelectedEndDate!.Value
+                    requestedEndDate: SelectedEndDate!.Value,
+                    status: RentalRequestStatus.Waiting
                 )    
             );
 

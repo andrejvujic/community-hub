@@ -9,6 +9,26 @@ public class CountryRepository : ICountryRepository
 {
     private readonly CountryMapper _countryMapper = new CountryMapper();
 
+    public Country? GetById(long id)
+    {
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
+            "SELECT id AS country_id, name AS country_name FROM countries WHERE id = @id"
+        ).AddParameter("id", id);
+
+        Country? country = null;
+        
+        connection.ExecuteReader(
+            query,
+            reader => country = _countryMapper.MapToEntity(
+                reader
+            )
+        );
+
+        return country;
+    }
+
     public List<Country> GetAll()
     {
         using var connection = DatabaseConnection.Create();

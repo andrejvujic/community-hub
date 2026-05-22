@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
@@ -13,7 +14,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
     {
         private readonly AdTimeSlotsViewModel _viewModel;
 
-        public AdTimeSlotsPage(long userId, Ad ad)
+        public AdTimeSlotsPage(long userId, AdDto ad)
         {
             InitializeComponent();
             _viewModel = new AdTimeSlotsViewModel(
@@ -58,7 +59,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not AdTimeSlot timeSlot || timeSlot.IsReserved) return;
+            if (element.DataContext is not AdTimeSlotDto timeSlot || timeSlot.IsReserved) return;
 
             if (_viewModel.IsTimeSlotSelected(timeSlot))
                 _viewModel.DeselectTimeSlot(timeSlot);

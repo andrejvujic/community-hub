@@ -359,7 +359,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
                 address: address
             );
 
-            return _buildingService.Create(building);
+            return null; // _buildingService.Create(building);
         }
         private void CreateImages(Building building)
         {
