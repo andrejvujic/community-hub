@@ -13,5 +13,18 @@ namespace CommunityHub.Ui.Views.Citizen.TrustRecords
             _viewModel = new OtherMembersTrustViewModel(userId, neighborhoodId);
             DataContext = _viewModel;
         }
+
+        private void Header_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

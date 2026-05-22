@@ -34,7 +34,7 @@ namespace CommunityHub.Ui.Views.Citizen
         private void HomeWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _activeTabColor = (SolidColorBrush)FindResource("ActiveTabBrush");
-            _inactiveTabColor = Brushes.White;
+            _inactiveTabColor = (SolidColorBrush)FindResource("BackgroundBrush");
 
             _viewModel = new HomeViewModel(_userId);
             _viewModel.Initialize(_activeTabColor!);
@@ -86,6 +86,11 @@ namespace CommunityHub.Ui.Views.Citizen
             {
                 _viewModel?.HandleTabClick(tabTag);
             }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         private void ViewModel_TabNavigationRequested(object? sender, TabNavigationEventArgs e)

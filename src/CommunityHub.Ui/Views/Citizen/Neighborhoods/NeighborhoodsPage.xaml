@@ -10,25 +10,38 @@
       Title="Kvartovi">
 
     <Page.Resources>
-        <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Margin="30,15,30,25">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0,0,0,20" Height="34">
+        <Grid Grid.Row="0" Margin="0,0,0,12" Height="34" Width="500" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="190"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Content="Parametri pretrage (Ctrl+S)" Width="190" Height="34" FontWeight="Bold" Padding="10,0" Background="#F0F0F0" BorderBrush="Gray" BorderThickness="1" Click="SearchButton_Click" HorizontalAlignment="Left"/>
+            <Grid Grid.Column="0">
+                <TextBox Style="{StaticResource SearchBarStyle}"/>
+                <Button Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,2,0" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}" Cursor="Hand">
+                    <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+            </Grid>
+            <Button Grid.Column="2" Content="Parametri pretrage (Ctrl+S)" Height="34" Style="{StaticResource CompactButton}" Click="SearchButton_Click" HorizontalAlignment="Stretch" Foreground="{StaticResource TextBrush}"/>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="20"/>
@@ -36,7 +49,7 @@
             </Grid.ColumnDefinitions>
 
             <DataGrid x:Name="NeighborhoodsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
-                      BorderBrush="Black" BorderThickness="2" RowHeight="30" IsReadOnly="True"
+                      Style="{StaticResource PrimaryDataGrid}" ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}" RowStyle="{StaticResource DataGridRowStyle}" CellStyle="{StaticResource DataGridCellStyle}" IsReadOnly="True"
                       ItemsSource="{Binding Neighborhoods}"
                       SelectedItem="{Binding SelectedNeighborhood}">
                 <DataGrid.Columns>
@@ -52,11 +65,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" BorderBrush="Black" BorderThickness="2" Background="#F9F9F9" Padding="16">
+                <Border Grid.Row="0" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource AlternatingRowBrush}" Padding="16">
                     <Grid>
                         <StackPanel x:Name="PlaceholderPanel" VerticalAlignment="Center"
                                     Visibility="{Binding SelectedNeighborhood, Converter={StaticResource NullToVisibility}}">
-                            <TextBlock TextAlignment="Center" FontSize="14" Foreground="#333" TextWrapping="Wrap">
+                            <TextBlock TextAlignment="Center" FontSize="18" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap">
                                 Pritisnite Ctrl+S da pretražite kvartove. Izaberite željeni kvart klikom miša ili koristeći strelice gore/dole.
 
                                 Detalji o izabranom kvartu biće prikazani ovde.
@@ -72,8 +85,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                    <TextBlock Text="{Binding SelectedNeighborhood.Name, TargetNullValue=''}" FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
-                                    <TextBlock FontSize="14" Foreground="#666" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding SelectedNeighborhood.Name, TargetNullValue=''}" FontSize="22" FontWeight="Bold" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}"/>
+                                    <TextBlock FontSize="16" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" Opacity="0.7">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0}, {1}">
                                                 <Binding Path="SelectedNeighborhood.City.Name" TargetNullValue="" />
@@ -81,10 +94,10 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <TextBlock Text="{Binding SelectedNeighborhood.Description, TargetNullValue=''}" FontSize="13" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" />
+                                    <TextBlock Text="{Binding SelectedNeighborhood.Description, TargetNullValue=''}" FontSize="16" TextWrapping="Wrap" MinHeight="80" Margin="0,0,0,12" Foreground="{StaticResource TextBrush}" />
 
-                                    <TextBlock Text="Ulice:" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <ListBox ItemsSource="{Binding SelectedNeighborhood.StreetSections}" MinHeight="275">
+                                    <TextBlock Text="Ulice:" FontWeight="Bold" FontSize="16" Margin="0,0,0,4" Foreground="{StaticResource TextBrush}"/>
+                                    <ListBox ItemsSource="{Binding SelectedNeighborhood.StreetSections}" MinHeight="275" Style="{StaticResource PrimaryListBox}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock>
@@ -131,17 +144,17 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="RequestAccessButton_Click"
+                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="RequestAccessButton_Click"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
 
-                    <Button x:Name="CoordinatorButton" Grid.Column="0" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2"
+                    <Button x:Name="CoordinatorButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Koordinator mog kvarta<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
-                    <Button Grid.Column="2" Height="44" HorizontalAlignment="Stretch" BorderBrush="Black" BorderThickness="2" Click="MyAccessRequestsButton_Click">
-                        <TextBlock TextAlignment="Center" TextWrapping="Wrap">
+                    <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Click="MyAccessRequestsButton_Click">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                             Moji zahtevi za pristup<LineBreak/>(Ctrl + 2)
                         </TextBlock>
                     </Button>

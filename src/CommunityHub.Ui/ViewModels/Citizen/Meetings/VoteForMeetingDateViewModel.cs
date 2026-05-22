@@ -37,6 +37,33 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
             _meeting = meeting;
         }
 
+        public void ParseAndSetDate(string dateText)
+        {
+            dateText = dateText?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(dateText))
+            {
+                SelectedDate = null;
+                return;
+            }
+
+            if (DateTime.TryParse(dateText, out DateTime parsedDate))
+            {
+                if (parsedDate >= DisplayDateStart && parsedDate <= DisplayDateEnd)
+                {
+                    SelectedDate = parsedDate;
+                }
+                else
+                {
+                    SelectedDate = null;
+                }
+            }
+            else
+            {
+                SelectedDate = null;
+            }
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

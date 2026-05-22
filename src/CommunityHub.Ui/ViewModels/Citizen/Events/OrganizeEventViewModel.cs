@@ -57,6 +57,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             }
         }
 
+        public DateTime DisplayDateStart => DateTime.Today;
+        public DateTime DisplayDateEnd => DateTime.Today.AddYears(2);
+
         private string _hour = string.Empty;
         public string Hour
         {
@@ -189,6 +192,33 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 minVolunteers: minVolunteers,
                 itemNames: Items.ToList()
             );
+        }
+
+        public void ParseAndSetDate(string dateText)
+        {
+            dateText = dateText?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(dateText))
+            {
+                SelectedDate = null;
+                return;
+            }
+
+            if (DateTime.TryParseExact(dateText, "d.M.yyyy.", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+            {
+                if (parsedDate >= DisplayDateStart && parsedDate <= DisplayDateEnd)
+                {
+                    SelectedDate = parsedDate;
+                }
+                else
+                {
+                    SelectedDate = null;
+                }
+            }
+            else
+            {
+                SelectedDate = null;
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)

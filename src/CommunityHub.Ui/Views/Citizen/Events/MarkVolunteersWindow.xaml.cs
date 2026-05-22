@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Ui.ViewModels.Citizen.Events;
 
@@ -14,6 +15,19 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             InitializeComponent();
             _viewModel = new MarkVolunteersViewModel(eventDto);
             DataContext = _viewModel;
+        }
+
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void PresenceCheckBox_Click(object sender, RoutedEventArgs e)

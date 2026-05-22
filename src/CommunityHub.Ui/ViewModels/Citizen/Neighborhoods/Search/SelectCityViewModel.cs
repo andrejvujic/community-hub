@@ -89,6 +89,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
             foreach (var city in results)
                 Cities.Add(_cityMapper.MapToDto(city));
+
+            if (SelectedCity == null && Cities.Count > 0)
+            {
+                SelectedCity = Cities[0];
+            }
         }
 
         public void Search()

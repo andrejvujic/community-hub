@@ -18,6 +18,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         private CitizenDto? _citizen;
         private ObservableCollection<CommunityEventDto> _events = new();
         private object? _membership;
+        private CommunityEventDto? _selectedEvent;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -33,6 +34,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         }
 
         public ObservableCollection<CommunityEventDto> Events => _events;
+
+        public CommunityEventDto? SelectedEvent
+        {
+            get => _selectedEvent;
+            set
+            {
+                if (_selectedEvent == value) return;
+                _selectedEvent = value;
+                OnPropertyChanged(nameof(SelectedEvent));
+            }
+        }
 
         public object? Membership
         {
@@ -77,6 +89,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
             foreach (var eventDto in events)
                 _events.Add(eventDto);
+
+            if (_events.Count > 0)
+            {
+                SelectedEvent = _events[0];
+            }
         }
 
         public string? CanApplyToVolunteer(long selectedEventId)
