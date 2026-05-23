@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Browse;
 using CommunityHub.Ui.Views.Resident.Buildings.Search;
@@ -26,7 +26,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not BuildingMembershipGroup group) return;
+            if (element.DataContext is not BuildingMembershipGroupDto group) return;
 
             Push(new BuildingOptionsPage(
                 userId: _viewModel.UserId,
