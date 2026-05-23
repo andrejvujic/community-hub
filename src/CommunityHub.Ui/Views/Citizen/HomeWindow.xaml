@@ -4,16 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.Citizen"
+        xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         mc:Ignorable="d"
         Language="sr-Latn-RS"
         Title="Citizen" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         WindowStyle="None">
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{Binding SelectTabCommand}" CommandParameter="Main Menu" />
+        <KeyBinding Key="F2" Command="{Binding SelectTabCommand}" CommandParameter="Neighborhoods" />
+        <KeyBinding Key="F3" Command="{Binding SelectTabCommand}" CommandParameter="Events" />
+        <KeyBinding Key="F4" Command="{Binding SelectTabCommand}" CommandParameter="Trust Records" />
+        <KeyBinding Key="F5" Command="{Binding SelectTabCommand}" CommandParameter="Meetings" />
+        <KeyBinding Key="F6" Command="{Binding SelectTabCommand}" CommandParameter="Local Facilities" />
+        <KeyBinding Key="F7" Command="{Binding SelectTabCommand}" CommandParameter="Donations" />
+
+        <KeyBinding Key="Esc" Command="{Binding CloseWindowCommand}" />
+        <KeyBinding Key="T" Command="{Binding ToggleTooltipCommand}" Modifiers="Ctrl" />
+    </Window.InputBindings>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:SelectedTabToBrushConverter x:Key="SelectedTabToBrushConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -40,7 +55,7 @@
                 <TextBlock Grid.Column="1" Text="Community Hub - Citizen" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}" FontSize="13" FontWeight="SemiBold"/>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button x:Name="CloseButton" Click="CloseButton_Click" Width="32" Height="32" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                    <Button x:Name="CloseButton" Command="{Binding CloseWindowCommand}" Width="32" Height="32" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
                         <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
                     </Button>
                 </StackPanel>
@@ -49,7 +64,17 @@
 
         <Border Grid.Row="1" Margin="10,10,10,0">
             <UniformGrid Columns="7" Height="80">
-                <Border x:Name="TabMainMenu" Tag="Main Menu" Uid="Glavni meni" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="2,2,1,2" Background="{StaticResource ActiveTabBrush}">
+                <Border x:Name="TabMainMenu" Tag="Main Menu" Uid="Glavni meni" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="2,2,1,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Main Menu">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Main Menu" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -60,7 +85,17 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabNeighborhoods" Tag="Neighborhoods" Uid="Kvartovi" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2" Background="{StaticResource BackgroundBrush}">
+                <Border x:Name="TabNeighborhoods" Tag="Neighborhoods" Uid="Kvartovi" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Neighborhoods">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Neighborhoods" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -75,7 +110,17 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabEvents" Tag="Events" Uid="Događaji" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2" Background="{StaticResource BackgroundBrush}">
+                <Border x:Name="TabEvents" Tag="Events" Uid="Događaji" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Events">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Events" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F3" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -86,7 +131,17 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabTrustRecords" Tag="Trust Records" Uid="Evidencije poverenja" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2" Background="{StaticResource BackgroundBrush}">
+                <Border x:Name="TabTrustRecords" Tag="Trust Records" Uid="Evidencije poverenja" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Trust Records">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Trust Records" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F4" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -101,7 +156,17 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabMeetings" Tag="Meetings" Uid="Sastanci" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2" Background="{StaticResource BackgroundBrush}">
+                <Border x:Name="TabMeetings" Tag="Meetings" Uid="Sastanci" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Meetings">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Meetings" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F5" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -112,7 +177,17 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabLocalFacilities" Tag="Local Facilities" Uid="Lokalni objekti" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2" Background="{StaticResource BackgroundBrush}">
+                <Border x:Name="TabLocalFacilities" Tag="Local Facilities" Uid="Lokalni objekti" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,1,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Local Facilities">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Local Facilities" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F6" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -123,7 +198,17 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-                <Border x:Name="TabDonations" Tag="Donations" Uid="Donacije" MouseLeftButtonDown="Tab_Click" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,2,2" Background="{StaticResource BackgroundBrush}">
+                <Border x:Name="TabDonations" Tag="Donations" Uid="Donacije" Cursor="Hand" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,2,2,2">
+                    <Border.Background>
+                        <MultiBinding Converter="{StaticResource SelectedTabToBrushConverter}" ConverterParameter="Donations">
+                            <Binding Path="SelectedTabTag" />
+                            <Binding Path="ActiveTabColor" />
+                            <Binding Path="InactiveTabColor" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectTabCommand}" CommandParameter="Donations" />
+                    </Border.InputBindings>
                     <Grid>
                         <TextBlock Text="F7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,1,3,0" Foreground="{StaticResource TextBrush}" Opacity="0.8"/>
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -141,7 +226,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,30,0" Panel.ZIndex="1">
             <TextBlock Text="Prikaži objašnjenja (Ctrl + T):" VerticalAlignment="Center" FontSize="16" Margin="0,0,10,0" Foreground="{StaticResource TextBrush}"/>
-            <CheckBox x:Name="TooltipToggleCheckBox" VerticalAlignment="Center" IsChecked="True" Cursor="Hand">
+            <CheckBox x:Name="TooltipToggleCheckBox" VerticalAlignment="Center" IsChecked="{Binding TooltipEnabled}" Cursor="Hand">
                 <CheckBox.Style>
                     <Style TargetType="CheckBox">
                         <Setter Property="Template">

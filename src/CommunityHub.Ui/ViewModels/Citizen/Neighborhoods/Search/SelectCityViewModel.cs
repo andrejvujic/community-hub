@@ -10,7 +10,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
     public class SelectCityViewModel : INotifyPropertyChanged
     {
         private readonly CityRepository _cityRepository = new();
-        private readonly CountryMapper _countryMapper = new();
         private readonly CityMapper _cityMapper = new();
         private CountryDto? _selectedCountry;
         private CityDto? _selectedCity;
@@ -82,15 +81,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             if (SelectedCountry == null)
                 return;
 
-            var countryDomain = _countryMapper.MapToDomain(SelectedCountry);
-            /*
             var results = string.IsNullOrWhiteSpace(searchQuery)
                 ? _cityRepository.GetByCountryId(SelectedCountry.Id)
-                : _cityRepository.Search(new CitySearchParameters(countryDomain, searchQuery));
+                : _cityRepository.Search(new CitySearchParameters(SelectedCountry.Id, searchQuery));
 
             foreach (var city in results)
                 Cities.Add(_cityMapper.MapToDto(city));
-            */
 
             if (SelectedCity == null && Cities.Count > 0)
             {

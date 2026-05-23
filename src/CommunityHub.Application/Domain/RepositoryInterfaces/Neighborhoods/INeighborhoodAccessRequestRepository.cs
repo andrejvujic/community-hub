@@ -1,7 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Helpers.Sorting;
 
-namespace CommunityHub.Application.Domain.JobListingBookings
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods
 {
     public interface INeighborhoodAccessRequestRepository
     {

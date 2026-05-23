@@ -1,5 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
 

@@ -6,6 +6,8 @@ using CommunityHub.Application.MappersDto.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Services;
+using CommunityHub.Application.MappersDto.Users;
+using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
@@ -21,6 +23,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         private readonly AdTimeSlotService _adTimeSlotService;
         private readonly AdTimeSlotGenerator _adTimeSlotGenerator;
         private readonly AdMapper _adMapper = new();
+        private readonly UserMapper _userMapper = new();
         public AdService(
             IAdRepository adRepository,
             IAdTimeSlotRepository adTimeSlotRepository
@@ -129,8 +132,12 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         public int GetAdsCountByStatus(long buildingId, AdStatus status)
             => _adRepository.GetAdsCountByStatus(buildingId, status);
 
-        public User? GetMostHelpfulResident(long buildingId)
-            => _adRepository.GetMostHelpfulResident(buildingId);
+        public UserDto? GetMostHelpfulResident(long buildingId)
+        {
+            User? user = _adRepository.GetMostHelpfulResident(buildingId);
+            if (user is null) return null;
+            return _userMapper.MapToDto(user);
+        }
 
         public List<AdDto> GetAllByBuildingId(long buildingId)
         {

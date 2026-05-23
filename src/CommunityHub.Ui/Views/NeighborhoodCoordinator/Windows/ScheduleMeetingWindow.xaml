@@ -10,12 +10,14 @@
         Title="Zakazivanje sastanka" 
         Height="370" Width="450"
         WindowStartupLocation="CenterOwner" 
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}">
     <Window.Resources>
         <conv:MeetingThemeToStringConverter x:Key="MeetingThemeConverter" />
     </Window.Resources>
-    
-    <Grid Margin="20">
+
+    <Grid Margin="20"
+          TextElement.Foreground="{DynamicResource PrimaryTextBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -31,24 +33,36 @@
                        VerticalAlignment="Center"
                        Visibility="{Binding FixedThemeVisibility}"/>
             <ComboBox x:Name="ThemeComboBox"
-                      FontSize="20" Width="200" Height="30"
+                      Style="{StaticResource ComboBoxStyle}"
+                      FontSize="20" 
+                      Width="200" 
+                      Height="30" 
+                      Padding="10,0,0,0"
                       Visibility="{Binding SelectableThemeVisibility}">
-                <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Welcome}" 
-                      Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}" />
-                <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Motivation}" 
-                      Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}" />
+                <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Welcome}"
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}"/>
+                <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Motivation}"
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}"/>
             </ComboBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
             <TextBlock Text="Vreme održavanja: " FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
-            <TextBox x:Name="HourTxt" FontSize="20" Width="40" Height="30" 
-                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                     MaxLength="2" Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="HourTxt"
+                     Style="{StaticResource TextBoxStyle}"
+                     FontSize="20" Width="40" Height="30"
+                     Padding="0"
+                     HorizontalContentAlignment="Center"
+                     MaxLength="2"
+                     Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text=" : " FontSize="20" VerticalAlignment="Center"/>
-            <TextBox x:Name="MinuteTxt" FontSize="20" Width="40" Height="30" 
-                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
-                     MaxLength="2" Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="MinuteTxt"
+                     Style="{StaticResource TextBoxStyle}"
+                     FontSize="20" Width="40" Height="30"
+                     Padding="0"
+                     HorizontalContentAlignment="Center"
+                     MaxLength="2"
+                     Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text=" h" FontSize="20" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
 
@@ -60,39 +74,34 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="0,0,10,0">
                 <TextBlock Text="Od" FontSize="20" Margin="0,0,0,5"/>
-                <DatePicker x:Name="FromDatePicker" FontSize="20" Height="35"
-                            SelectedDate="{Binding FromDate}">
-                    <DatePicker.Resources>
-                        <Style TargetType="DatePickerTextBox">
-                            <Setter Property="IsReadOnly" Value="True"/>
-                        </Style>
-                    </DatePicker.Resources>
-                </DatePicker>
+                <DatePicker x:Name="FromDatePicker"
+                            Style="{StaticResource DatePickerStyle}"
+                            FontSize="20" 
+                            Height="30"
+                            SelectedDate="{Binding FromDate}"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Do" FontSize="20" Margin="0,0,0,5"/>
-                <DatePicker x:Name="ToDatePicker" FontSize="20" Height="35"
-                            SelectedDate="{Binding ToDate}">
-                    <DatePicker.Resources>
-                        <Style TargetType="DatePickerTextBox">
-                            <Setter Property="IsReadOnly" Value="True"/>
-                        </Style>
-                    </DatePicker.Resources>
-                </DatePicker>
+                <DatePicker x:Name="ToDatePicker"
+                            Style="{StaticResource DatePickerStyle}"
+                            FontSize="20" Height="30"
+                            SelectedDate="{Binding ToDate}"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="4" Margin="0,25,0,0">
-            <Button Content="Odustani" 
-                        HorizontalAlignment="Left" 
-                        Width="170" 
-                        Height="35" 
-                        Click="CancelButton_Click"/>
-            <Button Content="Pokreni glasanje" 
-                        HorizontalAlignment="Right"
-                        Width="170" 
-                        Height="35" 
-                        Click="StartVotingButton_Click"/>
+            <Button Content="Odustani"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    HorizontalAlignment="Left"
+                    Width="170" 
+                    Height="45"
+                    Click="CancelButton_Click"/>
+            <Button Content="Pokreni glasanje"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    HorizontalAlignment="Right"
+                    Width="170" 
+                    Height="45"
+                    Click="StartVotingButton_Click"/>
         </Grid>
     </Grid>
 </Window>

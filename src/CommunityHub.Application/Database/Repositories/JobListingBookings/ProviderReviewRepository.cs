@@ -1,6 +1,6 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.JobListingBookings;
-using CommunityHub.Application.Domain.JobListingBookings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
 
 namespace CommunityHub.Application.Database.Repositories.JobListingBookings;
 

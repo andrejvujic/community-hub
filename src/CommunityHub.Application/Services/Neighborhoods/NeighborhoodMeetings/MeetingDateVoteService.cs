@@ -1,9 +1,9 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
 
 namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
 {

@@ -9,6 +9,12 @@
       Language="sr-Latn-RS"
       Title="Događaji">
 
+    <Page.InputBindings>
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ApplyToVolunteerCommand}" />
+        <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding PrintReportCommand}" />
+        <KeyBinding Key="D3" Modifiers="Ctrl" Command="{Binding MyEventsCommand}" />
+    </Page.InputBindings>
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -143,15 +149,15 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Click="ApplyToVolunteerButton_Click">
+                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Command="{Binding ApplyToVolunteerCommand}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
                         </Button>
 
-                        <Button Grid.Column="1" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="4,0,4,0">
+                        <Button Grid.Column="1" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="4,0,4,0" Command="{Binding PrintReportCommand}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Štampaj izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
                         </Button>
 
-                        <Button x:Name="MyEventsButton" Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Click="MyEventsButton_Click">
+                        <Button x:Name="MyEventsButton" Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Command="{Binding MyEventsCommand}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Moji događaji<LineBreak/>(Ctrl + 3)</TextBlock>
                         </Button>
                     </Grid>

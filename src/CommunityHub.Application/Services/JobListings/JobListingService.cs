@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.JobListings.RepositoryInterfaces;
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
 using CommunityHub.Application.MappersDto.JobListings;
 using CommunityHub.Application.Services.Dtos.Services;
 

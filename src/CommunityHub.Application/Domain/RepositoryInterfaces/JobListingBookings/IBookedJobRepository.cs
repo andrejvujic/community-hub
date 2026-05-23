@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.JobListingBookings.RepositoryInterfaces
+﻿using CommunityHub.Application.Domain.JobListingBookings;
+
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings
 {
     public interface IBookedJobRepository
     {

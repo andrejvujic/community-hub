@@ -1,7 +1,8 @@
-﻿using CommunityHub.Application.Domain.TrustRecords;
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Domain.TrustRecords;
 using CommunityHub.Application.Domain.Users;
 
-namespace CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods
 {
     public interface INeighborhoodMembershipRepository
     {

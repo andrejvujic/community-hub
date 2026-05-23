@@ -1,8 +1,11 @@
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 {
@@ -19,6 +22,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
         private object? _membership;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? VoteRequested;
 
         public ObservableCollection<NeighborhoodMeetingDto> Meetings
         {
@@ -68,9 +72,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 
         public bool HasVoted => CurrentVote != null;
 
+        public ICommand VoteCommand { get; }
+
         public MeetingsViewModel(long userId)
         {
             _userId = userId;
+            VoteCommand = new RelayCommand<object>(_ => VoteRequested?.Invoke(this, EventArgs.Empty));
             LoadData();
         }
 
@@ -110,6 +117,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
             }
 
             CurrentVote = _voteService.GetByMeetingIdAndCitizenId(_selectedMeeting.Id, _userId);
+        }
+
+        public string? ValidateVote()
+        {
+            if (SelectedMeeting == null)
+                return "Izaberite sastanak iz tabele.";
+
+            if (SelectedMeeting.Status != MeetingStatus.InPreparation)
+                return "Može se glasati samo za sastanke koji su u statusu pripreme.";
+
+            return null;
         }
 
         public void ProcessVote(long meetingId, DateOnly votedDate)

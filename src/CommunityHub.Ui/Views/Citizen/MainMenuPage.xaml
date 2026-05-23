@@ -8,6 +8,10 @@
       Language="sr-Latn-RS"
       Title="Glavni Meni">
 
+    <Page.InputBindings>
+        <KeyBinding Key="W" Modifiers="Ctrl" Command="{Binding WizardHelperCommand}" />
+    </Page.InputBindings>
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -69,7 +73,7 @@
         <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,120,0" BorderBrush="{StaticResource TextBrush}" BorderThickness="3" Background="{StaticResource AlternatingRowBrush}" Padding="30">
             <StackPanel Width="280" VerticalAlignment="Center">
                 <TextBlock Text="Ponovo pokreni čarobnjaka&#10;za pomoć&#10;(Ctrl + W)" TextAlignment="Center" FontSize="20" Margin="0,0,0,20" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
-                <Button Content="Čarobnjak za pomoć" Style="{StaticResource LargeButton}"/>
+                <Button Content="Čarobnjak za pomoć" Style="{StaticResource LargeButton}" Command="{Binding WizardHelperCommand}" />
             </StackPanel>
         </Border>
 

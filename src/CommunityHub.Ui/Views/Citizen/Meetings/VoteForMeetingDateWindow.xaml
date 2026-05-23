@@ -31,7 +31,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Glasaj za vreme sastanka" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
-                    <Button Grid.Column="1" Width="32" Height="32" Click="CloseButton_Click" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                    <Button Grid.Column="1" Width="32" Height="32" Command="{Binding CloseCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
                         <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
                     </Button>
                 </Grid>
@@ -69,7 +69,8 @@
                                  VerticalAlignment="Center"
                                  VerticalContentAlignment="Center"
                                  CaretBrush="{StaticResource TextBrush}"
-                                 Text="{Binding SelectedDate, StringFormat='d', Mode=OneWay}"/>
+                                 Text="{Binding SelectedDate, StringFormat='d', UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="VoteDateTextBox_TextChanged"/>
                         <Button x:Name="CalendarButton" 
                                 Grid.Column="1"
                                 Background="{StaticResource AccentBrush}"
@@ -78,7 +79,7 @@
                                 Padding="6"
                                 Width="32"
                                 Height="32"
-                                Click="CalendarButton_Click"
+                                Command="{Binding ToggleCalendarCommand}"
                                 Content="▼"
                                 FontSize="10"
                                 Foreground="{StaticResource TextBrush}"/>
@@ -103,10 +104,10 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="CancelButton" Grid.Column="0" Height="44" Style="{StaticResource PrimaryButton}" IsCancel="True" Click="CancelButton_Click">
+                    <Button x:Name="CancelButton" Grid.Column="0" Height="44" Style="{StaticResource PrimaryButton}" IsCancel="True" Command="{Binding CancelCommand}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">Otkaži glas<LineBreak/>(Esc)</TextBlock>
                     </Button>
-                    <Button x:Name="ConfirmButton" Grid.Column="2" Height="44" Style="{StaticResource PrimaryButton}" IsDefault="True" Click="ConfirmButton_Click" IsEnabled="{Binding CanConfirm}">
+                    <Button x:Name="ConfirmButton" Grid.Column="2" Height="44" Style="{StaticResource PrimaryButton}" IsDefault="True" Command="{Binding ConfirmCommand}" IsEnabled="{Binding CanConfirm}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap">Potvrdi glas<LineBreak/>(Enter)</TextBlock>
                     </Button>
                 </Grid>
