@@ -403,12 +403,12 @@ INSERT INTO job_listings (id, service_name, description, billing_type, city_id, 
 (3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
  
 INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
-(1,  15000.00, '2025-01-01', '2026-05-20', 1),
-(2,  16500.00, '2026-05-21', '2026-12-31', 1),
-(3,   1200.00, '2025-01-01', '2026-05-20', 2),
-(4,   1400.00, '2026-05-21', '2026-12-31', 2),
-(5,  12000.00, '2025-01-01', '2026-05-20', 3),
-(6, 13500.00, '2026-05-21', '2026-12-31', 3);
+(1,  15000.00, '2025-01-01', '2026-05-24', 1),
+(2,  16500.00, '2026-05-25', '2026-12-31', 1),
+(3,   1200.00, '2025-01-01', '2026-05-24', 2),
+(4,   1400.00, '2026-05-25', '2026-12-31', 2),
+(5,  12000.00, '2025-01-01', '2026-05-24', 3),
+(6, 13500.00, '2026-05-25', '2026-12-31', 3);
  
 INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
 (1,  '2026-02-10', NULL,    NULL, 15000.00, FALSE, 1,  1,  NULL),
@@ -1315,6 +1315,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.neighborhood_meetings', 'id'),
     COALESCE((SELECT MAX(id) FROM public.neighborhood_meetings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.facility_reservations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.facility_reservations), 0),
     true
 );
 

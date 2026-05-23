@@ -9,8 +9,10 @@
         Height="450"
         Width="400"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
-    <Grid Margin="24">
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Grid Margin="24"
+          TextElement.Foreground="{DynamicResource PrimaryTextBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -23,6 +25,7 @@
         <TextBlock Grid.Row="0"
                    Text="{Binding Header}"
                    FontSize="16"
+                   FontWeight="SemiBold"
                    TextWrapping="Wrap"
                    Margin="0,0,0,16"/>
 
@@ -48,17 +51,27 @@
                        Visibility="{Binding PerJobVisibility}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" 
+        <StackPanel Grid.Row="2"
                     Margin="0,0,0,12"
                     Visibility="{Binding PriceChangeVisibility}">
-            <TextBlock Text="Važno obaveštenje"
-                       FontSize="18"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,8"/>
-            <TextBlock Text="{Binding PriceChangeInfo}"
-                       FontSize="13"
-                       TextWrapping="Wrap"
-                       Margin="0,0,0,6"/>
+            <Border Background="{DynamicResource SurfaceBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Važno obaveštenje"
+                               FontSize="18" 
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding PriceChangeInfo}"
+                               FontSize="13"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <TextBlock Text="{Binding QuestionText}"
@@ -74,17 +87,17 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="Odustani"
-                    Height="40"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Height="40" 
                     Margin="10,0,10,0"
                     FontSize="14"
-                    Cursor="Hand"
                     Click="CancelButton_Click"/>
             <Button Grid.Column="1"
                     Content="Potvrdi"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     Height="40"
                     Margin="10,0,10,0"
                     FontSize="14"
-                    Cursor="Hand"
                     Click="ConfirmButton_Click"/>
         </Grid>
     </Grid>
