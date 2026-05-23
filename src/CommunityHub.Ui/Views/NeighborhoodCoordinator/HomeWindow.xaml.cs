@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
@@ -62,13 +63,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Da li ste sigurni da želite da se odjavite?",
+            var dialog = new ConfirmDialog(
                 "Potvrda odjave",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+                "Da li ste sigurni da želite da se odjavite?",
+                owner: this);
 
-            if (result != MessageBoxResult.Yes) return;
+            dialog.ShowDialog();
+
+            if (!dialog.Confirmed) return;
 
             LogInForm loginForm = new LogInForm();
             loginForm.Show();

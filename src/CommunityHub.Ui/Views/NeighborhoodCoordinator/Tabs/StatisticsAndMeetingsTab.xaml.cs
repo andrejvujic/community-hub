@@ -43,6 +43,17 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
         private void ConfirmTermButton_Click(object sender, RoutedEventArgs e)
         {
+            var owner = Window.GetWindow(this);
+
+            var confirmDialog = new ConfirmDialog(
+                "Potvrda termina",
+                "Da li ste sigurni da želite da potvrdite ovaj termin?",
+                owner);
+
+            confirmDialog.ShowDialog();
+
+            if (!confirmDialog.Confirmed) return;
+
             _viewModel.ConfirmTiedDate();
             MessageBox.Show("Termin je uspešno zakazan.", "Uspeh",
                 MessageBoxButton.OK, MessageBoxImage.Information);

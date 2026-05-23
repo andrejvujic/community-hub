@@ -276,7 +276,7 @@
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     HorizontalAlignment="Center"
                                     Content="Potvrdite konačan termin"
-                                    VerticalAlignment="Bottom"
+                                    VerticalAlignment="Center"
                                     Padding="15,8"
                                     IsEnabled="{Binding CanConfirmTiedDate}"
                                     Click="ConfirmTermButton_Click"/>

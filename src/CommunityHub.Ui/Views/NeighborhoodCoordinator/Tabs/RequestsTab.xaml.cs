@@ -57,19 +57,21 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (_viewModel.SelectedRequest == null) return;
  
-            var req = _viewModel.SelectedRequest;
- 
-            var result = MessageBox.Show(
-                $"Da li ste sigurni da želite da prihvatite zahtev korisnika {req.Citizen.Name} {req.Citizen.Surname} za pristup kvartu {req.Neighborhood.Name}?",
+            var request = _viewModel.SelectedRequest;
+
+            var confirmDialog = new ConfirmDialog(
                 "Potvrda prihvatanja",
-                MessageBoxButton.YesNo);
- 
-            if (result != MessageBoxResult.Yes) return;
- 
+                $"Da li ste sigurni da želite da prihvatite zahtev korisnika {request.Citizen.Name} {request.Citizen.Surname} za pristup kvartu {request.Neighborhood.Name}?",
+                owner: Window.GetWindow(this));
+
+            confirmDialog.ShowDialog();
+
+            if (!confirmDialog.Confirmed) return;
+
             _viewModel.Accept();
  
             MessageBox.Show(
-                $"Korisnik {req.Citizen.Name} {req.Citizen.Surname} je postao novi član kvarta {req.Neighborhood.Name}.",
+                $"Korisnik {request.Citizen.Name} {request.Citizen.Surname} je postao novi član kvarta {request.Neighborhood.Name}.",
                 "Prihvaćen zahtev");
         }
     }
