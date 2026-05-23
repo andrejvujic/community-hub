@@ -10,7 +10,47 @@
 
     <UserControl.Resources>
         <conv:BillingTypeToStringConverter x:Key="BillingConverter" />
+        
+        <Style x:Key="JobListingItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ItemBorder"
+                                BorderBrush="{DynamicResource ItemBorderBrush}"
+                                BorderThickness="1.5"
+                                CornerRadius="8"
+                                Background="{TemplateBinding Background}"
+                                Padding="10"
+                                Width="270"
+                                Height="115">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsSelected"  Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderThickness" Value="2"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="ItemBorder" Property="BorderThickness" Value="2.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
+
+
 
     <Grid Background="{DynamicResource WindowBackgroundBrush}"
           TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
@@ -89,49 +129,38 @@
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <ListBox x:Name="JobListingsListBox"
                                          ItemsSource="{Binding JobListings}"
+                                         ItemContainerStyle="{StaticResource JobListingItemStyle}"
                                          BorderThickness="0"
                                          Background="Transparent"
                                          SelectionChanged="JobListingsListBox_SelectionChanged">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <Border BorderBrush="{DynamicResource ItemBorderBrush}"
-                                                    BorderThickness="1" 
-                                                    CornerRadius="8" 
-                                                    Margin="0,0,0,10" 
-                                                    Padding="10" 
-                                                    Width="270" 
-                                                    Height="115">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
 
-                                                    <Border Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0" CornerRadius="5" ClipToBounds="True">
-                                                        <Image Source="{Binding WorkSamples[0].Path}" Stretch="UniformToFill" />
-                                                    </Border>
+                                                <Border Grid.Column="0" Width="90" Height="90" Margin="0,0,10,0" CornerRadius="5" ClipToBounds="True">
+                                                    <Image Source="{Binding WorkSamples[0].Path}" Stretch="UniformToFill"/>
+                                                </Border>
 
-                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding ServiceName}" FontSize="16"/>
-
-                                                        <TextBlock FontSize="13"
-                                                                   Foreground="{DynamicResource SecondaryTextBrush}">
-                                                            <TextBlock.Text>
-                                                                <MultiBinding StringFormat="{}{0} {1}">
-                                                                    <Binding Path="Provider.Name"/>
-                                                                    <Binding Path="Provider.Surname"/>
-                                                                </MultiBinding>
-                                                            </TextBlock.Text>
-                                                        </TextBlock>
-                                                        <TextBlock Text="{Binding CurrentPriceEntry.Amount, StringFormat='{}{0:N2} RSD'}" 
-                                                                   FontSize="12"
-                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                                        <TextBlock Text="{Binding BillingType, Converter={StaticResource BillingConverter}}" 
-                                                                   FontSize="12"
-                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Border>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding ServiceName}" FontSize="16" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                                <Binding Path="Provider.Name"/>
+                                                                <Binding Path="Provider.Surname"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding CurrentPriceEntry.Amount, StringFormat='{}{0:N2} RSD'}"
+                                                               FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                    <TextBlock Text="{Binding BillingType, Converter={StaticResource BillingConverter}}"
+                                                               FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                </StackPanel>
+                                            </Grid>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
