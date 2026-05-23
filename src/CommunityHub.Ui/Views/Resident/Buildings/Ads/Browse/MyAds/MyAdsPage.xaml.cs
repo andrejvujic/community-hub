@@ -1,65 +1,38 @@
-﻿using CommunityHub.Application;
-using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
-using CommunityHub.Application.Services.Dtos.Ads;
+﻿using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Create;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdsPage : MainNavigationConsumerPage, INotifyPropertyChanged
+    public partial class MyAdsPage : MainNavigationConsumerPage
     {
-        private readonly long _userId, _buildingId;
-        private readonly AdService _adService;
-
-        public ObservableCollection<AdDto> Ads { get; } = new();
-        public bool HasAds => Ads.Count > 0; 
-
+        private readonly MyAdsViewModel _viewModel;
         public MyAdsPage(long userId, long buildingId)
-        {
-            _adService = new(
-                Injector.CreateInstance<IAdRepository>(),
-                Injector.CreateInstance<IAdTimeSlotRepository>()
-            );
-
+        { 
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new MyAdsViewModel(userId, buildingId);    
+            DataContext = _viewModel;
 
-            _userId = userId;
-            _buildingId = buildingId;
-
-            UpdateAds();
-        }
-
-        private void UpdateAds()
-        {
-            Ads.Clear();
-            var ads = _adService.GetByAuthorAndBuilding(_userId, _buildingId);
-            foreach (var ad in ads)
-                Ads.Add(ad);
-
-            OnPropertyChanged(nameof(HasAds));
+            _viewModel.UpdateAds();
         }
 
         private void CreateAdButton_Click(object sender, RoutedEventArgs e)
         {
             Push(
                 new CreateAdPage(
-                    userId: _userId,
-                    buildingId: _buildingId
+                    userId: _viewModel.UserId,
+                    buildingId: _viewModel.BuildingId
                 ),
                 onPop: (object? value) =>
                 {
                     if (value is AdDto publishedAd)
                     {
-                        UpdateAds();
-                        Push(new MatchingAdsPage(_userId, publishedAd));
+                        _viewModel.UpdateAds();
+                        Push(new MatchingAdsPage(_viewModel.UserId, publishedAd));
                         return;
                     }
                 }
@@ -73,16 +46,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
             if (element.DataContext is not AdDto ad) return;
 
             Push(
-                new MyAdDetailsPage(_userId, ad),
-                onPop: _ => UpdateAds()
+                new MyAdDetailsPage(_viewModel.UserId, ad),
+                onPop: _ => _viewModel.UpdateAds()
             );
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
