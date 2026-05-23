@@ -16,7 +16,7 @@ namespace CommunityHub.Application.Domain.Apartments.AccessRequests
         public Status Status { get; private set; }
         public DateTime CreationDate { get; private set; }
 
-        public bool IsPending => Status == Status.Waiting;
+        public bool IsPending => Status is Status.Waiting;
 
         public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
 

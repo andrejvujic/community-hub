@@ -7,11 +7,13 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Apartments
     {
         public ApartmentAccessRequest Create(ApartmentAccessRequest request);
         public void Delete(long requestId);
+
         public List<ApartmentAccessRequest> GetByApplicant(
             long id,
             Status? status = null,
             RequestOrder order = RequestOrder.Unspecified
         );
+
         public List<ApartmentAccessRequest> GetByApplicantAndApartment(
             long applicantId,
             long apartmentId,
@@ -23,7 +25,9 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Apartments
             long buildingId,
             Status? status = null
         );
+
         public bool HasPendingRequest(long userId, long apartmentId);
+
         public int Update(ApartmentAccessRequest request);
         
     }
