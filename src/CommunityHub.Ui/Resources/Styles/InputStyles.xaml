@@ -26,6 +26,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Bd" Property="BorderBrush"
                                     Value="{DynamicResource AccentBrush}"/>
+                            <Setter Property="Cursor" Value="IBeam"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Bd" Property="BorderBrush"
