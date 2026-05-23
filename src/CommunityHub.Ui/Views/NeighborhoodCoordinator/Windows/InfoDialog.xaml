@@ -42,6 +42,7 @@
                     Width="90" Height="36"
                     HorizontalAlignment="Right"
                     Padding="0"
+                    IsDefault="True"
                     Click="OkButton_Click"/>
 
         </StackPanel>

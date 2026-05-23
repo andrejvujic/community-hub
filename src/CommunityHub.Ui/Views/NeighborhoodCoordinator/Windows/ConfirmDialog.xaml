@@ -50,6 +50,7 @@
                         Style="{StaticResource PrimaryButtonStyle}"
                         Width="90" Height="36"
                         Padding="0"
+                        IsDefault="True"
                         Click="YesButton_Click"/>
             </StackPanel>
             

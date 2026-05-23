@@ -33,8 +33,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             _viewModel.SelectedMeeting = MeetingsDataGrid.SelectedItem as NeighborhoodMeetingDto;
 
-            if (_viewModel.HasTiedDates)
+            if (!_viewModel.HasTiedDates) return;
+
+            Dispatcher.BeginInvoke(() =>
+            {
                 new InfoDialog("Izjednačeni termini", "Postoji izjednačen broj glasova. Odaberite jedan od termina.", Window.GetWindow(this)).ShowDialog();
+            });
         }
 
         private void ConfirmTermButton_Click(object sender, RoutedEventArgs e)
