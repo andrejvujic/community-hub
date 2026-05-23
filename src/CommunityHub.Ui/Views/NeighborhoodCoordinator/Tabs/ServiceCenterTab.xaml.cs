@@ -65,7 +65,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
         private void BookIfConfirmed(AvailableJobSlotDto availableJobSlotDto)
         {
-            var window = new BookingConfirmationWindow(_viewModel.SelectedListing!, availableJobSlotDto)
+            var window = new ServiceBookingConfirmationWindow(_viewModel.SelectedListing!, availableJobSlotDto)
             { Owner = Window.GetWindow(this) };
 
             if (window.ShowDialog() != true) return;

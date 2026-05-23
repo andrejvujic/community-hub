@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using CommunityHub.Application.Database.Repositories;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Domain.Neighborhoods;
@@ -27,6 +28,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public CityFacilitiesTab()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
             DataContext = this;
         }
 

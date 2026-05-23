@@ -403,12 +403,12 @@ INSERT INTO job_listings (id, service_name, description, billing_type, city_id, 
 (3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
  
 INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
-(1,  15000.00, '2025-01-01', '2026-05-20', 1),
-(2,  16500.00, '2026-05-21', '2026-12-31', 1),
-(3,   1200.00, '2025-01-01', '2026-05-20', 2),
-(4,   1400.00, '2026-05-21', '2026-12-31', 2),
-(5,  12000.00, '2025-01-01', '2026-05-20', 3),
-(6, 13500.00, '2026-05-21', '2026-12-31', 3);
+(1,  15000.00, '2025-01-01', '2026-05-24', 1),
+(2,  16500.00, '2026-05-25', '2026-12-31', 1),
+(3,   1200.00, '2025-01-01', '2026-05-24', 2),
+(4,   1400.00, '2026-05-25', '2026-12-31', 2),
+(5,  12000.00, '2025-01-01', '2026-05-24', 3),
+(6, 13500.00, '2026-05-25', '2026-12-31', 3);
  
 INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
 (1,  '2026-02-10', NULL,    NULL, 15000.00, FALSE, 1,  1,  NULL),
@@ -982,26 +982,26 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
 
 INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
-(11, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 1),
-(12, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 1),
-(13, 'welcome', '11:00', '2026-05-18', '2026-05-23', NULL, 'in_preparation', 1),
-(14, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 6),
-(15, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 6),
-(16, 'welcome', '11:00', '2026-05-18', '2026-05-22', NULL, 'in_preparation', 6),
-(17, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 11),
-(18, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 11),
-(19, 'welcome', '11:00', '2026-05-18', '2026-05-22', NULL, 'in_preparation', 11);
+(11, 'welcome', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
+(12, 'motivation', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
+(13, 'welcome', '11:00', '2026-05-23', '2026-05-28', NULL, 'in_preparation', 1),
+(14, 'welcome', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
+(15, 'motivation', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
+(16, 'welcome', '11:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 6),
+(17, 'welcome', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
+(18, 'motivation', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
+(19, 'welcome', '11:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 11);
 
 INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
-(11, '2026-05-19', 11, 121), (12, '2026-05-20', 11, 122),
-(13, '2026-05-19', 12, 123), (14, '2026-05-21', 12, 124),
-(15, '2026-05-18', 13, 125), (16, '2026-05-19', 13, 126),
-(17, '2026-05-19', 14, 127), (18, '2026-05-20', 14, 128),
-(19, '2026-05-19', 15, 129), (20, '2026-05-21', 15, 130),
-(21, '2026-05-18', 16, 131), (22, '2026-05-19', 16, 132),
-(23, '2026-05-19', 17, 133), (24, '2026-05-20', 17, 134),
-(25, '2026-05-19', 18, 135), (26, '2026-05-21', 18, 136),
-(27, '2026-05-18', 19, 137), (28, '2026-05-19', 19, 138);
+(11, '2026-05-24', 11, 121), (12, '2026-05-25', 11, 122),
+(13, '2026-05-23', 12, 123), (14, '2026-05-26', 12, 124),
+(15, '2026-05-23', 13, 125), (16, '2026-05-24', 13, 126),
+(17, '2026-05-24', 14, 127), (18, '2026-05-25', 14, 128),
+(19, '2026-05-24', 15, 129), (20, '2026-05-26', 15, 130),
+(21, '2026-05-23', 16, 131), (22, '2026-05-24', 16, 132),
+(23, '2026-05-24', 17, 133), (24, '2026-05-25', 17, 134),
+(25, '2026-05-24', 18, 135), (26, '2026-05-26', 18, 136),
+(27, '2026-05-23', 19, 137), (28, '2026-05-24', 19, 138);
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (34, '2026-04-15', 1),
@@ -1315,6 +1315,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.neighborhood_meetings', 'id'),
     COALESCE((SELECT MAX(id) FROM public.neighborhood_meetings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.facility_reservations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.facility_reservations), 0),
     true
 );
 

@@ -14,13 +14,20 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
-    <Grid Background="#F5F6FA">
+    <Grid Background="{DynamicResource WindowBackgroundBrush}"
+          TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
+          Cursor="Arrow">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="White" Margin="15" CornerRadius="12">
+        <Border Grid.Column="0" 
+                Background="{DynamicResource PanelBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                Margin="15" 
+                CornerRadius="12">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -45,15 +52,27 @@
             </Grid>
         </Border>
 
-        <Border Grid.Column="1" Background="White" CornerRadius="12" Margin="0,15,15,15" Padding="8">
+        <Border Grid.Column="1"
+                Background="{DynamicResource PanelBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Margin="0,15,15,15"
+                Padding="8">
             <Grid Margin="0,15,15,15"
                   Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibility}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
-                
-                <Border Grid.Column="0" BorderBrush="Black"  BorderThickness="1" Margin="0,0,5,0" Padding="10">
+
+                <Border Grid.Column="0"
+                        Background="{DynamicResource SurfaceBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Margin="0,0,5,0"
+                        Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
@@ -61,37 +80,37 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Row="0" Margin="10">
-                            <TextBlock Text="Statistika" FontSize="22" Margin="0,0,0,15"/>
+                            <TextBlock Text="Statistika" FontSize="22" Margin="0,0,0,15" FontWeight="Bold"/>
 
                             <UniformGrid Columns="1">
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Ukupan broj građana: " FontSize="15"/>
-                                    <TextBlock Text="{Binding TotalCitizensText}" FontSize="15" FontWeight="Bold"/>
+                                    <TextBlock Text="Ukupan broj građana: " FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding TotalCitizensText}" FontSize="18" FontWeight="Bold"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj novih građana: " FontSize="15"/>
                                     <TextBlock Text="{Binding NewCountText}" FontSize="15" Margin="5,0"/>
-                                    <TextBlock Text="{Binding NewPercentText}" FontSize="15"/>
+                                    <TextBlock Text="{Binding NewPercentText}" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj neaktivnih građana: " FontSize="15"/>
                                     <TextBlock Text="{Binding InactiveCountText}" FontSize="15" Margin="5,0"/>
-                                    <TextBlock Text="{Binding InactivePercentText}" FontSize="15"/>
+                                    <TextBlock Text="{Binding InactivePercentText}" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj aktivnih građana: " FontSize="15"/>
                                     <TextBlock Text="{Binding ActiveCountText}" FontSize="15" Margin="5,0"/>
-                                    <TextBlock Text="{Binding ActivePercentText}" FontSize="15"/>
+                                    <TextBlock Text="{Binding ActivePercentText}" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj istaknutih građana: " FontSize="15"/>
                                     <TextBlock Text="{Binding ProminentCountText}" FontSize="15" Margin="5,0"/>
-                                    <TextBlock Text="{Binding ProminentPercentText}" FontSize="15"/>
+                                    <TextBlock Text="{Binding ProminentPercentText}" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,5">
                                     <TextBlock Text="Broj građana od poverenja: " FontSize="15"/>
                                     <TextBlock Text="{Binding TrustworthyCountText}" FontSize="15" Margin="5,0"/>
-                                    <TextBlock Text="{Binding TrustworthyPercentText}" FontSize="15"/>
+                                    <TextBlock Text="{Binding TrustworthyPercentText}" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
                             </UniformGrid>
                         </StackPanel>
@@ -103,11 +122,12 @@
                                 <RowDefinition Height="1*" />
                             </Grid.RowDefinitions>
 
-                            <Border Grid.Row="0" 
-                                    BorderBrush="Black" 
+                            <Border Grid.Row="0"
+                                    Background="{DynamicResource PanelBackgroundBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
-                                    Padding="15" 
-                                    Background="White">
+                                    CornerRadius="8"
+                                    Padding="15">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                         <TextBlock Text="&#xf0eb;"
@@ -133,21 +153,23 @@
                                 </StackPanel>
                             </Border>
 
-                            <Button x:Name="WelcomeMeetingButton" 
-                                    Grid.Row="1" 
+                            <Button x:Name="WelcomeMeetingButton"
+                                    Grid.Row="1"
+                                    Style="{StaticResource PrimaryButtonStyle}"
                                     Margin="0,10,0,0"
                                     Height="40"
-                                    Cursor="Hand"
+                                    Padding="0"
                                     Visibility="{Binding ShowWelcomeRecommendation, Converter={StaticResource BoolToVisibility}}"
                                     Click="WelcomeMeetingButton_Click">
                                 <TextBlock Text="Zakaži sastanak dobrodošlice"/>
                             </Button>
 
-                            <Button x:Name="MotivationMeetingButton" 
-                                    Grid.Row="1" 
+                            <Button x:Name="MotivationMeetingButton"
+                                    Grid.Row="1"
+                                    Style="{StaticResource PrimaryButtonStyle}"
                                     Margin="0,10,0,0"
                                     Height="40"
-                                    Cursor="Hand"
+                                    Padding="0"
                                     Visibility="{Binding ShowMotivationRecommendation, Converter={StaticResource BoolToVisibility}}"
                                     Click="MotivationMeetingButton_Click">
                                 <TextBlock Text="Zakaži sastanak motivacije"/>
@@ -155,7 +177,13 @@
                         </Grid>
                     </Grid>
                 </Border>
-                <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Background="White" Margin="5,0,0,0" Padding="10">
+                <Border Grid.Column="1"
+                        Background="{DynamicResource SurfaceBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Margin="5,0,0,0"
+                        Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -165,7 +193,10 @@
 
                         <Grid Grid.Row="0" Margin="0,0,0,20">
                             <TextBlock Text="Sastanci" FontSize="22" VerticalAlignment="Center"/>
-                            <Button HorizontalAlignment="Right" Padding="5" Cursor="Hand" Click="ScheduleNewMeetingButton_Click">
+                            <Button HorizontalAlignment="Right" 
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="5" 
+                                    Click="ScheduleNewMeetingButton_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xf067;" 
                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
@@ -179,6 +210,8 @@
                         <DataGrid x:Name="MeetingsDataGrid"
                                   ItemsSource="{Binding Meetings}"
                                   SelectedItem="{Binding SelectedMeeting}"
+                                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                                  CellStyle="{StaticResource DataGridCellStyle}"
                                   Grid.Row="1" 
                                   AutoGenerateColumns="False" 
                                   CanUserAddRows="False" 
@@ -192,10 +225,11 @@
                                   FontSize="16"
                                   SelectionChanged="MeetingsDataGrid_SelectionChanged">
                             <DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow">
+                                <Style TargetType="DataGridRow"
+                                       BasedOn="{StaticResource DataGridRowStyle}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsTied}" Value="True">
-                                            <Setter Property="Background" Value="#FFF4CE"/>
+                                            <Setter Property="Background" Value="#C90505"/>
                                             <Setter Property="ToolTip" Value="Nerešen broj glasova! Potreban odabir konačnog datuma."/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -221,23 +255,29 @@
                                         Margin="0,10,0,0"
                                         Visibility="{Binding HasTiedDates, Converter={StaticResource BoolToVisibility}}">
                                 <TextBlock Text="Odredite konačan termin" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                                <ComboBox ItemsSource="{Binding TiedDateOptions}"
+                                <ComboBox Style="{StaticResource ComboBoxStyle}"
+                                          ItemsSource="{Binding TiedDateOptions}"
                                           SelectedItem="{Binding SelectedTiedDateOption}"
-                                          DisplayMemberPath="Display"
                                           HorizontalAlignment="Center"
                                           Width="150"
                                           FontSize="14"
                                           Height="30"
-                                          Margin="0,0,10,0"/>
+                                          Margin="0,0,10,0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Display}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
 
                             <Button x:Name="ConfirmTermButton"
-                                    Grid.Column="1" 
+                                    Grid.Column="1"
+                                    Style="{StaticResource PrimaryButtonStyle}"
                                     HorizontalAlignment="Center"
-                                    Content="Potvrdite konačan termin" 
+                                    Content="Potvrdite konačan termin"
                                     VerticalAlignment="Bottom"
                                     Padding="15,8"
-                                    Cursor="Hand"
                                     IsEnabled="{Binding CanConfirmTiedDate}"
                                     Click="ConfirmTermButton_Click"/>
                         </Grid>
