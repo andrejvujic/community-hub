@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.MappersDto.Addresses;
 using CommunityHub.Application.MappersDto.Neighborhoods;

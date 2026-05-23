@@ -1,11 +1,11 @@
-﻿using CommunityHub.Application.Domain.JobListingBookings.RepositoryInterfaces;
-using CommunityHub.Application.Domain.JobListingBookings;
+﻿using CommunityHub.Application.Domain.JobListingBookings;
 using CommunityHub.Application.MappersDto.JobListingBookings;
 using CommunityHub.Application.MappersDto.JobListings;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Services;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
 
 namespace CommunityHub.Application.Services.JobListingBookings
 {

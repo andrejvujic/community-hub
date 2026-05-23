@@ -11,15 +11,10 @@ using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Database.Repositories.Shared.Notifications;
 using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Database.Repositories.JobListings;
 using CommunityHub.Application.Database.Repositories.JobListingBookings;
-using CommunityHub.Application.Domain.JobListingBookings.RepositoryInterfaces;
-using CommunityHub.Application.Domain.JobListingBookings;
-using CommunityHub.Application.Domain.JobListings.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
@@ -28,6 +23,10 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Images;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
 
 namespace CommunityHub.Application
 {

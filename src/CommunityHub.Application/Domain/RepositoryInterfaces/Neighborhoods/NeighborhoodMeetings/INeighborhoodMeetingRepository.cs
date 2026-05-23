@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 
-namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings
 {
     public interface INeighborhoodMeetingRepository
     {
