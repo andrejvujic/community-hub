@@ -40,17 +40,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (_viewModel.SelectedRequest == null) return;
  
-            var req = _viewModel.SelectedRequest;
-            var dialog = new RejectRequestWindow(req.Citizen.Name, req.Citizen.Surname, req.Neighborhood.Name);
+            var request = _viewModel.SelectedRequest;
+            var dialog = new RejectRequestWindow(request.Citizen.Name, request.Citizen.Surname, request.Neighborhood.Name);
             dialog.Owner = Window.GetWindow(this);
  
             if (dialog.ShowDialog() != true) return;
  
             _viewModel.Reject(dialog.Comment);
- 
-            MessageBox.Show(
-                $"Korisniku {req.Citizen.Name} {req.Citizen.Surname} je odbijen zahtev za pristup kvartu {req.Neighborhood.Name}.",
-                "Odbijen zahtev");
+
+            new InfoDialog("Odbijen zahtev", $"Korisniku {request.Citizen.Name} {request.Citizen.Surname} je odbijen zahtev za pristup kvartu {request.Neighborhood.Name}.", Window.GetWindow(this)).ShowDialog();
         }
  
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
@@ -69,10 +67,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             if (!confirmDialog.Confirmed) return;
 
             _viewModel.Accept();
- 
-            MessageBox.Show(
-                $"Korisnik {request.Citizen.Name} {request.Citizen.Surname} je postao novi član kvarta {request.Neighborhood.Name}.",
-                "Prihvaćen zahtev");
+
+            new InfoDialog("Prihvaćen zahtev", $"Korisnik {request.Citizen.Name} {request.Citizen.Surname} je postao novi član kvarta {request.Neighborhood.Name}.", Window.GetWindow(this)).ShowDialog();
         }
     }
 }

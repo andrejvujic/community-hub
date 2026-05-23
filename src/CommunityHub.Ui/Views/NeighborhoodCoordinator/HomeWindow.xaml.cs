@@ -19,8 +19,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             _userId = userId;
             if (!_homeWindowViewModel.LoadUser(userId))
             {
-                MessageBox.Show("Korisnik nije pronađen.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                new InfoDialog("Greška", "Korisnik nije pronađen.", this).ShowDialog();
                 Close();
                 return;
             }

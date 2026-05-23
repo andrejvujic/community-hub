@@ -34,11 +34,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             _viewModel.SelectedMeeting = MeetingsDataGrid.SelectedItem as NeighborhoodMeetingDto;
 
             if (_viewModel.HasTiedDates)
-                MessageBox.Show(
-                    "Postoji izjednačen broj glasova. Odaberite jedan od termina.",
-                    "Izjednačeni termini",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                new InfoDialog("Izjednačeni termini", "Postoji izjednačen broj glasova. Odaberite jedan od termina.", Window.GetWindow(this)).ShowDialog();
         }
 
         private void ConfirmTermButton_Click(object sender, RoutedEventArgs e)
@@ -55,8 +51,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             if (!confirmDialog.Confirmed) return;
 
             _viewModel.ConfirmTiedDate();
-            MessageBox.Show("Termin je uspešno zakazan.", "Uspeh",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+
+            new InfoDialog("Uspeh", "Termin je uspešno zakazan.", owner).ShowDialog();
         }
 
         private void OpenScheduleWindow(MeetingTheme? theme)

@@ -86,10 +86,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             if (slotInRange is null && slotsOutsideRange.Count == 0)
             {
-                MessageBox.Show(
-                    "Nije pronađen nijedan slobodan termin u narednih 90 dana.",
-                    "Nema slobodnih termina",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                new InfoDialog("Nema slobodnih termina", "Nije pronađen nijedan slobodan termin u narednih 90 dana.", Window.GetWindow(this)).ShowDialog();
+
                 return;
             }
 
@@ -123,8 +121,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             facility = FacilitiesComboBox.SelectedItem as CityFacility;
             if (facility is null)
             {
-                MessageBox.Show("Izaberite objekat.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Izaberite objekat.", Window.GetWindow(this)).ShowDialog();
                 return false;
             }
 
@@ -138,8 +135,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (!int.TryParse(DurationTextBox.Text.Trim(), out durationHours) || durationHours <= 0)
             {
-                MessageBox.Show("Unesite ispravno trajanje posete u satima.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Unesite ispravno trajanje posete u satima.", Window.GetWindow(this)).ShowDialog();
                 return false;
             }
 
@@ -153,8 +149,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             if (StartDatePicker.SelectedDate is null || EndDatePicker.SelectedDate is null)
             {
-                MessageBox.Show("Izaberite opseg datuma.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Izaberite opseg datuma.", Window.GetWindow(this)).ShowDialog();
                 return false;
             }
 
@@ -163,8 +158,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             if (rangeStart >= rangeEnd)
             {
-                MessageBox.Show("Početni datum mora biti pre krajnjeg.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Početni datum mora biti pre krajnjeg.", Window.GetWindow(this)).ShowDialog();
                 return false;
             }
 

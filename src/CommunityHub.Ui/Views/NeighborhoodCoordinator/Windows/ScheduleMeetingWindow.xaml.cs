@@ -39,7 +39,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
             var (success, error) = _viewModel.TryCreate();
             if (!success)
             {
-                MessageBox.Show(error, "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", error, this).ShowDialog();
                 return;
             }
 

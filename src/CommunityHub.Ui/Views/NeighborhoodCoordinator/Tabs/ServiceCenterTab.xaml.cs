@@ -41,8 +41,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             var slot = _viewModel.FindFirstAvailableSlot(durationHours);
             if (slot is null)
             {
-                MessageBox.Show("Nije pronađen slobodan termin u narednih 60 dana.",
-                    "Nema slobodnih termina", MessageBoxButton.OK, MessageBoxImage.Information);
+                new InfoDialog("Nema slobodnih termina", "Nije pronađen slobodan termin u narednih 60 dana.", Window.GetWindow(this)).ShowDialog();
                 return;
             }
             BookIfConfirmed(slot);
@@ -58,8 +57,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
                 durationHours = hours;
                 return true;
             }
-            MessageBox.Show("Molimo unesite ispravno trajanje usluge u satima.",
-                "Nevažeći unos", MessageBoxButton.OK, MessageBoxImage.Warning);
+            new InfoDialog("Nevažeći unos", "Molimo unesite ispravno trajanje usluge u satima.", Window.GetWindow(this)).ShowDialog();
             return false;
         }
 
@@ -71,8 +69,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             if (window.ShowDialog() != true) return;
 
             var booked = _viewModel.Book(availableJobSlotDto);
-            MessageBox.Show($"Termin je uspešno zakazan za {booked!.ScheduledDate:dd.MM.yyyy.}.",
-                "Zakazano", MessageBoxButton.OK, MessageBoxImage.Information);
+            new InfoDialog("Zakazano", $"Termin je uspešno zakazan za {booked!.ScheduledDate:dd.MM.yyyy.}.", Window.GetWindow(this)).ShowDialog();
         }
 
         private void ScheduledServicesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,8 +80,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (!_viewModel.CanReview)
             {
-                MessageBox.Show("Ova usluga ne može biti ocenjena.",
-                    "Ocenjivanje nije moguće", MessageBoxButton.OK, MessageBoxImage.Information);
+                new InfoDialog("Ocenjivanje nije moguće", "Ova usluga ne može biti ocenjena.", Window.GetWindow(this)).ShowDialog();
                 return;
             }
             OpenReviewWindow(_viewModel.SelectedScheduledService!);
@@ -94,8 +90,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (!_viewModel.CanEditReview)
             {
-                MessageBox.Show("Recenzija se može menjati samo u roku od 3 dana od kreiranja.",
-                    "Izmena nije dozvoljena", MessageBoxButton.OK, MessageBoxImage.Information);
+                new InfoDialog("Izmena nije dozvoljena", "Recenzija se može menjati samo u roku od 3 dana od kreiranja.", Window.GetWindow(this)).ShowDialog();
                 return;
             }
             OpenReviewWindow(_viewModel.SelectedScheduledService!);

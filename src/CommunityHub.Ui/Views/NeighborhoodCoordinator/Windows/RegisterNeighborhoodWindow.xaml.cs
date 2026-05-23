@@ -19,7 +19,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 
             if (_viewModel.Coordinator == null)
             {
-                MessageBox.Show("Korisnik nije pronađen.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                new InfoDialog("Greška", "Korisnik nije pronađen.", this).ShowDialog();
                 Close();
                 return;
             }
@@ -39,7 +39,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 
             if (error != null)
             {
-                MessageBox.Show(error, "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", error, this).ShowDialog();
                 return;
             }
 
@@ -78,11 +78,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 
             if (!string.IsNullOrEmpty(error))
             {
-                MessageBox.Show("Molimo popunite sledeće nedostatke:\n\n" + error, "Validacija", MessageBoxButton.OK);
+                new InfoDialog("Validacija", "Molimo popunite sledeće nedostatke:\n\n" + error, this).ShowDialog();
                 return;
             }
 
-            MessageBox.Show($"Kvart '{_viewModel.Name}' je uspešno registrovan!", "Uspeh");
+            new InfoDialog("Uspeh", $"Kvart '{_viewModel.Name}' je uspešno registrovan!", this).ShowDialog();
             DialogResult = true;
             Close();
         }

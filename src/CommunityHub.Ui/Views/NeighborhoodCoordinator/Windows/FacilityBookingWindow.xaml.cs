@@ -97,8 +97,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 
             if (SlotsComboBox.SelectedItem is not AvailableFacilitySlot selected)
             {
-                MessageBox.Show("Odaberite termin.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Odaberite termin.", this).ShowDialog();
                 return null;
             }
 
