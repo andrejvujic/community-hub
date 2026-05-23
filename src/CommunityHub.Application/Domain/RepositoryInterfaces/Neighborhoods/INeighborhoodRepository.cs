@@ -1,6 +1,7 @@
-﻿using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Domain.Neighborhoods;
+using CommunityHub.Application.Helpers.Search;
 
-namespace CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods
 {
     public interface INeighborhoodRepository
     {

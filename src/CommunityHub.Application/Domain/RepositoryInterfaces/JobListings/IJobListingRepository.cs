@@ -1,4 +1,6 @@
-﻿namespace CommunityHub.Application.Domain.JobListings.RepositoryInterfaces
+﻿using CommunityHub.Application.Domain.JobListings;
+
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.JobListings
 {
     public interface IJobListingRepository
     {

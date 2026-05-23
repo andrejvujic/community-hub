@@ -2,7 +2,7 @@
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.JobListings;
-using CommunityHub.Application.Domain.JobListings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
 
 namespace CommunityHub.Application.Database.Repositories.JobListings;
 
