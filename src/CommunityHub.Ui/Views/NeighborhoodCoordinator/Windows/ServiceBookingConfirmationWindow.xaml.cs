@@ -4,12 +4,12 @@ using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
-    public partial class BookingConfirmationWindow : Window
+    public partial class ServiceBookingConfirmationWindow : Window
     {
         private readonly BookingConfirmationWindowViewModel _viewModel;
         public bool Confirmed { get; private set; }
 
-        public BookingConfirmationWindow(JobListingDto listing, AvailableJobSlotDto slot)
+        public ServiceBookingConfirmationWindow(JobListingDto listing, AvailableJobSlotDto slot)
         {
             InitializeComponent();
             _viewModel = new BookingConfirmationWindowViewModel(listing, slot);
