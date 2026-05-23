@@ -34,6 +34,8 @@ namespace CommunityHub.Application.Domain.Apartments.AccessRequests
             Id = id;
             Applicant = applicant;
             Apartment = apartment;
+            ApartmentId = apartmentId;
+            ApplicantId = applicantId;
             Comment = comment;
             Status = status;
             CreationDate = creationDate;

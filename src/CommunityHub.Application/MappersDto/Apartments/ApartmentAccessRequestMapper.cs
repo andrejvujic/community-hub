@@ -28,14 +28,14 @@ namespace CommunityHub.Application.MappersDto.Apartments
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new ApartmentAccessRequest(
-                dto.ApplicantId,
-                dto.ApartmentId,
-                dto.Status,
-                dto.CreationDate,
-                dto.Id,
-                dto.Comment,
-                dto.Applicant != null ? _userMapper.MapToDomain(dto.Applicant) : null,
-                apartment: dto.Apartment != null ? _apartmentMapper.MapToDomain(dto.Apartment) : null
+                applicantId: dto.ApplicantId,
+                apartmentId: dto.ApartmentId,
+                status: dto.Status,
+                creationDate: dto.CreationDate,
+                id: dto.Id,
+                comment: dto.Comment,
+                applicant: dto.Applicant is not null ? _userMapper.MapToDomain(dto.Applicant) : null,
+                apartment: dto.Apartment is not null ? _apartmentMapper.MapToDomain(dto.Apartment) : null
             );
         }
     }
