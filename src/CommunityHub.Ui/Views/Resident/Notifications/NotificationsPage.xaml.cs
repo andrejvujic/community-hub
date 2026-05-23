@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications
 {
-    public partial class NotificationsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class NotificationsPage : MainNavigationConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId;
         private readonly NotificationService _notificationService;

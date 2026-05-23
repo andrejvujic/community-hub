@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class CommonRoomRentalRequestsPage : MainNavigatorConsumerPage
+    public partial class CommonRoomRentalRequestsPage : MainNavigationConsumerPage
     {
         private readonly CommonRoomRentalRequestsViewModel _viewModel;
 

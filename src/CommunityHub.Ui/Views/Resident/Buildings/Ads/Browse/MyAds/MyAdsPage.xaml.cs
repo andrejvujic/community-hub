@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdsPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class MyAdsPage : MainNavigationConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
         private readonly AdService _adService;

@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdTimeSlotsPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class MyAdTimeSlotsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly long _userId;
         private readonly MyAdTimeSlotsViewModel _viewModel;

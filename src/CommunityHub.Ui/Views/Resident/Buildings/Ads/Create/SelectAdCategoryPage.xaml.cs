@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 {
-    public partial class SelectAdCategoryPage : MainNavigatorConsumerPage
+    public partial class SelectAdCategoryPage : MainNavigationConsumerPage
     {
         public AdCategory? SelectedCategory { get; }
 

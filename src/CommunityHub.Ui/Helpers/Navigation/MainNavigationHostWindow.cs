@@ -4,13 +4,13 @@ using System.Windows.Threading;
 
 namespace CommunityHub.Ui.Helpers.Navigation;
 
-    public abstract class MainNavigatorHostWindow : Window
+    public abstract class MainNavigationHostWindow : Window
     {
         public abstract Frame Frame { get; }
 
         private readonly Stack<NavigationEntry> _entries = new();
 
-        public void Push(MainNavigatorConsumerPage page, Action<object?>? onPop = null)
+        public void Push(MainNavigationConsumerPage page, Action<object?>? onPop = null)
         {
             Frame.Navigate(page);
             _entries.Push(
@@ -21,7 +21,7 @@ namespace CommunityHub.Ui.Helpers.Navigation;
                 );
         }
 
-        public void PushReplacement(MainNavigatorConsumerPage page)
+        public void PushReplacement(MainNavigationConsumerPage page)
         {
             Frame.Navigate(page);
 

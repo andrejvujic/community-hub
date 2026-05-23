@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 {
-    public partial class CommonRoomDetailsPage : MainNavigatorConsumerPage
+    public partial class CommonRoomDetailsPage : MainNavigationConsumerPage
     {
         private readonly long _userId;
 

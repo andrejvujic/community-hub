@@ -1,4 +1,4 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.CommonRoomInformationPage"
+﻿<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.CommonRoomInformationPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,9 +9,9 @@
       mc:Ignorable="d" 
       Title="Informacije o zajedničkoj prostoriji"
       FontFamily="{StaticResource AppFontFamily}">
-    <navigation:MainNavigatorConsumerPage.Resources>
+    <navigation:MainNavigationConsumerPage.Resources>
         <converters:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter"/>
-    </navigation:MainNavigatorConsumerPage.Resources>
+    </navigation:MainNavigationConsumerPage.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="8" Orientation="Vertical">
             <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
@@ -77,4 +77,4 @@
 
         </StackPanel>
     </ScrollViewer>
-</navigation:MainNavigatorConsumerPage>
+</navigation:MainNavigationConsumerPage>

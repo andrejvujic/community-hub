@@ -4,7 +4,7 @@ using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details
 {
-    public partial class CommonRoomInformationPage : MainNavigatorConsumerPage
+    public partial class CommonRoomInformationPage : MainNavigationConsumerPage
     {
         public CommonRoomDto CommonRoom { get; }
 

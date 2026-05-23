@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class CommonRoomRentalRequestDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class CommonRoomRentalRequestDetailsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly CommonRoomRentalRequestDetailsViewModel _viewModel;
         public CommonRoomRentalRequestDetailsPage(CommonRoomRentalRequestDto request)
@@ -22,7 +22,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
         private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         title: "Upozorenje",
@@ -43,7 +43,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         {
             _viewModel.AcceptProposedRequestDateRange();
 
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         title: "Informacija",

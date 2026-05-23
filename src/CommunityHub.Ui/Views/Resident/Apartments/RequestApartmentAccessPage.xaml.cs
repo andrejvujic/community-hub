@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Apartments
 {
-    public partial class RequestApartmentAccessPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class RequestApartmentAccessPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly RequestApartmentAccessViewModel _viewModel;
 
@@ -34,7 +34,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         private void ShowSuccessAlert()
         {
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Zahtjev podnesen",
@@ -47,7 +47,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         private void ShowValidationResult(AccessRequestValidationResult result)
         {
-            if (this is not IAlertConsumer consumer) return;
+            if (this is not IAlertServiceConsumer consumer) return;
 
             switch (result)
             {

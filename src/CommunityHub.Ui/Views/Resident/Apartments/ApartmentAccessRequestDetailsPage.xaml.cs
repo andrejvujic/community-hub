@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Apartments
 {
-    public partial class ApartmentAccessRequestDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class ApartmentAccessRequestDetailsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly ApartmentAccessRequestService _apartmentAccessService = new();
 
@@ -26,7 +26,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
         private void CancelRequestButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Upozorenje",

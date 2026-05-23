@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class RequestCommonRoomRentalPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class RequestCommonRoomRentalPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly RequestCommonRoomRentalViewModel _viewModel;
 
@@ -21,7 +21,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
         private void ShowSuccessAlert()
         {
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Zahtjev podnesen",
@@ -34,7 +34,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
         private void ShowValidationResult(RentalRequestValidationResult result)
         {
-            if (this is not IAlertConsumer consumer)
+            if (this is not IAlertServiceConsumer consumer)
                 return;
 
             switch (result)

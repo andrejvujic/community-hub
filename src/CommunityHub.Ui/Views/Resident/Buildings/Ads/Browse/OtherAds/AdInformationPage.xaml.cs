@@ -3,7 +3,7 @@ using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
-    public partial class AdInformationPage : MainNavigatorConsumerPage
+    public partial class AdInformationPage : MainNavigationConsumerPage
     {
         public AdDto Ad { get; }
         public AdInformationPage(AdDto ad)

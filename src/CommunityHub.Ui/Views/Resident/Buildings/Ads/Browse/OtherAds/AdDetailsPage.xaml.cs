@@ -11,7 +11,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
         TimeSlots
     }
 
-    public partial class AdDetailsPage : MainNavigatorConsumerPage
+    public partial class AdDetailsPage : MainNavigationConsumerPage
     {
         private readonly long _userId;
 

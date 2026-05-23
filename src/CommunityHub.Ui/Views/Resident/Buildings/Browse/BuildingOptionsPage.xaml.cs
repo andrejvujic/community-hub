@@ -8,7 +8,7 @@ using CommunityHub.Application.Services.Dtos.Buildings;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
 {
-    public partial class BuildingOptionsPage : MainNavigatorConsumerPage
+    public partial class BuildingOptionsPage : MainNavigationConsumerPage
     {
         private readonly long _userId;
 

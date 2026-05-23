@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
-    public partial class SelectCityPage : MainNavigatorConsumerPage
+    public partial class SelectCityPage : MainNavigationConsumerPage
     {
         private readonly SelectCityViewModel _viewModel;
 

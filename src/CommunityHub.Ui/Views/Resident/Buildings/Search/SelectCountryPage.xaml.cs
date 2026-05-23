@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
-    public partial class SelectCountryPage : MainNavigatorConsumerPage
+    public partial class SelectCountryPage : MainNavigationConsumerPage
     {
         private readonly SelectCountryViewModel _viewModel;
 

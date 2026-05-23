@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdInfoPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
+    public partial class MyAdInfoPage : MainNavigationConsumerPage, IAlertServiceConsumer, INotifyPropertyChanged
     {
         private readonly AdService _adService;
 
@@ -31,7 +31,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 
         private void ArchiveAdButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Upozorenje",
