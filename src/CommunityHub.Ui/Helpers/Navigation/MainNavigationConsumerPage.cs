@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
                 return;
             }
 
-            throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
+            // throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
         }
 
         public void PushReplacement(IMainNavigationConsumer page)
@@ -26,7 +26,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
                 return;
             }
 
-            throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
+            // throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
         }
 
         public void Pop(object? returnValue = null)
@@ -40,7 +40,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
             }
 
 
-            throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
+            // throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
         }
 
         public void PopAll()
@@ -51,7 +51,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
                 return;
             }
 
-            throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
+            // throw new InvalidOperationException("Parent window must inhert from MainNavigationHostWindow");
         }
     }
 }
