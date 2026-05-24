@@ -49,7 +49,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
 
             UserId = userId;
             Notification = notification;
+
             Ad = _adService.Get(NotificationDetails.AdId);
+
             OpenAdCommand = new RelayCommand(OpenAd);
         }
 
@@ -58,7 +60,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
             if (Ad is null)
                 return AdAvailability.NotFound;
 
-            if (Ad.IsActive && NotificationDetails.EventType is AdEventType.MatchingAdCreated)
+            if (!Ad.IsActive && NotificationDetails.EventType is AdEventType.MatchingAdCreated)
                 return AdAvailability.Expired;
 
             return AdAvailability.Available;
@@ -67,7 +69,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
         public void OpenAd()
         {
             var availability = GetAdAvailability();
-            if (availability != AdAvailability.Available)
+            if (availability is not AdAvailability.Available)
             {
                 ShowAdAvailabilityCheckResult(availability);
                 return;
