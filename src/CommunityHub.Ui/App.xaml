@@ -42,6 +42,7 @@
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
             <SolidColorBrush x:Key="ResidentPrimaryHoverBrush" Color="#105568" />
+            <SolidColorBrush x:Key="ResidentActionBorderBrush" Color="#0B4456" />
             <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#CFDCE3" />
             <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#142F3D" />
             <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#445D6B" />
@@ -56,8 +57,8 @@
             <Style x:Key="ResidentPrimaryActionButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
                 <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
+                <Setter Property="BorderThickness" Value="2" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -74,11 +75,11 @@
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="ResidentActionBackground" Property="Background" Value="{StaticResource ResidentPrimaryHoverBrush}" />
-                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentPrimaryHoverBrush}" />
+                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter TargetName="ResidentActionBackground" Property="Background" Value="{StaticResource ResidentDisabledActionBackgroundBrush}" />
-                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentBorderBrush}" />
+                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
                                     <Setter Property="Foreground" Value="{StaticResource ResidentDisabledActionTextBrush}" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
