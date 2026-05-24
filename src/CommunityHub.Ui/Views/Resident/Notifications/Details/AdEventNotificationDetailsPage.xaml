@@ -116,7 +116,12 @@
                      BorderBrush="{StaticResource ResidentBorderBrush}"
                      Background="{StaticResource ResidentSurfaceBrush}"
                      Padding="16">
-                    <Grid Background="Transparent" MouseLeftButtonDown="OpenAdButton_Click">
+                    <Grid Background="Transparent">
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftClick"
+                                Command="{Binding OpenAdCommand}" />
+                        </Grid.InputBindings>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>

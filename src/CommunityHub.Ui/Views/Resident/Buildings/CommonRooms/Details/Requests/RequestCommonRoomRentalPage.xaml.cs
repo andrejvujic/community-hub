@@ -15,56 +15,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         public RequestCommonRoomRentalPage(long userId, CommonRoomDto commonRoom)
         {
             InitializeComponent();
-            _viewModel = new RequestCommonRoomRentalViewModel(userId, commonRoom);
+            _viewModel = new RequestCommonRoomRentalViewModel(userId, commonRoom, this);
             DataContext = _viewModel;
         }
 
-        private void ShowSuccessAlert()
-        {
-            if (this is IAlertServiceConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Zahtjev podnesen",
-                        "Vaš zahtjev je uspješno podnesen.",
-                        AlertType.Info
-                    )
-                    .AddOption("U redu", () => Pop())
-                );
-        }
-
-        private void ShowValidationResult(RentalRequestValidationResult result)
-        {
-            if (this is not IAlertServiceConsumer consumer)
-                return;
-
-            switch (result)
-            {
-                case RentalRequestValidationResult.PendingRequestExists:
-                        consumer.ShowAlert(
-                              Alert.Create(
-                                  "Greška",
-                                  "Nije moguće kreirati zahtjev za iznajmljivanje ove zajedničke prostorije zato što ste već imate zahtjev za ovu zajedničku prostoriju koji je još uvijek u fazi obrade.",
-                                  AlertType.Error
-                              )
-                              .AddOption("U redu")
-                          );
-                    break;
-            }
-        }
-
         private void CreateRentalRequestButton_Click(object sender, RoutedEventArgs e)
-        {
-            var result = _viewModel.ValidateRentalRequest();
-
-            if (result is RentalRequestValidationResult.Valid)
-            {
-                _viewModel.CreateRentalRequest();
-                ShowSuccessAlert();
-                return;
-            }
-
-            ShowValidationResult(result);
-        }
+            => _viewModel.SubmitRentalRequest();
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 

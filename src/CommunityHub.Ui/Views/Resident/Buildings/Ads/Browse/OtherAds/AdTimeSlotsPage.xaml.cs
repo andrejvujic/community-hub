@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
-    public partial class AdTimeSlotsPage : MainNavigationConsumerPage, INotifyPropertyChanged, IAlertServiceConsumer
+    public partial class AdTimeSlotsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly AdTimeSlotsViewModel _viewModel;
 
@@ -19,7 +19,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
             InitializeComponent();
             _viewModel = new AdTimeSlotsViewModel(
                 userId: userId,
-                ad: ad
+                ad: ad,
+                page: this
             );
             DataContext = _viewModel;
 
@@ -29,31 +30,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
         }
 
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ReserveSelectedTimeSlots();
-
-            /*
-            if (this is IAlertServiceConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Greška",
-                        $"Nije bilo moguće rezervisati termin {selectedTimeSlot.StartTime:HH.mm} — {selectedTimeSlot.EndTime:HH.mm} na dan {selectedTimeSlot.StartTime.ToString("d. MMMM", _culture)} zato što već imate dogovor sklopljen sa drugim stanarom u ovom terminu.",
-                        AlertType.Error
-                    ).AddOption("U redu")
-                );
-            */
-
-            if (this is IAlertServiceConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Rezervacija uspješna",
-                        "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
-                    ).AddOption("U redu")
-                );
-
-            _viewModel.UpdateReservableTimeSlots();
-            _viewModel.DeselectAllTimeSlots();
-        }
+            => _viewModel.Reserve();
 
         private void TimeSlotItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -66,9 +43,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
             else
                 _viewModel.SelectTimeSlot(timeSlot);
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

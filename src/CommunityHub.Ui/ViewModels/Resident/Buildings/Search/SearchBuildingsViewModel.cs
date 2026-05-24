@@ -4,12 +4,13 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.Buildings;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Buildings;
 using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Search;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SearchBuildingsViewModel : INotifyPropertyChanged
+    public class SearchBuildingsViewModel : BaseViewModel
     {
         public long UserId { get; }
 
@@ -18,10 +19,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public ObservableCollection<BuildingDto> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;
 
-        public SearchBuildingsViewModel(long userId)
+        public SearchBuildingsViewModel(long userId, MainNavigationConsumerPage page) : base(page)
         {
             UserId = userId;
         }
+
+        public void OpenSearchCriteriaPage()
+            => Push(
+                new SearchCriteriaPage(SetSearchParameters, SearchParameters),
+                onPop: _ => UpdateSearchResults()
+            );
 
 
         private BuildingSearchParameters? _searchParameters;
@@ -58,8 +65,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

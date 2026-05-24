@@ -8,12 +8,13 @@ using CommunityHub.Application.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Application.Services.Notifications;
+using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
-    public class AdTimeSlotsViewModel : INotifyPropertyChanged
+    public class AdTimeSlotsViewModel : BaseViewModel
     {
         private readonly NotificationService _notificationService;
 
@@ -29,7 +30,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         public bool HasSelectedTimeSlots => SelectedTimeSlots.Count > 0;
         public ObservableCollection<AdTimeSlotDto> SelectedTimeSlots { get; } = new();
 
-        public AdTimeSlotsViewModel(long userId, AdDto ad) {
+        public AdTimeSlotsViewModel(long userId, AdDto ad, MainNavigationConsumerPage page) : base(page) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -67,6 +68,20 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                     sentAt: DateTime.Now
                 )
             );
+        }
+
+        public void Reserve()
+        {
+            ReserveSelectedTimeSlots();
+            ShowAlert(
+                Alert.Create(
+                    "Rezervacija uspješna",
+                    "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
+                )
+                .AddOption("U redu")
+            );
+            UpdateReservableTimeSlots();
+            DeselectAllTimeSlots();
         }
 
         public void UpdateReservableTimeSlots()
@@ -124,8 +139,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasSelectedTimeSlots));
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

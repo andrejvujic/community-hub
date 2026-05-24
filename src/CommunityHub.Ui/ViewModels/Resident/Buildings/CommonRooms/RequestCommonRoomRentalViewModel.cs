@@ -2,12 +2,13 @@
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
-using System.ComponentModel;
+using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Globalization;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 {
-    public class RequestCommonRoomRentalViewModel : INotifyPropertyChanged
+    public class RequestCommonRoomRentalViewModel : BaseViewModel
     {
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
@@ -17,7 +18,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         public long UserId { get; }
         public CommonRoomDto CommonRoom { get; }
 
-        public RequestCommonRoomRentalViewModel(long userId, CommonRoomDto commonRoom)
+        public RequestCommonRoomRentalViewModel(long userId, CommonRoomDto commonRoom, MainNavigationConsumerPage page) : base(page)
         {
             UserId = userId;
             CommonRoom = commonRoom;
@@ -36,6 +37,43 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                     status: RentalRequestStatus.Waiting
                 )    
             );
+
+        public void SubmitRentalRequest()
+        {
+            var result = ValidateRentalRequest();
+
+            if (result is RentalRequestValidationResult.Valid)
+            {
+                CreateRentalRequest();
+                ShowSuccessAlert();
+                return;
+            }
+
+            ShowValidationResult(result);
+        }
+
+        private void ShowSuccessAlert()
+            => ShowAlert(
+                Alert.Create(
+                    "Zahtjev podnesen",
+                    "Vaš zahtjev je uspješno podnesen.",
+                    AlertType.Info
+                )
+                .AddOption("U redu", () => Pop())
+            );
+
+        private void ShowValidationResult(RentalRequestValidationResult result)
+        {
+            if (result is RentalRequestValidationResult.PendingRequestExists)
+                ShowAlert(
+                    Alert.Create(
+                        "Greška",
+                        "Nije moguće kreirati zahtjev za iznajmljivanje ove zajedničke prostorije zato što ste već imate zahtjev za ovu zajedničku prostoriju koji je još uvijek u fazi obrade.",
+                        AlertType.Error
+                    )
+                    .AddOption("U redu")
+                );
+        }
 
         public DateTime MinStartDate => _today;
         public DateTime? MaxStartDate => SelectedEndDate;
@@ -111,8 +149,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

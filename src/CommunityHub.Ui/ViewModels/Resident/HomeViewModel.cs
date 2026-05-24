@@ -4,18 +4,19 @@ using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Notifications;
-using System.ComponentModel;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Notifications;
 
 namespace CommunityHub.Ui.ViewModels.Resident
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : BaseViewModel
     {
         private readonly NotificationService _notificationService;
         private readonly AdService _adService;
 
         public long UserId { get; }
 
-        public HomeViewModel(long userId) {
+        public HomeViewModel(long userId, MainNavigationConsumerPage page) : base(page) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -27,6 +28,12 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
             UserId = userId;
         }
+
+        public void OpenNotificationsPage()
+            => Push(
+                new NotificationsPage(UserId),
+                onPop: _ => UpdateUnreadNotificationCount()
+            );
 
         public void Initialize()
         {
@@ -68,8 +75,5 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
         public bool HasUnreadNotifications => UnreadNotificationCount > 0;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

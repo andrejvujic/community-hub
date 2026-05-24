@@ -1,11 +1,12 @@
 ﻿using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
-using System.ComponentModel;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Search;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SearchCriteriaViewModel : INotifyPropertyChanged
+    public class SearchCriteriaViewModel : BaseViewModel
     {
         private readonly Action<BuildingSearchParameters> _setSerachParameters;
         private readonly CityService _cityService = new();
@@ -13,8 +14,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 
         public SearchCriteriaViewModel(
             Action<BuildingSearchParameters> setSearchParameters,
+            MainNavigationConsumerPage page,
             BuildingSearchParameters? initialSearchParameters = null
-        ) {
+        ) : base(page) {
             _setSerachParameters = setSearchParameters;
             ApplyInitialSearchParameters(initialSearchParameters);
         }
@@ -49,6 +51,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
                     neighborhood: Neighborhood
                 )
              );
+        }
+
+        public void OpenSelectCountryPage()
+            => Push(new SelectCountryPage(SetCountry, Country));
+
+        public void OpenSelectCityPage()
+        {
+            if (!IsCountrySelected) return;
+            Push(new SelectCityPage(SetCity, Country!, City));
         }
 
         private CountryDto? _country;
@@ -92,8 +103,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 
         public void SetCity(CityDto? city) => City = city;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

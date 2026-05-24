@@ -59,7 +59,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
         public bool HasPreviousImage { get => CurrentImageIndex > 0; }
         public bool HasNextImage { get => CurrentImageIndex < Building.Images.Count - 1; }
 
-
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
                    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
