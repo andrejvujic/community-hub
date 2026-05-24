@@ -58,7 +58,7 @@
                                                 <DataTemplate>
                                                     <Border
                                                         Grid.Row="2"
-                                                        Background="{StaticResource ResidentCardBackgroundBrush}"
+                                                        Background="{StaticResource ResidentSurfaceBrush}"
                                                         BorderBrush="{StaticResource ResidentBorderBrush}"
                                                         BorderThickness="1"
                                                         Margin="8"

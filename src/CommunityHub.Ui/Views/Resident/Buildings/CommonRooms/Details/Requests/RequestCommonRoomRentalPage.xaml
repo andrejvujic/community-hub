@@ -20,7 +20,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
                     BaseTheme="Light"
-                    PrimaryColor="Teal"
+                    PrimaryColor="Blue"
                     SecondaryColor="LightBlue" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -164,7 +164,7 @@
             <Border
                     Margin="16"
                     Padding="8"
-                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                    Background="{StaticResource ResidentInputBackgroundBrush}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Stretch">
                 <Grid>
@@ -278,7 +278,7 @@
                 x:Name="StartDatePicker"
                 Visibility="Collapsed"
                 Background="{StaticResource ResidentOverlayBrush}">
-            <Border Background="{StaticResource ResidentCardBackgroundBrush}" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Background="{StaticResource ResidentInputBackgroundBrush}" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -316,7 +316,7 @@
                 x:Name="EndDatePicker"
                 Visibility="Collapsed"
                 Background="{StaticResource ResidentOverlayBrush}">
-            <Border Background="{StaticResource ResidentCardBackgroundBrush}" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Background="{StaticResource ResidentInputBackgroundBrush}" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
