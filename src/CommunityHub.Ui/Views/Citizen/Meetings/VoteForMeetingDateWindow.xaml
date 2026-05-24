@@ -8,6 +8,11 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
 
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+        <KeyBinding Key="Return" Command="{Binding ConfirmCommand}" />
+    </Window.InputBindings>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
