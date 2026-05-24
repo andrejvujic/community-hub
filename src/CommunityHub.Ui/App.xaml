@@ -33,6 +33,23 @@
             <SolidColorBrush x:Key="ErrorMessageBrush" Color="#C43D5A" />
             <SolidColorBrush x:Key="PageTitleBrush" Color="#000000" />
 
+            <!-- Resident palette -->
+            <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F4F7FA" />
+            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#D9E8F1" />
+            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#C7DDE9" />
+            <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#E7F0F4" />
+            <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
+            <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#E7EFF4" />
+            <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#17313F" />
+            <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#536B78" />
+            <SolidColorBrush x:Key="ResidentBorderBrush" Color="#B7CAD4" />
+            <SolidColorBrush x:Key="ResidentDangerBrush" Color="#BE4054" />
+            <SolidColorBrush x:Key="ResidentWarningBrush" Color="#A9690E" />
+            <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
+
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Themes/LightTheme.xaml" />

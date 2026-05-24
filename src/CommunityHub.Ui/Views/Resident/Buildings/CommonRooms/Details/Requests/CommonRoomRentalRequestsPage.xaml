@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d"
       Title="Zahtjevi za iznajmljivanje zajedničke prostorije"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:RentalRequestStatusToStringConverter x:Key="RentalRequestStatusToStringConverter"/>
         <converters:RentalRequestStatusToIconCodeConverter x:Key="RentalRequestStatusToIconCodeConverter"/>
@@ -37,8 +39,8 @@
                                 <Border
                                     Padding="8"
                                     Margin="0,0,0,8"
-                                    Background="#dedede"
-                                    BorderBrush="Gray"
+                                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                                    BorderBrush="{StaticResource ResidentBorderBrush}"
                                     BorderThickness="1">
                                     <Grid Background="Transparent" MouseLeftButtonDown="RentalRequestItem_Click">
                                         <Grid.ColumnDefinitions>
@@ -115,7 +117,7 @@
 
         <Button
             Content="&#x2b;"
-            Foreground="White"
+            Foreground="{StaticResource ResidentOnPrimaryBrush}"
             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
             FontSize="24"
             Margin="16"
@@ -126,7 +128,7 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Ellipse Width="64" Height="64" Fill="Black"/>
+                        <Ellipse Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}"/>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </ControlTemplate>

@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Pretraživanje zgrada"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
@@ -19,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="#dedede">
+        <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="*"/>
@@ -84,6 +86,9 @@
                         <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                         <Button
                             Content="Poništi pretragu"
+                            Background="{StaticResource ResidentSecondaryBrush}"
+                            Foreground="{StaticResource ResidentTextPrimaryBrush}"
+                            BorderBrush="{StaticResource ResidentBorderBrush}"
                             Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                             Height="48"
                             Padding="8"
@@ -103,8 +108,8 @@
                                 <Border
                                      Padding="8"
                                      Margin="0,0,0,8"
-                                     Background="#dedede"
-                                     BorderBrush="Gray"
+                                     Background="{StaticResource ResidentCardBackgroundBrush}"
+                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                      BorderThickness="1">
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -141,7 +146,7 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock
                                                         Text="&#xf64f;"
-                                                        Foreground="#4a4a4a"
+                                                        Foreground="{StaticResource ResidentTextSecondaryBrush}"
                                                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                         VerticalAlignment="Center"
                                                         FontSize="16"
@@ -149,7 +154,7 @@
                                                         Padding="0"/>
 
                                                     <TextBlock                                                
-                                                         Foreground="#4a4a4a"
+                                                         Foreground="{StaticResource ResidentTextSecondaryBrush}"
                                                          FontSize="14">
                                                         <TextBlock.Text>
                                                             <MultiBinding StringFormat="{}{0}, {1}">
@@ -165,14 +170,14 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock
                                                         Text="&#xf3c5;"
-                                                        Foreground="#4a4a4a"
+                                                        Foreground="{StaticResource ResidentTextSecondaryBrush}"
                                                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                         VerticalAlignment="Center"
                                                         FontSize="16"
                                                         Margin="0,0,4,0"
                                                         Padding="0"/>
                                                     <TextBlock
-                                                         Foreground="#4a4a4a"
+                                                         Foreground="{StaticResource ResidentTextSecondaryBrush}"
                                                          Text="{Binding Address.Neighborhood}"
                                                          FontSize="14"/>
                                                 </StackPanel>
@@ -187,7 +192,9 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Button
-                                                Background="#ffffff"
+                                                Background="{StaticResource ResidentSecondaryBrush}"
+                                                Foreground="{StaticResource ResidentTextPrimaryBrush}"
+                                                BorderBrush="{StaticResource ResidentBorderBrush}"
                                                 Height="48"
                                                 Padding="8"
                                                 Grid.Column="0" 
@@ -196,7 +203,9 @@
                                                 Click="OpenBuildingDetailsPageButton_Click"/>
 
                                             <Button
-                                                Background="#ffffff"
+                                                Background="{StaticResource ResidentPrimaryBrush}"
+                                                Foreground="{StaticResource ResidentOnPrimaryBrush}"
+                                                BorderBrush="{StaticResource ResidentPrimaryBrush}"
                                                 Height="48"
                                                 Padding="8"
                                                 Grid.Column="2"
@@ -238,6 +247,9 @@
                                 <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                                 <Button
                                     Content="Poništi pretragu"
+                                    Background="{StaticResource ResidentSecondaryBrush}"
+                                    Foreground="{StaticResource ResidentTextPrimaryBrush}"
+                                    BorderBrush="{StaticResource ResidentBorderBrush}"
                                     Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                     Height="48"
                                     Padding="8"

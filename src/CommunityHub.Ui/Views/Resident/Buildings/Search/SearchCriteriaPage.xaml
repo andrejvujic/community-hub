@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Kriterijum za pretraživanje"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
@@ -20,7 +22,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#dedede">
+            <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="64"/>
                     <ColumnDefinition Width="*"/>
@@ -66,10 +68,10 @@
 
                 <Border
                     Grid.Row="1" 
-                    Background="#dedede"
-                    BorderBrush="Gray"
+                    Background="{StaticResource ResidentInputBackgroundBrush}"
+                    BorderBrush="{StaticResource ResidentBorderBrush}"
                     BorderThickness="1">
-                    <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCountryButton_Click">
+                    <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="SelectCountryButton_Click">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
@@ -91,10 +93,10 @@
 
                 <Grid Grid.Row="4">
                     <Border
-                        Background="#dedede"
-                        BorderBrush="Gray"
+                        Background="{StaticResource ResidentInputBackgroundBrush}"
+                        BorderBrush="{StaticResource ResidentBorderBrush}"
                         BorderThickness="1">
-                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="SelectCityButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="SelectCityButton_Click">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -112,14 +114,14 @@
                         </Grid>
                     </Border>
 
-                    <Grid Visibility="{Binding IsCountrySelected, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Background="#dedede" Opacity="0.7"/>
+                    <Grid Visibility="{Binding IsCountrySelected, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Background="{StaticResource ResidentSurfaceBrush}" Opacity="0.7"/>
                 </Grid>
 
                 <Label Content="Ulica" FontSize="18" Grid.Row="6"/>
-                <TextBox Height="48" FontSize="16" Text="{Binding StreetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalContentAlignment="Center" Padding="4" Grid.Row="7"/>
+                <TextBox Height="48" FontSize="16" Background="{StaticResource ResidentInputBackgroundBrush}" BorderBrush="{StaticResource ResidentBorderBrush}" Text="{Binding StreetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalContentAlignment="Center" Padding="4" Grid.Row="7"/>
 
                 <Label Content="Naselje" FontSize="18" Grid.Row="9"/>
-                <TextBox Height="48" FontSize="16" Text="{Binding Neighborhood, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Padding="4" Grid.Row="10"/>
+                <TextBox Height="48" FontSize="16" Background="{StaticResource ResidentInputBackgroundBrush}" BorderBrush="{StaticResource ResidentBorderBrush}" Text="{Binding Neighborhood, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Padding="4" Grid.Row="10"/>
             </Grid>
         </Grid>
 
@@ -129,6 +131,9 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Započni pretragu"
+            Background="{StaticResource ResidentPrimaryBrush}"
+            Foreground="{StaticResource ResidentOnPrimaryBrush}"
+            BorderBrush="{StaticResource ResidentPrimaryBrush}"
             FontSize="18"
             Width="192"
             Height="72"
