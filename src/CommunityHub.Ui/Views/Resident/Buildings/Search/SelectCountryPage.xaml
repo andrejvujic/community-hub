@@ -85,8 +85,12 @@
 
                     <Grid
                         Grid.Column="1"
-                        MouseLeftButtonDown="SearchButton_Click"
                         Background="Transparent">
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftClick"
+                                Command="{Binding SearchCommand}" />
+                        </Grid.InputBindings>
                         <TextBlock
                             Text="&#xf002;"
                             FontSize="24"
@@ -110,7 +114,13 @@
                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                     BorderThickness="1"
                                     Margin="0,0,0,8">
-                                    <Grid Height="48" MouseLeftButtonDown="CountryItem_Click" Background="Transparent">
+                                    <Grid Height="48" Background="Transparent">
+                                        <Grid.InputBindings>
+                                            <MouseBinding
+                                                Gesture="LeftClick"
+                                                Command="{Binding DataContext.SelectCountryCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}" />
+                                        </Grid.InputBindings>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>

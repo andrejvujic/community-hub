@@ -49,8 +49,12 @@
 
             <Grid
                 Grid.Column="2"
-                MouseLeftButtonDown="SearchButton_Click"
                 Background="Transparent">
+                <Grid.InputBindings>
+                    <MouseBinding
+                        Gesture="LeftClick"
+                        Command="{Binding OpenSearchCriteriaCommand}" />
+                </Grid.InputBindings>
                 <TextBlock
                     Text="&#xf002;"
                     FontSize="24"
@@ -92,7 +96,7 @@
                             Padding="8"
                             Grid.Column="2"
                             FontSize="16"
-                            Click="ResetSearchButton_Click"
+                            Command="{Binding ResetSearchCommand}"
                         />
                     </Grid>
                     
@@ -196,7 +200,8 @@
                                                 Grid.Column="0" 
                                                 FontSize="16"
                                                 Content="Prikaži detalje"
-                                                Click="OpenBuildingDetailsPageButton_Click"/>
+                                                Command="{Binding DataContext.OpenBuildingDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"/>
 
                                             <Button
                                                 Style="{StaticResource ResidentPrimaryActionButtonStyle}"
@@ -205,7 +210,8 @@
                                                 Grid.Column="2"
                                                 FontSize="16"
                                                 Content="Pridruži se"
-                                                Click="OpenRequestApartmentAccessPageButton_Click"/>
+                                                Command="{Binding DataContext.OpenRequestApartmentAccessCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"/>
                                         </Grid>
 
                                     </Grid>
@@ -247,7 +253,7 @@
                                     Padding="8"
                                     Grid.Column="2"
                                     FontSize="16"
-                                    Click="ResetSearchButton_Click"
+                                    Command="{Binding ResetSearchCommand}"
                                 />
                             </Grid>
 

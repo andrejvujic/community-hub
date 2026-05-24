@@ -1,8 +1,6 @@
 ﻿using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
-using System.Windows;
-using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
@@ -19,22 +17,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
             _viewModel.UpdateRenalRequests();
         }
 
-        private void RequestCommonRoomRentalButton_Click(object sender, RoutedEventArgs e)
-            => Push(
-                new RequestCommonRoomRentalPage(_viewModel.UserId, _viewModel.CommonRoom),
-                onPop: _ => _viewModel.UpdateRenalRequests()
-            );
-
-        private void RentalRequestItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not CommonRoomRentalRequestDto request) return;
-
-            Push(
-                new CommonRoomRentalRequestDetailsPage(request),
-                onPop: _ => _viewModel.UpdateRenalRequests()
-            );
-        }
     }
 }

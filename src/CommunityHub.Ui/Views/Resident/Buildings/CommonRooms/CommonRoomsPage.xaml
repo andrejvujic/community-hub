@@ -104,7 +104,13 @@
                                     Background="{StaticResource ResidentCardBackgroundBrush}"
                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                     BorderThickness="1">
-                                    <Grid Background="Transparent" MouseLeftButtonDown="CommonRoomItem_Click">
+                                    <Grid Background="Transparent">
+                                        <Grid.InputBindings>
+                                            <MouseBinding
+                                                Gesture="LeftClick"
+                                                Command="{Binding DataContext.OpenCommonRoomDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}" />
+                                        </Grid.InputBindings>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
