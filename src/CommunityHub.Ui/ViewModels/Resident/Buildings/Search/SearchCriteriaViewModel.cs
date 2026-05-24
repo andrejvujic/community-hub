@@ -2,6 +2,7 @@
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Search;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
-    public partial class AdTimeSlotsPage : MainNavigationConsumerPage, INotifyPropertyChanged, IAlertServiceConsumer
+    public partial class AdTimeSlotsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly AdTimeSlotsViewModel _viewModel;
 
