@@ -4,6 +4,10 @@ using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads.Create;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -25,7 +29,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
         public bool IsSuccessful => ValidationResult is PublishmentValidationResult.Valid && _ad is not null;
     }
 
-    public class CreateAdViewModel: INotifyPropertyChanged
+    public class CreateAdViewModel: BaseViewModel
     {
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
@@ -33,10 +37,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
         private readonly AdService _adService;
         private readonly AdMatchSubscriptionService _adMatchSubscriptionService;
 
-        public long UserId { get; }
-        public long BuildingId { get; }
+        private readonly long _userId;
+        private readonly long _buildingId;
 
-        public CreateAdViewModel(long userId, long buildingId)
+        public CreateAdViewModel(long userId, long buildingId, MainNavigationConsumerPage page) : base(page)
         {
             _adService = new(
                 Injector.CreateInstance<IAdRepository>(),
@@ -50,18 +54,61 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
                 Injector.CreateInstance<INotificationRepository>()
             );
 
-            UserId = userId;
-            BuildingId = buildingId;
+            _userId = userId;
+            _buildingId = buildingId;
+
+            PublishCommand = new RelayCommand(Publish, () => IsFormValid);
+            OpenSelectTypePageCommand = new RelayCommand(OpenSelectTypePage);
+            OpenSelectCategoryPageCommand = new RelayCommand(OpenSelectCategoryPage);
         }
 
-        public SubmissionResult Submit()
+        public RelayCommand PublishCommand { get; }
+        public RelayCommand OpenSelectTypePageCommand { get; }
+        public RelayCommand OpenSelectCategoryPageCommand { get; }
+
+        private void Publish()
+        {
+            var result = Submit();
+
+            if (result.IsSuccessful)
+            {
+                ShowSuccessAlert(result.PublishedAd);
+                return;
+            }
+
+            ShowPublishmentValidationResult(result.ValidationResult);
+        }
+
+        private void OpenSelectTypePage()
+        {
+            Push(
+                new SelectAdTypePage(selectedType: SelectedType),
+                onPop: (object? value) => {
+                    if (value is not AdType type) return;
+                    SelectedType = type;
+                }
+            );
+        }
+
+        private void OpenSelectCategoryPage()
+        {
+            Push(
+                new SelectAdCategoryPage(selectedCategory: SelectedCategory),
+                onPop: (object? value) => {
+                    if (value is not AdCategory category) return;
+                    SelectedCategory = category;
+                }
+            );
+        }
+        
+        private SubmissionResult Submit()
         {
             if (!IsFormValid)
                 throw new InvalidOperationException("Invalid form can't be submitted.");
 
             var ad = new AdDto(
-                authorId: UserId,
-                buildingId: BuildingId,
+                authorId: _userId,
+                buildingId: _buildingId,
                 type: SelectedType!.Value,
                 category: SelectedCategory!.Value,
                 status: AdStatus.Active,
@@ -82,6 +129,36 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
             return new(validationResult);
         }
 
+        private void ShowPublishmentValidationResult(PublishmentValidationResult result)
+        {
+            switch (result)
+            {
+                case PublishmentValidationResult.DuplicateAdExists:
+                    ShowAlert(
+                        Alert.Create(
+                            "Greška",
+                            "Objava oglasa nije bila moguća. Već imate aktivan oglas u ovoj zgradi sa istim tipom, kategorijom i preklapajućim datumima. Korigujte opseg datuma i pokušajte ponovo.",
+                            AlertType.Error
+                        )
+                        .AddOption("U redu")
+                    );
+                    break;
+            }
+        }
+
+        private void ShowSuccessAlert(AdDto publishedAd)
+            => ShowAlert(
+                Alert.Create(
+                    "Oglas objavljen",
+                    "Vaš oglas je uspješno objavljen i biće prikazan ostalim stanarima na oglasnoj tabli zgrade.",
+                    AlertType.Info
+                )
+                .AddOption(
+                    "Nastavi",
+                    () => Pop(publishedAd)
+                )
+            );
+
         private AdType? _selectedType;
         public AdType? SelectedType
         {
@@ -92,6 +169,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
                 _selectedType = value;
                 OnPropertyChanged(nameof(SelectedType));
                 OnPropertyChanged(nameof(IsFormValid));
+
+                PublishCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -105,6 +184,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
                 _selectedCategory = value;
                 OnPropertyChanged(nameof(SelectedCategory));
                 OnPropertyChanged(nameof(IsFormValid));
+
+                PublishCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -118,6 +199,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
                 _description = value;
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsFormValid));
+
+                PublishCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -143,6 +226,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
 
                 OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 OnPropertyChanged(nameof(IsFormValid));
+
+                PublishCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -169,6 +254,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
 
                 OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 OnPropertyChanged(nameof(IsFormValid));
+
+                PublishCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -211,9 +298,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
                 return true;
             }
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

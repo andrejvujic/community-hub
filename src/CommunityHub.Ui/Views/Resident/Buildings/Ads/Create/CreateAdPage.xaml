@@ -82,11 +82,17 @@
                         Background="{StaticResource ResidentInputBackgroundBrush}"
                         BorderBrush="{StaticResource ResidentBorderBrush}"
                         BorderThickness="1">
-                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="SelectTypeButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+
+                            <Grid.InputBindings>
+                                <MouseBinding
+                                    Gesture="LeftClick"
+                                    Command="{Binding OpenSelectTypePageCommand}" />
+                            </Grid.InputBindings>
 
                             <Label
                                 Grid.Column="0"
@@ -113,11 +119,17 @@
                         Background="{StaticResource ResidentInputBackgroundBrush}"
                         BorderBrush="{StaticResource ResidentBorderBrush}"
                         BorderThickness="1">
-                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="SelectCategoryButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+
+                            <Grid.InputBindings>
+                                <MouseBinding
+                                    Gesture="LeftClick"
+                                    Command="{Binding OpenSelectCategoryPageCommand}"/>
+                            </Grid.InputBindings>
 
                             <Label
                                 Grid.Column="0"
@@ -189,7 +201,7 @@
                 VerticalAlignment="Bottom"
                 Margin="0,0,0,16"
                 IsEnabled="{Binding IsFormValid}"
-                Click="PublishAdButton_Click"
+                Command="{Binding PublishCommand}"
                 Content="Objavi oglas"
                 Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                 FontSize="18"
