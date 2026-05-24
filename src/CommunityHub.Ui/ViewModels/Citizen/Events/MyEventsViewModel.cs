@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Application.Services.Events;
+using CommunityHub.Ui.Helpers.Commands;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
 {
@@ -10,16 +12,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
     {
         private readonly long _userId;
         private readonly CommunityEventService _eventService = new();
+        private CommunityEventDto? _selectedOrganizerEvent;
+        private CommunityEventDto? _selectedVolunteerEvent;
 
         public long UserId => _userId;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? CloseRequested;
+        public event EventHandler? OrganizeEventRequested;
+        public event EventHandler<CommunityEventDto>? OpenMarkVolunteersRequested;
 
         public MyEventsViewModel(long userId)
         {
             _userId = userId;
             _organizerEvents = new ObservableCollection<CommunityEventDto>();
             _volunteerEvents = new ObservableCollection<CommunityEventDto>();
+
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            OrganizeEventCommand = new RelayCommand<object>(_ => RequestOrganizeEvent());
+            OpenMarkVolunteersCommand = new RelayCommand<object>(_ => RequestOpenMarkVolunteers());
+
             LoadEvents();
         }
 
@@ -47,6 +59,32 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             }
         }
 
+        public CommunityEventDto? SelectedOrganizerEvent
+        {
+            get => _selectedOrganizerEvent;
+            set
+            {
+                if (_selectedOrganizerEvent == value) return;
+                _selectedOrganizerEvent = value;
+                OnPropertyChanged(nameof(SelectedOrganizerEvent));
+            }
+        }
+
+        public CommunityEventDto? SelectedVolunteerEvent
+        {
+            get => _selectedVolunteerEvent;
+            set
+            {
+                if (_selectedVolunteerEvent == value) return;
+                _selectedVolunteerEvent = value;
+                OnPropertyChanged(nameof(SelectedVolunteerEvent));
+            }
+        }
+
+        public ICommand CloseCommand { get; }
+        public ICommand OrganizeEventCommand { get; }
+        public ICommand OpenMarkVolunteersCommand { get; }
+
         public void LoadEvents()
         {
             var organizerEvents = _eventService.GetByOrganizerId(_userId);
@@ -54,6 +92,27 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
             var volunteerEvents = _eventService.GetByVolunteerCitizenId(_userId);
             VolunteerEvents = new ObservableCollection<CommunityEventDto>(volunteerEvents);
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestOrganizeEvent()
+        {
+            OrganizeEventRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestOpenMarkVolunteers()
+        {
+            var selectedEvent = SelectedOrganizerEvent;
+            if (selectedEvent == null || !CanOpenMarkVolunteersWindow(selectedEvent))
+                return;
+
+            var eventDto = GetEventDto(selectedEvent.Id);
+            if (eventDto != null)
+                OpenMarkVolunteersRequested?.Invoke(this, eventDto);
         }
 
         public bool CanOpenMarkVolunteersWindow(CommunityEventDto? eventDto)
