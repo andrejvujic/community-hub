@@ -15,33 +15,27 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             _viewModel = new RequestNeighborhoodAccessViewModel(neighborhoodName);
             DataContext = _viewModel;
             InitializeComponent();
-        }
 
-        private void Confirm_Click(object sender, RoutedEventArgs e)
-        {
             if (_viewModel != null)
-                _viewModel.Confirmed = true;
-            DialogResult = true;
-            Close();
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            if (_viewModel != null)
-                _viewModel.Confirmed = false;
-            DialogResult = false;
-            Close();
+            {
+                _viewModel.ConfirmRequested += (_, _) =>
+                {
+                    DialogResult = true;
+                    Close();
+                };
+                _viewModel.CancelRequested += (_, _) =>
+                {
+                    DialogResult = false;
+                    Close();
+                };
+                _viewModel.CloseRequested += (_, _) => Close();
+            }
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }
