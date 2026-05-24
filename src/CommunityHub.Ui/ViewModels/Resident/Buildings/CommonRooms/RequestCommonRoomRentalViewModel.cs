@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Globalization;
 
@@ -22,12 +23,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         {
             UserId = userId;
             CommonRoom = commonRoom;
+
+            SubmitCommand = new(SubmitRentalRequest, () => IsSelectedDateRangeValid);
         }
 
-        public RentalRequestValidationResult ValidateRentalRequest()
+        public RelayCommand SubmitCommand { get; }
+
+        private RentalRequestValidationResult ValidateRentalRequest()
             => _commonRoomRentalRequestService.ValidateRentalRequest(UserId, CommonRoom.Id);
 
-        public void CreateRentalRequest()
+        private void CreateRentalRequest()
             => _commonRoomRentalRequestService.Create(
                 new CommonRoomRentalRequestDto(
                     residentId: UserId,
@@ -38,7 +43,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                 )    
             );
 
-        public void SubmitRentalRequest()
+        private void SubmitRentalRequest()
         {
             var result = ValidateRentalRequest();
 
@@ -96,6 +101,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                 OnPropertyChanged(nameof(MinEndDate));
 
                 OnPropertyChanged(nameof(IsSelectedDateRangeValid));
+
+                SubmitCommand.RaiseCanExecuteChanged();
             }
         }
         public string SelectedStartDateText
@@ -120,6 +127,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                 OnPropertyChanged(nameof(MaxStartDate));
 
                 OnPropertyChanged(nameof(IsSelectedDateRangeValid));
+
+                SubmitCommand.RaiseCanExecuteChanged();
             }
         }
 

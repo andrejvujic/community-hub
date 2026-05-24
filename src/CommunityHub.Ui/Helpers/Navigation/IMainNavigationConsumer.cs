@@ -4,9 +4,9 @@
     {
         public abstract string Id { get; }
 
-        public void Push(IMainNavigationConsumer page, Action<object?>? onPop = null);
+        public void Push(IMainNavigationConsumer target, Action<object?>? onPop = null);
 
-        public void PushReplacement(IMainNavigationConsumer page);
+        public void PushReplacement(IMainNavigationConsumer target);
 
         public void Pop(object? returnValue = null);
 

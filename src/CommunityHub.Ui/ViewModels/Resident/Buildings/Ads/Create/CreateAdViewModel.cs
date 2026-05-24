@@ -8,7 +8,6 @@ using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Create;
-using System.ComponentModel;
 using System.Globalization;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
@@ -40,7 +39,11 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
         private readonly long _userId;
         private readonly long _buildingId;
 
-        public CreateAdViewModel(long userId, long buildingId, MainNavigationConsumerPage page) : base(page)
+        public CreateAdViewModel(
+            long userId,
+            long buildingId,
+            IMainNavigationConsumer navigationConsumer
+        ) : base(navigationConsumer)
         {
             _adService = new(
                 Injector.CreateInstance<IAdRepository>(),
