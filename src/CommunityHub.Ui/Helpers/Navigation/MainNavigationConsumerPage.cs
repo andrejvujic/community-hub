@@ -3,25 +3,25 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Helpers.Navigation
 {
-    public class MainNavigationConsumerPage : Page
+    public class MainNavigationConsumerPage : Page, IMainNavigationConsumer
     {
         public string Id { get; } = Guid.NewGuid().ToString();
 
-        public void Push(MainNavigationConsumerPage page, Action<object?>? onPop = null)
+        public void Push(IMainNavigationConsumer page, Action<object?>? onPop = null)
         {
             if (Window.GetWindow(this) is MainNavigationHostWindow window)
                 window.Push(page, onPop: onPop);
         }
 
-        public void PushReplacement(MainNavigationConsumerPage page)
+        public void PushReplacement(IMainNavigationConsumer page)
         {
-            if (Window.GetWindow(this) is MainNavigationHostWindow window)
+            if (Window.GetWindow(this) is IMainNavigationConsumer window)
                 window.PushReplacement(page);
         }
 
         public void Pop(object? returnValue = null)
         {
-            if (Window.GetWindow(this) is MainNavigationHostWindow window)
+            if (Window.GetWindow(this) is IMainNavigationConsumer window)
                 window.Pop(
                     returnValue: returnValue
                 );
@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
 
         public void PopAll()
         {
-            if (Window.GetWindow(this) is MainNavigationHostWindow window)
+            if (Window.GetWindow(this) is IMainNavigationConsumer window)
                 window.PopAll();
         }
     }

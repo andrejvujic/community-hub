@@ -6,28 +6,28 @@ namespace CommunityHub.Ui.ViewModels.Resident
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        private readonly MainNavigationConsumerPage _page;
+        private readonly IMainNavigationConsumer _target;
 
-        public BaseViewModel(MainNavigationConsumerPage page)
+        public BaseViewModel(IMainNavigationConsumer target)
         {
-            _page = page;
+            _target = target;
         }
 
-        protected void Push(MainNavigationConsumerPage page, Action<object?>? onPop = null)
-            => _page.Push(page, onPop: onPop);
+        protected void Push(IMainNavigationConsumer page, Action<object?>? onPop = null)
+            => _target.Push(page, onPop: onPop);
 
-        protected void PushReplacement(MainNavigationConsumerPage page)
-            => _page.PushReplacement(page);
+        protected void PushReplacement(IMainNavigationConsumer page)
+            => _target.PushReplacement(page);
 
         protected void Pop(object? returnValue = null)
-            => _page.Pop(returnValue);
+            => _target.Pop(returnValue);
 
         protected void PopAll()
-            => _page.PopAll();
+            => _target.PopAll();
 
         protected void ShowAlert(Alert alert)
         {
-            if (_page is IAlertServiceConsumer consumer)
+            if (_target is IAlertServiceConsumer consumer)
             {
                 consumer.ShowAlert(alert);
                 return;
@@ -39,7 +39,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
         protected void CloseAlert()
         {
-            if (_page is IAlertServiceConsumer consumer)
+            if (_target is IAlertServiceConsumer consumer)
             {
                 consumer.CloseAlert();
                 return;
