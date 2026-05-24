@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Navigation;
 using CommunityHub.Ui.Views.BuildingManager;
 using CommunityHub.Ui.Views.BuildingManager.BuildingPages;
 using System.ComponentModel;
@@ -10,19 +11,25 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
-    public class BuildingDetailsPageViewModel : INotifyPropertyChanged
+    public class BuildingDetailsPageViewModel : INotifyPropertyChanged, IDisposable
     {
-        public User User { get; }
-        public Building Building { get; }
+        private readonly IAppNavigationService _navigationService;
         private readonly CommonRoomRentalRequestsPageViewModel _rentalRequestsViewModel;
         private readonly Dictionary<string, Func<Page>> _navigationMap;
 
-        public BuildingDetailsPageViewModel(User user, Building building)
+        public User User { get; }
+        public Building Building { get; }
+
+        public BuildingDetailsPageViewModel(
+            User user,
+            Building building,
+            IAppNavigationService navigationService,
+            string? initialSectionTag = null)
         {
             User = user;
             Building = building;
-            SelectedSection = "Info";
-            CurrentPage = new BuildingInfoPage(User, Building);
+            _navigationService = navigationService;
+
             _rentalRequestsViewModel = new CommonRoomRentalRequestsPageViewModel(User, Building);
             _rentalRequestsViewModel.AutoProcessRentalRequestStatuses();
 
@@ -39,7 +46,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             };
 
             NavigateCommand = new RelayCommand<string>(NavigateTo);
+
+            _navigationService.Navigated += OnNavigated;
+
+            string firstSection = string.IsNullOrWhiteSpace(initialSectionTag) ? "Info" : initialSectionTag;
+            LoadSection(firstSection);
         }
+
         public ICommand NavigateCommand { get; }
 
         private string? _selectedSection;
@@ -66,16 +79,50 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 OnPropertyChanged();
             }
         }
+
         private void NavigateTo(string? tag)
         {
-            if (tag != null && _navigationMap.TryGetValue(tag, out var createPage))
+            if (string.IsNullOrWhiteSpace(tag))
+                return;
+
+            _navigationService.Navigate(new AppNavigationState
+            {
+                PageTag = "BuildingDetails",
+                Building = Building,
+                SectionTag = tag
+            });
+        }
+
+        private void OnNavigated(AppNavigationState state)
+        {
+            if (state.PageTag != "BuildingDetails")
+                return;
+
+            if (state.Building == null)
+                return;
+
+            if (state.Building.Id != Building.Id)
+                return;
+
+            string section = string.IsNullOrWhiteSpace(state.SectionTag) ? "Info" : state.SectionTag;
+            LoadSection(section);
+        }
+
+        private void LoadSection(string tag)
+        {
+            if (_navigationMap.TryGetValue(tag, out var createPage))
             {
                 SelectedSection = tag;
                 CurrentPage = createPage();
             }
         }
+        public void Dispose()
+        {
+            _navigationService.Navigated -= OnNavigated;
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

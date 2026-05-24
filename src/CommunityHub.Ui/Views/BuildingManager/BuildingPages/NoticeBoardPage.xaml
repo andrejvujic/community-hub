@@ -40,29 +40,15 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Cursor="Hand"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    FontSize="28"
-                    MouseLeftButtonDown="LeftArrow_Click"
-                    Text="&#xf060;" />
-
                 <TextBlock
                     x:Name="streetInfo"
-                    Grid.Column="1"
-                    Margin="15,0,0,0"
+                    Margin="10,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    FontSize="21"
+                    FontFamily="{StaticResource InterFontFamily}"
+                    FontSize="22"
+                    FontWeight="Normal"
+                    Foreground="#1C1E21"
                     Text="{Binding StreetInfo}" />
             </Grid>
 
