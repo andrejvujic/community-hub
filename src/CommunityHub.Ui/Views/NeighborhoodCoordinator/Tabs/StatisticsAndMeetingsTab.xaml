@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <conv:MeetingStatusToStringConverter x:Key="MeetingStatusConverter"/>
         <conv:MeetingThemeToStringConverter x:Key="MeetingThemeConverter"/>
+        <conv:MeetingStatusToIconCodeConverter x:Key="MeetingStatusIconConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
@@ -225,14 +226,32 @@
                                 <DataGridTemplateColumn Width="35">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="&#xf071;"
-                                                       FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                       FontSize="14"
-                                                       Foreground="#F0A500"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       ToolTip="Nerešen broj glasova! Potreban odabir konačnog datuma."
-                                                       Visibility="{Binding IsTied, Converter={StaticResource BoolToVisibility}}"/>
+                                            <Grid>
+                                                <TextBlock Text="&#xf071;"
+                                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                           FontSize="14"
+                                                           Foreground="#F0A500"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           ToolTip="Nerešen broj glasova! Potreban odabir konačnog datuma."
+                                                           Visibility="{Binding IsTied, Converter={StaticResource BoolToVisibility}}"/>
+                                                <TextBlock Text="{Binding Status, Converter={StaticResource MeetingStatusIconConverter}}"
+                                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                           FontSize="14"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsTied}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
