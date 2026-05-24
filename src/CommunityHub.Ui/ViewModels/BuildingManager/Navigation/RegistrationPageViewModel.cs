@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Navigation;
 using DomainImage = CommunityHub.Application.Domain.Image;
 
 
@@ -43,7 +42,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 
         public RelayCommand<object> ChooseImageCommand { get; }
         public RelayCommand<string> RemoveImageCommand { get; }
-        public RelayCommand<NavigationService> CancelCommand { get; }
 
         public RegistrationPageViewModel(User user)
         {
@@ -56,7 +54,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 
             ChooseImageCommand = new RelayCommand<object>(_ => OnChooseImage());
             RemoveImageCommand = new RelayCommand<string>(OnRemoveImage);
-            CancelCommand = new RelayCommand<NavigationService>(OnCancel);
 
             LoadCountries();
             UpdateImageValidation();
@@ -442,18 +439,31 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
 
+            ResetForm();
+
             return true;
         }
-        private void OnCancel(NavigationService? navigationService)
+        public void ResetForm()
         {
-            if (MessageBox.Show(
-                "Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.",
-                "Potvrda",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                navigationService?.GoBack();
-            }
+            SelectedCountry = null;
+            SelectedCity = null;
+            SelectedStreet = null;
+            StreetNumber = string.Empty;
+            Neighborhood = string.Empty;
+            SelectedImagePaths.Clear();
+            ErrorMessage = null;
+            ImageErrorMessage = string.Empty;
+            AreApartmentsValid = false;
+
+            LoadCountries();
+            UpdateImageValidation();
+
+            OnPropertyChanged(nameof(CanConfirm));
+        }
+        public void ResetFloorsAndApartments()
+        {
+            AreApartmentsValid = false;
+            OnPropertyChanged(nameof(CanConfirm));
         }
 
 

@@ -2,11 +2,10 @@
 using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Services.Buildings;
 using CommunityHub.Application.Services.Dtos.Buildings;
-using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Navigation;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
-using CommunityHub.Ui.Views.BuildingManager;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 {
@@ -14,15 +13,16 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
     {
         private readonly BuildingService _buildingService;
         private readonly BuildingMapper _buildingMapper = new();
+        private readonly IAppNavigationService _navigationService;
         public User User { get; }
         public ObservableCollection<BuildingDto> Buildings { get; } = [];
 
         public ICommand LoadBuildingsCommand { get; }
         public ICommand DetailsCommand { get; }
-        public Action<Page>? Navigate { get; set; }
-        public MyBuildingsPageViewModel(User user)
+        public MyBuildingsPageViewModel(User user, IAppNavigationService navigationService)
         {
             User = user;
+            _navigationService = navigationService;
             _buildingService = new BuildingService();
 
             LoadBuildingsCommand = new RelayCommand<object?>(_ => LoadBuildings());
@@ -42,7 +42,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             if (buildingDto == null) return;
 
             var building = _buildingMapper.MapToDomain(buildingDto);
-            Navigate?.Invoke(new BuildingDetailsPage(User, building));
+
+            _navigationService.Navigate(new AppNavigationState
+            {
+                PageTag = "BuildingDetails",
+                Building = building,
+                SectionTag = "Info"
+            });
         }
     }
 }
