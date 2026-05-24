@@ -256,7 +256,7 @@
                     </Grid>
 
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Nema rezultata" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Label Content="Nema rezultata" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                              Text="Ne postoji nijedna zgrada koja odgovara zadanom kriterijumu pretrage. Provjerite zadani kriterijum i pokušajte ponovo."
                              TextWrapping="Wrap" 

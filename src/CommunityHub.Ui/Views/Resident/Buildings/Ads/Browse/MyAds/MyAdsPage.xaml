@@ -155,7 +155,7 @@
                 </Grid>
                 <Grid Visibility="{Binding HasAds, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Nema oglasa" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Label Content="Nema oglasa" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                     Text="Nema oglasa za prikazivanje. Još uvijek niste naparvili nijedan oglas na oglasnoj tabli ove zgrade. Svoj prvi oglas možete objaviti klikom na dugme ispod."
                     TextWrapping="Wrap" 

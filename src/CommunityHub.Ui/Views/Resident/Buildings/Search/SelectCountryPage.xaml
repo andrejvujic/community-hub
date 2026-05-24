@@ -176,7 +176,7 @@
 
                 <Grid Visibility="{Binding HasSearchResults, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Nema rezultata" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Label Content="Nema rezultata" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                             Text="Ne postoji nijedna država koja odgovara zadanom kriterijumu pretrage. Provjerite zadani kriterijum i pokušajte ponovo."
                             TextWrapping="Wrap" 
