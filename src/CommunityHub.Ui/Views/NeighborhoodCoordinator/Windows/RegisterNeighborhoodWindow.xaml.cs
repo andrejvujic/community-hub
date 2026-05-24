@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows;
@@ -45,6 +46,18 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 
             StartNumberTextBox.Clear();
             EndNumberTextBox.Clear();
+        }
+
+        private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(char.IsDigit);
+        }
+
+        private void NumberTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V &&
+                (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                e.Handled = true;
         }
 
         private void RemoveStreetSection_Click(object sender, RoutedEventArgs e)

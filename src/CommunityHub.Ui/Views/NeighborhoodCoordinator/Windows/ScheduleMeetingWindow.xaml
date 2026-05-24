@@ -54,7 +54,13 @@
                      Padding="0"
                      HorizontalContentAlignment="Center"
                      MaxLength="2"
-                     Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"
+                     PreviewTextInput="NumberTextBox_PreviewTextInput"
+                     PreviewKeyDown="NumberTextBox_PreviewKeyDown">
+                <TextBox.ContextMenu>
+                    <ContextMenu Visibility="Collapsed"/>
+                </TextBox.ContextMenu>
+            </TextBox>
             <TextBlock Text=" : " FontSize="20" VerticalAlignment="Center"/>
             <TextBox x:Name="MinuteTxt"
                      Style="{StaticResource TextBoxStyle}"
@@ -62,7 +68,13 @@
                      Padding="0"
                      HorizontalContentAlignment="Center"
                      MaxLength="2"
-                     Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"
+                     PreviewTextInput="NumberTextBox_PreviewTextInput"
+                     PreviewKeyDown="NumberTextBox_PreviewKeyDown">
+                <TextBox.ContextMenu>
+                    <ContextMenu Visibility="Collapsed"/>
+                </TextBox.ContextMenu>
+            </TextBox>
             <TextBlock Text=" h" FontSize="20" VerticalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
 
