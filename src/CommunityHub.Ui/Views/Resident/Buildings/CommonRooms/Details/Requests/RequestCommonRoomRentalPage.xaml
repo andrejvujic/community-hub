@@ -151,7 +151,6 @@
                 IsEnabled="{Binding IsSelectedDateRangeValid}"
                 Click="CreateRentalRequestButton_Click"
                 Content="Podnesi zahtjev"
-                Style="{StaticResource ResidentPrimaryButtonStyle}"
                 Background="{StaticResource ResidentPrimaryBrush}"
                 Foreground="{StaticResource ResidentOnPrimaryBrush}"
                 BorderBrush="{StaticResource ResidentPrimaryBrush}"
@@ -271,7 +270,6 @@
                             Click="ToggleSelectDateRangeMenuButton_Click"
                             IsEnabled="{Binding IsSelectedDateRangeValid}"
                             Content="Potvrdi"
-                            Style="{StaticResource ResidentPrimaryButtonStyle}"
                             Background="{StaticResource ResidentPrimaryBrush}"
                             Foreground="{StaticResource ResidentOnPrimaryBrush}"
                             BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
@@ -312,7 +310,6 @@
                             HorizontalAlignment="Stretch"
                             Click="ToggleStartDatePickerButton_Click"
                             Content="Potvrdi"
-                            Style="{StaticResource ResidentPrimaryButtonStyle}"
                             Background="{StaticResource ResidentPrimaryBrush}"
                             Foreground="{StaticResource ResidentOnPrimaryBrush}"
                             BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
@@ -354,7 +351,6 @@
                         HorizontalAlignment="Stretch"
                         Click="ToggleEndDatePickerButton_Click"
                         Content="Potvrdi"
-                        Style="{StaticResource ResidentPrimaryButtonStyle}"
                         Background="{StaticResource ResidentPrimaryBrush}"
                         Foreground="{StaticResource ResidentOnPrimaryBrush}"
                         BorderBrush="{StaticResource ResidentPrimaryBrush}"/>

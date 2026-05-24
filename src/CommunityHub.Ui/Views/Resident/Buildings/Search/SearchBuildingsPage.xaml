@@ -86,7 +86,6 @@
                         <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                         <Button
                             Content="Poništi pretragu"
-                            Style="{StaticResource ResidentSecondaryButtonStyle}"
                             Background="{StaticResource ResidentSecondaryBrush}"
                             Foreground="{StaticResource ResidentTextPrimaryBrush}"
                             BorderBrush="{StaticResource ResidentBorderBrush}"
@@ -201,7 +200,6 @@
                                                 Grid.Column="0" 
                                                 FontSize="16"
                                                 Content="Prikaži detalje"
-                                                Style="{StaticResource ResidentSecondaryButtonStyle}"
                                                 Click="OpenBuildingDetailsPageButton_Click"/>
 
                                             <Button
@@ -213,7 +211,6 @@
                                                 Grid.Column="2"
                                                 FontSize="16"
                                                 Content="Pridruži se"
-                                                Style="{StaticResource ResidentPrimaryButtonStyle}"
                                                 Click="OpenRequestApartmentAccessPageButton_Click"/>
                                         </Grid>
 
@@ -250,7 +247,6 @@
                                 <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                                 <Button
                                     Content="Poništi pretragu"
-                                    Style="{StaticResource ResidentSecondaryButtonStyle}"
                                     Background="{StaticResource ResidentSecondaryBrush}"
                                     Foreground="{StaticResource ResidentTextPrimaryBrush}"
                                     BorderBrush="{StaticResource ResidentBorderBrush}"

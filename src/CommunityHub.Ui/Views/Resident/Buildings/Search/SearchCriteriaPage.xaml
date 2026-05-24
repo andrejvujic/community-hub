@@ -131,7 +131,6 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Započni pretragu"
-            Style="{StaticResource ResidentPrimaryButtonStyle}"
             Background="{StaticResource ResidentPrimaryBrush}"
             Foreground="{StaticResource ResidentOnPrimaryBrush}"
             BorderBrush="{StaticResource ResidentPrimaryBrush}"

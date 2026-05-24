@@ -80,9 +80,9 @@
                     Text="{Binding ApartmentNumberText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                     VerticalContentAlignment="Center"
                     Padding="4"
+                    Grid.Row="5"
                     Background="{StaticResource ResidentInputBackgroundBrush}"
-                    BorderBrush="{StaticResource ResidentBorderBrush}"
-                    Grid.Row="5"/>
+                    BorderBrush="{StaticResource ResidentBorderBrush}"/>
 
                 <Grid Grid.Row="7">
                     <TextBlock
@@ -104,7 +104,6 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Podnesi zahtjev"
-            Style="{StaticResource ResidentPrimaryButtonStyle}"
             Background="{StaticResource ResidentPrimaryBrush}"
             Foreground="{StaticResource ResidentOnPrimaryBrush}"
             BorderBrush="{StaticResource ResidentPrimaryBrush}"

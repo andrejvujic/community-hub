@@ -119,7 +119,6 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Arhiviraj"
-            Style="{StaticResource ResidentDangerButtonStyle}"
             Background="{StaticResource ResidentDangerBrush}"
             Foreground="{StaticResource ResidentOnPrimaryBrush}"
             BorderBrush="{StaticResource ResidentDangerBrush}"

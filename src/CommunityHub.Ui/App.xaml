@@ -33,135 +33,22 @@
             <SolidColorBrush x:Key="ErrorMessageBrush" Color="#C43D5A" />
             <SolidColorBrush x:Key="PageTitleBrush" Color="#000000" />
 
-            <!-- Resident area: calm neighborhood-inspired palette -->
-            <Color x:Key="ResidentPageBackgroundColor">#F3F7F7</Color>
-            <Color x:Key="ResidentCardBackgroundColor">#FFFFFF</Color>
-            <Color x:Key="ResidentPrimaryColor">#147A7E</Color>
-            <Color x:Key="ResidentPrimaryHoverColor">#106367</Color>
-            <Color x:Key="ResidentPrimaryPressedColor">#0C5054</Color>
-            <Color x:Key="ResidentSecondaryColor">#E4F0EF</Color>
-            <Color x:Key="ResidentTextPrimaryColor">#17333D</Color>
-            <Color x:Key="ResidentTextSecondaryColor">#526B73</Color>
-            <Color x:Key="ResidentBorderColor">#CEDDDB</Color>
-            <Color x:Key="ResidentDangerColor">#BF4554</Color>
-            <Color x:Key="ResidentWarningColor">#B77718</Color>
-
-            <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="{StaticResource ResidentPageBackgroundColor}" />
-            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="{StaticResource ResidentCardBackgroundColor}" />
-            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#E4F0EF" />
-            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#DFECEB" />
-            <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#EDF4F3" />
+            <!-- Resident palette -->
+            <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F4F7FA" />
+            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#D9E8F1" />
+            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#C7DDE9" />
+            <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#E7F0F4" />
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ResidentInputHoverBrush" Color="#E8F3F2" />
-            <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="{StaticResource ResidentPrimaryColor}" />
-            <SolidColorBrush x:Key="ResidentPrimaryHoverBrush" Color="{StaticResource ResidentPrimaryHoverColor}" />
-            <SolidColorBrush x:Key="ResidentPrimaryPressedBrush" Color="{StaticResource ResidentPrimaryPressedColor}" />
+            <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
+            <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#E7EFF4" />
+            <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#17313F" />
+            <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#536B78" />
+            <SolidColorBrush x:Key="ResidentBorderBrush" Color="#B7CAD4" />
+            <SolidColorBrush x:Key="ResidentDangerBrush" Color="#BE4054" />
+            <SolidColorBrush x:Key="ResidentWarningBrush" Color="#A9690E" />
             <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="{StaticResource ResidentSecondaryColor}" />
-            <SolidColorBrush x:Key="ResidentSecondaryHoverBrush" Color="#D2E6E4" />
-            <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="{StaticResource ResidentTextPrimaryColor}" />
-            <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="{StaticResource ResidentTextSecondaryColor}" />
-            <SolidColorBrush x:Key="ResidentBorderBrush" Color="{StaticResource ResidentBorderColor}" />
-            <SolidColorBrush x:Key="ResidentDangerBrush" Color="{StaticResource ResidentDangerColor}" />
-            <SolidColorBrush x:Key="ResidentDangerHoverBrush" Color="#A93847" />
-            <SolidColorBrush x:Key="ResidentWarningBrush" Color="{StaticResource ResidentWarningColor}" />
-            <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85182D36" />
-
-            <Style x:Key="ResidentPrimaryButtonStyle" TargetType="Button">
-                <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="ResidentButtonBorder"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="7"
-                                    Padding="{TemplateBinding Padding}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="ResidentButtonBorder" Property="Background" Value="{StaticResource ResidentPrimaryHoverBrush}" />
-                                    <Setter TargetName="ResidentButtonBorder" Property="BorderBrush" Value="{StaticResource ResidentPrimaryHoverBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="ResidentButtonBorder" Property="Background" Value="{StaticResource ResidentPrimaryPressedBrush}" />
-                                    <Setter TargetName="ResidentButtonBorder" Property="BorderBrush" Value="{StaticResource ResidentPrimaryPressedBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Opacity" Value="0.52" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="ResidentSecondaryButtonStyle" TargetType="Button">
-                <Setter Property="Background" Value="{StaticResource ResidentSecondaryBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource ResidentTextPrimaryBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource ResidentBorderBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="ResidentButtonBorder"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="7"
-                                    Padding="{TemplateBinding Padding}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="ResidentButtonBorder" Property="Background" Value="{StaticResource ResidentSecondaryHoverBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Opacity" Value="0.52" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="ResidentDangerButtonStyle" TargetType="Button">
-                <Setter Property="Background" Value="{StaticResource ResidentDangerBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource ResidentDangerBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="ResidentButtonBorder"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="7"
-                                    Padding="{TemplateBinding Padding}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="ResidentButtonBorder" Property="Background" Value="{StaticResource ResidentDangerHoverBrush}" />
-                                    <Setter TargetName="ResidentButtonBorder" Property="BorderBrush" Value="{StaticResource ResidentDangerHoverBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Opacity" Value="0.52" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
 
 
             <ResourceDictionary.MergedDictionaries>

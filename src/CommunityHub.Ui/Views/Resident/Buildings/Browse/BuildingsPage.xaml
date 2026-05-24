@@ -150,17 +150,9 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Ellipse x:Name="ActionBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}"/>
+                        <Ellipse Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}"/>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ActionBackground" Property="Fill" Value="{StaticResource ResidentPrimaryHoverBrush}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ActionBackground" Property="Fill" Value="{StaticResource ResidentPrimaryPressedBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
         </Button>

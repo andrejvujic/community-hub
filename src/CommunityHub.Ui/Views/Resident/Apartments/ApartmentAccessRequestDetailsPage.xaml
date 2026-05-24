@@ -220,7 +220,6 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Otkaži zahtjev"
-            Style="{StaticResource ResidentDangerButtonStyle}"
             Background="{StaticResource ResidentDangerBrush}"
             Foreground="{StaticResource ResidentOnPrimaryBrush}"
             BorderBrush="{StaticResource ResidentDangerBrush}"

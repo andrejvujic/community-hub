@@ -162,7 +162,7 @@
                                         <Border
                                             BorderThickness="1"
                                             BorderBrush="{StaticResource ResidentBorderBrush}"
-                                            Background="{StaticResource ResidentSurfaceBrush}"
+                                            Background="{StaticResource ResidentSecondaryBrush}"
                                             Padding="16">
                                             <Grid Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
                                                 <Grid.ColumnDefinitions>
