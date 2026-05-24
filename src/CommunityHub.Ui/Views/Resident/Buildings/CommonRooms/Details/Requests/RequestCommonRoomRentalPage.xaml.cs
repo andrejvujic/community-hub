@@ -12,15 +12,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         public RequestCommonRoomRentalPage(long userId, CommonRoomDto commonRoom)
         {
             InitializeComponent();
-<<<<<<< HEAD
-            DataContext = new RequestCommonRoomRentalViewModel(userId, commonRoom, this);
-=======
             DataContext = new RequestCommonRoomRentalViewModel(
                 userId,
                 commonRoom,
                 this
             );
->>>>>>> 088658f6b0aefce5d256767f38936e25cc057cea
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
