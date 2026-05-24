@@ -54,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\Behaviors\" />
     <Folder Include="ViewModels\Resident\Buildings\Ads\Browse\" />
     <Folder Include="ViewModels\Resident\Buildings\Create\" />
     <Folder Include="ViewModels\Shared\" />
