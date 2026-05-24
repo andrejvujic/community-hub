@@ -10,6 +10,8 @@
       mc:Ignorable="d"
       Title="Podnošenje zahtjeva za iznajmljivanje zajedničke prostorije"
       FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}"
       xml:lang="sr-Latn-RS">
     <navigation:MainNavigationConsumerPage.Resources>
         <ResourceDictionary>
@@ -18,8 +20,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme
                     BaseTheme="Light"
-                    PrimaryColor="Grey"
-                    SecondaryColor="LightBlue" />
+                    PrimaryColor="Teal"
+                    SecondaryColor="BlueGrey" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -32,7 +34,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#dedede">
+            <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="64"/>
                     <ColumnDefinition Width="*"/>
@@ -86,10 +88,10 @@
 
                     <Border
                         Grid.Row="1" 
-                        Background="#dedede"
-                        BorderBrush="Gray"
+                        Background="{StaticResource ResidentInputBackgroundBrush}"
+                        BorderBrush="{StaticResource ResidentBorderBrush}"
                         BorderThickness="1">
-                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleSelectDateRangeMenuButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="ToggleSelectDateRangeMenuButton_Click">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -118,7 +120,7 @@
                     <TextBlock
                         Visibility="{Binding CommonRoom.IsMultiDayRental, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                         FontSize="18"
-                        Foreground="Gray"
+                        Foreground="{StaticResource ResidentTextSecondaryBrush}"
                         TextWrapping="Wrap">
                         <Run Text="Napomena —"/>
                         <Run Text="{Binding CommonRoom.Name, Mode=OneWay}" FontWeight="Bold"/>
@@ -130,7 +132,7 @@
                     <TextBlock
                         Visibility="{Binding CommonRoom.IsMultiDayRental, Converter={StaticResource BooleanToVisibilityConverter}}"
                         FontSize="18"
-                        Foreground="Gray"
+                        Foreground="{StaticResource ResidentTextSecondaryBrush}"
                         TextWrapping="Wrap">
                         <Run Text="Napomena —"/>
                         <Run Text="{Binding CommonRoom.Name, Mode=OneWay}" FontWeight="Bold"/>
@@ -149,6 +151,10 @@
                 IsEnabled="{Binding IsSelectedDateRangeValid}"
                 Click="CreateRentalRequestButton_Click"
                 Content="Podnesi zahtjev"
+                Style="{StaticResource ResidentPrimaryButtonStyle}"
+                Background="{StaticResource ResidentPrimaryBrush}"
+                Foreground="{StaticResource ResidentOnPrimaryBrush}"
+                BorderBrush="{StaticResource ResidentPrimaryBrush}"
                 FontSize="18"
                 Width="192"
                 Height="72"/>
@@ -157,11 +163,11 @@
         <Grid
                 x:Name="SelectDateRangeOverlay"
                 Visibility="Collapsed"
-                Background="#bb000000">
+                Background="{StaticResource ResidentOverlayBrush}">
             <Border
                     Margin="16"
                     Padding="8"
-                    Background="White"
+                    Background="{StaticResource ResidentCardBackgroundBrush}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Stretch">
                 <Grid>
@@ -195,10 +201,10 @@
 
                     <Border
                             Grid.Row="4" 
-                            Background="#dedede"
-                            BorderBrush="Gray"
+                            Background="{StaticResource ResidentInputBackgroundBrush}"
+                            BorderBrush="{StaticResource ResidentBorderBrush}"
                             BorderThickness="1">
-                        <Grid Background="#dedede" Height="48" MouseLeftButtonDown="ToggleStartDatePickerButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="ToggleStartDatePickerButton_Click">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -229,10 +235,10 @@
 
                     <Border
                             Grid.Row="8" 
-                            Background="#dedede"
-                            BorderBrush="Gray"
+                            Background="{StaticResource ResidentInputBackgroundBrush}"
+                            BorderBrush="{StaticResource ResidentBorderBrush}"
                             BorderThickness="1">
-                        <Grid Background="#dedede" Height="48"  MouseLeftButtonDown="ToggleEndDatePickerButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48"  MouseLeftButtonDown="ToggleEndDatePickerButton_Click">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -264,7 +270,11 @@
                             HorizontalAlignment="Stretch"
                             Click="ToggleSelectDateRangeMenuButton_Click"
                             IsEnabled="{Binding IsSelectedDateRangeValid}"
-                            Content="Potvrdi"/>
+                            Content="Potvrdi"
+                            Style="{StaticResource ResidentPrimaryButtonStyle}"
+                            Background="{StaticResource ResidentPrimaryBrush}"
+                            Foreground="{StaticResource ResidentOnPrimaryBrush}"
+                            BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
                 </Grid>
             </Border>
         </Grid>
@@ -273,18 +283,18 @@
         <Grid
                 x:Name="StartDatePicker"
                 Visibility="Collapsed"
-                Background="#33000000">
-            <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                Background="{StaticResource ResidentOverlayBrush}">
+            <Border Background="{StaticResource ResidentCardBackgroundBrush}" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="8"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                    <Border Grid.Row="0" CornerRadius="0" BorderBrush="{StaticResource ResidentBorderBrush}" BorderThickness="1">
                         <Viewbox Stretch="Uniform">
                             <Calendar
-                                    materialDesign:CalendarAssist.HeaderBackground="White"
+                                    materialDesign:CalendarAssist.HeaderBackground="{StaticResource ResidentHeaderBackgroundBrush}"
                                     BorderThickness="0"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
@@ -301,7 +311,11 @@
                             FontSize="18"
                             HorizontalAlignment="Stretch"
                             Click="ToggleStartDatePickerButton_Click"
-                            Content="Potvrdi"/>
+                            Content="Potvrdi"
+                            Style="{StaticResource ResidentPrimaryButtonStyle}"
+                            Background="{StaticResource ResidentPrimaryBrush}"
+                            Foreground="{StaticResource ResidentOnPrimaryBrush}"
+                            BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
                 </Grid>
             </Border>
         </Grid>
@@ -310,8 +324,8 @@
         <Grid
                 x:Name="EndDatePicker"
                 Visibility="Collapsed"
-                Background="#33000000">
-            <Border Background="White" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                Background="{StaticResource ResidentOverlayBrush}">
+            <Border Background="{StaticResource ResidentCardBackgroundBrush}" Padding="8" Margin="16" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -320,10 +334,10 @@
                     </Grid.RowDefinitions>
 
 
-                    <Border Grid.Row="0" CornerRadius="0" BorderBrush="Gray" BorderThickness="1">
+                    <Border Grid.Row="0" CornerRadius="0" BorderBrush="{StaticResource ResidentBorderBrush}" BorderThickness="1">
                         <Viewbox Stretch="Uniform">
                             <Calendar
-                                    materialDesign:CalendarAssist.HeaderBackground="White"
+                                    materialDesign:CalendarAssist.HeaderBackground="{StaticResource ResidentHeaderBackgroundBrush}"
                                     BorderThickness="0"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
@@ -339,7 +353,11 @@
                         FontSize="18"
                         HorizontalAlignment="Stretch"
                         Click="ToggleEndDatePickerButton_Click"
-                        Content="Potvrdi"/>
+                        Content="Potvrdi"
+                        Style="{StaticResource ResidentPrimaryButtonStyle}"
+                        Background="{StaticResource ResidentPrimaryBrush}"
+                        Foreground="{StaticResource ResidentOnPrimaryBrush}"
+                        BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
                 </Grid>
             </Border>
         </Grid>

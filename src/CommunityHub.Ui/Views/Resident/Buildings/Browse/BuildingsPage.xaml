@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Zgrade"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
@@ -35,7 +37,8 @@
                                 <Border
                                     Padding="8"
                                     Margin="0,0,0,8"
-                                    BorderBrush="Gray"
+                                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                                    Background="{StaticResource ResidentCardBackgroundBrush}"
                                     BorderThickness="1">
                                     <Grid Background="Transparent" MouseLeftButtonDown="OpenBuildingOptionsPageButton_Click">
                                         <Grid.ColumnDefinitions>
@@ -69,8 +72,8 @@
                                                         <Border 
                                                             Margin="0,0,4,4"
                                                             Padding="8"
-                                                            Background="#dedede"
-                                                            BorderBrush="Gray"
+                                                            Background="{StaticResource ResidentSurfaceBrush}"
+                                                            BorderBrush="{StaticResource ResidentBorderBrush}"
                                                             BorderThickness="1"
                                                             Width="80">
                                                             <TextBlock
@@ -136,7 +139,7 @@
 
         <Button
             Content="&#x2b;"
-            Foreground="White"
+            Foreground="{StaticResource ResidentOnPrimaryBrush}"
             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
             FontSize="24"
             Margin="16"
@@ -147,9 +150,17 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Ellipse Width="64" Height="64" Fill="Black"/>
+                        <Ellipse x:Name="ActionBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}"/>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ActionBackground" Property="Fill" Value="{StaticResource ResidentPrimaryHoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ActionBackground" Property="Fill" Value="{StaticResource ResidentPrimaryPressedBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
         </Button>
