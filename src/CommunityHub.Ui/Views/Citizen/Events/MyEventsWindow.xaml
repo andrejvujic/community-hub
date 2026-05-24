@@ -6,6 +6,13 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
 
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding OrganizeEventCommand}" />
+        <KeyBinding Key="NumPad1" Modifiers="Ctrl" Command="{Binding OrganizeEventCommand}" />
+        <KeyBinding Key="Return" Command="{Binding OpenMarkVolunteersCommand}" />
+    </Window.InputBindings>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,6 +27,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
@@ -29,7 +37,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Moji događaji" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
-                    <Button Grid.Column="1" Width="32" Height="32" Click="CloseButton_Click" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                    <Button Grid.Column="1" Width="32" Height="32" Command="{Binding CloseCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
                         <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
                     </Button>
                 </Grid>
@@ -41,8 +49,8 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Button Grid.Row="0" Style="{StaticResource PrimaryButton}" Click="OrganizeButton_Click" Foreground="{StaticResource TextBrush}" Margin="15,12,15,8" Padding="6,6" HorizontalAlignment="Left" Width="200">
-                    <TextBlock FontSize="13" TextAlignment="Center">Organizuj novi događaj<LineBreak/>(Ctrl + 1)</TextBlock>
+                <Button Grid.Row="0" Style="{StaticResource PrimaryButton}" Command="{Binding OrganizeEventCommand}" Foreground="{StaticResource TextBrush}" Margin="15,12,15,8" Padding="6,6" HorizontalAlignment="Left" Width="200">
+                    <TextBlock FontSize="13" TextAlignment="Center">Organizuj novi događaj<LineBreak/>(Ctrl+1)</TextBlock>
                 </Button>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="15,0,15,15">
@@ -62,7 +70,7 @@
                             </TextBlock>
                         </Border>
 
-                        <ListBox x:Name="OrganizerEventsList" ItemsSource="{Binding OrganizerEvents}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" Margin="0,0,0,12">
+                        <ListBox x:Name="OrganizerEventsList" ItemsSource="{Binding OrganizerEvents}" SelectedItem="{Binding SelectedOrganizerEvent}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" Margin="0,0,0,12">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -114,7 +122,7 @@
                             </TextBlock>
                         </Border>
 
-                        <ListBox x:Name="VolunteerEventsList" ItemsSource="{Binding VolunteerEvents}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                        <ListBox x:Name="VolunteerEventsList" ItemsSource="{Binding VolunteerEvents}" SelectedItem="{Binding SelectedVolunteerEvent}" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -153,6 +161,13 @@
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
+
+            <Border Grid.Row="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Označi prisutnost volontera - Enter" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}" Margin="0,0,200,0"/>
+                    <TextBlock Text="Zatvori - Esc" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>

@@ -24,6 +24,17 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                     }
                 }
             };
+
+            if (_viewModel != null)
+            {
+                _viewModel.CloseRequested += (_, _) => Close();
+                _viewModel.ConfirmRequested += (_, _) =>
+                {
+                    DialogResult = true;
+                    Close();
+                };
+                _viewModel.ToggleCalendarRequested += (_, _) => DatePickerPopup.IsOpen = !DatePickerPopup.IsOpen;
+            }
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)
@@ -32,42 +43,6 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             {
                 DragMove();
             }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void AddItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.AddItem();
-        }
-
-        private void ItemInputBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                _viewModel.AddItem();
-                e.Handled = true;
-            }
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.Submit();
-            this.DialogResult = true;
-            this.Close();
-        }
-
-        private void DiscardButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void DatePickerButton_Click(object sender, RoutedEventArgs e)
-        {
-            DatePickerPopup.IsOpen = true;
         }
 
         private void EventCalendar_SelectedDatesChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
