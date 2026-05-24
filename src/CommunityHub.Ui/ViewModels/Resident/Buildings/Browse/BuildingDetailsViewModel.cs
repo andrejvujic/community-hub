@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Application.Services.Dtos.Images;
+using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
@@ -11,7 +12,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
         public BuildingDetailsViewModel(BuildingDto building)
         {
             Building = building;
+
+            GoToNextImageCommand = new(GoToNextImage, () => HasNextImage);
+            GoToPreviousImageCommand = new(GoToPreviousImage, () => HasPreviousImage);
         }
+
+        public RelayCommand GoToNextImageCommand { get; }
+        public RelayCommand GoToPreviousImageCommand { get; }
 
         private int _currentImageIndex = 0;
         public int CurrentImageIndex
@@ -26,6 +33,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
                 OnPropertyChanged(nameof(CurrentImageText));
                 OnPropertyChanged(nameof(HasPreviousImage));
                 OnPropertyChanged(nameof(HasNextImage));
+
+                GoToNextImageCommand.RaiseCanExecuteChanged();
+                GoToPreviousImageCommand.RaiseCanExecuteChanged();
             }
         }
 

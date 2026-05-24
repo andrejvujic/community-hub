@@ -2,6 +2,7 @@
 using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
@@ -12,22 +13,23 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 
         public CommonRoomRentalRequestDto Request { get; private set; }
 
-        public CommonRoomRentalRequestDetailsViewModel(CommonRoomRentalRequestDto request, MainNavigationConsumerPage page) : base(page)
+        public CommonRoomRentalRequestDetailsViewModel(
+            CommonRoomRentalRequestDto request, 
+            IMainNavigationConsumer navigationConsumer
+        ) : base(navigationConsumer)
         {
             Request = request;
+
+            CancelCommand = new(CancelRequest, () => Request.IsPending);
+            AcceptProposedDateRangeCommand = new(AcceptProposedDateRange, () => Request.HasProposedDateRange);
         }
 
-        public void CancelRequest()
-            => _commonRentalRequestService.Cancel(Request);
+        public RelayCommand CancelCommand { get; }
+        public RelayCommand AcceptProposedDateRangeCommand { get; }
 
-        public void AcceptProposedRequestDateRange()
-        {
-            Request = _commonRentalRequestService.AcceptProposedDateRange(Request);
-            OnPropertyChanged(nameof(Request));
-        }
-
-        public void ConfirmCancelRequest()
-            => ShowAlert(
+        private void CancelRequest()
+        { 
+            ShowAlert(
                 Alert.Create(
                     title: "Upozorenje",
                     content: "Da li ste sigurni da želite da odbijete predloženi opseg datuma? Ovo će rezultovati u trajnom brisanju vašeg zahtjeva.",
@@ -35,14 +37,17 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                 )
                 .AddOption("Otkaži")
                 .AddOption("Nastavi", () => {
-                    CancelRequest();
+                    _commonRentalRequestService.Cancel(Request);
                     Pop();
                 })
             );
+        }
 
-        public void AcceptProposedDateRange()
+        private void AcceptProposedDateRange()
         {
-            AcceptProposedRequestDateRange();
+            Request = _commonRentalRequestService.AcceptProposedDateRange(Request);
+            OnPropertyChanged(nameof(Request));
+
             ShowAlert(
                 Alert.Create(
                     title: "Informacija",

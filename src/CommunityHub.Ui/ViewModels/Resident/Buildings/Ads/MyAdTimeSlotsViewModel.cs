@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Collections.ObjectModel;
@@ -16,23 +17,36 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         public ObservableCollection<AdReservationDto> Reservations { get; } = new();
         public bool HasReservations { get => Reservations.Count > 0; }
 
-        public long UserId { get; }
+        private readonly long _userId;
         public AdDto Ad { get; }
-        public MyAdTimeSlotsViewModel(long userId, AdDto ad, MainNavigationConsumerPage page) : base(page)
+
+        public MyAdTimeSlotsViewModel(
+            long userId,
+            AdDto ad,
+            IMainNavigationConsumer navigationConsumer
+        ) : base(navigationConsumer)
         {
             _timeSlotService = new(
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
-            UserId = userId;
+            _userId = userId;
             Ad = ad;
+
+            OpenAdDetailsCommand = new(OpenAdDetailsPage);
         }
 
-        public void OpenAdDetailsPage(AdReservationDto reservation)
-            => Push(
-                new AdDetailsPage(UserId, reservation.Ad),
+        public RelayCommand<AdReservationDto> OpenAdDetailsCommand { get; }
+
+        private void OpenAdDetailsPage(AdReservationDto? reservation)
+        {
+            if (reservation is null) return;
+
+            Push(
+                new AdDetailsPage(_userId, reservation.Ad),
                 onPop: _ => UpdateReservations()
             );
+        }
 
         public void UpdateReservations()
         {

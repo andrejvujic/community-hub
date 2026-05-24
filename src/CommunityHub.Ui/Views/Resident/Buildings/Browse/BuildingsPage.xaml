@@ -40,11 +40,20 @@
                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                     Background="{StaticResource ResidentCardBackgroundBrush}"
                                     BorderThickness="1">
-                                    <Grid Background="Transparent" MouseLeftButtonDown="OpenBuildingOptionsPageButton_Click">
+                                    <Grid Background="Transparent">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
+
+                                        <Grid.InputBindings>
+                                            <MouseBinding
+                                                Gesture="LeftClick"
+                                                Command="{Binding DataContext.OpenBuildingOptionsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"
+                                            />
+
+                                        </Grid.InputBindings>
 
                                         <StackPanel Grid.Column="0">
                                             <TextBlock

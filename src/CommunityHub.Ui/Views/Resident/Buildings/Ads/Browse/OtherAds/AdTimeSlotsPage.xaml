@@ -63,12 +63,20 @@
                                                         BorderThickness="1"
                                                         Margin="8"
                                                         Padding="8">
-                                                        <Grid Background="Transparent" MouseLeftButtonDown="TimeSlotItem_Click">
+                                                        <Grid Background="Transparent">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="8"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
+
+                                                            <Grid.InputBindings>
+                                                                <MouseBinding
+                                                                    Gesture="LeftClick"
+                                                                    Command="{Binding DataContext.OnTimeSlotClickCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                                    CommandParameter="{Binding}"
+                                                                />
+                                                            </Grid.InputBindings>
 
                                                             <StackPanel Grid.Column="0" Orientation="Horizontal">
                                                                 <TextBlock
@@ -167,6 +175,6 @@
             Width="192"
             Height="72"
             IsEnabled="{Binding HasSelectedTimeSlots}"
-            Click="ReserveButton_Click"/>
+            Command="{Binding ReserveCommand}"/>
     </Grid>
 </navigation:MainNavigationConsumerPage>

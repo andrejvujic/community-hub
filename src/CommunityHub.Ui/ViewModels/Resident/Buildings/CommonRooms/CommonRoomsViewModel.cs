@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Services.CommonRooms;
+﻿using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

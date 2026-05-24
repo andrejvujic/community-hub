@@ -20,7 +20,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
         }
 
         private void RequestCommonRoomRentalButton_Click(object sender, RoutedEventArgs e)
-            => _viewModel.OpenRequestCommonRoomRentalPage();
+            => Push(
+                new RequestCommonRoomRentalPage(_viewModel.UserId, _viewModel.CommonRoom),
+                onPop: _ => _viewModel.UpdateRenalRequests()
+            );
 
         private void RentalRequestItem_Click(object sender, MouseButtonEventArgs e)
         {
@@ -28,7 +31,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 
             if (element.DataContext is not CommonRoomRentalRequestDto request) return;
 
-            _viewModel.OpenRentalRequestDetailsPage(request);
+            Push(
+                new CommonRoomRentalRequestDetailsPage(request),
+                onPop: _ => _viewModel.UpdateRenalRequests()
+            );
         }
     }
 }

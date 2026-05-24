@@ -1,5 +1,4 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
@@ -9,8 +8,10 @@ using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Application.Services.Notifications;
 using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
@@ -46,9 +47,32 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 
             UserId = userId;
             Ad = ad;
+
+            ReserveCommand = new(Reserve);
+            OnTimeSlotClickCommand = new(OnTimeSlotClick);
         }
 
-        public void ReserveSelectedTimeSlots()
+        public RelayCommand ReserveCommand { get; }
+        public RelayCommand<AdTimeSlotDto> OnTimeSlotClickCommand { get; }
+
+        public void Reserve()
+        {
+            ReserveSelectedTimeSlots();
+
+            ShowAlert(
+                Alert.Create(
+                    "Rezervacija uspješna",
+                    "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
+                )
+                .AddOption("U redu")
+            );
+
+            UpdateReservableTimeSlots();
+
+            DeselectAllTimeSlots();
+        }
+
+        private void ReserveSelectedTimeSlots()
         {
             var reservations = _timeSlotReservationService.Reserve(
                 UserId,
@@ -68,20 +92,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                     sentAt: DateTime.Now
                 )
             );
-        }
-
-        public void Reserve()
-        {
-            ReserveSelectedTimeSlots();
-            ShowAlert(
-                Alert.Create(
-                    "Rezervacija uspješna",
-                    "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
-                )
-                .AddOption("U redu")
-            );
-            UpdateReservableTimeSlots();
-            DeselectAllTimeSlots();
         }
 
         public void UpdateReservableTimeSlots()
@@ -106,6 +116,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                             [.. timeSlots]
                         )
                     ).ToList();
+        }
+
+        private void OnTimeSlotClick(AdTimeSlotDto? timeSlot)
+        {
+            if (timeSlot is null || timeSlot.IsReserved) return;
+
+            if (IsTimeSlotSelected(timeSlot))
+            {
+                DeselectTimeSlot(timeSlot);
+                return;
+            }
+ 
+            SelectTimeSlot(timeSlot);
         }
 
         public bool IsTimeSlotSelected(AdTimeSlotDto timeSlot)

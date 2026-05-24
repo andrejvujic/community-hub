@@ -2,6 +2,7 @@
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
@@ -27,9 +28,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         {
             UserId = userId;
             BuildingId = buildingId;
+
+            OpenCreateAdCommand = new(OpenCreateAdPage);
+            OpenAdDetailsCommand = new(OpenAdDetailsPage);
         }
 
-        public void OpenCreateAdPage()
+        public RelayCommand OpenCreateAdCommand { get; }
+        public RelayCommand<AdDto> OpenAdDetailsCommand { get; }
+
+        private void OpenCreateAdPage()
             => Push(
                 new CreateAdPage(UserId, BuildingId),
                 onPop: value =>
@@ -40,11 +47,14 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 }
             );
 
-        public void OpenAdDetailsPage(AdDto ad)
-            => Push(
+        private void OpenAdDetailsPage(AdDto? ad)
+        {
+            if (ad is null) return;
+            Push(
                 new MyAdDetailsPage(UserId, ad),
                 onPop: _ => UpdateAds()
             );
+        }
 
         public void UpdateAds()
         {
