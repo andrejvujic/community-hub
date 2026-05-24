@@ -7,19 +7,19 @@ namespace CommunityHub.Ui.Helpers.Navigation
     {
         public string Id { get; } = Guid.NewGuid().ToString();
 
-        protected void Push(MainNavigationConsumerPage page, Action<object?>? onPop = null)
+        public void Push(MainNavigationConsumerPage page, Action<object?>? onPop = null)
         {
             if (Window.GetWindow(this) is MainNavigationHostWindow window)
                 window.Push(page, onPop: onPop);
         }
 
-        protected void PushReplacement(MainNavigationConsumerPage page)
+        public void PushReplacement(MainNavigationConsumerPage page)
         {
             if (Window.GetWindow(this) is MainNavigationHostWindow window)
                 window.PushReplacement(page);
         }
 
-        protected void Pop(object? returnValue = null)
+        public void Pop(object? returnValue = null)
         {
             if (Window.GetWindow(this) is MainNavigationHostWindow window)
                 window.Pop(
@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Helpers.Navigation
                 );
         }
 
-        protected void PopAll()
+        public void PopAll()
         {
             if (Window.GetWindow(this) is MainNavigationHostWindow window)
                 window.PopAll();
