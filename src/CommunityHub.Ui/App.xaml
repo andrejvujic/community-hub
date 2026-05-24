@@ -33,6 +33,60 @@
             <SolidColorBrush x:Key="ErrorMessageBrush" Color="#C43D5A" />
             <SolidColorBrush x:Key="PageTitleBrush" Color="#000000" />
 
+            <!-- Resident palette -->
+            <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F2F5F7" />
+            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#D6E2E9" />
+            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#8FB3BE" />
+            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#789EAD" />
+            <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#BACFD9" />
+            <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#2B8398" />
+            <SolidColorBrush x:Key="ResidentPrimaryHoverBrush" Color="#1D687D" />
+            <SolidColorBrush x:Key="ResidentActionBorderBrush" Color="#0B4456" />
+            <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#CFDCE3" />
+            <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#142F3D" />
+            <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#445D6B" />
+            <SolidColorBrush x:Key="ResidentBorderBrush" Color="#8EA8B7" />
+            <SolidColorBrush x:Key="ResidentDangerBrush" Color="#BE4054" />
+            <SolidColorBrush x:Key="ResidentWarningBrush" Color="#9B5F08" />
+            <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentDisabledActionBackgroundBrush" Color="#EDEFF0" />
+            <SolidColorBrush x:Key="ResidentDisabledActionTextBrush" Color="#96A3A8" />
+            <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
+
+            <Style x:Key="ResidentPrimaryActionButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border
+                                x:Name="ResidentActionBackground"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                                <ContentPresenter
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ResidentActionBackground" Property="Background" Value="{StaticResource ResidentPrimaryHoverBrush}" />
+                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ResidentActionBackground" Property="Background" Value="{StaticResource ResidentDisabledActionBackgroundBrush}" />
+                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
+                                    <Setter Property="Foreground" Value="{StaticResource ResidentDisabledActionTextBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Themes/LightTheme.xaml" />

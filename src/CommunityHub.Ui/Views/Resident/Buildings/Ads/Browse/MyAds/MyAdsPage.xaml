@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d"
       Title="Lični oglasi za stanara"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter"/>
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter"/>
@@ -24,7 +26,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#dedede">
+            <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="64"/>
                     <ColumnDefinition Width="*"/>
@@ -59,17 +61,17 @@
                                     <Border
                                         Padding="8"
                                         Margin="0,0,0,8"
-                                        BorderBrush="Gray"
+                                        BorderBrush="{StaticResource ResidentBorderBrush}"
                                         BorderThickness="1">
                                         <Border.Style>
                                             <Style TargetType="Border">
-                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="Background" Value="{StaticResource ResidentCardBackgroundBrush}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Value="True">
                                                         <DataTrigger.Binding>
                                                             <Binding Path="IsOffer"/>
                                                         </DataTrigger.Binding>
-                                                        <Setter Property="Background" Value="#dedede"/>
+                                                        <Setter Property="Background" Value="{StaticResource ResidentSurfaceBrush}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -153,7 +155,7 @@
                 </Grid>
                 <Grid Visibility="{Binding HasAds, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Nema oglasa" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Label Content="Nema oglasa" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                     Text="Nema oglasa za prikazivanje. Još uvijek niste naparvili nijedan oglas na oglasnoj tabli ove zgrade. Svoj prvi oglas možete objaviti klikom na dugme ispod."
                     TextWrapping="Wrap" 
@@ -167,7 +169,7 @@
 
         <Button
             Content="&#x2b;"
-            Foreground="White"
+            Foreground="{StaticResource ResidentOnPrimaryBrush}"
             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
             FontSize="24"
             Margin="16"
@@ -178,9 +180,14 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Ellipse Width="64" Height="64" Fill="Black"/>
+                        <Ellipse x:Name="ResidentFloatingBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}" Stroke="{StaticResource ResidentActionBorderBrush}" StrokeThickness="1"/>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ResidentFloatingBackground" Property="Fill" Value="{StaticResource ResidentPrimaryHoverBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
         </Button>
