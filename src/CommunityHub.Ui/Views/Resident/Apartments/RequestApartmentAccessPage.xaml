@@ -104,8 +104,7 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Podnesi zahtjev"
-            Background="{StaticResource ResidentPrimaryActionBrush}"
-            BorderBrush="{StaticResource ResidentBorderBrush}"
+            Style="{StaticResource ResidentPrimaryActionButtonStyle}"
             FontSize="18"
             Width="192"
             Height="72"/>

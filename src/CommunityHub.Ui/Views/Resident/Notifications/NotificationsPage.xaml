@@ -134,7 +134,7 @@
                                                 Grid.Row="4"
                                                  BorderThickness="1"
                                                  BorderBrush="{StaticResource ResidentBorderBrush}"
-                                                 Background="{StaticResource ResidentSecondaryBrush}"
+                                                 Background="{StaticResource ResidentSurfaceBrush}"
                                                  Padding="16">
                                                  <Grid Background="Transparent"  MouseLeftButtonDown="NotificationItem_Click">
                                                     <Grid.ColumnDefinitions>

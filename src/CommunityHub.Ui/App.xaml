@@ -36,22 +36,34 @@
             <!-- Resident palette -->
             <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F2F5F7" />
             <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#D6E2E9" />
-            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#AEC8D7" />
-            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#91B4C7" />
+            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#8FB3BE" />
+            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#789EAD" />
             <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#BACFD9" />
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
-            <SolidColorBrush x:Key="ResidentPrimaryActionBrush" Color="#91CAD1" />
             <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#CFDCE3" />
             <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#142F3D" />
             <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#445D6B" />
             <SolidColorBrush x:Key="ResidentBorderBrush" Color="#8EA8B7" />
             <SolidColorBrush x:Key="ResidentDangerBrush" Color="#BE4054" />
-            <SolidColorBrush x:Key="ResidentDangerActionBrush" Color="#F1C2C9" />
             <SolidColorBrush x:Key="ResidentWarningBrush" Color="#9B5F08" />
             <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentDisabledActionBackgroundBrush" Color="#C4D1D5" />
+            <SolidColorBrush x:Key="ResidentDisabledActionTextBrush" Color="#63757C" />
             <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
 
+            <Style x:Key="ResidentPrimaryActionButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
+                <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryBrush}" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="{StaticResource ResidentDisabledActionBackgroundBrush}" />
+                        <Setter Property="Foreground" Value="{StaticResource ResidentDisabledActionTextBrush}" />
+                        <Setter Property="BorderBrush" Value="{StaticResource ResidentBorderBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Themes/LightTheme.xaml" />
