@@ -40,8 +40,8 @@
             <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#789EAD" />
             <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#BACFD9" />
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
-            <SolidColorBrush x:Key="ResidentPrimaryHoverBrush" Color="#105568" />
+            <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#1C748B" />
+            <SolidColorBrush x:Key="ResidentPrimaryHoverBrush" Color="#145A6F" />
             <SolidColorBrush x:Key="ResidentActionBorderBrush" Color="#0B4456" />
             <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#CFDCE3" />
             <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#142F3D" />
@@ -58,7 +58,7 @@
                 <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
                 <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
                 <Setter Property="BorderBrush" Value="{StaticResource ResidentActionBorderBrush}" />
-                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="BorderThickness" Value="1" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
