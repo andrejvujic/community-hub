@@ -41,6 +41,7 @@
             <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#BACFD9" />
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
+            <SolidColorBrush x:Key="ResidentPrimaryHoverBrush" Color="#105568" />
             <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#CFDCE3" />
             <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#142F3D" />
             <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#445D6B" />
@@ -57,6 +58,10 @@
                 <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
                 <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryBrush}" />
                 <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource ResidentPrimaryHoverBrush}" />
+                        <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryHoverBrush}" />
+                    </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
                         <Setter Property="Background" Value="{StaticResource ResidentDisabledActionBackgroundBrush}" />
                         <Setter Property="Foreground" Value="{StaticResource ResidentDisabledActionTextBrush}" />
