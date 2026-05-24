@@ -35,12 +35,13 @@
 
             <!-- Resident palette -->
             <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F4F7FA" />
-            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#E1EDF2" />
             <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#D9E8F1" />
             <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#C7DDE9" />
             <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#E7F0F4" />
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
+            <SolidColorBrush x:Key="ResidentFormActionBrush" Color="#B9DDE1" />
             <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#E7EFF4" />
             <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#17313F" />
             <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#536B78" />
