@@ -128,7 +128,7 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Ellipse x:Name="ResidentFloatingBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}"/>
+                        <Ellipse x:Name="ResidentFloatingBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}" Stroke="{StaticResource ResidentActionBorderBrush}" StrokeThickness="2"/>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <ControlTemplate.Triggers>

@@ -174,7 +174,7 @@
 
                 <Grid Visibility="{Binding HasReportedIssues, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Nemate prijavljene probleme" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Label Content="Nemate prijavljene probleme" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                             Text="Nema prijavljenih problema za prikazivanje. Još uvijek niste prijavili nijedan problem za ovu zgradu. Svoju prvu prijavu možete podnijeti klikom na dugme ispod."
                             TextWrapping="Wrap" 
@@ -199,7 +199,7 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Ellipse x:Name="ResidentFloatingBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}"/>
+                        <Ellipse x:Name="ResidentFloatingBackground" Width="64" Height="64" Fill="{StaticResource ResidentPrimaryBrush}" Stroke="{StaticResource ResidentActionBorderBrush}" StrokeThickness="2"/>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <ControlTemplate.Triggers>
