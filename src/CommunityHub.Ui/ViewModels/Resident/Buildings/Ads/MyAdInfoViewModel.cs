@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
     {
         private readonly AdService _adService;
 
-        public AdDto Ad { get; }
+        public AdDto Ad { get; private set; }
         public RelayCommand ArchiveAdCommand { get; }
 
         public MyAdInfoViewModel(AdDto ad, IMainNavigationConsumer navigationConsumer) : base(navigationConsumer)
@@ -37,7 +37,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 .AddOption(
                     "Nastavi",
                     callback: () => {
-                        _adService.Archive(Ad);
+                        Ad = _adService.Archive(Ad);
                         OnPropertyChanged(nameof(Ad));
                     }
                 )
