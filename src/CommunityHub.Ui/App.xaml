@@ -57,17 +57,34 @@
                 <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
                 <Setter Property="Foreground" Value="{StaticResource ResidentOnPrimaryBrush}" />
                 <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryBrush}" />
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{StaticResource ResidentPrimaryHoverBrush}" />
-                        <Setter Property="BorderBrush" Value="{StaticResource ResidentPrimaryHoverBrush}" />
-                    </Trigger>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Background" Value="{StaticResource ResidentDisabledActionBackgroundBrush}" />
-                        <Setter Property="Foreground" Value="{StaticResource ResidentDisabledActionTextBrush}" />
-                        <Setter Property="BorderBrush" Value="{StaticResource ResidentBorderBrush}" />
-                    </Trigger>
-                </Style.Triggers>
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border
+                                x:Name="ResidentActionBackground"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                                <ContentPresenter
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ResidentActionBackground" Property="Background" Value="{StaticResource ResidentPrimaryHoverBrush}" />
+                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentPrimaryHoverBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ResidentActionBackground" Property="Background" Value="{StaticResource ResidentDisabledActionBackgroundBrush}" />
+                                    <Setter TargetName="ResidentActionBackground" Property="BorderBrush" Value="{StaticResource ResidentBorderBrush}" />
+                                    <Setter Property="Foreground" Value="{StaticResource ResidentDisabledActionTextBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
