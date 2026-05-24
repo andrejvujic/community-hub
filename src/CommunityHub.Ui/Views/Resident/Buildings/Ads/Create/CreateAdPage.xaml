@@ -21,7 +21,7 @@
                 <materialDesign:BundledTheme
                     BaseTheme="Light"
                     PrimaryColor="Teal"
-                    SecondaryColor="BlueGrey" />
+                    SecondaryColor="LightBlue" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -191,8 +191,7 @@
                 IsEnabled="{Binding IsFormValid}"
                 Click="PublishAdButton_Click"
                 Content="Objavi oglas"
-                Background="{StaticResource ResidentFormActionBrush}"
-                Foreground="{StaticResource ResidentTextPrimaryBrush}"
+                Background="{StaticResource ResidentPrimaryActionBrush}"
                 BorderBrush="{StaticResource ResidentBorderBrush}"
                 FontSize="18"
                 Width="192"
@@ -310,8 +309,7 @@
                             Click="ToggleSelectDateRangeMenuButton_Click"
                             IsEnabled="{Binding IsSelectedDateRangeValid}"
                             Content="Potvrdi"
-                            Background="{StaticResource ResidentFormActionBrush}"
-                            Foreground="{StaticResource ResidentTextPrimaryBrush}"
+                            Background="{StaticResource ResidentPrimaryActionBrush}"
                             BorderBrush="{StaticResource ResidentBorderBrush}"/>
                     </Grid>
                 </Border>
@@ -350,9 +348,8 @@
                             HorizontalAlignment="Stretch"
                             Click="ToggleStartDatePickerButton_Click"
                             Content="Potvrdi"
-                            Background="{StaticResource ResidentPrimaryBrush}"
-                            Foreground="{StaticResource ResidentOnPrimaryBrush}"
-                            BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
+                            Background="{StaticResource ResidentPrimaryActionBrush}"
+                            BorderBrush="{StaticResource ResidentBorderBrush}"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -390,9 +387,8 @@
                             HorizontalAlignment="Stretch"
                             Click="ToggleEndDatePickerButton_Click"
                             Content="Potvrdi"
-                            Background="{StaticResource ResidentPrimaryBrush}"
-                            Foreground="{StaticResource ResidentOnPrimaryBrush}"
-                            BorderBrush="{StaticResource ResidentPrimaryBrush}"/>
+                            Background="{StaticResource ResidentPrimaryActionBrush}"
+                            BorderBrush="{StaticResource ResidentBorderBrush}"/>
                     </Grid>
                 </Border>
             </Grid>
