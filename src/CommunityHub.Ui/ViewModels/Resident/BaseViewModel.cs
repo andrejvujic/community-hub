@@ -8,9 +8,9 @@ namespace CommunityHub.Ui.ViewModels.Resident
     {
         private readonly IMainNavigationConsumer _navigationConsumer;
 
-        public BaseViewModel(IMainNavigationConsumer consumer)
+        public BaseViewModel(IMainNavigationConsumer navigationConsumer)
         {
-            _navigationConsumer = consumer;
+            _navigationConsumer = navigationConsumer;
         }
 
         protected void Push(IMainNavigationConsumer target, Action<object?>? onPop = null)

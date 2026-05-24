@@ -19,11 +19,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
             DataContext = _viewModel;
         }
 
-        private void CreateRentalRequestButton_Click(object sender, RoutedEventArgs e)
-            => _viewModel.SubmitRentalRequest();
-
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
-
 
         private void ToggleOverlayVisibility(FrameworkElement overlay)
             =>

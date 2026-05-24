@@ -149,7 +149,7 @@
                 VerticalAlignment="Bottom"
                 Margin="0,0,0,16"
                 IsEnabled="{Binding IsSelectedDateRangeValid}"
-                Click="CreateRentalRequestButton_Click"
+                Command="{Binding SubmitCommand}"
                 Content="Podnesi zahtjev"
                 Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                 FontSize="18"
