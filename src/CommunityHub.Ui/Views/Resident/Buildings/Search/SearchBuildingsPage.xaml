@@ -87,7 +87,6 @@
                         <Button
                             Content="Poništi pretragu"
                             Background="{StaticResource ResidentSecondaryBrush}"
-                            Foreground="{StaticResource ResidentTextPrimaryBrush}"
                             BorderBrush="{StaticResource ResidentBorderBrush}"
                             Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                             Height="48"
@@ -193,7 +192,6 @@
 
                                             <Button
                                                 Background="{StaticResource ResidentSecondaryBrush}"
-                                                Foreground="{StaticResource ResidentTextPrimaryBrush}"
                                                 BorderBrush="{StaticResource ResidentBorderBrush}"
                                                 Height="48"
                                                 Padding="8"
@@ -203,9 +201,8 @@
                                                 Click="OpenBuildingDetailsPageButton_Click"/>
 
                                             <Button
-                                                Background="{StaticResource ResidentPrimaryBrush}"
-                                                Foreground="{StaticResource ResidentOnPrimaryBrush}"
-                                                BorderBrush="{StaticResource ResidentPrimaryBrush}"
+                                                Background="{StaticResource ResidentPrimaryActionBrush}"
+                                                BorderBrush="{StaticResource ResidentBorderBrush}"
                                                 Height="48"
                                                 Padding="8"
                                                 Grid.Column="2"
@@ -248,7 +245,6 @@
                                 <Button
                                     Content="Poništi pretragu"
                                     Background="{StaticResource ResidentSecondaryBrush}"
-                                    Foreground="{StaticResource ResidentTextPrimaryBrush}"
                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                     Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                     Height="48"

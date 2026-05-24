@@ -34,20 +34,21 @@
             <SolidColorBrush x:Key="PageTitleBrush" Color="#000000" />
 
             <!-- Resident palette -->
-            <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F4F7FA" />
-            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#E1EDF2" />
-            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#D9E8F1" />
-            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#C7DDE9" />
-            <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#E7F0F4" />
+            <SolidColorBrush x:Key="ResidentPageBackgroundBrush" Color="#F2F5F7" />
+            <SolidColorBrush x:Key="ResidentCardBackgroundBrush" Color="#D6E2E9" />
+            <SolidColorBrush x:Key="ResidentHeaderBackgroundBrush" Color="#AEC8D7" />
+            <SolidColorBrush x:Key="ResidentNavigationBackgroundBrush" Color="#91B4C7" />
+            <SolidColorBrush x:Key="ResidentSurfaceBrush" Color="#BACFD9" />
             <SolidColorBrush x:Key="ResidentInputBackgroundBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentPrimaryBrush" Color="#156B82" />
-            <SolidColorBrush x:Key="ResidentFormActionBrush" Color="#B9DDE1" />
-            <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#E7EFF4" />
-            <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#17313F" />
-            <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#536B78" />
-            <SolidColorBrush x:Key="ResidentBorderBrush" Color="#B7CAD4" />
+            <SolidColorBrush x:Key="ResidentPrimaryActionBrush" Color="#91CAD1" />
+            <SolidColorBrush x:Key="ResidentSecondaryBrush" Color="#CFDCE3" />
+            <SolidColorBrush x:Key="ResidentTextPrimaryBrush" Color="#142F3D" />
+            <SolidColorBrush x:Key="ResidentTextSecondaryBrush" Color="#445D6B" />
+            <SolidColorBrush x:Key="ResidentBorderBrush" Color="#8EA8B7" />
             <SolidColorBrush x:Key="ResidentDangerBrush" Color="#BE4054" />
-            <SolidColorBrush x:Key="ResidentWarningBrush" Color="#A9690E" />
+            <SolidColorBrush x:Key="ResidentDangerActionBrush" Color="#F1C2C9" />
+            <SolidColorBrush x:Key="ResidentWarningBrush" Color="#9B5F08" />
             <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
 

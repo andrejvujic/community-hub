@@ -215,9 +215,8 @@
                 Visibility="{Binding Request.HasProposedDateRange, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Click="AcceptProposedDateRangeButton_Click"
                 Content="Prihvati"
-                Background="{StaticResource ResidentPrimaryBrush}"
-                Foreground="{StaticResource ResidentOnPrimaryBrush}"
-                BorderBrush="{StaticResource ResidentPrimaryBrush}"
+                Background="{StaticResource ResidentPrimaryActionBrush}"
+                BorderBrush="{StaticResource ResidentBorderBrush}"
                 FontSize="18"
                 Padding="64, 24"
                 Margin="8,0"/>
@@ -226,9 +225,8 @@
                 Visibility="{Binding Request.IsPending, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Click="CancelRequestButton_Click"
                 Content="Otkaži"
-                Background="{StaticResource ResidentDangerBrush}"
-                Foreground="{StaticResource ResidentOnPrimaryBrush}"
-                BorderBrush="{StaticResource ResidentDangerBrush}"
+                Background="{StaticResource ResidentDangerActionBrush}"
+                BorderBrush="{StaticResource ResidentBorderBrush}"
                 FontSize="18"
                 Padding="64, 24"
                 Margin="8,0"/>
