@@ -10,7 +10,6 @@ using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Database.Repositories.Shared.Notifications;
-using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Database.Repositories.JobListings;
@@ -27,6 +26,7 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Events;
 
 namespace CommunityHub.Application
 {
