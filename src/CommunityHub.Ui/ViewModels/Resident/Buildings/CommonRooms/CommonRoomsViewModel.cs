@@ -2,6 +2,7 @@
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details;
 using System.Collections.ObjectModel;
 

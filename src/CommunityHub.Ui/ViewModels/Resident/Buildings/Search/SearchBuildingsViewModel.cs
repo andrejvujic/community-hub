@@ -65,7 +65,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         private BuildingSearchParameters? SearchParameters
         {
             get => _searchParameters;
-            private set
+            set
             {
                 if (_searchParameters == value) return;
                 _searchParameters = value;
