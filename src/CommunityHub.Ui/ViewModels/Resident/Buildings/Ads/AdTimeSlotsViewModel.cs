@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
@@ -25,7 +24,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         public AdDto Ad { get; }
 
         public bool HasReservableTimeSlots { get => ReservableTimeSlotGroups.Count > 0; }
-        public ObservableCollection<AdTimeSlotGroup> ReservableTimeSlotGroups { get; } = new();
+        public ObservableCollection<AdTimeSlotGroupDto> ReservableTimeSlotGroups { get; } = new();
 
         public bool HasSelectedTimeSlots => SelectedTimeSlots.Count > 0;
         public ObservableCollection<AdTimeSlotDto> SelectedTimeSlots { get; } = new();
@@ -82,12 +81,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 ReservableTimeSlotGroups.Add(group);
         }
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
+        private List<AdTimeSlotGroupDto> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 
             return groups.Select(timeSlots =>
-                        new AdTimeSlotGroup(
+                        new AdTimeSlotGroupDto(
                             timeSlots.First().StartTime.Date,
                             [.. timeSlots]
                         )

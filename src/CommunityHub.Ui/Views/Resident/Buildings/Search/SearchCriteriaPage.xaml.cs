@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
-    public partial class SearchCriteriaPage : MainNavigatorConsumerPage
+    public partial class SearchCriteriaPage : MainNavigationConsumerPage
     {
         private readonly SearchCriteriaViewModel _viewModel;
 

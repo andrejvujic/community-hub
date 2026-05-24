@@ -1,6 +1,4 @@
-﻿using CommunityHub.Application.Domain.Ads;
-
-namespace CommunityHub.Application.Domain.Ads.TimeSlots
+﻿namespace CommunityHub.Application.Domain.Ads.TimeSlots
 {
     public class AdTimeSlotReservation
     {

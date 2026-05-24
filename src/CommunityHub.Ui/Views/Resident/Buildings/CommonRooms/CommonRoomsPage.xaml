@@ -1,4 +1,4 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.CommonRoomsPage"
+﻿<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.CommonRoomsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,11 +9,11 @@
       mc:Ignorable="d" 
       Title="Zajedničke prostorije"
       FontFamily="{StaticResource AppFontFamily}">
-    <navigation:MainNavigatorConsumerPage.Resources>
+    <navigation:MainNavigationConsumerPage.Resources>
         <converters:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </navigation:MainNavigatorConsumerPage.Resources>
+    </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -179,4 +179,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</navigation:MainNavigatorConsumerPage>
+</navigation:MainNavigationConsumerPage>

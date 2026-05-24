@@ -1,4 +1,4 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds.MatchingAdsPage"
+﻿<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds.MatchingAdsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,12 +9,12 @@
       mc:Ignorable="d" 
       Title="Predloženi oglasi"
       FontFamily="{StaticResource AppFontFamily}">
-    <navigation:MainNavigatorConsumerPage.Resources>
+    <navigation:MainNavigationConsumerPage.Resources>
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter"/>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
-    </navigation:MainNavigatorConsumerPage.Resources>
+    </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
@@ -186,4 +186,4 @@
             </Grid>
         </Grid>
     </Grid>
-</navigation:MainNavigatorConsumerPage>
+</navigation:MainNavigationConsumerPage>

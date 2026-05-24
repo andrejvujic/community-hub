@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
-    public partial class AdTimeSlotsPage : MainNavigatorConsumerPage, INotifyPropertyChanged, IAlertConsumer
+    public partial class AdTimeSlotsPage : MainNavigationConsumerPage, INotifyPropertyChanged, IAlertServiceConsumer
     {
         private readonly AdTimeSlotsViewModel _viewModel;
 
@@ -33,7 +33,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
             _viewModel.ReserveSelectedTimeSlots();
 
             /*
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Greška",
@@ -43,7 +43,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
                 );
             */
 
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Rezervacija uspješna",

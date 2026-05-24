@@ -1,6 +1,6 @@
-﻿using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Services.Apartments;
+﻿using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
+using CommunityHub.Application.Services.Dtos.Buildings;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -17,16 +17,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
             UserId = userId;
         }
 
-        public ObservableCollection<BuildingMembershipGroup> MembershipGroups { get; set; } = new();
+        public ObservableCollection<BuildingMembershipGroupDto> MembershipGroups { get; set; } = new();
         public bool HasMemberships { get => MembershipGroups.Count > 0; }
 
-        private static List<BuildingMembershipGroup> GroupMembershipsByBuilding(
+        private static List<BuildingMembershipGroupDto> GroupMembershipsByBuilding(
             List<ApartmentMembershipDto> memberships
         )
         {
             var groups = memberships.GroupBy(membership => membership.Apartment.Building.Id);
             return groups.Select(memberships =>
-                new BuildingMembershipGroup(
+                new BuildingMembershipGroupDto(
                     memberships.First().Apartment.Building,
                     memberships.First().Resident
                 )

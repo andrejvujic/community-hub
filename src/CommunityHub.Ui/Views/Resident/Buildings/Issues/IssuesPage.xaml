@@ -1,4 +1,4 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Issues.IssuesPage"
+﻿<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Issues.IssuesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,12 +9,12 @@
       mc:Ignorable="d" 
       Title="Problemi"
       FontFamily="{StaticResource AppFontFamily}">
-    <navigation:MainNavigatorConsumerPage.Resources>
+    <navigation:MainNavigationConsumerPage.Resources>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:IssueStatusToStringConverter x:Key="IssueStatusToStringConverter"/>
         <converters:IssuePriorityToStringConverter x:Key="IssuePriorityToStringConverter"/>
-    </navigation:MainNavigatorConsumerPage.Resources>
+    </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -203,4 +203,4 @@
             </Button.Template>
         </Button>
     </Grid>
-</navigation:MainNavigatorConsumerPage>
+</navigation:MainNavigationConsumerPage>

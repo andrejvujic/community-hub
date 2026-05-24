@@ -1,4 +1,4 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Search.SearchBuildingsPage"
+﻿<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Search.SearchBuildingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,10 +9,10 @@
       mc:Ignorable="d" 
       Title="Pretraživanje zgrada"
       FontFamily="{StaticResource AppFontFamily}">
-    <navigation:MainNavigatorConsumerPage.Resources>
+    <navigation:MainNavigationConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
-    </navigation:MainNavigatorConsumerPage.Resources>
+    </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
@@ -264,4 +264,4 @@
             </Grid>
         </Grid>
     </Grid>
-</navigation:MainNavigatorConsumerPage>
+</navigation:MainNavigationConsumerPage>

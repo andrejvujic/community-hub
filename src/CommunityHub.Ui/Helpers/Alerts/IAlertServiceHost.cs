@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Helpers.Alerts
 {
-    public interface IAlertHost
+    public interface IAlertServiceHost
     {
         public FrameworkElement Root { get; }
         public TextBlock TypeTextBlock { get; }

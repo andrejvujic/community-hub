@@ -9,7 +9,7 @@ using System.Windows.Controls.Primitives;
 namespace CommunityHub.Ui.Views.Resident.Apartments
 {
 
-    public partial class ApartmentAccessRequestsPage : MainNavigatorConsumerPage
+    public partial class ApartmentAccessRequestsPage : MainNavigationConsumerPage
     {
 
         private readonly ApartmentAccessRequestsViewModel _viewModel;

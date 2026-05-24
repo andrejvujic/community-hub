@@ -10,7 +10,7 @@ using System.Windows.Input;
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 {
 
-    public partial class SearchBuildingsPage : MainNavigatorConsumerPage
+    public partial class SearchBuildingsPage : MainNavigationConsumerPage
     {
         private readonly SearchBuildingsViewModel _viewModel;
         public SearchBuildingsPage(long userId)

@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident
 {
-    public partial class HomePage : MainNavigatorConsumerPage
+    public partial class HomePage : MainNavigationConsumerPage
     {
         private readonly HomeViewModel _viewModel;
 

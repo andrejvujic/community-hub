@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds
 {
-    public partial class MatchingAdsPage : MainNavigatorConsumerPage
+    public partial class MatchingAdsPage : MainNavigationConsumerPage
     {
         private readonly long _userId;
         private readonly AdService _adService;

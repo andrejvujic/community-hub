@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Issues
 {
-    public partial class IssuesPage : MainNavigatorConsumerPage, INotifyPropertyChanged
+    public partial class IssuesPage : MainNavigationConsumerPage, INotifyPropertyChanged
     {
         private readonly long _userId, _buildingId;
         private readonly IssueRepository _issueRepository = new();

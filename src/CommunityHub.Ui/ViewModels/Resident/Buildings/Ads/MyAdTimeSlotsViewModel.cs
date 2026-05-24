@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
@@ -13,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
     {
         private readonly AdTimeSlotService _timeSlotService;
 
-        public ObservableCollection<AdReservation> Reservations { get; } = new();
+        public ObservableCollection<AdReservationDto> Reservations { get; } = new();
         public bool HasReservations { get => Reservations.Count > 0; }
 
         public AdDto Ad { get; }
@@ -38,19 +37,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasReservations));
         }   
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
+        private List<AdTimeSlotGroupDto> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 
             return groups.Select(timeSlots =>
-                        new AdTimeSlotGroup(
+                        new AdTimeSlotGroupDto(
                             timeSlots.First().StartTime.Date,
                             [.. timeSlots]
                         )
                     ).ToList();
         }
 
-        private List<AdReservation> GroupTimeSlotsByAd(List<AdTimeSlotDto> timeSlots)
+        private List<AdReservationDto> GroupTimeSlotsByAd(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => {
                 var reservation = timeSlot.Reservation!;
@@ -60,7 +59,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             return groups.Select(timeSlots => {
                 var reservation = timeSlots.First().Reservation!;
 
-                return new AdReservation(
+                return new AdReservationDto(
                     Ad.Type is AdType.Offer ? reservation.RequestAd! : reservation.OfferAd!,
                     GroupTimeSlotsByDay([.. timeSlots])
                 );

@@ -1,4 +1,4 @@
-﻿<navigation:MainNavigatorConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Ads.Create.CreateAdPage"
+﻿<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Buildings.Ads.Create.CreateAdPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,7 +11,7 @@
       Title="Objavljivanje oglasa"
       FontFamily="{StaticResource AppFontFamily}"
       xml:lang="sr-Latn-RS">
-    <navigation:MainNavigatorConsumerPage.Resources>
+    <navigation:MainNavigationConsumerPage.Resources>
         <ResourceDictionary>
             <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
             <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
@@ -23,7 +23,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </navigation:MainNavigatorConsumerPage.Resources>
+    </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid>
             <Grid>
@@ -382,4 +382,4 @@
             </Grid>
         </Grid>
     </Grid>
-</navigation:MainNavigatorConsumerPage>
+</navigation:MainNavigationConsumerPage>

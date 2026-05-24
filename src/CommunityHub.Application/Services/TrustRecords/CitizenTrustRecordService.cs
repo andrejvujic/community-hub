@@ -1,5 +1,5 @@
 using CommunityHub.Application.Database.Repositories.Events;
-using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Events;
 using CommunityHub.Application.Domain.TrustRecords;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.MappersDto;

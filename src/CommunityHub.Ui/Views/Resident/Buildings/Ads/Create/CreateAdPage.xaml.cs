@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 {
-    public partial class CreateAdPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class CreateAdPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly CreateAdViewModel _viewModel;
 
@@ -62,7 +62,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
             switch (result)
             {
                 case PublishmentValidationResult.DuplicateAdExists:
-                    if (this is IAlertConsumer consumer)
+                    if (this is IAlertServiceConsumer consumer)
                         consumer.ShowAlert(
                             Alert.Create(
                                 "Greška",
@@ -77,7 +77,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Create
 
         private void ShowSuccessAlert(AdDto publishedAd)
         {
-            if (this is IAlertConsumer consumer)
+            if (this is IAlertServiceConsumer consumer)
                 consumer.ShowAlert(
                     Alert.Create(
                         "Oglas objavljen",

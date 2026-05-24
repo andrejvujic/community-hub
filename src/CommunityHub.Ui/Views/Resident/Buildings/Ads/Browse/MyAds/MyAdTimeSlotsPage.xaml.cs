@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Services.Dtos.Ads;
+﻿using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdTimeSlotsPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class MyAdTimeSlotsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly long _userId;
         private readonly MyAdTimeSlotsViewModel _viewModel;
@@ -29,7 +28,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
         {
             if (sender is not FrameworkElement element) return;
 
-            if (element.DataContext is not AdReservation reservation) return;
+            if (element.DataContext is not AdReservationDto reservation) return;
 
             Push(
                 new AdDetailsPage(_userId, reservation.Ad),

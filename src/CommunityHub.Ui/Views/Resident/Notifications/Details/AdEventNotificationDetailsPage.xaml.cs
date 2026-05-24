@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Notifications.Details
 {
-    public partial class AdEventNotificationDetailsPage : MainNavigatorConsumerPage, IAlertConsumer
+    public partial class AdEventNotificationDetailsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly AdEventNotificationDetailsViewModel _viewModel;
 
@@ -23,7 +23,7 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
 
         private void ShowAdAvailabilityCheckResult(AdAvailability result)
         {
-            if (this is not IAlertConsumer consumer) return;
+            if (this is not IAlertServiceConsumer consumer) return;
 
             switch (result) {
                 case AdAvailability.NotFound:
