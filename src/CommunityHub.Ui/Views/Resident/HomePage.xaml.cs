@@ -15,19 +15,11 @@ namespace CommunityHub.Ui.Views.Resident
         {
             InitializeComponent();
             
-            _viewModel = new HomeViewModel(userId);
+            _viewModel = new HomeViewModel(userId, this);
             DataContext = _viewModel;
             _viewModel.Initialize();
 
             OpenBuildingsPage();
-        }
-
-        private void OpenNotificationsPage()
-        {
-            Push(
-                new NotificationsPage(_viewModel.UserId),
-                onPop: _ => _viewModel.UpdateUnreadNotificationCount()
-            );
         }
 
         private void OpenBuildingsPage() => LocalFrame.Navigate(
@@ -39,7 +31,7 @@ namespace CommunityHub.Ui.Views.Resident
         );
 
         private void TopBar_NotificationsItemClick(object sender, MouseButtonEventArgs e)
-                => OpenNotificationsPage();
+                => _viewModel.OpenNotificationsPage();
 
         private void BottomBar_RequestsItemClick(object sender, MouseButtonEventArgs e) => OpenApartmentAccessRequestsPage();
         private void BottomBar_BuildingsItemClick(object sender, MouseButtonEventArgs e) => OpenBuildingsPage();

@@ -16,7 +16,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
         public SearchBuildingsPage(long userId)
         {
             InitializeComponent();
-            _viewModel = new SearchBuildingsViewModel(userId);
+            _viewModel = new SearchBuildingsViewModel(userId, this);
             DataContext = _viewModel;
             _viewModel.UpdateSearchResults();
         }
@@ -24,15 +24,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
         private void SearchButton_Click(object sender, MouseButtonEventArgs e)
-        {
-            Push(
-                new SearchCriteriaPage(
-                    setSearchParameters: _viewModel.SetSearchParameters,
-                    initialSearchParameters: _viewModel.SearchParameters
-                ),
-                onPop: _ => _viewModel.UpdateSearchResults()
-            );
-        }
+            => _viewModel.OpenSearchCriteriaPage();
         
 
         private void ResetSearchButton_Click(object sender, RoutedEventArgs e)
@@ -50,7 +42,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var building = element.DataContext as BuildingDto;
             if (building == null) return;
 
-            Push(new BuildingDetailsPage(building));
+            _viewModel.OpenBuildingDetailsPage(building);
         }
 
         private void OpenRequestApartmentAccessPageButton_Click(object sender, RoutedEventArgs e)
@@ -61,7 +53,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var building = element.DataContext as BuildingDto;
             if (building == null) return;
 
-            Push(new RequestApartmentAccessPage(_viewModel.UserId, building));
+            _viewModel.OpenRequestApartmentAccessPage(building);
         }
     }
 }

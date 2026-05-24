@@ -2,12 +2,12 @@
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SelectCityViewModel : INotifyPropertyChanged
+    public class SelectCityViewModel : BaseViewModel
     {
         private readonly CityService _cityService = new();
 
@@ -33,8 +33,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public SelectCityViewModel(
             Action<CityDto?> setCity,
             CountryDto selectedCountry,
+            MainNavigationConsumerPage page,
             CityDto? selectedCity = null
-        )
+        ) : base(page)
         {
             _setCity = setCity;
             SelectedCountry = selectedCountry;
@@ -83,10 +84,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         {
             SelectedCity = city;
             _setCity.Invoke(SelectedCity);
+            Pop();
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

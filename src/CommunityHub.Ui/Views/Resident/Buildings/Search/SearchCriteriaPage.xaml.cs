@@ -18,6 +18,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             InitializeComponent();
             _viewModel = new SearchCriteriaViewModel(
                 setSearchParameters: setSearchParameters,
+                page: this,
                 initialSearchParameters: initialSearchParameters
             );
             DataContext = _viewModel;
@@ -26,29 +27,12 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
         private void SelectCountryButton_Click(object sender, MouseButtonEventArgs e)
-            => Push(
-                    new SelectCountryPage(
-                        _viewModel.SetCountry,
-                        selectedCountry: _viewModel.Country
-                    )
-                );
+            => _viewModel.OpenSelectCountryPage();
 
         private void SelectCityButton_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (!_viewModel.IsCountrySelected) return;
-            Push(
-                new SelectCityPage(
-                        _viewModel.SetCity,
-                        selectedCountry: _viewModel.Country!,
-                        selectedCity: _viewModel.City
-                    )
-                );
-        }
+            => _viewModel.OpenSelectCityPage();
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ApplySearchParameters();
-            Pop();
-        }
+            => _viewModel.ApplyAndClose();
     }
 }

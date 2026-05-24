@@ -16,6 +16,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             InitializeComponent();
             _viewModel = new SelectCountryViewModel(
                 setCountry: setCountry,
+                page: this,
                 selectedCountry: selectedCountry
             );
             DataContext = _viewModel;
@@ -48,7 +49,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             }
 
             _viewModel.UpdateSelectedCountry(country);
-            Pop();
         }
     }
 }

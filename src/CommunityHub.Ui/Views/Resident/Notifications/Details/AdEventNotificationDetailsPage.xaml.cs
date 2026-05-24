@@ -17,77 +17,12 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
         public AdEventNotificationDetailsPage(long userId, NotificationDto notification)
         {
             InitializeComponent();
-            _viewModel = new AdEventNotificationDetailsViewModel(userId, notification);
+            _viewModel = new AdEventNotificationDetailsViewModel(userId, notification, this);
             DataContext = _viewModel;
         }
 
-        private void ShowAdAvailabilityCheckResult(AdAvailability result)
-        {
-            if (this is not IAlertServiceConsumer consumer) return;
-
-            switch (result) {
-                case AdAvailability.NotFound:
-                    consumer.ShowAlert(
-                        Alert.Create(
-                            "Greška",
-                            "Traženi oglas nije pronađen.",
-                            AlertType.Error
-                        )
-                        .AddOption("U redu")
-                    );
-                    break;
-                case AdAvailability.Expired:
-                    consumer.ShowAlert(
-                        Alert.Create(
-                            "Greška",
-                            "Traženi oglas je istekao i više nije dostupan za zakazivanje termina.",
-                            AlertType.Error
-                        )
-                        .AddOption("U redu")
-                    );
-                    break;
-            }
-        }
-
-
         private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
-        {
-            var availability = _viewModel.GetAdAvailability();
-
-            if (availability == AdAvailability.Available)
-            {
-                switch (_viewModel.NotificationDetails.EventType)
-                {
-                    case AdEventType.MatchingAdCreated:
-                        OpenMatchingAdTimeSlotsPage();
-                        break;
-                    case AdEventType.AdTimeSlotsReserved:
-                        OpenPersonalAdTimeSlotsPage();
-                        break;
-                }
-                return;
-            }
-
-            ShowAdAvailabilityCheckResult(availability);
-        }
-
-        private void OpenMatchingAdTimeSlotsPage()
-            => Push(
-                new AdDetailsPage(
-                    _viewModel.UserId,
-                    _viewModel.Ad!,
-                    initialTab: AdDetailsPageTab.TimeSlots
-                )
-            );
-
-        private void OpenPersonalAdTimeSlotsPage()
-            => Push(
-                new MyAdDetailsPage(
-                    _viewModel.UserId,
-                    _viewModel.Ad!,
-                    initialTab: MyAdDetailsPageTab.TimeSlots
-                )
-            );
+            => _viewModel.OpenAd();
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();

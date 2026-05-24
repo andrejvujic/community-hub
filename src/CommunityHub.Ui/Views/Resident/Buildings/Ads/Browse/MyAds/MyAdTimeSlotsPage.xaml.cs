@@ -10,13 +10,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
     public partial class MyAdTimeSlotsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
-        private readonly long _userId;
         private readonly MyAdTimeSlotsViewModel _viewModel;
 
         public MyAdTimeSlotsPage(long userId, AdDto ad)
         {
-            _viewModel = new MyAdTimeSlotsViewModel(ad);
-            _userId = userId;
+            _viewModel = new MyAdTimeSlotsViewModel(userId, ad, this);
 
             InitializeComponent();
             DataContext = _viewModel;
@@ -30,10 +28,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 
             if (element.DataContext is not AdReservationDto reservation) return;
 
-            Push(
-                new AdDetailsPage(_userId, reservation.Ad),
-                onPop: _ => _viewModel.UpdateReservations()
-            );
+            _viewModel.OpenAdDetailsPage(reservation);
         }
     }
 }

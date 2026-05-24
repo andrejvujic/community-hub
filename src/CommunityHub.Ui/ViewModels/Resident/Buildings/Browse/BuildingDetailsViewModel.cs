@@ -1,14 +1,14 @@
 ﻿using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Application.Services.Dtos.Images;
-using System.ComponentModel;
+using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 {
-    public class BuildingDetailsViewModel : INotifyPropertyChanged
+    public class BuildingDetailsViewModel : BaseViewModel
     {
         public BuildingDto Building { get; }
 
-        public BuildingDetailsViewModel(BuildingDto building)
+        public BuildingDetailsViewModel(BuildingDto building, MainNavigationConsumerPage page) : base(page)
         {
             Building = building;
         }
@@ -58,10 +58,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 
         public bool HasPreviousImage { get => CurrentImageIndex > 0; }
         public bool HasNextImage { get => CurrentImageIndex < Building.Images.Count - 1; }
-
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
