@@ -58,7 +58,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             bool newValue = registration.Attended != true;
             UpdateAttendance(registration.Id, newValue);
             RefreshEvent();
-            // Restore selection after refresh
+
             if (_event?.Registrations != null)
             {
                 var registrationToSelect = _event.Registrations.FirstOrDefault(r => r.Id == registration.Id);

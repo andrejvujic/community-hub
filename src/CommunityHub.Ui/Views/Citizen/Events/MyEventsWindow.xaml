@@ -164,7 +164,8 @@
 
             <Border Grid.Row="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="Označi prisutnost volontera - Enter" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                    <TextBlock Text="Označi prisutnost volontera - Enter" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}" Margin="0,0,200,0"/>
+                    <TextBlock Text="Zatvori - Esc" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}"/>
                 </StackPanel>
             </Border>
         </Grid>

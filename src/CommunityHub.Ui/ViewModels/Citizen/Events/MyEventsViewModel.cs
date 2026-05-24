@@ -99,6 +99,18 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
+        public void SelectFirstEvent()
+        {
+            if (OrganizerEvents.Count > 0)
+            {
+                SelectedOrganizerEvent = OrganizerEvents[0];
+            }
+            else if (VolunteerEvents.Count > 0)
+            {
+                SelectedVolunteerEvent = VolunteerEvents[0];
+            }
+        }
+
         public void RequestOrganizeEvent()
         {
             OrganizeEventRequested?.Invoke(this, EventArgs.Empty);
