@@ -72,16 +72,15 @@
                                                         <Border 
                                                             Margin="0,0,4,4"
                                                             Padding="8"
-                                                            Background="{StaticResource ResidentPrimaryBrush}"
-                                                            BorderBrush="{StaticResource ResidentPrimaryBrush}"
+                                                            Background="{StaticResource ResidentSurfaceBrush}"
+                                                            BorderBrush="{StaticResource ResidentBorderBrush}"
                                                             BorderThickness="1"
                                                             Width="80">
                                                             <TextBlock
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Center" 
                                                                 TextAlignment="Center"         
-                                                                FontSize="14"
-                                                                Foreground="{StaticResource ResidentOnPrimaryBrush}">
+                                                                FontSize="14">
                                                                     <Run Text="Stan"/>
                                                                     <Run
                                                                         Text="{Binding Apartment.Number, Mode=OneWay}"
