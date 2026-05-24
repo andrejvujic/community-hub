@@ -16,6 +16,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             InitializeComponent();
             _viewModel = new SelectCountryViewModel(
                 setCountry: setCountry,
+                navigationConsumer: this,
                 selectedCountry: selectedCountry
             );
             DataContext = _viewModel;
@@ -25,30 +26,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
-        private void SearchButton_Click(object sender, MouseButtonEventArgs e) => _viewModel.UpdateSearchResults();
-
         private void CountrySearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!_viewModel.HasSetSearchText)
                 _viewModel.UpdateSearchResults();
         }
 
-        private void CountryItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            var element = sender as Grid;
-            if (element == null) return;
-
-            var country = element.DataContext as CountryDto;
-            if (country == null) return;
-
-            if (_viewModel.IsCountrySelected(country))
-            {
-                _viewModel.ResetSelectedCountry();
-                return;
-            }
-
-            _viewModel.UpdateSelectedCountry(country);
-            Pop();
-        }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SelectCountryViewModel : INotifyPropertyChanged
+    public class SelectCountryViewModel : BaseViewModel
     {
         private readonly CountryService _countryService = new();
 
@@ -16,7 +17,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public CountryDto? SelectedCountry
         {
             get => _selectedCountry;
-            set
+            private set
             {
                 if (_selectedCountry == value) return;
                 _selectedCountry = value;
@@ -29,12 +30,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 
         public SelectCountryViewModel(
             Action<CountryDto?> setCountry,
+            IMainNavigationConsumer navigationConsumer,
             CountryDto? selectedCountry = null
-        )
+        ) : base(navigationConsumer)
         {
             _setCountry = setCountry;
             SelectedCountry = selectedCountry;
+
+            SearchCommand = new(UpdateSearchResults);
+            SelectCountryCommand = new(SelectCountry);
         }
+
+        public RelayCommand SearchCommand { get; }
+        public RelayCommand<CountryDto> SelectCountryCommand { get; }
 
         private string _searchText = string.Empty;
         public string SearchText
@@ -62,24 +70,33 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public bool IsCountrySelected(CountryDto country)
+        private bool IsCountrySelected(CountryDto country)
             => SelectedCountry == country;
 
-        public void ResetSelectedCountry()
+        private void ResetSelectedCountry()
         {
             SelectedCountry = null;
             _setCountry.Invoke(null);
         }
 
-        public void UpdateSelectedCountry(CountryDto country)
+        private void UpdateSelectedCountry(CountryDto country)
         {
             SelectedCountry = country;
             _setCountry.Invoke(SelectedCountry);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void SelectCountry(CountryDto? country)
+        {
+            if (country is null) return;
+            if (IsCountrySelected(country))
+            {
+                ResetSelectedCountry();
+                return;
+            }
+
+            UpdateSelectedCountry(country);
+            Pop();
+        }
 
     }
 }

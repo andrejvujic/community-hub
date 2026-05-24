@@ -39,8 +39,12 @@
 
             <Grid
                 Grid.Column="1"
-                Background="Transparent"
-                MouseLeftButtonDown="TopBar_NotificationsItemClick">
+                Background="Transparent">
+                <Grid.InputBindings>
+                    <MouseBinding
+                        Gesture="LeftClick"
+                        Command="{Binding OpenNotificationsCommand}" />
+                </Grid.InputBindings>
                 <TextBlock
                     Text="&#xf0f3;"
                     FontSize="24"
@@ -90,7 +94,12 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0"  MouseLeftButtonDown="BottomBar_BuildingsItemClick" Background="Transparent">
+            <Grid Grid.Column="0" Background="Transparent">
+                <Grid.InputBindings>
+                    <MouseBinding
+                        Gesture="LeftClick"
+                        Command="{Binding OpenBuildingsCommand}" />
+                </Grid.InputBindings>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -114,7 +123,12 @@
                         FontSize="14"/>
             </Grid>
 
-            <Grid Grid.Column="1" MouseLeftButtonDown="BottomBar_RequestsItemClick" Background="Transparent">
+            <Grid Grid.Column="1" Background="Transparent">
+                <Grid.InputBindings>
+                    <MouseBinding
+                        Gesture="LeftClick"
+                        Command="{Binding OpenApartmentAccessRequestsCommand}" />
+                </Grid.InputBindings>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>

@@ -71,7 +71,12 @@
                     Background="{StaticResource ResidentInputBackgroundBrush}"
                     BorderBrush="{StaticResource ResidentBorderBrush}"
                     BorderThickness="1">
-                    <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="SelectCountryButton_Click">
+                    <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48">
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftClick"
+                                Command="{Binding OpenSelectCountryCommand}" />
+                        </Grid.InputBindings>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
@@ -96,7 +101,12 @@
                         Background="{StaticResource ResidentInputBackgroundBrush}"
                         BorderBrush="{StaticResource ResidentBorderBrush}"
                         BorderThickness="1">
-                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48" MouseLeftButtonDown="SelectCityButton_Click">
+                        <Grid Background="{StaticResource ResidentInputBackgroundBrush}" Height="48">
+                            <Grid.InputBindings>
+                                <MouseBinding
+                                    Gesture="LeftClick"
+                                    Command="{Binding OpenSelectCityCommand}" />
+                            </Grid.InputBindings>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -126,7 +136,7 @@
         </Grid>
 
         <Button
-            Click="ApplyButton_Click"
+            Command="{Binding ApplyCommand}"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"

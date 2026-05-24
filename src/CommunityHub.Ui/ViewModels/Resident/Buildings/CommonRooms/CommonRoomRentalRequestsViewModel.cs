@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
     {
         private readonly CommonRoomRentalRequestService _rentalRequestService = new();
 
-        public long UserId { get; }
+        private readonly long _userId;
         public CommonRoomDto CommonRoom { get; }
 
         public CommonRoomRentalRequestsViewModel(
@@ -20,17 +21,38 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             IMainNavigationConsumer navigationConsumer
         ) : base(navigationConsumer)
         {
-            UserId = userId;
+            _userId = userId;
             CommonRoom = commonRoom;
+
+            OpenRequestCommonRoomRentalCommand = new(OpenRequestCommonRoomRentalPage);
+            OpenRentalRequestDetailsCommand = new(OpenRentalRequestDetailsPage);
         }
+
+        public RelayCommand OpenRequestCommonRoomRentalCommand { get; }
+        public RelayCommand<CommonRoomRentalRequestDto> OpenRentalRequestDetailsCommand { get; }
 
         public ObservableCollection<CommonRoomRentalRequestDto> RentalRequests { get; } = new();
         public bool HasRentalRequests => RentalRequests.Count > 0;
 
+        private void OpenRequestCommonRoomRentalPage()
+            => Push(
+                new RequestCommonRoomRentalPage(_userId, CommonRoom),
+                onPop: _ => UpdateRenalRequests()
+            );
+
+        private void OpenRentalRequestDetailsPage(CommonRoomRentalRequestDto? request)
+        {
+            if (request is null) return;
+            Push(
+                new CommonRoomRentalRequestDetailsPage(request),
+                onPop: _ => UpdateRenalRequests()
+            );
+        }
+
         public void UpdateRenalRequests()
         {
             var rentalRequests = _rentalRequestService.GetByResidentAndCommonRoom(
-                UserId,
+                _userId,
                 CommonRoom.Id
             );
 

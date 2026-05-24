@@ -1,7 +1,6 @@
 ﻿using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Search;
-using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Search
@@ -26,16 +25,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 
-        private void SelectCountryButton_Click(object sender, MouseButtonEventArgs e)
-            => _viewModel.OpenSelectCountryPage();
-
-        private void SelectCityButton_Click(object sender, MouseButtonEventArgs e)
-            => _viewModel.OpenSelectCityPage();
-
-        private void ApplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ApplySearchParameters();
-            Pop();
-        }
     }
 }

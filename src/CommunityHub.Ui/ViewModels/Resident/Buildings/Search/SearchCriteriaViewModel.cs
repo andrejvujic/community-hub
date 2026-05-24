@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Search;
 
@@ -19,7 +20,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         ) : base(page) {
             _setSerachParameters = setSearchParameters;
             ApplyInitialSearchParameters(initialSearchParameters);
+
+            OpenSelectCountryCommand = new(OpenSelectCountryPage);
+            OpenSelectCityCommand = new(OpenSelectCityPage);
+            ApplyCommand = new(ApplySearchParameters);
         }
+
+        public RelayCommand OpenSelectCountryCommand { get; }
+        public RelayCommand OpenSelectCityCommand { get; }
+        public RelayCommand ApplyCommand { get; }
         private void ApplyInitialSearchParameters(BuildingSearchParameters? initialSearchParameters)
         {
             if (initialSearchParameters == null) return;
@@ -35,13 +44,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             Country = _countryService.GetById(initialCountryId.Value);
         }
 
-        public void LoadInitialCity(long? initialCityId)
+        private void LoadInitialCity(long? initialCityId)
         {
             if (initialCityId is null) return;
             City = _cityService.GetById(initialCityId.Value);
         }
 
-        public void ApplySearchParameters()
+        private void ApplySearchParameters()
         {
             _setSerachParameters.Invoke(
                 new BuildingSearchParameters(
@@ -51,12 +60,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
                     neighborhood: Neighborhood
                 )
              );
+            Pop();
         }
 
-        public void OpenSelectCountryPage()
+        private void OpenSelectCountryPage()
             => Push(new SelectCountryPage(SetCountry, Country));
 
-        public void OpenSelectCityPage()
+        private void OpenSelectCityPage()
         {
             if (!IsCountrySelected) return;
             Push(new SelectCityPage(SetCity, Country!, City));
@@ -82,7 +92,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public CityDto? City
         {
             get => _city;
-            set
+            private set
             {
                 if (_city == value) return; 
                 _city = value;
@@ -95,13 +105,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public string StreetName { get; set; } = string.Empty;
         public string Neighborhood { get; set; } = string.Empty;
 
-        public void SetCountry(CountryDto? country)
+        private void SetCountry(CountryDto? country)
         {
             Country = country;
             City = null;
         }
 
-        public void SetCity(CityDto? city) => City = city;
+        private void SetCity(CityDto? city) => City = city;
 
     }
 }
