@@ -100,7 +100,7 @@
                     <Button
                         Grid.Column="0"
                         Height="48"
-                        Background="Transparent"
+                        Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                         Click="PreviousImageButton_Click"
                         IsEnabled="{Binding HasPreviousImage}">
                         <TextBlock
@@ -158,7 +158,7 @@
                     <Button
                         Grid.Column="2"
                         Height="48"
-                        Background="Transparent"
+                        Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                         Click="NextImageButton_Click"
                         IsEnabled="{Binding HasNextImage}">
                         <TextBlock

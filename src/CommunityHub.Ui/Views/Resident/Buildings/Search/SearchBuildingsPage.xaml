@@ -86,8 +86,7 @@
                         <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                         <Button
                             Content="Poništi pretragu"
-                            Background="{StaticResource ResidentSecondaryBrush}"
-                            BorderBrush="{StaticResource ResidentBorderBrush}"
+                            Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                             Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                             Height="48"
                             Padding="8"
@@ -191,8 +190,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Button
-                                                Background="{StaticResource ResidentSecondaryBrush}"
-                                                BorderBrush="{StaticResource ResidentBorderBrush}"
+                                                Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                                                 Height="48"
                                                 Padding="8"
                                                 Grid.Column="0" 
@@ -201,8 +199,7 @@
                                                 Click="OpenBuildingDetailsPageButton_Click"/>
 
                                             <Button
-                                                Background="{StaticResource ResidentPrimaryActionBrush}"
-                                                BorderBrush="{StaticResource ResidentBorderBrush}"
+                                                Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                                                 Height="48"
                                                 Padding="8"
                                                 Grid.Column="2"
@@ -244,8 +241,7 @@
                                 <Label Grid.Column="0" Content="{Binding SearchResults.Count}" ContentStringFormat="Broj rezultata — {0}"  VerticalContentAlignment="Center" FontSize="18"/>
                                 <Button
                                     Content="Poništi pretragu"
-                                    Background="{StaticResource ResidentSecondaryBrush}"
-                                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                                    Style="{StaticResource ResidentPrimaryActionButtonStyle}"
                                     Visibility="{Binding HasSetSearchParameters, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                     Height="48"
                                     Padding="8"
