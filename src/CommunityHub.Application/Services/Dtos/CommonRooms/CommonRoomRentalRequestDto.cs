@@ -53,5 +53,7 @@ namespace CommunityHub.Application.Services.Dtos.CommonRooms
         public bool IsApproved => Status is RentalRequestStatus.Approved;
         public bool IsPending
             => Status is RentalRequestStatus.Waiting || Status is RentalRequestStatus.WaitingDateChange;
+
+        public bool HasProposedDateRange => ProposedStartDate is not null && ProposedEndDate is not null;
     }
 }
