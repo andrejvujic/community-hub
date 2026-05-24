@@ -8,17 +8,21 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d"
       Title="Detaljne informacije o oglasu"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
         <converters:AdStatusToStringConverter x:Key="AdStatusToStringConverter" />
+        <converters:AdStatusToIconCodeConverter x:Key="AdStatusToIconCodeConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="8" Orientation="Vertical">
-                <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                <Border BorderBrush="{StaticResource ResidentBorderBrush}" Background="{StaticResource ResidentCardBackgroundBrush}" BorderThickness="1" Padding="8" Margin="0,0,0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="32"/>
@@ -43,7 +47,7 @@
                     </Grid>
                 </Border>
 
-                <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                <Border BorderBrush="{StaticResource ResidentBorderBrush}" Background="{StaticResource ResidentCardBackgroundBrush}" BorderThickness="1" Padding="8" Margin="0,0,0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="32"/>
@@ -68,7 +72,7 @@
                     </Grid>
                 </Border>
 
-                <Border BorderBrush="Gray" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+                <Border BorderBrush="{StaticResource ResidentBorderBrush}" Background="{StaticResource ResidentCardBackgroundBrush}" BorderThickness="1" Padding="8" Margin="0,0,0,8">
                     <StackPanel Grid.Column="1" Margin="8,0,0,0">
                         <TextBlock Text="Opis" FontSize="14"/>
                         <TextBlock
@@ -79,8 +83,12 @@
                     </StackPanel>
                 </Border>
 
-
-                <Border BorderBrush="Gray" BorderThickness="1" Padding="8">
+                <Border
+                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                    BorderThickness="1"
+                    Padding="8" 
+                    Margin="0,0,0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="32"/>
@@ -109,6 +117,36 @@
                     </Grid>
                 </Border>
 
+                <Border
+                    Visibility="{Binding Ad.IsActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                    BorderThickness="1"
+                    Padding="8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="32"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            Text="{Binding Ad.Status, Converter={StaticResource AdStatusToIconCodeConverter}}"
+                            FontSize="22"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Status" FontSize="14"/>
+                            <TextBlock
+                                Text="{Binding Ad.Status, Converter={StaticResource AdStatusToStringConverter}}"
+                                FontSize="18"
+                                FontWeight="Bold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
             </StackPanel>
         </ScrollViewer>
         <Button
@@ -117,9 +155,10 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Arhiviraj"
+            Style="{StaticResource ResidentPrimaryActionButtonStyle}"
             FontSize="18"
             Width="192"
             Height="72"
-            Click="ArchiveAdButton_Click"/>
+            Command="{Binding ArchiveAdCommand}"/>
     </Grid>
 </navigation:MainNavigationConsumerPage>

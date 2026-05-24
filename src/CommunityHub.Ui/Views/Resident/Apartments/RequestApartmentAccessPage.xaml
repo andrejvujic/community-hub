@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Podnošenje zahtjeva"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
@@ -19,7 +21,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#dedede">
+            <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="64"/>
                     <ColumnDefinition Width="*"/>
@@ -78,12 +80,14 @@
                     Text="{Binding ApartmentNumberText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                     VerticalContentAlignment="Center"
                     Padding="4"
-                    Grid.Row="5"/>
+                    Grid.Row="5"
+                    Background="{StaticResource ResidentInputBackgroundBrush}"
+                    BorderBrush="{StaticResource ResidentBorderBrush}"/>
 
                 <Grid Grid.Row="7">
                     <TextBlock
                         Visibility="{Binding IsApartmentNumberValid, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                        Foreground="#4a4a4a"
+                        Foreground="{StaticResource ResidentWarningBrush}"
                         FontSize="16"
                         TextWrapping="Wrap">
                         <Run Text="&#xf071;" FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"/>
@@ -100,6 +104,7 @@
             VerticalAlignment="Bottom"
             Margin="0,0,0,16"
             Content="Podnesi zahtjev"
+            Style="{StaticResource ResidentPrimaryActionButtonStyle}"
             FontSize="18"
             Width="192"
             Height="72"/>

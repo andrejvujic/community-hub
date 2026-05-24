@@ -10,7 +10,7 @@ namespace CommunityHub.Ui.Helpers.Navigation;
 
         private readonly Stack<NavigationEntry> _entries = new();
 
-        public void Push(MainNavigationConsumerPage page, Action<object?>? onPop = null)
+        public void Push(IMainNavigationConsumer page, Action<object?>? onPop = null)
         {
             Frame.Navigate(page);
             _entries.Push(
@@ -21,7 +21,7 @@ namespace CommunityHub.Ui.Helpers.Navigation;
                 );
         }
 
-        public void PushReplacement(MainNavigationConsumerPage page)
+        public void PushReplacement(IMainNavigationConsumer page)
         {
             Frame.Navigate(page);
 

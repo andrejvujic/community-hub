@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Notifications.Details;
 using System.Data;
-using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Mapping.EntityMappers.Notifications.Details
 {

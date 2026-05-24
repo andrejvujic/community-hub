@@ -58,6 +58,7 @@ namespace CommunityHub.Ui.Helpers.Alerts
             button.Height = 48;
             button.FontSize = 18;
             button.Margin = OptionsPanel.Children.Count > 0 ? new Thickness(8, 0, 0, 0) : new Thickness(0);
+            button.SetResourceReference(FrameworkElement.StyleProperty, "ResidentPrimaryActionButtonStyle");
 
             button.Content = option.Text;
             button.Click += (s, e) => {

@@ -17,7 +17,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         public ApartmentAccessRequestsPage(long userId)
         {
             InitializeComponent();
-            _viewModel = new ApartmentAccessRequestsViewModel(userId);
+            _viewModel = new ApartmentAccessRequestsViewModel(userId, this);
             DataContext = _viewModel;
             _viewModel.UpdateRequests();
         }
@@ -28,10 +28,7 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
 
             if (element.DataContext is not ApartmentAccessRequestDto request) return;
 
-            Push(
-                new ApartmentAccessRequestDetailsPage(request),
-                onPop: _ => _viewModel.UpdateRequests()
-            );
+            _viewModel.OpenRequestDetailsPage(request);
         }
 
         private void OpenSortAndFilterMenu_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)

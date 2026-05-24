@@ -2,12 +2,13 @@
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SelectCityViewModel : INotifyPropertyChanged
+    public class SelectCityViewModel : BaseViewModel
     {
         private readonly CityService _cityService = new();
 
@@ -19,7 +20,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public CityDto? SelectedCity
         {
             get => _selectedCity;
-            set
+            private set
             {
                 if (_selectedCity == value) return;
                 _selectedCity = value;
@@ -33,13 +34,20 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public SelectCityViewModel(
             Action<CityDto?> setCity,
             CountryDto selectedCountry,
+            IMainNavigationConsumer navigationConsumer,
             CityDto? selectedCity = null
-        )
+        ) : base(navigationConsumer)
         {
             _setCity = setCity;
             SelectedCountry = selectedCountry;
             SelectedCity = selectedCity;
+
+            SearchCommand = new(UpdateSearchResults);
+            SelectCityCommand = new(SelectCity);
         }
+
+        public RelayCommand SearchCommand { get; }
+        public RelayCommand<CityDto> SelectCityCommand { get; }
 
         private string _searchText;
         public string SearchText
@@ -70,23 +78,33 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public bool IsCitySelected(CityDto City)
+        private bool IsCitySelected(CityDto City)
             => SelectedCity == City;
 
-        public void ResetSelectedCity()
+        private void ResetSelectedCity()
         {
             SelectedCity = null;
             _setCity.Invoke(null);
         }
 
-        public void UpdateSelectedCity(CityDto city)
+        private void UpdateSelectedCity(CityDto city)
         {
             SelectedCity = city;
             _setCity.Invoke(SelectedCity);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void SelectCity(CityDto? city)
+        {
+            if (city is null) return;
+            if (IsCitySelected(city))
+            {
+                ResetSelectedCity();
+                return;
+            }
+
+            UpdateSelectedCity(city);
+            Pop();
+        }
+
     }
 }

@@ -38,9 +38,14 @@ namespace CommunityHub.Application.Domain.CommonRooms.RentalRequests
             long id = 0
         ) {
             Id = id;
+
+            CommonRoomId = commonRoomId;
             CommonRoom = commonRoom;
-            Status = status;
+
+            ResidentId = residentId;
             Resident = resident;
+
+            Status = status;
 
             RequestedStartDate = requestedStartDate;
             RequestedEndDate = requestedEndDate;

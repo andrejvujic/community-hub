@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Izabrite državu"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:EqualityConverter x:Key="EqualityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
@@ -20,7 +22,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="#dedede">
+        <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="*"/>
@@ -77,12 +79,18 @@
                         FontSize="16"
                         Text="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                         TextChanged="CountrySearchTextBox_TextChanged"   
-                        VerticalContentAlignment="Center"/>
+                        VerticalContentAlignment="Center"
+                        Background="{StaticResource ResidentInputBackgroundBrush}"
+                        BorderBrush="{StaticResource ResidentBorderBrush}"/>
 
                     <Grid
                         Grid.Column="1"
-                        MouseLeftButtonDown="SearchButton_Click"
                         Background="Transparent">
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftClick"
+                                Command="{Binding SearchCommand}" />
+                        </Grid.InputBindings>
                         <TextBlock
                             Text="&#xf002;"
                             FontSize="24"
@@ -102,11 +110,17 @@
                             <DataTemplate>
                                 <Border
                                     Padding="8"
-                                    Background="#dedede"
-                                    BorderBrush="Gray"
+                                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                                    BorderBrush="{StaticResource ResidentBorderBrush}"
                                     BorderThickness="1"
                                     Margin="0,0,0,8">
-                                    <Grid Height="48" MouseLeftButtonDown="CountryItem_Click" Background="Transparent">
+                                    <Grid Height="48" Background="Transparent">
+                                        <Grid.InputBindings>
+                                            <MouseBinding
+                                                Gesture="LeftClick"
+                                                Command="{Binding DataContext.SelectCountryCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}" />
+                                        </Grid.InputBindings>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
@@ -172,7 +186,7 @@
 
                 <Grid Visibility="{Binding HasSearchResults, Converter={StaticResource InverseBooleanToVisibilityConverter}}" Margin="8">
                     <StackPanel Margin="32,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Content="Nema rezultata" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <Label Content="Nema rezultata" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock
                             Text="Ne postoji nijedna država koja odgovara zadanom kriterijumu pretrage. Provjerite zadani kriterijum i pokušajte ponovo."
                             TextWrapping="Wrap" 

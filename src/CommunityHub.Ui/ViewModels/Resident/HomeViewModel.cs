@@ -4,18 +4,26 @@ using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Notifications;
-using System.ComponentModel;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Apartments;
+using CommunityHub.Ui.Views.Resident.Buildings.Browse;
+using CommunityHub.Ui.Views.Resident.Notifications;
 
 namespace CommunityHub.Ui.ViewModels.Resident
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : BaseViewModel
     {
         private readonly NotificationService _notificationService;
         private readonly AdService _adService;
+        private readonly long _userId;
+        private readonly Action<MainNavigationConsumerPage> _navigateLocal;
 
-        public long UserId { get; }
-
-        public HomeViewModel(long userId) {
+        public HomeViewModel(
+            long userId,
+            IMainNavigationConsumer navigationConsumer,
+            Action<MainNavigationConsumerPage> navigateLocal
+        ) : base(navigationConsumer) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -25,19 +33,41 @@ namespace CommunityHub.Ui.ViewModels.Resident
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
-            UserId = userId;
+            _userId = userId;
+            _navigateLocal = navigateLocal;
+
+            OpenNotificationsCommand = new(OpenNotificationsPage);
+            OpenBuildingsCommand = new(OpenBuildingsPage);
+            OpenApartmentAccessRequestsCommand = new(OpenApartmentAccessRequestsPage);
         }
+
+        public RelayCommand OpenNotificationsCommand { get; }
+        public RelayCommand OpenBuildingsCommand { get; }
+        public RelayCommand OpenApartmentAccessRequestsCommand { get; }
+
+        private void OpenNotificationsPage()
+            => Push(
+                new NotificationsPage(_userId),
+                onPop: _ => UpdateUnreadNotificationCount()
+            );
+
+        private void OpenBuildingsPage()
+            => _navigateLocal(new BuildingsPage(_userId));
+
+        private void OpenApartmentAccessRequestsPage()
+            => _navigateLocal(new ApartmentAccessRequestsPage(_userId));
 
         public void Initialize()
         {
             UpdateUnreadNotificationCount();
             _adService.ArchiveExpiredAds();
+            OpenBuildingsPage();
         }
 
-        public void UpdateUnreadNotificationCount()
+        private void UpdateUnreadNotificationCount()
         {
             UnreadNotificationCount = _notificationService.GetNotificationCountForUser(
-                UserId,
+                _userId,
                 status: NotificationStatus.Unread
             );
         }
@@ -46,7 +76,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
         public int UnreadNotificationCount
         {
             get => _unreadNotificationCount;
-            set
+            private set
             {
                 if (_unreadNotificationCount == value) return;
                 _unreadNotificationCount = value;
@@ -68,8 +98,5 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
         public bool HasUnreadNotifications => UnreadNotificationCount > 0;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

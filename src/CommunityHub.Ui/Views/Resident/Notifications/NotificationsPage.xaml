@@ -8,7 +8,9 @@
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
       mc:Ignorable="d" 
       Title="Obavještenja"
-      FontFamily="{StaticResource AppFontFamily}">
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
@@ -21,7 +23,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="#dedede">
+            <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="64"/>
                     <ColumnDefinition Width="*"/>
@@ -62,7 +64,8 @@
                                     <Border
                                         Margin="0,0,0,16"
                                         Padding="8"
-                                        BorderBrush="Gray"
+                                        BorderBrush="{StaticResource ResidentBorderBrush}"
+                                        Background="{StaticResource ResidentCardBackgroundBrush}"
                                         BorderThickness="1">
                                         <Grid Background="Transparent"> 
                                             <Grid.RowDefinitions>
@@ -130,10 +133,16 @@
                                              <Border
                                                 Grid.Row="4"
                                                  BorderThickness="1"
-                                                 BorderBrush="Gray"
-                                                 Background="#dedede"
+                                                 BorderBrush="{StaticResource ResidentBorderBrush}"
+                                                 Background="{StaticResource ResidentSurfaceBrush}"
                                                  Padding="16">
-                                                 <Grid Background="Transparent"  MouseLeftButtonDown="NotificationItem_Click">
+                                                 <Grid Background="Transparent">
+                                                    <Grid.InputBindings>
+                                                        <MouseBinding
+                                                            Gesture="LeftClick"
+                                                            Command="{Binding DataContext.OpenNotificationDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </Grid.InputBindings>
                                                     <Grid.ColumnDefinitions>
                                                          <ColumnDefinition Width="*"/>
                                                          <ColumnDefinition Width="Auto"/>
