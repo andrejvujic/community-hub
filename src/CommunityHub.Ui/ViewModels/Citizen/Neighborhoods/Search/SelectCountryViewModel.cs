@@ -2,8 +2,10 @@ using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.MappersDto.Addresses;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 {
@@ -15,6 +17,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
         private string _searchQuery = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ConfirmRequested;
+        public event EventHandler? CancelRequested;
+        public event EventHandler? CloseRequested;
+
+        public ICommand ConfirmCommand { get; }
+        public ICommand CancelCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand SearchCommand { get; }
 
         public CountryDto? SelectedCountry
         {
@@ -42,6 +52,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public SelectCountryViewModel(CountryDto? initial = null)
         {
+            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
+            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            SearchCommand = new RelayCommand<object>(_ => Search());
+
             LoadCountries();
             if (initial != null)
             {
@@ -72,6 +87,21 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
         public void Search()
         {
             LoadCountries(SearchQuery);
+        }
+
+        public void RequestConfirm()
+        {
+            ConfirmRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestCancel()
+        {
+            CancelRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

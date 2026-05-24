@@ -1,6 +1,6 @@
 using CommunityHub.Application.Domain.Events;
 
-namespace CommunityHub.Application.Domain.Events.RepositoryInterfaces
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Events
 {
     public interface IEventRegistrationRepository
     {

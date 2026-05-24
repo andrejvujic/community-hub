@@ -2,11 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
-        Height="350" Width="500"
+        Height="375" Width="500"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
+
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+        <KeyBinding Key="Return" Command="{Binding ConfirmCommand}" />
+    </Window.InputBindings>
 
     <Window.Resources>
         <ResourceDictionary>
@@ -22,6 +27,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
@@ -112,6 +118,11 @@
                     </Button>
                 </Grid>
             </Grid>
+
+            <Border Grid.Row="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>

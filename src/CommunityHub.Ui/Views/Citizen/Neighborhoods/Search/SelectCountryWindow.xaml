@@ -5,6 +5,12 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
 
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+        <KeyBinding Key="Return" Command="{Binding ConfirmCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SearchCommand}" />
+    </Window.InputBindings>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,6 +24,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
@@ -27,7 +34,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Izaberite državu" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
-                    <Button Grid.Column="1" Width="32" Height="32" Click="CloseButton_Click" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                    <Button Grid.Column="1" Width="32" Height="32" Command="{Binding CloseCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
                         <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
                     </Button>
                 </Grid>
@@ -50,16 +57,30 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox x:Name="SearchTextBox" Grid.Column="0" Height="32" VerticalContentAlignment="Center" Text="{Binding SearchQuery}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Padding="8,6" FontSize="13" CaretBrush="{StaticResource TextBrush}" />
-                    <Button Grid.Column="2" Content="Pretraži" Width="90" Height="32" Margin="0,0,0,0" Click="SearchButton_Click" Style="{StaticResource PrimaryButton}"/>
+                    <Button Grid.Column="2" Height="32" Command="{Binding SearchCommand}" Style="{StaticResource PrimaryButton}">
+                        <TextBlock TextAlignment="Center">Pretraži (Ctrl+S)</TextBlock>
+                    </Button>
                 </Grid>
 
                 <ListBox x:Name="CountriesList" Grid.Row="2" DisplayMemberPath="Name" ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" Style="{StaticResource PrimaryListBox}" Margin="0,0,0,0"/>
 
-                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
-                    <Button Content="Otkaži" Width="90" Click="Cancel_Click" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"/>
-                    <Button Content="Potvrdi" Width="90" Margin="0,0,0,0" Click="Confirm_Click" Style="{StaticResource PrimaryButton}"/>
-                </StackPanel>
+                <Grid Grid.Row="4" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Height="44" Command="{Binding CancelCommand}" Style="{StaticResource PrimaryButton}" Padding="0">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Otkaži<LineBreak/>(Esc)</TextBlock>
+                    </Button>
+                    <Button Grid.Column="2" Height="44" Command="{Binding ConfirmCommand}" Style="{StaticResource PrimaryButton}" Padding="0">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Potvrdi<LineBreak/>(Enter)</TextBlock>
+                    </Button>
+                </Grid>
             </Grid>
+
+            <Border Grid.Row="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+            </Border>
         </Grid>
     </Border>
 </Window>

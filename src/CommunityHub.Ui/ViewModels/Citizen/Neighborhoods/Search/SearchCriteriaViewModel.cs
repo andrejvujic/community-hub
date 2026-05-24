@@ -1,7 +1,9 @@
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.MappersDto.Addresses;
+using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 {
@@ -18,6 +20,15 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
         private bool _isCityEnabled = false;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ConfirmRequested;
+        public event EventHandler? CancelRequested;
+        public event EventHandler? CloseRequested;
+        public event EventHandler? ClearRequested;
+
+        public ICommand ConfirmCommand { get; }
+        public ICommand CancelCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand ClearCommand { get; }
 
         public string NameFilter
         {
@@ -105,6 +116,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public SearchCriteriaViewModel(NeighborhoodSearchParameters? initial = null)
         {
+            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
+            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            ClearCommand = new RelayCommand<object>(_ => RequestClear());
+
             if (initial != null)
             {
                 NameFilter = initial.Name ?? string.Empty;
@@ -114,7 +130,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             }
 
             UpdateCountryButtonContent();
-            UpdateCityButtonContent();
+            UpdateCountryButtonContent();
             UpdateCityEnabledState();
         }
 
@@ -135,6 +151,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             AddressFilter = string.Empty;
             SelectedCountry = null;
             SelectedCity = null;
+        }
+
+        public void RequestConfirm()
+        {
+            ConfirmRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestCancel()
+        {
+            CancelRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestClear()
+        {
+            ClearRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void UpdateCountryButtonContent()

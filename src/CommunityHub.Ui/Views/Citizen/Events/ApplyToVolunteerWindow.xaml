@@ -6,6 +6,12 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
 
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding ConfirmCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding CancelCommand}" />
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ToggleItemCommand}" />
+    </Window.InputBindings>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,6 +27,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
@@ -30,7 +37,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Prijava za volontiranje" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
-                    <Button Grid.Column="1" Width="32" Height="32" Click="CloseButton_Click" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                    <Button Grid.Column="1" Width="32" Height="32" Command="{Binding CloseCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
                         <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
                     </Button>
                 </Grid>
@@ -103,11 +110,11 @@
                 </Grid>
 
                 <TextBlock Grid.Row="1" TextWrapping="Wrap" Margin="0,12,0,8" FontSize="15" Foreground="{StaticResource TextBrush}">
-                    Izaberite stavke koje možete doneti. Možete menjati selekciju pomoću strelica za gore i dole. Pritisnite Ctrl + 1 jednom da izaberete, i ponovo da opozovete izbor. Ako je stavka označena, to znači da već postoji volonter koji donosi tu stavku.
+                    Izaberite stavke koje možete doneti. Ako je stavka označena sa strane, to znači da već postoji volonter koji donosi tu stavku.
                 </TextBlock>
 
                 <Border Grid.Row="2" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" CornerRadius="2" Background="{StaticResource BackgroundBrush}" Margin="0,0,0,12">
-                    <ListBox x:Name="ItemsListBox" SelectionMode="Single" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Items}" Tag="{Binding AlreadyAssignedItemIds}">
+                    <ListBox x:Name="ItemsListBox" SelectionMode="Single" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Tag="{Binding AlreadyAssignedItemIds}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0" Height="40">
@@ -138,17 +145,25 @@
                 <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Style="{StaticResource PrimaryButton}" Click="CancelButton_Click" Foreground="{StaticResource TextBrush}" Margin="0,0,4,0" Padding="12,14">
-                        <TextBlock TextAlignment="Center">Otkaži prijavu</TextBlock>
+                    <Button Grid.Column="0" Height="44" Command="{Binding CancelCommand}" Style="{StaticResource PrimaryButton}" Foreground="{StaticResource TextBrush}" Padding="0">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Otkaži prijavu<LineBreak/>(Esc)</TextBlock>
                     </Button>
-                    <Button Grid.Column="1" Style="{StaticResource PrimaryButton}" Click="ConfirmButton_Click" Foreground="{StaticResource TextBrush}" Margin="4,0,0,0" Padding="12,14">
-                        <TextBlock TextAlignment="Center">Potvrdi prijavu</TextBlock>
+                    <Button Grid.Column="2" Height="44" Command="{Binding ConfirmCommand}" Style="{StaticResource PrimaryButton}" Foreground="{StaticResource TextBrush}" Padding="0">
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Potvrdi prijavu<LineBreak/>(Enter)</TextBlock>
                     </Button>
                 </Grid>
             </Grid>
+
+            <Border Grid.Row="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Listaj stavke - Strelice gore/dole" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}" Margin="0,0,100,0"/>
+                    <TextBlock Text="Dodaj/ukloni stavku - Ctrl+1" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>

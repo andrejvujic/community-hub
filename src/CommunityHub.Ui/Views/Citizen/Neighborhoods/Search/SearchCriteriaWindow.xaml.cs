@@ -14,26 +14,31 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
         {
             InitializeComponent();
             _viewModel = new SearchCriteriaViewModel(initial);
+            _viewModel.ConfirmRequested += (_, _) =>
+            {
+                Result = _viewModel.BuildSearchParameters();
+                DialogResult = true;
+            };
+            _viewModel.CancelRequested += (_, _) =>
+            {
+                DialogResult = false;
+            };
+            _viewModel.CloseRequested += (_, _) => Close();
+            _viewModel.ClearRequested += (_, _) =>
+            {
+                _viewModel.Clear();
+                Result = null;
+                DialogResult = true;
+            };
             DataContext = _viewModel;
+
+            Loaded += (_, _) => NameTextBox.Focus();
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            Close();
-        }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            Result = _viewModel.BuildSearchParameters();
-            DialogResult = true;
-            Close();
         }
 
         private void SelectCountryButton_Click(object sender, RoutedEventArgs e)
@@ -52,18 +57,6 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             {
                 _viewModel.SelectedCity = window.SelectedCity;
             }
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-        }
-
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.Clear();
-            Result = null;
-            DialogResult = true;
         }
     }
 }
