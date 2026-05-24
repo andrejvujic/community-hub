@@ -9,6 +9,7 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services;
 using CommunityHub.Ui.Helpers.Converters;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
@@ -117,8 +118,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             var selected = BudgetCategoriesDataGrid.SelectedItem as BudgetCategoryViewModel;
             if (selected is null)
             {
-                MessageBox.Show("Odaberite kategoriju.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Odaberite kategoriju", "Greška", Window.GetWindow(this)).ShowDialog();
                 return;
             }
 
@@ -136,15 +136,13 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             {
                 var coordinator = _selectedNeighborhood!.Coordinator;
                 _budgetService.CreateExpense(selected.Balance, coordinator, amount, description);
-                MessageBox.Show("Trošak je uspešno evidentiran.", "Uspeh",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                new InfoDialog("Uspeh", "Trošak je uspešno evidentiran.", Window.GetWindow(this)).ShowDialog();
                 LoadBudgetData();
                 RefreshCategoryDetails(selected.Balance.Id);
             }
             catch (InvalidOperationException ex)
             {
-                MessageBox.Show(ex.Message, "Nedovoljno sredstava",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Nedovoljno sredstava", ex.Message, Window.GetWindow(this)).ShowDialog();
             }
         }
 
@@ -155,16 +153,21 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             if (!decimal.TryParse(AmountTextBox.Text.Trim(), out amount) || amount <= 0)
             {
-                MessageBox.Show("Unesite ispravan iznos.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Unesite ispravan iznos.", Window.GetWindow(this)).ShowDialog();
                 return false;
             }
 
             description = DescriptionTextBox.Text.Trim();
             if (string.IsNullOrEmpty(description))
             {
-                MessageBox.Show("Unesite opis troška.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", "Unesite opis troška.", Window.GetWindow(this)).ShowDialog();
+                return false;
+            }
+
+            description = DescriptionTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(description))
+            {
+                new InfoDialog("Greška", "Unesite opis troška.", Window.GetWindow(this)).ShowDialog();
                 return false;
             }
 

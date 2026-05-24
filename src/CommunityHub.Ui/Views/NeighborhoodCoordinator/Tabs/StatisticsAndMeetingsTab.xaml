@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <conv:MeetingStatusToStringConverter x:Key="MeetingStatusConverter"/>
         <conv:MeetingThemeToStringConverter x:Key="MeetingThemeConverter"/>
+        <conv:MeetingStatusToIconCodeConverter x:Key="MeetingStatusIconConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
 
@@ -210,36 +211,50 @@
                         <DataGrid x:Name="MeetingsDataGrid"
                                   ItemsSource="{Binding Meetings}"
                                   SelectedItem="{Binding SelectedMeeting}"
+                                  Style="{StaticResource DataGridStyle}"
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                                  RowStyle="{StaticResource DataGridRowStyle}"
                                   CellStyle="{StaticResource DataGridCellStyle}"
                                   Grid.Row="1" 
-                                  AutoGenerateColumns="False" 
-                                  CanUserAddRows="False" 
-                                  CanUserResizeRows="False"
-                                  CanUserResizeColumns="False"
-                                  CanUserReorderColumns="False"
-                                  CanUserSortColumns="False"
-                                  IsReadOnly="True"
-                                  HeadersVisibility="Column"
-                                  Background="Transparent"
                                   FontSize="16"
                                   SelectionChanged="MeetingsDataGrid_SelectionChanged">
-                            <DataGrid.RowStyle>
-                                <Style TargetType="DataGridRow"
-                                       BasedOn="{StaticResource DataGridRowStyle}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsTied}" Value="True">
-                                            <Setter Property="Background" Value="#C90505"/>
-                                            <Setter Property="ToolTip" Value="Nerešen broj glasova! Potreban odabir konačnog datuma."/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGrid.RowStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="130"/>
                                 <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTimeDisplay}" Width="100"/>
                                 <DataGridTextColumn Header="Datum-opseg" Binding="{Binding DisplayDate}" Width="1.5*"/>
                                 <DataGridTextColumn Header="Stanje" Binding="{Binding Status, Converter={StaticResource MeetingStatusConverter}}" Width="120"/>
+                                <DataGridTemplateColumn Width="35">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock Text="&#xf071;"
+                                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                           FontSize="14"
+                                                           Foreground="#F0A500"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           ToolTip="Nerešen broj glasova! Potreban odabir konačnog datuma."
+                                                           Visibility="{Binding IsTied, Converter={StaticResource BoolToVisibility}}"/>
+                                                <TextBlock Text="{Binding Status, Converter={StaticResource MeetingStatusIconConverter}}"
+                                                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                           FontSize="14"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsTied}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -276,7 +291,7 @@
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     HorizontalAlignment="Center"
                                     Content="Potvrdite konačan termin"
-                                    VerticalAlignment="Bottom"
+                                    VerticalAlignment="Center"
                                     Padding="15,8"
                                     IsEnabled="{Binding CanConfirmTiedDate}"
                                     Click="ConfirmTermButton_Click"/>

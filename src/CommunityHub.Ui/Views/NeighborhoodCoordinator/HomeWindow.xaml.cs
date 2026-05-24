@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
@@ -18,8 +20,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             _userId = userId;
             if (!_homeWindowViewModel.LoadUser(userId))
             {
-                MessageBox.Show("Korisnik nije pronađen.", "Greška",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                new InfoDialog("Greška", "Korisnik nije pronađen.", this).ShowDialog();
                 Close();
                 return;
             }
@@ -62,17 +63,41 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Da li ste sigurni da želite da se odjavite?",
+            var dialog = new ConfirmDialog(
                 "Potvrda odjave",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+                "Da li ste sigurni da želite da se odjavite?",
+                owner: this);
 
-            if (result != MessageBoxResult.Yes) return;
+            dialog.ShowDialog();
+
+            if (!dialog.Confirmed) return;
 
             LogInForm loginForm = new LogInForm();
             loginForm.Show();
             this.Close();
+        }
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (e.Key >= Key.D1 && e.Key <= Key.D8)
+                {
+                    MainTabControl.SelectedIndex = e.Key - Key.D1;
+                    e.Handled = true;
+                }
+                else if (Keyboard.IsKeyDown(Key.Q))
+                {
+                    LogoutButton_Click(sender, e);
+                }
+                else if (Keyboard.IsKeyDown(Key.T))
+                {
+                    ThemeComboBox.SelectedIndex = ThemeComboBox.SelectedIndex == 0 ? 1 : 0;
+                }
+                else if (Keyboard.IsKeyDown(Key.L))
+                {
+                    LanguageComboBox.SelectedIndex = LanguageComboBox.SelectedIndex == 0 ? 1 : 0;
+                }
+            }
         }
     }
 }

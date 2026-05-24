@@ -43,6 +43,7 @@
                     <Button Style="{StaticResource IconButtonStyle}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
+                            ToolTip="Ctrl+N"
                             Click="RegisterButton_Click">
                         <TextBlock Text="&#xf055;" 
                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"

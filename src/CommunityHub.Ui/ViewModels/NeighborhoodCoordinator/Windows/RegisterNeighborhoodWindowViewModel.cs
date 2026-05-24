@@ -174,6 +174,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             if (!int.TryParse(startNumberText, out int startNumber) || !int.TryParse(endNumberText, out int endNumber))
                 return "Unesite ispravne brojeve.";
 
+            if (startNumber <= 0 || endNumber <= 0)
+                return "Brojevi moraju biti veći od 0.";
+
             if (startNumber >= endNumber)
                 return "Početni broj mora biti manji od krajnjeg.";
 
