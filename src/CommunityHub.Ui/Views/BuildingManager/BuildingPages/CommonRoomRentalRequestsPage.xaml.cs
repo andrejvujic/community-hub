@@ -16,12 +16,5 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
             _viewModel = new CommonRoomRentalRequestsPageViewModel(user, building);
             DataContext = _viewModel;
         }
-        private void LeftArrow_Click(object sender, MouseButtonEventArgs e)
-        {
-            var homeWindow = Window.GetWindow(this) as HomeWindow;
-
-            if (homeWindow != null)
-                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
-        }
     }
 }

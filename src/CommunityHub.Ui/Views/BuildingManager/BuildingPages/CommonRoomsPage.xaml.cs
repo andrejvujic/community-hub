@@ -22,13 +22,6 @@ namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 
             SyncCalendar();
         }
-        private void LeftArrow_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            var homeWindow = Window.GetWindow(this) as HomeWindow;
-
-            if (homeWindow != null)
-                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
-        }
         private void ReservedDates_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             SyncCalendar();

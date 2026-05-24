@@ -500,8 +500,7 @@
                                         Margin="0,0,15,0"
                                         Background="#0F5AA6"
                                         BorderBrush="#0F5AA6"
-                                        Command="{Binding CancelCommand}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Page}, Path=NavigationService}"
+                                        Click="CancelButton_Click"
                                         Cursor="Hand"
                                         Foreground="White">
                                         Otkaži

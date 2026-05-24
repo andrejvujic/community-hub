@@ -26,6 +26,14 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             floorsStackPanel.Children.Add(CreateFloor(1));
         }
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.", "Potvrda otkazivanja", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.No) return;
+
+            ResetFloorsUI();
+            _viewModel.ResetForm();
+        }
         private void FloorsUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (floorsStackPanel == null) return;
@@ -214,7 +222,7 @@ namespace CommunityHub.Ui.Views.BuildingManager
 
                     foreach (TextBox apartmentTextBox in apartmentsPanel.Children.OfType<TextBox>())
                     {
-                        if(!ProcessApartmentTextBox(apartmentTextBox, floorNumber))
+                        if (!ProcessApartmentTextBox(apartmentTextBox, floorNumber))
                             allValid = false;
                     }
                 }
@@ -285,10 +293,15 @@ namespace CommunityHub.Ui.Views.BuildingManager
             if (!success)
                 return;
 
-            HomeWindow? homeWindow = Window.GetWindow(this) as HomeWindow;
-
-            if (homeWindow != null)
-                homeWindow.HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
+            ResetFloorsUI();
+        }
+        private void ResetFloorsUI()
+        {
+            floorsUpDown.Value = 1;
+            floorsStackPanel.Children.Clear();
+            floorsStackPanel.Children.Add(CreateFloor(1));
+            _apartmentEntries.Clear();
+            _viewModel.ResetFloorsAndApartments();
         }
     }
 }
