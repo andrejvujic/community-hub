@@ -10,13 +10,10 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
     public partial class RequestCommonRoomRentalPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
-        private readonly RequestCommonRoomRentalViewModel _viewModel;
-
         public RequestCommonRoomRentalPage(long userId, CommonRoomDto commonRoom)
         {
             InitializeComponent();
-            _viewModel = new RequestCommonRoomRentalViewModel(userId, commonRoom, this);
-            DataContext = _viewModel;
+            DataContext = new RequestCommonRoomRentalViewModel(userId, commonRoom, this);
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
