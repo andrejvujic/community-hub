@@ -21,9 +21,6 @@ namespace CommunityHub.Ui.Views.Resident.Notifications.Details
             DataContext = _viewModel;
         }
 
-        private void OpenAdButton_Click(object sender, MouseButtonEventArgs e)
-            => _viewModel.OpenAd();
-
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
     }

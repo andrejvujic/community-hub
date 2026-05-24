@@ -33,6 +33,9 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             => _viewModel.OpenSelectCityPage();
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
-            => _viewModel.ApplyAndClose();
+        {
+            _viewModel.ApplySearchParameters();
+            Pop();
+        }
     }
 }

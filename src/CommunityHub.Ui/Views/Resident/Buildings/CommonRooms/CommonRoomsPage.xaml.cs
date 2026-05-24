@@ -13,7 +13,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 
         public CommonRoomsPage(long userId, long buildingId)
         {
-            _viewModel = new CommonRoomsViewModel(userId, buildingId, this);
+            _viewModel = new CommonRoomsViewModel(userId, buildingId);
 
             InitializeComponent();
             DataContext = _viewModel;
@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 
             if (element.DataContext is not CommonRoomDto commonRoom) return;
 
-            _viewModel.OpenCommonRoomDetailsPage(commonRoom);
+            Push(new CommonRoomDetailsPage(_viewModel.UserId, commonRoom));
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)

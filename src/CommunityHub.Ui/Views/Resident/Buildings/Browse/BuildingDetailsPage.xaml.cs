@@ -13,7 +13,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
         public BuildingDetailsPage(BuildingDto building)
         {
             InitializeComponent();
-            _viewModel = new BuildingDetailsViewModel(building, this);
+            _viewModel = new BuildingDetailsViewModel(building);
             DataContext = _viewModel;
         }
 

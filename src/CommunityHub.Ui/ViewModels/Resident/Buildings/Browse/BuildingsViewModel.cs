@@ -1,29 +1,21 @@
 ﻿using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Application.Services.Dtos.Buildings;
-using CommunityHub.Ui.Helpers.Navigation;
-using CommunityHub.Ui.Views.Resident.Buildings.Browse;
-using CommunityHub.Ui.Views.Resident.Buildings.Search;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 {
-    public class BuildingsViewModel : BaseViewModel
+    public class BuildingsViewModel : INotifyPropertyChanged
     {
         private readonly ApartmentMembershipService _apartmentMembershipService = new();
 
         public long UserId { get; }
 
-        public BuildingsViewModel(long userId, MainNavigationConsumerPage page) : base(page)
+        public BuildingsViewModel(long userId)
         {
             UserId = userId;
         }
-
-        public void OpenSearchBuildingsPage()
-            => Push(new SearchBuildingsPage(UserId));
-
-        public void OpenBuildingOptionsPage(BuildingMembershipGroupDto group)
-            => Push(new BuildingOptionsPage(UserId, group.Building));
 
         public ObservableCollection<BuildingMembershipGroupDto> MembershipGroups { get; set; } = new();
         public bool HasMemberships { get => MembershipGroups.Count > 0; }
@@ -55,6 +47,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 
             OnPropertyChanged(nameof(HasMemberships));
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     }
 }

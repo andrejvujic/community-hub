@@ -5,8 +5,6 @@ using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Buildings;
 using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Ui.Helpers.Navigation;
-using CommunityHub.Ui.Views.Resident.Apartments;
-using CommunityHub.Ui.Views.Resident.Buildings.Browse;
 using CommunityHub.Ui.Views.Resident.Buildings.Search;
 using System.Collections.ObjectModel;
 
@@ -31,12 +29,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
                 new SearchCriteriaPage(SetSearchParameters, SearchParameters),
                 onPop: _ => UpdateSearchResults()
             );
-
-        public void OpenBuildingDetailsPage(BuildingDto building)
-            => Push(new BuildingDetailsPage(building));
-
-        public void OpenRequestApartmentAccessPage(BuildingDto building)
-            => Push(new RequestApartmentAccessPage(UserId, building));
 
 
         private BuildingSearchParameters? _searchParameters;

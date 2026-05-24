@@ -5,6 +5,7 @@ using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
@@ -37,6 +38,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
         }
 
         public AdDto? Ad { get; }
+        public RelayCommand OpenAdCommand { get; }
 
         public AdEventNotificationDetailsViewModel(long userId, NotificationDto notification, MainNavigationConsumerPage page) : base(page)
         {
@@ -48,6 +50,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
             UserId = userId;
             Notification = notification;
             Ad = _adService.Get(NotificationDetails.AdId);
+            OpenAdCommand = new RelayCommand(OpenAd);
         }
 
         public AdAvailability GetAdAvailability()

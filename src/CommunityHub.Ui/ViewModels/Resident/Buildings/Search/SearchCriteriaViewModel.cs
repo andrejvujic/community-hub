@@ -62,12 +62,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             Push(new SelectCityPage(SetCity, Country!, City));
         }
 
-        public void ApplyAndClose()
-        {
-            ApplySearchParameters();
-            Pop();
-        }
-
         private CountryDto? _country;
         public CountryDto? Country
         {

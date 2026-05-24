@@ -42,7 +42,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var building = element.DataContext as BuildingDto;
             if (building == null) return;
 
-            _viewModel.OpenBuildingDetailsPage(building);
+            Push(new BuildingDetailsPage(building));
         }
 
         private void OpenRequestApartmentAccessPageButton_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             var building = element.DataContext as BuildingDto;
             if (building == null) return;
 
-            _viewModel.OpenRequestApartmentAccessPage(building);
+            Push(new RequestApartmentAccessPage(_viewModel.UserId, building));
         }
     }
 }
