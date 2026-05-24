@@ -164,11 +164,18 @@
                                             BorderBrush="{StaticResource ResidentBorderBrush}"
                                             Background="{StaticResource ResidentSurfaceBrush}"
                                             Padding="16">
-                                            <Grid Background="Transparent" MouseLeftButtonDown="ReservationItem_Click">
+                                            <Grid Background="Transparent">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
+
+                                                <Grid.InputBindings>
+                                                    <MouseBinding
+                                                        Gesture="LeftClick"
+                                                        Command="{Binding DataContext.OpenAdDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                        CommandParameter="{Binding}"/>
+                                                </Grid.InputBindings>
 
                                                 <TextBlock
                                                     Grid.Column="0"

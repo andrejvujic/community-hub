@@ -20,18 +20,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
             _viewModel.UpdateAds();
         }
 
-        private void CreateAdButton_Click(object sender, RoutedEventArgs e)
-            => _viewModel.OpenCreateAdPage();
-
-        private void AdItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not AdDto ad) return;
-
-            _viewModel.OpenAdDetailsPage(ad);
-        }
-
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
     }

@@ -13,7 +13,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
         public BuildingsPage(long userId)
         {
             InitializeComponent();
-            _viewModel = new BuildingsViewModel(userId);
+            _viewModel = new BuildingsViewModel(userId, this);
             DataContext = _viewModel;
 
             _viewModel.UpdateMemberships();
@@ -21,17 +21,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
 
         private void CreateAppartmentAccessRequestButton_Click(object sender, RoutedEventArgs e)
             => Push(new SearchBuildingsPage(_viewModel.UserId));
-
-        private void OpenBuildingOptionsPageButton_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not BuildingMembershipGroupDto group) return;
-
-            Push(new BuildingOptionsPage(
-                userId: _viewModel.UserId,
-                building: group.Building
-            ));
-        }
     }
 }

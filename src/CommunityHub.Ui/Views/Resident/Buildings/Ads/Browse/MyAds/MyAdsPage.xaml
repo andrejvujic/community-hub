@@ -77,11 +77,18 @@
                                             </Style>
                                         </Border.Style>
 
-                                        <Grid Background="Transparent" MouseLeftButtonDown="AdItem_Click">
+                                        <Grid Background="Transparent">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
+
+                                            <Grid.InputBindings>
+                                                <MouseBinding
+                                                    Gesture="LeftClick"
+                                                    Command="{Binding DataContext.OpenAdDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}"/>
+                                            </Grid.InputBindings>
 
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock FontSize="18" FontWeight="Bold">
@@ -176,7 +183,7 @@
             BorderThickness="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Click="CreateAdButton_Click">
+            Command="{Binding OpenCreateAdCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>

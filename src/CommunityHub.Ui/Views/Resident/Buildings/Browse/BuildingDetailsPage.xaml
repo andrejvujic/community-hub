@@ -101,7 +101,7 @@
                         Grid.Column="0"
                         Height="48"
                         Style="{StaticResource ResidentPrimaryActionButtonStyle}"
-                        Click="PreviousImageButton_Click"
+                        Command="{Binding GoToPreviousImageCommand}"
                         IsEnabled="{Binding HasPreviousImage}">
                         <TextBlock
                             Text="&#xf060;"
@@ -159,7 +159,7 @@
                         Grid.Column="2"
                         Height="48"
                         Style="{StaticResource ResidentPrimaryActionButtonStyle}"
-                        Click="NextImageButton_Click"
+                        Command="{Binding GoToNextImageCommand}"
                         IsEnabled="{Binding HasNextImage}">
                         <TextBlock
                             Text="&#xf061;"

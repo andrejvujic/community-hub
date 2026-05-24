@@ -24,24 +24,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
             );
             DataContext = _viewModel;
 
-
-
             _viewModel.UpdateReservableTimeSlots();
-        }
-
-        private void ReserveButton_Click(object sender, RoutedEventArgs e)
-            => _viewModel.Reserve();
-
-        private void TimeSlotItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not AdTimeSlotDto timeSlot || timeSlot.IsReserved) return;
-
-            if (_viewModel.IsTimeSlotSelected(timeSlot))
-                _viewModel.DeselectTimeSlot(timeSlot);
-            else
-                _viewModel.SelectTimeSlot(timeSlot);
         }
     }
 }

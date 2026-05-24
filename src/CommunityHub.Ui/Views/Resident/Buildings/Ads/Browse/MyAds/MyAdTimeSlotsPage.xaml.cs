@@ -21,14 +21,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 
             _viewModel.UpdateReservations();
         }
-
-        private void ReservationItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not AdReservationDto reservation) return;
-
-            _viewModel.OpenAdDetailsPage(reservation);
-        }
     }
 }
