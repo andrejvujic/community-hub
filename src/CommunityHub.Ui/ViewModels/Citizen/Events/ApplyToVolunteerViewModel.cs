@@ -3,8 +3,10 @@ using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Application.Domain.Events;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
 {
@@ -19,8 +21,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         private CommunityEventDto? _event;
         private CitizenDto? _citizen;
+        private EventItemSelection? _selectedItem;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ConfirmRequested;
+        public event EventHandler? CancelRequested;
+        public event EventHandler? CloseRequested;
 
         public CitizenDto? Citizen
         {
@@ -30,6 +36,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 if (_citizen == value) return;
                 _citizen = value;
                 OnPropertyChanged(nameof(Citizen));
+            }
+        }
+
+        public EventItemSelection? SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                if (_selectedItem == value) return;
+                _selectedItem = value;
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -46,10 +63,21 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public ObservableCollection<EventItemSelection> Items { get; } = new();
         public List<long> AlreadyAssignedItemIds { get; } = new();
 
+        public ICommand ConfirmCommand { get; }
+        public ICommand CancelCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand ToggleItemCommand { get; }
+
         public ApplyToVolunteerViewModel(long userId, long eventId)
         {
             _userId = userId;
             _eventId = eventId;
+
+            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
+            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            ToggleItemCommand = new RelayCommand<object>(_ => ToggleSelectedItem());
+
             LoadData();
         }
 
@@ -78,6 +106,28 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             _eventService.UpdateEventStatusIfReady(_eventId);
         }
 
+        public void RequestConfirm()
+        {
+            Register();
+            ConfirmRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestCancel()
+        {
+            CancelRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void ToggleSelectedItem()
+        {
+            if (SelectedItem != null)
+                SelectedItem.IsChecked = !SelectedItem.IsChecked;
+        }
+
         private void AssignSelectedItems(long registrationId)
         {
             foreach (var selection in Items.Where(s => s.IsChecked))
@@ -90,15 +140,34 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         }
     }
 
-    public class EventItemSelection
+    public class EventItemSelection : INotifyPropertyChanged
     {
+        private bool _isChecked;
+
         public EventItemDto Item { get; }
-        public bool IsChecked { get; set; }
+
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                if (_isChecked == value) return;
+                _isChecked = value;
+                OnPropertyChanged(nameof(IsChecked));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public EventItemSelection(EventItemDto item)
         {
             Item = item;
-            IsChecked = false;
+            _isChecked = false;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
