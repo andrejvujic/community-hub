@@ -50,8 +50,8 @@
             <SolidColorBrush x:Key="ResidentDangerBrush" Color="#BE4054" />
             <SolidColorBrush x:Key="ResidentWarningBrush" Color="#9B5F08" />
             <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ResidentDisabledActionBackgroundBrush" Color="#C4D1D5" />
-            <SolidColorBrush x:Key="ResidentDisabledActionTextBrush" Color="#63757C" />
+            <SolidColorBrush x:Key="ResidentDisabledActionBackgroundBrush" Color="#EDEFF0" />
+            <SolidColorBrush x:Key="ResidentDisabledActionTextBrush" Color="#96A3A8" />
             <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
 
             <Style x:Key="ResidentPrimaryActionButtonStyle" TargetType="Button">
