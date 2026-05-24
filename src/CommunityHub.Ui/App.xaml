@@ -52,7 +52,7 @@
             <SolidColorBrush x:Key="ResidentOnPrimaryBrush" Color="#FFFFFF" />
             <SolidColorBrush x:Key="ResidentDisabledActionBackgroundBrush" Color="#EDEFF0" />
             <SolidColorBrush x:Key="ResidentDisabledActionTextBrush" Color="#96A3A8" />
-            <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#85172732" />
+            <SolidColorBrush x:Key="ResidentOverlayBrush" Color="#bb172732" />
 
             <Style x:Key="ResidentPrimaryActionButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="{StaticResource ResidentPrimaryBrush}" />
