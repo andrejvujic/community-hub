@@ -11,4 +11,9 @@ namespace CommunityHub.Application.Domain.Issues
         [EnumMember(Value = "urgent")]
         Urgent
     }
+
+    public static class IssuePriorityValues
+    {
+        public static Array All => Enum.GetValues(typeof(IssuePriority));
+    }
 }
