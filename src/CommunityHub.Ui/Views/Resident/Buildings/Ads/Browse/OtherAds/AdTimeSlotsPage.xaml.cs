@@ -1,12 +1,7 @@
-﻿using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
-using CommunityHub.Application.Services.Dtos.Ads;
+﻿using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
@@ -24,6 +19,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
             );
             DataContext = _viewModel;
 
+            _viewModel.Reserve();
             _viewModel.UpdateReservableTimeSlots();
         }
     }

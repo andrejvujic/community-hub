@@ -2,9 +2,6 @@
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
-using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
-using System.Windows;
-using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {

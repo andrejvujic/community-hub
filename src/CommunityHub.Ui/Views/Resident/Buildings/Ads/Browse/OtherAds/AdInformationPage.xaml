@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Ads"
+    xmlns:local="clr-namespace:CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds"
     xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
     xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
     mc:Ignorable="d"
@@ -16,6 +16,8 @@
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:AdTypeToStringConverter x:Key="AdTypeToStringConverter" />
         <converters:AdCategoryToStringConverter x:Key="AdCategoryToStringConverter" />
+        <converters:AdStatusToStringConverter x:Key="AdStatusToStringConverter" />
+        <converters:AdStatusToIconCodeConverter x:Key="AdStatusToIconCodeConverter" />
     </navigation:MainNavigationConsumerPage.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -111,7 +113,7 @@
             </Border>
 
 
-            <Border BorderBrush="{StaticResource ResidentBorderBrush}" Background="{StaticResource ResidentCardBackgroundBrush}" BorderThickness="1" Padding="8">
+            <Border BorderBrush="{StaticResource ResidentBorderBrush}" Background="{StaticResource ResidentCardBackgroundBrush}" BorderThickness="1" Padding="8" Margin="0,0,0,8">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -136,6 +138,35 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border
+                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                    BorderThickness="1"
+                    Padding="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                            Grid.Column="0"
+                            Text="{Binding Ad.Status, Converter={StaticResource AdStatusToIconCodeConverter}}"
+                            FontSize="22"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                        <TextBlock Text="Status" FontSize="14"/>
+                        <TextBlock
+                                Text="{Binding Ad.Status, Converter={StaticResource AdStatusToStringConverter}}"
+                                FontSize="18"
+                                FontWeight="Bold"/>
                     </StackPanel>
                 </Grid>
             </Border>
