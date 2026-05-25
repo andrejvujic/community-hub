@@ -22,15 +22,6 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
             _viewModel.UpdateRequests();
         }
 
-        private void OpenRequestDetailsPageButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not ApartmentAccessRequestDto request) return;
-
-            _viewModel.OpenRequestDetailsPage(request);
-        }
-
         private void OpenSortAndFilterMenu_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             StatusComboBox

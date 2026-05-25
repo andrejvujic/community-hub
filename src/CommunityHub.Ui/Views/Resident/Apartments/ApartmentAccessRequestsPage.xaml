@@ -85,11 +85,18 @@
                                 Background="{StaticResource ResidentCardBackgroundBrush}"
                                 BorderBrush="{StaticResource ResidentBorderBrush}"
                                 BorderThickness="1">
-                                <Grid Background="Transparent" MouseLeftButtonDown="OpenRequestDetailsPageButton_Click"> 
+                                <Grid Background="Transparent"> 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
+
+                                    <Grid.InputBindings>
+                                        <MouseBinding
+                                            Gesture="LeftClick"
+                                            Command="{Binding DataContext.OpenRequestDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                            CommandParameter="{Binding}"/>
+                                    </Grid.InputBindings>
 
                                     <StackPanel Grid.Column="0">
                                         <TextBlock

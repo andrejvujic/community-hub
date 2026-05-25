@@ -3,6 +3,7 @@ using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using System.Collections.ObjectModel;
@@ -20,13 +21,21 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
         public ApartmentAccessRequestsViewModel(long userId, MainNavigationConsumerPage page) : base(page)
         {
             UserId = userId;
+
+            OpenRequestDetailsCommand = new(OpenRequestDetailsPage);
         }
 
-        public void OpenRequestDetailsPage(ApartmentAccessRequestDto request)
-            => Push(
+        public RelayCommand<ApartmentAccessRequestDto> OpenRequestDetailsCommand { get; }
+
+        private void OpenRequestDetailsPage(ApartmentAccessRequestDto? request)
+        {
+            if (request is null) return;
+
+            Push(
                 new ApartmentAccessRequestDetailsPage(request),
                 onPop: _ => UpdateRequests()
             );
+        }
 
         public void UpdateRequests()
         {
