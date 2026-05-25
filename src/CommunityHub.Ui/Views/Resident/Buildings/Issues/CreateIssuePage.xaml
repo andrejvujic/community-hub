@@ -12,6 +12,8 @@
       Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:IssuePriorityToStringConverter x:Key="IssuePriorityToStringConverter"/>
+        <converters:IssuePriorityToIconCodeConverter x:Key="IssuePriorityToIconCodeConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -75,19 +77,29 @@
                             <MouseBinding Gesture="LeftClick" Command="{Binding OpenSelectPriorityPageCommand}"/>
                         </Grid.InputBindings>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
                             Grid.Column="0"
+                            Text="{Binding SelectedPriority, Converter={StaticResource IssuePriorityToIconCodeConverter}}"
+                            Visibility="{Binding SelectedPriority, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Inverse}"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="20"
+                            VerticalAlignment="Center"
+                            Margin="8,4,4,4"/>
+
+                        <TextBlock
+                            Grid.Column="1"
                             VerticalAlignment="Center"
                             Text="{Binding SelectedPriority, Converter={StaticResource IssuePriorityToStringConverter}, ConverterParameter='Izaberite...'}"
                             FontSize="18"
                             Margin="4"/>
 
                         <TextBlock
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Text="&#xf178;"
                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                             VerticalAlignment="Center"
