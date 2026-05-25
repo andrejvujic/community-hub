@@ -11,7 +11,6 @@ using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.Windows;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
@@ -57,20 +56,40 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 
         public void Reserve()
         {
+            if (!Ad.IsActive)
+            {
+                ShowErrorAlert();
+                DeselectAllTimeSlots();
+                return;
+            }
+
             ReserveSelectedTimeSlots();
 
-            ShowAlert(
+            ShowSuccessAlert();
+
+            UpdateReservableTimeSlots();
+
+            DeselectAllTimeSlots();
+        }
+
+        private void ShowErrorAlert()
+            => ShowAlert(
+                    Alert.Create(
+                        "Rezervacija nije moguća",
+                        "Rezervacija termina nije moguća za ovaj oglas zato što je arhiviran.",
+                        type: AlertType.Error
+                    )
+                    .AddOption("U redu")
+                );
+
+        private void ShowSuccessAlert()
+            => ShowAlert(
                 Alert.Create(
                     "Rezervacija uspješna",
                     "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
                 )
                 .AddOption("U redu")
             );
-
-            UpdateReservableTimeSlots();
-
-            DeselectAllTimeSlots();
-        }
 
         private void ReserveSelectedTimeSlots()
         {
