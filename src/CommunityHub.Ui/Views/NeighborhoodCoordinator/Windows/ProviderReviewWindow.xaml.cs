@@ -23,7 +23,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
             var (success, error) = _viewModel.TrySubmit();
             if (!success)
             {
-                MessageBox.Show(error, "Nevažeći unos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Nevažeći unos", error, this).ShowDialog();
                 return;
             }
             DialogResult = true;

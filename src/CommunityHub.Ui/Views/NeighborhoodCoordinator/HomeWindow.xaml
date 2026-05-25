@@ -9,7 +9,8 @@
         Title="Neighborhood Coordinator App"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Background="{DynamicResource WindowBackgroundBrush}">
+        Background="{DynamicResource WindowBackgroundBrush}"
+        KeyDown="Window_KeyDown">
     <Grid>
         <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
         
@@ -98,42 +99,42 @@
                     Style="{StaticResource SidebarTabControlStyle}"
                     FontSize="20">
 
-            <TabItem Header="Početna (F1)"
+            <TabItem Header="Početna (Ctrl+1)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <Grid/>
             </TabItem>
 
-            <TabItem Header="Kvartovi i članstva (F2)"
+            <TabItem Header="Kvartovi i članstva (Ctrl+2)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:NeighborhoodsTab x:Name="NeighborhoodsTab" />
             </TabItem>
 
-            <TabItem Header="Zahtevi za pristup (F3)"
+            <TabItem Header="Zahtevi za pristup (Ctrl+3)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:RequestsTab x:Name="RequestsTab" />
             </TabItem>
 
-            <TabItem Header="Statistika i sastanci (F4)"
+            <TabItem Header="Statistika i sastanci (Ctrl+4)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
             </TabItem>
 
-            <TabItem Header="Servisni centar (F5)"
+            <TabItem Header="Servisni centar (Ctrl+5)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:ServiceCenterTab x:Name="ServiceCenterTab" />
             </TabItem>
 
-            <TabItem Header="Gradski objekti (F6)"
+            <TabItem Header="Gradski objekti (Ctrl+6)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
-            <TabItem Header="Budžet (F7)"
+            <TabItem Header="Budžet (Ctrl+7)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
             </TabItem>
 
-            <TabItem Header="Profil (F8)"
+            <TabItem Header="Profil (Ctrl+8)"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <Grid/>
             </TabItem>

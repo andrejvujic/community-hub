@@ -12,7 +12,7 @@
                 <ControlTemplate TargetType="TabControl">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="240"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 

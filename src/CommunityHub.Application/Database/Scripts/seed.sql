@@ -982,15 +982,15 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
 
 INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
-(11, 'welcome', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
-(12, 'motivation', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
-(13, 'welcome', '11:00', '2026-05-23', '2026-05-28', NULL, 'in_preparation', 1),
-(14, 'welcome', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
-(15, 'motivation', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
-(16, 'welcome', '11:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 6),
-(17, 'welcome', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
-(18, 'motivation', '11:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
-(19, 'welcome', '11:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 11);
+(11, 'welcome', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
+(12, 'motivation', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
+(13, 'welcome', '20:00', '2026-05-23', '2026-05-28', NULL, 'in_preparation', 1),
+(14, 'welcome', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
+(15, 'motivation', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
+(16, 'welcome', '20:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 6),
+(17, 'welcome', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
+(18, 'motivation', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
+(19, 'welcome', '20:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 11);
 
 INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
 (11, '2026-05-24', 11, 121), (12, '2026-05-25', 11, 122),
