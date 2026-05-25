@@ -30,7 +30,24 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
             }
         }
 
+        public bool HasSetApartmentNumber => !string.IsNullOrWhiteSpace(ApartmentNumberText);
         public bool IsApartmentNumberValid { get => ApartmentNumber > 0; }
+
+        public string FormErrorText
+        {
+            get
+            {
+                if (!HasSetApartmentNumber)
+                    return "Ovo polje je obavezno.";
+
+                if (!IsApartmentNumberValid)
+                    return "Broj stana koji ste unijeli nije validan. Neophodno je da koristite samo cifre.";
+
+                return string.Empty;
+            }
+        }
+
+        public bool IsFormValid => string.IsNullOrWhiteSpace(FormErrorText);
 
         private string _apartmentNumberText = string.Empty;
         public string ApartmentNumberText
@@ -42,7 +59,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
                 _apartmentNumberText = value;
                 OnPropertyChanged(nameof(ApartmentNumberText));
                 OnPropertyChanged(nameof(ApartmentNumber));
+
                 OnPropertyChanged(nameof(IsApartmentNumberValid));
+                OnPropertyChanged(nameof(HasSetApartmentNumber));
+
+                OnPropertyChanged(nameof(FormErrorText));
+                OnPropertyChanged(nameof(IsFormValid));
             }
         }
 
@@ -52,6 +74,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
                     Building.Id,
                     ApartmentNumber
                 );
+
 
         public void CreateAccessRequest()
         {

@@ -86,12 +86,12 @@
 
                 <Grid Grid.Row="7">
                     <TextBlock
-                        Visibility="{Binding IsApartmentNumberValid, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                         Foreground="{StaticResource ResidentWarningBrush}"
+                        Visibility="{Binding IsFormValid, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
                         FontSize="16"
                         TextWrapping="Wrap">
                         <Run Text="&#xf071;" FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"/>
-                        <Run Text="Ovo polje je obavezno. Uneseni broj stana nije ispravan. Provjerite Vaš unos i pokušajte ponovo."/>
+                        <Run Text="{Binding FormErrorText, Mode=OneWay}"/>
                     </TextBlock>
                 </Grid>
             </Grid>
