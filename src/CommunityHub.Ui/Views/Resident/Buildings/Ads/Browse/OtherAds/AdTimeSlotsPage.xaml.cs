@@ -19,7 +19,6 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
             );
             DataContext = _viewModel;
 
-            _viewModel.Reserve();
             _viewModel.UpdateReservableTimeSlots();
         }
     }
