@@ -55,7 +55,8 @@
             <Grid Grid.Row="1">
                 <Grid Visibility="{Binding HasReportedIssues, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding ReportedIssues}">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{Binding ReportedIssues}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel/>
@@ -172,7 +173,10 @@
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                            </ItemsControl>
+
+                            <Grid Height="64" Margin="0,8"/>
+                        </StackPanel>
                     </ScrollViewer>
                 </Grid>
 
