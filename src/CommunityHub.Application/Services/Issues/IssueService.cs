@@ -17,6 +17,13 @@ namespace CommunityHub.Application.Services.Issues
             return issues.Select(_issueMapper.MapToDto).ToList();
         }
 
+        public List<IssueDto> GetAllByBuildingAndResident(long buildingId, long residentId)
+        {
+            var issues = _issueRepository.GetAllByBuildingAndResident(buildingId, residentId);
+
+            return issues.Select(_issueMapper.MapToDto).ToList();
+        }
+
         public int MarkIssueAsResolved(IssueDto issueDto)
         {
             var issue = _issueMapper.MapToDomain(issueDto);
