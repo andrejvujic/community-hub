@@ -54,7 +54,7 @@
 
             <Grid Grid.Row="1">
                 <Grid Visibility="{Binding HasReportedIssues, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
-                    <ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding ReportedIssues}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -70,7 +70,13 @@
                                         BorderThickness="1"
                                         Padding="8"
                                         Margin="0,0,0,8">
-                                        <Grid>
+                                        <Grid Background="Transparent">
+                                            <Grid.InputBindings>
+                                                <MouseBinding
+                                                    Gesture="LeftClick"
+                                                    Command="{Binding DataContext.OpenIssueDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}"/>
+                                            </Grid.InputBindings>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="8"/>
@@ -87,10 +93,10 @@
                                                 <StackPanel>
                                                     <TextBlock
                                                         Text="Opis"
-                                                        FontSize="12"/>
+                                                        FontSize="14"/>
                                                     <TextBlock
                                                         Text="{Binding Description}"
-                                                        FontSize="16"
+                                                        FontSize="18"
                                                         TextTrimming="CharacterEllipsis"
                                                         TextWrapping="WrapWithOverflow"
                                                         FontWeight="SemiBold"/>
@@ -193,7 +199,7 @@
             BorderThickness="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Click="ReportIssueButton_Click">
+            Command="{Binding OpenCreateIssueCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>

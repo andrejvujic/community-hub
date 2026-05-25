@@ -19,10 +19,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Issues
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
-
-        private void ReportIssueButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
     }
 }
