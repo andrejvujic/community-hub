@@ -18,12 +18,13 @@ namespace CommunityHub.Application.Database
 {
     public class DatabaseConnection : IDisposable
     {
+        private static readonly NpgsqlDataSource DataSource = BuildDataSource();
         private readonly IDbConnection _connection;
         private IDbTransaction? transaction;
 
         private DatabaseConnection()
         {
-            _connection = CreateNpgsqlConnection();
+            _connection = DataSource.CreateConnection();
             _connection.Open();
         }
 
@@ -117,15 +118,14 @@ namespace CommunityHub.Application.Database
             return convert(value);
         }
 
-        private static IDbConnection CreateNpgsqlConnection()
+        private static NpgsqlDataSource BuildDataSource()
         {
             var connectionString = LoadNpgsqlConnectionString();
             var builder = new NpgsqlDataSourceBuilder(connectionString);
 
             SetupEnumMapping(builder);
 
-            var dataSource = builder.Build();
-            return dataSource.CreateConnection();
+            return builder.Build();
         }
 
         private static string LoadNpgsqlConnectionString()
