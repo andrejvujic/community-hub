@@ -54,8 +54,9 @@
 
             <Grid Grid.Row="1">
                 <Grid Visibility="{Binding HasReportedIssues, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
-                    <ScrollViewer>
-                        <ItemsControl ItemsSource="{Binding ReportedIssues}">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{Binding ReportedIssues}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel/>
@@ -70,7 +71,13 @@
                                         BorderThickness="1"
                                         Padding="8"
                                         Margin="0,0,0,8">
-                                        <Grid>
+                                        <Grid Background="Transparent">
+                                            <Grid.InputBindings>
+                                                <MouseBinding
+                                                    Gesture="LeftClick"
+                                                    Command="{Binding DataContext.OpenIssueDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}"/>
+                                            </Grid.InputBindings>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="8"/>
@@ -87,10 +94,10 @@
                                                 <StackPanel>
                                                     <TextBlock
                                                         Text="Opis"
-                                                        FontSize="12"/>
+                                                        FontSize="14"/>
                                                     <TextBlock
                                                         Text="{Binding Description}"
-                                                        FontSize="16"
+                                                        FontSize="18"
                                                         TextTrimming="CharacterEllipsis"
                                                         TextWrapping="WrapWithOverflow"
                                                         FontWeight="SemiBold"/>
@@ -119,6 +126,22 @@
                                                              FontSize="14"/>
                                                     </StackPanel>
 
+                                                        <Separator Opacity="0" Height="2"/>
+
+                                                        <StackPanel Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Text="{Binding Priority, Converter={StaticResource IssuePriorityToIconCodeConverter}}"
+                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="16"
+                                                            Margin="0,0,8,0"
+                                                            Padding="0"/>
+                                                        <TextBlock
+                                                            Text="{Binding Priority, Converter={StaticResource IssuePriorityToStringConverter}}"
+                                                            FontSize="14"
+                                                            FontWeight="Bold"/>
+                                                    </StackPanel>
+
                                                     <Separator Opacity="0" Height="2"/>
 
                                                      <StackPanel Orientation="Horizontal">
@@ -134,23 +157,6 @@
                                                              FontSize="14"
                                                              FontWeight="Bold"/>
                                                      </StackPanel>
-
-
-                                                    <Separator Opacity="0" Height="2"/>
-
-                                                    <StackPanel Orientation="Horizontal">
-                                                         <TextBlock
-                                                              Text="{Binding Priority, Converter={StaticResource IssuePriorityToIconCodeConverter}}"
-                                                              FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                              VerticalAlignment="Center"
-                                                              FontSize="16"
-                                                              Margin="0,0,8,0"
-                                                              Padding="0"/>
-                                                        <TextBlock
-                                                             Text="{Binding Priority, Converter={StaticResource IssuePriorityToStringConverter}}"
-                                                             FontSize="14"
-                                                             FontWeight="Bold"/>
-                                                    </StackPanel>
                                                 </StackPanel>
 
                                                  <TextBlock
@@ -166,7 +172,10 @@
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                            </ItemsControl>
+
+                            <Grid Height="64" Margin="0,8"/>
+                        </StackPanel>
                     </ScrollViewer>
                 </Grid>
 
@@ -193,7 +202,7 @@
             BorderThickness="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Click="ReportIssueButton_Click">
+            Command="{Binding OpenCreateIssueCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>

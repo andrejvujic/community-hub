@@ -54,7 +54,8 @@
                     <Grid>
                         <Grid Visibility="{Binding HasAds, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="8">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsControl x:Name="AdsItemsControl" ItemsSource="{Binding Ads}">
+                                <StackPanel>
+                                    <ItemsControl x:Name="AdsItemsControl" ItemsSource="{Binding Ads}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border
@@ -159,7 +160,10 @@
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                    </ItemsControl>
+
+                                    <Grid Height="64" Margin="0,8"/>
+                                </StackPanel>
                             </ScrollViewer>
                         </Grid>
 

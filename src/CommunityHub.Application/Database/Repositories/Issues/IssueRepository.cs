@@ -8,6 +8,23 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 	{
 		private readonly IssueMapper _issueMapper = new();
 
+		public Issue Create(Issue issue)
+		{
+			using var connection = DatabaseConnection.Create();
+
+			var query = DatabaseQuery.Create(
+				@"INSERT INTO reported_issues
+					(description, reported_date, priority, status, resident_id, building_id)
+				VALUES
+					(@description, @reported_date, @priority, @status, @resident_id, @building_id)
+				RETURNING id;"
+			).ExtendParameters(_issueMapper.MapToQueryParameters(issue));
+
+			long id = connection.ExecuteScalar(query, Convert.ToInt64);
+
+			return issue.CopyWith(id: id);
+		}
+
 		public List<Issue> GetAllByBuilding(long buildingId)
 		{
 			using var connection = DatabaseConnection.Create();

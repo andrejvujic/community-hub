@@ -33,7 +33,8 @@
                 <Separator Grid.Row="2"/>
 
                 <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding RentalRequests}">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding RentalRequests}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border
@@ -104,7 +105,10 @@
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        </ItemsControl>
+
+                        <Grid Height="64" Margin="0,8"/>
+                    </StackPanel>
                 </ScrollViewer>
             </Grid>
         </Grid>
