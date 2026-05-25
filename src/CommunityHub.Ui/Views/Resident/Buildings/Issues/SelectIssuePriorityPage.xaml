@@ -13,7 +13,6 @@
       Foreground="{StaticResource ResidentTextPrimaryBrush}">
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:IssuePriorityToStringConverter x:Key="IssuePriorityToStringConverter"/>
-        <converters:IssuePriorityToIconCodeConverter x:Key="IssuePriorityToIconCodeConverter"/>
         <converters:EqualityConverter x:Key="EqualityConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
@@ -73,34 +72,50 @@
                                 Margin="0,0,0,8">
                                 <Grid Height="48" MouseLeftButtonDown="PriorityItem_Click" Background="Transparent">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock
-                                        Grid.Column="0"
-                                        Text="{Binding Converter={StaticResource IssuePriorityToIconCodeConverter}}"
-                                        FontSize="20"
-                                        Margin="0,0,16,0"
-                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                        VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                        <TextBlock
+                                            Text="&#xf00c;"
+                                            FontSize="20"
+                                            Margin="0,0,16,0"
+                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                            VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Value="True">
+                                                            <DataTrigger.Binding>
+                                                                <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                                    <Binding/>
+                                                                    <Binding Path="SelectedPriority" RelativeSource="{RelativeSource AncestorType=Page}"/>
+                                                                </MultiBinding>
+                                                            </DataTrigger.Binding>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <TextBlock
+                                            Text="{Binding Converter={StaticResource IssuePriorityToStringConverter}}"
+                                            FontSize="18"
+                                            VerticalAlignment="Center"/>
+                                    </StackPanel>
 
                                     <TextBlock
                                         Grid.Column="1"
-                                        Text="{Binding Converter={StaticResource IssuePriorityToStringConverter}}"
-                                        FontSize="18"
-                                        VerticalAlignment="Center"/>
-
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        Text="&#xf00c;"
-                                        FontSize="20"
+                                        Text="&#xf178;"
                                         FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                        VerticalAlignment="Center">
+                                        VerticalAlignment="Center"
+                                        FontSize="24">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Value="True">
                                                         <DataTrigger.Binding>
@@ -109,7 +124,7 @@
                                                                 <Binding Path="SelectedPriority" RelativeSource="{RelativeSource AncestorType=Page}"/>
                                                             </MultiBinding>
                                                         </DataTrigger.Binding>
-                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

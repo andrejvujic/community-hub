@@ -29,7 +29,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Issues
             => ShowAlert(
                 Alert.Create(
                     "Potvrda rješavanja",
-                    "Da li potvrđujete da je prijavljeni problem riješen?",
+                    "Da li ste sigurni da želite da potvrdite rješavanje ovog problema?",
                     AlertType.Warning
                 )
                 .AddOption("Otkaži")
