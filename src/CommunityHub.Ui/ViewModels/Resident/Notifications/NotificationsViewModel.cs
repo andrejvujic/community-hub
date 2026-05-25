@@ -50,7 +50,11 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
             if (!notification.IsRead)
                 _notificationService.MarkAsRead(notification);
 
-            if (!notification.HasDetails) return;
+            if (!notification.HasDetails)
+            {
+                UpdateNotifications();
+                return;
+            }
 
             switch (notification.Type)
             {
