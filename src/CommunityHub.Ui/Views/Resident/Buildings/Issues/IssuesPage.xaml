@@ -15,7 +15,9 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:IssueStatusToStringConverter x:Key="IssueStatusToStringConverter"/>
+        <converters:IssueStatusToIconCodeConverter x:Key="IssueStatusToIconCodeConverter"/>
         <converters:IssuePriorityToStringConverter x:Key="IssuePriorityToStringConverter"/>
+        <converters:IssuePriorityToIconCodeConverter x:Key="IssuePriorityToIconCodeConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
     <Grid>
         <Grid>
@@ -120,15 +122,13 @@
                                                     <Separator Opacity="0" Height="2"/>
 
                                                      <StackPanel Orientation="Horizontal">
-                                                        <!--
                                                          <TextBlock
-                                                              Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}"
+                                                              Text="{Binding Status, Converter={StaticResource IssueStatusToIconCodeConverter}}"
                                                               FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                               VerticalAlignment="Center"
                                                               FontSize="16"
                                                               Margin="0,0,8,0"
                                                               Padding="0"/>
-                                                        -->
                                                          <TextBlock
                                                              Text="{Binding Status, Converter={StaticResource IssueStatusToStringConverter}}"
                                                              FontSize="14"
@@ -139,15 +139,13 @@
                                                     <Separator Opacity="0" Height="2"/>
 
                                                     <StackPanel Orientation="Horizontal">
-                                                        <!--
                                                          <TextBlock
-                                                              Text="{Binding Status, Converter={StaticResource StatusToIconCodeConverter}}"
+                                                              Text="{Binding Priority, Converter={StaticResource IssuePriorityToIconCodeConverter}}"
                                                               FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                               VerticalAlignment="Center"
                                                               FontSize="16"
                                                               Margin="0,0,8,0"
                                                               Padding="0"/>
-                                                        -->
                                                         <TextBlock
                                                              Text="{Binding Priority, Converter={StaticResource IssuePriorityToStringConverter}}"
                                                              FontSize="14"
