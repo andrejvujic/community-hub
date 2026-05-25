@@ -5,10 +5,12 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
 
 namespace CommunityHub.Application.Services.Issues
 {
-    public class IssueService
+    public class IssueService : BaseService<Issue, IssueDto>
     {
         private readonly IIssueRepository _issueRepository = Injector.CreateInstance<IIssueRepository>();
         private readonly IssueMapper _issueMapper = new();
+
+        public IssueService() : base(new IssueMapper()) { }
 
         public List<IssueDto> GetAllByBuilding(long buildingId)
         {
@@ -18,11 +20,7 @@ namespace CommunityHub.Application.Services.Issues
         }
 
         public List<IssueDto> GetAllByBuildingAndResident(long buildingId, long residentId)
-        {
-            var issues = _issueRepository.GetAllByBuildingAndResident(buildingId, residentId);
-
-            return issues.Select(_issueMapper.MapToDto).ToList();
-        }
+            => MapToDto(_issueRepository.GetAllByBuildingAndResident(buildingId, residentId));
 
         public int MarkIssueAsResolved(IssueDto issueDto)
         {
