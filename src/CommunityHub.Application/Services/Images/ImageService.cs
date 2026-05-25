@@ -13,6 +13,12 @@ namespace CommunityHub.Application.Services.Images
         public DomainImage Create(DomainImage image)
             => _imageRepository.Create(image);
 
+        public List<ImageDto> GetByBuilding(long buildingId)
+            => _imageRepository
+                .GetByBuilding(buildingId)
+                .Select(_imageMapper.MapToDto)
+                .ToList();
+
         public List<ImageDto> GetByNeighborhood(long neighborhoodId)
             => _imageRepository
                 .GetByNeighborhoodId(neighborhoodId)
