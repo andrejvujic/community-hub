@@ -16,7 +16,6 @@ namespace CommunityHub.Ui.Views.Resident
             
             _viewModel = new HomeViewModel(userId, this);
             DataContext = _viewModel;
-            _viewModel.Initialize();
 
             LocalFrame.Navigate(new BuildingsPage(_viewModel.UserId));
         }

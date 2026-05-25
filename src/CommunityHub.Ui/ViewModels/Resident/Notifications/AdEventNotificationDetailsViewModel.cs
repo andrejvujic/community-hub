@@ -21,7 +21,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
 
     public class AdEventNotificationDetailsViewModel : BaseViewModel
     {
-        private readonly AdService _adService;
+        private readonly AdService _adService = new(
+            Injector.CreateInstance<IAdRepository>(),
+            Injector.CreateInstance<IAdTimeSlotRepository>()
+        );
 
         public long UserId { get; }
 
@@ -42,11 +45,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
 
         public AdEventNotificationDetailsViewModel(long userId, NotificationDto notification, MainNavigationConsumerPage page) : base(page)
         {
-            _adService = new(
-                Injector.CreateInstance<IAdRepository>(),
-                Injector.CreateInstance<IAdTimeSlotRepository>()
-            );
-
             UserId = userId;
             Notification = notification;
 
@@ -55,7 +53,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
             OpenAdCommand = new RelayCommand(OpenAd);
         }
 
-        public AdAvailability GetAdAvailability()
+        private AdAvailability GetAdAvailability()
         {
             if (Ad is null)
                 return AdAvailability.NotFound;
@@ -66,7 +64,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Notifications
             return AdAvailability.Available;
         }
 
-        public void OpenAd()
+        private void OpenAd()
         {
             var availability = GetAdAvailability();
             if (availability is not AdAvailability.Available)

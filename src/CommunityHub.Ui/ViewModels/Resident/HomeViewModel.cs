@@ -19,6 +19,8 @@ namespace CommunityHub.Ui.ViewModels.Resident
             long userId,
             IMainNavigationConsumer navigationConsumer
         ) : base(navigationConsumer) {
+            UserId = userId;
+
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -28,9 +30,9 @@ namespace CommunityHub.Ui.ViewModels.Resident
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
-            UserId = userId;
-
             OpenNotificationsCommand = new(OpenNotificationsPage);
+
+            Initialize();
         }
 
         public long UserId { get; }
@@ -42,7 +44,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
                 onPop: _ => UpdateUnreadNotificationCount()
             );
 
-        public void Initialize()
+        private void Initialize()
         {
             UpdateUnreadNotificationCount();
             _adService.ArchiveExpiredAds();
