@@ -32,12 +32,22 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
                     MapToEntity(subscription)
                 );
 
-        public bool IsSubscribed(long adId) => _adMatchSubscriptionRepository.ExistsWithAdId(adId);
+        private List<AdDto> GetSubscribedMatchingAds(AdDto referenceAd)
+        {
+            var ads = _adService.GetMatchingAds(referenceAd);
+
+            var subscribedAdIds = _adMatchSubscriptionRepository.GetSubscribedAdIds();
+            var subscribedAds = ads.Where(
+                ad => subscribedAdIds.Contains(ad.Id)
+            ).ToList();
+
+            return subscribedAds;
+        } 
 
         public void NotifyAuthorsOfSubscribedMatchingAds(AdDto referenceAd)
         {
-            var ads = _adService.GetMatchingAds(referenceAd);
-            var authorIds = ads.Select(ad => ad.AuthorId).Distinct();
+            var subscribedAds = GetSubscribedMatchingAds(referenceAd);
+            var authorIds = subscribedAds.Select(ad => ad.AuthorId).Distinct();
 
             var notifications = authorIds.Select(
                 authorId => new Notification(
@@ -56,7 +66,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             _notificationRepository.CreateMany(notifications);
 
             _adMatchSubscriptionRepository.DeleteManyByAdId(
-                ads.Select(ad => ad.Id).ToList()
+                subscribedAds.Select(ad => ad.Id).ToList()
             );
         }
     }

@@ -20,6 +20,26 @@ namespace CommunityHub.Application.Database.Repositories.Ads
             );
         }
 
+        public List<long> GetSubscribedAdIds()
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var ids = new List<long>(); 
+
+            connection.ExecuteReader(
+                DatabaseQuery.Create(
+                    "SELECT ad_id AS id FROM ad_match_subscriptions"
+                ),
+                (reader) =>
+                {
+                    var ordinal = reader.GetOrdinal("id");
+                    ids.Add(reader.GetInt64(ordinal));
+                }
+            );
+
+            return ids;
+        }
+
         public void DeleteByAdId(long adId)
         {
             using var connection = DatabaseConnection.Create();

@@ -6,6 +6,8 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Ads
     {
         public void Create(AdMatchSubscription subscription);
 
+        public List<long> GetSubscribedAdIds();
+
         public void DeleteByAdId(long adId);
         public void DeleteManyByAdId(List<long> adIds);
 
