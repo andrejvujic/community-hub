@@ -26,9 +26,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 
         private void LoadImages()
         {
-            if (Building.Images.Count > 0) return;
+            if (Building.HasImages) return;
             Building.Images = _imageService.GetByBuilding(Building.Id);
-
+            OnPropertyChanged(nameof(Building));
         }
 
         private int _currentImageIndex = 0;
