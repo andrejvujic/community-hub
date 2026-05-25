@@ -5,13 +5,18 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers.Notifications.
 {
     public class AdEventNotificationDetailsMapper : EntityMapper<AdEventNotificationDetails>
     {
-        public override AdEventNotificationDetails MapToEntity(IDataReader reader)
+        public override AdEventNotificationDetails? MapToEntity(IDataReader reader)
         {
-            long id = reader.GetInt64(reader.GetOrdinal("details_id"));
-            long notificationId = reader.GetInt64(reader.GetOrdinal("details_notification_id"));
+            if (!reader.HasColumn("details_id")) return null;
+            var idColumnOrdinal = reader.GetOrdinal("details_id");
 
-            long adId = reader.GetInt64(reader.GetOrdinal("details_ad_id"));
-            AdEventType eventType = (AdEventType)reader.GetValue(
+            if (reader.IsDBNull(idColumnOrdinal)) return null;
+            var id = reader.GetInt64(reader.GetOrdinal("details_id"));
+
+            var notificationId = reader.GetInt64(reader.GetOrdinal("details_notification_id"));
+
+            var adId = reader.GetInt64(reader.GetOrdinal("details_ad_id"));
+            var eventType = (AdEventType)reader.GetValue(
                 reader.GetOrdinal("details_ad_event_type")
             );
 

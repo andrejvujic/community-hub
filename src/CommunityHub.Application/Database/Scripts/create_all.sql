@@ -18,7 +18,7 @@ CREATE TYPE budget_categories AS ENUM ('street_maintenance', 'park_maintenance',
 CREATE TYPE event_statuses AS ENUM ('preparation', 'scheduled', 'cancelled', 'finished');
 CREATE TYPE notification_statuses AS ENUM ('read', 'unread');
 CREATE TYPE notification_types AS ENUM ('ad_event', 'other');
-CREATE TYPE ad_event_types AS ENUM ('ad_created', 'ad_time_slots_reserved');
+CREATE TYPE ad_event_types AS ENUM ('matching_ad_created', 'ad_time_slots_reserved');
 CREATE TYPE reported_issue_priorities AS ENUM ('can_wait', 'should_be_resolved_soon', 'urgent');
 CREATE TYPE reported_issue_statuses AS ENUM ('open', 'potentially_resolved', 'resolved');
 
