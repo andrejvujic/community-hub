@@ -41,6 +41,14 @@ namespace CommunityHub.Application.Domain.Issues
             Id = id;
         }
 
+        public void ConfirmResolution()
+        {
+            if (Status is not IssueStatus.PotentiallyResolved)
+                throw new InvalidOperationException("Only potentially resolved issues can be confirmed.");
+
+            Status = IssueStatus.Resolved;
+        }
+
         public Issue CopyWith(
             long? id = null,
             string? description = null,
