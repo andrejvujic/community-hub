@@ -1,39 +1,20 @@
-﻿using CommunityHub.Application.Database.Repositories.Issues;
-using CommunityHub.Application.Domain.Issues;
-using CommunityHub.Ui.Helpers.Navigation;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Issues;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Issues
 {
-    public partial class IssuesPage : MainNavigationConsumerPage, INotifyPropertyChanged
+    public partial class IssuesPage : MainNavigationConsumerPage
     {
-        private readonly long _userId, _buildingId;
-        private readonly IssueRepository _issueRepository = new();
-        public ObservableCollection<Issue> ReportedIssues { get; } = new();
-        public bool HasReportedIssues { get => ReportedIssues.Count > 0; }
+        private readonly IssuesViewModel _viewModel;
 
         public IssuesPage(long userId, long buildingId)
         {
-            _userId = userId;
-            _buildingId = buildingId;
-
             InitializeComponent();
-            DataContext = this;
+            _viewModel = new IssuesViewModel(userId, buildingId, this);
+            DataContext = _viewModel;
 
-            UpdateIssues();
-        }
-
-        private void UpdateIssues()
-        {
-            ReportedIssues.Clear();
-
-            var issues = _issueRepository.GetAllByBuildingAndResident(_buildingId, _userId);
-            foreach (var issue in issues)
-                ReportedIssues.Add(issue);
-
-            OnPropertyChanged(nameof(HasReportedIssues));
+            _viewModel.UpdateIssues();
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
@@ -43,10 +24,5 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Issues
         {
 
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
