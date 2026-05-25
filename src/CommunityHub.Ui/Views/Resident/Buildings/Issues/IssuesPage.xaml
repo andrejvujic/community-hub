@@ -126,6 +126,22 @@
                                                              FontSize="14"/>
                                                     </StackPanel>
 
+                                                        <Separator Opacity="0" Height="2"/>
+
+                                                        <StackPanel Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Text="{Binding Priority, Converter={StaticResource IssuePriorityToIconCodeConverter}}"
+                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="16"
+                                                            Margin="0,0,8,0"
+                                                            Padding="0"/>
+                                                        <TextBlock
+                                                            Text="{Binding Priority, Converter={StaticResource IssuePriorityToStringConverter}}"
+                                                            FontSize="14"
+                                                            FontWeight="Bold"/>
+                                                    </StackPanel>
+
                                                     <Separator Opacity="0" Height="2"/>
 
                                                      <StackPanel Orientation="Horizontal">
@@ -141,23 +157,6 @@
                                                              FontSize="14"
                                                              FontWeight="Bold"/>
                                                      </StackPanel>
-
-
-                                                    <Separator Opacity="0" Height="2"/>
-
-                                                    <StackPanel Orientation="Horizontal">
-                                                         <TextBlock
-                                                              Text="{Binding Priority, Converter={StaticResource IssuePriorityToIconCodeConverter}}"
-                                                              FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                              VerticalAlignment="Center"
-                                                              FontSize="16"
-                                                              Margin="0,0,8,0"
-                                                              Padding="0"/>
-                                                        <TextBlock
-                                                             Text="{Binding Priority, Converter={StaticResource IssuePriorityToStringConverter}}"
-                                                             FontSize="14"
-                                                             FontWeight="Bold"/>
-                                                    </StackPanel>
                                                 </StackPanel>
 
                                                  <TextBlock
