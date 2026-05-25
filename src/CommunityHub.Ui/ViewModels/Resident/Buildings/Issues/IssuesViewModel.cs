@@ -1,6 +1,8 @@
 ﻿using CommunityHub.Application.Services.Dtos.Issues;
 using CommunityHub.Application.Services.Issues;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Issues;
 using System.Collections.ObjectModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Issues
@@ -22,6 +24,32 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Issues
         {
             _userId = userId;
             _buildingId = buildingId;
+
+            OpenCreateIssueCommand = new(OpenCreateIssuePage);
+            OpenIssueDetailsCommand = new(OpenIssueDetailsPage);
+        }
+
+        public RelayCommand OpenCreateIssueCommand { get; }
+        public RelayCommand<IssueDto> OpenIssueDetailsCommand { get; }
+
+        private void OpenCreateIssuePage()
+            => Push(
+                new CreateIssuePage(_userId, _buildingId),
+                onPop: value =>
+                {
+                    if (value is IssueDto)
+                        UpdateIssues();
+                }
+            );
+
+        private void OpenIssueDetailsPage(IssueDto? issue)
+        {
+            if (issue is null) return;
+
+            Push(
+                new IssueDetailsPage(issue),
+                onPop: _ => UpdateIssues()
+            );
         }
 
         public void UpdateIssues()
