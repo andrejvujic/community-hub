@@ -6,8 +6,6 @@ using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Notifications;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
-using CommunityHub.Ui.Views.Resident.Apartments;
-using CommunityHub.Ui.Views.Resident.Buildings.Browse;
 using CommunityHub.Ui.Views.Resident.Notifications;
 
 namespace CommunityHub.Ui.ViewModels.Resident
@@ -16,13 +14,10 @@ namespace CommunityHub.Ui.ViewModels.Resident
     {
         private readonly NotificationService _notificationService;
         private readonly AdService _adService;
-        private readonly long _userId;
-        private readonly Action<MainNavigationConsumerPage> _navigateLocal;
 
         public HomeViewModel(
             long userId,
-            IMainNavigationConsumer navigationConsumer,
-            Action<MainNavigationConsumerPage> navigateLocal
+            IMainNavigationConsumer navigationConsumer
         ) : base(navigationConsumer) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
@@ -33,41 +28,30 @@ namespace CommunityHub.Ui.ViewModels.Resident
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
-            _userId = userId;
-            _navigateLocal = navigateLocal;
+            UserId = userId;
 
             OpenNotificationsCommand = new(OpenNotificationsPage);
-            OpenBuildingsCommand = new(OpenBuildingsPage);
-            OpenApartmentAccessRequestsCommand = new(OpenApartmentAccessRequestsPage);
         }
 
+        public long UserId { get; }
         public RelayCommand OpenNotificationsCommand { get; }
-        public RelayCommand OpenBuildingsCommand { get; }
-        public RelayCommand OpenApartmentAccessRequestsCommand { get; }
 
         private void OpenNotificationsPage()
             => Push(
-                new NotificationsPage(_userId),
+                new NotificationsPage(UserId),
                 onPop: _ => UpdateUnreadNotificationCount()
             );
-
-        private void OpenBuildingsPage()
-            => _navigateLocal(new BuildingsPage(_userId));
-
-        private void OpenApartmentAccessRequestsPage()
-            => _navigateLocal(new ApartmentAccessRequestsPage(_userId));
 
         public void Initialize()
         {
             UpdateUnreadNotificationCount();
             _adService.ArchiveExpiredAds();
-            OpenBuildingsPage();
         }
 
         private void UpdateUnreadNotificationCount()
         {
             UnreadNotificationCount = _notificationService.GetNotificationCountForUser(
-                _userId,
+                UserId,
                 status: NotificationStatus.Unread
             );
         }

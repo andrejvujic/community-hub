@@ -94,12 +94,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Background="Transparent">
-                <Grid.InputBindings>
-                    <MouseBinding
-                        Gesture="LeftClick"
-                        Command="{Binding OpenBuildingsCommand}" />
-                </Grid.InputBindings>
+            <Grid Grid.Column="0"
+                  Background="Transparent"
+                  MouseLeftButtonDown="OpenBuildingsPageButton_Click">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -123,12 +120,9 @@
                         FontSize="14"/>
             </Grid>
 
-            <Grid Grid.Column="1" Background="Transparent">
-                <Grid.InputBindings>
-                    <MouseBinding
-                        Gesture="LeftClick"
-                        Command="{Binding OpenApartmentAccessRequestsCommand}" />
-                </Grid.InputBindings>
+            <Grid Grid.Column="1"
+                  Background="Transparent"
+                  MouseLeftButtonDown="OpenApartmentAccessRequestsPageButton_Click">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
