@@ -119,11 +119,11 @@
                                 FontSize="14"
                                 FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                 BaselineAlignment="Center"/>
-                            <Run Text="Zahtjev je odobren. Upravnik je dodijelio termin koji možete pogledati ispod."/>
+                            <Run Text="Upravnik je odobrio vaš zahtjev."/>
                         </TextBlock>
 
                         <Border
-                            Visibility="{Binding Request.IsApproved, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Visibility="{Binding Request.CommonRoom.IsSingleDayRental, Converter={StaticResource BooleanToVisibilityConverter}}"
                             BorderBrush="{StaticResource ResidentBorderBrush}"
                             Background="{StaticResource ResidentCardBackgroundBrush}"
                             BorderThickness="1"
