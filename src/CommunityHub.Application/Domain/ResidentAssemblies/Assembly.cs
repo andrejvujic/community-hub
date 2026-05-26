@@ -51,7 +51,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             _attendances = attendances ?? [];
         }
 
-        private bool HasRegisteredAttendance(long apartmentId)
+        public bool HasRegisteredAttendance(long apartmentId)
             => _attendances.Any(attendance => attendance.ApartmentId == apartmentId);
 
         public void RegisterAttendance(AssemblyAttendance attendance)

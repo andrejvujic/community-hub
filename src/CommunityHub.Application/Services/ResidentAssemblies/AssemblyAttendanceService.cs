@@ -48,12 +48,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 assembly.BuildingId
             );
 
-            var confirmedApartmentIds = assembly.Attendances
-                .Select(attendance => attendance.ApartmentId)
-                .ToHashSet();
-
-            foreach (var apartmentId in residentApartmentIds.Where(id => !confirmedApartmentIds.Contains(id)))
+            foreach (var apartmentId in residentApartmentIds)
             {
+                if (assembly.HasRegisteredAttendance(apartmentId)) continue;
                 var attendance = _assemblyAttendanceRepository.Create(apartmentId, assembly.Id);
                 assembly.RegisterAttendance(attendance);
             }
