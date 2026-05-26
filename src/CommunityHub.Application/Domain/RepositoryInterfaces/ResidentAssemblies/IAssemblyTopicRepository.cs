@@ -4,6 +4,8 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
 {
     public interface IAssemblyTopicRepository
     {
+        public AssemblyTopic Create(AssemblyTopic topic);
+
         public List<AssemblyTopic> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null

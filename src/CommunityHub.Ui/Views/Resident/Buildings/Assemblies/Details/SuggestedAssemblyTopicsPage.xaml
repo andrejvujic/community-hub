@@ -48,66 +48,92 @@
                 VerticalAlignment="Center"/>
         </Grid>
 
-        <Grid Grid.Row="1" Margin="8">
-            <ScrollViewer
-                Visibility="{Binding HasTopics, Converter={StaticResource BooleanToVisibilityConverter}}"
-                VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Topics}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Padding="12"
-                                    Margin="0,0,0,8"
-                                    Background="{StaticResource ResidentCardBackgroundBrush}"
-                                    BorderBrush="{StaticResource ResidentBorderBrush}"
-                                    BorderThickness="1">
-                                    <StackPanel>
-                                        <TextBlock
-                                            Text="{Binding Description}"
-                                            TextWrapping="Wrap"
-                                            FontSize="18"
-                                            FontWeight="SemiBold"/>
-                                        <Separator Height="8" Opacity="0"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
-                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                FontSize="16"
-                                                Margin="0,0,8,0"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
-                                            <TextBlock
-                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
-                                                FontSize="16"
-                                                FontWeight="Bold"
-                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </ScrollViewer>
-
-            <StackPanel
-                Visibility="{Binding HasTopics, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
-                Margin="32,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <Label
-                    Content="Nemate predloženih tema"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    HorizontalAlignment="Center"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="8">
                 <TextBlock
-                    Text="Još uvijek niste predložili nijednu temu za ovu skupštinu."
+                    Text="Predložite novu temu za skupštinu"
+                    FontSize="20"
+                    Margin="0,0,0,8"/>
+                <TextBox
+                    FontSize="18"
+                    Height="96"
+                    Padding="4"
+                    MaxLength="128"
+                    AcceptsReturn="True"
                     TextWrapping="Wrap"
-                    TextAlignment="Center"
-                    FontSize="16"
+                    Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Background="{StaticResource ResidentInputBackgroundBrush}"
+                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                    Margin="0,0,0,8"/>
+                <Button
+                    Content="Dodaj temu"
+                    IsEnabled="{Binding IsFormValid}"
+                    Command="{Binding SuggestTopicCommand}"
+                    Style="{StaticResource ResidentPrimaryActionButtonStyle}"
+                    FontSize="18"
+                    Height="56"
+                    Width="192"
                     HorizontalAlignment="Center"/>
+
+                <Separator Margin="0,16"/>
+
+                <TextBlock Text="Moji prijedlozi" FontSize="20" Margin="0,0,0,8"/>
+
+                <ItemsControl
+                    ItemsSource="{Binding Topics}"
+                    Visibility="{Binding HasTopics, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Padding="12"
+                                Margin="0,0,0,8"
+                                Background="{StaticResource ResidentCardBackgroundBrush}"
+                                BorderBrush="{StaticResource ResidentBorderBrush}"
+                                BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="{Binding Description}"
+                                        TextWrapping="Wrap"
+                                        FontSize="18"
+                                        FontWeight="SemiBold"/>
+                                    <Separator Height="8" Opacity="0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
+                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                            FontSize="16"
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                        <TextBlock
+                                            Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <StackPanel
+                    Visibility="{Binding HasTopics, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+                    Margin="32,16"
+                    HorizontalAlignment="Center">
+                    <Label
+                        Content="Nemate predloženih tema"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"/>
+                    <TextBlock
+                        Text="Još uvijek niste predložili nijednu temu za ovu skupštinu."
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        FontSize="16"
+                        HorizontalAlignment="Center"/>
+                </StackPanel>
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
     </Grid>
 </navigation:MainNavigationConsumerPage>

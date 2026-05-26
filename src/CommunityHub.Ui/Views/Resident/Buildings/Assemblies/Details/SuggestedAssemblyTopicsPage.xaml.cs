@@ -1,10 +1,11 @@
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Assemblies.Details
 {
-    public partial class SuggestedAssemblyTopicsPage : MainNavigationConsumerPage
+    public partial class SuggestedAssemblyTopicsPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         private readonly SuggestedAssemblyTopicsViewModel _viewModel;
 

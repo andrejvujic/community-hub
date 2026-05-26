@@ -8,23 +8,72 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
     {
         private readonly AssemblyTopicMapper _topicMapper = new();
 
+        public AssemblyTopic Create(AssemblyTopic topic)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"INSERT INTO assembly_topics
+                    (assembly_id, author_id, description, topic_type)
+                VALUES
+                    (@assembly_id, @author_id, @description, @topic_type)
+                RETURNING id;"
+            ).ExtendParameters(_topicMapper.MapToQueryParameters(topic));
+
+            var id = connection.ExecuteScalar(query, Convert.ToInt64);
+
+            return new AssemblyTopic(
+                id: id,
+                assemblyId: topic.AssemblyId,
+                authorId: topic.AuthorId,
+                author: topic.Author,
+                description: topic.Description,
+                status: topic.Status,
+                isEnforcedByManager: topic.IsEnforcedByManager
+            );
+        }
+
         public List<AssemblyTopic> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null
         )
         {
-            var conditions = "WHERE topic.assembly_id = @assembly_id";
+            using var connection = DatabaseConnection.Create();
 
-            if (status is not null)
-                conditions += " AND topic.topic_type = @status";
+            var query = DatabaseQuery.Create(
+                @"SELECT
+                    topic.id AS assembly_topic_id,
+                    topic.assembly_id AS assembly_topic_assembly_id,
+                    topic.author_id AS assembly_topic_author_id,
+                    topic.description AS assembly_topic_description,
+                    topic.topic_type AS assembly_topic_status,
+                    topic.author_id = building.building_manager_id AS assembly_topic_is_enforced_by_manager,
+                    author.id AS author_user_id,
+                    author.username AS author_username,
+                    author.password AS author_password,
+                    author.name AS author_name,
+                    author.surname AS author_surname,
+                    author.user_role AS author_user_role
+                FROM assembly_topics topic
+                INNER JOIN users author ON topic.author_id = author.id
+                INNER JOIN assemblies assembly ON topic.assembly_id = assembly.id
+                INNER JOIN buildings building ON assembly.building_id = building.id
+                WHERE topic.assembly_id = @assembly_id AND
+                    (topic.topic_type = @status OR @status IS NULL)
+                ORDER BY author.name, author.surname, topic.id;"
+            )
+            .AddParameter("assembly_id", assemblyId)
+            .AddParameter("status", status);
 
-            var query = CreateGetTopicsQuery(conditions)
-                .AddParameter("assembly_id", assemblyId);
+            List<AssemblyTopic> topics = new();
+            connection.ExecuteReader(query, reader =>
+            {
+                var topic = _topicMapper.MapToEntity(reader);
+                if (topic is not null)
+                    topics.Add(topic);
+            });
 
-            if (status is not null)
-                query.AddParameter("status", status.Value);
-
-            return ReadTopics(query);
+            return topics;
         }
 
         public List<AssemblyTopic> GetAllByAssemblyAndAuthor(
@@ -33,61 +82,42 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
             AssemblyTopicStatus? status = null
         )
         {
-            var conditions = @"WHERE topic.assembly_id = @assembly_id
-                        AND topic.author_id = @author_id";
-
-            if (status is not null)
-                conditions += " AND topic.topic_type = @status";
-
-            var query = CreateGetTopicsQuery(conditions)
-                .AddParameter("assembly_id", assemblyId)
-                .AddParameter("author_id", authorId);
-
-            if (status is not null)
-                query.AddParameter("status", status.Value);
-
-            return ReadTopics(query);
-        }
-
-        private DatabaseQuery CreateGetTopicsQuery(string conditions)
-        {
-            return DatabaseQuery.Create(
-                $@"SELECT
-                        topic.id AS assembly_topic_id,
-                        topic.assembly_id AS assembly_topic_assembly_id,
-                        topic.author_id AS assembly_topic_author_id,
-                        topic.description AS assembly_topic_description,
-                        topic.topic_type AS assembly_topic_status,
-                        topic.author_id = building.building_manager_id AS assembly_topic_is_enforced_by_manager,
-                        author.id AS author_user_id,
-                        author.username AS author_username,
-                        author.password AS author_password,
-                        author.name AS author_name,
-                        author.surname AS author_surname,
-                        author.user_role AS author_user_role
-                    FROM assembly_topics topic
-                    INNER JOIN users author ON topic.author_id = author.id
-                    INNER JOIN assemblies assembly ON topic.assembly_id = assembly.id
-                    INNER JOIN buildings building ON assembly.building_id = building.id
-                    {conditions}
-                    ORDER BY author.name, author.surname, topic.id;"
-            );
-        }
-
-        private List<AssemblyTopic> ReadTopics(DatabaseQuery query)
-        {
             using var connection = DatabaseConnection.Create();
-            List<AssemblyTopic> topics = new();
 
-            connection.ExecuteReader(
-                query,
-                reader =>
-                {
-                    var topic = _topicMapper.MapToEntity(reader);
-                    if (topic is not null)
-                        topics.Add(topic);
-                }
-            );
+            var query = DatabaseQuery.Create(
+                @"SELECT
+                    topic.id AS assembly_topic_id,
+                    topic.assembly_id AS assembly_topic_assembly_id,
+                    topic.author_id AS assembly_topic_author_id,
+                    topic.description AS assembly_topic_description,
+                    topic.topic_type AS assembly_topic_status,
+                    topic.author_id = building.building_manager_id AS assembly_topic_is_enforced_by_manager,
+                    author.id AS author_user_id,
+                    author.username AS author_username,
+                    author.password AS author_password,
+                    author.name AS author_name,
+                    author.surname AS author_surname,
+                    author.user_role AS author_user_role
+                FROM assembly_topics topic
+                INNER JOIN users author ON topic.author_id = author.id
+                INNER JOIN assemblies assembly ON topic.assembly_id = assembly.id
+                INNER JOIN buildings building ON assembly.building_id = building.id
+                WHERE topic.assembly_id = @assembly_id
+                AND topic.author_id = @author_id AND
+                    (topic.topic_type = @status OR @status IS NULL)
+                ORDER BY topic.id;"
+            )
+                .AddParameter("assembly_id", assemblyId)
+                .AddParameter("author_id", authorId)
+                .AddParameter("status", status);
+
+            List<AssemblyTopic> topics = new();
+            connection.ExecuteReader(query, reader =>
+            {
+                var topic = _topicMapper.MapToEntity(reader);
+                if (topic is not null)
+                    topics.Add(topic);
+            });
 
             return topics;
         }

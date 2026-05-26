@@ -12,6 +12,17 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
         public AssemblyTopicService() : base(new AssemblyTopicMapper()) { }
 
+        public AssemblyTopicDto SuggestTopic(long assemblyId, long residentId, string description)
+            => MapToDto(
+                _topicRepository.Create(
+                    AssemblyTopic.SuggestedByResident(
+                        assemblyId,
+                        residentId,
+                        description.Trim()
+                    )
+                )
+            );
+
         public List<AssemblyTopicDto> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null

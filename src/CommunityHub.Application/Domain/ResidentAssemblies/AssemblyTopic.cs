@@ -37,10 +37,14 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             IsEnforcedByManager = isEnforcedByManager;
         }
 
-        public static AssemblyTopic SuggestedByResident(long residentId, string description)
+        public static AssemblyTopic SuggestedByResident(
+            long assemblyId,
+            long residentId,
+            string description
+        )
         {
             return new AssemblyTopic(
-                assemblyId: 0,
+                assemblyId: assemblyId,
                 authorId: residentId,
                 description: description,
                 status: AssemblyTopicStatus.Suggested
