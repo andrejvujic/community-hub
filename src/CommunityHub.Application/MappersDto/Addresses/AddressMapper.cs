@@ -21,17 +21,17 @@ namespace CommunityHub.Application.MappersDto.Addresses
                 _countryMapper.MapToDto(address.Country)
             );
         }
-        public Address MapToDomain(AddressDto dto)
+        public Address MapToEntity(AddressDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new Address(
                 dto.Id,
-                _streetMapper.MapToDomain(dto.Street),
+                _streetMapper.MapToEntity(dto.Street),
                 dto.StreetNumber,
                 dto.Neighborhood,
-                _cityMapper.MapToDomain(dto.City),
-                _countryMapper.MapToDomain(dto.Country)
+                _cityMapper.MapToEntity(dto.City),
+                _countryMapper.MapToEntity(dto.Country)
             );
         }
     }

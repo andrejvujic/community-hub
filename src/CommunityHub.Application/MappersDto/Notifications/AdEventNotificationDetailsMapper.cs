@@ -5,7 +5,7 @@ namespace CommunityHub.Application.MappersDto.Notifications
 {
     public class AdEventNotificationDetailsMapper : IMapper<AdEventNotificationDetails, AdEventNotificationDetailsDto>
     {
-        public AdEventNotificationDetails MapToDomain(AdEventNotificationDetailsDto dto)
+        public AdEventNotificationDetails MapToEntity(AdEventNotificationDetailsDto dto)
             => new AdEventNotificationDetails(
                     adId: dto.AdId,
                     eventType: dto.EventType,   

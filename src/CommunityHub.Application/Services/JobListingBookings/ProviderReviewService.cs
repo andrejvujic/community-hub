@@ -30,8 +30,8 @@ namespace CommunityHub.Application.Services.JobListingBookings
         public ProviderReviewDto Create(BookedJobDto bookedJobDto, UserDto coordinatorDto, 
             int quality, int communication, string? comment)
         {
-            var bookedJob = _bookedJobMapper.MapToDomain(bookedJobDto);
-            var coordinator = _userMapper.MapToDomain(coordinatorDto);
+            var bookedJob = _bookedJobMapper.MapToEntity(bookedJobDto);
+            var coordinator = _userMapper.MapToEntity(coordinatorDto);
 
             var review = new ProviderReview(
                 bookedJob, 
@@ -48,7 +48,7 @@ namespace CommunityHub.Application.Services.JobListingBookings
 
         public ProviderReviewDto Update(ProviderReviewDto providerReviewDto, int quality, int communication, string? comment)
         {
-            var review = _providerReviewMapper.MapToDomain(providerReviewDto);
+            var review = _providerReviewMapper.MapToEntity(providerReviewDto);
             var updated = review.CopyWith(
                 qualityRating: quality,
                 communicationRating: communication,

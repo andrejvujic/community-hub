@@ -26,7 +26,7 @@ namespace CommunityHub.Application.MappersDto.CommonRooms
                 status: rentalRequest.Status
             );
         }
-        public CommonRoomRentalRequest MapToDomain(CommonRoomRentalRequestDto dto)
+        public CommonRoomRentalRequest MapToEntity(CommonRoomRentalRequestDto dto)
         {
             if (dto == null) throw new ArgumentNullException("Couldn't convert null reference to CommonRoomRentalRequest");
 
@@ -35,8 +35,8 @@ namespace CommunityHub.Application.MappersDto.CommonRooms
                 dto.CommonRoomId,
                 dto.RequestedStartDate,
                 dto.RequestedEndDate,
-                dto.Resident != null ? _userMapper.MapToDomain(dto.Resident) : null,
-                dto.CommonRoom != null ? _commonRoomMapper.MapToDomain(dto.CommonRoom) : null,
+                dto.Resident != null ? _userMapper.MapToEntity(dto.Resident) : null,
+                dto.CommonRoom != null ? _commonRoomMapper.MapToEntity(dto.CommonRoom) : null,
                 dto.ProposedStartDate,
                 dto.ProposedEndDate,
                 dto.AssignedDate,

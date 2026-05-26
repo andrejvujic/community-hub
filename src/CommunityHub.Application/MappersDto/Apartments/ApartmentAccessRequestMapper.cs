@@ -23,7 +23,7 @@ namespace CommunityHub.Application.MappersDto.Apartments
                 creationDate: apartmentAccessRequest.CreationDate
             );
         }
-        public ApartmentAccessRequest MapToDomain(ApartmentAccessRequestDto dto)
+        public ApartmentAccessRequest MapToEntity(ApartmentAccessRequestDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -34,8 +34,8 @@ namespace CommunityHub.Application.MappersDto.Apartments
                 creationDate: dto.CreationDate,
                 id: dto.Id,
                 comment: dto.Comment,
-                applicant: dto.Applicant is not null ? _userMapper.MapToDomain(dto.Applicant) : null,
-                apartment: dto.Apartment is not null ? _apartmentMapper.MapToDomain(dto.Apartment) : null
+                applicant: dto.Applicant is not null ? _userMapper.MapToEntity(dto.Applicant) : null,
+                apartment: dto.Apartment is not null ? _apartmentMapper.MapToEntity(dto.Apartment) : null
             );
         }
     }

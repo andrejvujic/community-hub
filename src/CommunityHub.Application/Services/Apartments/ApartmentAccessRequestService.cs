@@ -98,7 +98,7 @@ namespace CommunityHub.Application.Services.Apartments
 
         public bool UpdateStatus(ApartmentAccessRequestDto requestDto, Status newStatus, string comment)
         {
-            var domainRequest = _apartmentAccessRequestMapper.MapToDomain(requestDto);
+            var domainRequest = _apartmentAccessRequestMapper.MapToEntity(requestDto);
 
             var updatedRequest = domainRequest.CopyWith(status: newStatus, comment: comment);
 

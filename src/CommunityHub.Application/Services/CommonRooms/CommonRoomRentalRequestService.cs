@@ -192,13 +192,13 @@ namespace CommunityHub.Application.Services.CommonRooms
 
         public void ApproveOneDaySuggestion(CommonRoomRentalRequestDto request, DateTime day)
         {
-            var domainRequest = _rentalRequestMapper.MapToDomain(request);
+            var domainRequest = _rentalRequestMapper.MapToEntity(request);
             domainRequest = domainRequest.CopyWith(status: RentalRequestStatus.Approved, assignedDate: day);
             _rentalRequestRepository.Update(domainRequest);
         }
         public void AcceptMultiDaySuggestion(CommonRoomRentalRequestDto request, DateTime proposedStartDate, DateTime proposedEndDate)
         {
-            var domainRequest = _rentalRequestMapper.MapToDomain(request);
+            var domainRequest = _rentalRequestMapper.MapToEntity(request);
             domainRequest = domainRequest.CopyWith(status: RentalRequestStatus.WaitingDateChange, proposedStartDate: proposedStartDate, proposedEndDate: proposedEndDate);
             _rentalRequestRepository.Update(domainRequest);
         }

@@ -26,7 +26,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public NeighborhoodDto Create(NeighborhoodDto neighborhoodDto)
         {
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
             var created = _neighborhoodRepository.Create(neighborhood);
 
             return _neighborhoodMapper.MapToDto(created);
@@ -52,8 +52,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public bool AddressIsInNeighborhood(NeighborhoodDto neighborhoodDto, AddressDto addressDto)
         {
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
-            var address = _addressMapper.MapToDomain(addressDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
+            var address = _addressMapper.MapToEntity(addressDto);
             return neighborhood.Contains(address);
         }
     }

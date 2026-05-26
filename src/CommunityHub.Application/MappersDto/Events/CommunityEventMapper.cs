@@ -33,13 +33,13 @@ namespace CommunityHub.Application.MappersDto.Events
             );
         }
 
-        public CommunityEvent MapToDomain(CommunityEventDto dto)
+        public CommunityEvent MapToEntity(CommunityEventDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            var items = dto.Items?.Select(_eventItemMapper.MapToDomain).ToList();
-            var registrations = dto.Registrations?.Select(_eventRegistrationMapper.MapToDomain).ToList();
-            var assignments = dto.Assignments?.Select(_eventItemAssignmentMapper.MapToDomain).ToList();
+            var items = dto.Items?.Select(_eventItemMapper.MapToEntity).ToList();
+            var registrations = dto.Registrations?.Select(_eventRegistrationMapper.MapToEntity).ToList();
+            var assignments = dto.Assignments?.Select(_eventItemAssignmentMapper.MapToEntity).ToList();
 
             return new CommunityEvent(
                 dto.Id,
@@ -49,8 +49,8 @@ namespace CommunityHub.Application.MappersDto.Events
                 dto.DurationMinutes,
                 dto.MinVolunteers,
                 dto.Status,
-                _neighborhoodMapper.MapToDomain(dto.Neighborhood),
-                _citizenMapper.MapToDomain(dto.Organizer),
+                _neighborhoodMapper.MapToEntity(dto.Neighborhood),
+                _citizenMapper.MapToEntity(dto.Organizer),
                 items,
                 registrations,
                 assignments

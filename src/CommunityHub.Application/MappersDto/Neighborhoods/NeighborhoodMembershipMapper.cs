@@ -18,14 +18,14 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods
             );
         }
 
-        public NeighborhoodMembership MapToDomain(NeighborhoodMembershipDto dto)
+        public NeighborhoodMembership MapToEntity(NeighborhoodMembershipDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new NeighborhoodMembership(
                 dto.Id,
                 dto.AcceptanceDate,
-                _neighborhoodMapper.MapToDomain(dto.Neighborhood)
+                _neighborhoodMapper.MapToEntity(dto.Neighborhood)
             );
         }
     }

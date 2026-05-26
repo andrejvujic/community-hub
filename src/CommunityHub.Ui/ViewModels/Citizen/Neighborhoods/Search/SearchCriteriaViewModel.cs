@@ -139,8 +139,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             string? name = string.IsNullOrWhiteSpace(NameFilter) ? null : NameFilter.Trim();
             string? address = string.IsNullOrWhiteSpace(AddressFilter) ? null : AddressFilter.Trim();
 
-            var countryDomain = SelectedCountry != null ? _countryMapper.MapToDomain(SelectedCountry) : null;
-            var cityDomain = SelectedCity != null ? _cityMapper.MapToDomain(SelectedCity) : null;
+            var countryDomain = SelectedCountry != null ? _countryMapper.MapToEntity(SelectedCountry) : null;
+            var cityDomain = SelectedCity != null ? _cityMapper.MapToEntity(SelectedCity) : null;
 
             return new NeighborhoodSearchParameters(countryDomain, cityDomain, name, address);
         }

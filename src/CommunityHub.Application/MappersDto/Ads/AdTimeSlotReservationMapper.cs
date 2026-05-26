@@ -18,15 +18,15 @@ namespace CommunityHub.Application.MappersDto.Ads
                 reservation.RequestAd != null ? _adMapper.MapToDto(reservation.RequestAd) : null
             );
         }
-        public AdTimeSlotReservation MapToDomain(AdTimeSlotReservationDto dto)
+        public AdTimeSlotReservation MapToEntity(AdTimeSlotReservationDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new AdTimeSlotReservation(
                 dto.OfferTimeSlotId,
                 dto.RequestTimeSlotId,
-                dto.OfferAd != null ? _adMapper.MapToDomain(dto.OfferAd) : null,
-                dto.RequestAd != null ? _adMapper.MapToDomain(dto.RequestAd) : null,
+                dto.OfferAd != null ? _adMapper.MapToEntity(dto.OfferAd) : null,
+                dto.RequestAd != null ? _adMapper.MapToEntity(dto.RequestAd) : null,
                 dto.Id
             );
         }

@@ -24,13 +24,13 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
                 providerReview.UpdatedAt);
         }
 
-        public ProviderReview MapToDomain(ProviderReviewDto dto)
+        public ProviderReview MapToEntity(ProviderReviewDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new ProviderReview(
-                _bookedJobMapper.MapToDomain(dto.BookedJob),
-                _userMapper.MapToDomain(dto.Coordinator),
+                _bookedJobMapper.MapToEntity(dto.BookedJob),
+                _userMapper.MapToEntity(dto.Coordinator),
                 dto.QualityRating,
                 dto.CommunicationRating,
                 dto.CreatedAt,

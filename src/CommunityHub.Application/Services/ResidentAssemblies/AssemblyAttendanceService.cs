@@ -41,7 +41,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
           
             EnsureAttendanceCanBeChanged(targetAssembly);
 
-            var assembly = _assemblyMapper.MapToDomain(targetAssembly);
+            var assembly = _assemblyMapper.MapToEntity(targetAssembly);
 
             var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
@@ -64,7 +64,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         {
             EnsureAttendanceCanBeChanged(targetAssembly);
 
-            var assembly = _assemblyMapper.MapToDomain(targetAssembly);
+            var assembly = _assemblyMapper.MapToEntity(targetAssembly);
 
             var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,

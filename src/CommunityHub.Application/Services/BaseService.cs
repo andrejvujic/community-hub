@@ -13,11 +13,11 @@ namespace CommunityHub.Application.Services
             _mapper = mapper;
         }
 
-        public TEntity MapToEntity(TDto dto) => _mapper.MapToDomain(dto);
+        public TEntity MapToEntity(TDto dto) => _mapper.MapToEntity(dto);
 
         public List<TEntity> MapToEntity(List<TDto> dtos)
             => dtos
-                .Select(_mapper.MapToDomain)
+                .Select(_mapper.MapToEntity)
                 .ToList();
 
         public TDto MapToDto(TEntity entity) => _mapper.MapToDto(entity);

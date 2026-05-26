@@ -26,7 +26,7 @@ namespace CommunityHub.Application.MappersDto.Users
             );
         }
 
-        public Citizen MapToDomain(CitizenDto citizenDto)
+        public Citizen MapToEntity(CitizenDto citizenDto)
         {
             if (citizenDto == null) throw new ArgumentNullException(nameof(citizenDto));
 
@@ -37,8 +37,8 @@ namespace CommunityHub.Application.MappersDto.Users
                 citizenDto.Name,
                 citizenDto.Surname,
                 citizenDto.Role,
-                _addressMapper.MapToDomain(citizenDto.Address),
-                citizenDto.Membership != null ? _neighborhoodMembershipMapper.MapToDomain(citizenDto.Membership) : null
+                _addressMapper.MapToEntity(citizenDto.Address),
+                citizenDto.Membership != null ? _neighborhoodMembershipMapper.MapToEntity(citizenDto.Membership) : null
             );
         }
     }

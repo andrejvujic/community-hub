@@ -23,7 +23,7 @@ namespace CommunityHub.Application.Services.Addresses
 
         public StreetSectionDto Create(StreetSectionDto dto, long neighborhoodId)
         {
-            var created = _streetSectionRepository.Create(_streetSectionMapper.MapToDomain(dto), neighborhoodId);
+            var created = _streetSectionRepository.Create(_streetSectionMapper.MapToEntity(dto), neighborhoodId);
             return _streetSectionMapper.MapToDto(created);
         }
     }

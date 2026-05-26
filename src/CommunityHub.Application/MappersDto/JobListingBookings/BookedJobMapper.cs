@@ -30,13 +30,13 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
                     : null);
         }
 
-        public BookedJob MapToDomain(BookedJobDto dto)
+        public BookedJob MapToEntity(BookedJobDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new BookedJob(
-                _listingMapper.MapToDomain(dto.Listing),
-                _neighborhoodMapper.MapToDomain(dto.Neighborhood),
+                _listingMapper.MapToEntity(dto.Listing),
+                _neighborhoodMapper.MapToEntity(dto.Neighborhood),
                 dto.ScheduledDate,
                 dto.UnitPrice,
                 dto.Id,
@@ -44,7 +44,7 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
                 dto.DurationHours,
                 dto.IsSubstitution,
                 dto.SubstitutingProvider != null
-                    ? _providerMapper.MapToDomain(dto.SubstitutingProvider)
+                    ? _providerMapper.MapToEntity(dto.SubstitutingProvider)
                     : null);
         }
     }

@@ -20,7 +20,7 @@ namespace CommunityHub.Application.MappersDto.Ads
                 timeSlot.Reservation != null ? _adTimeSlotReservationMapper.MapToDto(timeSlot.Reservation) : null
             );
         }
-        public AdTimeSlot MapToDomain(AdTimeSlotDto dto)
+        public AdTimeSlot MapToEntity(AdTimeSlotDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -28,8 +28,8 @@ namespace CommunityHub.Application.MappersDto.Ads
                 dto.AdId,
                 dto.StartTime,
                 dto.EndTime,
-                dto.Ad != null ? _adMapper.MapToDomain(dto.Ad) : null,
-                dto.Reservation != null ? _adTimeSlotReservationMapper.MapToDomain(dto.Reservation) : null,
+                dto.Ad != null ? _adMapper.MapToEntity(dto.Ad) : null,
+                dto.Reservation != null ? _adTimeSlotReservationMapper.MapToEntity(dto.Reservation) : null,
                 dto.Id
             );
         }

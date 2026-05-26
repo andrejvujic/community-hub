@@ -20,12 +20,12 @@ namespace CommunityHub.Application.MappersDto.TrustRecords
             );
         }
 
-        public CitizenTrustRecord MapToDomain(CitizenTrustRecordDto dto)
+        public CitizenTrustRecord MapToEntity(CitizenTrustRecordDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new CitizenTrustRecord(
-                _citizenMapper.MapToDomain(dto.Citizen),
+                _citizenMapper.MapToEntity(dto.Citizen),
                 dto.Organized,
                 dto.Volunteered
             );

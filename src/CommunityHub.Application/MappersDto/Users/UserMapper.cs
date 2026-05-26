@@ -18,7 +18,7 @@ namespace CommunityHub.Application.MappersDto.Users
                 user.Role
             );
         }
-        public User MapToDomain(UserDto dto)
+        public User MapToEntity(UserDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

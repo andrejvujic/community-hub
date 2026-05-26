@@ -8,12 +8,12 @@ namespace CommunityHub.Application.MappersDto.Notifications
         IMapper<AdEventNotificationDetails, AdEventNotificationDetailsDto> _adEventNotificationDetailsMapper 
             = new AdEventNotificationDetailsMapper();
 
-        public NotificationDetails MapToDomain(NotificationDetailsDto dto)
+        public NotificationDetails MapToEntity(NotificationDetailsDto dto)
         {
             if (dto is AdEventNotificationDetailsDto adEventDetails)
-                return _adEventNotificationDetailsMapper.MapToDomain(adEventDetails);
+                return _adEventNotificationDetailsMapper.MapToEntity(adEventDetails);
 
-            throw new NotImplementedException($"MapToDomain isn't implemented for type {dto.GetType()}");
+            throw new NotImplementedException($"MapToEntity isn't implemented for type {dto.GetType()}");
         }
 
         public NotificationDetailsDto MapToDto(NotificationDetails entity)

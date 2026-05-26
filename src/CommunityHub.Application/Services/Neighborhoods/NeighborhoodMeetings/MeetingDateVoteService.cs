@@ -31,7 +31,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
         {
             var meeting = _meetingRepository.GetById(meetingId)!;
             var citizenDto = _citizenService.GetCitizenById(citizenId)!;
-            var citizenDomain = _citizenMapper.MapToDomain(citizenDto);
+            var citizenDomain = _citizenMapper.MapToEntity(citizenDto);
 
             var vote = new MeetingDateVote(meeting, citizenDomain, votedDate);
             var created = _meetingDateVoteRepository.Create(vote);

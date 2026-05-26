@@ -19,7 +19,7 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
             );
         }
 
-        public Assembly MapToDomain(AssemblyDto dto)
+        public Assembly MapToEntity(AssemblyDto dto)
         {
             if (dto is null) throw new ArgumentNullException(nameof(dto));
 

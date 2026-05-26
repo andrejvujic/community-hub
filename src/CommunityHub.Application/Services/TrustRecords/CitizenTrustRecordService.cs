@@ -27,7 +27,7 @@ namespace CommunityHub.Application.Services.TrustRecords
             int organized = _communityEventRepository.GetOrganizedEventsCount(userId);
             int volunteered = _eventRegistrationRepository.GetConfirmedVolunteerCount(userId);
 
-            var citizenDomain = _citizenMapper.MapToDomain(citizen);
+            var citizenDomain = _citizenMapper.MapToEntity(citizen);
             var trustRecord = new CitizenTrustRecord(citizenDomain, organized, volunteered);
 
             return _trustRecordMapper.MapToDto(trustRecord);
@@ -45,7 +45,7 @@ namespace CommunityHub.Application.Services.TrustRecords
                 int organized = _communityEventRepository.GetOrganizedEventsCount(citizen.Id);
                 int volunteered = _eventRegistrationRepository.GetConfirmedVolunteerCount(citizen.Id);
 
-                var citizenDomain = _citizenMapper.MapToDomain(citizen);
+                var citizenDomain = _citizenMapper.MapToEntity(citizen);
                 var trustRecord = new CitizenTrustRecord(citizenDomain, organized, volunteered);
                 trustRecords.Add(_trustRecordMapper.MapToDto(trustRecord));
             }

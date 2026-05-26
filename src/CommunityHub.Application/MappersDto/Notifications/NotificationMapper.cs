@@ -9,7 +9,7 @@ namespace CommunityHub.Application.MappersDto.Notifications
         private readonly IMapper<NotificationDetails, NotificationDetailsDto> _detailsMapper
             = new NotificationDetailsMapper();
 
-        public Notification MapToDomain(NotificationDto dto)
+        public Notification MapToEntity(NotificationDto dto)
         {
             return new Notification(
                 recipientId: dto.RecipientId,
@@ -19,7 +19,7 @@ namespace CommunityHub.Application.MappersDto.Notifications
                 type: dto.Type,
                 recipient: dto.Recipient,
                 status: dto.Status,
-                details: dto.Details is not null ? _detailsMapper.MapToDomain(dto.Details) : null,
+                details: dto.Details is not null ? _detailsMapper.MapToEntity(dto.Details) : null,
                 id: dto.Id
             );
         }

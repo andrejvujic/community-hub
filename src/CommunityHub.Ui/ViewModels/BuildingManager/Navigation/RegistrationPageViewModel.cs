@@ -369,11 +369,11 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
         {
             var address = new Address(
                 id: 0,
-                street: _streetMapper.MapToDomain(SelectedStreet!),
+                street: _streetMapper.MapToEntity(SelectedStreet!),
                 streetNumber: StreetNumber,
                 neighborhood: Neighborhood,
-                city: _cityMapper.MapToDomain(SelectedCity!),
-                country: _countryMapper.MapToDomain(SelectedCountry!)
+                city: _cityMapper.MapToEntity(SelectedCity!),
+                country: _countryMapper.MapToEntity(SelectedCountry!)
             );
 
             return _addressService.Create(address);

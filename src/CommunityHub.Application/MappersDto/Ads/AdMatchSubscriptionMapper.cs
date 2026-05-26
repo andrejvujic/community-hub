@@ -6,9 +6,9 @@ namespace CommunityHub.Application.MappersDto.Ads
     public class AdMatchSubscriptionMapper : IMapper<AdMatchSubscription, AdMatchSubscriptionDto>
     {
         private readonly AdMapper _adMapper = new();
-        public AdMatchSubscription MapToDomain(AdMatchSubscriptionDto dto)
+        public AdMatchSubscription MapToEntity(AdMatchSubscriptionDto dto)
             => new AdMatchSubscription(
-                subscribedAd: dto.SubscribedAd is null ? null: _adMapper.MapToDomain(dto.SubscribedAd),
+                subscribedAd: dto.SubscribedAd is null ? null: _adMapper.MapToEntity(dto.SubscribedAd),
                 subscribedAdId: dto.SubscribedAdId,
                 id: dto.Id
             );

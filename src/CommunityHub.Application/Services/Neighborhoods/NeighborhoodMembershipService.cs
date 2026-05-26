@@ -35,7 +35,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var membership = new NeighborhoodMembership(
                 0,
                 DateTime.Now,
-                _neighborhoodMapper.MapToDomain(neighborhoodDto)
+                _neighborhoodMapper.MapToEntity(neighborhoodDto)
             );
             var createdMembership = _neighborhoodMembershipRepository.Create(membership);
             return _neighborhoodMembershipMapper.MapToDto(createdMembership);
@@ -43,7 +43,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public void CreateMembershipAndUpdate(CitizenDto citizenDto, NeighborhoodDto neighborhoodDto)
         {
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
             var membership = new NeighborhoodMembership(
                 0,
                 DateTime.Now,

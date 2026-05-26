@@ -42,22 +42,22 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public void Reject(NeighborhoodAccessRequestDto requestDto, string comment)
         {
-            var request = _neighborhoodAccessRequestMapper.MapToDomain(requestDto);
+            var request = _neighborhoodAccessRequestMapper.MapToEntity(requestDto);
             var rejected = request.Reject(comment);
             _neighborhoodAccessRequestRepository.Update(rejected);
         }
 
         public void Accept(NeighborhoodAccessRequestDto requestDto)
         {
-            var request = _neighborhoodAccessRequestMapper.MapToDomain(requestDto);
+            var request = _neighborhoodAccessRequestMapper.MapToEntity(requestDto);
             var accepted = request.Accept();
             _neighborhoodAccessRequestRepository.Update(accepted);
         }
 
         public void CreateAccessRequest(CitizenDto citizenDto, NeighborhoodDto neighborhoodDto)
         {
-            var citizen = _citizenMapper.MapToDomain(citizenDto);
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
+            var citizen = _citizenMapper.MapToEntity(citizenDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
 
             var request = new NeighborhoodAccessRequest(
                 citizen,

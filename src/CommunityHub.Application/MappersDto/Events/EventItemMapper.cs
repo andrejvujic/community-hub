@@ -16,7 +16,7 @@ namespace CommunityHub.Application.MappersDto.Events
             );
         }
 
-        public EventItem MapToDomain(EventItemDto dto)
+        public EventItem MapToEntity(EventItemDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

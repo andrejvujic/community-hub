@@ -26,18 +26,18 @@ namespace CommunityHub.Application.MappersDto.Buildings
             );
         }
 
-        public Building MapToDomain(BuildingDto dto)
+        public Building MapToEntity(BuildingDto dto)
         {
             if (dto == null) throw new ArgumentNullException("Can't convert null reference to Building.");
 
-            var images = dto.Images?.Select(_imageMapper.MapToDomain).ToList();
+            var images = dto.Images?.Select(_imageMapper.MapToEntity).ToList();
 
             var building = new Building(
                 id: dto.Id,
                 floorCount: dto.FloorCount,
                 apartmentCount: dto.ApartmentCount,
-                manager: _userMapper.MapToDomain(dto.Manager),
-                address: _addressMapper.MapToDomain(dto.Address)
+                manager: _userMapper.MapToEntity(dto.Manager),
+                address: _addressMapper.MapToEntity(dto.Address)
             );
 
             return images is not null && images.Count > 0

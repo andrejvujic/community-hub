@@ -18,7 +18,7 @@ namespace CommunityHub.Application.MappersDto.JobListings
             );
         }
 
-        public PriceEntry MapToDomain(PriceEntryDto dto)
+        public PriceEntry MapToEntity(PriceEntryDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

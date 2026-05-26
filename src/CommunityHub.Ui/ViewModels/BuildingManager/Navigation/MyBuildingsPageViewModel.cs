@@ -41,7 +41,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
         {
             if (buildingDto == null) return;
 
-            var building = _buildingMapper.MapToDomain(buildingDto);
+            var building = _buildingMapper.MapToEntity(buildingDto);
 
             _navigationService.Navigate(new AppNavigationState
             {

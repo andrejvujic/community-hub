@@ -19,13 +19,13 @@ namespace CommunityHub.Application.MappersDto.Apartments
                 apartmentMembership.AcceptanceDate
             );
         }
-        public ApartmentMembership MapToDomain(ApartmentMembershipDto dto)
+        public ApartmentMembership MapToEntity(ApartmentMembershipDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new ApartmentMembership(
-                _userMapper.MapToDomain(dto.Resident),
-                _apartmentMapper.MapToDomain(dto.Apartment),
+                _userMapper.MapToEntity(dto.Resident),
+                _apartmentMapper.MapToEntity(dto.Apartment),
                 dto.AcceptanceDate,
                 dto.Id
             );

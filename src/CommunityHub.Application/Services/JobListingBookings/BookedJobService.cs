@@ -25,7 +25,7 @@ namespace CommunityHub.Application.Services.JobListingBookings
 
         public AvailableJobSlotDto? FindFirstAvailableSlot(JobListingDto jobListing, int? durationHours)
         {
-            var joblisting = _jobListingMapper.MapToDomain(jobListing);
+            var joblisting = _jobListingMapper.MapToEntity(jobListing);
             var bookedJobs = _bookedJobRepository.GetByServiceProviderId(joblisting.Provider.Id);
             var availableSlot = joblisting.FindFirstAvailableSlot(bookedJobs, durationHours);
             return availableSlot != null ? _availableJobSlotMapper.MapToDto(availableSlot) : null;
@@ -33,9 +33,9 @@ namespace CommunityHub.Application.Services.JobListingBookings
 
         public BookedJobDto Book(JobListingDto listingDto, NeighborhoodDto neighborhoodDto, AvailableJobSlotDto slotDto)
         {
-            var listing = _jobListingMapper.MapToDomain(listingDto);
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
-            var slot = _availableJobSlotMapper.MapToDomain(slotDto);
+            var listing = _jobListingMapper.MapToEntity(listingDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
+            var slot = _availableJobSlotMapper.MapToEntity(slotDto);
             var job = new BookedJob(
                 listing, 
                 neighborhood, 

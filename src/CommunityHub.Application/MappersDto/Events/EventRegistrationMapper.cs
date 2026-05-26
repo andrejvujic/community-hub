@@ -20,13 +20,13 @@ namespace CommunityHub.Application.MappersDto.Events
             );
         }
 
-        public EventRegistration MapToDomain(EventRegistrationDto dto)
+        public EventRegistration MapToEntity(EventRegistrationDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new EventRegistration(
                 dto.Id,
-                _citizenMapper.MapToDomain(dto.Citizen),
+                _citizenMapper.MapToEntity(dto.Citizen),
                 dto.EventId,
                 dto.Attended
             );

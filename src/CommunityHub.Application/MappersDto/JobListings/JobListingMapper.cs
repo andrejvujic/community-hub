@@ -30,7 +30,7 @@ namespace CommunityHub.Application.MappersDto.JobListings
                 jobListing.WorkSamples.Select(_imageMapper.MapToDto).ToList());
         }
 
-        public JobListing MapToDomain(JobListingDto dto)
+        public JobListing MapToEntity(JobListingDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -38,12 +38,12 @@ namespace CommunityHub.Application.MappersDto.JobListings
                 dto.ServiceName,
                 dto.Description,
                 dto.BillingType,
-                _cityMapper.MapToDomain(dto.City),
-                _countryMapper.MapToDomain(dto.Country),
-                _providerMapper.MapToDomain(dto.Provider),
+                _cityMapper.MapToEntity(dto.City),
+                _countryMapper.MapToEntity(dto.Country),
+                _providerMapper.MapToEntity(dto.Provider),
                 dto.Id,
-                dto.PriceList.Select(_priceEntryMapper.MapToDomain),
-                dto.WorkSamples.Select(_imageMapper.MapToDomain));
+                dto.PriceList.Select(_priceEntryMapper.MapToEntity),
+                dto.WorkSamples.Select(_imageMapper.MapToEntity));
         }
     }
 }

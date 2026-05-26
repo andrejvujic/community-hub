@@ -17,7 +17,7 @@ namespace CommunityHub.Application.MappersDto.JobListings
                 slot.DurationHours);
         }
 
-        public AvailableJobSlot MapToDomain(AvailableJobSlotDto dto)
+        public AvailableJobSlot MapToEntity(AvailableJobSlotDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

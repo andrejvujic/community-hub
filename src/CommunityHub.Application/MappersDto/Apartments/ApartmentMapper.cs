@@ -18,7 +18,7 @@ namespace CommunityHub.Application.MappersDto.Apartments
                 _buildingMapper.MapToDto(apartment.Building)
             );
         }
-        public Apartment MapToDomain(ApartmentDto dto)
+        public Apartment MapToEntity(ApartmentDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -26,7 +26,7 @@ namespace CommunityHub.Application.MappersDto.Apartments
                 dto.Id,
                 dto.Number,
                 dto.FloorNumber,
-                _buildingMapper.MapToDomain(dto.Building)
+                _buildingMapper.MapToEntity(dto.Building)
             );
         }
     }

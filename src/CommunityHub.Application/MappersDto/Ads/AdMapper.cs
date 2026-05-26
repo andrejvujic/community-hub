@@ -23,7 +23,7 @@ namespace CommunityHub.Application.MappersDto.Ads
                 endDate: ad.EndDate
             );
         }
-        public Ad MapToDomain(AdDto dto)
+        public Ad MapToEntity(AdDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -36,7 +36,7 @@ namespace CommunityHub.Application.MappersDto.Ads
                 dto.Description,
                 dto.StartDate,
                 dto.EndDate,
-                dto.Author is not null ? _userMapper.MapToDomain(dto.Author) : null,
+                dto.Author is not null ? _userMapper.MapToEntity(dto.Author) : null,
                 dto.Id
             );
         }

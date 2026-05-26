@@ -18,7 +18,7 @@ namespace CommunityHub.Application.MappersDto.CommonRooms
                 commonRoom.RentalType
             );
         }
-        public CommonRoom MapToDomain(CommonRoomDto dto)
+        public CommonRoom MapToEntity(CommonRoomDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

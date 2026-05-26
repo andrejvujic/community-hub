@@ -11,7 +11,7 @@ namespace CommunityHub.Application.MappersDto.Addresses
 
             return new CountryDto(country.Id, country.Name);
         }
-        public Country MapToDomain(CountryDto dto)
+        public Country MapToEntity(CountryDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
