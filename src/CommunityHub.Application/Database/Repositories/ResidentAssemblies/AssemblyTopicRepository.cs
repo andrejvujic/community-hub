@@ -58,6 +58,7 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                         topic.author_id AS assembly_topic_author_id,
                         topic.description AS assembly_topic_description,
                         topic.topic_type AS assembly_topic_status,
+                        topic.author_id = building.building_manager_id AS assembly_topic_is_enforced_by_manager,
                         author.id AS author_user_id,
                         author.username AS author_username,
                         author.password AS author_password,
@@ -66,6 +67,8 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                         author.user_role AS author_user_role
                     FROM assembly_topics topic
                     INNER JOIN users author ON topic.author_id = author.id
+                    INNER JOIN assemblies assembly ON topic.assembly_id = assembly.id
+                    INNER JOIN buildings building ON assembly.building_id = building.id
                     {conditions}
                     ORDER BY author.name, author.surname, topic.id;"
             );

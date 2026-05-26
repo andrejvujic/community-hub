@@ -14,6 +14,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <converters:AssemblyTopicStatusToStringConverter x:Key="AssemblyTopicStatusToStringConverter"/>
+        <converters:AssemblyTopicStatusToIconCodeConverter x:Key="AssemblyTopicStatusToIconCodeConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
 
     <Grid>
@@ -68,11 +69,20 @@
                                             FontSize="18"
                                             FontWeight="SemiBold"/>
                                         <Separator Height="8" Opacity="0"/>
-                                        <TextBlock
-                                            Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
+                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                FontSize="16"
+                                                Margin="0,0,8,0"
+                                                VerticalAlignment="Center"
+                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                            <TextBlock
+                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

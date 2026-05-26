@@ -17,7 +17,8 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 authorId: topic.AuthorId,
                 description: topic.Description,
                 status: topic.Status,
-                author: topic.Author is null ? null : _authorMapper.MapToDto(topic.Author)
+                author: topic.Author is null ? null : _authorMapper.MapToDto(topic.Author),
+                isEnforcedByManager: topic.IsEnforcedByManager
             );
         }
 
@@ -31,7 +32,8 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 authorId: dto.AuthorId,
                 description: dto.Description,
                 status: dto.Status,
-                author: dto.Author is null ? null : _authorMapper.MapToEntity(dto.Author)
+                author: dto.Author is null ? null : _authorMapper.MapToEntity(dto.Author),
+                isEnforcedByManager: dto.IsEnforcedByManager
             );
         }
     }

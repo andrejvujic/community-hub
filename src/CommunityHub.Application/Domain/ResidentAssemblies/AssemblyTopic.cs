@@ -16,12 +16,15 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
 
         public AssemblyTopicStatus Status { get; private set; }
 
+        public bool IsEnforcedByManager { get; private set; }
+
         public AssemblyTopic(
             long assemblyId,
             long authorId,
             string description,
             AssemblyTopicStatus status,
             User? author = null,
+            bool isEnforcedByManager = false,
             long id = 0
         )
         {
@@ -31,6 +34,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             Author = author;
             Description = description;
             Status = status;
+            IsEnforcedByManager = isEnforcedByManager;
         }
 
         public static AssemblyTopic SuggestedByResident(long residentId, string description)

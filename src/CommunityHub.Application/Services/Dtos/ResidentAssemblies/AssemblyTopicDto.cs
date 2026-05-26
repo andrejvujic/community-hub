@@ -17,13 +17,16 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
 
         public AssemblyTopicStatus Status { get; set; }
 
+        public bool IsEnforcedByManager { get; set; }
+
         public AssemblyTopicDto(
             long id,
             long assemblyId,
             long authorId,
             string description,
             AssemblyTopicStatus status,
-            UserDto? author = null
+            UserDto? author = null,
+            bool isEnforcedByManager = false
         )
         {
             Id = id;
@@ -32,6 +35,7 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
             Author = author;
             Description = description;
             Status = status;
+            IsEnforcedByManager = isEnforcedByManager;
         }
     }
 }

@@ -62,6 +62,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         public List<AssemblyTopicDto> Topics { get; }
 
+        public bool IsEnforcedByManager => Topics.First().IsEnforcedByManager;
+
         public AssemblyTopicAuthorGroup(UserDto author, List<AssemblyTopicDto> topics)
         {
             Author = author;

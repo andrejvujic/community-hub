@@ -43,6 +43,11 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
+                                        <TextBlock
+                                            Text=" (upravnik)"
+                                            FontSize="18"
+                                            FontWeight="Bold"
+                                            Visibility="{Binding IsEnforcedByManager, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                     </StackPanel>
 
                                     <ItemsControl ItemsSource="{Binding Topics}" Margin="0,8,0,0">
@@ -55,9 +60,11 @@
                                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                                     BorderThickness="1">
                                                     <TextBlock
-                                                        Text="{Binding Description}"
                                                         TextWrapping="Wrap"
-                                                        FontSize="16"/>
+                                                        FontSize="16">
+                                                        <Run Text="— "/>
+                                                        <Run Text="{Binding Description}"/>
+                                                    </TextBlock>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>

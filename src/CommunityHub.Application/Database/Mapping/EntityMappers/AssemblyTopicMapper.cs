@@ -20,6 +20,9 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             var author = _authorMapper.MapToEntity(reader.WithPrefix("author"));
             var description = reader.GetString(reader.GetOrdinal("assembly_topic_description"));
             var status = (AssemblyTopicStatus)reader.GetValue(reader.GetOrdinal("assembly_topic_status"));
+            var isEnforcedByManager = reader.GetBoolean(
+                reader.GetOrdinal("assembly_topic_is_enforced_by_manager")
+            );
 
             return new AssemblyTopic(
                 assemblyId: assemblyId,
@@ -27,6 +30,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 description: description,
                 status: status,
                 author: author,
+                isEnforcedByManager: isEnforcedByManager,
                 id: id
             );
         }
