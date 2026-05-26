@@ -29,7 +29,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             return MapToDto(assembly);
         }
 
-        public void RefreshStatuses()
+        public void RefreshStatusForAllAssemblies()
         {
             var assemblies = _assemblyRepository.GetAll();
 
