@@ -4,7 +4,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
 {
     public interface IAssemblyAttendanceRepository
     {
-        public AssemblyAttendance Create(AssemblyAttendance attendance);
+        public AssemblyAttendance Create(long apartmentId, long assemblyId);
 
         public void Delete(long attendanceId);
 

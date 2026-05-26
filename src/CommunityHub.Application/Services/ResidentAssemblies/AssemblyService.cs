@@ -19,22 +19,13 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 ? MapToDto(assembly)
                 : null;
 
-        public AssemblyDto UpdateStatus(AssemblyDto targetAssembly)
+        public AssemblyDto SynchronizeStatus(AssemblyDto targetAssembly)
         {
             var assembly = MapToEntity(targetAssembly);
 
-            if (!assembly.CanBeConfirmed && !assembly.CanBeCancelled && !assembly.CanBeUnconfirmed) return targetAssembly;
-
-            if (assembly.CanBeConfirmed)
-                assembly.Confirm();
-
-            if (assembly.CanBeCancelled)
-                assembly.Cancel();
-
-            if (assembly.CanBeUnconfirmed)
-                assembly.Unconfirm();
-
+            assembly.SynchronizeStatus();
             _assemblyRepository.Update(assembly);
+
             return MapToDto(assembly);
         }
     }

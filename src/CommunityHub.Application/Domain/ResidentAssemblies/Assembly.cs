@@ -51,7 +51,46 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             _attendances = attendances ?? [];
         }
 
-        public void RegisterAttendance(AssemblyAttendance attendance) => _attendances.Add(attendance);
+        private bool HasRegisteredAttendance(long apartmentId)
+            => _attendances.Any(attendance => attendance.ApartmentId == apartmentId);
+
+        public void RegisterAttendance(AssemblyAttendance attendance)
+        {
+            if (HasRegisteredAttendance(attendance.ApartmentId))
+                throw new InvalidOperationException("Attendance already registered");
+
+            _attendances.Add(attendance);
+        }
+
+        public void UnregisterAttendance(AssemblyAttendance attendance)
+        {
+            if (!HasRegisteredAttendance(attendance.ApartmentId))
+                throw new InvalidOperationException("Attendance wasn't registered");
+
+            _attendances.Remove(attendance);
+        }
+
+        public void SynchronizeStatus()
+        {
+            if (CanBeConfirmed)
+            {
+                Confirm();
+                return;
+            }
+
+            if (CanBeCancelled)
+            {
+                Cancel();
+                return;
+            }
+
+            if (CanBeUnconfirmed)
+            {
+                Unconfirm();
+                return;
+            }
+        }
+
 
         public double GetAttendancePercentage()
         {
