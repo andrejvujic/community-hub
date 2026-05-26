@@ -1,6 +1,7 @@
 using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.Services.Dtos.ResidentAssemblies;
 using CommunityHub.Application.Services.ResidentAssemblies;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 
@@ -44,11 +45,36 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         private void ToggleAttendance()
         {
-            if (HasConfirmedAttendance)
-                Assembly = _assemblyAttendanceService.UnregisterAttendance(Assembly, _residentId);
-            else
-                Assembly = _assemblyAttendanceService.RegisterAttendance(Assembly, _residentId);
+            if (HasConfirmedAttendance) {
+                UnregisterAttendance();
+                return;
+            }
 
+            RegisterAttendance();
+        }
+
+        private void UnregisterAttendance()
+        {
+            ShowAlert(
+                Alert.Create(
+                    "Upozorenje",
+                    "Da li ste sigurni da želite da otkažete svoje prisustvo na ovoj skupšitini?",
+                    type: AlertType.Warning
+                )
+                .AddOption("Otkaži")
+                .AddOption(
+                    "Potvrdi",
+                    () => {
+                        Assembly = _assemblyAttendanceService.UnregisterAttendance(Assembly, _residentId);
+                        UpdateAttendanceState();
+                    }
+                )
+            );
+        }
+
+        private void RegisterAttendance()
+        {
+            Assembly = _assemblyAttendanceService.RegisterAttendance(Assembly, _residentId);
             UpdateAttendanceState();
         }
 
