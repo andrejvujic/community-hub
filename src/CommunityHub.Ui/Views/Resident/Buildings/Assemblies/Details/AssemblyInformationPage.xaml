@@ -13,6 +13,7 @@
     <navigation:MainNavigationConsumerPage.Resources>
         <converters:AssemblyStatusToStringConverter x:Key="AssemblyStatusToStringConverter"/>
         <converters:AssemblyStatusToIconCodeConverter x:Key="AssemblyStatusToIconCodeConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
 
     <Grid>
@@ -58,7 +59,7 @@
                     Background="{StaticResource ResidentCardBackgroundBrush}"
                     BorderThickness="1"
                     Padding="8"
-                    Margin="0,0,0,16">
+                    Margin="0,0,0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="36"/>
@@ -84,17 +85,33 @@
                 </Border>
 
                 <TextBlock
-                    FontSize="16"
+                    FontSize="18"
                     Foreground="{StaticResource ResidentTextSecondaryBrush}"
-                    TextWrapping="Wrap">
-                    <Run
-                        Text="&#xf05a;"
-                        FontSize="14"
-                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                        BaselineAlignment="Center"/>
-                    <Run Text="{Binding AttendancePercentage, StringFormat='{}{0}% stanova je potvrdilo svoje prisustvo na ovoj skupštini. ', Mode=OneWay}" FontWeight="Bold"/>
-                    <Run Text="Skupština će se održati ukoliko najmanje 50% stanova potvrdi prisustvo. Svoje prisustvo možete potvrditi najkasnije 24 sata prije početka skupštine."/>
-                </TextBlock>
+                    TextWrapping="Wrap"
+                    Text="{Binding AttendancePercentage, StringFormat='{}{0}% stanova je potvrdilo svoje prisustvo na ovoj skupštini. ', Mode=OneWay}" FontWeight="Bold"
+                />
+
+                <StackPanel Visibility="{Binding HasConfirmedAttendance, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Separator Background="{StaticResource ResidentBorderBrush}" Height="16"/>
+                    <StackPanel
+                    Orientation="Horizontal">
+                        <TextBlock
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            Text="&#xf058;"
+                            Foreground="{StaticResource ResidentTextSecondaryBrush}"
+                            FontWeight="Bold"
+                            FontSize="18"
+                            Margin="0,0,6,0"
+                            VerticalAlignment="Center"/>
+
+                        <TextBlock
+                            Text="Potvrdili ste svoje prisustvo"
+                            Foreground="{StaticResource ResidentTextSecondaryBrush}"
+                            FontWeight="Bold"
+                            FontSize="18"
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 

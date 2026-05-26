@@ -18,14 +18,14 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
                 ? (int)(Assembly.Attendances.Count * 100.0 / Assembly.BuildingApartmentCount)
                 : 0;
 
-        public bool IsAttendanceConfirmed { get; private set; }
+        public bool HasConfirmedAttendance { get; private set; }
 
         public bool CanChangeAttendance =>
             Assembly.Status is not AssemblyStatus.Cancelled &&
             Assembly.StartsAt > DateTime.Now.AddHours(24);
             
         public string AttendanceActionText =>
-            IsAttendanceConfirmed ? "Odjavi prisustvo" : "Prijavi prisustvo";
+            HasConfirmedAttendance ? "Odjavi prisustvo" : "Prijavi prisustvo";
 
         public RelayCommand ToggleAttendanceCommand { get; }
 
@@ -44,7 +44,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         private void ToggleAttendance()
         {
-            if (IsAttendanceConfirmed)
+            if (HasConfirmedAttendance)
                 Assembly = _assemblyAttendanceService.UnregisterAttendance(Assembly, _residentId);
             else
                 Assembly = _assemblyAttendanceService.RegisterAttendance(Assembly, _residentId);
@@ -54,14 +54,14 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         private void UpdateAttendanceState()
         {
-            IsAttendanceConfirmed = _assemblyAttendanceService.HasRegisteredAttendance(
+            HasConfirmedAttendance = _assemblyAttendanceService.HasRegisteredAttendance(
                 Assembly.Id,
                 _residentId
             );
 
             OnPropertyChanged(nameof(Assembly));
             OnPropertyChanged(nameof(AttendancePercentage));
-            OnPropertyChanged(nameof(IsAttendanceConfirmed));
+            OnPropertyChanged(nameof(HasConfirmedAttendance));
             OnPropertyChanged(nameof(CanChangeAttendance));
             OnPropertyChanged(nameof(AttendanceActionText));
             ToggleAttendanceCommand.RaiseCanExecuteChanged();
