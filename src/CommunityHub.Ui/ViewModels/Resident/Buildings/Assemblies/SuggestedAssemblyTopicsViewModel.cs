@@ -66,7 +66,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         private void RemoveTopic(AssemblyTopicDto? topic)
         {
-            if (topic is null || !topic.CanBeRemovedByResident) return;
+            if (topic is null) return;
 
             ShowAlert(
                 Alert.Create(
@@ -77,9 +77,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
                 .AddOption("Otkaži")
                 .AddOption(
                     "Potvrdi",
-                    () =>
-                    {
-                        _topicService.RemoveSuggestedTopic(topic, _residentId);
+                    () => {
+                        _topicService.DeleteTopic(topic);
                         UpdateTopics();
                     }
                 )

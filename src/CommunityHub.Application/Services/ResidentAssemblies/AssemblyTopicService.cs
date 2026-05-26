@@ -23,13 +23,8 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 )
             );
 
-        public void RemoveSuggestedTopic(AssemblyTopicDto topicDto, long residentId)
-        {
-            var topic = MapToEntity(topicDto);
-            topic.ValidateCanBeRemovedByResident(residentId);
-
-            _topicRepository.Delete(topic.Id);
-        }
+        public void DeleteTopic(AssemblyTopicDto topic)
+            => _topicRepository.Delete(topic.Id);
 
         public List<AssemblyTopicDto> GetAllByAssembly(
             long assemblyId,
