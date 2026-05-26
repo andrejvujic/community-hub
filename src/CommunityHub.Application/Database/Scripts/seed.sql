@@ -787,6 +787,150 @@ INSERT INTO reported_issues (description, reported_date, priority, status, resid
 ('Interfon na glavnom ulazu ne funkcioniše.', '2026-04-15', 'should_be_resolved_soon', 'open', 4, 1),
 ('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1);
 
+-- Assemblies
+INSERT INTO assemblies (id, building_id, starts_at, status) VALUES
+(1,  1,  '2026-06-10 18:00:00', 'scheduled'),
+(2,  2,  '2026-06-12 19:00:00', 'confirmed'),
+(3,  3,  '2026-06-08 17:30:00', 'cancelled'),
+(4,  4,  '2026-06-15 18:30:00', 'scheduled'),
+(5,  5,  '2026-06-18 20:00:00', 'confirmed'),
+(6,  6,  '2026-06-07 18:00:00', 'cancelled'),
+(7,  7,  '2026-06-20 19:00:00', 'scheduled'),
+(8,  8,  '2026-06-22 18:00:00', 'confirmed'),
+(9,  9,  '2026-06-25 19:30:00', 'scheduled'),
+(10, 10, '2026-06-28 17:00:00', 'cancelled');
+
+-- Assembly attendances
+
+-- Assembly 1 (building 1)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 5),
+(1, 7),
+(1, 8),
+(1, 10),
+(1, 12),
+(1, 15),
+(1, 18),
+(1, 20);
+
+-- Assembly 2 (building 2)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(2, 25),
+(2, 26),
+(2, 27),
+(2, 28),
+(2, 29),
+(2, 30),
+(2, 31),
+(2, 32),
+(2, 33),
+(2, 34),
+(2, 35),
+(2, 36),
+(2, 37),
+(2, 38),
+(2, 39),
+(2, 40),
+(2, 41),
+(2, 42),
+(2, 43),
+(2, 44),
+(2, 45),
+(2, 46),
+(2, 47);
+
+-- Assembly 3 (building 3)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(3, 70),
+(3, 71),
+(3, 72),
+(3, 73),
+(3, 74);
+
+-- Assembly 4 (building 4)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(4, 85),
+(4, 86),
+(4, 87),
+(4, 88),
+(4, 89),
+(4, 90);
+
+-- Assembly 5 (building 5)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(5, 97),
+(5, 98),
+(5, 99),
+(5, 100),
+(5, 101),
+(5, 102),
+(5, 103),
+(5, 104),
+(5, 105),
+(5, 106),
+(5, 107),
+(5, 108),
+(5, 109),
+(5, 110),
+(5, 111);
+
+-- Assembly 6 (building 6)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(6, 125),
+(6, 126);
+
+-- Assembly 7 (building 7)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(7, 131),
+(7, 132),
+(7, 133),
+(7, 134),
+(7, 135),
+(7, 136),
+(7, 137),
+(7, 138),
+(7, 139),
+(7, 140),
+(7, 141),
+(7, 142),
+(7, 143),
+(7, 144);
+
+-- Assembly 8 (building 8)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(8, 163),
+(8, 164),
+(8, 165),
+(8, 166),
+(8, 167),
+(8, 168),
+(8, 169),
+(8, 170);
+
+-- Assembly 9 (building 9)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(9, 178),
+(9, 179),
+(9, 180),
+(9, 181),
+(9, 182),
+(9, 183),
+(9, 184),
+(9, 185),
+(9, 186),
+(9, 187),
+(9, 188),
+(9, 189);
+
+-- Assembly 10 (building 10)
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(10, 202),
+(10, 203),
+(10, 204);
+
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
 ('/Resources/Images/building_1.jpg', 1),
