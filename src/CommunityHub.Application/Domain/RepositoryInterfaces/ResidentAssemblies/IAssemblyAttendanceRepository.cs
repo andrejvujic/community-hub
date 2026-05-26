@@ -9,7 +9,5 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
         public void Delete(long attendanceId);
 
         public List<AssemblyAttendance> GetAllByAssembly(long assemblyId);
-
-        public bool HasRegisteredAttendance(long assemblyId, long residentId);
     }
 }

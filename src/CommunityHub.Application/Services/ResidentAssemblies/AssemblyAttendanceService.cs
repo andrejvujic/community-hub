@@ -15,7 +15,21 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         private readonly ApartmentMembershipService _apartmentMembershipService = new();
 
         public bool HasRegisteredAttendance(long assemblyId, long residentId)
-            => _assemblyAttendanceRepository.HasRegisteredAttendance(assemblyId, residentId);
+        {
+            var assembly = _assemblyService.GetById(assemblyId);
+            if (assembly is null) return false;
+
+            var attendanceApartmentIds = assembly.Attendances.Select(
+                attendance => attendance.ApartmentId
+            ).ToHashSet();
+
+            var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
+                residentId,
+                assembly.BuildingId
+            );
+
+            return residentApartmentIds.All(attendanceApartmentIds.Contains);
+        }
 
         public AssemblyDto RegisterAttendance(AssemblyDto assembly, long residentId)
         {
