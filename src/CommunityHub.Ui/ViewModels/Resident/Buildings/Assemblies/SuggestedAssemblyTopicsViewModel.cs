@@ -49,6 +49,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
             if (!IsFormValid)
                 throw new InvalidOperationException("Invalid form can't be submitted.");
 
+            if (!_topicService.CanEditTopics(_assemblyId))
+            {
+                ShowAlert(
+                    Alert.Create(
+                        "Grеška",
+                        "Nije bilo moguće dodati temu jer je prošao rok za izmjenu tema. Teme je moguće mijenjati najkasnije 24 sata prije početka skupštine.",
+                        AlertType.Error
+                    )
+                    .AddOption("U redu")
+                );
+                return;
+            }
+
             _topicService.SuggestTopic(_assemblyId, _residentId, Description);
 
             Description = string.Empty;
@@ -78,12 +91,27 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
                 .AddOption(
                     "Potvrdi",
                     () => {
+                        if (!_topicService.CanEditTopics(_assemblyId))
+                        {
+                            ShowAlert(
+                                Alert.Create(
+                                    "Grеška",
+                                    "Nije bilo moguće obrisati temu jer je prošao rok za izmjenu tema. Teme je moguće mijenjati najkasnije 24 sata prije početka skupštine.",
+                                    AlertType.Error
+                                )
+                                .AddOption("U redu")
+                            );
+                            return;
+                        }
+
                         _topicService.DeleteTopic(topic);
                         UpdateTopics();
                     }
                 )
             );
         }
+
+        
 
         private string _description = string.Empty;
         public string Description

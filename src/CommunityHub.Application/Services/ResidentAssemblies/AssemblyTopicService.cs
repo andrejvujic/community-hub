@@ -10,6 +10,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         private readonly IAssemblyTopicRepository _topicRepository =
             Injector.CreateInstance<IAssemblyTopicRepository>();
 
+        private readonly IAssemblyRepository _assemblyRepository =
+            Injector.CreateInstance<IAssemblyRepository>();
+
         public AssemblyTopicService() : base(new AssemblyTopicMapper()) { }
 
         public AssemblyTopicDto SuggestTopic(long assemblyId, long residentId, string description)
@@ -22,6 +25,12 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                     )
                 )
             );
+
+        public bool CanEditTopics(long assemblyId)
+        {
+            var assembly = _assemblyRepository.GetById(assemblyId);
+            return assembly is not null && assembly.GetHoursLeftUntilStart() > 24;
+        }
 
         public void DeleteTopic(AssemblyTopicDto topic)
             => _topicRepository.Delete(topic.Id);
