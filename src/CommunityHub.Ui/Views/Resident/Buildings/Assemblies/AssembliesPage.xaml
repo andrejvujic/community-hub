@@ -73,7 +73,7 @@
 
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock
-                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} u {0:HH:mm}', ConverterCulture=sr-Latn-RS}"
+                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} u {0:HH.mm}', ConverterCulture=sr-Latn-RS}"
                                                     FontSize="16"/>
                                                 <Separator Height="2" Opacity="0"/>
                                                 <TextBlock
