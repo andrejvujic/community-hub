@@ -4,6 +4,7 @@ using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Notifications;
+using CommunityHub.Application.Services.ResidentAssemblies;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications;
@@ -14,6 +15,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
     {
         private readonly NotificationService _notificationService;
         private readonly AdService _adService;
+        private readonly AssemblyService _assemblyService;
 
         public HomeViewModel(
             long userId,
@@ -29,6 +31,8 @@ namespace CommunityHub.Ui.ViewModels.Resident
                 Injector.CreateInstance<IAdRepository>(),
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
+
+            _assemblyService = new();
 
             OpenNotificationsCommand = new(OpenNotificationsPage);
 
@@ -48,6 +52,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
         {
             UpdateUnreadNotificationCount();
             _adService.ArchiveExpiredAds();
+            _assemblyService.SynchronizeStatus();
         }
 
         private void UpdateUnreadNotificationCount()

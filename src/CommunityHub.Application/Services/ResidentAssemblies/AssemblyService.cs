@@ -28,5 +28,15 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
             return MapToDto(assembly);
         }
+
+        public void SynchronizeStatus()
+        {
+            var assemblies = _assemblyRepository.GetAll();
+
+            foreach (var assembly in assemblies)
+                assembly.SynchronizeStatus();
+
+            _assemblyRepository.UpdateMany(assemblies);
+        }
     }
 }
