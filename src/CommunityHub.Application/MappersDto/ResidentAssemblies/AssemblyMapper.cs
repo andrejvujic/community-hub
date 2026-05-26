@@ -5,6 +5,8 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
 {
     public class AssemblyMapper : IMapper<Assembly, AssemblyDto>
     {
+        private readonly AssemblyAttendanceMapper _attendanceMapper = new();
+
         public AssemblyDto MapToDto(Assembly assembly)
         {
             if (assembly is null) throw new ArgumentNullException(nameof(assembly));
@@ -15,7 +17,9 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 buildingApartmentCount: assembly.BuildingApartmentCount,
                 startsAt: assembly.StartsAt,
                 status: assembly.Status,
-                attendances: assembly.Attendances.ToList()
+                attendances: assembly.Attendances
+                    .Select(_attendanceMapper.MapToDto)
+                    .ToList()
             );
         }
 
@@ -29,7 +33,9 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 buildingApartmentCount: dto.BuildingApartmentCount,
                 startsAt: dto.StartsAt,
                 status: dto.Status,
-                attendances: dto.Attendances.ToList()
+                attendances: dto.Attendances
+                    .Select(_attendanceMapper.MapToEntity)
+                    .ToList()
             );
         }
     }
