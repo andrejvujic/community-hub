@@ -14,6 +14,11 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         public List<AssemblyDto> GetAllByBuilding(long buildingId)
             => MapToDto(_assemblyRepository.GetAllByBuilding(buildingId));
 
+        public AssemblyDto? GetById(long assemblyId)
+            => _assemblyRepository.GetById(assemblyId) is Assembly assembly
+                ? MapToDto(assembly)
+                : null;
+
         public AssemblyDto UpdateStatus(AssemblyDto targetAssembly)
         {
             var assembly = MapToEntity(targetAssembly);
