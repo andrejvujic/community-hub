@@ -262,11 +262,15 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             .AddParameter("resident_id", residentId)
             .AddParameter("building_id", buildingId);
 
-            List<long> apartmentIds = [];
+            List<long> apartmentIds = new();
 
             connection.ExecuteReader(
                 query,
-                reader => apartmentIds.Add(reader.GetInt64(reader.GetOrdinal("apartment_id")))
+                reader => apartmentIds.Add(
+                    reader.GetInt64(
+                        reader.GetOrdinal("apartment_id")
+                    )
+                )
             );
 
             return apartmentIds;

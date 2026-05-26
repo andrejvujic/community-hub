@@ -14,17 +14,15 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         public bool HasRegisteredAttendance(long assemblyId, long residentId)
             => _assemblyAttendanceRepository.HasRegisteredAttendance(assemblyId, residentId);
 
-        private List<long> GetResidentApartmentIds(AssemblyDto assembly, long residentId)
-            => _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
-                residentId,
-                assembly.BuildingId
-            );
-
         public AssemblyDto RegisterAttendance(AssemblyDto assembly, long residentId)
         {
             EnsureAttendanceCanBeChanged(assembly);
 
-            var apartmentIds = GetResidentApartmentIds(assembly, residentId);
+            var apartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
+                residentId,
+                assembly.BuildingId
+            );
+
             var confirmedApartmentIds = assembly.Attendances
                 .Select(attendance => attendance.ApartmentId)
                 .ToHashSet();
@@ -41,7 +39,11 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         {
             EnsureAttendanceCanBeChanged(assembly);
 
-            var apartmentIds = GetResidentApartmentIds(assembly, residentId).ToHashSet();
+            var apartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
+                residentId,
+                assembly.BuildingId
+            );
+
             var residentAttendances = assembly.Attendances
                 .Where(attendance => apartmentIds.Contains(attendance.ApartmentId))
                 .ToList();
