@@ -170,6 +170,7 @@ namespace CommunityHub.Application.Database
             builder.MapEnum<IssuePriority>("reported_issue_priorities");
             builder.MapEnum<IssueStatus>("reported_issue_statuses");
             builder.MapEnum<AssemblyStatus>("assembly_statuses");
+            builder.MapEnum<AssemblyTopicStatus>("assembly_topic_types");
         }
 
         public void Dispose()

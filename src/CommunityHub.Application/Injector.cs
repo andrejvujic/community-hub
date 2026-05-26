@@ -70,7 +70,8 @@ namespace CommunityHub.Application
             { typeof(IBookedJobRepository), new BookedJobRepository() },
             { typeof(IProviderReviewRepository), new ProviderReviewRepository() },
             { typeof(IAssemblyRepository), new AssemblyRepository() },
-            { typeof(IAssemblyAttendanceRepository), new AssemblyAttendanceRepository() }
+            { typeof(IAssemblyAttendanceRepository), new AssemblyAttendanceRepository() },
+            { typeof(IAssemblyTopicRepository), new AssemblyTopicRepository() }
 
         };
 

@@ -24,7 +24,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Assemblies.Details
             => LocalFrame.Navigate(new AssemblyInformationPage(_residentId, Assembly));
 
         private void OpenAssemblyTopicsPage()
-            => LocalFrame.Navigate(new AssemblyTopicsPage());
+            => LocalFrame.Navigate(new AssemblyTopicsPage(_residentId, Assembly.Id));
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e) => Pop();
 

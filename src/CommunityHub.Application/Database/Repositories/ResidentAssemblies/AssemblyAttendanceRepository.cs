@@ -64,7 +64,7 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                 )
                 .AddParameter("assembly_id", assemblyId);
 
-            List<AssemblyAttendance> attendances = [];
+            List<AssemblyAttendance> attendances = new();
 
             connection.ExecuteReader(
                 query,
