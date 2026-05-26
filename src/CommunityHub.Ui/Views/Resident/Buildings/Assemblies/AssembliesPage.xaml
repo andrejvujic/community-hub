@@ -14,6 +14,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
         <converters:AssemblyStatusToStringConverter x:Key="AssemblyStatusToStringConverter"/>
+        <converters:AssemblyStatusToIconCodeConverter x:Key="AssemblyStatusToIconCodeConverter"/>
     </navigation:MainNavigationConsumerPage.Resources>
 
     <Grid>
@@ -73,13 +74,21 @@
 
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock
-                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} u {0:HH.mm}', ConverterCulture=sr-Latn-RS}"
+                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} — {0:HH.mm}', ConverterCulture=sr-Latn-RS}"
                                                     FontSize="16"/>
                                                 <Separator Height="2" Opacity="0"/>
-                                                <TextBlock
-                                                    Text="{Binding Status, Converter={StaticResource AssemblyStatusToStringConverter}}"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Text="{Binding Status, Converter={StaticResource AssemblyStatusToIconCodeConverter}}"
+                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        Margin="0,0,8,0"/>
+                                                    <TextBlock
+                                                        Text="{Binding Status, Converter={StaticResource AssemblyStatusToStringConverter}}"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"/>
+                                                </StackPanel>
                                             </StackPanel>
 
                                             <TextBlock
@@ -120,13 +129,21 @@
 
                                             <StackPanel Grid.Column="0">
                                                 <TextBlock
-                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} u {0:HH:mm}', ConverterCulture=sr-Latn-RS}"
+                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} — {0:HH.mm}', ConverterCulture=sr-Latn-RS}"
                                                     FontSize="16"/>
                                                 <Separator Height="2" Opacity="0"/>
-                                                <TextBlock
-                                                    Text="{Binding Status, Converter={StaticResource AssemblyStatusToStringConverter}}"
-                                                    FontSize="16"
-                                                    FontWeight="Bold"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Text="{Binding Status, Converter={StaticResource AssemblyStatusToIconCodeConverter}}"
+                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        Margin="0,0,8,0"/>
+                                                    <TextBlock
+                                                        Text="{Binding Status, Converter={StaticResource AssemblyStatusToStringConverter}}"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"/>
+                                                </StackPanel>
                                             </StackPanel>
 
                                             <TextBlock
