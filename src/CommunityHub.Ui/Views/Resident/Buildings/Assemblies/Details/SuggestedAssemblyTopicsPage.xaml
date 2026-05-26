@@ -135,21 +135,23 @@
                                                     FontWeight="Bold"
                                                     Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
                                             </StackPanel>
-                                            <TextBlock
+                                            <Button
                                                 Grid.Column="1"
-                                                Text="&#xf2ed;"
-                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                FontSize="18"
-                                                Margin="8,0,4,0"
+                                                Height="48"
+                                                Width="56"
+                                                Margin="8,0,0,0"
                                                 VerticalAlignment="Center"
+                                                Style="{StaticResource ResidentPrimaryActionButtonStyle}"
+                                                Command="{Binding DataContext.RemoveTopicCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"
                                                 Visibility="{Binding CanBeRemovedByResident, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <TextBlock.InputBindings>
-                                                    <MouseBinding
-                                                        Gesture="LeftClick"
-                                                        Command="{Binding DataContext.RemoveTopicCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                        CommandParameter="{Binding}"/>
-                                                </TextBlock.InputBindings>
-                                            </TextBlock>
+                                                <TextBlock
+                                                    Text="&#xf2ed;"
+                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                    FontSize="20"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"/>
+                                            </Button>
                                         </Grid>
                                     </Grid>
                                 </Border>
