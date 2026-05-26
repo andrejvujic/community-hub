@@ -60,52 +60,53 @@
                         <ItemsControl ItemsSource="{Binding UpcomingAssemblies}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border
-                                        Padding="8"
-                                        Margin="0,0,0,8"
-                                        Background="{StaticResource ResidentCardBackgroundBrush}"
-                                        BorderBrush="{StaticResource ResidentBorderBrush}"
-                                        BorderThickness="1">
-                                        <Grid>
-                                            <Grid.InputBindings>
-                                                <MouseBinding
-                                                    Gesture="LeftClick"
-                                                    Command="{Binding DataContext.OpenAssemblyDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                                    CommandParameter="{Binding}"/>
-                                            </Grid.InputBindings>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
+                                    <Grid Background="Transparent" Margin="0,0,0,8">
+                                        <Grid.InputBindings>
+                                            <MouseBinding
+                                                Gesture="LeftClick"
+                                                Command="{Binding DataContext.OpenAssemblyDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"/>
+                                        </Grid.InputBindings>
+                                        <Border
+                                            Padding="8"
+                                            Background="{StaticResource ResidentCardBackgroundBrush}"
+                                            BorderBrush="{StaticResource ResidentBorderBrush}"
+                                            BorderThickness="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <StackPanel Grid.Column="0">
-                                                <TextBlock
-                                                    Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} — {0:HH.mm}', ConverterCulture=sr-Latn-RS}"
-                                                    FontSize="16"/>
-                                                <Separator Height="2" Opacity="0"/>
-                                                <StackPanel Orientation="Horizontal">
+                                                <StackPanel Grid.Column="0">
                                                     <TextBlock
-                                                        Text="{Binding Status, Converter={StaticResource AssemblyStatusToIconCodeConverter}}"
-                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                        VerticalAlignment="Center"
-                                                        FontSize="16"
-                                                        Margin="0,0,8,0"/>
-                                                    <TextBlock
-                                                        Text="{Binding Status, Converter={StaticResource AssemblyStatusToStringConverter}}"
-                                                        FontSize="16"
-                                                        FontWeight="Bold"/>
+                                                        Text="{Binding StartsAt, StringFormat='{}{0:d. MMMM yyyy.} — {0:HH.mm}', ConverterCulture=sr-Latn-RS}"
+                                                        FontSize="16"/>
+                                                    <Separator Height="2" Opacity="0"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock
+                                                            Text="{Binding Status, Converter={StaticResource AssemblyStatusToIconCodeConverter}}"
+                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="16"
+                                                            Margin="0,0,8,0"/>
+                                                        <TextBlock
+                                                            Text="{Binding Status, Converter={StaticResource AssemblyStatusToStringConverter}}"
+                                                            FontSize="16"
+                                                            FontWeight="Bold"/>
+                                                    </StackPanel>
                                                 </StackPanel>
-                                            </StackPanel>
 
-                                            <TextBlock
-                                                Grid.Column="1"
-                                                Text="&#xf178;"
-                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                VerticalAlignment="Center"
-                                                FontSize="24"
-                                                Margin="0,0,8,0"/>
-                                        </Grid>
-                                    </Border>
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Text="&#xf178;"
+                                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="24"
+                                                    Margin="0,0,8,0"/>
+                                            </Grid>
+                                        </Border>                                    
+                                    </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
