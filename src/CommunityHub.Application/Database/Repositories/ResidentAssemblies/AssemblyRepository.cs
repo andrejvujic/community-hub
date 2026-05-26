@@ -77,7 +77,7 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                 )
                 .AddParameter("building_id", buildingId);
 
-            Dictionary<long, (Assembly Assembly, List<AssemblyAttendance> Attendances)> assemblies = [];
+            Dictionary<long, Assembly> assemblies = [];
 
             connection.ExecuteReader(
                 query,
@@ -86,28 +86,19 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                     var assembly = _assemblyMapper.MapToEntity(reader);
                     if (assembly is null) return;
 
-                    if (!assemblies.TryGetValue(assembly.Id, out var entry))
+                    if (!assemblies.TryGetValue(assembly.Id, out var existingAssembly))
                     {
-                        entry = (assembly, []);
-                        assemblies.Add(assembly.Id, entry);
+                        assemblies.Add(assembly.Id, assembly);
+                        existingAssembly = assembly;
                     }
 
                     var attendance = _attendanceMapper.MapToEntity(reader);
                     if (attendance is not null)
-                        entry.Attendances.Add(attendance);
+                        existingAssembly.Attendances.Add(attendance);
                 }
             );
 
-            return assemblies.Values
-                .Select(entry => new Assembly(
-                    id: entry.Assembly.Id,
-                    buildingId: entry.Assembly.BuildingId,
-                    buildingApartmentCount: entry.Assembly.BuildingApartmentCount,
-                    startsAt: entry.Assembly.StartsAt,
-                    status: entry.Assembly.Status,
-                    attendances: entry.Attendances
-                ))
-                .ToList();
+            return assemblies.Values.ToList();
         }
     }
 }

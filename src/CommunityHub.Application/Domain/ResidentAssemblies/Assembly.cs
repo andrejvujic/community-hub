@@ -13,8 +13,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
 
         public DateTime StartsAt { get; init; }
 
-        private List<AssemblyAttendance> _attendances = new();
-        public IReadOnlyList<AssemblyAttendance> Attendances => _attendances.AsReadOnly();
+        public List<AssemblyAttendance> Attendances { get; private set; } = [];
 
         public const double AttendancePercentageThreshold = 0.5;
 
@@ -45,13 +44,13 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             BuildingApartmentCount = buildingApartmentCount;
             StartsAt = startsAt;
             Status = status;
-            _attendances = attendances ?? new();
+            Attendances = attendances ?? [];
         }
 
         public double GetAttendancePercentage()
         {
             if (BuildingApartmentCount > 0)
-                return _attendances.Count / (double)BuildingApartmentCount;
+                return Attendances.Count / (double)BuildingApartmentCount;
 
             return 0.0;
         }
