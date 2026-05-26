@@ -243,7 +243,7 @@
                 BorderBrush="{StaticResource ResidentBorderBrush}"
                 Background="{StaticResource ResidentCardBackgroundBrush}"
                 BorderThickness="1">
-                <Grid Background="Transparent">
+                <Grid Background="Transparent" MouseLeftButtonDown="OpenAssembliesPageButton_Click">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="12"/>

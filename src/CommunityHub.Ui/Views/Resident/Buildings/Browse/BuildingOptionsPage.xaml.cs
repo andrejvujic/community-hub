@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.OtherAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds;
 using CommunityHub.Ui.Views.Resident.Buildings.Issues;
+using CommunityHub.Ui.Views.Resident.Buildings.Assemblies;
 using CommunityHub.Application.Services.Dtos.Buildings;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
@@ -49,6 +50,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
             => Push(new IssuesPage(
                 userId: _userId,
                 buildingId: Building.Id 
+            ));
+
+        private void OpenAssembliesPageButton_Click(object sender, MouseButtonEventArgs e)
+            => Push(new AssembliesPage(
+                buildingId: Building.Id
             ));
     }
 }
