@@ -104,28 +104,62 @@
                                     Background="{StaticResource ResidentCardBackgroundBrush}"
                                     BorderBrush="{StaticResource ResidentBorderBrush}"
                                     BorderThickness="1">
-                                    <StackPanel>
-                                        <TextBlock
-                                            Text="{Binding Description}"
-                                            TextWrapping="Wrap"
-                                            FontSize="18"
-                                            FontWeight="SemiBold"/>
-                                        <Separator Height="8" Opacity="0"/>
-                                        <StackPanel Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0">
+                                            <Grid Grid.Row="2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="8"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Text="{Binding Description}"
+                                                    TextWrapping="Wrap"
+                                                    FontSize="18"
+                                                    FontWeight="SemiBold"/>
+
+                                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
+                                                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                        FontSize="16"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center"
+                                                        Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                                    <TextBlock
+                                                        Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Button
+                                            Grid.Column="2"
+                                            Height="48"
+                                            Width="48"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ResidentPrimaryActionButtonStyle}"
+                                            Command="{Binding DataContext.RemoveTopicCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                            CommandParameter="{Binding}"
+                                            Visibility="{Binding CanBeRemovedByResident, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <TextBlock
-                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
+                                                Text="&#xf2ed;"
                                                 FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                                FontSize="16"
-                                                Margin="0,0,8,0"
-                                                VerticalAlignment="Center"
-                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
-                                            <TextBlock
-                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
-                                                FontSize="16"
-                                                FontWeight="Bold"
-                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
-                                        </StackPanel>
-                                    </StackPanel>
+                                                FontSize="20"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"/>
+                                        </Button>
+                                    </Grid>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

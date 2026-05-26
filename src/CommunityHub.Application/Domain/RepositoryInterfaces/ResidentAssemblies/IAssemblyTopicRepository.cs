@@ -6,6 +6,8 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
     {
         public AssemblyTopic Create(AssemblyTopic topic);
 
+        public void Delete(long topicId);
+
         public List<AssemblyTopic> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null

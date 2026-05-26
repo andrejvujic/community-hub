@@ -18,6 +18,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
         public bool HasTopics => Topics.Count > 0;
 
         public RelayCommand SuggestTopicCommand { get; }
+        public RelayCommand<AssemblyTopicDto> RemoveTopicCommand { get; }
 
         public SuggestedAssemblyTopicsViewModel(
             long residentId,
@@ -28,6 +29,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
             _residentId = residentId;
             _assemblyId = assemblyId;
             SuggestTopicCommand = new(SuggestTopic, () => IsFormValid);
+            RemoveTopicCommand = new(RemoveTopic);
         }
 
         public void UpdateTopics()
@@ -47,18 +49,64 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
             if (!IsFormValid)
                 throw new InvalidOperationException("Invalid form can't be submitted.");
 
+            if (!_topicService.CanEditTopics(_assemblyId))
+            {
+                ShowErrorAlert();
+                return;
+            }
+
             _topicService.SuggestTopic(_assemblyId, _residentId, Description);
 
             Description = string.Empty;
             UpdateTopics();
 
-            ShowAlert(
+            ShowSuccessAlert();
+        }
+
+        private void ShowErrorAlert()
+            => ShowAlert(
+                    Alert.Create(
+                        "Grеška",
+                        "Teme je moguće mijenjati najkasnije 24 sata prije početka skupštine.",
+                        AlertType.Error
+                    )
+                    .AddOption("U redu")
+                );
+
+        private void ShowSuccessAlert()
+            => ShowAlert(
                 Alert.Create(
                     "Tema predložena",
-                    "Vaša tema je uspješno predložena upravniku zgrade.",
+                    "Uspješno ste predložili temu za skupštinu",
                     AlertType.Info
                 )
                 .AddOption("U redu")
+            );
+
+        private void RemoveTopic(AssemblyTopicDto? topic)
+        {
+            if (topic is null) return;
+
+            if (!_topicService.CanEditTopics(_assemblyId))
+            {
+                ShowErrorAlert();
+                return;
+            }
+
+            ShowAlert(
+                Alert.Create(
+                    "Upozorenje",
+                    "Da li ste sigurni da želite da uklonite dodanu temu?",
+                    AlertType.Warning
+                )
+                .AddOption("Otkaži")
+                .AddOption(
+                    "Potvrdi",
+                    () => {
+                        _topicService.DeleteTopic(topic);
+                        UpdateTopics();
+                    }
+                )
             );
         }
 
