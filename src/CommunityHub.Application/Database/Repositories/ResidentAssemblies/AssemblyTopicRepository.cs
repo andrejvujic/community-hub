@@ -33,6 +33,18 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
             );
         }
 
+        public void Delete(long topicId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            connection.Execute(
+                DatabaseQuery.Create(
+                    @"DELETE FROM assembly_topics WHERE id = @id;"
+                )
+                .AddParameter("id", topicId)
+            );
+        }
+
         public List<AssemblyTopic> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null

@@ -18,6 +18,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
         public bool HasTopics => Topics.Count > 0;
 
         public RelayCommand SuggestTopicCommand { get; }
+        public RelayCommand<AssemblyTopicDto> RemoveTopicCommand { get; }
 
         public SuggestedAssemblyTopicsViewModel(
             long residentId,
@@ -28,6 +29,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
             _residentId = residentId;
             _assemblyId = assemblyId;
             SuggestTopicCommand = new(SuggestTopic, () => IsFormValid);
+            RemoveTopicCommand = new(RemoveTopic);
         }
 
         public void UpdateTopics()
@@ -59,6 +61,28 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
                     AlertType.Info
                 )
                 .AddOption("U redu")
+            );
+        }
+
+        private void RemoveTopic(AssemblyTopicDto? topic)
+        {
+            if (topic is null || !topic.CanBeRemovedByResident) return;
+
+            ShowAlert(
+                Alert.Create(
+                    "Upozorenje",
+                    "Da li ste sigurni da želite da uklonite dodanu temu?",
+                    AlertType.Warning
+                )
+                .AddOption("Otkaži")
+                .AddOption(
+                    "Potvrdi",
+                    () =>
+                    {
+                        _topicService.RemoveSuggestedTopic(topic, _residentId);
+                        UpdateTopics();
+                    }
+                )
             );
         }
 

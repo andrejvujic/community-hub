@@ -50,5 +50,14 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
                 status: AssemblyTopicStatus.Suggested
             );
         }
+
+        public void ValidateCanBeRemovedByResident(long residentId)
+        {
+            if (AuthorId != residentId)
+                throw new InvalidOperationException("Only the topic author can remove a suggested topic.");
+
+            if (Status is not AssemblyTopicStatus.Suggested)
+                throw new InvalidOperationException("Only suggested topics can be removed.");
+        }
     }
 }

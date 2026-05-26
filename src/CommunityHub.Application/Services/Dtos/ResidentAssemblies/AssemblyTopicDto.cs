@@ -19,6 +19,8 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
 
         public bool IsEnforcedByManager { get; set; }
 
+        public bool CanBeRemovedByResident => Status is AssemblyTopicStatus.Suggested;
+
         public AssemblyTopicDto(
             long id,
             long assemblyId,
