@@ -10,7 +10,7 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
         public int BuildingApartmentCount { get; set; }
         public DateTime StartsAt { get; set; }
         public AssemblyStatus Status { get; set; }
-        public List<AssemblyAttendance> Attendances { get; set; }
+        public List<AssemblyAttendanceDto> Attendances { get; set; }
 
         public AssemblyDto(
             long id,
@@ -18,7 +18,7 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
             int buildingApartmentCount,
             DateTime startsAt,
             AssemblyStatus status,
-            List<AssemblyAttendance>? attendances = null
+            List<AssemblyAttendanceDto>? attendances = null
         )
         {
             Id = id;
