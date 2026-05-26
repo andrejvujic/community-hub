@@ -18,13 +18,16 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         {
             var assembly = MapToEntity(targetAssembly);
 
-            if (!assembly.CanBeConfirmed && !assembly.ShouldBeCancelled) return targetAssembly;
+            if (!assembly.CanBeConfirmed && !assembly.CanBeCancelled && !assembly.CanBeUnconfirmed) return targetAssembly;
 
             if (assembly.CanBeConfirmed)
                 assembly.Confirm();
 
-            if (assembly.ShouldBeCancelled)
+            if (assembly.CanBeCancelled)
                 assembly.Cancel();
+
+            if (assembly.CanBeUnconfirmed)
+                assembly.Unconfirm();
 
             _assemblyRepository.Update(assembly);
             return MapToDto(assembly);

@@ -1,4 +1,5 @@
 using CommunityHub.Application.Domain.ResidentAssemblies;
+using System.Diagnostics;
 
 namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
 {
@@ -25,7 +26,12 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
             BuildingApartmentCount = buildingApartmentCount;
             StartsAt = startsAt;
             Status = status;
-            Attendances = attendances ?? [];
+            Attendances = attendances ?? new();
         }
+
+        public const double AttendancePercentageThreshold = 0.5;
+
+        public double AttendancePercentage
+            => BuildingApartmentCount > 0 ? Attendances.Count / (double)BuildingApartmentCount : 0.0;
     }
 }

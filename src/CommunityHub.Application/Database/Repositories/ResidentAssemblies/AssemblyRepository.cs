@@ -77,7 +77,7 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                 )
                 .AddParameter("building_id", buildingId);
 
-            Dictionary<long, Assembly> assemblies = [];
+            Dictionary<long, Assembly> assemblies = new();
 
             connection.ExecuteReader(
                 query,
@@ -94,7 +94,7 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
 
                     var attendance = _attendanceMapper.MapToEntity(reader);
                     if (attendance is not null)
-                        existingAssembly.Attendances.Add(attendance);
+                        existingAssembly.RegisterAttendance(attendance);
                 }
             );
 

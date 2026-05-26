@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         public int AttendancePercentage =>
             Assembly.BuildingApartmentCount > 0
-                ? (int)(Assembly.Attendances.Count * 100.0 / Assembly.BuildingApartmentCount)
+                ? (int)(Assembly.AttendancePercentage * 100.0)
                 : 0;
 
         public bool HasConfirmedAttendance { get; private set; }
