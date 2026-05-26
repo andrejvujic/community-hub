@@ -28,25 +28,32 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 
         public void UpdateAssemblies()
         {
-            var now = DateTime.Now;
             var assemblies = _assemblyService.GetAllByBuilding(_buildingId);
 
             UpcomingAssemblies.Clear();
             PreviousAssemblies.Clear();
 
-            foreach (var assembly in assemblies
-                .Where(assembly => assembly.StartsAt >= now && assembly.Status is not AssemblyStatus.Cancelled)
-                .OrderBy(assembly => assembly.StartsAt))
+            foreach (var assembly in ExtractUpcomingAssemblies(assemblies))
                 UpcomingAssemblies.Add(assembly);
 
-            foreach (var assembly in assemblies
-                .Where(assembly => assembly.StartsAt < now || assembly.Status is AssemblyStatus.Cancelled)
-                .OrderByDescending(assembly => assembly.StartsAt))
+            foreach (var assembly in ExtractPreviousAssemblies(assemblies))
                 PreviousAssemblies.Add(assembly);
 
             OnPropertyChanged(nameof(HasAssemblies));
             OnPropertyChanged(nameof(HasUpcomingAssemblies));
             OnPropertyChanged(nameof(HasPreviousAssemblies));
         }
+
+        private List<AssemblyDto> ExtractPreviousAssemblies(List<AssemblyDto> allAssemblies)
+            => allAssemblies
+                .Where(assembly => assembly.StartsAt < DateTime.Now)
+                .OrderByDescending(assembly => assembly.StartsAt)
+                .ToList();
+
+        private List<AssemblyDto> ExtractUpcomingAssemblies(List<AssemblyDto> allAssemblies)
+            => allAssemblies
+                .Where(assembly => assembly.StartsAt >= DateTime.Now)
+                .OrderBy(assembly => assembly.StartsAt)
+                .ToList();
     }
 }
