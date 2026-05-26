@@ -38,12 +38,16 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         public List<AssemblyTopicDto> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null
-        ) => MapToDto(_topicRepository.GetAllByAssembly(assemblyId, status));
+        ) => MapToDto(
+            _topicRepository.GetAllByAssembly(assemblyId, status)
+        );
 
         public List<AssemblyTopicDto> GetAllByAssemblyAndAuthor(
             long assemblyId,
             long authorId,
             AssemblyTopicStatus? status = null
-        ) => MapToDto(_topicRepository.GetAllByAssemblyAndAuthor(assemblyId, authorId, status));
+        ) => MapToDto(
+            _topicRepository.GetAllByAssemblyAndAuthor(assemblyId, authorId, status)
+        );
     }
 }
