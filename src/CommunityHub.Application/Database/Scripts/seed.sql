@@ -844,79 +844,16 @@ INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
 (3, 73),
 (3, 74);
 
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(4, 85),
-(4, 86),
-(4, 87),
-(4, 88),
-(4, 89),
-(4, 90);
 
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(5, 97),
-(5, 98),
-(5, 99),
-(5, 100),
-(5, 101),
-(5, 102),
-(5, 103),
-(5, 104),
-(5, 105),
-(5, 106),
-(5, 107),
-(5, 108),
-(5, 109),
-(5, 110),
-(5, 111);
-
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(6, 125),
-(6, 126);
-
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(7, 131),
-(7, 132),
-(7, 133),
-(7, 134),
-(7, 135),
-(7, 136),
-(7, 137),
-(7, 138),
-(7, 139),
-(7, 140),
-(7, 141),
-(7, 142),
-(7, 143),
-(7, 144);
-
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(8, 163),
-(8, 164),
-(8, 165),
-(8, 166),
-(8, 167),
-(8, 168),
-(8, 169),
-(8, 170);
-
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(9, 178),
-(9, 179),
-(9, 180),
-(9, 181),
-(9, 182),
-(9, 183),
-(9, 184),
-(9, 185),
-(9, 186),
-(9, 187),
-(9, 188),
-(9, 189);
-
-INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
-(10, 202),
-(10, 203),
-(10, 204);
+INSERT INTO assembly_topics
+(description, assembly_id, author_id, topic_type) VALUES
+('Pregled troskova odrzavanja zgrade', 1, 1, 'accepted'),
+('Plan redovnog servisa lifta', 1, 1, 'accepted'),
+('Uredjenje ulaza i zajednickih hodnika', 1, 1, 'accepted'),
+('Popravka interfona na glavnom ulazu', 1, 6, 'suggested'),
+('Zamena sijalica u hodnicima', 1, 9, 'suggested'),
+('Postavljanje dodatnih kamera u ulazu', 1, 17, 'suggested'),
+('Sanacija vlage u podrumu', 1, 6, 'accepted');
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
