@@ -48,8 +48,15 @@
                 VerticalAlignment="Center"/>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="8">
+        <Grid Grid.Row="1" Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
                 <TextBlock
                     Text="Predložite novu temu za skupštinu"
                     FontSize="20"
@@ -74,48 +81,56 @@
                     Height="56"
                     Width="192"
                     HorizontalAlignment="Center"/>
+            </StackPanel>
 
-                <Separator Margin="0,16"/>
+            <Separator Grid.Row="1" Margin="0,16"/>
 
-                <TextBlock Text="Moji prijedlozi" FontSize="20" Margin="0,0,0,8"/>
+            <TextBlock
+                Grid.Row="2"
+                Text="Moji prijedlozi"
+                FontSize="20"
+                Margin="0,0,0,8"/>
 
-                <ItemsControl
-                    ItemsSource="{Binding Topics}"
-                    Visibility="{Binding HasTopics, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border
-                                Padding="12"
-                                Margin="0,0,0,8"
-                                Background="{StaticResource ResidentCardBackgroundBrush}"
-                                BorderBrush="{StaticResource ResidentBorderBrush}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock
-                                        Text="{Binding Description}"
-                                        TextWrapping="Wrap"
-                                        FontSize="18"
-                                        FontWeight="SemiBold"/>
-                                    <Separator Height="8" Opacity="0"/>
-                                    <StackPanel Orientation="Horizontal">
+            <Grid Grid.Row="3">
+                <ScrollViewer
+                    Visibility="{Binding HasTopics, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Topics}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Padding="12"
+                                    Margin="0,0,0,8"
+                                    Background="{StaticResource ResidentCardBackgroundBrush}"
+                                    BorderBrush="{StaticResource ResidentBorderBrush}"
+                                    BorderThickness="1">
+                                    <StackPanel>
                                         <TextBlock
-                                            Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
-                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                            FontSize="16"
-                                            Margin="0,0,8,0"
-                                            VerticalAlignment="Center"
-                                            Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
-                                        <TextBlock
-                                            Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                            Text="{Binding Description}"
+                                            TextWrapping="Wrap"
+                                            FontSize="18"
+                                            FontWeight="SemiBold"/>
+                                        <Separator Height="8" Opacity="0"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock
+                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToIconCodeConverter}}"
+                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                                FontSize="16"
+                                                Margin="0,0,8,0"
+                                                VerticalAlignment="Center"
+                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                            <TextBlock
+                                                Text="{Binding Status, Converter={StaticResource AssemblyTopicStatusToStringConverter}}"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
                 <StackPanel
                     Visibility="{Binding HasTopics, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
@@ -133,7 +148,7 @@
                         FontSize="16"
                         HorizontalAlignment="Center"/>
                 </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
+            </Grid>
+        </Grid>
     </Grid>
 </navigation:MainNavigationConsumerPage>
