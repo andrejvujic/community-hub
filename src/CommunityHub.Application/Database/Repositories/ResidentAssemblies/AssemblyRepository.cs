@@ -7,6 +7,7 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
     public class AssemblyRepository : IAssemblyRepository
     {
         private readonly AssemblyMapper _assemblyMapper = new();
+        private readonly AssemblyAttendanceMapper _attendanceMapper = new();
 
         public Assembly Create(Assembly assembly)
         {
@@ -64,27 +65,49 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                         assembly.building_id AS assembly_building_id,
                         building.apartment_count,
                         assembly.starts_at,
-                        assembly.status AS assembly_status
+                        assembly.status AS assembly_status,
+                        attendance.id AS assembly_attendance_id,
+                        attendance.assembly_id AS assembly_attendance_assembly_id,
+                        attendance.apartment_id AS assembly_attendance_apartment_id
                     FROM assemblies assembly
                     INNER JOIN buildings building ON assembly.building_id = building.id
+                    LEFT JOIN assembly_attendances attendance ON attendance.assembly_id = assembly.id
                     WHERE assembly.building_id = @building_id
                     ORDER BY assembly.starts_at DESC;"
                 )
                 .AddParameter("building_id", buildingId);
 
-            List<Assembly> assemblies = [];
+            Dictionary<long, (Assembly Assembly, List<AssemblyAttendance> Attendances)> assemblies = [];
 
             connection.ExecuteReader(
                 query,
                 reader =>
                 {
                     var assembly = _assemblyMapper.MapToEntity(reader);
-                    if (assembly is not null)
-                        assemblies.Add(assembly);
+                    if (assembly is null) return;
+
+                    if (!assemblies.TryGetValue(assembly.Id, out var entry))
+                    {
+                        entry = (assembly, []);
+                        assemblies.Add(assembly.Id, entry);
+                    }
+
+                    var attendance = _attendanceMapper.MapToEntity(reader);
+                    if (attendance is not null)
+                        entry.Attendances.Add(attendance);
                 }
             );
 
-            return assemblies;
+            return assemblies.Values
+                .Select(entry => new Assembly(
+                    id: entry.Assembly.Id,
+                    buildingId: entry.Assembly.BuildingId,
+                    buildingApartmentCount: entry.Assembly.BuildingApartmentCount,
+                    startsAt: entry.Assembly.StartsAt,
+                    status: entry.Assembly.Status,
+                    attendances: entry.Attendances
+                ))
+                .ToList();
         }
     }
 }

@@ -1,7 +1,9 @@
 using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.Services.Dtos.ResidentAssemblies;
 using CommunityHub.Application.Services.ResidentAssemblies;
+using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Assemblies.Details;
 using System.Collections.ObjectModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
@@ -9,6 +11,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
     public class AssembliesViewModel : BaseViewModel
     {
         private readonly AssemblyService _assemblyService = new();
+        private readonly long _residentId;
         private readonly long _buildingId;
 
         public ObservableCollection<AssemblyDto> UpcomingAssemblies { get; } = new();
@@ -17,13 +20,17 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
         public bool HasAssemblies => HasUpcomingAssemblies || HasPreviousAssemblies;
         public bool HasUpcomingAssemblies => UpcomingAssemblies.Count > 0;
         public bool HasPreviousAssemblies => PreviousAssemblies.Count > 0;
+        public RelayCommand<AssemblyDto> OpenAssemblyDetailsCommand { get; }
 
         public AssembliesViewModel(
+            long residentId,
             long buildingId,
             IMainNavigationConsumer navigationConsumer
         ) : base(navigationConsumer)
         {
+            _residentId = residentId;
             _buildingId = buildingId;
+            OpenAssemblyDetailsCommand = new(OpenAssemblyDetailsPage);
         }
 
         public void UpdateAssemblies()
@@ -55,5 +62,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
                 .Where(assembly => assembly.StartsAt >= DateTime.Now)
                 .OrderBy(assembly => assembly.StartsAt)
                 .ToList();
+
+        private void OpenAssemblyDetailsPage(AssemblyDto? assembly)
+        {
+            if (assembly is null) return;
+
+            Push(new AssemblyDetailsPage(_residentId, assembly));
+        }
     }
 }

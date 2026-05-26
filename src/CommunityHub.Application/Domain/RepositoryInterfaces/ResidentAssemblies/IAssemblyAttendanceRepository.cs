@@ -7,5 +7,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
         public AssemblyAttendance Create(AssemblyAttendance attendance);
 
         public void Delete(long attendanceId);
+
+        public bool HasRegisteredAttendance(long assemblyId, long residentId);
     }
 }

@@ -67,6 +67,12 @@
                                         BorderBrush="{StaticResource ResidentBorderBrush}"
                                         BorderThickness="1">
                                         <Grid>
+                                            <Grid.InputBindings>
+                                                <MouseBinding
+                                                    Gesture="LeftClick"
+                                                    Command="{Binding DataContext.OpenAssemblyDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}"/>
+                                            </Grid.InputBindings>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
@@ -122,6 +128,12 @@
                                         BorderBrush="{StaticResource ResidentBorderBrush}"
                                         BorderThickness="1">
                                         <Grid>
+                                            <Grid.InputBindings>
+                                                <MouseBinding
+                                                    Gesture="LeftClick"
+                                                    Command="{Binding DataContext.OpenAssemblyDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}"/>
+                                            </Grid.InputBindings>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
