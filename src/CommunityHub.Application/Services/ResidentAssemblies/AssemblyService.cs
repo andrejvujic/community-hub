@@ -19,22 +19,22 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 ? MapToDto(assembly)
                 : null;
 
-        public AssemblyDto SynchronizeStatus(AssemblyDto targetAssembly)
+        public AssemblyDto RefreshStatus(AssemblyDto targetAssembly)
         {
             var assembly = MapToEntity(targetAssembly);
 
-            assembly.SynchronizeStatus();
+            assembly.RefreshStatus();
             _assemblyRepository.Update(assembly);
 
             return MapToDto(assembly);
         }
 
-        public void SynchronizeStatus()
+        public void RefreshStatuses()
         {
             var assemblies = _assemblyRepository.GetAll();
 
             foreach (var assembly in assemblies)
-                assembly.SynchronizeStatus();
+                assembly.RefreshStatus();
 
             _assemblyRepository.UpdateMany(assemblies);
         }

@@ -70,7 +70,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             _attendances.Remove(attendance);
         }
 
-        public void SynchronizeStatus()
+        public void RefreshStatus()
         {
             if (CanBeConfirmed)
             {

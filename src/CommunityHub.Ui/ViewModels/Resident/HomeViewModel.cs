@@ -52,7 +52,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
         {
             UpdateUnreadNotificationCount();
             _adService.ArchiveExpiredAds();
-            _assemblyService.SynchronizeStatus();
+            _assemblyService.RefreshStatuses();
         }
 
         private void UpdateUnreadNotificationCount()

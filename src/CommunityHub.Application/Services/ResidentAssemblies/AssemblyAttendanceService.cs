@@ -55,7 +55,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 assembly.RegisterAttendance(attendance);
             }
 
-            return _assemblyService.SynchronizeStatus(
+            return _assemblyService.RefreshStatus(
                 _assemblyMapper.MapToDto(assembly)    
             );
         }
@@ -81,7 +81,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 _assemblyAttendanceRepository.Delete(attendance.Id);
             }
 
-            return _assemblyService.SynchronizeStatus(
+            return _assemblyService.RefreshStatus(
                 _assemblyMapper.MapToDto(assembly)    
             );
         }
