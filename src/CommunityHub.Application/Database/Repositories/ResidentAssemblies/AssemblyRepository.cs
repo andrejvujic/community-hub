@@ -52,5 +52,39 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
                     .ExtendParameters(_assemblyMapper.MapToQueryParameters(assembly))
             );
         }
+
+        public List<Assembly> GetAllByBuilding(long buildingId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery
+                .Create(
+                    @"SELECT
+                        assembly.id AS assembly_id,
+                        assembly.building_id AS assembly_building_id,
+                        building.apartment_count,
+                        assembly.starts_at,
+                        assembly.status AS assembly_status
+                    FROM assemblies assembly
+                    INNER JOIN buildings building ON assembly.building_id = building.id
+                    WHERE assembly.building_id = @building_id
+                    ORDER BY assembly.starts_at DESC;"
+                )
+                .AddParameter("building_id", buildingId);
+
+            List<Assembly> assemblies = [];
+
+            connection.ExecuteReader(
+                query,
+                reader =>
+                {
+                    var assembly = _assemblyMapper.MapToEntity(reader);
+                    if (assembly is not null)
+                        assemblies.Add(assembly);
+                }
+            );
+
+            return assemblies;
+        }
     }
 }
