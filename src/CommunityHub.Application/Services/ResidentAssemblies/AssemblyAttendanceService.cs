@@ -9,6 +9,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
     {
         private readonly IAssemblyAttendanceRepository _assemblyAttendanceRepository =
             Injector.CreateInstance<IAssemblyAttendanceRepository>();
+
+        private readonly AssemblyService _assemblyService = new();
+
         private readonly ApartmentMembershipService _apartmentMembershipService = new();
 
         public bool HasRegisteredAttendance(long assemblyId, long residentId)
@@ -18,7 +21,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         {
             EnsureAttendanceCanBeChanged(assembly);
 
-            var apartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
+            var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
                 assembly.BuildingId
             );
@@ -27,25 +30,25 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 .Select(attendance => attendance.ApartmentId)
                 .ToHashSet();
 
-            foreach (var apartmentId in apartmentIds.Where(id => !confirmedApartmentIds.Contains(id)))
+            foreach (var apartmentId in residentApartmentIds.Where(id => !confirmedApartmentIds.Contains(id)))
                 assembly.Attendances.Add(_assemblyAttendanceRepository.Create(
                     new AssemblyAttendance(assembly.Id, apartmentId)
                 ));
 
-            return assembly;
+            return _assemblyService.UpdateStatus(assembly);
         }
 
         public AssemblyDto UnregisterAttendance(AssemblyDto assembly, long residentId)
         {
             EnsureAttendanceCanBeChanged(assembly);
 
-            var apartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
+            var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
                 assembly.BuildingId
             );
 
             var residentAttendances = assembly.Attendances
-                .Where(attendance => apartmentIds.Contains(attendance.ApartmentId))
+                .Where(attendance => residentApartmentIds.Contains(attendance.ApartmentId))
                 .ToList();
 
             foreach (var attendance in residentAttendances)
@@ -54,7 +57,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 assembly.Attendances.Remove(attendance);
             }
 
-            return assembly;
+            return _assemblyService.UpdateStatus(assembly);
         }
 
         private static void EnsureAttendanceCanBeChanged(AssemblyDto assembly)
