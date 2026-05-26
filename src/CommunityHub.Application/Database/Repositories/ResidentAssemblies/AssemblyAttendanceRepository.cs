@@ -46,6 +46,36 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
             );
         }
 
+        public List<AssemblyAttendance> GetAllByAssembly(long assemblyId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery
+                .Create(
+                    @"SELECT
+                        attendance.id AS assembly_attendance_id,
+                        attendance.assembly_id AS assembly_attendance_assembly_id,
+                        attendance.apartment_id AS assembly_attendance_apartment_id
+                    FROM assembly_attendances attendance
+                    WHERE attendance.assembly_id = @assembly_id;"
+                )
+                .AddParameter("assembly_id", assemblyId);
+
+            List<AssemblyAttendance> attendances = [];
+
+            connection.ExecuteReader(
+                query,
+                reader =>
+                {
+                    var attendance = _assemblyAttendanceMapper.MapToEntity(reader);
+                    if (attendance is not null)
+                        attendances.Add(attendance);
+                }
+            );
+
+            return attendances;
+        }
+
         public bool HasRegisteredAttendance(long assemblyId, long residentId)
         {
             using var connection = DatabaseConnection.Create();
