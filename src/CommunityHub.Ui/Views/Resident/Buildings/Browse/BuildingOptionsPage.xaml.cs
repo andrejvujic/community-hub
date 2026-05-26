@@ -54,6 +54,7 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Browse
 
         private void OpenAssembliesPageButton_Click(object sender, MouseButtonEventArgs e)
             => Push(new AssembliesPage(
+                residentId: _userId,
                 buildingId: Building.Id
             ));
     }

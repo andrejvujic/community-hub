@@ -9,5 +9,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
         public void Update(Assembly assembly);
 
         public List<Assembly> GetAllByBuilding(long buildingId);
+
+        public Assembly? GetById(long assemblyId);
     }
 }

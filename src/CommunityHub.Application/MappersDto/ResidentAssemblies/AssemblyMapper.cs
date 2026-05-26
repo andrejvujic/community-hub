@@ -14,7 +14,8 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 buildingId: assembly.BuildingId,
                 buildingApartmentCount: assembly.BuildingApartmentCount,
                 startsAt: assembly.StartsAt,
-                status: assembly.Status
+                status: assembly.Status,
+                attendances: assembly.Attendances.ToList()
             );
         }
 
@@ -27,7 +28,8 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 buildingId: dto.BuildingId,
                 buildingApartmentCount: dto.BuildingApartmentCount,
                 startsAt: dto.StartsAt,
-                status: dto.Status
+                status: dto.Status,
+                attendances: dto.Attendances.ToList()
             );
         }
     }

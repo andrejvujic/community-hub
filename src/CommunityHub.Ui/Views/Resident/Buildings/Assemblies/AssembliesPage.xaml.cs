@@ -8,11 +8,11 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Assemblies
     {
         private readonly AssembliesViewModel _viewModel;
 
-        public AssembliesPage(long buildingId)
+        public AssembliesPage(long residentId, long buildingId)
         {
             InitializeComponent();
 
-            _viewModel = new AssembliesViewModel(buildingId, this);
+            _viewModel = new AssembliesViewModel(residentId, buildingId, this);
             DataContext = _viewModel;
 
             _viewModel.UpdateAssemblies();

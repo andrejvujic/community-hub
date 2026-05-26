@@ -38,9 +38,11 @@ namespace CommunityHub.Application.Services.Apartments
             return membershipDtos;
         }
 
+        public List<long> GetApartmentIdsByResidentAndBuilding(long residentId, long buildingId)
+            => _apartmentMembershipRepository.GetApartmentIdsByResidentAndBuilding(residentId, buildingId);
+
         public ApartmentMembership Create(ApartmentMembership membership)
             => _apartmentMembershipRepository.Create(membership);
 
     }
 }
-

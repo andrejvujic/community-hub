@@ -13,5 +13,29 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
         public List<AssemblyDto> GetAllByBuilding(long buildingId)
             => MapToDto(_assemblyRepository.GetAllByBuilding(buildingId));
+
+        public AssemblyDto? GetById(long assemblyId)
+            => _assemblyRepository.GetById(assemblyId) is Assembly assembly
+                ? MapToDto(assembly)
+                : null;
+
+        public AssemblyDto UpdateStatus(AssemblyDto targetAssembly)
+        {
+            var assembly = MapToEntity(targetAssembly);
+
+            if (!assembly.CanBeConfirmed && !assembly.CanBeCancelled && !assembly.CanBeUnconfirmed) return targetAssembly;
+
+            if (assembly.CanBeConfirmed)
+                assembly.Confirm();
+
+            if (assembly.CanBeCancelled)
+                assembly.Cancel();
+
+            if (assembly.CanBeUnconfirmed)
+                assembly.Unconfirm();
+
+            _assemblyRepository.Update(assembly);
+            return MapToDto(assembly);
+        }
     }
 }
