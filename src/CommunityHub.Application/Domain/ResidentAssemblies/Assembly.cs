@@ -2,7 +2,7 @@
 
 namespace CommunityHub.Application.Domain.ResidentAssemblies
 {
-    internal class Assembly
+    public class Assembly
     {
         public long Id { get; private set; }
 
@@ -34,14 +34,18 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
         public Assembly(
             long id,
             long buildingId,
-            int maxAttendance,
-            List<AssemblyAttendance> attendances
+            int buildingApartmentCount,
+            DateTime startsAt,
+            AssemblyStatus status,
+            List<AssemblyAttendance>? attendances = null
         )
         {
             Id = id;
             BuildingId = buildingId;
-            BuildingApartmentCount = maxAttendance;
-            _attendances = attendances;
+            BuildingApartmentCount = buildingApartmentCount;
+            StartsAt = startsAt;
+            Status = status;
+            _attendances = attendances ?? new();
         }
 
         public double GetAttendancePercentage()

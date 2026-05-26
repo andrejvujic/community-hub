@@ -2,7 +2,7 @@
 
 namespace CommunityHub.Application.Domain.ResidentAssemblies
 {
-    internal enum AssemblyStatus
+    public enum AssemblyStatus
     {
         [EnumMember(Value = "scheduled")]
         Scheduled,

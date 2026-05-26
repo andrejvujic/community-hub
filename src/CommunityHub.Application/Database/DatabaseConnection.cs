@@ -9,6 +9,7 @@ using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.Domain.Users;
 using Npgsql;
 using System.Data;
@@ -168,6 +169,7 @@ namespace CommunityHub.Application.Database
             builder.MapEnum<AdEventType>("ad_event_types");
             builder.MapEnum<IssuePriority>("reported_issue_priorities");
             builder.MapEnum<IssueStatus>("reported_issue_statuses");
+            builder.MapEnum<AssemblyStatus>("assembly_statuses");
         }
 
         public void Dispose()
