@@ -67,7 +67,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
         {
             if (assembly is null) return;
 
-            Push(new AssemblyDetailsPage(_residentId, assembly));
+            Push(
+                new AssemblyDetailsPage(_residentId, assembly),
+                onPop: _ => UpdateAssemblies()
+            );
         }
     }
 }
