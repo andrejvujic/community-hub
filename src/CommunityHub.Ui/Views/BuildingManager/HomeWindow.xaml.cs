@@ -33,5 +33,19 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             Close();
         }
+
+        private void TitleBarDragArea_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                MaximizeRestoreButton_Click(sender, e);
+                return;
+            }
+
+            if (e.ButtonState == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
     }
 }

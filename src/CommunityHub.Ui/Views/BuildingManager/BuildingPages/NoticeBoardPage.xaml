@@ -591,23 +591,44 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Status, Converter={StaticResource AdStatusToStringConverter}}"
-                            Header="Status">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="Foreground" Value="#1C1E21" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
-                                            <Setter Property="Foreground" Value="#123B63" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Width="*" Header="Status">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center">
+                                            <materialDesign:PackIcon.Style>
+                                                <Style TargetType="materialDesign:PackIcon">
+                                                    <Setter Property="Kind" Value="CheckCircle" />
+                                                    <Setter Property="Foreground" Value="#1B8A2F" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Archived">
+                                                            <Setter Property="Kind" Value="Archive" />
+                                                            <Setter Property="Foreground" Value="#606770" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Active">
+                                                            <Setter Property="Kind" Value="CheckCircle" />
+                                                            <Setter Property="Foreground" Value="#1B8A2F" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </materialDesign:PackIcon.Style>
+                                        </materialDesign:PackIcon>
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Status, Converter={StaticResource AdStatusToStringConverter}}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#1C1E21" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                            <Setter Property="Foreground" Value="#123B63" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

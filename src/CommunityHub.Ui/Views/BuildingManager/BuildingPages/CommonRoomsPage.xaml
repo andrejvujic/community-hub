@@ -282,7 +282,7 @@
 
                                 <Grid
                                     Grid.Row="8"
-                                    Margin="0,5,0,5"
+                                    Margin="0,15,0,5"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center">
                                     <TextBlock FontSize="17" Text="Način iznajmljivanja:" />
@@ -323,7 +323,16 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
-                    <TextBlock FontSize="25" Text="Pregled zajedničkih prostorija" />
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock FontSize="25" Text="Pregled zajedničkih prostorija" />
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            Foreground="#0F5AA6"
+                            Kind="CalendarMonth" />
+                    </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="0,20,0,20">
@@ -433,25 +442,46 @@
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
 
-                            <DataGridTextColumn
-                                Width="*"
-                                Binding="{Binding RentalType, Converter={StaticResource RentalTypeToStringConverter}}"
-                                CanUserSort="False"
-                                Header="Način iznajmljivanja">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Left" />
-                                        <Setter Property="Margin" Value="12,0,0,0" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                        <Setter Property="Foreground" Value="#1C1E21" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
-                                                <Setter Property="Foreground" Value="#123B63" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Width="*" CanUserSort="False" Header="Način iznajmljivanja">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="12,0,0,0" VerticalAlignment="Center" Orientation="Horizontal">
+                                            <materialDesign:PackIcon Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                <materialDesign:PackIcon.Style>
+                                                    <Style TargetType="materialDesign:PackIcon">
+                                                        <Setter Property="Kind" Value="Calendar" />
+                                                        <Setter Property="Foreground" Value="#0F5AA6" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RentalType}" Value="MultiDay">
+                                                                <Setter Property="Kind" Value="CalendarRange" />
+                                                                <Setter Property="Foreground" Value="#0F5AA6" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RentalType}" Value="OneDay">
+                                                                <Setter Property="Kind" Value="Calendar" />
+                                                                <Setter Property="Foreground" Value="#0F5AA6" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </materialDesign:PackIcon.Style>
+                                            </materialDesign:PackIcon>
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                Foreground="#1C1E21"
+                                                Text="{Binding RentalType, Converter={StaticResource RentalTypeToStringConverter}}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                                <Setter Property="Foreground" Value="#123B63" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

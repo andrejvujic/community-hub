@@ -434,10 +434,13 @@
                                 Grid.Row="7"
                                 Margin="0,25,0,20"
                                 HorizontalAlignment="Left"
+                                AllowDrop="True"
                                 Background="#F5F5F5"
                                 BorderBrush="#CCCCCC"
                                 BorderThickness="1"
                                 CornerRadius="3"
+                                DragOver="Images_DragOver"
+                                Drop="Images_Drop"
                                 Effect="{StaticResource DepthShadow}">
                                 <ScrollViewer
                                     Width="600"
