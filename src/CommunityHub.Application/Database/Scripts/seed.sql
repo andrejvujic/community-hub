@@ -999,25 +999,6 @@ INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id
 (11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
 (12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
 
-INSERT INTO facility_votes (id, facility_id, citizen_id) VALUES
-(1, 1, 101),
-(2, 2, 101),
-(3, 1, 105),
-(4, 3, 105),
-(5, 2, 111),
-(6, 3, 111),
-(7, 1, 102),
-(8, 3, 102),
-(9, 2, 112),
-(10, 4, 103),
-(11, 5, 103),
-(12, 4, 113),
-(13, 6, 104),
-(14, 7, 114),
-(15, 8, 106),
-(16, 9, 107),
-(17, 10, 108);
-
 INSERT INTO budget_category_balances (category, neighborhood_id, total_amount) VALUES
 ('street_maintenance', 1, 200000.00),
 ('park_maintenance',   1, 150000.00),
@@ -1206,6 +1187,46 @@ INSERT INTO event_registrations (id, attended, event_id, citizen_id) VALUES
 (18, TRUE, 18, 158),
 (19, TRUE, 19, 158),
 (20, TRUE, 20, 158);
+
+INSERT INTO facility_votes (id, facility_id, citizen_id) VALUES
+(1, 1, 101),
+(2, 2, 101),
+(3, 1, 105),
+(4, 3, 105),
+(5, 2, 111),
+(6, 3, 111),
+(7, 1, 102),
+(8, 3, 102),
+(9, 2, 112),
+(10, 4, 103),
+(11, 5, 103),
+(12, 4, 113),
+(13, 6, 104),
+(14, 7, 114),
+(15, 8, 106),
+(16, 9, 107),
+(17, 10, 108);
+
+INSERT INTO coordinator_reviews (id, rating, comment, created_at, neighborhood_id, reviewer_id, is_removed) VALUES
+(1, 5, NULL, '2026-02-15 10:30:00', 1, 101, false),
+(2, 4, NULL, '2026-02-20 14:45:00', 1, 105, false),
+(3, 2, 'Koordinator nije dostupan.', '2026-03-01 09:15:00', 1, 111, false),
+(4, 5, NULL, '2026-02-18 16:20:00', 2, 102, false),
+(5, 3, 'Spora komunikacija sa stanovnicima.', '2026-02-25 11:00:00', 2, 112, false),
+(6, 4, NULL, '2026-03-05 13:30:00', 2, 117, false),
+(7, 5, NULL, '2026-02-22 10:00:00', 3, 103, false),
+(8, 5, NULL, '2026-02-28 15:45:00', 3, 113, false),
+(9, 4, NULL, '2026-03-03 12:15:00', 3, 118, false),
+(10, 5, NULL, '2026-02-17 09:30:00', 4, 104, false),
+(11, 4, NULL, '2026-02-24 14:00:00', 4, 119, false),
+(12, 5, NULL, '2026-03-02 11:20:00', 4, 109, false),
+(13, 4, NULL, '2026-02-19 10:45:00', 5, 120, false),
+(14, 5, NULL, '2026-02-26 16:30:00', 5, 110, false);
+
+INSERT INTO review_reports (id, review_id, reporter_id, created_at) VALUES
+(1, 3, 105, '2026-03-02 10:00:00'),
+(2, 3, 112, '2026-03-03 11:30:00'),
+(3, 5, 102, '2026-03-01 09:45:00');
 
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
@@ -1414,6 +1435,18 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.facility_votes', 'id'),
     COALESCE((SELECT MAX(id) FROM public.facility_votes), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.coordinator_reviews', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.coordinator_reviews), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.review_reports', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
     true
 );
 
