@@ -999,6 +999,25 @@ INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id
 (11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
 (12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
 
+INSERT INTO facility_votes (id, facility_id, citizen_id) VALUES
+(1, 1, 101),
+(2, 2, 101),
+(3, 1, 105),
+(4, 3, 105),
+(5, 2, 111),
+(6, 3, 111),
+(7, 1, 102),
+(8, 3, 102),
+(9, 2, 112),
+(10, 4, 103),
+(11, 5, 103),
+(12, 4, 113),
+(13, 6, 104),
+(14, 7, 114),
+(15, 8, 106),
+(16, 9, 107),
+(17, 10, 108);
+
 INSERT INTO budget_category_balances (category, neighborhood_id, total_amount) VALUES
 ('street_maintenance', 1, 200000.00),
 ('park_maintenance',   1, 150000.00),
@@ -1389,6 +1408,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.facility_reservations', 'id'),
     COALESCE((SELECT MAX(id) FROM public.facility_reservations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.facility_votes', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.facility_votes), 0),
     true
 );
 
