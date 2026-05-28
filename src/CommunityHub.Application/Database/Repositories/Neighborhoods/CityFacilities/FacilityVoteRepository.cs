@@ -1,9 +1,10 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CityFacilities;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities
 {
-    public class FacilityVoteRepository
+    public class FacilityVoteRepository : IFacilityVoteRepository
     {
         private readonly FacilityVoteMapper _facilityVoteMapper = new FacilityVoteMapper();
 

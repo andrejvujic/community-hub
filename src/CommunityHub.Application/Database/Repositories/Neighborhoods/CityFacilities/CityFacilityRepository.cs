@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CityFacilities;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities
 {
-    public class CityFacilityRepository
+    public class CityFacilityRepository : ICityFacilityRepository
     {
         private readonly CityFacilityMapper _cityFacilityMapper = new CityFacilityMapper();
 

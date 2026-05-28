@@ -7,6 +7,7 @@ using CommunityHub.Application.Database.Repositories.CommonRooms;
 using CommunityHub.Application.Database.Repositories.Issues;
 using CommunityHub.Application.Database.Repositories.Events;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
+using CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Database.Repositories.ResidentAssemblies;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
@@ -24,6 +25,7 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.Images;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
@@ -66,6 +68,9 @@ namespace CommunityHub.Application
             { typeof(INeighborhoodMembershipRepository), new NeighborhoodMembershipRepository() },
             { typeof(INeighborhoodMeetingRepository), new NeighborhoodMeetingRepository() },
             { typeof(IMeetingDateVoteRepository), new MeetingDateVoteRepository() },
+            { typeof(ICityFacilityRepository), new CityFacilityRepository() },
+            { typeof(IFacilityReservationRepository), new FacilityReservationRepository() },
+            { typeof(IFacilityVoteRepository), new FacilityVoteRepository() },
             { typeof(IJobListingRepository), new JobListingRepository()  },
             { typeof(IBookedJobRepository), new BookedJobRepository() },
             { typeof(IProviderReviewRepository), new ProviderReviewRepository() },
