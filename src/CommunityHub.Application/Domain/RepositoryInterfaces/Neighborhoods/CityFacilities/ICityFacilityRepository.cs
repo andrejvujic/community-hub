@@ -4,6 +4,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Cit
 {
     public interface ICityFacilityRepository
     {
+        CityFacility? GetById(long id);
         List<CityFacility> GetByCityId(long cityId);
     }
 }

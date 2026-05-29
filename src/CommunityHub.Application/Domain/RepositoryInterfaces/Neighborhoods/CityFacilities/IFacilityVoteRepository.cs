@@ -5,9 +5,10 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Cit
     public interface IFacilityVoteRepository
     {
         FacilityVote? GetById(long id);
+        FacilityVote? GetByFacilityIdAndCitizenId(long facilityId, long citizenId);
         List<FacilityVote> GetByNeighborhoodId(long neighborhoodId);
         int GetVoteCountByFacilityId(long facilityId);
         FacilityVote Create(FacilityVote vote);
-        void Delete(long id);
+        void DeleteByFacilityIdAndCitizenId(long facilityId, long citizenId);
     }
 }
