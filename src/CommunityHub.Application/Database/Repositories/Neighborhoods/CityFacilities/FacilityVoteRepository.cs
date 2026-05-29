@@ -98,6 +98,21 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             return votes;
         }
 
+        public FacilityVote? GetByFacilityIdAndCitizenId(long facilityId, long citizenId)
+        {
+            var query = PostgresQuery.Create(
+                $"SELECT {SelectColumns} {FromJoins} WHERE city_facility.id = @facility_id AND citizen.id = @citizen_id"
+            ).AddParameter("facility_id", facilityId)
+             .AddParameter("citizen_id", citizenId);
+
+            FacilityVote? vote = null;
+            query.ExecuteReader(reader =>
+            {
+                vote = _facilityVoteMapper.MapToEntity(reader);
+            });
+            return vote;
+        }
+
         public int GetVoteCountByFacilityId(long facilityId)
         {
             var query = PostgresQuery.Create(
@@ -122,11 +137,13 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             return vote.CopyWith(id: id);
         }
 
-        public void Delete(long id)
+        public void DeleteByFacilityIdAndCitizenId(long facilityId, long citizenId)
         {
             var query = PostgresQuery.Create(
-                "DELETE FROM facility_votes WHERE id = @id"
-            ).AddParameter("id", id);
+                "DELETE FROM facility_votes WHERE facility_id = @facility_id AND citizen_id = @citizen_id"
+            )
+            .AddParameter("facility_id", facilityId)
+            .AddParameter("citizen_id", citizenId);
 
             query.GetRowsAffectedCount();
         }

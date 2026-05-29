@@ -1,8 +1,10 @@
 using CommunityHub.Application.Services.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
 {
@@ -19,6 +21,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
         private object? _membership;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? AddVoteRequested;
+        public event EventHandler? RemoveVoteRequested;
+        public event EventHandler? ViewHistoryRequested;
+        public event EventHandler? ViewStatisticsRequested;
 
         public ObservableCollection<CityFacilityDto> Facilities
         {
@@ -53,9 +59,20 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
             }
         }
 
+        public ICommand AddVoteCommand { get; }
+        public ICommand RemoveVoteCommand { get; }
+        public ICommand ViewHistoryCommand { get; }
+        public ICommand ViewStatisticsCommand { get; }
+
         public LocalFacilitiesViewModel(long userId)
         {
             _userId = userId;
+
+            AddVoteCommand = new RelayCommand<object>(_ => { AddVote(); AddVoteRequested?.Invoke(this, EventArgs.Empty); });
+            RemoveVoteCommand = new RelayCommand<object>(_ => { RemoveVote(); RemoveVoteRequested?.Invoke(this, EventArgs.Empty); });
+            ViewHistoryCommand = new RelayCommand<object>(_ => ViewHistoryRequested?.Invoke(this, EventArgs.Empty));
+            ViewStatisticsCommand = new RelayCommand<object>(_ => ViewStatisticsRequested?.Invoke(this, EventArgs.Empty));
+
             LoadData();
         }
 
@@ -90,6 +107,22 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
                 facility.LastVisitDate = _reservationService.GetLastVisitDateForFacility(facility.Id);
                 facility.VotedByMe = _voteService.GetByFacilityIdAndCitizenId(facility.Id, _userId) != null;
             }
+        }
+
+        public void RemoveVote()
+        {
+            if (SelectedFacility == null) return;
+
+            _voteService.DeleteByFacilityIdAndCitizenId(SelectedFacility.Id, _userId);
+            LoadData();
+        }
+
+        public void AddVote()
+        {
+            if (SelectedFacility == null) return;
+
+            _voteService.Create(SelectedFacility.Id, _userId);
+            LoadData();
         }
 
         protected void OnPropertyChanged(string propertyName)

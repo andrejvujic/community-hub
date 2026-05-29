@@ -9,12 +9,21 @@
       Language="sr-Latn-RS"
       Title="Lokalni objekti">
 
+    <Page.InputBindings>
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ViewHistoryCommand}" />
+        <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding ViewStatisticsCommand}" />
+        <KeyBinding Key="Return" Command="{Binding AddVoteCommand}" />
+        <KeyBinding Key="Return" Command="{Binding RemoveVoteCommand}" />
+    </Page.InputBindings>
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -69,6 +78,37 @@
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource AlternatingRowBrush}" Padding="16">
+                        <StackPanel VerticalAlignment="Center">
+                            <StackPanel Visibility="{Binding SelectedFacility, Converter={StaticResource NullToVisibility}}">
+                                <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap">
+                                    Odaberite objekat da biste videli detaljne informacije.
+                                </TextBlock>
+                            </StackPanel>
+
+                            <StackPanel Visibility="{Binding SelectedFacility, Converter={StaticResource NullToVisibility}, ConverterParameter=Inverse}">
+                                <StackPanel Visibility="{Binding SelectedFacility.VotedByMe, Converter={StaticResource InverseBooleanToVisibility}}">
+                                    <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,0,0,12">
+                                        Niste još glasali za posetu ovog objekta. Ako glasate, kasnije možete ukloniti svoj glas. Imate pravo da date glas za više objekata. <LineBreak/>
+                                    </TextBlock>
+                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding AddVoteCommand}">
+                                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="12">
+                                            Dodaj glas<LineBreak/>(Enter)
+                                        </TextBlock>
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Visibility="{Binding SelectedFacility.VotedByMe, Converter={StaticResource BooleanToVisibility}}">
+                                    <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,0,0,12">
+                                        Već ste glasali za posetu ovog objekta. Ako želite, možete ukloniti svoj glas. Imate pravo da date glas za više objekata. <LineBreak/>
+                                    </TextBlock>
+                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding RemoveVoteCommand}">
+                                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="12">
+                                            Ukloni glas<LineBreak/>(Enter)
+                                        </TextBlock>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
                     </Border>
 
                     <Grid Grid.Row="1" Margin="0,12,0,0">
@@ -78,13 +118,13 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}">
+                        <Button Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding ViewHistoryCommand}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                                 Istorija poseta objekta<LineBreak/>(Ctrl + 1)
                             </TextBlock>
                         </Button>
 
-                        <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}">
+                        <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding ViewStatisticsCommand}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                                 Statistika rezervacija<LineBreak/>(Ctrl + 2)
                             </TextBlock>
