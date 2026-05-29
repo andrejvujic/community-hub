@@ -22,6 +22,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
@@ -50,6 +51,13 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <Border Grid.Row="2" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Listaj - Strelice gore/dole" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}" Margin="0,0,35,0"/>
+                    <TextBlock Text="Zatvori - Esc" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>
