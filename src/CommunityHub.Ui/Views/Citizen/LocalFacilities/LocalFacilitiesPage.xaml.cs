@@ -41,7 +41,7 @@ namespace CommunityHub.Ui.Views.Citizen.LocalFacilities
             var citizen = _citizenService.GetCitizenById(_userId);
             if (citizen?.Membership?.Neighborhood.Id == null) return;
 
-            var window = new ReservationStatisticsWindow();
+            var window = new ReservationStatisticsWindow(citizen.Membership.Neighborhood.Id);
             window.Owner = Window.GetWindow(this);
             window.ShowDialog();
         }

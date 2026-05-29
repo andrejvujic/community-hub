@@ -18,6 +18,12 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
             return MapToDto(reservations);
         }
 
+        public List<FacilityReservationDto> GetByNeighborhoodId(long neighborhoodId)
+        {
+            var reservations = _reservationRepository.GetByNeighborhoodId(neighborhoodId);
+            return MapToDto(reservations);
+        }
+
         public DateTime? GetLastVisitDateForFacility(long facilityId)
         {
             var reservations = _reservationRepository.GetByFacilityId(facilityId);

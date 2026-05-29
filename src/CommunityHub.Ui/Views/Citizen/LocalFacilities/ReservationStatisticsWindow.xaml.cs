@@ -6,10 +6,10 @@ namespace CommunityHub.Ui.Views.Citizen.LocalFacilities
 {
     public partial class ReservationStatisticsWindow : Window
     {
-        public ReservationStatisticsWindow()
+        public ReservationStatisticsWindow(long neighborhoodId)
         {
             InitializeComponent();
-            var viewModel = new ReservationStatisticsViewModel();
+            var viewModel = new ReservationStatisticsViewModel(neighborhoodId);
             DataContext = viewModel;
 
             if (viewModel != null)

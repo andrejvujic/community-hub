@@ -108,9 +108,10 @@
                 </Grid>
             </Border>
 
-            <TextBlock Grid.Row="2" Text="Ukupne posete u datom periodu:" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="15,10,15,10" />
+            <TextBlock Grid.Row="2" Text="{Binding TotalReservationsText}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="15,10,15,10" />
 
             <DataGrid x:Name="StatisticsGrid" Grid.Row="3" 
+                      ItemsSource="{Binding Statistics}"
                       Style="{StaticResource PrimaryDataGrid}" 
                       ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"
@@ -122,8 +123,8 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Naziv objekta" Width="*" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Ukupno poseta" Width="*" CellStyle="{StaticResource CenteredDataGridCellStyle}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Naziv objekta" Binding="{Binding FacilityName}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Ukupno poseta" Binding="{Binding VisitCount}" Width="*" CellStyle="{StaticResource CenteredDataGridCellStyle}" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
 
