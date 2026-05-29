@@ -7,6 +7,9 @@
 
     <Window.InputBindings>
         <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+        <KeyBinding Key="Left" Command="{Binding PreviousPeriodCommand}" />
+        <KeyBinding Key="Right" Command="{Binding NextPeriodCommand}" />
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding TogglePeriodCommand}" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -55,7 +58,7 @@
 
                     <TextBlock Grid.Column="0" Text="Vremenski period (Ctrl + 1):" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,10,0" />
 
-                    <RadioButton x:Name="MonthToggle" Grid.Column="1" Content="Mesec" FontSize="16" Width="70" GroupName="TimeframeGroup" Foreground="{StaticResource TextBrush}" Margin="0,0,10,0" IsChecked="True">
+                    <RadioButton x:Name="MonthToggle" Grid.Column="1" Width="65" Content="Mesec" FontSize="13" GroupName="TimeframeGroup" Foreground="{StaticResource TextBrush}" Margin="0,0,10,0" IsChecked="{Binding IsMonthView, Mode=TwoWay}">
                         <RadioButton.Style>
                             <Style TargetType="RadioButton">
                                 <Setter Property="Template">
@@ -76,7 +79,7 @@
                         </RadioButton.Style>
                     </RadioButton>
 
-                    <RadioButton x:Name="YearToggle" Grid.Column="2" Content="Godina" FontSize="16" Width="70" GroupName="TimeframeGroup" Foreground="{StaticResource TextBrush}" Margin="0,0,20,0">
+                    <RadioButton x:Name="YearToggle" Grid.Column="2" Width="65" Content="Godina" FontSize="13" GroupName="TimeframeGroup" Foreground="{StaticResource TextBrush}" Margin="0,0,20,0" IsChecked="{Binding IsYearView, Mode=TwoWay}">
                         <RadioButton.Style>
                             <Style TargetType="RadioButton">
                                 <Setter Property="Template">
@@ -97,11 +100,11 @@
                         </RadioButton.Style>
                     </RadioButton>
 
-                    <Button Grid.Column="4" Height="26" Width="26" Content="◄" Style="{StaticResource CompactButton}" Margin="0,0,5,0" />
+                    <Button Grid.Column="4" Height="26" Width="26" Content="◄" Style="{StaticResource CompactButton}" Margin="0,0,5,0" Command="{Binding PreviousPeriodCommand}" />
 
-                    <TextBlock Grid.Column="5" Text="April 2026" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Grid.Column="5" Text="{Binding PeriodText}" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                    <Button Grid.Column="6" Height="26" Width="26" Content="►" Style="{StaticResource CompactButton}" Margin="5,0,0,0" />
+                    <Button Grid.Column="6" Height="26" Width="26" Content="►" Style="{StaticResource CompactButton}" Margin="5,0,0,0" Command="{Binding NextPeriodCommand}" />
                 </Grid>
             </Border>
 
