@@ -12,8 +12,7 @@
     <Page.InputBindings>
         <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ViewHistoryCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding ViewStatisticsCommand}" />
-        <KeyBinding Key="Return" Command="{Binding AddVoteCommand}" />
-        <KeyBinding Key="Return" Command="{Binding RemoveVoteCommand}" />
+        <KeyBinding Key="Space" Command="{Binding ToggleVoteCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>
@@ -24,6 +23,7 @@
             <converters:NullToVisibilityConverter x:Key="NullToVisibility" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility" />
+            <converters:BooleanToCheckmarkConverter x:Key="BooleanToCheckmark" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -64,10 +64,10 @@
                       CanUserDeleteRows="False"
                       Margin="0,0,0,0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Naziv objekta" Binding="{Binding Name, Mode=OneWay}" Width="*" />
-                        <DataGridTextColumn Header="Poslednja poseta" Binding="{Binding LastVisitDate, StringFormat=d, Mode=OneWay}" Width="*" />
-                        <DataGridTextColumn Header="Ukupni glasovi" Binding="{Binding VoteCount, Mode=OneWay}" Width="*" />
-                        <DataGridTextColumn Header="Ima moj glas" Binding="{Binding VotedByMe, Mode=OneWay}" Width="*" />
+                        <DataGridTextColumn Header="Naziv objekta" Binding="{Binding Name, Mode=OneWay}" Width="1.2*" />
+                        <DataGridTextColumn Header="Poslednja poseta" Binding="{Binding LastVisitDate, StringFormat=d, Mode=OneWay}" Width="1*" />
+                        <DataGridTextColumn Header="Ukupno glasova" Binding="{Binding VoteCount, Mode=OneWay}" Width="0.7*" />
+                        <DataGridTextColumn Header="Ima moj glas" Binding="{Binding VotedByMe, Converter={StaticResource BooleanToCheckmark}, Mode=OneWay}" Width="0.5*" CellStyle="{StaticResource CenteredDataGridCellStyle}" />
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -90,9 +90,9 @@
                                     <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,0,0,12">
                                         Niste još glasali za posetu ovog objekta. Ako glasate, kasnije možete ukloniti svoj glas. Imate pravo da date glas za više objekata. <LineBreak/>
                                     </TextBlock>
-                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding AddVoteCommand}">
+                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding ToggleVoteCommand}">
                                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="12">
-                                            Dodaj glas<LineBreak/>(Enter)
+                                            Dodaj glas<LineBreak/>(Space)
                                         </TextBlock>
                                     </Button>
                                 </StackPanel>
@@ -101,9 +101,9 @@
                                     <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,0,0,12">
                                         Već ste glasali za posetu ovog objekta. Ako želite, možete ukloniti svoj glas. Imate pravo da date glas za više objekata. <LineBreak/>
                                     </TextBlock>
-                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding RemoveVoteCommand}">
+                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding ToggleVoteCommand}">
                                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="12">
-                                            Ukloni glas<LineBreak/>(Enter)
+                                            Ukloni glas<LineBreak/>(Space)
                                         </TextBlock>
                                     </Button>
                                 </StackPanel>

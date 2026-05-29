@@ -59,8 +59,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
             }
         }
 
-        public ICommand AddVoteCommand { get; }
-        public ICommand RemoveVoteCommand { get; }
+        public ICommand ToggleVoteCommand { get; }
         public ICommand ViewHistoryCommand { get; }
         public ICommand ViewStatisticsCommand { get; }
 
@@ -68,8 +67,19 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
         {
             _userId = userId;
 
-            AddVoteCommand = new RelayCommand<object>(_ => { AddVote(); AddVoteRequested?.Invoke(this, EventArgs.Empty); });
-            RemoveVoteCommand = new RelayCommand<object>(_ => { RemoveVote(); RemoveVoteRequested?.Invoke(this, EventArgs.Empty); });
+            ToggleVoteCommand = new RelayCommand<object>(_ =>
+            {
+                if (SelectedFacility?.VotedByMe == true)
+                {
+                    RemoveVote();
+                    RemoveVoteRequested?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    AddVote();
+                    AddVoteRequested?.Invoke(this, EventArgs.Empty);
+                }
+            });
             ViewHistoryCommand = new RelayCommand<object>(_ => ViewHistoryRequested?.Invoke(this, EventArgs.Empty));
             ViewStatisticsCommand = new RelayCommand<object>(_ => ViewStatisticsRequested?.Invoke(this, EventArgs.Empty));
 
