@@ -105,6 +105,18 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
             return result != null ? Convert.ToInt32(result) : 0;
         }
 
+        public bool HasUserReportedReview(long reviewId, long reporterId)
+        {
+            var query = PostgresQuery.Create(
+                "SELECT COUNT(*) FROM review_reports WHERE review_id = @review_id AND reporter_id = @reporter_id"
+            )
+            .AddParameter("review_id", reviewId)
+            .AddParameter("reporter_id", reporterId);
+
+            object? result = query.ExecuteScalar(value => value);
+            return result != null && Convert.ToInt32(result) > 0;
+        }
+
         public ReviewReport Create(ReviewReport report)
         {
             var query = PostgresQuery.Create(

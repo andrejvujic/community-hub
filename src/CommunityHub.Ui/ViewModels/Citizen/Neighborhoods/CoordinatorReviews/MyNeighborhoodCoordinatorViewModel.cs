@@ -1,5 +1,7 @@
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Application.Services.Neighborhoods;
+using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -8,10 +10,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 {
     public class MyNeighborhoodCoordinatorViewModel : INotifyPropertyChanged
     {
+        private readonly long _userId;
         private readonly CitizenService _citizenService = new();
+        private readonly CoordinatorReviewService _reviewService = new();
+        private readonly ReviewReportService _reportService = new();
         private string _selectedNeighborhoodName = string.Empty;
         private string _coordinatorName = string.Empty;
         private object? _selectedReview;
+        private bool _canReportSelectedReview = true;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? CloseRequested;
@@ -48,6 +54,18 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                 if (_selectedReview == value) return;
                 _selectedReview = value;
                 OnPropertyChanged(nameof(SelectedReview));
+                UpdateCanReportSelectedReview();
+            }
+        }
+
+        public bool CanReportSelectedReview
+        {
+            get => _canReportSelectedReview;
+            private set
+            {
+                if (_canReportSelectedReview == value) return;
+                _canReportSelectedReview = value;
+                OnPropertyChanged(nameof(CanReportSelectedReview));
             }
         }
 
@@ -59,24 +77,41 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 
         public MyNeighborhoodCoordinatorViewModel(long userId)
         {
+            _userId = userId;
             CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
             WriteNewReviewCommand = new RelayCommand<object>(_ => WriteNewReviewRequested?.Invoke(this, EventArgs.Empty));
-            ReportSelectedReviewCommand = new RelayCommand<object>(_ =>
-            {
-                if (SelectedReview != null) ReportReviewRequested?.Invoke(this, EventArgs.Empty);
-            });
+            ReportSelectedReviewCommand = new RelayCommand<object>(_ => ReportReviewRequested?.Invoke(this, EventArgs.Empty), _ => SelectedReview != null && CanReportSelectedReview);
 
-            LoadCoordinator(userId);
+            LoadData(userId);
+
+            if (Reviews.Count > 0)
+            {
+                SelectedReview = Reviews[0];
+            }
         }
 
-        private void LoadCoordinator(long userId)
+        private void UpdateCanReportSelectedReview()
+        {
+            if (SelectedReview is CoordinatorReviewDto review)
+            {
+                CanReportSelectedReview = !_reportService.HasUserReportedReview(review.Id, _userId);
+            }
+            ((RelayCommand<object>)ReportSelectedReviewCommand).RaiseCanExecuteChanged();
+        }
+
+        private void LoadData(long userId)
         {
             var citizen = _citizenService.GetCitizenById(userId);
+            if (citizen?.Membership?.Neighborhood == null) return;
 
-            if (citizen?.Membership?.Neighborhood != null)
+            SelectedNeighborhoodName = citizen.Membership.Neighborhood.Name;
+            CoordinatorName = $"{citizen.Membership.Neighborhood.Coordinator.Name} {citizen.Membership.Neighborhood.Coordinator.Surname}";
+
+            var reviews = _reviewService.GetByNeighborhoodId(citizen.Membership.Neighborhood.Id);
+            Reviews.Clear();
+            foreach (var review in reviews)
             {
-                SelectedNeighborhoodName = citizen.Membership.Neighborhood.Name;
-                CoordinatorName = $"{citizen.Membership.Neighborhood.Coordinator.Name} {citizen.Membership.Neighborhood.Coordinator.Surname}";
+                Reviews.Add(review);
             }
         }
 

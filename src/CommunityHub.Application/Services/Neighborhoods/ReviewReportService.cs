@@ -13,6 +13,9 @@ namespace CommunityHub.Application.Services.Neighborhoods
         public int GetReportCountByReviewId(long reviewId)
             => _reviewReportRepository.GetReportCountByReviewId(reviewId);
 
+        public bool HasUserReportedReview(long reviewId, long reporterId)
+            => _reviewReportRepository.HasUserReportedReview(reviewId, reporterId);
+
         public ReviewReportDto? GetById(long reportId)
         {
             var report = _reviewReportRepository.GetById(reportId);

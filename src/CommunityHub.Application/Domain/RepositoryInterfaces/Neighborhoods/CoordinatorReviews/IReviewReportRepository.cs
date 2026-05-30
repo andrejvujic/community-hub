@@ -6,6 +6,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Coo
     {
         ReviewReport? GetById(long id);
         int GetReportCountByReviewId(long reviewId);
+        bool HasUserReportedReview(long reviewId, long reporterId);
         ReviewReport Create(ReviewReport report);
     }
 }

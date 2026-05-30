@@ -1,6 +1,7 @@
 <Window x:Class="CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews.MyNeighborhoodCoordinatorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         Height="600" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
@@ -18,6 +19,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:RatingToStarsConverter x:Key="RatingToStarsConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -74,10 +76,55 @@
                           ItemsSource="{Binding Reviews}" 
                           SelectedItem="{Binding SelectedReview}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Recenzent" Binding="{Binding Reviewer, Mode=OneWay}" Width="1.2*"/>
-                        <DataGridTextColumn Header="Ocena" Binding="{Binding Rating, Mode=OneWay}" Width="0.8*"/>
-                        <DataGridTextColumn Header="Komentar" Binding="{Binding Comment, Mode=OneWay}" Width="2*"/>
-                        <DataGridTextColumn Header="Prijave" Binding="{Binding Reports, Mode=OneWay}" Width="0.4*"/>
+                        <DataGridTemplateColumn Header="Recenzent" Width="1.2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Reviewer.Name" />
+                                                <Binding Path="Reviewer.Surname" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Ocena" Width="0.6*" CellStyle="{StaticResource CenteredDataGridCellStyle}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <ItemsControl ItemsSource="{Binding Rating, Converter={StaticResource RatingToStarsConverter}}"
+                                                      HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="★" FontSize="18" Margin="1,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Foreground" Value="Gold"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsFilled}" Value="False">
+                                                                        <Setter Property="Foreground" Value="Black"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Komentar" Binding="{Binding Comment, Mode=OneWay}" Width="2.2*"/>
+                        <DataGridTextColumn Header="Prijave" Binding="{Binding ReportCount, Mode=OneWay}" Width="0.4*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
@@ -95,11 +142,11 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Width="250" Height="44" Command="{Binding ReportSelectedReviewCommand}" Style="{StaticResource PrimaryButton}" Foreground="{StaticResource TextBrush}" Padding="0">
+                    <Button Grid.Column="0" Width="250" Height="44" Command="{Binding ReportSelectedReviewCommand}" IsEnabled="{Binding CanReportSelectedReview}" Style="{StaticResource PrimaryButton}" Padding="0">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Prijavi recenziju<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
 
-                    <Button Grid.Column="2" Width="250" Height="44" Command="{Binding WriteNewReviewCommand}" Style="{StaticResource PrimaryButton}" Foreground="{StaticResource TextBrush}" Padding="0">
+                    <Button Grid.Column="2" Width="250" Height="44" Command="{Binding WriteNewReviewCommand}" Style="{StaticResource PrimaryButton}" Padding="0">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Napišite novu recenziju<LineBreak/>(Ctrl + 2)</TextBlock>
                     </Button>
                 </Grid>
