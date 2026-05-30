@@ -1,4 +1,5 @@
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews;
+using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
 using System.Windows;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
@@ -23,6 +24,13 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
 
         private void HandleReportReview()
         {
+            if (_viewModel?.SelectedReview is not CoordinatorReviewDto review) return;
+            var reportReviewWindow = new ReportReviewWindow($"{review.Reviewer.Name} {review.Reviewer.Surname}");
+
+            if (reportReviewWindow.ShowDialog() == true && reportReviewWindow.Confirmed)
+            {
+                _viewModel.ExecuteReport(review.Id);
+            }
         }
 
         private void Header_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
