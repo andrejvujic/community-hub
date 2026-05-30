@@ -95,6 +95,20 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
             return report;
         }
 
+        public List<ReviewReport> GetByReviewId(long reviewId)
+        {
+            var query = PostgresQuery.Create(
+                $"SELECT {SelectColumns} {FromJoins} WHERE coordinator_review.id = @review_id ORDER BY review_report.created_at DESC"
+            ).AddParameter("review_id", reviewId);
+
+            var reports = new List<ReviewReport>();
+            query.ExecuteReader(reader =>
+            {
+                reports.Add(_reportMapper.MapToEntity(reader));
+            });
+            return reports;
+        }
+
         public int GetReportCountByReviewId(long reviewId)
         {
             var query = PostgresQuery.Create(

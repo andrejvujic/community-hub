@@ -8,8 +8,6 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
     {
         private ReportReviewViewModel? _viewModel;
 
-        public bool Confirmed => _viewModel?.Confirmed ?? false;
-
         public ReportReviewWindow(string reviewerName)
         {
             _viewModel = new ReportReviewViewModel(reviewerName);

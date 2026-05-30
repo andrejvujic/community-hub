@@ -5,6 +5,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Coo
     public interface IReviewReportRepository
     {
         ReviewReport? GetById(long id);
+        List<ReviewReport> GetByReviewId(long reviewId);
         int GetReportCountByReviewId(long reviewId);
         bool HasUserReportedReview(long reviewId, long reporterId);
         ReviewReport Create(ReviewReport report);

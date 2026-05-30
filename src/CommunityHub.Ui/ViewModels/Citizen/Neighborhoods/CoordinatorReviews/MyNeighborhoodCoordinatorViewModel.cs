@@ -1,7 +1,9 @@
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Application.Services.Neighborhoods;
+using CommunityHub.Application.Services.TrustRecords;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
+using CommunityHub.Application.Domain.TrustRecords;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -14,10 +16,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         private readonly CitizenService _citizenService = new();
         private readonly CoordinatorReviewService _reviewService = new();
         private readonly ReviewReportService _reportService = new();
+        private readonly CitizenTrustRecordService _trustRecordService = new();
         private string _selectedNeighborhoodName = string.Empty;
         private string _coordinatorName = string.Empty;
         private object? _selectedReview;
         private bool _canReportSelectedReview = true;
+        private long _neighborhoodId;
+
+        public long UserId => _userId;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? CloseRequested;
@@ -83,11 +89,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             ReportSelectedReviewCommand = new RelayCommand<object>(_ => ReportReviewRequested?.Invoke(this, EventArgs.Empty), _ => SelectedReview != null && CanReportSelectedReview);
 
             LoadData(userId);
-
-            if (Reviews.Count > 0)
-            {
-                SelectedReview = Reviews[0];
-            }
         }
 
         private void UpdateCanReportSelectedReview()
@@ -104,15 +105,60 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             var citizen = _citizenService.GetCitizenById(userId);
             if (citizen?.Membership?.Neighborhood == null) return;
 
+            _neighborhoodId = citizen.Membership.Neighborhood.Id;
             SelectedNeighborhoodName = citizen.Membership.Neighborhood.Name;
             CoordinatorName = $"{citizen.Membership.Neighborhood.Coordinator.Name} {citizen.Membership.Neighborhood.Coordinator.Surname}";
 
-            var reviews = _reviewService.GetByNeighborhoodId(citizen.Membership.Neighborhood.Id);
+            LoadReviews();
+        }
+
+        private void LoadReviews()
+        {
+            var reviews = _reviewService.GetByNeighborhoodId(_neighborhoodId);
             Reviews.Clear();
             foreach (var review in reviews)
             {
                 Reviews.Add(review);
             }
+            if (Reviews.Count > 0)
+            {
+                SelectedReview = Reviews[0];
+            }
+        }
+
+        public void ExecuteReport(long reviewId)
+        {
+            var review = _reviewService.GetById(reviewId);
+            var reporter = _citizenService.GetCitizenById(_userId);
+            if (review == null || reporter == null) return;
+
+            var reportDto = new ReviewReportDto(0, review, reporter, DateTime.Now);
+            _reportService.Create(reportDto);
+
+            int totalReports = _reportService.GetReportCountByReviewId(reviewId);
+            if (totalReports >= 10 || CountTrustedReports(reviewId) >= 5)
+            {
+                _reviewService.MarkAsRemoved(reviewId);
+            }
+
+            LoadReviews();
+        }
+
+        private int CountTrustedReports(long reviewId)
+        {
+            var reports = _reportService.GetByReviewId(reviewId);
+            int trustedCount = 0;
+
+            foreach (var report in reports)
+            {
+                var trustRecord = _trustRecordService.GetTrustRecord(report.Reporter.Id);
+                if (trustRecord!.TrustStatus == TrustStatus.Prominent || trustRecord.TrustStatus == TrustStatus.Trustworthy)
+                {
+                    trustedCount++;
+                }
+            }
+
+            return trustedCount;
         }
 
         protected void OnPropertyChanged(string propertyName)

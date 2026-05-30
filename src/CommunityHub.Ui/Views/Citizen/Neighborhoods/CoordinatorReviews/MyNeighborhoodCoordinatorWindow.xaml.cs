@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
             if (_viewModel?.SelectedReview is not CoordinatorReviewDto review) return;
             var reportReviewWindow = new ReportReviewWindow($"{review.Reviewer.Name} {review.Reviewer.Surname}");
 
-            if (reportReviewWindow.ShowDialog() == true && reportReviewWindow.Confirmed)
+            if (reportReviewWindow.ShowDialog() == true)
             {
                 _viewModel.ExecuteReport(review.Id);
             }
