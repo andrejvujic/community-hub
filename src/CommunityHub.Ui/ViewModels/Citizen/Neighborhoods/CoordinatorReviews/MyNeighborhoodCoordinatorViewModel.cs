@@ -1,4 +1,5 @@
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Application.Services.Users;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 {
     public class MyNeighborhoodCoordinatorViewModel : INotifyPropertyChanged
     {
+        private readonly CitizenService _citizenService = new();
         private string _selectedNeighborhoodName = string.Empty;
         private string _coordinatorName = string.Empty;
         private object? _selectedReview;
@@ -55,7 +57,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         public ICommand WriteNewReviewCommand { get; }
         public ICommand ReportSelectedReviewCommand { get; }
 
-        public MyNeighborhoodCoordinatorViewModel(long userId, long neighborhoodId)
+        public MyNeighborhoodCoordinatorViewModel(long userId)
         {
             CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
             WriteNewReviewCommand = new RelayCommand<object>(_ => WriteNewReviewRequested?.Invoke(this, EventArgs.Empty));
@@ -63,6 +65,19 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             {
                 if (SelectedReview != null) ReportReviewRequested?.Invoke(this, EventArgs.Empty);
             });
+
+            LoadCoordinator(userId);
+        }
+
+        private void LoadCoordinator(long userId)
+        {
+            var citizen = _citizenService.GetCitizenById(userId);
+
+            if (citizen?.Membership?.Neighborhood != null)
+            {
+                SelectedNeighborhoodName = citizen.Membership.Neighborhood.Name;
+                CoordinatorName = $"{citizen.Membership.Neighborhood.Coordinator.Name} {citizen.Membership.Neighborhood.Coordinator.Surname}";
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)

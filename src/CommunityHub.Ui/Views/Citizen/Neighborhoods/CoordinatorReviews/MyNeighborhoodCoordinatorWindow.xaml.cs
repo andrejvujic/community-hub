@@ -7,10 +7,10 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
     {
         private MyNeighborhoodCoordinatorViewModel? _viewModel;
 
-        public MyNeighborhoodCoordinatorWindow(long userId, long neighborhoodId)
+        public MyNeighborhoodCoordinatorWindow(long userId)
         {
             InitializeComponent();
-            _viewModel = new MyNeighborhoodCoordinatorViewModel(userId, neighborhoodId);
+            _viewModel = new MyNeighborhoodCoordinatorViewModel(userId);
             _viewModel.CloseRequested += (_, _) => Close();
             _viewModel.WriteNewReviewRequested += (_, _) => HandleWriteNewReview();
             _viewModel.ReportReviewRequested += (_, _) => HandleReportReview();

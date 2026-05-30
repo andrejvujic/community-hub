@@ -61,13 +61,7 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
         private void HandleCoordinator()
         {
-            if (_viewModel?.SelectedNeighborhood == null)
-            {
-                MessageBox.Show("Izaberite kvart.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            var window = new MyNeighborhoodCoordinatorWindow(_userId, _viewModel.SelectedNeighborhood.Id);
+            var window = new MyNeighborhoodCoordinatorWindow(_userId);
             window.Owner = Window.GetWindow(this);
             window.ShowDialog();
         }
