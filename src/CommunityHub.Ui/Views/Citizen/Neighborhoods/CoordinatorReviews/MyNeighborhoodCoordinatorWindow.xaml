@@ -76,7 +76,7 @@
                           ItemsSource="{Binding Reviews}" 
                           SelectedItem="{Binding SelectedReview}">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Recenzent" Width="1.2*">
+                        <DataGridTemplateColumn Header="Recenzent" Width="1*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock>
@@ -123,6 +123,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Datum" Binding="{Binding CreatedAt, StringFormat='dd.MM.yyyy', Mode=OneWay}" Width="0.6*"/>
                         <DataGridTextColumn Header="Komentar" Binding="{Binding Comment, Mode=OneWay}" Width="2.2*"/>
                         <DataGridTextColumn Header="Prijave" Binding="{Binding ReportCount, Mode=OneWay}" Width="0.4*"/>
                     </DataGrid.Columns>

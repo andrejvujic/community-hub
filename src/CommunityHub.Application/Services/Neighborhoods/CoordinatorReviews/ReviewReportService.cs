@@ -21,12 +21,6 @@ namespace CommunityHub.Application.Services.Neighborhoods.CoordinatorReviews
         public bool HasUserReportedReview(long reviewId, long reporterId)
             => _reviewReportRepository.HasUserReportedReview(reviewId, reporterId);
 
-        public ReviewReportDto? GetById(long reportId)
-        {
-            var report = _reviewReportRepository.GetById(reportId);
-            return report != null ? _reportMapper.MapToDto(report) : null;
-        }
-
         public ReviewReportDto Create(ReviewReportDto reportDto)
         {
             var report = _reportMapper.MapToEntity(reportDto);

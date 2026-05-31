@@ -81,20 +81,6 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
             LEFT JOIN neighborhood_memberships reviewer_membership ON reviewer.membership_id = reviewer_membership.id
             INNER JOIN citizens reporter ON reporter.id = review_report.reporter_id";
 
-        public ReviewReport? GetById(long id)
-        {
-            var query = PostgresQuery.Create(
-                $"SELECT {SelectColumns} {FromJoins} WHERE review_report.id = @id"
-            ).AddParameter("id", id);
-
-            ReviewReport? report = null;
-            query.ExecuteReader(reader =>
-            {
-                report = _reportMapper.MapToEntity(reader);
-            });
-            return report;
-        }
-
         public List<ReviewReport> GetByReviewId(long reviewId)
         {
             var query = PostgresQuery.Create(
