@@ -8,9 +8,9 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
     {
         private WriteNewReviewViewModel? _viewModel;
 
-        public WriteNewReviewWindow(long coordinatorId, string neighborhoodName, string coordinatorName)
+        public WriteNewReviewWindow(string neighborhoodName, string coordinatorName)
         {
-            _viewModel = new WriteNewReviewViewModel(coordinatorId, neighborhoodName, coordinatorName);
+            _viewModel = new WriteNewReviewViewModel(neighborhoodName, coordinatorName);
             DataContext = _viewModel;
             InitializeComponent();
 

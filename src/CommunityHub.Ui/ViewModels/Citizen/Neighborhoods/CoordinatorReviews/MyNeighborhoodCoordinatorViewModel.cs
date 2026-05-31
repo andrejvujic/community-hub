@@ -145,6 +145,18 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             LoadReviews();
         }
 
+        public void CreateReview(int rating, string? comment)
+        {
+            var reviewer = _citizenService.GetCitizenById(_userId);
+            var neighborhood = reviewer!.Membership?.Neighborhood;
+            if (reviewer == null || neighborhood == null) return;
+
+            var reviewDto = new CoordinatorReviewDto(0, rating, string.IsNullOrWhiteSpace(comment) ? null : comment, DateTime.Now, neighborhood, reviewer, false);
+
+            _reviewService.Create(reviewDto);
+            LoadReviews();
+        }
+
         private int CountTrustedReports(long reviewId)
         {
             var reports = _reportService.GetByReviewId(reviewId);

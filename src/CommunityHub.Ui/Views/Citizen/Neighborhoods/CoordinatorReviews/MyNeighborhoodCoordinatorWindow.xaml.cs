@@ -21,10 +21,12 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews
         private void HandleWriteNewReview()
         {
             if (_viewModel == null) return;
-            var writeNewReviewWindow = new WriteNewReviewWindow(_viewModel.NeighborhoodId, _viewModel.SelectedNeighborhoodName, _viewModel.CoordinatorName);
+            var writeNewReviewWindow = new WriteNewReviewWindow(_viewModel.SelectedNeighborhoodName, _viewModel.CoordinatorName);
 
             if (writeNewReviewWindow.ShowDialog() == true)
             {
+                var viewModel = (WriteNewReviewViewModel?)writeNewReviewWindow.DataContext;
+                _viewModel.CreateReview(viewModel!.Rating, viewModel.Comment);
             }
         }
 

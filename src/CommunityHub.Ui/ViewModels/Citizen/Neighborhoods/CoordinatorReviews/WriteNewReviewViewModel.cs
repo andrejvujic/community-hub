@@ -6,13 +6,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 {
     public class WriteNewReviewViewModel : INotifyPropertyChanged
     {
-        private readonly long _coordinatorId;
         private int _rating = 5;
         private string _comment = "";
 
         public string NeighborhoodName { get; }
         public string CoordinatorName { get; }
         public string ReviewDate => DateTime.Now.ToString("d.M.yyyy");
+
         public int Rating
         {
             get => _rating;
@@ -76,9 +76,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         public ICommand CancelCommand { get; }
         public ICommand SetRatingCommand { get; }
 
-        public WriteNewReviewViewModel(long coordinatorId, string neighborhoodName, string coordinatorName)
+        public WriteNewReviewViewModel(string neighborhoodName, string coordinatorName)
         {
-            _coordinatorId = coordinatorId;
             NeighborhoodName = neighborhoodName;
             CoordinatorName = coordinatorName;
 
