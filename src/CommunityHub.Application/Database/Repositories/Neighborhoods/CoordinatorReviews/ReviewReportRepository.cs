@@ -81,18 +81,18 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
             LEFT JOIN neighborhood_memberships reviewer_membership ON reviewer.membership_id = reviewer_membership.id
             INNER JOIN citizens reporter ON reporter.id = review_report.reporter_id";
 
-        public ReviewReport? GetById(long id)
+        public List<ReviewReport> GetByReviewId(long reviewId)
         {
             var query = PostgresQuery.Create(
-                $"SELECT {SelectColumns} {FromJoins} WHERE review_report.id = @id"
-            ).AddParameter("id", id);
+                $"SELECT {SelectColumns} {FromJoins} WHERE coordinator_review.id = @review_id ORDER BY review_report.created_at DESC"
+            ).AddParameter("review_id", reviewId);
 
-            ReviewReport? report = null;
+            var reports = new List<ReviewReport>();
             query.ExecuteReader(reader =>
             {
-                report = _reportMapper.MapToEntity(reader);
+                reports.Add(_reportMapper.MapToEntity(reader));
             });
-            return report;
+            return reports;
         }
 
         public int GetReportCountByReviewId(long reviewId)
@@ -103,6 +103,18 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
             object? result = query.ExecuteScalar(value => value);
             return result != null ? Convert.ToInt32(result) : 0;
+        }
+
+        public bool HasUserReportedReview(long reviewId, long reporterId)
+        {
+            var query = PostgresQuery.Create(
+                "SELECT COUNT(*) FROM review_reports WHERE review_id = @review_id AND reporter_id = @reporter_id"
+            )
+            .AddParameter("review_id", reviewId)
+            .AddParameter("reporter_id", reporterId);
+
+            object? result = query.ExecuteScalar(value => value);
+            return result != null && Convert.ToInt32(result) > 0;
         }
 
         public ReviewReport Create(ReviewReport report)

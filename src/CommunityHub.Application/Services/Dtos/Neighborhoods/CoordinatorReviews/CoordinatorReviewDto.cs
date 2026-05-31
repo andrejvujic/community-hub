@@ -11,6 +11,7 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReview
         public NeighborhoodDto Neighborhood { get; set; }
         public CitizenDto Reviewer { get; set; }
         public bool IsRemoved { get; set; }
+        public int ReportCount { get; set; }
 
         public CoordinatorReviewDto(
             long id,
@@ -29,6 +30,7 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReview
             Neighborhood = neighborhood;
             Reviewer = reviewer;
             IsRemoved = isRemoved;
+            ReportCount = 0;
         }
     }
 }

@@ -98,6 +98,15 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
             return reviews;
         }
 
+        public int GetRemovedReviewCountByReviewerId(long neighborhoodId, long reviewerId)
+        {
+            var query = PostgresQuery.Create(
+                "SELECT COUNT(*) FROM coordinator_reviews WHERE neighborhood_id = @neighborhood_id AND reviewer_id = @reviewer_id AND is_removed = true"
+            ).AddParameter("neighborhood_id", neighborhoodId).AddParameter("reviewer_id", reviewerId);
+
+            return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
+        }
+
         public CoordinatorReview Create(CoordinatorReview review)
         {
             var query = PostgresQuery.Create(
