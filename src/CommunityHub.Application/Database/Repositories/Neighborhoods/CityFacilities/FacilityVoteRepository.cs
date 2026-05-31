@@ -147,5 +147,14 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
             query.GetRowsAffectedCount();
         }
+
+        public void DeleteAllByFacilityId(long facilityId)
+        {
+            PostgresQuery.Create(
+                "DELETE FROM facility_votes WHERE facility_id = @facility_id"
+            )
+            .AddParameter("facility_id", facilityId)
+            .GetRowsAffectedCount();
+        }
     }
 }
