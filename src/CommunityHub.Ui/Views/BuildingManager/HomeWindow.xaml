@@ -113,6 +113,11 @@
                     </Button>
                 </Grid>
 
+                <Grid
+                    Grid.Column="1"
+                    Background="Transparent"
+                    MouseLeftButtonDown="TitleBarDragArea_MouseLeftButtonDown" />
+
                 <Grid Grid.Column="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40" />

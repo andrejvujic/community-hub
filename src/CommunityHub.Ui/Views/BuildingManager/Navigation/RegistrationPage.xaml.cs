@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.ViewModels.BuildingManager.Navigation;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +14,12 @@ namespace CommunityHub.Ui.Views.BuildingManager
         private readonly RegistrationPageViewModel _viewModel;
         public ObservableCollection<int> ApartmentNumbers { get; }
         private List<(int Number, int Floor)> _apartmentEntries = new();
+        private static readonly HashSet<string> AllowedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ".jpg",
+            ".jpeg",
+            ".png"
+        };
 
         public RegistrationPage(User user)
         {
@@ -302,6 +309,40 @@ namespace CommunityHub.Ui.Views.BuildingManager
             floorsStackPanel.Children.Add(CreateFloor(1));
             _apartmentEntries.Clear();
             _viewModel.ResetFloorsAndApartments();
+        }
+
+        private void Images_DragOver(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+            var files = (string[]?)e.Data.GetData(DataFormats.FileDrop);
+            bool hasImage = files?.Any(file => AllowedImageExtensions.Contains(Path.GetExtension(file))) == true;
+            e.Effects = hasImage ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void Images_Drop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+                return;
+
+            var files = (string[]?)e.Data.GetData(DataFormats.FileDrop);
+            if (files == null || files.Length == 0)
+                return;
+
+            var imageFiles = files
+                .Where(file => AllowedImageExtensions.Contains(Path.GetExtension(file)))
+                .ToArray();
+
+            if (imageFiles.Length == 0)
+                return;
+
+            _viewModel.AddImages(imageFiles);
         }
     }
 }

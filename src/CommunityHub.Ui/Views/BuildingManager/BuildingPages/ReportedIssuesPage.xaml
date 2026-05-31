@@ -154,7 +154,31 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Grid Grid.Column="0" VerticalAlignment="Center">
-                                                <TextBlock FontSize="17" Text="{Binding Priority, Converter={StaticResource ReportedIssuePriorityToStringConverter}, StringFormat='Prioritet: {0}'}" />
+                                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                        <materialDesign:PackIcon.Style>
+                                                            <Style TargetType="materialDesign:PackIcon">
+                                                                <Setter Property="Kind" Value="CheckCircleOutline" />
+                                                                <Setter Property="Foreground" Value="#1B8A2F" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Priority}" Value="ShouldBeResolvedSoon">
+                                                                        <Setter Property="Kind" Value="ClockOutline" />
+                                                                        <Setter Property="Foreground" Value="#C69200" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Priority}" Value="Urgent">
+                                                                        <Setter Property="Kind" Value="AlertCircle" />
+                                                                        <Setter Property="Foreground" Value="#C0392B" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Priority}" Value="CanWait">
+                                                                        <Setter Property="Kind" Value="CheckCircleOutline" />
+                                                                        <Setter Property="Foreground" Value="#1B8A2F" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </materialDesign:PackIcon.Style>
+                                                    </materialDesign:PackIcon>
+                                                    <TextBlock FontSize="17" Text="{Binding Priority, Converter={StaticResource ReportedIssuePriorityToStringConverter}, StringFormat='Prioritet: {0}'}" />
+                                                </StackPanel>
                                             </Grid>
 
                                             <Button

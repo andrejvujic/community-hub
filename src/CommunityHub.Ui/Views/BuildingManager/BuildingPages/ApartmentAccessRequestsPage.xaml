@@ -224,25 +224,50 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Status, Converter={StaticResource RequestStatusConverter}}"
-                        CanUserSort="False"
-                        Header="Status">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Left" />
-                                <Setter Property="Margin" Value="12,0,0,0" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Foreground" Value="#1C1E21" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
-                                        <Setter Property="Foreground" Value="#123B63" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Width="*" CanUserSort="False" Header="Status">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="12,0,0,0" VerticalAlignment="Center" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center">
+                                        <materialDesign:PackIcon.Style>
+                                            <Style TargetType="materialDesign:PackIcon">
+                                                <Setter Property="Kind" Value="ClockOutline" />
+                                                <Setter Property="Foreground" Value="#C69200" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="accepted">
+                                                        <Setter Property="Kind" Value="CheckCircle" />
+                                                        <Setter Property="Foreground" Value="#1B8A2F" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="rejected">
+                                                        <Setter Property="Kind" Value="CloseCircle" />
+                                                        <Setter Property="Foreground" Value="#C0392B" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="waiting">
+                                                        <Setter Property="Kind" Value="ClockOutline" />
+                                                        <Setter Property="Foreground" Value="#C69200" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:PackIcon.Style>
+                                    </materialDesign:PackIcon>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="#1C1E21"
+                                        Text="{Binding Status, Converter={StaticResource RequestStatusConverter}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                        <Setter Property="Foreground" Value="#123B63" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

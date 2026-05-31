@@ -1,0 +1,140 @@
+<Window x:Class="CommunityHub.Ui.Views.Citizen.LocalFacilities.ReservationStatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="550" Width="700" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Language="sr-Latn-RS">
+
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+        <KeyBinding Key="Left" Command="{Binding PreviousPeriodCommand}" />
+        <KeyBinding Key="Right" Command="{Binding NextPeriodCommand}" />
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding TogglePeriodCommand}" />
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource AccentBrush}" Padding="15,6,15,6" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,2" MouseDown="Header_MouseDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Statistika rezervacija" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" Width="32" Height="32" Command="{Binding CloseCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
+                        <Path Data="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" Fill="{StaticResource TextBrush}" Stretch="Uniform" Width="16" Height="16"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Padding="15" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Vremenski period (Ctrl + 1):" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,10,0" />
+
+                    <RadioButton x:Name="MonthToggle" Grid.Column="1" Width="65" Content="Mesec" FontSize="13" GroupName="TimeframeGroup" Foreground="{StaticResource TextBrush}" Margin="0,0,10,0" IsChecked="{Binding IsMonthView, Mode=TwoWay}">
+                        <RadioButton.Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border x:Name="Bd" CornerRadius="4" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource BackgroundBrush}" Padding="8,4">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                    </RadioButton>
+
+                    <RadioButton x:Name="YearToggle" Grid.Column="2" Width="65" Content="Godina" FontSize="13" GroupName="TimeframeGroup" Foreground="{StaticResource TextBrush}" Margin="0,0,20,0" IsChecked="{Binding IsYearView, Mode=TwoWay}">
+                        <RadioButton.Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border x:Name="Bd" CornerRadius="4" BorderBrush="{StaticResource TextBrush}" BorderThickness="2" Background="{StaticResource BackgroundBrush}" Padding="8,4">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentBrush}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                    </RadioButton>
+
+                    <Button Grid.Column="4" Height="26" Width="26" Content="◄" Style="{StaticResource CompactButton}" Margin="0,0,5,0" Command="{Binding PreviousPeriodCommand}" />
+
+                    <TextBlock Grid.Column="5" Text="{Binding PeriodText}" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                    <Button Grid.Column="6" Height="26" Width="26" Content="►" Style="{StaticResource CompactButton}" Margin="5,0,0,0" Command="{Binding NextPeriodCommand}" />
+                </Grid>
+            </Border>
+
+            <TextBlock Grid.Row="2" Text="{Binding TotalReservationsText}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextBrush}" Margin="15,10,15,10" />
+
+            <DataGrid x:Name="StatisticsGrid" Grid.Row="3" 
+                      ItemsSource="{Binding Statistics}"
+                      Style="{StaticResource PrimaryDataGrid}" 
+                      ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                      RowStyle="{StaticResource DataGridRowStyle}"
+                      CellStyle="{StaticResource DataGridCellStyle}"
+                      Margin="15,0,15,15" 
+                      VerticalAlignment="Stretch"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Naziv objekta" Binding="{Binding FacilityName}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Ukupno poseta" Binding="{Binding VisitCount}" Width="*" CellStyle="{StaticResource CenteredDataGridCellStyle}" IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Grid.Row="4" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Listaj - Srtelice gore/dole" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}" Margin="0,0,100,0"/>
+                    <TextBlock Text="Promeni period - Strelice levo/desno" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}" Margin="0,0,100,0"/>
+                    <TextBlock Text="Zatvori - Esc" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
