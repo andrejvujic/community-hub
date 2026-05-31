@@ -1,12 +1,12 @@
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Application.Services.Users;
-using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.TrustRecords;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
 using CommunityHub.Application.Domain.TrustRecords;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using CommunityHub.Application.Services.Neighborhoods.CoordinatorReviews;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 {

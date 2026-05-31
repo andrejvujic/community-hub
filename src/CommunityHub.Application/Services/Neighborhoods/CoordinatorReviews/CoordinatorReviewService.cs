@@ -1,14 +1,13 @@
-using CommunityHub.Application.Database.Repositories.Neighborhoods.CoordinatorReviews;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CoordinatorReviews;
 using CommunityHub.Application.MappersDto.Neighborhoods.CoordinatorReviews;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
 
-namespace CommunityHub.Application.Services.Neighborhoods
+namespace CommunityHub.Application.Services.Neighborhoods.CoordinatorReviews
 {
     public class CoordinatorReviewService
     {
-        private readonly ICoordinatorReviewRepository _coordinatorReviewRepository = new CoordinatorReviewRepository();
-        private readonly IReviewReportRepository _reportRepository = new ReviewReportRepository();
+        private readonly ICoordinatorReviewRepository _coordinatorReviewRepository = Injector.CreateInstance<ICoordinatorReviewRepository>();
+        private readonly IReviewReportRepository _reportRepository = Injector.CreateInstance<IReviewReportRepository>();
         private readonly CoordinatorReviewMapper _reviewMapper = new();
 
         public List<CoordinatorReviewDto> GetByNeighborhoodId(long neighborhoodId)
