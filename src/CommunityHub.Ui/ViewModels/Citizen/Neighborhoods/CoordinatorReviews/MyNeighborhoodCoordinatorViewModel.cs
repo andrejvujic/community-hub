@@ -24,6 +24,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         private long _neighborhoodId;
 
         public long UserId => _userId;
+        public long NeighborhoodId => _neighborhoodId;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? CloseRequested;
