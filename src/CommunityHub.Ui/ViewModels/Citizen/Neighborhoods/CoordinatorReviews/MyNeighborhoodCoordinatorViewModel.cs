@@ -21,6 +21,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         private string _coordinatorName = string.Empty;
         private object? _selectedReview;
         private bool _canReportSelectedReview = true;
+        private bool _canWriteNewReview = true;
         private long _neighborhoodId;
 
         public long UserId => _userId;
@@ -76,6 +77,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             }
         }
 
+        public bool CanWriteNewReview
+        {
+            get => _canWriteNewReview;
+            private set
+            {
+                if (_canWriteNewReview == value) return;
+                _canWriteNewReview = value;
+                OnPropertyChanged(nameof(CanWriteNewReview));
+            }
+        }
+
         public ObservableCollection<object> Reviews { get; } = new();
 
         public ICommand CloseCommand { get; }
@@ -86,7 +98,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         {
             _userId = userId;
             CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
-            WriteNewReviewCommand = new RelayCommand<object>(_ => WriteNewReviewRequested?.Invoke(this, EventArgs.Empty));
+            WriteNewReviewCommand = new RelayCommand<object>(_ => WriteNewReviewRequested?.Invoke(this, EventArgs.Empty), _ => CanWriteNewReview);
             ReportSelectedReviewCommand = new RelayCommand<object>(_ => ReportReviewRequested?.Invoke(this, EventArgs.Empty), _ => SelectedReview != null && CanReportSelectedReview);
 
             LoadData(userId);
@@ -96,7 +108,18 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         {
             if (SelectedReview is CoordinatorReviewDto review)
             {
-                CanReportSelectedReview = !_reportService.HasUserReportedReview(review.Id, _userId);
+                if (review.Reviewer.Id == _userId)
+                {
+                    CanReportSelectedReview = false;
+                }
+                else
+                {
+                    CanReportSelectedReview = !_reportService.HasUserReportedReview(review.Id, _userId);
+                }
+            }
+            else
+            {
+                CanReportSelectedReview = false;
             }
             ((RelayCommand<object>)ReportSelectedReviewCommand).RaiseCanExecuteChanged();
         }
@@ -111,6 +134,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             CoordinatorName = $"{citizen.Membership.Neighborhood.Coordinator.Name} {citizen.Membership.Neighborhood.Coordinator.Surname}";
 
             LoadReviews();
+            UpdateCanWriteNewReview();
         }
 
         private void LoadReviews()
@@ -140,6 +164,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             if (totalReports >= 10 || CountTrustedReports(reviewId) >= 5)
             {
                 _reviewService.MarkAsRemoved(reviewId);
+                UpdateCanWriteNewReview();
             }
 
             LoadReviews();
@@ -155,6 +180,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 
             _reviewService.Create(reviewDto);
             LoadReviews();
+            UpdateCanWriteNewReview();
         }
 
         private int CountTrustedReports(long reviewId)
@@ -172,6 +198,24 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             }
 
             return trustedCount;
+        }
+
+        private void UpdateCanWriteNewReview()
+        {
+            int removedReviewCount = _reviewService.GetRemovedReviewCountByReviewerId(_neighborhoodId, _userId);
+            if (removedReviewCount >= 3)
+            {
+                CanWriteNewReview = false;
+                ((RelayCommand<object>)WriteNewReviewCommand).RaiseCanExecuteChanged();
+                return;
+            }
+
+            var allReviews = _reviewService.GetByNeighborhoodId(_neighborhoodId);
+            var now = DateTime.Now;
+            var userRecentReview = allReviews.FirstOrDefault(r => r.Reviewer.Id == _userId && r.CreatedAt.Year == now.Year && r.CreatedAt.Month == now.Month);
+
+            CanWriteNewReview = userRecentReview == null;
+            ((RelayCommand<object>)WriteNewReviewCommand).RaiseCanExecuteChanged();
         }
 
         protected void OnPropertyChanged(string propertyName)

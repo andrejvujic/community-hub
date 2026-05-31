@@ -8,10 +8,10 @@
 
     <Window.InputBindings>
         <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
-        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding WriteNewReviewCommand}" />
-        <KeyBinding Key="NumPad1" Modifiers="Ctrl" Command="{Binding WriteNewReviewCommand}" />
-        <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding ReportSelectedReviewCommand}" />
-        <KeyBinding Key="NumPad2" Modifiers="Ctrl" Command="{Binding ReportSelectedReviewCommand}" />
+        <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ReportSelectedReviewCommand}" />
+        <KeyBinding Key="NumPad1" Modifiers="Ctrl" Command="{Binding ReportSelectedReviewCommand}" />
+        <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding WriteNewReviewCommand}" />
+        <KeyBinding Key="NumPad2" Modifiers="Ctrl" Command="{Binding WriteNewReviewCommand}" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -146,7 +146,7 @@
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Prijavi recenziju<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>
 
-                    <Button Grid.Column="2" Width="250" Height="44" Command="{Binding WriteNewReviewCommand}" Style="{StaticResource PrimaryButton}" Padding="0">
+                    <Button Grid.Column="2" Width="250" Height="44" Command="{Binding WriteNewReviewCommand}" IsEnabled="{Binding CanWriteNewReview}" Style="{StaticResource PrimaryButton}" Padding="0">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center">Napišite novu recenziju<LineBreak/>(Ctrl + 2)</TextBlock>
                     </Button>
                 </Grid>
