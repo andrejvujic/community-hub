@@ -10,11 +10,14 @@ namespace CommunityHub.Ui.Helpers.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var stars = new List<RatingStar>();
-            if (value is int rating && rating >= 1 && rating <= 5)
+            if (value is int rating)
             {
-                for (int i = 1; i <= 5; i++)
+                if (rating == 0 || (rating >= 1 && rating <= 5))
                 {
-                    stars.Add(new RatingStar { IsFilled = i <= rating });
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        stars.Add(new RatingStar { IsFilled = i <= rating });
+                    }
                 }
             }
             return stars;

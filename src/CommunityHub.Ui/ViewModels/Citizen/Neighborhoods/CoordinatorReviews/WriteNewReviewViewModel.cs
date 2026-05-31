@@ -22,8 +22,27 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                 {
                     _rating = value;
                     OnPropertyChanged(nameof(Rating));
+                    OnPropertyChanged(nameof(RatingText));
                     OnPropertyChanged(nameof(IsCommentRequired));
                     OnPropertyChanged(nameof(CommentLabel));
+                    OnPropertyChanged(nameof(IsValid));
+                    ((RelayCommand<object>)ConfirmCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string RatingText
+        {
+            get => _rating > 0 ? _rating.ToString() : "";
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    Rating = 0;
+                }
+                else if (int.TryParse(value, out int newRating) && newRating <= 5 )
+                {
+                    Rating = newRating;
                 }
             }
         }
@@ -37,6 +56,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                 {
                     _comment = value;
                     OnPropertyChanged(nameof(Comment));
+                    OnPropertyChanged(nameof(IsValid));
+                    ((RelayCommand<object>)ConfirmCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -45,12 +66,15 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 
         public string CommentLabel => Rating < 3 ? "Obrazloženje (obavezno):" : "Obrazloženje (opciono):";
 
+        public bool IsValid => Rating >= 1 && Rating <= 5 && (!IsCommentRequired || !string.IsNullOrWhiteSpace(Comment));
+
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ConfirmRequested;
         public event EventHandler? CancelRequested;
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand SetRatingCommand { get; }
 
         public WriteNewReviewViewModel(long coordinatorId, string neighborhoodName, string coordinatorName)
         {
@@ -58,8 +82,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             NeighborhoodName = neighborhoodName;
             CoordinatorName = coordinatorName;
 
-            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty));
+            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty), _ => IsValid);
             CancelCommand = new RelayCommand<object>(_ => CancelRequested?.Invoke(this, EventArgs.Empty));
+            SetRatingCommand = new RelayCommand<object>(param =>
+            {
+                if (param is int starIndex) Rating = starIndex;
+                else if (param is string starStr && int.TryParse(starStr, out int parsed)) Rating = parsed;
+            });
         }
 
         protected void OnPropertyChanged(string propertyName)
