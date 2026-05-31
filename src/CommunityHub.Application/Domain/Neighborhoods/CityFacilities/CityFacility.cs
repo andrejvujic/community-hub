@@ -16,15 +16,13 @@ namespace CommunityHub.Application.Domain.Neighborhoods.CityFacilities
                 DateTime rangeStart,
                 DateTime rangeEnd)
         {
-            var tomorrow = DateTime.Today.AddDays(1);
-            if (rangeStart.Date < tomorrow)
-                rangeStart = tomorrow.AddHours(8);
-
             var ordered = existingReservations.OrderBy(r => r.StartDatetime).ToList();
 
-            var slotsInRange = FindAllSlotsInRange(ordered, rangeStart, rangeEnd, durationHours);
-            if (slotsInRange.Count > 0)
-                return (slotsInRange[0], new List<AvailableFacilitySlot>());
+            var slotInRange = FindAllSlotsInRange(ordered, rangeStart, rangeEnd, durationHours, maxSlots: 1)
+                .FirstOrDefault();
+
+            if (slotInRange is not null)
+                return (slotInRange, new List<AvailableFacilitySlot>());
 
             var outsideStart = rangeEnd.Date.AddDays(1).AddHours(8);
             var slotsOutside = FindAllSlotsInRange(ordered, outsideStart, outsideStart.AddDays(90), durationHours);

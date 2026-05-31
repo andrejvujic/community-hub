@@ -6,11 +6,16 @@
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
         mc:Ignorable="d"
         Title="Potvrda i provera termina"
-        Height="420" 
+        Height="470" 
         Width="480"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
     <Grid Margin="24"
           TextElement.Foreground="{DynamicResource PrimaryTextBrush}">
         <Grid.RowDefinitions>
@@ -22,13 +27,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="TitleTextBlock"
+        <TextBlock Text="{Binding Title}"
                    Grid.Row="0"
                    FontSize="20" FontWeight="Bold"
                    TextWrapping="Wrap"
                    Margin="0,0,0,12"/>
 
-        <TextBlock x:Name="StatusTextBlock"
+        <TextBlock Text="{Binding Status}"
                    Grid.Row="1"
                    FontSize="14"
                    TextWrapping="Wrap"
@@ -49,21 +54,22 @@
                 Padding="12"
                 Margin="0,0,0,16">
             <StackPanel>
-                <TextBlock x:Name="NeighborhoodTextBlock" FontSize="14" Margin="0,0,0,4" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                <TextBlock x:Name="FacilityTextBlock"    FontSize="14" Margin="0,0,0,4"/>
-                <TextBlock x:Name="SlotTextBlock"         FontSize="14"/>
+                <TextBlock Text="{Binding NeighborhoodText}" FontSize="14" Margin="0,0,0,4"/>
+                <TextBlock Text="{Binding FacilityText}" FontSize="14" Margin="0,0,0,4"/>
+                <TextBlock Text="{Binding SlotText}" FontSize="14"
+                           Visibility="{Binding HasSlotInRange, Converter={StaticResource BoolToVis}}"/>
             </StackPanel>
         </Border>
 
         <StackPanel x:Name="ComboPanel"
                     Grid.Row="4"
-                    Visibility="Collapsed"
+                    Visibility="{Binding HasNoSlotInRange, Converter={StaticResource BoolToVis}}"
                     Margin="0,0,0,16">
             <TextBlock Text="Odaberite termin:" FontSize="14" Margin="0,0,0,6"/>
-            <ComboBox x:Name="SlotsComboBox"
-                      Style="{StaticResource ComboBoxStyle}"
-                      FontSize="14" 
-                      Height="35">
+            <ComboBox Style="{StaticResource ComboBoxStyle}"
+                      FontSize="14" Height="35"
+                      ItemsSource="{Binding AvailableSlots}"
+                      SelectedItem="{Binding SelectedSlot}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding DisplayText}"/>
@@ -84,7 +90,7 @@
                     Margin="0,0,8,0"
                     Padding="0"
                     FontSize="14"
-                    Click="CancelButton_Click"/>
+                    Command="{Binding CancelCommand}"/>
             <Button Grid.Column="1"
                     Content="Potvrdi rezervaciju"
                     Style="{StaticResource PrimaryButtonStyle}"
@@ -92,7 +98,7 @@
                     Padding="0"
                     Margin="8,0,0,0"
                     FontSize="14"
-                    Click="ConfirmButton_Click"/>
+                    Command="{Binding ConfirmCommand}"/>
         </Grid>
     </Grid>
 </Window>
