@@ -1,10 +1,7 @@
-using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblies;
-using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.MappersDto.ResidentAssemblies;
 using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.ResidentAssemblies;
-using System.Diagnostics;
 
 namespace CommunityHub.Application.Services.ResidentAssemblies
 {
@@ -38,10 +35,10 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
         public AssemblyDto RegisterAttendance(AssemblyDto targetAssembly, long residentId)
         {
-          
-            EnsureAttendanceCanBeChanged(targetAssembly);
-
             var assembly = _assemblyMapper.MapToEntity(targetAssembly);
+
+            if (!assembly.CanChange())
+                throw new InvalidOperationException("Attendance can't be changed");
 
             var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
@@ -62,9 +59,10 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
         public AssemblyDto UnregisterAttendance(AssemblyDto targetAssembly, long residentId)
         {
-            EnsureAttendanceCanBeChanged(targetAssembly);
-
             var assembly = _assemblyMapper.MapToEntity(targetAssembly);
+
+            if (!assembly.CanChange())
+                throw new InvalidOperationException("Attendance can't be changed");
 
             var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
@@ -72,7 +70,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             );
 
             var residentAttendances = assembly.Attendances
-                .Where(attendance => residentApartmentIds.Contains(attendance.ApartmentId))
+                .Where(
+                    attendance => residentApartmentIds.Contains(attendance.ApartmentId)
+                )
                 .ToList();
 
             foreach (var attendance in residentAttendances)
@@ -84,14 +84,6 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             return _assemblyService.RefreshStatus(
                 _assemblyMapper.MapToDto(assembly)    
             );
-        }
-
-        private static void EnsureAttendanceCanBeChanged(AssemblyDto assembly)
-        {
-            if (assembly.Status is AssemblyStatus.Cancelled || assembly.StartsAt <= DateTime.Now.AddHours(24))
-                throw new InvalidOperationException(
-                    "Assembly attendance can only be changed until 24 hours before an active targetAssembly starts."
-                );
         }
     }
 }

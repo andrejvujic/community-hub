@@ -19,6 +19,12 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 ? MapToDto(assembly)
                 : null;
 
+        public bool CanChange(long assemblyId)
+        {
+            var assembly = _assemblyRepository.GetById(assemblyId);
+            return assembly is not null && assembly.CanChange();
+        }
+
         public AssemblyDto RefreshStatus(AssemblyDto targetAssembly)
         {
             var assembly = MapToEntity(targetAssembly);
