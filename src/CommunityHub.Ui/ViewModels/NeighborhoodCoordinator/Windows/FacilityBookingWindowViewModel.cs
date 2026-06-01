@@ -14,9 +14,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         private readonly CityFacilitiesTabViewModel _tabViewModel;
         private readonly Action _closeConfirmed;
         private readonly Action _closeCancelled;
-        private AvailableFacilitySlot? _confirmedSlot;
+        private AvailableFacilitySlotDto? _confirmedSlot;
 
-        public ObservableCollection<AvailableFacilitySlot> AvailableSlots { get; } = new();
+        public ObservableCollection<AvailableFacilitySlotDto> AvailableSlots { get; } = new();
 
         public string Title { get; }
         public string Status { get; }
@@ -26,8 +26,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public bool HasSlotInRange { get; }
         public bool HasNoSlotInRange => !HasSlotInRange;
 
-        private AvailableFacilitySlot? _selectedSlot;
-        public AvailableFacilitySlot? SelectedSlot
+        private AvailableFacilitySlotDto? _selectedSlot;
+        public AvailableFacilitySlotDto? SelectedSlot
         {
             get => _selectedSlot;
             set { _selectedSlot = value; OnPropertyChanged(); }
@@ -39,8 +39,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public FacilityBookingWindowViewModel(
             CityFacilityDto facility,
             NeighborhoodDto neighborhood,
-            AvailableFacilitySlot? slotInRange,
-            List<AvailableFacilitySlot> slotsOutsideRange,
+            AvailableFacilitySlotDto? slotInRange,
+            List<AvailableFacilitySlotDto> slotsOutsideRange,
             CityFacilitiesTabViewModel tabViewModel,
             Action closeConfirmed,
             Action closeCancelled)

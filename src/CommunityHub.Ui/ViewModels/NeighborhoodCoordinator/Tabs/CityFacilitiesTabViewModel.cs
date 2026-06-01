@@ -92,14 +92,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 Reservations.Add(r);
         }
 
-        public (AvailableFacilitySlot? SlotInRange, List<AvailableFacilitySlot> SlotsOutsideRange)?
+        public (AvailableFacilitySlotDto? SlotInRange, List<AvailableFacilitySlotDto> SlotsOutsideRange)?
             FindSlots(int durationHours, DateTime rangeStart, DateTime rangeEnd)
         {
             if (SelectedFacility is null) return null;
             return _reservationService.FindSlots(SelectedFacility, durationHours, rangeStart, rangeEnd);
         }
 
-        public FacilityReservationDto Book(AvailableFacilitySlot slot)
+        public FacilityReservationDto Book(AvailableFacilitySlotDto slot)
         {
             var created = _reservationService.Book(SelectedFacility!, SelectedNeighborhood!, slot);
             _voteService.DeleteAllByFacilityId(SelectedFacility!.Id);

@@ -12,8 +12,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
         public FacilityBookingWindow(
             CityFacilityDto facility,
             NeighborhoodDto neighborhood,
-            AvailableFacilitySlot? slotInRange,
-            List<AvailableFacilitySlot> slotsOutsideRange,
+            AvailableFacilitySlotDto? slotInRange,
+            List<AvailableFacilitySlotDto> slotsOutsideRange,
             CityFacilitiesTabViewModel tabViewModel)
         {
             InitializeComponent();

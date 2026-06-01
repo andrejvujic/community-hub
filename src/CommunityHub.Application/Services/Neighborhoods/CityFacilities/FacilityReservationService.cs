@@ -12,13 +12,10 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
     {
         private readonly IFacilityReservationRepository _reservationRepository
             = Injector.CreateInstance<IFacilityReservationRepository>();
-        private readonly ICityFacilityRepository _cityFacilityRepository
-            = Injector.CreateInstance<ICityFacilityRepository>();
-        private readonly INeighborhoodRepository _neighborhoodRepository
-            = Injector.CreateInstance<INeighborhoodRepository>();
         private readonly FacilityReservationMapper _reservationMapper = new();
         private readonly CityFacilityMapper _cityFacilityMapper = new();
         private readonly NeighborhoodMapper _neighborhoodMapper = new();
+        private readonly AvailableFacilitySlotMapper _slotMapper = new();
 
         public FacilityReservationService() : base(mapper: new FacilityReservationMapper()) { }
 
@@ -40,19 +37,25 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
             return reservations.OrderByDescending(r => r.EndDatetime).FirstOrDefault()?.EndDatetime;
         }
 
-        public (AvailableFacilitySlot? SlotInRange, List<AvailableFacilitySlot> SlotsOutsideRange)
+        public (AvailableFacilitySlotDto? SlotInRange, List<AvailableFacilitySlotDto> SlotsOutsideRange)
             FindSlots(CityFacilityDto facilityDto, int durationHours, DateTime rangeStart, DateTime rangeEnd)
         {
             var cityFacility = _cityFacilityMapper.MapToEntity(facilityDto);
             var reservations = _reservationRepository.GetByFacilityId(facilityDto.Id);
-            return cityFacility.FindSlots(reservations, durationHours, rangeStart, rangeEnd);
+            var (slotInRange, slotsOutside) = cityFacility.FindSlots(reservations, durationHours, rangeStart, rangeEnd);
+
+            return (
+                slotInRange is null ? null : _slotMapper.MapToDto(slotInRange),
+                slotsOutside.Select(s => _slotMapper.MapToDto(s)).ToList()
+            );
         }
 
         public FacilityReservationDto Book(CityFacilityDto facilityDto, NeighborhoodDto neighborhoodDto,
-            AvailableFacilitySlot slot)
+            AvailableFacilitySlotDto slotDto)
         {
             var facility = _cityFacilityMapper.MapToEntity(facilityDto);
             var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
+            var slot = _slotMapper.MapToEntity(slotDto);
             var reservation = new FacilityReservation(facility, neighborhood, slot.Start, slot.End);
             var created = _reservationRepository.Create(reservation);
             return _reservationMapper.MapToDto(created);
