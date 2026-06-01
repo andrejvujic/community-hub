@@ -98,6 +98,21 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
             return reviews;
         }
 
+        public List<CoordinatorReview> GetByCoordinatorId(long coordinatorId)
+        {
+            var query = PostgresQuery.Create(
+                $"SELECT {SelectColumns} {FromJoins} WHERE neighborhood.coordinator_id = @coordinator_id AND coordinator_review.is_removed = false ORDER BY coordinator_review.created_at DESC"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            var reviews = new List<CoordinatorReview>();
+            query.ExecuteReader(reader =>
+            {
+                var review = _reviewMapper.MapToEntity(reader);
+                if (review is not null) reviews.Add(review);
+            });
+            return reviews;
+        }
+
         public int GetRemovedReviewCountByReviewerId(long neighborhoodId, long reviewerId)
         {
             var query = PostgresQuery.Create(
