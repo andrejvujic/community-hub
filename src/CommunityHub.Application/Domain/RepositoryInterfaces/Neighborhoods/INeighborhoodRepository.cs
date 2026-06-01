@@ -9,5 +9,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods
         public Neighborhood Create(Neighborhood neighborhood);
         public List<Neighborhood> Search(NeighborhoodSearchParameters searchParameters);
         public void UpdateBudget(long neighborhoodId, int newBudget);
+        (int CitizenCount, int NeighborhoodCount) GetStatsByCoordinatorId(long coordinatorId);
     }
 }

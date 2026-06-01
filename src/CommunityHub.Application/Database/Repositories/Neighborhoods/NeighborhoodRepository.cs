@@ -170,5 +170,26 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("budget", newBudget)
             .Execute();
         }
+
+        public (int CitizenCount, int NeighborhoodCount) GetStatsByCoordinatorId(long coordinatorId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT 
+                    COUNT(DISTINCT m.id) AS citizen_count,
+                    COUNT(DISTINCT n.id) AS neighborhood_count
+                FROM neighborhoods n
+                LEFT JOIN neighborhood_memberships nm ON nm.neighborhood_id = n.id
+                LEFT JOIN citizens m ON m.membership_id = nm.id
+                WHERE n.coordinator_id = @coordinator_id"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            int citizenCount = 0, neighborhoodCount = 0;
+            query.ExecuteReader(reader =>
+            {
+                citizenCount = reader.GetInt32(reader.GetOrdinal("citizen_count"));
+                neighborhoodCount = reader.GetInt32(reader.GetOrdinal("neighborhood_count"));
+            });
+            return (citizenCount, neighborhoodCount);
+        }
     }
 }
