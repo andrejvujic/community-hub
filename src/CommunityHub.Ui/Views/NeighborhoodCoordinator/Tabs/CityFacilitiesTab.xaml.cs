@@ -1,168 +1,96 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
-using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities;
-using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
-using CommunityHub.Application.Services;
+using CommunityHub.Application.Services.Dtos.Neighborhoods;
+using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
     public partial class CityFacilitiesTab : UserControl
     {
-        private long _coordinatorId;
-        private Neighborhood? _selectedNeighborhood;
-
-        private readonly NeighborhoodRepository _neighborhoodRepository = new NeighborhoodRepository();
-        private readonly CityFacilityRepository _cityFacilityRepository = new CityFacilityRepository();
-        private readonly FacilityReservationRepository _facilityReservationRepository = new FacilityReservationRepository();
-        private readonly FacilityBookingService _facilityBookingService = new FacilityBookingService(new FacilityReservationRepository());
-
-        public ObservableCollection<Neighborhood> Neighborhoods { get; set; } = new ObservableCollection<Neighborhood>();
-        public ObservableCollection<CityFacility> Facilities { get; set; } = new ObservableCollection<CityFacility>();
-        public ObservableCollection<FacilityReservation> Reservations { get; set; } = new ObservableCollection<FacilityReservation>();
+        private CityFacilitiesTabViewModel _viewModel = null!;
 
         public CityFacilitiesTab()
         {
             InitializeComponent();
             Language = XmlLanguage.GetLanguage("sr-Latn-RS");
-            DataContext = this;
         }
 
         public void Initialize(long coordinatorId)
         {
-            _coordinatorId = coordinatorId;
-            LoadNeighborhoods();
-        }
-
-        private void LoadNeighborhoods()
-        {
-            Neighborhoods.Clear();
-            var neighborhoods = _neighborhoodRepository.GetByCoordinatorId(_coordinatorId);
-            foreach (var n in neighborhoods)
-                Neighborhoods.Add(n);
+            _viewModel = new CityFacilitiesTabViewModel(coordinatorId);
+            DataContext = _viewModel;
+            _viewModel.LoadNeighborhoods();
+            StartDatePicker.DisplayDateStart = DateTime.Today.AddDays(1);
+            EndDatePicker.DisplayDateStart = DateTime.Today.AddDays(1);
         }
 
         private void NeighborhoodsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _selectedNeighborhood = NeighborhoodsListBox.SelectedItem as Neighborhood;
-            if (_selectedNeighborhood is null) return;
+            => _viewModel.SelectedNeighborhood = NeighborhoodsListBox.SelectedItem as NeighborhoodDto;
 
-            NeighborhoodNameTextBlock.Text = _selectedNeighborhood.Name;
-            ReservationsTitleRun.Text = _selectedNeighborhood.Name;
-
-            LoadFacilities();
-            LoadReservations();
-
-            FacilitiesPanel.Visibility = Visibility.Visible;
-        }
-
-        private void LoadFacilities()
-        {
-            Facilities.Clear();
-            var facilities = _cityFacilityRepository.GetByCityId(_selectedNeighborhood!.City.Id);
-            foreach (var f in facilities)
-                Facilities.Add(f);
-        }
-
-        private void LoadReservations()
-        {
-            Reservations.Clear();
-            var reservations = _facilityReservationRepository.GetByNeighborhoodId(_selectedNeighborhood!.Id);
-            foreach (var r in reservations)
-                Reservations.Add(r);
-        }
+        private void FacilitiesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            => _viewModel.SelectedFacility = FacilitiesComboBox.SelectedItem as CityFacilityDto;
 
         private void ReserveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!TryGetBookingInputs(out var facility, out int durationHours,
-                out DateTime rangeStart, out DateTime rangeEnd)) return;
+            if (!TryGetBookingInputs(out var durationHours, out var rangeStart, out var rangeEnd)) return;
 
-            var (slotInRange, slotsOutsideRange) = _facilityBookingService
-                .FindSlots(facility!, durationHours, rangeStart, rangeEnd);
-
-            if (slotInRange is null && slotsOutsideRange.Count == 0)
+            var result = _viewModel.FindSlots(durationHours, rangeStart, rangeEnd);
+            if (result is null || (result.Value.SlotInRange is null && result.Value.SlotsOutsideRange.Count == 0))
             {
                 new InfoDialog("Nema slobodnih termina", "Nije pronađen nijedan slobodan termin u narednih 90 dana.", Window.GetWindow(this)).ShowDialog();
-
                 return;
             }
 
-            OpenBookingWindow(facility!, slotInRange, slotsOutsideRange);
+            new FacilityBookingWindow(
+                _viewModel.SelectedFacility!, _viewModel.SelectedNeighborhood!,
+                result.Value.SlotInRange, result.Value.SlotsOutsideRange, _viewModel)
+            { 
+                Owner = Window.GetWindow(this) 
+            }.ShowDialog();
         }
 
-        private void OpenBookingWindow(
-            CityFacility facility,
-            AvailableFacilitySlot? slotInRange,
-            List<AvailableFacilitySlot> slotsOutsideRange)
+        private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var facilityBookingWindow = new FacilityBookingWindow(facility, _selectedNeighborhood!, slotInRange, slotsOutsideRange, _facilityBookingService)
-            {
-                Owner = Window.GetWindow(this)
-            };
-
-            if (facilityBookingWindow.ShowDialog() == true && facilityBookingWindow.CreatedReservation is not null)
-                Reservations.Insert(0, facilityBookingWindow.CreatedReservation);
+            e.Handled = !e.Text.All(char.IsDigit);
         }
 
-        private bool TryGetBookingInputs(
-            out CityFacility? facility,
-            out int durationHours,
-            out DateTime rangeStart,
-            out DateTime rangeEnd)
+        private void NumberTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            durationHours = 0;
-            rangeStart = DateTime.MinValue;
-            rangeEnd = DateTime.MinValue;
-
-            facility = FacilitiesComboBox.SelectedItem as CityFacility;
-            if (facility is null)
-            {
-                new InfoDialog("Greška", "Izaberite objekat.", Window.GetWindow(this)).ShowDialog();
-                return false;
-            }
-
-            if (!TryGetDuration(out durationHours)) return false;
-            if (!TryGetDateRange(out rangeStart, out rangeEnd)) return false;
-
-            return true;
+            if (e.Key == Key.V &&
+                (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                e.Handled = true;
         }
 
-        private bool TryGetDuration(out int durationHours)
+        private bool TryGetBookingInputs(out int durationHours, out DateTime rangeStart, out DateTime rangeEnd)
         {
+            durationHours = 0; rangeStart = DateTime.MinValue; rangeEnd = DateTime.MinValue;
+
+            if (_viewModel.SelectedFacility is null)
+                return ShowError("Izaberite objekat.");
+
             if (!int.TryParse(DurationTextBox.Text.Trim(), out durationHours) || durationHours <= 0)
-            {
-                new InfoDialog("Greška", "Unesite ispravno trajanje posete u satima.", Window.GetWindow(this)).ShowDialog();
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool TryGetDateRange(out DateTime rangeStart, out DateTime rangeEnd)
-        {
-            rangeStart = DateTime.MinValue;
-            rangeEnd = DateTime.MinValue;
+                return ShowError("Unesite ispravno trajanje posete u satima.");
 
             if (StartDatePicker.SelectedDate is null || EndDatePicker.SelectedDate is null)
-            {
-                new InfoDialog("Greška", "Izaberite opseg datuma.", Window.GetWindow(this)).ShowDialog();
-                return false;
-            }
+                return ShowError("Izaberite opseg datuma.");
 
             rangeStart = StartDatePicker.SelectedDate.Value;
             rangeEnd = EndDatePicker.SelectedDate.Value.AddDays(1).AddSeconds(-1);
 
             if (rangeStart >= rangeEnd)
-            {
-                new InfoDialog("Greška", "Početni datum mora biti pre krajnjeg.", Window.GetWindow(this)).ShowDialog();
-                return false;
-            }
+                return ShowError("Početni datum mora biti pre krajnjeg.");
 
             return true;
+        }
+
+        private bool ShowError(string message)
+        {
+            new InfoDialog("Greška", message, Window.GetWindow(this)).ShowDialog();
+            return false;
         }
     }
 }

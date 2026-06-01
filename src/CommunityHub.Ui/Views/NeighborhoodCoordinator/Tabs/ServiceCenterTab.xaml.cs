@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Services;
@@ -59,6 +60,18 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             }
             new InfoDialog("Nevažeći unos", "Molimo unesite ispravno trajanje usluge u satima.", Window.GetWindow(this)).ShowDialog();
             return false;
+        }
+
+        private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(char.IsDigit);
+        }
+
+        private void NumberTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V &&
+                (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                e.Handled = true;
         }
 
         private void BookIfConfirmed(AvailableJobSlotDto availableJobSlotDto)

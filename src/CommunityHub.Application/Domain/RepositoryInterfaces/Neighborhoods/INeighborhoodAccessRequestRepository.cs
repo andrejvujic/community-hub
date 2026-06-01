@@ -14,5 +14,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods
         public bool Create(NeighborhoodAccessRequest request);
         public void Delete(long citizenId, long neighborhoodId);
         public bool HasPendingRequest(long userId, long neighborhoodId);
+        (int Accepted, int Rejected, int Pending) GetRequestStatsByCoordinatorId(long coordinatorId);
     }
 }

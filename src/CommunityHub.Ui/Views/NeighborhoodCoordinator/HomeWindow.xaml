@@ -136,7 +136,7 @@
 
             <TabItem Header="Profil (Ctrl+8)"
                      Style="{StaticResource SidebarTabItemStyle}">
-                <Grid/>
+                <tabs:ProfileTab x:Name="ProfileTab"/>
             </TabItem>
 
         </TabControl>

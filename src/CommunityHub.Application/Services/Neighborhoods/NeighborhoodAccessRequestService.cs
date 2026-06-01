@@ -82,5 +82,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public void Delete(long citizenId, long neighborhoodId)
             => _neighborhoodAccessRequestRepository.Delete(citizenId, neighborhoodId);
+
+        public (int Accepted, int Rejected, int Pending) GetRequestStatsByCoordinator(long coordinatorId)
+            => _neighborhoodAccessRequestRepository.GetRequestStatsByCoordinatorId(coordinatorId);
     }
 }

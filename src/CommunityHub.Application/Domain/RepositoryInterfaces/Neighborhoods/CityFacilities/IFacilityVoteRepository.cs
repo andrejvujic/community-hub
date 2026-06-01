@@ -10,5 +10,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Cit
         int GetVoteCountByFacilityId(long facilityId);
         FacilityVote Create(FacilityVote vote);
         void DeleteByFacilityIdAndCitizenId(long facilityId, long citizenId);
+        public void DeleteAllByFacilityId(long facilityId);
     }
 }

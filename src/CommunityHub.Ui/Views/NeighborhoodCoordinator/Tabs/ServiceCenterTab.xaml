@@ -259,7 +259,9 @@
                                                      FontSize="20"
                                                      VerticalContentAlignment="Center"
                                                      Text="1"
-                                                     HorizontalContentAlignment="Right"/>
+                                                     HorizontalContentAlignment="Right"
+                                                     PreviewTextInput="NumberTextBox_PreviewTextInput"
+                                                     PreviewKeyDown="NumberTextBox_PreviewKeyDown"/>
                                         </StackPanel>
                                     </StackPanel>
                                     <Button x:Name="FindSlotButton"

@@ -22,6 +22,11 @@ namespace CommunityHub.Application.Services.Neighborhoods.CoordinatorReviews
             return reviews;
         }
 
+        public List<CoordinatorReviewDto> GetByCoordinatorId(long coordinatorId)
+            => _coordinatorReviewRepository.GetByCoordinatorId(coordinatorId)
+                .Select(_reviewMapper.MapToDto)
+                .ToList();
+
         public int GetRemovedReviewCountByReviewerId(long neighborhoodId, long reviewerId)
         {
             return _coordinatorReviewRepository.GetRemovedReviewCountByReviewerId(neighborhoodId, reviewerId);

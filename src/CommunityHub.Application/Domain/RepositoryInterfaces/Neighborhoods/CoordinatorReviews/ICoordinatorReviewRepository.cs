@@ -6,6 +6,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Coo
     {
         CoordinatorReview? GetById(long id);
         List<CoordinatorReview> GetByNeighborhoodId(long neighborhoodId);
+        public List<CoordinatorReview> GetByCoordinatorId(long coordinatorId);
         int GetRemovedReviewCountByReviewerId(long neighborhoodId, long reviewerId);
         CoordinatorReview Create(CoordinatorReview review);
         void MarkAsRemoved(long reviewId);

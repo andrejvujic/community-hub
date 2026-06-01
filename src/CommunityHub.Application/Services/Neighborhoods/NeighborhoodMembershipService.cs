@@ -58,5 +58,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
             => _neighborhoodMembershipRepository.GetTrustRecordsByNeighborhoodId(neighborhoodId)
                 .Select(_citizenTrustRecordMapper.MapToDto)
                 .ToList();
+
+        public int GetCitizenCountByCoordinator(long coordinatorId)
+            => _neighborhoodMembershipRepository.GetCitizenCountByCoordinatorId(coordinatorId);
     }
 }
