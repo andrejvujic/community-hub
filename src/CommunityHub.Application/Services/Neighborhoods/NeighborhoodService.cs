@@ -57,7 +57,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
             return neighborhood.Contains(address);
         }
 
-        public (int CitizenCount, int NeighborhoodCount) GetStatsByCoordinator(long coordinatorId)
-            => _neighborhoodRepository.GetStatsByCoordinatorId(coordinatorId);
+        public int GetNeighborhoodCountsByCoordinator(long coordinatorId)
+            => _neighborhoodRepository.GetNeighborhoodCountsByCoordinatorId(coordinatorId);
     }
 }
