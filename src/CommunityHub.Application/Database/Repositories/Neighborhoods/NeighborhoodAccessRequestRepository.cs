@@ -405,7 +405,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
                 @"SELECT
                     COUNT(*) FILTER (WHERE r.status = 'accepted') AS accepted_count,
                     COUNT(*) FILTER (WHERE r.status = 'rejected') AS rejected_count,
-                    COUNT(*) FILTER (WHERE r.status = 'pending')  AS pending_count
+                    COUNT(*) FILTER (WHERE r.status = 'waiting')  AS pending_count
                 FROM neighborhood_access_requests r
                 INNER JOIN neighborhoods n ON r.neighborhood_id = n.id
                 WHERE n.coordinator_id = @coordinator_id"

@@ -9,5 +9,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods
         public NeighborhoodMembership Create(NeighborhoodMembership membership);
         public List<Citizen> GetCitizensByNeighborhoodId(long neighborhoodId);
         public List<CitizenTrustRecord> GetTrustRecordsByNeighborhoodId(long neighborhoodId);
+        public int GetCitizenCountByCoordinatorId(long coordinatorId);
     }
 }
