@@ -37,6 +37,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             StatisticsAndMeetingsTab.Initialize(_userId);
             CityFacilitiesTab.Initialize(_userId);
             NeighborhoodBudgetTab.Initialize(_userId);
+            ProfileTab.Initialize(_userId);
         }
  
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

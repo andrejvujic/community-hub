@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Neighborhoods;
