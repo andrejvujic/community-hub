@@ -4,35 +4,38 @@ using CommunityHub.Application.Database.Repositories.Ads.TimeSlots;
 using CommunityHub.Application.Database.Repositories.Apartments;
 using CommunityHub.Application.Database.Repositories.Buildings;
 using CommunityHub.Application.Database.Repositories.CommonRooms;
-using CommunityHub.Application.Database.Repositories.Issues;
 using CommunityHub.Application.Database.Repositories.Events;
+using CommunityHub.Application.Database.Repositories.Issues;
+using CommunityHub.Application.Database.Repositories.JobListingBookings;
+using CommunityHub.Application.Database.Repositories.JobListings;
 using CommunityHub.Application.Database.Repositories.Neighborhoods;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Database.Repositories.Neighborhoods.CoordinatorReviews;
+using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Database.Repositories.ResidentAssemblies;
 using CommunityHub.Application.Database.Repositories.Shared;
 using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Database.Repositories.Shared.Notifications;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
-using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Database.Repositories.JobListings;
-using CommunityHub.Application.Database.Repositories.JobListingBookings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Buildings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Events;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Images;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
-using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
+using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CoordinatorReviews;
-using CommunityHub.Application.Domain.RepositoryInterfaces.JobListings;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBookings;
-using CommunityHub.Application.Domain.RepositoryInterfaces.Events;
 using CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblies;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
+using Npgsql.Internal;
 
 namespace CommunityHub.Application
 {
@@ -80,7 +83,8 @@ namespace CommunityHub.Application
             { typeof(IProviderReviewRepository), new ProviderReviewRepository() },
             { typeof(IAssemblyRepository), new AssemblyRepository() },
             { typeof(IAssemblyAttendanceRepository), new AssemblyAttendanceRepository() },
-            { typeof(IAssemblyTopicRepository), new AssemblyTopicRepository() }
+            { typeof(IAssemblyTopicRepository), new AssemblyTopicRepository() },
+            { typeof(IBudgetCategoryBalanceRepository), new BudgetCategoryBalanceRepository() }
 
         };
 
