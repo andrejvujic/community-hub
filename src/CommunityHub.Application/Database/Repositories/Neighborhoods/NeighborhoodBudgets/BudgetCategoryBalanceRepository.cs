@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodBudgets;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudgets
 {
-    public class BudgetCategoryBalanceRepository
+    public class BudgetCategoryBalanceRepository : IBudgetCategoryBalanceRepository
     {
         private readonly BudgetCategoryBalanceMapper _budgetCategoryBalanceMapper = new BudgetCategoryBalanceMapper();
 
