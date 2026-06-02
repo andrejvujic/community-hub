@@ -1,24 +1,19 @@
-﻿using System.Runtime.Serialization;
-
-namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets
+﻿namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets
 {
-    public enum BudgetCategory
+    public class BudgetCategory
     {
-        [EnumMember(Value = "street_maintenance")]
-        StreetMaintenance,
-        [EnumMember(Value = "park_maintenance")]
-        ParkMaintenance,
-        [EnumMember(Value = "lighting")]
-        Lighting,
-        [EnumMember(Value = "cleanliness")]
-        Cleanliness,
-        [EnumMember(Value = "greenery")]
-        Greenery,
-        [EnumMember(Value = "emergency_repairs")]
-        EmergencyRepairs,
-        [EnumMember(Value = "playgrounds")]
-        Playgrounds,
-        [EnumMember(Value = "sports_facilities")]
-        SportsFacilities
+        public long Id { get; private set; }
+        public string Name { get; private set; }
+
+        public BudgetCategory(string name, long id = 0)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public BudgetCategory CopyWith(long? id = null, string? name = null)
+        {
+            return new(name ?? Name, id ?? Id);
+        }
     }
 }
