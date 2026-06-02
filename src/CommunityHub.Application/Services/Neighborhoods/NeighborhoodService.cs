@@ -59,5 +59,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public int GetNeighborhoodCountsByCoordinator(long coordinatorId)
             => _neighborhoodRepository.GetNeighborhoodCountsByCoordinatorId(coordinatorId);
+
+        public void UpdateBudget(long neighborhoodId, int newBudget)
+            => _neighborhoodRepository.UpdateBudget(neighborhoodId, newBudget);
     }
 }
