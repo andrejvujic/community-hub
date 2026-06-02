@@ -2,6 +2,7 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblies;
 using CommunityHub.Application.MappersDto.ResidentAssemblies;
 using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.ResidentAssemblies;
+using CommunityHub.Application.Domain.ResidentAssemblies;
 
 namespace CommunityHub.Application.Services.ResidentAssemblies
 {
