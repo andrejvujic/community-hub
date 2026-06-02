@@ -999,40 +999,50 @@ INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id
 (11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
 (12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
 
-INSERT INTO budget_category_balances (category, neighborhood_id, total_amount) VALUES
-('street_maintenance', 1, 200000.00),
-('park_maintenance',   1, 150000.00),
-('lighting',           1, 80000.00),
-('cleanliness',        1, 120000.00),
-('greenery',           1, 100000.00),
-('emergency_repairs',  1, 100000.00),
-('playgrounds',        1, 50000.00),
-('sports_facilities',  1, 50000.00),
-('street_maintenance', 6, 100000.00),
-('park_maintenance',   6, 50000.00),
-('lighting',           6, 40000.00),
-('cleanliness',        6, 80000.00),
-('greenery',           6, 50000.00),
-('emergency_repairs',  6, 60000.00),
-('playgrounds',        6, 20000.00),
-('sports_facilities',  6, 20000.00),
-('street_maintenance', 11, 120000.00),
-('park_maintenance',   11, 60000.00),
-('lighting',           11, 50000.00),
-('cleanliness',        11, 70000.00),
-('greenery',           11, 50000.00),
-('emergency_repairs',  11, 80000.00),
-('playgrounds',        11, 20000.00),
-('sports_facilities',  11, 20000.00);
-
+INSERT INTO budget_categories (id, name) VALUES
+(1, 'Uređenje ulica'),
+(2, 'Uređenje parkova'),
+(3, 'Rasveta'),
+(4, 'Čistoća'),
+(5, 'Zelenilo'),
+(6, 'Hitne popravke'),
+(7, 'Dečija igrališta'),
+(8, 'Sportski tereni');
+ 
+INSERT INTO budget_category_balances (category_id, neighborhood_id, total_amount) VALUES
+(1, 1, 200000.00),
+(2, 1, 150000.00),
+(3, 1,  80000.00),
+(4, 1, 120000.00),
+(5, 1, 100000.00),
+(6, 1, 100000.00),
+(7, 1,  50000.00),
+(8, 1,  50000.00),
+(1, 6, 100000.00),
+(2, 6,  50000.00),
+(3, 6,  40000.00),
+(4, 6,  80000.00),
+(5, 6,  50000.00),
+(6, 6,  60000.00),
+(7, 6,  20000.00),
+(8, 6,  20000.00),
+(1, 11, 120000.00),
+(2, 11,  60000.00),
+(3, 11,  50000.00),
+(4, 11,  70000.00),
+(5, 11,  50000.00),
+(6, 11,  80000.00),
+(7, 11,  20000.00),
+(8, 11,  20000.00);
+ 
 INSERT INTO budget_expenses (amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
-(12500.50, 'Popravka ulične svetiljke u Njegoševoj', '2026-04-20', 3, 11),
-(45000.00, 'Asfaltiranje udarne rupe kod hrama', '2026-04-25', 1, 11),
-(8200.00,  'Nove sadnice za Karađorđev park', '2026-05-01', 5, 11),
-(5600.00,  'Zamena peska u peskarniku na igralištu', '2026-04-15', 15, 11),
-(15000.00, 'Hitna sanacija vodovodne cevi', '2026-04-28', 14, 11),
-(22000.00, 'Farbanje klupa u glavnom parku', '2026-05-02', 18, 11),
-(3100.00,  'Nabavka kesa za komunalni otpad', '2026-04-10', 20, 11);
+(12500.50, 'Popravka ulične svetiljke u Njegoševoj', '2026-04-20', 3,  11),
+(45000.00, 'Asfaltiranje udarne rupe kod hrama',     '2026-04-25', 1,  11),
+( 8200.00, 'Nove sadnice za Karađorđev park',        '2026-05-01', 5,  11),
+( 5600.00, 'Zamena peska u peskarniku na igralištu', '2026-04-15', 7,  11),
+(15000.00, 'Hitna sanacija vodovodne cevi',          '2026-04-28', 6,  11),
+(22000.00, 'Farbanje klupa u glavnom parku',         '2026-05-02', 2,  11),
+( 3100.00, 'Nabavka kesa za komunalni otpad',        '2026-04-10', 4,  11);
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (16, '2026-04-01', 1), (17, '2026-04-01', 1), (18, '2026-04-01', 1), (19, '2026-04-01', 1), (20, '2026-04-01', 1), (21, '2026-04-01', 1),
@@ -1446,6 +1456,24 @@ SELECT setval(
 
 SELECT setval(
     pg_get_serial_sequence('public.review_reports', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_categories', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_category_balances', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_expenses', 'id'),
     COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
     true
 );
