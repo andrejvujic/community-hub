@@ -7,7 +7,6 @@ using CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodB
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services;
-using CommunityHub.Ui.Helpers.Converters;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
@@ -101,8 +100,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
         private void PopulateCategoryDetails(BudgetCategoryViewModel selected)
         {
-            var converter = new BudgetCategoryToStringConverter();
-            var categoryName = converter.Convert(selected.Category, typeof(string), null, System.Globalization.CultureInfo.CurrentCulture);
+            //var converter = new BudgetCategoryToStringConverter();
+            //var categoryName = converter.Convert(selected.Category, typeof(string), null, System.Globalization.CultureInfo.CurrentCulture);
+            var categoryName = selected.Category.Name;
 
             DonationsTitleTextBlock.Text = $"Donacije: {categoryName}";
             ExpensesTitleTextBlock.Text = $"Troškovi: {categoryName}";
