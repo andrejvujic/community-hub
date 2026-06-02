@@ -43,7 +43,6 @@ public static class PostgresConnection
         builder.MapEnum<RentalType>("rental_types");
         builder.MapEnum<MeetingTheme>("meeting_themes");
         builder.MapEnum<MeetingStatus>("meeting_statuses");
-        builder.MapEnum<BudgetCategory>("budget_categories");
         builder.MapEnum<RentalRequestStatus>("common_room_rental_statuses");
         builder.MapEnum<EventStatus>("event_statuses");
         builder.MapEnum<NotificationStatus>("notification_statuses");

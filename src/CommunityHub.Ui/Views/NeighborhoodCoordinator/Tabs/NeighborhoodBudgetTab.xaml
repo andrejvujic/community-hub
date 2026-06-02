@@ -8,10 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
-    <UserControl.Resources>
-        <conv:BudgetCategoryToStringConverter x:Key="BudgetCategoryConverter" />
-    </UserControl.Resources>
-
     <Grid Background="{DynamicResource WindowBackgroundBrush}"
           TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
           Cursor="Arrow">
@@ -74,7 +70,7 @@
                               Height="210"
                               SelectionChanged="BudgetCategoriesDataGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Kategorija" Binding="{Binding Category, Converter={StaticResource BudgetCategoryConverter}}" CanUserSort="False" Width="*" />
+                            <DataGridTextColumn Header="Kategorija" Binding="{Binding Category.Name}" CanUserSort="False" Width="*" />
                             <DataGridTextColumn Header="Ukupne donacije" Binding="{Binding TotalDonationsDisplay}" CanUserSort="False" Width="*" />
                             <DataGridTextColumn Header="Potrošeno" Binding="{Binding TotalExpensesDisplay}" CanUserSort="False" Width="*" />
                             <DataGridTextColumn Header="Raspoloživo" Binding="{Binding AvailableDisplay}" CanUserSort="False" Width="*" />

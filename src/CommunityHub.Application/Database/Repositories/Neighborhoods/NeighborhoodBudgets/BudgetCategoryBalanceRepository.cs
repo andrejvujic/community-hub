@@ -8,8 +8,10 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
         private readonly BudgetCategoryBalanceMapper _budgetCategoryBalanceMapper = new BudgetCategoryBalanceMapper();
 
         private const string SelectColumns = @"
+            budget_category.id AS budget_category_id,
+            budget_category.name AS budget_category_name,
+
             budget_category_balance.id AS budget_category_balance_id,
-            budget_category_balance.category AS budget_category,
             budget_category_balance.total_amount,
 
             neighborhood.id AS neighborhood_id,
@@ -31,7 +33,8 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             coordinator.user_role AS coordinator_user_role";
 
         private const string FromJoins = @"
-            FROM budget_category_balances budget_category_balance
+            FROM budget_categories budget_category
+            INNER JOIN budget_category_balances budget_category_balance ON budget_category.id = budget_category_balance.category_id
             INNER JOIN neighborhoods neighborhood ON neighborhood.id = budget_category_balance.neighborhood_id
             INNER JOIN cities city ON city.id = neighborhood.city_id
             INNER JOIN countries country ON country.id = city.country_id
@@ -43,7 +46,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
                 $@"SELECT {SelectColumns} 
                 {FromJoins} 
                 WHERE budget_category_balance.neighborhood_id = @neighborhood_id 
-                ORDER BY budget_category_balance.category"
+                ORDER BY budget_category.id"
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BudgetCategoryBalance> budgetCategoryBalances = new List<BudgetCategoryBalance>();

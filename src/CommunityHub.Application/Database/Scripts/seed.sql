@@ -1462,19 +1462,19 @@ SELECT setval(
 
 SELECT setval(
     pg_get_serial_sequence('public.budget_categories', 'id'),
-    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    COALESCE((SELECT MAX(id) FROM public.budget_categories), 0),
     true
 );
 
 SELECT setval(
     pg_get_serial_sequence('public.budget_category_balances', 'id'),
-    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    COALESCE((SELECT MAX(id) FROM public.budget_category_balances), 0),
     true
 );
 
 SELECT setval(
     pg_get_serial_sequence('public.budget_expenses', 'id'),
-    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    COALESCE((SELECT MAX(id) FROM public.budget_expenses), 0),
     true
 );
 
