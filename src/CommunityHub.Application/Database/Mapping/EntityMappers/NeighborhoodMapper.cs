@@ -20,7 +20,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             long id = reader.GetInt64(reader.GetOrdinal("neighborhood_id"));
             string name = reader.GetString(reader.GetOrdinal("neighborhood_name"));
             string description = reader.GetString(reader.GetOrdinal("description"));
-            int budget = reader.GetInt32(reader.GetOrdinal("budget"));
+            decimal budget = reader.GetDecimal(reader.GetOrdinal("budget"));
 
             return new Neighborhood(name, description, budget, city, country, coordinator, id: id);
         }

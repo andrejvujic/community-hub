@@ -11,7 +11,7 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Budget { get; set; }
+        public decimal Budget { get; set; }
         public CityDto City { get; set; }
         public CountryDto Country { get; set; }
         public UserDto Coordinator { get; set; }
@@ -22,7 +22,7 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods
             long id,
             string name,
             string description,
-            int budget,
+            decimal budget,
             CityDto city,
             CountryDto country,
             UserDto coordinator,

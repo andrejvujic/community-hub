@@ -14,5 +14,16 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
 
         public List<BudgetCategoryBalanceDto> GetByNeighborhood(long neighborhoodId)
             => MapToDto(_budgetCategoryBalanceRepository.GetByNeighborhoodId(neighborhoodId));
+
+        public decimal UpdateTotalAmount(
+            BudgetCategoryBalanceDto balanceDto,
+            decimal amountChange)
+        {
+            var balance = MapToEntity(balanceDto);
+            var newCategoryAmount = balance.TotalAmount + amountChange;
+            _budgetCategoryBalanceRepository.UpdateTotalAmount(balance.Id, newCategoryAmount);
+
+            return balance.Neighborhood.Budget + amountChange;
+        }
     }
 }

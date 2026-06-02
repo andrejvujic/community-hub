@@ -21,19 +21,19 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
             => MapToDto(_budgetExpenseRepository.GetByNeighborhoodId(neighborhoodId));
 
         public BudgetExpenseDto Create(
-            BudgetCategoryBalanceDto balance,
-            UserDto coordinator,
+            BudgetCategoryBalanceDto balanceDto,
+            UserDto coordinatorDto,
             decimal amount,
             string description)
         {
-            if (amount > balance.TotalAmount)
+            if (amount > balanceDto.TotalAmount)
                 throw new InvalidOperationException(
-                    $"Nedovoljno sredstava u kategoriji. Raspoloživo: {balance.TotalAmount:N2} RSD, " +
+                    $"Nedovoljno sredstava u kategoriji. Raspoloživo: {balanceDto.TotalAmount:N2} RSD, " +
                     $"traženo: {amount:N2} RSD.");
 
             var expense = new BudgetExpense(
-                _budgetCategoryBalanceMapper.MapToEntity(balance),
-                _userMapper.MapToEntity(coordinator),
+                _budgetCategoryBalanceMapper.MapToEntity(balanceDto),
+                _userMapper.MapToEntity(coordinatorDto),
                 amount,
                 description,
                 DateOnly.FromDateTime(DateTime.Today)
