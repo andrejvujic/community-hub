@@ -40,5 +40,11 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
         ) => MapToDto(
             _topicRepository.GetAllByAssemblyAndAuthor(assemblyId, authorId, status)
         );
+
+        public AssemblyTopicDto Create(AssemblyTopicDto topic)
+            => MapToDto(_topicRepository.Create(MapToEntity(topic)));
+
+        public void Update(AssemblyTopicDto topic)
+            => _topicRepository.Update(MapToEntity(topic));
     }
 }

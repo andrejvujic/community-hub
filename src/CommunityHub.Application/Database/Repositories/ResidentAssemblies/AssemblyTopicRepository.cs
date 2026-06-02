@@ -45,6 +45,24 @@ namespace CommunityHub.Application.Database.Repositories.ResidentAssemblies
             );
         }
 
+        public void Update(AssemblyTopic topic)
+        {
+            using var connection = DatabaseConnection.Create();
+            connection.Execute(
+                DatabaseQuery.Create(
+                    @"UPDATE assembly_topics
+                    SET
+                        assembly_id = @assembly_id,
+                        author_id = @author_id,
+                        description = @description,
+                        topic_type = @topic_type
+                    WHERE id = @id;"
+                )
+                .AddParameter("id", topic.Id)
+                .ExtendParameters(_topicMapper.MapToQueryParameters(topic))
+            );
+        }
+
         public List<AssemblyTopic> GetAllByAssembly(
             long assemblyId,
             AssemblyTopicStatus? status = null

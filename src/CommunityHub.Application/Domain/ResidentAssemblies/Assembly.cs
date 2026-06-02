@@ -111,7 +111,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
         }
 
         public bool HasSufficientAttendance =>
-            GetAttendancePercentage() >= AttendancePercentageThreshold;
+            GetAttendancePercentage() > AttendancePercentageThreshold;
 
         public bool CanBeConfirmed =>
             Status is AssemblyStatus.Scheduled && HasSufficientAttendance;

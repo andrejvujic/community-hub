@@ -18,7 +18,8 @@ namespace CommunityHub.Application.MappersDto.ResidentAssemblies
                 description: topic.Description,
                 status: topic.Status,
                 author: topic.Author is null ? null : _authorMapper.MapToDto(topic.Author),
-                isEnforcedByManager: topic.IsEnforcedByManager
+                isEnforcedByManager: topic.IsEnforcedByManager,
+                wasSuggestedByResident: topic.WasSuggestedByResident
             );
         }
 

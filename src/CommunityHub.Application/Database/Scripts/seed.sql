@@ -793,7 +793,7 @@ INSERT INTO assemblies (id, building_id, starts_at, status) VALUES
 (3,  3,  '2026-06-08 17:30:00', 'cancelled'),
 (4,  4,  '2026-06-15 18:30:00', 'scheduled'),
 (5,  5,  '2026-06-18 20:00:00', 'confirmed'),
-(6,  6,  '2026-06-07 18:00:00', 'cancelled'),
+(6,  6,  '2026-06-07 18:00:00', 'scheduled'),
 (7,  7,  '2026-06-20 19:00:00', 'scheduled'),
 (8,  8,  '2026-06-22 18:00:00', 'confirmed'),
 (9,  9,  '2026-06-25 19:30:00', 'scheduled'),
@@ -844,6 +844,11 @@ INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
 (3, 73),
 (3, 74);
 
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES 
+(6, 125),
+(6, 129),
+(6, 130);
+
 
 INSERT INTO assembly_topics
 (description, assembly_id, author_id, topic_type) VALUES
@@ -851,9 +856,19 @@ INSERT INTO assembly_topics
 ('Plan redovnog servisa lifta', 1, 1, 'accepted'),
 ('Uredjenje ulaza i zajednickih hodnika', 1, 1, 'accepted'),
 ('Popravka interfona na glavnom ulazu', 1, 6, 'suggested'),
+('Predlog dnevnog reda i organizacije sastanka', 6, 1, 'accepted'),
+('Servis protivpozarnog aparata', 6, 16, 'suggested'),
 ('Zamena sijalica u hodnicima', 1, 9, 'suggested'),
 ('Postavljanje dodatnih kamera u ulazu', 1, 17, 'suggested'),
-('Sanacija vlage u podrumu', 1, 6, 'accepted');
+('Sanacija vlage u podrumu', 1, 6, 'accepted'),
+('Popravka ulaznih vrata', 2, 7, 'accepted'),
+('Organizacija dezinfekcije zgrade', 3, 8, 'accepted'),
+('Zamena tabli sa obavestenjima', 4, 9, 'accepted'),
+('Ciscenje podruma', 5, 10, 'accepted'),
+('Farbanje ograde', 7, 17, 'accepted'),
+('Postavljanje novog zvonceta', 8, 18, 'accepted'),
+('Uredjenje dvorista', 9, 19, 'accepted'),
+('Uvodjenje video nadzora', 10, 20, 'accepted');
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
@@ -1421,6 +1436,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.reported_issues', 'id'),
     COALESCE((SELECT MAX(id) FROM public.reported_issues), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.assemblies', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.assemblies), 0),
     true
 );
 

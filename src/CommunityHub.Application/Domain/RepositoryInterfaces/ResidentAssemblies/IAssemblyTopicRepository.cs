@@ -18,5 +18,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblie
             long authorId,
             AssemblyTopicStatus? status = null
         );
+
+        public void Update(AssemblyTopic topic);
     }
 }
