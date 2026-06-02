@@ -7,6 +7,7 @@ using CommunityHub.Application.Services.Issues;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.Windows;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -53,13 +54,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (issue == null)
                 return;
 
-            MessageBoxResult result = MessageBox.Show(
-                "Da li želite da označite ovaj problem kao rešen?",
-                "Potvrda",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No)
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da označite ovaj problem kao rešen?");
+
+            if (!confirm)
                 return;
 
             MarkIssueAsResolved(issue);

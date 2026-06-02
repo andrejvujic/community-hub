@@ -1,0 +1,108 @@
+﻿<Window
+    x:Class="CommunityHub.Ui.Helpers.BuildingManagerAlerts.AlertWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Alert"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner"
+    WindowStyle="None">
+
+    <Border
+        Padding="24"
+        Background="White"
+        BorderBrush="Black"
+        BorderThickness="2"
+        CornerRadius="14">
+
+        <Grid Width="380">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="16" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        x:Name="Icon"
+                        Grid.Column="0"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                        FontSize="20" />
+
+                    <TextBlock
+                        x:Name="TitleTextBlock"
+                        Grid.Column="1"
+                        FontSize="20"
+                        FontWeight="SemiBold"
+                        Foreground="#222222"
+                        Text="Naslov" />
+
+                </Grid>
+
+                <TextBlock
+                    x:Name="IconTextBlock"
+                    Margin="0,8,0,0"
+                    FontSize="14"
+                    Foreground="#666666"
+                    Text="Informacija" />
+            </StackPanel>
+
+            <TextBlock
+                x:Name="MessageTextBlock"
+                Grid.Row="2"
+                FontSize="15"
+                Foreground="#333333"
+                Text="Poruka"
+                TextWrapping="Wrap" />
+
+            <StackPanel
+                Grid.Row="4"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="CloseButton"
+                    Width="90"
+                    Height="34"
+                    Click="CloseButton_Click"
+                    Content="Zatvori"
+                    Cursor="Hand"
+                    Visibility="Collapsed" />
+
+                <Button
+                    x:Name="CancelButton"
+                    Width="90"
+                    Height="34"
+                    Margin="0,0,8,0"
+                    Click="CancelButton_Click"
+                    Content="Otkaži"
+                    Cursor="Hand"
+                    IsCancel="True"
+                    Visibility="Collapsed" />
+
+                <Button
+                    x:Name="ConfirmButton"
+                    Width="90"
+                    Height="34"
+                    Click="ConfirmButton_Click"
+                    Content="Potvrdi"
+                    Cursor="Hand"
+                    IsDefault="True"
+                    Visibility="Collapsed" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

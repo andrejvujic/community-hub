@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager
 {
@@ -150,12 +151,12 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager
 
         private void HandleLogOut()
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Da li ste sigurni da želite da se odjavite?",
-                "Pažnja",
-                MessageBoxButton.YesNo);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.Yes)
+            bool confirm = dialogService.ShowConfirmation("Pažnja",
+                "Da li ste sigurni da želite da se odjavite?");
+
+            if (confirm)
             {
                 LogInForm logInForm = new LogInForm();
                 logInForm.Show();

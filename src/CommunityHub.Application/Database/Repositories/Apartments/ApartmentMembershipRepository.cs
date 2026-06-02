@@ -181,7 +181,7 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
         public List<ApartmentMembership> GetByUserAndBuilding(long userId, long buildingId)
         {
             using var connection = DatabaseConnection.Create();
-            
+
             var query = DatabaseQuery.Create(
                 @"SELECT
                 membership.id as membership_id,
@@ -307,6 +307,24 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             .AddParameter("resident_id", residentId);
 
             return connection.ExecuteScalar(query, Convert.ToBoolean);
+        }
+
+        public int CountResidentsForManagerBuildings(long managerId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT COUNT(am.id)
+                    FROM users u
+                    JOIN buildings b ON u.id = b.building_manager_id
+                    JOIN apartments ap ON b.id = ap.building_id
+                    JOIN apartment_memberships am ON ap.id = am.apartment_id
+                    WHERE u.id = @managerId
+                    AND u.user_role = 'building_manager';"
+                )
+            .AddParameter("managerId", managerId);
+
+            return connection.ExecuteScalar(query, Convert.ToInt32);
         }
     }
 }
