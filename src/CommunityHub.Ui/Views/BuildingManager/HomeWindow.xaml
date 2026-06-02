@@ -244,7 +244,6 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
 
@@ -537,64 +536,6 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="navBarHelpItem"
-                        Cursor="Hand"
-                        Tag="Help">
-
-                        <Grid.InputBindings>
-                            <MouseBinding
-                                Command="{Binding NavigateCommand}"
-                                CommandParameter="Help"
-                                Gesture="LeftClick" />
-                        </Grid.InputBindings>
-
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Background" Value="{StaticResource NavBarDefaultBackgroundBrush}" />
-                                <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarDefaultForegroundBrush}" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
-                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding SelectedNavItem}" Value="Help">
-                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
-                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Grid Grid.Column="0">
-                            <TextBlock
-                                Margin="20,0,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                FontSize="28"
-                                Text="&#xf059;" />
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <TextBlock
-                                Margin="16,0,20,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="24"
-                                Text="Pomoć" />
-                        </Grid>
-                    </Grid>
-                </Border>
-
-                <Border
-                    Grid.Column="6"
-                    BorderBrush="Gray"
-                    BorderThickness="0,0,2,0">
-                    <Grid
                         x:Name="navBarLogOutItem"
                         Cursor="Hand"
                         Tag="LogOut">
@@ -649,7 +590,7 @@
                 </Border>
 
                 <Grid
-                    Grid.Column="7"
+                    Grid.Column="6"
                     Background="{StaticResource NavBarDefaultBackgroundBrush}"
                     TextElement.Foreground="{StaticResource NavBarDefaultForegroundBrush}">
                     <Grid.RowDefinitions>

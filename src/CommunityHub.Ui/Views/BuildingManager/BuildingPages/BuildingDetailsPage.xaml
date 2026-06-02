@@ -391,8 +391,14 @@
                     <Grid
                         x:Name="sideBarSchedulingAssemblyItem"
                         Cursor="Hand"
-                        Opacity="0.5"
                         Tag="SchedulingAssembly">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="SchedulingAssembly"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
 
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -403,6 +409,10 @@
                                         <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
                                         <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedSection}" Value="SchedulingAssembly">
+                                        <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>

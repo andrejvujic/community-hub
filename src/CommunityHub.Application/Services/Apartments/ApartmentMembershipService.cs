@@ -44,5 +44,7 @@ namespace CommunityHub.Application.Services.Apartments
         public ApartmentMembership Create(ApartmentMembership membership)
             => _apartmentMembershipRepository.Create(membership);
 
+        public int CountResidentsForManagerBuildings(long managerId)
+            => _apartmentMembershipRepository.CountResidentsForManagerBuildings(managerId);
     }
 }

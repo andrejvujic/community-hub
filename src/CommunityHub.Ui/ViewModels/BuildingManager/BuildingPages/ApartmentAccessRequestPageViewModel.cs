@@ -9,6 +9,7 @@ using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 using System.Windows;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
@@ -171,9 +172,14 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
         }
         private void Cancel()
         {
-            var result = MessageBox.Show("Da li ste sigurni da želite otkazati promenu statusa zahteva?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.Yes)
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li ste sigurni da želite otkazati promenu statusa zahteva?"
+            );
+
+            if (confirm)
                 ResetSelectionAndForm();
         }
         private bool CanConfirm()
@@ -182,19 +188,20 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
         }
         private void Confirm()
         {
-            var result = MessageBox.Show(
-                "Da li ste sigurni da želite promeniti status zahteva?",
-                "Potvrda",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No)
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li ste sigurni da želite promeniti status zahteva?"
+            );
+
+            if (!confirm)
                 return;
 
             bool success = ConfirmStatusChange();
 
             if (success)
-                MessageBox.Show("Status zahteva je uspešno promenjen.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+                dialogService.ShowInfo("Čestitamo", "Status zahteva je uspešno promenjen.");
         }
         
 

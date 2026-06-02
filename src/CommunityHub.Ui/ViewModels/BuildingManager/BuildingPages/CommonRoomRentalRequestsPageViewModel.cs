@@ -7,6 +7,7 @@ using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -170,9 +171,14 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (SelectedRentalRequest == null)
                 return;
 
-            var result = MessageBox.Show("Da li želite da promenite datum rezervacije?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No) return;
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da promenite datum rezervacije?"
+            );
+
+            if (!confirm) return;
 
             _rentalRequestService.ApproveOneDaySuggestion(SelectedRentalRequest, day);
             AutoProcessRentalRequestStatuses();
@@ -185,9 +191,14 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (SelectedRentalRequest == null)
                 return;
 
-            var result = MessageBox.Show("Da li želite da promenite opseg rezervacije", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No) return;
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da promenite opseg rezervacije?"
+            );
+
+            if (!confirm) return;
 
             _rentalRequestService.AcceptMultiDaySuggestion(SelectedRentalRequest, proposedStartDate, proposedEndDate);
             AutoProcessRentalRequestStatuses();

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
@@ -35,11 +36,18 @@ namespace CommunityHub.Ui.Views.BuildingManager
         }
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni.", "Potvrda otkazivanja", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.No) return;
+            var dialogService = new DialogService();
 
-            ResetFloorsUI();
-            _viewModel.ResetForm();
+            bool confirm = dialogService.ShowConfirmation(
+                "Potvrda otkazivanja",
+                "Da li ste sigurni da želite da otkažete registraciju? Svi uneseni podaci će biti izgubljeni."
+            );
+
+            if(confirm)
+            {
+                ResetFloorsUI();
+                _viewModel.ResetForm();
+            }
         }
         private void FloorsUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

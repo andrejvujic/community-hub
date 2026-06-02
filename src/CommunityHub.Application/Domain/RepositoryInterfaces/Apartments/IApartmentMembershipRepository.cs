@@ -13,5 +13,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Apartments
 
         public bool Exists(long apartmentId);
         public bool Exists(long residentId, long apartmentId);
+        public int CountResidentsForManagerBuildings(long managerId);
     }
 }
