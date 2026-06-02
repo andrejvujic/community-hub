@@ -1081,6 +1081,22 @@ INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
 (25, '2026-05-24', 18, 135), (26, '2026-05-26', 18, 136),
 (27, '2026-05-23', 19, 137), (28, '2026-05-24', 19, 138);
 
+INSERT INTO budget_donations (id, amount, donation_date, neighborhood_id, budget_category_id, citizen_id) VALUES
+(1, 50.00, '2026-04-15', 1, 1, 121),
+(2, 100.00, '2026-04-20', 1, 2, 122),
+(3, 75.50, '2026-05-05', 1, 3, 123),
+(4, 200.00, '2026-05-10', 1, 4, 124),
+(5, 150.00, '2026-05-15', 1, 5, 125),
+(6, 80.00, '2026-04-18', 6, 1, 127),
+(7, 120.00, '2026-05-01', 6, 2, 128),
+(8, 95.00, '2026-05-12', 6, 3, 129),
+(9, 300.00, '2026-05-20', 6, 4, 130),
+(10, 175.00, '2026-06-01', 6, 5, 131),
+(11, 60.00, '2026-04-25', 11, 1, 133),
+(12, 140.00, '2026-05-08', 11, 2, 134),
+(13, 85.00, '2026-05-18', 11, 3, 135),
+(14, 250.00, '2026-06-05', 11, 4, 136);
+
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (34, '2026-04-15', 1),
 (35, '2026-04-20', 1),
@@ -1475,6 +1491,12 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.budget_expenses', 'id'),
     COALESCE((SELECT MAX(id) FROM public.budget_expenses), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_donations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.budget_donations), 0),
     true
 );
 
