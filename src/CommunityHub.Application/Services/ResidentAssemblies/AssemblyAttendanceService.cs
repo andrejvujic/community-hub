@@ -1,10 +1,7 @@
-using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain.RepositoryInterfaces.ResidentAssemblies;
-using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.MappersDto.ResidentAssemblies;
 using CommunityHub.Application.Services.Apartments;
 using CommunityHub.Application.Services.Dtos.ResidentAssemblies;
-using System.Diagnostics;
 
 namespace CommunityHub.Application.Services.ResidentAssemblies
 {
@@ -42,6 +39,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
             var assembly = _assemblyMapper.MapToEntity(targetAssembly);
 
+            if (!assembly.CanChange())
+                throw new InvalidOperationException("Attendance can't be changed");
+
             var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
                 assembly.BuildingId
@@ -61,9 +61,10 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
         public AssemblyDto UnregisterAttendance(AssemblyDto targetAssembly, long residentId)
         {
-            EnsureAttendanceCanBeChanged(targetAssembly);
-
             var assembly = _assemblyMapper.MapToEntity(targetAssembly);
+
+            if (!assembly.CanChange())
+                throw new InvalidOperationException("Attendance can't be changed");
 
             var residentApartmentIds = _apartmentMembershipService.GetApartmentIdsByResidentAndBuilding(
                 residentId,
@@ -71,7 +72,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             );
 
             var residentAttendances = assembly.Attendances
-                .Where(attendance => residentApartmentIds.Contains(attendance.ApartmentId))
+                .Where(
+                    attendance => residentApartmentIds.Contains(attendance.ApartmentId)
+                )
                 .ToList();
 
             foreach (var attendance in residentAttendances)

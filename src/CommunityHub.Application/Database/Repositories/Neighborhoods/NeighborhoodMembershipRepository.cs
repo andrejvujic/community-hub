@@ -145,5 +145,20 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
             return citizenTrustRecords;
         }
+
+        public int GetCitizenCountByCoordinatorId(long coordinatorId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT COUNT(DISTINCT nm.id) AS citizen_count
+                FROM neighborhood_memberships nm
+                INNER JOIN neighborhoods n ON nm.neighborhood_id = n.id
+                WHERE n.coordinator_id = @coordinator_id"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            int count = 0;
+            query.ExecuteReader(reader =>
+                count = reader.GetInt32(reader.GetOrdinal("citizen_count")));
+            return count;
+        }
     }
 }

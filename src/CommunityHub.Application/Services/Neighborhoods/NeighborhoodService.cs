@@ -56,5 +56,11 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var address = _addressMapper.MapToEntity(addressDto);
             return neighborhood.Contains(address);
         }
+
+        public int GetNeighborhoodCountsByCoordinator(long coordinatorId)
+            => _neighborhoodRepository.GetNeighborhoodCountsByCoordinatorId(coordinatorId);
+
+        public void UpdateBudget(long neighborhoodId, int newBudget)
+            => _neighborhoodRepository.UpdateBudget(neighborhoodId, newBudget);
     }
 }

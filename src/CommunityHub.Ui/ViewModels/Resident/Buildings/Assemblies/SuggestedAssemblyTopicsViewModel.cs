@@ -9,6 +9,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
 {
     public class SuggestedAssemblyTopicsViewModel : BaseViewModel
     {
+        private readonly AssemblyService _assemblyService = new();
         private readonly AssemblyTopicService _topicService = new();
         private readonly long _residentId;
         private readonly long _assemblyId;
@@ -49,7 +50,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
             if (!IsFormValid)
                 throw new InvalidOperationException("Invalid form can't be submitted.");
 
-            if (!_topicService.CanEditTopics(_assemblyId))
+            if (!_assemblyService.CanChange(_assemblyId))
             {
                 ShowErrorAlert();
                 return;
@@ -87,7 +88,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Assemblies
         {
             if (topic is null) return;
 
-            if (!_topicService.CanEditTopics(_assemblyId))
+            if (!_assemblyService.CanChange(_assemblyId))
             {
                 ShowErrorAlert();
                 return;

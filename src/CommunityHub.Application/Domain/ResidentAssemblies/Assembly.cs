@@ -51,6 +51,9 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             _attendances = attendances ?? [];
         }
 
+        public bool CanChange()
+            => Status is not AssemblyStatus.Cancelled && StartsAt > DateTime.Now.AddHours(24);
+
         public bool HasRegisteredAttendance(long apartmentId)
             => _attendances.Any(attendance => attendance.ApartmentId == apartmentId);
 
@@ -78,17 +81,14 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
                 return;
             }
 
-            if (CanBeCancelled)
-            {
-                Cancel();
-                return;
-            }
-
             if (CanBeUnconfirmed)
             {
                 Unconfirm();
                 return;
             }
+
+            if (CanBeCancelled)
+                Cancel();
         }
 
 

@@ -1,4 +1,5 @@
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
+using CommunityHub.Ui.Views.Citizen.Neighborhoods.CoordinatorReviews;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -60,21 +61,9 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
         private void HandleCoordinator()
         {
-            if (_viewModel?.SelectedNeighborhood == null)
-            {
-                MessageBox.Show("Izaberite kvart.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            var coordinatorInfo = _viewModel.GetCoordinatorInfo(_viewModel.SelectedNeighborhood);
-            if (coordinatorInfo == null)
-            {
-                MessageBox.Show("Ovaj kvart nema koordinatora.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show(coordinatorInfo, "Koordinator", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            var window = new MyNeighborhoodCoordinatorWindow(_userId);
+            window.Owner = Window.GetWindow(this);
+            window.ShowDialog();
         }
 
         private void HandleMyAccessRequests()

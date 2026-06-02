@@ -32,6 +32,7 @@ namespace CommunityHub.Application.Services.Issues
         public IssueDto ConfirmResolution(IssueDto issueDto)
         {
             var issue = MapToEntity(issueDto);
+
             issue.ConfirmResolution();
             _issueRepository.Update(issue);
 

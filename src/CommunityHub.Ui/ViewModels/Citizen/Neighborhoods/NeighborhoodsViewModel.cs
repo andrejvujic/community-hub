@@ -166,16 +166,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             }
         }
 
-        public string? GetCoordinatorInfo(NeighborhoodDto? neighborhood)
-        {
-            if (neighborhood?.Coordinator == null)
-            {
-                return null;
-            }
-
-            return $"Koordinator: {neighborhood.Coordinator.Name} {neighborhood.Coordinator.Surname}";
-        }
-
         protected virtual void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
