@@ -1,9 +1,10 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers.NeighborhoodBudget;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodBudgets;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods.NeighborhoodBudgets
 {
-    public class BudgetExpenseRepository
+    public class BudgetExpenseRepository : IBudgetExpenseRepository
     {
 
         private readonly BudgetExpenseMapper _budgetExpenseMapper = new BudgetExpenseMapper();
