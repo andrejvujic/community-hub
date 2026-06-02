@@ -20,7 +20,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets
             long id = 0
         )
         {
-            if (citizen.Membership?.Neighborhood?.Id != neighborhood.Id) throw new ArgumentException("Citizen must be a member of the neighborhood to donate to it.");
+            ValidateInputs(citizen, neighborhood, amount);
 
             Id = id;
             Neighborhood = neighborhood;
@@ -28,6 +28,12 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets
             Citizen = citizen;
             Amount = amount;
             DonationDate = donationDate;
+        }
+
+        private static void ValidateInputs(Citizen citizen, Neighborhood neighborhood, decimal amount)
+        {
+            if (amount <= 0) throw new InvalidOperationException("Iznos donacije mora biti veći od 0.");
+            if (citizen.Membership?.Neighborhood?.Id != neighborhood.Id) throw new ArgumentException("Citizen must be a member of the neighborhood to donate to it.");
         }
 
         public BudgetDonation CopyWith(
