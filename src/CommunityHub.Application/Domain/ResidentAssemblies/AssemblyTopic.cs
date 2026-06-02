@@ -18,6 +18,10 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
 
         public bool IsEnforcedByManager { get; private set; }
 
+        public bool WasSuggestedByResident =>
+           Status == AssemblyTopicStatus.Suggested ||
+           (Status == AssemblyTopicStatus.Accepted && !IsEnforcedByManager);
+
         public AssemblyTopic(
             long assemblyId,
             long authorId,

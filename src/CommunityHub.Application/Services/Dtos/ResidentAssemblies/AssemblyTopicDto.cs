@@ -19,6 +19,8 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
 
         public bool IsEnforcedByManager { get; set; }
 
+        public bool WasSuggestedByResident { get; set; }
+
         public AssemblyTopicDto(
             long id,
             long assemblyId,
@@ -26,7 +28,8 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
             string description,
             AssemblyTopicStatus status,
             UserDto? author = null,
-            bool isEnforcedByManager = false
+            bool isEnforcedByManager = false,
+            bool wasSuggestedByResident = false
         )
         {
             Id = id;
@@ -36,6 +39,7 @@ namespace CommunityHub.Application.Services.Dtos.ResidentAssemblies
             Description = description;
             Status = status;
             IsEnforcedByManager = isEnforcedByManager;
+            WasSuggestedByResident = wasSuggestedByResident;
         }
     }
 }

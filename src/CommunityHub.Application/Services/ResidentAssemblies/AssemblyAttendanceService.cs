@@ -14,10 +14,9 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             Injector.CreateInstance<IAssemblyAttendanceRepository>();
 
         private readonly AssemblyService _assemblyService = new();
-
         private readonly ApartmentMembershipService _apartmentMembershipService = new();
-
         private readonly AssemblyMapper _assemblyMapper = new();
+        private readonly AssemblyAttendanceMapper _assemblyAttendanceMapper = new();
 
         public bool HasRegisteredAttendance(long assemblyId, long residentId)
         {
@@ -38,7 +37,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
 
         public AssemblyDto RegisterAttendance(AssemblyDto targetAssembly, long residentId)
         {
-          
+
             EnsureAttendanceCanBeChanged(targetAssembly);
 
             var assembly = _assemblyMapper.MapToEntity(targetAssembly);
@@ -56,7 +55,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             }
 
             return _assemblyService.RefreshStatus(
-                _assemblyMapper.MapToDto(assembly)    
+                _assemblyMapper.MapToDto(assembly)
             );
         }
 
@@ -82,7 +81,7 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
             }
 
             return _assemblyService.RefreshStatus(
-                _assemblyMapper.MapToDto(assembly)    
+                _assemblyMapper.MapToDto(assembly)
             );
         }
 
@@ -92,6 +91,13 @@ namespace CommunityHub.Application.Services.ResidentAssemblies
                 throw new InvalidOperationException(
                     "Assembly attendance can only be changed until 24 hours before an active targetAssembly starts."
                 );
+        }
+
+        public List<AssemblyAttendanceDto> GetAllByAssembly(long assemblyId)
+        {
+            var attendances = _assemblyAttendanceRepository.GetAllByAssembly(assemblyId);
+
+            return attendances.Select(_assemblyAttendanceMapper.MapToDto).ToList();
         }
     }
 }
