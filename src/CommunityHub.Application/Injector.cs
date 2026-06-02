@@ -84,7 +84,8 @@ namespace CommunityHub.Application
             { typeof(IAssemblyRepository), new AssemblyRepository() },
             { typeof(IAssemblyAttendanceRepository), new AssemblyAttendanceRepository() },
             { typeof(IAssemblyTopicRepository), new AssemblyTopicRepository() },
-            { typeof(IBudgetCategoryBalanceRepository), new BudgetCategoryBalanceRepository() }
+            { typeof(IBudgetCategoryBalanceRepository), new BudgetCategoryBalanceRepository() },
+            { typeof(IBudgetExpenseRepository), new BudgetExpenseRepository() }
 
         };
 
