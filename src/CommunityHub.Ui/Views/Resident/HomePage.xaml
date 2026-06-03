@@ -75,7 +75,13 @@
 
             <Grid
                 Grid.Column="2"
-                Background="Transparent">
+                Background="Transparent"
+                Cursor="Hand">
+                <Grid.InputBindings>
+                    <MouseBinding
+                        Gesture="LeftClick"
+                        Command="{Binding OpenTutorialsCommand}" />
+                </Grid.InputBindings>
                 <TextBlock
                     Text="&#xf059;"
                     FontSize="24"
