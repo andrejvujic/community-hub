@@ -62,27 +62,19 @@
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="16"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
                                     Grid.Column="0"
-                                    Text="&#xf03d;"
-                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                    VerticalAlignment="Center"
-                                    FontSize="22"/>
-
-                                <TextBlock
-                                    Grid.Column="2"
                                     Text="{Binding Title}"
                                     FontSize="18"
                                     TextWrapping="Wrap"
                                     VerticalAlignment="Center"/>
 
                                 <TextBlock
-                                    Grid.Column="3"
+                                    Grid.Column="2"
                                     Text="&#xf178;"
                                     FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                     VerticalAlignment="Center"

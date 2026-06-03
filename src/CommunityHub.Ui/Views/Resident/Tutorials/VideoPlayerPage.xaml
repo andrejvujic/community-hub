@@ -51,18 +51,7 @@
             BorderThickness="1">
             <Grid>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
-                    <TextBlock
-                        Text="&#xf03d;"
-                        FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                        FontSize="42"
-                        HorizontalAlignment="Center"
-                        Margin="0,0,0,12"/>
-                    <TextBlock
-                        Text="{Binding VideoPath}"
-                        FontSize="16"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap"
-                        Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                    <MediaElement Source="{Binding VideoPath}"/>
                 </StackPanel>
             </Grid>
         </Border>
