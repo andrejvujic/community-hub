@@ -83,10 +83,54 @@
                     IsEnabled="{Binding IsLoaded}"
                     VerticalAlignment="Center"
                     ValueChanged="ProgressSlider_ValueChanged">
-                    <Slider.LayoutTransform>
-                        <ScaleTransform ScaleX="2.4" ScaleY="2.4">
-                        </ScaleTransform>
-                    </Slider.LayoutTransform>
+                    <Slider.Template>
+                        <ControlTemplate TargetType="{x:Type Slider}">
+                            <Grid VerticalAlignment="Center">
+
+                                <Track x:Name="PART_Track"
+                                   Height="36"
+                                   IsDirectionReversed="False">
+
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton
+                                            Command="{x:Static Slider.DecreaseLarge}"
+                                            Height="16"
+                                            Background="{StaticResource ResidentSecondaryBrush}"
+                                            BorderBrush="{StaticResource ResidentBorderBrush}"
+                                            BorderThickness="1"
+                                            Focusable="False" />
+                                    </Track.DecreaseRepeatButton>
+
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton
+                                            Command="{x:Static Slider.IncreaseLarge}"
+                                            Height="16"
+                                            Background="{StaticResource ResidentSecondaryBrush}"
+                                            BorderBrush="{StaticResource ResidentBorderBrush}"
+                                            BorderThickness="1"
+                                            Focusable="False" />
+                                    </Track.IncreaseRepeatButton>
+
+                                    <Track.Thumb>
+                                        <Thumb 
+                                            Width="36"
+                                            Height="36">
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                    <Rectangle
+                                                        Fill="{StaticResource ResidentPrimaryBrush}"
+                                                        Stroke="{StaticResource ResidentActionBorderBrush}"
+                                                        StrokeThickness="1" />
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+
+                                </Track>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Slider.Template>
                 </Slider>
 
 
