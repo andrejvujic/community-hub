@@ -20,6 +20,9 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
         public List<BudgetExpenseDto> GetByNeighborhood(long neighborhoodId)
             => MapToDto(_budgetExpenseRepository.GetByNeighborhoodId(neighborhoodId));
 
+        public List<BudgetExpenseDto> GetByCategory(long categoryId)
+            => MapToDto(_budgetExpenseRepository.GetByCategoryId(categoryId));
+
         public BudgetExpenseDto Create(
             BudgetCategoryBalanceDto balanceDto,
             UserDto coordinatorDto,

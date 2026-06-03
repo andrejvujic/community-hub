@@ -74,6 +74,24 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             return budgetExpenses;
         }
 
+        public List<BudgetExpense> GetByCategoryId(long categoryId)
+        {
+            var query = PostgresQuery.Create(
+                $@"SELECT {SelectColumns} 
+                {FromJoins} 
+                WHERE budget_category.id = @category_id 
+                ORDER BY budget_expense.expense_date DESC"
+            ).AddParameter("category_id", categoryId);
+
+            List<BudgetExpense> budgetExpenses = new List<BudgetExpense>();
+            query.ExecuteReader(reader =>
+            {
+                var budgetExpense = _budgetExpenseMapper.MapToEntity(reader);
+                if (budgetExpense is not null) budgetExpenses.Add(budgetExpense);
+            });
+            return budgetExpenses;
+        }
+
         public BudgetExpense Create(BudgetExpense budgetExpense)
         {
             var query = PostgresQuery.Create(

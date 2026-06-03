@@ -5,6 +5,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Nei
     public interface IBudgetExpenseRepository
     {
         public List<BudgetExpense> GetByNeighborhoodId(long neighborhoodId);
+        public List<BudgetExpense> GetByCategoryId(long categoryId);
         public BudgetExpense Create(BudgetExpense budgetExpense);
     }
 }
