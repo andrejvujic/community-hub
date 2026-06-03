@@ -93,7 +93,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             }
         }
 
-        public DateTime MinStartDate => _today;
         public DateTime? MaxStartDate => SelectedEndDate;
         public DateTime MinEndDate => SelectedStartDate ?? _today;
 
