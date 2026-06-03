@@ -1,4 +1,3 @@
-using CommunityHub.Application.Services;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodBudgets;
@@ -15,6 +14,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
         private readonly long _userId;
         private readonly BudgetCategoryBalanceService _balanceService = new();
         private readonly CitizenService _citizenService = new();
+        private readonly BudgetDonationService _donationService = new();
 
         private CitizenDto? _citizen;
         private ObservableCollection<BudgetCategoryBalanceDto> _categories = new();
@@ -82,7 +82,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 
             if (_citizen?.Membership != null)
             {
-                RefreshCategories();
+                RefreshData();
                 Membership = _citizen.Membership;
             }
             else
@@ -91,13 +91,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
             }
         }
 
-        public void RefreshCategories()
+        public void RefreshData()
         {
             _categories.Clear();
 
-            if (_citizen?.Membership == null) return;
-
-            var neighborhoodId = _citizen.Membership.Neighborhood.Id;
+            var neighborhoodId = _citizen!.Membership!.Neighborhood.Id;
             var balanceDtos = _balanceService.GetByNeighborhood(neighborhoodId);
 
             foreach (var balanceDto in balanceDtos)
@@ -110,7 +108,21 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
                 SelectedCategory = _categories[0];
             }
 
-            NeighborhoodBudgetTotal = _citizen.Membership.Neighborhood.Budget;
+            var updatedCitizen = _citizenService.GetCitizenById(_citizen.Id);
+            if (updatedCitizen?.Membership?.Neighborhood != null)
+            {
+                NeighborhoodBudgetTotal = updatedCitizen.Membership.Neighborhood.Budget;
+            }
+        }
+
+        public void CreateDonation(BudgetCategoryBalanceDto category, decimal amount)
+        {
+            if (_citizen == null || category.Neighborhood == null) return;
+
+            var donationDto = new BudgetDonationDto(0, category.Neighborhood, category.Category, _citizen, amount, DateOnly.FromDateTime(DateTime.Today));
+
+            _donationService.Create(donationDto);
+            RefreshData();
         }
 
         protected void OnPropertyChanged(string propertyName)

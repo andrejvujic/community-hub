@@ -23,17 +23,13 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
         public List<BudgetDonationDto> GetDonationsForCategory(long neighborhoodId, long categoryId)
             => _donationRepository.GetByNeighborhoodIdAndCategoryId(neighborhoodId, categoryId).Select(d => _donationMapper.MapToDto(d)).ToList();
 
-        public BudgetDonationDto CreateDonation(
-            Citizen citizen,
-            Neighborhood neighborhood,
-            BudgetCategory category,
-            decimal amount)
+        public BudgetDonationDto Create(BudgetDonationDto donationDto)
         {
-            var donation = new BudgetDonation(neighborhood, category, citizen, amount, DateOnly.FromDateTime(DateTime.Today));
-            var createdDonation = _donationRepository.Create(donation);
-            UpdateCategoryBalance(category, neighborhood.Id, amount);
-            UpdateNeighborhoodBudget(neighborhood, amount);
-            return _donationMapper.MapToDto(createdDonation);
+            var donation = _donationMapper.MapToEntity(donationDto);
+            var created = _donationRepository.Create(donation);
+            UpdateCategoryBalance(donation.BudgetCategory, donation.Neighborhood.Id, donation.Amount);
+            UpdateNeighborhoodBudget(donation.Neighborhood, donation.Amount);
+            return _donationMapper.MapToDto(created);
         }
 
         private void UpdateCategoryBalance(BudgetCategory category, long neighborhoodId, decimal amount)
