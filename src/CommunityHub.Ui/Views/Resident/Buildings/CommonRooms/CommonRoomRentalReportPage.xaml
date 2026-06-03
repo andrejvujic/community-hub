@@ -301,6 +301,7 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 DisplayDateStart="{Binding MinEndDate, Mode=OneWay}"
+                                DisplayDateEnd="{Binding MaxEndDate, Mode=OneWay}"
                                 SelectedDate="{Binding SelectedEndDate}"
                                 Style="{StaticResource MaterialDesignCalendarPortrait}"/>
                         </Viewbox>
