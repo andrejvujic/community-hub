@@ -33,6 +33,14 @@ namespace CommunityHub.Ui.Views.Citizen.Donations
 
         private void HandleMakeDonation()
         {
+            if (_viewModel?.SelectedCategory != null && _viewModel.Citizen != null)
+            {
+                var wnd = new DonateToCategoryWindow(_viewModel.SelectedCategory, _viewModel.Citizen);
+                wnd.Owner = Window.GetWindow(this);
+                if (wnd.ShowDialog() == true)
+                {
+                }
+            }
         }
     }
 }

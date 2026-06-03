@@ -42,6 +42,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
             }
         }
 
+        public CitizenDto? Citizen => _citizen;
+
         public object? Membership
         {
             get => _membership;
