@@ -54,15 +54,15 @@
     <Resource Include="Resources\Images\neighborhood_0.jpg" />
     <Resource Include="Resources\Inter\InterDisplay-Italic.ttf" />
     <Resource Include="Resources\Inter\InterDisplay-Regular.ttf" />
-    <Resource Include="Resources\Videos\Tutorial_0.mp4">
+    <Content Include="Resources\Videos\Tutorial_0.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Videos\Tutorial_1.mp4">
+    </Content>
+    <Content Include="Resources\Videos\Tutorial_1.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Videos\Tutorial_2.mp4">
+    </Content>
+    <Content Include="Resources\Videos\Tutorial_2.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

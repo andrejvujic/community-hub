@@ -50,9 +50,13 @@
             BorderBrush="{StaticResource ResidentBorderBrush}"
             BorderThickness="1">
             <Grid>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
-                    <MediaElement Source="{Binding VideoPath}"/>
-                </StackPanel>
+                <MediaElement
+                    x:Name="VideoElement"
+                    Margin="8"
+                    Source="{Binding VideoUri}"
+                    LoadedBehavior="Manual"
+                    UnloadedBehavior="Stop"
+                    Stretch="Uniform"/>
             </Grid>
         </Border>
 
