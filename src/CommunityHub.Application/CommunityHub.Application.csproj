@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
     <PackageReference Include="Npgsql" Version="10.0.1" />
-    <PackageReference Include="QuestPDF" Version="2026.5.0" />
+    <PackageReference Include="PDFsharp-MigraDoc" Version="6.2.4" />
   </ItemGroup>
 
   <ItemGroup>
