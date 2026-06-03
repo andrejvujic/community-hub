@@ -13,8 +13,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         {
             Title = title;
             VideoPath = videoPath;
-            PauseCommand = new(Pause, () => IsPlaying);
-            UnpauseCommand = new(Unpause, () => !IsPlaying);
+            PauseCommand = new(Pause, () => IsLoaded && IsPlaying);
+            UnpauseCommand = new(Unpause, () => IsLoaded && !IsPlaying);
         }
 
         public string Title { get; }
@@ -25,6 +25,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         public Action? PauseVideo { get; set; }
         public Action? UnpauseVideo { get; set; }
 
+        private bool _isLoaded;
+        public bool IsLoaded
+        {
+            get => _isLoaded;
+            private set
+            {
+                if (_isLoaded == value) return;
+                _isLoaded = value;
+                OnPropertyChanged(nameof(IsLoaded));
+                RaisePlaybackCanExecuteChanged();
+            }
+        }
+
         private bool _isPlaying;
         public bool IsPlaying
         {
@@ -34,8 +47,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
                 if (_isPlaying == value) return;
                 _isPlaying = value;
                 OnPropertyChanged(nameof(IsPlaying));
-                PauseCommand.RaiseCanExecuteChanged();
-                UnpauseCommand.RaiseCanExecuteChanged();
+                RaisePlaybackCanExecuteChanged();
             }
         }
 
@@ -47,6 +59,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
 
         private void Unpause()
         {
+            Play();
+        }
+
+        public void Play()
+        {
+            if (!IsLoaded) return;
             UnpauseVideo?.Invoke();
             IsPlaying = true;
         }
@@ -54,6 +72,18 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         public void Stop()
         {
             IsPlaying = false;
+        }
+
+        public void MarkLoadedAndPlaying()
+        {
+            IsLoaded = true;
+            IsPlaying = true;
+        }
+
+        private void RaisePlaybackCanExecuteChanged()
+        {
+            PauseCommand.RaiseCanExecuteChanged();
+            UnpauseCommand.RaiseCanExecuteChanged();
         }
 
         private static string GetAbsoluteVideoFilePath(string videoPath)

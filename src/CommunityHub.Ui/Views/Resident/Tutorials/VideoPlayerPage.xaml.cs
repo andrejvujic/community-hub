@@ -18,16 +18,28 @@ namespace CommunityHub.Ui.Views.Resident.Tutorials
             };
             DataContext = _viewModel;
 
+            Loaded += VideoPlayerPage_Loaded;
             Unloaded += VideoPlayerPage_Unloaded;
         }
 
         private void BackButton_Click(object sender, MouseButtonEventArgs e)
             => Pop();
 
+        private void VideoPlayerPage_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            VideoElement.Play();
+        }
+
+        private void VideoElement_MediaOpened(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _viewModel.MarkLoadedAndPlaying();
+        }
+
         private void VideoPlayerPage_Unloaded(object sender, System.Windows.RoutedEventArgs e)
         {
             VideoElement.Stop();
             _viewModel.Stop();
+            Loaded -= VideoPlayerPage_Loaded;
             Unloaded -= VideoPlayerPage_Unloaded;
         }
     }

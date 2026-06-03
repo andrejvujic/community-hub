@@ -68,6 +68,7 @@
                             Source="{Binding VideoUri}"
                             LoadedBehavior="Manual"
                             UnloadedBehavior="Stop"
+                            MediaOpened="VideoElement_MediaOpened"
                             Stretch="Uniform"/>
                     </Grid>
                 </Grid>
