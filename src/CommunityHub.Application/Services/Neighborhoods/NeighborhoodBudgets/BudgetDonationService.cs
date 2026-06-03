@@ -6,14 +6,16 @@ using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodBudgets;
 
-namespace CommunityHub.Application.Services
+namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
 {
-    public class BudgetDonationService
+    public class BudgetDonationService : BaseService<BudgetDonation, BudgetDonationDto>
     {
         private readonly IBudgetDonationRepository _donationRepository = Injector.CreateInstance<IBudgetDonationRepository>();
         private readonly IBudgetCategoryBalanceRepository _balanceRepository = Injector.CreateInstance<IBudgetCategoryBalanceRepository>();
         private readonly INeighborhoodRepository _neighborhoodRepository = Injector.CreateInstance<INeighborhoodRepository>();
         private readonly BudgetDonationMapper _donationMapper = new BudgetDonationMapper();
+
+        public BudgetDonationService() : base(new BudgetDonationMapper()) { }
 
         public List<BudgetDonationDto> GetDonationsForNeighborhood(long neighborhoodId)
             => _donationRepository.GetByNeighborhoodId(neighborhoodId).Select(d => _donationMapper.MapToDto(d)).ToList();
