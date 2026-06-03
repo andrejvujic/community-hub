@@ -45,18 +45,24 @@
 
         <Border
             Grid.Row="1"
-            Margin="8"
             Background="{StaticResource ResidentCardBackgroundBrush}"
             BorderBrush="{StaticResource ResidentBorderBrush}"
             BorderThickness="1">
             <Grid>
-                <MediaElement
-                    x:Name="VideoElement"
-                    Margin="8"
-                    Source="{Binding VideoUri}"
-                    LoadedBehavior="Manual"
-                    UnloadedBehavior="Stop"
-                    Stretch="Uniform"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                    <Grid>
+                        <TextBlock
+                            Text="Video se učitava..."
+                            FontSize="18"
+                            VerticalAlignment="Center"/>
+                        <MediaElement
+                            x:Name="VideoElement"
+                            Source="{Binding VideoUri}"
+                            LoadedBehavior="Manual"
+                            UnloadedBehavior="Stop"
+                            Stretch="Fill"/>
+                    </Grid>
+                </StackPanel>
             </Grid>
         </Border>
 

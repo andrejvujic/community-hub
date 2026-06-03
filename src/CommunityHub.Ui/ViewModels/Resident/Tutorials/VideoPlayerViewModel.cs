@@ -1,5 +1,6 @@
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
+using System.IO;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
 {
@@ -18,7 +19,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
 
         public string Title { get; }
         public string VideoPath { get; }
-        public Uri VideoUri => new(GetVideoFilePath(VideoPath), UriKind.Absolute);
+        public Uri VideoUri => new(GetAbsoluteVideoFilePath(VideoPath), UriKind.Absolute);
         public RelayCommand PauseCommand { get; }
         public RelayCommand UnpauseCommand { get; }
         public Action? PauseVideo { get; set; }
@@ -34,14 +35,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
             UnpauseVideo?.Invoke();
         }
 
-        private static string GetVideoFilePath(string videoPath)
-        {
-            var normalizedPath = videoPath
-                .TrimStart('/', '\\')
-                .Replace('/', Path.DirectorySeparatorChar)
-                .Replace('\\', Path.DirectorySeparatorChar);
-
-            return Path.Combine(AppContext.BaseDirectory, normalizedPath);
-        }
+        private static string GetAbsoluteVideoFilePath(string videoPath)
+            => Path.Combine(
+                AppContext.BaseDirectory,
+                videoPath
+                    .TrimStart('/', '\\')
+                    .Replace('/', Path.DirectorySeparatorChar)
+                    .Replace('\\', Path.DirectorySeparatorChar)
+            );
     }
 }
