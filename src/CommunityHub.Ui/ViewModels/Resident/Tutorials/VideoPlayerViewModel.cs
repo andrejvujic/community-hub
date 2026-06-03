@@ -13,8 +13,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         {
             Title = title;
             VideoPath = videoPath;
-            PauseCommand = new(Pause);
-            UnpauseCommand = new(Unpause);
+            PauseCommand = new(Pause, () => IsPlaying);
+            UnpauseCommand = new(Unpause, () => !IsPlaying);
         }
 
         public string Title { get; }
@@ -25,14 +25,35 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         public Action? PauseVideo { get; set; }
         public Action? UnpauseVideo { get; set; }
 
+        private bool _isPlaying;
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            private set
+            {
+                if (_isPlaying == value) return;
+                _isPlaying = value;
+                OnPropertyChanged(nameof(IsPlaying));
+                PauseCommand.RaiseCanExecuteChanged();
+                UnpauseCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         private void Pause()
         {
             PauseVideo?.Invoke();
+            IsPlaying = false;
         }
 
         private void Unpause()
         {
             UnpauseVideo?.Invoke();
+            IsPlaying = true;
+        }
+
+        public void Stop()
+        {
+            IsPlaying = false;
         }
 
         private static string GetAbsoluteVideoFilePath(string videoPath)
