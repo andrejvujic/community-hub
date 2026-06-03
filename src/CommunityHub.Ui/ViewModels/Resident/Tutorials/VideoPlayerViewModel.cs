@@ -13,17 +13,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         {
             Title = title;
             VideoPath = videoPath;
-            PauseCommand = new(Pause, () => IsLoaded && IsPlaying);
-            UnpauseCommand = new(Unpause, () => IsLoaded && !IsPlaying);
         }
 
         public string Title { get; }
         public string VideoPath { get; }
         public Uri VideoUri => new(GetAbsoluteVideoFilePath(VideoPath), UriKind.Absolute);
-        public RelayCommand PauseCommand { get; }
-        public RelayCommand UnpauseCommand { get; }
-        public Action? PauseVideo { get; set; }
-        public Action? UnpauseVideo { get; set; }
+
 
         private double _durationSeconds;
         public double DurationSeconds
@@ -31,7 +26,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
             get => _durationSeconds;
             private set
             {
-                if (Math.Abs(_durationSeconds - value) < 0.1) return;
                 _durationSeconds = value;
                 OnPropertyChanged(nameof(DurationSeconds));
             }
@@ -43,7 +37,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
             get => _positionSeconds;
             set
             {
-                if (Math.Abs(_positionSeconds - value) < 0.1) return;
                 _positionSeconds = value;
                 OnPropertyChanged(nameof(PositionSeconds));
             }
@@ -58,7 +51,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
                 if (_isLoaded == value) return;
                 _isLoaded = value;
                 OnPropertyChanged(nameof(IsLoaded));
-                RaisePlaybackCanExecuteChanged();
+                OnPropertyChanged(nameof(CanPlay));
+                OnPropertyChanged(nameof(CanPause));
             }
         }
 
@@ -71,50 +65,54 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
                 if (_isPlaying == value) return;
                 _isPlaying = value;
                 OnPropertyChanged(nameof(IsPlaying));
-                RaisePlaybackCanExecuteChanged();
+                OnPropertyChanged(nameof(CanPlay));
+                OnPropertyChanged(nameof(CanPause));
             }
         }
 
-        private void Pause()
+        private bool _areControlsDisabled;
+        public bool AreControlsDisabled
         {
-            PauseVideo?.Invoke();
-            IsPlaying = false;
-        }
-
-        private void Unpause()
-        {
-            Play();
-        }
-
-        public void Play()
-        {
-            if (!IsLoaded) return;
-            UnpauseVideo?.Invoke();
-            IsPlaying = true;
+            get => _areControlsDisabled;
+            private set
+            {
+                if (_areControlsDisabled == value) return;
+                _areControlsDisabled = value;
+                OnPropertyChanged(nameof(AreControlsDisabled));
+                OnPropertyChanged(nameof(CanPlay));
+                OnPropertyChanged(nameof(CanPause));
+            }
         }
 
         public void Stop()
         {
+            if (!IsLoaded || !IsPlaying) return;
             IsPlaying = false;
+        }
+
+        public void Play()
+        {
+            if (!IsLoaded || IsPlaying) return;
+            IsPlaying = true;
         }
 
         public void MarkLoadedAndPlaying(TimeSpan duration)
         {
             IsLoaded = true;
-            DurationSeconds = duration.TotalSeconds;
             IsPlaying = true;
+            DurationSeconds = duration.TotalSeconds;
         }
+
+        public bool CanPlay => IsLoaded && !IsPlaying && !AreControlsDisabled;
+        public bool CanPause => IsLoaded && IsPlaying && !AreControlsDisabled;
 
         public void UpdatePosition(TimeSpan position)
         {
             PositionSeconds = position.TotalSeconds;
         }
 
-        private void RaisePlaybackCanExecuteChanged()
-        {
-            PauseCommand.RaiseCanExecuteChanged();
-            UnpauseCommand.RaiseCanExecuteChanged();
-        }
+        public void DisableControls() => AreControlsDisabled = true;
+        public void EnableControls() => AreControlsDisabled = false;
 
         private static string GetAbsoluteVideoFilePath(string videoPath)
             => Path.Combine(

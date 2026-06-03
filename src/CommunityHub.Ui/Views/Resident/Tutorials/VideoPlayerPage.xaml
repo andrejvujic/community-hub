@@ -67,6 +67,8 @@
                             LoadedBehavior="Manual"
                             UnloadedBehavior="Stop"
                             MediaOpened="VideoElement_MediaOpened"
+                            MediaEnded="VideoElement_MediaEnded"
+                            FocusableChanged="VideoElement_FocusableChanged"
                             Stretch="Uniform"/>
                     </Grid>
                 </Grid>
@@ -74,11 +76,19 @@
                 <Slider
                     x:Name="ProgressSlider"
                     Grid.Row="2"
+                    Margin="0,16,0,16"
                     Minimum="0"
                     Maximum="{Binding DurationSeconds}"
                     Value="{Binding PositionSeconds, Mode=TwoWay}"
                     IsEnabled="{Binding IsLoaded}"
-                    ValueChanged="ProgressSlider_ValueChanged"/>
+                    VerticalAlignment="Center"
+                    ValueChanged="ProgressSlider_ValueChanged">
+                    <Slider.LayoutTransform>
+                        <ScaleTransform ScaleX="2.4" ScaleY="2.4">
+                        </ScaleTransform>
+                    </Slider.LayoutTransform>
+                </Slider>
+
 
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
@@ -90,7 +100,8 @@
                     <Button
                         Grid.Column="0"
                         Height="56"
-                        Command="{Binding PauseCommand}"
+                        Click="PauseButton_Click"
+                        IsEnabled="{Binding CanPause}"
                         Style="{StaticResource ResidentPrimaryActionButtonStyle}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock
@@ -109,7 +120,8 @@
                     <Button
                         Grid.Column="2"
                         Height="56"
-                        Command="{Binding UnpauseCommand}"
+                        Click="PlayButton_Click"
+                        IsEnabled="{Binding CanPlay}"
                         Style="{StaticResource ResidentPrimaryActionButtonStyle}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock
