@@ -25,6 +25,30 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
         public Action? PauseVideo { get; set; }
         public Action? UnpauseVideo { get; set; }
 
+        private double _durationSeconds;
+        public double DurationSeconds
+        {
+            get => _durationSeconds;
+            private set
+            {
+                if (Math.Abs(_durationSeconds - value) < 0.1) return;
+                _durationSeconds = value;
+                OnPropertyChanged(nameof(DurationSeconds));
+            }
+        }
+
+        private double _positionSeconds;
+        public double PositionSeconds
+        {
+            get => _positionSeconds;
+            set
+            {
+                if (Math.Abs(_positionSeconds - value) < 0.1) return;
+                _positionSeconds = value;
+                OnPropertyChanged(nameof(PositionSeconds));
+            }
+        }
+
         private bool _isLoaded;
         public bool IsLoaded
         {
@@ -74,10 +98,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
             IsPlaying = false;
         }
 
-        public void MarkLoadedAndPlaying()
+        public void MarkLoadedAndPlaying(TimeSpan duration)
         {
             IsLoaded = true;
+            DurationSeconds = duration.TotalSeconds;
             IsPlaying = true;
+        }
+
+        public void UpdatePosition(TimeSpan position)
+        {
+            PositionSeconds = position.TotalSeconds;
         }
 
         private void RaisePlaybackCanExecuteChanged()
@@ -94,5 +124,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Tutorials
                     .Replace('/', Path.DirectorySeparatorChar)
                     .Replace('\\', Path.DirectorySeparatorChar)
             );
+
     }
 }

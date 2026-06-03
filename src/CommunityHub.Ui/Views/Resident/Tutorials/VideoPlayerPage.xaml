@@ -49,6 +49,8 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="8"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -69,7 +71,16 @@
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="2">
+                <Slider
+                    x:Name="ProgressSlider"
+                    Grid.Row="2"
+                    Minimum="0"
+                    Maximum="{Binding DurationSeconds}"
+                    Value="{Binding PositionSeconds, Mode=TwoWay}"
+                    IsEnabled="{Binding IsLoaded}"
+                    ValueChanged="ProgressSlider_ValueChanged"/>
+
+                <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="8"/>
