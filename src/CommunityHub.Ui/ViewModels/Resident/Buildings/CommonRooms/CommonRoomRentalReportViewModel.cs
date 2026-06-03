@@ -2,6 +2,7 @@ using CommunityHub.Application.Services.CommonRooms.Reports;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
@@ -118,11 +119,20 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             ShowAlert(
                 Alert.Create(
                     "Izvještaj generisan",
-                    $"PDF izvještaj je sačuvan u Downloads folderu:\n{filePath}",
+                    "Izvještaj je uspješno generisan.",
                     AlertType.Info
                 )
                 .AddOption("U redu")
+                .AddOption("Prikaži", () => OpenPdf(filePath))
             );
+        }
+
+        private static void OpenPdf(string filePath)
+        {
+            Process.Start(new ProcessStartInfo(filePath)
+            {
+                UseShellExecute = true
+            });
         }
 
         private bool CanGenerateReport()
