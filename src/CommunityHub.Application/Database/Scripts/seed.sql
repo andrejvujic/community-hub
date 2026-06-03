@@ -785,7 +785,11 @@ INSERT INTO reported_issues (description, reported_date, priority, status, resid
 ('Sijalica u hodniku na 2. spratu je pregorela.', '2026-03-18', 'can_wait', 'resolved', 2, 1),
 ('Curenje vode iz cevi u podrumu, mokri zidovi.', '2026-04-01', 'should_be_resolved_soon', 'potentially_resolved', 3, 1),
 ('Interfon na glavnom ulazu ne funkcioniše.', '2026-04-15', 'should_be_resolved_soon', 'open', 4, 1),
-('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1);
+('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1),
+('Ne radi rasveta u hodniku na 1. spratu.', '2026-05-02', 'should_be_resolved_soon', 'open', 7, 6),
+('Ulazna vrata zgrade se tesko zatvaraju i brava zapinje.', '2026-05-06', 'can_wait', 'open', 9, 6),
+('U podrumu se oseca jak miris vlage i vide se tragovi curenja.', '2026-05-11', 'urgent', 'potentially_resolved', 17, 6),
+('Interfon na glavnom ulazu ne radi za nekoliko stanova.', '2026-05-19', 'should_be_resolved_soon', 'open', 19, 6);
 
 INSERT INTO assemblies (id, building_id, starts_at, status) VALUES
 (1,  1,  '2026-06-10 18:00:00', 'scheduled'),
@@ -797,7 +801,8 @@ INSERT INTO assemblies (id, building_id, starts_at, status) VALUES
 (7,  7,  '2026-06-20 19:00:00', 'scheduled'),
 (8,  8,  '2026-06-22 18:00:00', 'confirmed'),
 (9,  9,  '2026-06-25 19:30:00', 'scheduled'),
-(10, 10, '2026-06-28 17:00:00', 'cancelled');
+(10, 10, '2026-06-28 17:00:00', 'cancelled'),
+(12,  1,  '2026-05-30 10:00:00', 'cancelled');
 
 INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
 (1, 1),
@@ -868,7 +873,10 @@ INSERT INTO assembly_topics
 ('Farbanje ograde', 7, 17, 'accepted'),
 ('Postavljanje novog zvonceta', 8, 18, 'accepted'),
 ('Uredjenje dvorista', 9, 19, 'accepted'),
-('Uvodjenje video nadzora', 10, 20, 'accepted');
+('Uvodjenje video nadzora', 10, 20, 'accepted'),
+('Pregled troskova odrzavanja zgrade', 12, 1, 'accepted'),
+('Popravka lifta', 6, 16, 'suggested');
+
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),

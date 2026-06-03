@@ -5,7 +5,6 @@ using CommunityHub.Application.Domain.Buildings;
 
 namespace CommunityHub.Ui.Views.BuildingManager.BuildingPages
 {
-
     public partial class SchedulingAssemblyPage : Page
     {
        private readonly SchedulingAssemblyPageViewModel _viewModel;

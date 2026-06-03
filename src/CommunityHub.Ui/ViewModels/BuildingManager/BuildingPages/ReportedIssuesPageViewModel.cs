@@ -6,7 +6,6 @@ using CommunityHub.Application.Services.Dtos.Issues;
 using CommunityHub.Application.Services.Issues;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
-using System.Windows;
 using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages

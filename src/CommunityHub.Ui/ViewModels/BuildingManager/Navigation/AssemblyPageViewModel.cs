@@ -44,15 +44,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             LoadAssemblies();
         }
 
+        public bool IsAssemblySelected => SelectedAssembly != null;
         public bool IsTopicChangeLocked =>
             SelectedAssembly != null &&
             (SelectedAssembly.Status == AssemblyStatus.Cancelled || DateTime.Now >= SelectedAssembly.Assembly.StartsAt.AddHours(-24));
         public bool CanEditSuggestedTopics => !IsTopicChangeLocked;
-        public bool HasAnySuggestedTopics =>
-            SuggestedTopics.Any();
-
-        public bool HasAnyAcceptedSuggestedTopics =>
-            SuggestedTopics.Any(t => t.Topic.Status == AssemblyTopicStatus.Accepted);
+        public bool HasAnySuggestedTopics => SuggestedTopics.Any();
+        public bool HasAnyAcceptedSuggestedTopics => SuggestedTopics.Any(t => t.Topic.Status == AssemblyTopicStatus.Accepted);
 
         private AssemblyRowViewModel? _selectedAssembly;
         public AssemblyRowViewModel? SelectedAssembly
@@ -76,7 +74,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                 }
             }
         }
-        public bool IsAssemblySelected => SelectedAssembly != null;
 
         public void LoadAssemblies()
         {
@@ -114,9 +111,22 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                 Topics.Add(topic);
             }
         }
+        public void LoadAttendancesForSelectedAssembly()
+        {
+            Attendances.Clear();
+
+            if (SelectedAssembly == null)
+                return;
+
+            var attendances = _assemblyAttendanceService.GetAllByAssembly(SelectedAssembly.Assembly.Id);
+
+            foreach (var attendance in attendances)
+                Attendances.Add(attendance);
+        }
         public void LoadApartmentsForSelectedAssembly()
         {
             Apartments.Clear();
+
             if (SelectedAssembly == null)
                 return;
 
@@ -132,25 +142,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                     HasAttendance = attendanceApartmentIds.Contains(apartment.Id)
                 });
             }
-        }
-        public void LoadAttendancesForSelectedAssembly()
-        {
-            Attendances.Clear();
-
-            if (SelectedAssembly == null)
-                return;
-
-            var attendances = _assemblyAttendanceService.GetAllByAssembly(SelectedAssembly.Assembly.Id);
-
-            foreach (var attendance in attendances)
-                Attendances.Add(attendance);
-        }
-        public bool HasAttendance(ApartmentDto apartment)
-        {
-            if (apartment == null)
-                return false;
-
-            return Attendances.Any(attendance => attendance.ApartmentId == apartment.Id);
         }
         public void LoadSuggestedTopics()
         {
@@ -203,15 +194,11 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             }
 
             LoadAssemblies();
-
-            SelectedAssembly = Assemblies
-                .FirstOrDefault(a => a.Assembly.Id == selectedAssemblyId);
+            SelectedAssembly = Assemblies.FirstOrDefault(a => a.Assembly.Id == selectedAssemblyId);
         }
-
         private void ApplySuggestedTopicsDeadline()
         {
-            if (SelectedAssembly == null)
-                return;
+            if (SelectedAssembly == null) return;
 
             RefreshSelectedAssemblyStatus();
 
@@ -224,11 +211,9 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                 return;
             }
 
-            if (DateTime.Now < SelectedAssembly.Assembly.StartsAt.AddHours(-24))
-                return;
+            if (DateTime.Now < SelectedAssembly.Assembly.StartsAt.AddHours(-24)) return;
 
-            if (!SuggestedTopics.Any())
-                return;
+            if (!SuggestedTopics.Any()) return;
 
             if (!SuggestedTopics.Any(t => t.Topic.Status == AssemblyTopicStatus.Accepted))
             {
@@ -244,7 +229,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             OnPropertyChanged(nameof(CanEditSuggestedTopics));
             OnPropertyChanged(nameof(IsTopicChangeLocked));
         }
-
         private void RefreshSelectedAssemblyStatus()
         {
             if (SelectedAssembly == null)
