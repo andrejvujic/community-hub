@@ -24,7 +24,13 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
                     _ => Visibility.Visible
                 };
 
-        private void ToggleDatePickerButton_Click(object sender, EventArgs e)
-            => ToggleOverlayVisibility(DatePickerOverlay);
+        private void ToggleSelectDateRangeMenuButton_Click(object sender, EventArgs e)
+            => ToggleOverlayVisibility(SelectDateRangeOverlay);
+
+        private void ToggleStartDatePickerButton_Click(object sender, EventArgs e)
+            => ToggleOverlayVisibility(StartDatePicker);
+
+        private void ToggleEndDatePickerButton_Click(object sender, EventArgs e)
+            => ToggleOverlayVisibility(EndDatePicker);
     }
 }

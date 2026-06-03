@@ -22,31 +22,69 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         public long BuildingId { get; }
         public RelayCommand GenerateReportCommand { get; }
 
-        private DateTime? _selectedDate;
-        public DateTime? SelectedDate
+        private DateTime? _selectedStartDate;
+        public DateTime? SelectedStartDate
         {
-            get => _selectedDate;
+            get => _selectedStartDate;
             set
             {
-                if (_selectedDate == value) return;
-                _selectedDate = value is null ? null : value.Value.Date;
+                if (_selectedStartDate == value) return;
+                _selectedStartDate = value is null ? null : value.Value.Date;
 
-                OnPropertyChanged(nameof(SelectedDate));
-                OnPropertyChanged(nameof(SelectedDateText));
+                OnPropertyChanged(nameof(SelectedStartDate));
+                OnPropertyChanged(nameof(SelectedStartDateText));
+                OnPropertyChanged(nameof(SelectedDateRangeText));
+                OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 GenerateReportCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public string SelectedDateText
-            => SelectedDate is null
+        public string SelectedStartDateText
+            => SelectedStartDate is null
                 ? "Izaberite..."
-                : SelectedDate.Value.ToString("d. MMMM yyyy.", _culture);
+                : SelectedStartDate.Value.ToString("d. MMMM", _culture);
+
+        private DateTime? _selectedEndDate;
+        public DateTime? SelectedEndDate
+        {
+            get => _selectedEndDate;
+            set
+            {
+                if (_selectedEndDate == value) return;
+                _selectedEndDate = value is null ? null : value.Value.Date;
+
+                OnPropertyChanged(nameof(SelectedEndDate));
+                OnPropertyChanged(nameof(SelectedEndDateText));
+                OnPropertyChanged(nameof(SelectedDateRangeText));
+                OnPropertyChanged(nameof(IsSelectedDateRangeValid));
+                GenerateReportCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string SelectedEndDateText
+            => SelectedEndDate is null
+                ? "Izaberite..."
+                : SelectedEndDate.Value.ToString("d. MMMM", _culture);
+
+        public string SelectedDateRangeText
+        {
+            get
+            {
+                if (SelectedStartDate is null || SelectedEndDate is null) return "Izaberite...";
+                return $"{SelectedStartDateText} — {SelectedEndDateText}";
+            }
+        }
+
+        public bool IsSelectedDateRangeValid
+            => SelectedStartDate.HasValue
+                && SelectedEndDate.HasValue
+                && SelectedEndDate.Value >= SelectedStartDate.Value;
 
         private void GenerateReport()
         {
         }
 
         private bool CanGenerateReport()
-            => SelectedDate.HasValue;
+            => IsSelectedDateRangeValid;
     }
 }
