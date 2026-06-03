@@ -1,4 +1,5 @@
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+using MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
@@ -78,6 +79,8 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
         private static void DefineStyles(Document document)
         {
             var normal = document.Styles["Normal"];
+            if (normal is null) return;
+
             normal.Font.Name = ReportFontResolver.FontFamilyName;
             normal.Font.Size = 8;
 
