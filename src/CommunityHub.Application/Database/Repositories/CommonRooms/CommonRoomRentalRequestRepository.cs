@@ -172,8 +172,8 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
                    INNER JOIN users resident ON
                    common_room_rental_request.resident_id = resident.id
                    WHERE common_room.building_id = @building_id AND
-                     (@from IS NULL OR common_room_rental_request.requested_start_date >= @from) AND
-                     (@to IS NULL OR common_room_rental_request.requested_end_date <= @to)  
+                     (@from::timestamp IS NULL OR common_room_rental_request.requested_start_date >= @from::timestamp) AND
+                     (@to::timestamp IS NULL OR common_room_rental_request.requested_end_date <= @to::timestamp)  
                    ORDER BY common_room_rental_request_id;"
             )
             .AddParameter("building_id", buildingId)
