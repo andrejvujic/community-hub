@@ -2,6 +2,7 @@ using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
+using PdfSharp.Fonts;
 using System.Globalization;
 
 namespace CommunityHub.Application.Services.CommonRooms.Reports
@@ -16,6 +17,8 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             DateTime to
         )
         {
+            ConfigureFonts();
+
             var downloadsPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 "Downloads"
@@ -75,7 +78,7 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
         private static void DefineStyles(Document document)
         {
             var normal = document.Styles["Normal"];
-            normal.Font.Name = "Arial";
+            normal.Font.Name = ReportFontResolver.FontFamilyName;
             normal.Font.Size = 8;
 
             var title = document.Styles.AddStyle("Title", "Normal");
@@ -96,6 +99,14 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             var statistics = document.Styles.AddStyle("Statistics", "Normal");
             statistics.Font.Size = 8;
             statistics.ParagraphFormat.SpaceAfter = Unit.FromPoint(4);
+        }
+
+        private static void ConfigureFonts()
+        {
+            if (GlobalFontSettings.FontResolver is null)
+                GlobalFontSettings.FontResolver = new ReportFontResolver();
+
+            PredefinedFontsAndChars.ErrorFontName = ReportFontResolver.FontFamilyName;
         }
 
         private void AddCommonRoomReport(Section section, CommonRoomRentalRequestsReport report)
