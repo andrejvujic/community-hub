@@ -17,8 +17,8 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodBudgets
                 _neighborhoodMapper.MapToDto(budgetCategoryBalance.Neighborhood),
                 _budgetCategoryMapper.MapToDto(budgetCategoryBalance.Category),
                 budgetCategoryBalance.TotalAmount,
-                budgetCategoryBalance.TotalDonations,
-                budgetCategoryBalance.TotalExpenses
+                0,
+                0
             );
         }
 
@@ -30,8 +30,6 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodBudgets
                 _neighborhoodMapper.MapToEntity(dto.Neighborhood),
                 _budgetCategoryMapper.MapToEntity(dto.Category),
                 dto.TotalAmount,
-                dto.TotalDonations,
-                dto.TotalExpenses,
                 dto.Id
             );
         }

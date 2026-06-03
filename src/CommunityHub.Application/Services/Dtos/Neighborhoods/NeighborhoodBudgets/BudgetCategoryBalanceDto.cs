@@ -6,8 +6,8 @@
         public NeighborhoodDto Neighborhood { get; set; }
         public BudgetCategoryDto Category { get; set; }
         public decimal TotalAmount { get; set; }
-        public decimal TotalDonations { get; }
-        public decimal TotalExpenses { get; }
+        public decimal TotalDonations { get; set; }
+        public decimal TotalExpenses { get; set; }
 
         public string TotalDonationsDisplay => $"{TotalDonations:N2} RSD";
         public string TotalExpensesDisplay => $"{TotalExpenses:N2} RSD";
