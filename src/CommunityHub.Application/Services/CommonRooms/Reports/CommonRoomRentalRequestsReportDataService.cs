@@ -1,9 +1,10 @@
-﻿using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+using CommunityHub.Application.Domain.CommonRooms;
+using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
 
-namespace CommunityHub.Application.Domain.CommonRooms.Services
+namespace CommunityHub.Application.Services.CommonRooms.Reports
 {
-    public class RentalRequestsReportGenerator
+    public class CommonRoomRentalRequestsReportDataService
     {
         private readonly ICommonRoomRepository _commonRoomRepository = Injector.CreateInstance<ICommonRoomRepository>();
         private readonly ICommonRoomRentalRequestRepository _commonRoomRentalRequestRepository = Injector.CreateInstance<ICommonRoomRentalRequestRepository>();
@@ -16,7 +17,7 @@ namespace CommunityHub.Application.Domain.CommonRooms.Services
         {
             var commonRooms = _commonRoomRepository.GetAllByBuildingId(buildingId);
             var rentalRequests = _commonRoomRentalRequestRepository.GetAllByBuildingId(
-                buildingId, 
+                buildingId,
                 from: from,
                 to: to
             );
@@ -28,20 +29,26 @@ namespace CommunityHub.Application.Domain.CommonRooms.Services
             return GroupRentalRequestsByCommonRoom(commonRoomsById, rentalRequests);
         }
 
-         private static List<CommonRoomRentalRequestsReport> GroupRentalRequestsByCommonRoom(
+        private static List<CommonRoomRentalRequestsReport> GroupRentalRequestsByCommonRoom(
             Dictionary<long, CommonRoom> commonRooms,
             List<CommonRoomRentalRequest> rentalRequests
-         )
-         {
-            var groups = rentalRequests.GroupBy(r => r.CommonRoomId);
+        )
+        {
+            var reportsByCommonRoomId = rentalRequests
+                .GroupBy(r => r.CommonRoomId)
+                .Where(group => commonRooms.ContainsKey(group.Key))
+                .Select(group => new CommonRoomRentalRequestsReport(
+                    commonRooms[group.Key],
+                    group.ToList()
+                ))
+                .ToDictionary(report => report.CommonRoom.Id);
 
-            return groups.Select(
-                rentalRequests => new CommonRoomRentalRequestsReport(
-                    commonRooms[rentalRequests.First().CommonRoomId],
-                    rentalRequests.ToList()
-                )
-            ).ToList();
+            return commonRooms
+                .Values
+                .Select(commonRoom => reportsByCommonRoomId.TryGetValue(commonRoom.Id, out var report)
+                    ? report
+                    : new CommonRoomRentalRequestsReport(commonRoom, new List<CommonRoomRentalRequest>()))
+                .ToList();
         }
-
     }
 }

@@ -1,4 +1,5 @@
-using CommunityHub.Application.Domain.CommonRooms.Services;
+using CommunityHub.Application.Services.CommonRooms.Reports;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Globalization;
@@ -7,7 +8,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 {
     public class CommonRoomRentalReportViewModel : BaseViewModel
     {
-        private readonly RentalRequestsReportGenerator _reportGenerator = new();
+        private readonly CommonRoomRentalRequestsReportDataService _reportDataService = new();
+        private readonly CommonRoomRentalRequestsReportPdfGenerator _pdfGenerator = new();
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
 
@@ -93,6 +95,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             }
         }
 
+        public DateTime MinStartDate => _today;
         public DateTime? MaxStartDate => SelectedEndDate;
         public DateTime MinEndDate => SelectedStartDate ?? _today;
 
@@ -100,10 +103,25 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         {
             if (SelectedStartDate is null || SelectedEndDate is null) return;
 
-            var rentalRequestReports = _reportGenerator.GenerateForBuilding(
-                BuildingId, 
-                SelectedStartDate.Value, 
+            var reports = _reportDataService.GenerateForBuilding(
+                BuildingId,
+                SelectedStartDate.Value,
                 SelectedEndDate.Value
+            );
+
+            var filePath = _pdfGenerator.GenerateToDownloads(
+                reports,
+                SelectedStartDate.Value,
+                SelectedEndDate.Value
+            );
+
+            ShowAlert(
+                Alert.Create(
+                    "Izvještaj generisan",
+                    $"PDF izvještaj je sačuvan u Downloads folderu:\n{filePath}",
+                    AlertType.Info
+                )
+                .AddOption("U redu")
             );
         }
 

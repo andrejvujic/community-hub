@@ -1,3 +1,4 @@
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
 using System.Windows;
@@ -5,7 +6,7 @@ using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms
 {
-    public partial class CommonRoomRentalReportPage : MainNavigationConsumerPage
+    public partial class CommonRoomRentalReportPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
         public CommonRoomRentalReportPage(long userId, long buildingId)
         {
