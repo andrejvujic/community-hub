@@ -7,12 +7,12 @@ namespace CommunityHub.Ui.Views.Citizen.Donations
 {
     public partial class ExpenseHistoryWindow : Window
     {
-        private ExpenseHistoryWindowViewModel? _viewModel;
+        private ExpenseHistoryViewModel? _viewModel;
 
         public ExpenseHistoryWindow(BudgetCategoryBalanceDto category)
         {
             InitializeComponent();
-            _viewModel = new ExpenseHistoryWindowViewModel(category);
+            _viewModel = new ExpenseHistoryViewModel(category);
             DataContext = _viewModel;
 
             if (_viewModel != null)

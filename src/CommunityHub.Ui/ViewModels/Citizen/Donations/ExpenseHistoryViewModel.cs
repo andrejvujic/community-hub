@@ -8,7 +8,7 @@ using CommunityHub.Ui.Helpers.Commands;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 {
-    public class ExpenseHistoryWindowViewModel : INotifyPropertyChanged
+    public class ExpenseHistoryViewModel : INotifyPropertyChanged
     {
         private readonly BudgetExpenseService _expenseService = new();
         private BudgetCategoryBalanceDto _category;
@@ -37,7 +37,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 
         public ICommand CloseCommand { get; }
 
-        public ExpenseHistoryWindowViewModel(BudgetCategoryBalanceDto category)
+        public ExpenseHistoryViewModel(BudgetCategoryBalanceDto category)
         {
             _category = category;
             CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
