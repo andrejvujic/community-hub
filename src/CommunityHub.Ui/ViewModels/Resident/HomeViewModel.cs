@@ -8,6 +8,7 @@ using CommunityHub.Application.Services.ResidentAssemblies;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications;
+using CommunityHub.Ui.Views.Resident.Tutorials;
 
 namespace CommunityHub.Ui.ViewModels.Resident
 {
@@ -35,18 +36,23 @@ namespace CommunityHub.Ui.ViewModels.Resident
             _assemblyService = new();
 
             OpenNotificationsCommand = new(OpenNotificationsPage);
+            OpenTutorialsCommand = new(OpenTutorialsPage);
 
             Initialize();
         }
 
         public long UserId { get; }
         public RelayCommand OpenNotificationsCommand { get; }
+        public RelayCommand OpenTutorialsCommand { get; }
 
         private void OpenNotificationsPage()
             => Push(
                 new NotificationsPage(UserId),
                 onPop: _ => UpdateUnreadNotificationCount()
             );
+
+        private void OpenTutorialsPage()
+            => Push(new TutorialsPage());
 
         private void Initialize()
         {

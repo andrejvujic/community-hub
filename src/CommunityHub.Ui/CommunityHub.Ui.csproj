@@ -18,6 +18,9 @@
     <None Remove="Resources\Images\neighborhood_1.jpg" />
     <None Remove="Resources\Inter\InterDisplay-Italic.ttf" />
     <None Remove="Resources\Inter\InterDisplay-Regular.ttf" />
+    <None Remove="Resources\Videos\Tutorial_0.mp4" />
+    <None Remove="Resources\Videos\Tutorial_1.mp4" />
+    <None Remove="Resources\Videos\Tutorial_2.mp4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +55,15 @@
     <Resource Include="Resources\Images\neighborhood_0.jpg" />
     <Resource Include="Resources\Inter\InterDisplay-Italic.ttf" />
     <Resource Include="Resources\Inter\InterDisplay-Regular.ttf" />
+    <Content Include="Resources\Videos\Tutorial_0.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Videos\Tutorial_1.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Videos\Tutorial_2.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
