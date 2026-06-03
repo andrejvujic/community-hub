@@ -40,11 +40,10 @@
                          Grid.Row="1"
                          Margin="10,0,10,10"
                          ItemsSource="{Binding Neighborhoods}"
-                         SelectedItem="{Binding SelectedNeighborhood, Mode=TwoWay}"
+                         SelectedItem="{Binding SelectedNeighborhood}"
                          Style="{StaticResource NeighborhoodListBoxStyle}"
                          ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
-                         SelectionChanged="NeighborhoodsListBox_SelectionChanged">
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
                 </ListBox>
             </Grid>
         </Border>
@@ -85,8 +84,7 @@
                                   Margin="0,0,0,40"
                                   HorizontalAlignment="Center"
                                   ItemsSource="{Binding Facilities}"
-                                  SelectedItem="{Binding SelectedFacility}"
-                                  SelectionChanged="FacilitiesComboBox_SelectionChanged">
+                                  SelectedItem="{Binding SelectedFacility}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock>
@@ -108,6 +106,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Trajanje posete (h):" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBox x:Name="DurationTextBox"
+                                     Text="{Binding DurationInput, UpdateSourceTrigger=PropertyChanged}"
                                      Grid.Column="1"
                                      Style="{StaticResource TextBoxStyle}"
                                      Height="35"
@@ -130,7 +129,9 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Od:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                                 <DatePicker x:Name="StartDatePicker"
+                                            SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
+                                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
                                             Height="35"
                                             FontSize="22"/>
                             </StackPanel>
@@ -138,7 +139,9 @@
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="Do:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                                 <DatePicker x:Name="EndDatePicker"
+                                            SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
+                                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
                                             Height="35"
                                             FontSize="22"/>
                             </StackPanel>
@@ -152,7 +155,7 @@
                                 FontSize="20"
                                 Margin="5,25,5,0"
                                 HorizontalAlignment="Center"
-                                Click="ReserveButton_Click"/>
+                                Command="{Binding ReserveCommand}"/>
                     </StackPanel>
                 </Border>
 
