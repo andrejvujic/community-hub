@@ -36,11 +36,12 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
         {
             var reportsByCommonRoomId = rentalRequests
                 .GroupBy(r => r.CommonRoomId)
-                .Where(group => commonRooms.ContainsKey(group.Key))
-                .Select(group => new CommonRoomRentalRequestsReport(
-                    commonRooms[group.Key],
-                    group.ToList()
-                ))
+                .Select(
+                    group => new CommonRoomRentalRequestsReport(
+                        commonRooms[group.Key],
+                        group.ToList()
+                    )
+                )
                 .ToDictionary(report => report.CommonRoom.Id);
 
             return commonRooms
