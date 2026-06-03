@@ -9,7 +9,6 @@ namespace CommunityHub.Ui.Views.Citizen.Donations
     public partial class DonateToCategoryWindow : Window
     {
         private DonateToCategoryViewModel? _viewModel;
-        public decimal DonationAmount => _viewModel?.DonationAmount ?? 0;
 
         public DonateToCategoryWindow(BudgetCategoryBalanceDto category, CitizenDto citizen)
         {

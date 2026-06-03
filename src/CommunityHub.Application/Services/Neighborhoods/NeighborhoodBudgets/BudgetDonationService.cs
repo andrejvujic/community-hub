@@ -1,7 +1,6 @@
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodBudgets;
-using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodBudgets;

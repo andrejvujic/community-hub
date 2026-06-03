@@ -39,7 +39,8 @@ namespace CommunityHub.Ui.Views.Citizen.Donations
                 wnd.Owner = Window.GetWindow(this);
                 if (wnd.ShowDialog() == true)
                 {
-                    _viewModel.CreateDonation(_viewModel.SelectedCategory, wnd.DonationAmount);
+                    var viewModel = (DonateToCategoryViewModel?)wnd.DataContext;
+                    _viewModel.CreateDonation(_viewModel.SelectedCategory, viewModel!.DonationAmount);
                 }
             }
         }
