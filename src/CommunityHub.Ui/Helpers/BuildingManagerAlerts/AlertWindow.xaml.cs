@@ -18,7 +18,6 @@ namespace CommunityHub.Ui.Helpers.BuildingManagerAlerts
 
             ConfigureByType();
         }
-
         private void ConfigureByType()
         {
             switch (_alertType)
@@ -40,25 +39,21 @@ namespace CommunityHub.Ui.Helpers.BuildingManagerAlerts
                     break;
             }
         }
-
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             AlertResult = AlertResult.Confirmed;
             DialogResult = true;
         }
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             AlertResult = AlertResult.Cancelled;
             DialogResult = false;
         }
-
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             AlertResult = AlertResult.Closed;
             Close();
         }
-
         protected override void OnClosed(EventArgs e)
         {
             if (AlertResult == AlertResult.None)

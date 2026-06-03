@@ -1,6 +1,7 @@
-﻿using QuestPDF.Fluent;
-using QuestPDF.Helpers;
+﻿using CommunityHub.Application.Domain.Issues;
 using CommunityHub.Application.Services.Dtos.Issues;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace CommunityHub.Application.Services.Issues.Reports
@@ -125,6 +126,8 @@ namespace CommunityHub.Application.Services.Issues.Reports
                     .SemiBold()
                     .FontColor(Colors.Black);
 
+                sectionColumn.Item().Element(c => ComposeSectionSummary(c, section));
+
                 sectionColumn.Item()
                     .LineHorizontal(1)
                     .LineColor(Colors.Grey.Lighten2);
@@ -133,6 +136,36 @@ namespace CommunityHub.Application.Services.Issues.Reports
                 {
                     sectionColumn.Item().Element(c => ComposeIssueCard(c, item));
                 }
+            });
+        }
+        private void ComposeSectionSummary(IContainer container, BuildingIssueReportSection section)
+        {
+            var totalCount = section.Items.Count;
+            var unresolvedCount = section.Items.Count(x => x.Status == IssueStatus.Open);
+            var potentiallyResolvedCount = section.Items.Count(x => x.Status == IssueStatus.PotentiallyResolved);
+            var resolvedCount = section.Items.Count(x => x.Status == IssueStatus.Resolved);
+
+            container.Text(text =>
+            {
+                text.DefaultTextStyle(x => x.FontSize(10).FontColor(Colors.Grey.Darken2));
+
+                text.Span("Ukupno: ").SemiBold();
+                text.Span(totalCount.ToString());
+
+                text.Span(" | ");
+
+                text.Span("Nerešeni: ").SemiBold();
+                text.Span(unresolvedCount.ToString());
+
+                text.Span(" | ");
+
+                text.Span("Potencijalno rešeni: ").SemiBold();
+                text.Span(potentiallyResolvedCount.ToString());
+
+                text.Span(" | ");
+
+                text.Span("Rešeni: ").SemiBold();
+                text.Span(resolvedCount.ToString());
             });
         }
         private void ComposeIssueCard(IContainer container, IssueDto item)

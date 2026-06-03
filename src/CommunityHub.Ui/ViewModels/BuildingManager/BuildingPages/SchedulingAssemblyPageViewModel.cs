@@ -9,7 +9,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using CommunityHub.Application.Domain.ResidentAssemblies;
 using System.Windows.Input;
 using CommunityHub.Application.Services.Dtos.ResidentAssemblies;

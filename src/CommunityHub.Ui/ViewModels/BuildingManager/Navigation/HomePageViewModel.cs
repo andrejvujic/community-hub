@@ -9,7 +9,6 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
@@ -57,7 +56,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             CreateOpenIssuesChart(chartData);
             ConfigureOpenIssuesAxes(chartData);
         }
-
         private void CreateOpenIssuesChart(List<BuildingOpenIssuesChartDto> chartData)
         {
             OpenIssuesSeries = new ISeries[]
@@ -72,11 +70,15 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                 }
             };
         }
-
         private void ConfigureOpenIssuesAxes(List<BuildingOpenIssuesChartDto> chartData)
         {
+           ConfigureXAxes();
+           ConfigureYAxes(chartData);
+        }
+        private void ConfigureXAxes()
+        {
             XAxes = new[]
-            {
+           {
                 new Axis
                 {
                     Name = "Broj nerešenih problema",
@@ -86,7 +88,9 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                     MinStep = 1
                 }
             };
-
+        }
+        private void ConfigureYAxes(List<BuildingOpenIssuesChartDto> chartData)
+        {
             YAxes = new[]
             {
                 new Axis

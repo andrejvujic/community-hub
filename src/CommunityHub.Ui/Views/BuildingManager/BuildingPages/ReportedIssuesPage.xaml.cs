@@ -1,7 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using CommunityHub.Application.Domain.Buildings;
-using System.Windows.Input;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages;
 
