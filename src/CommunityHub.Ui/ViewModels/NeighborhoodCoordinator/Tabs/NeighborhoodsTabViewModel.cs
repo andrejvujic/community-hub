@@ -1,12 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Users;
-using CommunityHub.Application.Services.Images;
 using CommunityHub.Application.Services.Neighborhoods;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -15,12 +17,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly NeighborhoodMembershipService _neighborhoodMembershipService = new();
         private readonly StreetSectionService _streetSectionService = new();
-        private readonly ImageService _imageService = new();
         private readonly long _coordinatorId;
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
         public ObservableCollection<StreetSectionDto> NeighborhoodStreetSections { get; } = new();
         public ObservableCollection<CitizenDto> NeighborhoodMembers { get; } = new();
+
+        public RelayCommand RegisterCommand { get; }
 
         private NeighborhoodDto? _selectedNeighborhood;
         public NeighborhoodDto? SelectedNeighborhood
@@ -41,6 +44,23 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public NeighborhoodsTabViewModel(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
+            RegisterCommand = new RelayCommand(ExecuteRegister);
+        }
+
+        private void ExecuteRegister()
+        {
+            var window = System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                         ?? System.Windows.Application.Current.MainWindow;
+
+            var dialog = new RegisterNeighborhoodWindow(_coordinatorId)
+            {
+                Owner = window
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                LoadNeighborhoods();
+            }
         }
 
         public void LoadNeighborhoods()

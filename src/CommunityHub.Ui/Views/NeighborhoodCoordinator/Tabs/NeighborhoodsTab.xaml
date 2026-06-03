@@ -44,7 +44,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             ToolTip="Ctrl+N"
-                            Click="RegisterButton_Click">
+                            Command="{Binding RegisterCommand}">
                         <TextBlock Text="&#xf055;" 
                                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                    FontSize="30"
@@ -57,7 +57,6 @@
                          Margin="10,0,10,10"
                          ItemsSource="{Binding Neighborhoods}"
                          SelectedItem="{Binding SelectedNeighborhood}"
-                         SelectionChanged="NeighborhoodsListBox_SelectionChanged"
                          Style="{StaticResource NeighborhoodListBoxStyle}"
                          ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
                          ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
