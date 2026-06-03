@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 using DomainImage = CommunityHub.Application.Domain.Image;
 
 
@@ -421,11 +422,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             if (!CanConfirm)
                 return false;
 
-            if (MessageBox.Show(
-                "Da li ste sigurni da želite da potvrdite registraciju zgrade?",
-                "Potvrda",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question) != MessageBoxResult.Yes)
+            var dialogService = new DialogService();
+
+            bool confirm = dialogService.ShowConfirmation(
+                "Potvrda registracije zgrade",
+                "Da li ste sigurni da želite da potvrdite registraciju zgrade?");
+
+            if(!confirm)
                 return false;
 
             var address = CreateAddress();
@@ -433,11 +436,9 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             CreateImages(building);
             CreateApartments(building, apartmentEntries);
 
-            MessageBox.Show(
-                "Uspešno ste registrovali zgradu.",
-                "Uspeh",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            dialogService.ShowInfo(
+                "Čestitamo",
+                "Uspešno ste registrovali zgradu.");
 
             ResetForm();
 

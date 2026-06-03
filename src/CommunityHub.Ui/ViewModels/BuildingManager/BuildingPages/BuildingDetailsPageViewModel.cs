@@ -1,5 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Buildings;
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Navigation;
 using CommunityHub.Ui.Views.BuildingManager;
@@ -14,7 +15,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
     public class BuildingDetailsPageViewModel : INotifyPropertyChanged, IDisposable
     {
         private readonly IAppNavigationService _navigationService;
-        private readonly CommonRoomRentalRequestsPageViewModel _rentalRequestsViewModel;
+        private readonly CommonRoomRentalRequestService _commonRoomRentalRequestService;
         private readonly Dictionary<string, Func<Page>> _navigationMap;
 
         public User User { get; }
@@ -30,8 +31,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             Building = building;
             _navigationService = navigationService;
 
-            _rentalRequestsViewModel = new CommonRoomRentalRequestsPageViewModel(User, Building);
-            _rentalRequestsViewModel.AutoProcessRentalRequestStatuses();
+            _commonRoomRentalRequestService = new();
+            _commonRoomRentalRequestService.AutoProcessRentalRequestStatuses(Building.Id);
 
             _navigationMap = new Dictionary<string, Func<Page>>
             {
@@ -41,7 +42,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 ["CommonRoom"] = () => new CommonRoomsPage(User, Building),
                 ["CommonRoomRentalRequest"] = () => new CommonRoomRentalRequestsPage(User, Building),
                 ["NoticeBoard"] = () => new NoticeBoardPage(User, Building),
-                ["SchedulingAssembly"] = () => new AssemblyPage(User),
+                ["SchedulingAssembly"] = () => new SchedulingAssemblyPage(User, Building),
                 ["ReportedIssue"] = () => new ReportedIssuesPage(User, Building)
             };
 

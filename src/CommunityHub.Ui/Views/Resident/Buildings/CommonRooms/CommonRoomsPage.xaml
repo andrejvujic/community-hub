@@ -62,8 +62,14 @@
                     BorderThickness="1"
                     BorderBrush="{StaticResource ResidentBorderBrush}"
                     Background="{StaticResource ResidentCardBackgroundBrush}"
+                    Cursor="Hand"
                     Padding="16">
                     <Grid Background="Transparent">
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftClick"
+                                Command="{Binding OpenRentalReportCommand}" />
+                        </Grid.InputBindings>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="16"/>
@@ -81,7 +87,7 @@
                         <TextBlock
                             Grid.Column="2"
                             FontSize="18"
-                            Text="Izvještaj o iznajmljivanju"/>
+                            Text="Izvještaj o zahtjevima"/>
 
                         <TextBlock
                             Grid.Column="4"

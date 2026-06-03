@@ -5,6 +5,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms
     public interface ICommonRoomRepository
     {
         public CommonRoom Create(CommonRoom commonRoom);
-        public List<CommonRoom> GetByBuilding(long buildingId);
+        public List<CommonRoom> GetAllByBuildingId(long buildingId);
     }
 }

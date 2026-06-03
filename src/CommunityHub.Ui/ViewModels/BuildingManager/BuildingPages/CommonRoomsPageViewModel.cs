@@ -7,6 +7,7 @@ using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
@@ -223,13 +224,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
         }
         private void Cancel()
         {
-            var result = MessageBox.Show(
-                "Da li želite da otkažete kreiranje zajedničke prostorije?",
-                "Potvrda",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.Yes)
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da otkažete kreiranje zajedničke prostorije?");
+            
+            if (confirm)
                 ResetForm();
         }
         private void Confirm()
@@ -237,24 +238,19 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (!ValidateForm())
                 return;
 
-            var result = MessageBox.Show(
-                "Da li želite da kreirate zajedničku prostoriju?",
-                "Potvrda",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No)
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da kreirate zajedničku prostoriju?");
+            if (!confirm)
                 return;
 
             CreateCommonRoom();
             ResetForm();
             LoadCommonRooms();
 
-            MessageBox.Show(
-                "Zajednička prostorija je uspešno kreirana.",
-                "Uspeh",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            dialogService.ShowInfo("Čestitamo", "Zajednička prostorija je uspešno kreirana.");
         }
         private bool CanConfirm()
         {

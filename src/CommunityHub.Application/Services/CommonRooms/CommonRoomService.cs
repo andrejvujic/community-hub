@@ -16,11 +16,11 @@ namespace CommunityHub.Application.Services.CommonRooms
         public CommonRoomService() : base(new CommonRoomMapper()) {}
 
         public List<CommonRoomDto> GetByBuilding(long buildingId)
-            => MapToDto(_commonRoomRepository.GetByBuilding(buildingId));
+            => MapToDto(_commonRoomRepository.GetAllByBuildingId(buildingId));
 
         public List<CommonRoomDto> GetAllByBuilding(long buildingId)
         {
-            var commonRooms = _commonRoomRepository.GetByBuilding(buildingId);
+            var commonRooms = _commonRoomRepository.GetAllByBuildingId(buildingId);
 
             return commonRooms.Select(_commonRoomMapper.MapToDto).ToList();
         }

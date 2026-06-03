@@ -34,13 +34,13 @@
                 </Grid>
 
                 <ListBox x:Name="NeighborhoodsListBox" 
-                     Grid.Row="1" 
-                     Margin="10,0,10,10"
-                     ItemsSource="{Binding Neighborhoods}"
-                     Style="{StaticResource NeighborhoodListBoxStyle}"
-                     ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
-                     SelectionChanged="NeighborhoodsListBox_SelectionChanged">
+                         Grid.Row="1" 
+                         Margin="10,0,10,10"
+                         ItemsSource="{Binding Neighborhoods}"
+                         SelectedItem="{Binding SelectedNeighborhood}"
+                         Style="{StaticResource NeighborhoodListBoxStyle}"
+                         ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
                 </ListBox>
             </Grid>
         </Border>
@@ -52,7 +52,7 @@
                 CornerRadius="12"
                 Margin="0,15,15,15"
                 Padding="8">
-            <Grid x:Name="BudgetPanel" Margin="10" Visibility="Collapsed">
+            <Grid x:Name="BudgetPanel" Margin="10" Visibility="{Binding BudgetPanelVisibility}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="1.8*" />
@@ -60,15 +60,15 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                    <TextBlock x:Name="BudgetTitleTextBlock" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="BudgetTitleTextBlock" Text="{Binding BudgetTitleText}" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
                     <DataGrid x:Name="BudgetCategoriesDataGrid"
                               ItemsSource="{Binding BudgetCategories}"
+                              SelectedItem="{Binding SelectedCategoryBalance}"
                               Style="{StaticResource DataGridStyle}"
                               ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                               RowStyle="{StaticResource DataGridRowStyle}"
                               CellStyle="{StaticResource DataGridCellStyle}"
-                              Height="210"
-                              SelectionChanged="BudgetCategoriesDataGrid_SelectionChanged">
+                              Height="210">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Kategorija" Binding="{Binding Category.Name}" CanUserSort="False" Width="*" />
                             <DataGridTextColumn Header="Ukupne donacije" Binding="{Binding TotalDonationsDisplay}" CanUserSort="False" Width="*" />
@@ -78,14 +78,14 @@
                     </DataGrid>
                 </StackPanel>
 
-                <Grid x:Name="CategoryDetailsPanel" Grid.Row="1" Margin="0,0,0,10" Visibility="Collapsed">
+                <Grid x:Name="CategoryDetailsPanel" Grid.Row="1" Margin="0,0,0,10" Visibility="{Binding CategoryDetailsPanelVisibility}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="1.5*" />
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                        <TextBlock x:Name="DonationsTitleTextBlock" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="DonationsTitleTextBlock" Text="{Binding DonationsTitleText}" FontWeight="SemiBold" Margin="0,0,0,5"/>
                         <DataGrid x:Name="DonationsDataGrid"
                                   Style="{StaticResource DataGridStyle}"
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
@@ -101,7 +101,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                        <TextBlock x:Name="ExpensesTitleTextBlock" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock x:Name="ExpensesTitleTextBlock" Text="{Binding ExpensesTitleText}" FontWeight="SemiBold" Margin="0,0,0,5"/>
                         <DataGrid x:Name="ExpensesDataGrid"
                                   ItemsSource="{Binding Expenses}"
                                   Style="{StaticResource DataGridStyle}"
@@ -148,6 +148,7 @@
                                 <TextBlock Text="Opis:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                 <TextBox x:Name="DescriptionTextBox"
                                          Grid.Column="1"
+                                         Text="{Binding DescriptionInput, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource TextBoxStyle}"
                                          Height="25"
                                          FontSize="14"
@@ -164,6 +165,7 @@
                                 <TextBlock Grid.Column="0" Text="Iznos (RSD):" VerticalAlignment="Center"/>
                                 <TextBox x:Name="AmountTextBox"
                                          Grid.Column="0"
+                                         Text="{Binding AmountInput, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource TextBoxStyle}"
                                          Margin="110,0,10,0"
                                          Height="25"
@@ -186,7 +188,7 @@
                                 VerticalAlignment="Center"
                                 Padding="15,5"
                                 Margin="20,0,10,0"
-                                Click="RegisterButton_Click">
+                                Command="{Binding RegisterExpenseCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xf067;" 
                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
