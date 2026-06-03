@@ -16,8 +16,6 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             DateTime to
         )
         {
-            QuestPDF.Settings.License = LicenseType.Community;
-
             var downloadsPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 "Downloads"

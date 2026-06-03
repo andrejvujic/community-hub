@@ -88,16 +88,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             get
             {
                 if (SelectedStartDate is null || SelectedEndDate is null) return false;
-                if (SelectedStartDate.Value < _today) return false;
+                if (SelectedEndDate.Value > _today) return false;
                 if (SelectedEndDate.Value < SelectedStartDate.Value) return false;
 
                 return true;
             }
         }
 
-        public DateTime MinStartDate => _today;
         public DateTime? MaxStartDate => SelectedEndDate;
-        public DateTime MinEndDate => SelectedStartDate ?? _today;
+        public DateTime? MinEndDate => SelectedStartDate;
+        public DateTime MaxEndDate => SelectedStartDate ?? _today;
 
         private void GenerateReport()
         {
