@@ -21,6 +21,8 @@ namespace CommunityHub.Ui.Views.Citizen.Donations
                 _viewModel.CloseRequested += (_, _) => DialogResult = false;
                 _viewModel.ConfirmRequested += (_, _) => DialogResult = true;
             }
+
+            Loaded += (_, _) => DonationAmountTextBox.Focus();
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)

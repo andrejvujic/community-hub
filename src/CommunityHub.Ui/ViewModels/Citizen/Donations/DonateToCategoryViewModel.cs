@@ -31,9 +31,29 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
                 {
                     _donationAmount = value;
                     OnPropertyChanged(nameof(DonationAmount));
+                    OnPropertyChanged(nameof(IsValid));
+                    ((RelayCommand<object>)ConfirmCommand).RaiseCanExecuteChanged();
                 }
             }
         }
+
+        public string DonationAmountText
+        {
+            get => _donationAmount > 0 ? _donationAmount.ToString() : "";
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    DonationAmount = 0;
+                }
+                else if (decimal.TryParse(value, out decimal newAmount) && newAmount > 0)
+                {
+                    DonationAmount = newAmount;
+                }
+            }
+        }
+
+        public bool IsValid => _donationAmount > 0;
 
         public ICommand CancelCommand { get; }
         public ICommand ConfirmCommand { get; }
@@ -45,7 +65,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
             _donationAmount = 0;
 
             CancelCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
-            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty));
+            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty), _ => IsValid);
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

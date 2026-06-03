@@ -69,8 +69,9 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="Iznos donacije: " FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center" Margin="0,0,10,0" />
-                    <TextBox Grid.Column="1" 
-                             Text="{Binding DonationAmount, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox x:Name="DonationAmountTextBox"
+                             Grid.Column="1" 
+                             Text="{Binding DonationAmountText, UpdateSourceTrigger=PropertyChanged}" 
                              FontSize="14" 
                              Foreground="{StaticResource TextBrush}"
                              Background="{StaticResource BackgroundBrush}"
