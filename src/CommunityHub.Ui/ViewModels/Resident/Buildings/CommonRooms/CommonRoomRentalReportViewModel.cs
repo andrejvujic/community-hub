@@ -1,3 +1,4 @@
+using CommunityHub.Application.Domain.CommonRooms.Services;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using System.Globalization;
@@ -6,13 +7,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 {
     public class CommonRoomRentalReportViewModel : BaseViewModel
     {
+        private readonly RentalRequestsReportGenerator _reportGenerator = new();
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
 
         public CommonRoomRentalReportViewModel(
             long userId,
             long buildingId,
-            IMainNavigationConsumer navigationConsumer) : base(navigationConsumer)
+            IMainNavigationConsumer navigationConsumer
+        ) : base(navigationConsumer)
         {
             UserId = userId;
             BuildingId = buildingId;
@@ -96,6 +99,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 
         private void GenerateReport()
         {
+            if (SelectedStartDate is null || SelectedEndDate is null) return;
+
+            var rentalRequestReports = _reportGenerator.GenerateForBuilding(
+                BuildingId, 
+                SelectedStartDate.Value, 
+                SelectedEndDate.Value
+            );
         }
 
         private bool CanGenerateReport()
