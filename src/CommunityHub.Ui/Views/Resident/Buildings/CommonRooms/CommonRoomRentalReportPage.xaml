@@ -263,6 +263,8 @@
                                 BorderThickness="0"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
+                                DisplayDateStart="{Binding MinStartDate, Mode=OneWay}"
+                                DisplayDateEnd="{Binding MaxStartDate, Mode=OneWay}"
                                 SelectedDate="{Binding SelectedStartDate}"
                                 Style="{StaticResource MaterialDesignCalendarPortrait}"/>
                         </Viewbox>
@@ -299,6 +301,7 @@
                                 BorderThickness="0"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
+                                DisplayDateStart="{Binding MinEndDate, Mode=OneWay}"
                                 SelectedDate="{Binding SelectedEndDate}"
                                 Style="{StaticResource MaterialDesignCalendarPortrait}"/>
                         </Viewbox>

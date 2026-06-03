@@ -7,6 +7,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
     public class CommonRoomRentalReportViewModel : BaseViewModel
     {
         private readonly CultureInfo _culture = new("sr-Latn-RS");
+        private readonly DateTime _today = DateTime.Today;
 
         public CommonRoomRentalReportViewModel(
             long userId,
@@ -34,6 +35,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                 OnPropertyChanged(nameof(SelectedStartDate));
                 OnPropertyChanged(nameof(SelectedStartDateText));
                 OnPropertyChanged(nameof(SelectedDateRangeText));
+                OnPropertyChanged(nameof(MinEndDate));
                 OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 GenerateReportCommand.RaiseCanExecuteChanged();
             }
@@ -56,6 +58,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                 OnPropertyChanged(nameof(SelectedEndDate));
                 OnPropertyChanged(nameof(SelectedEndDateText));
                 OnPropertyChanged(nameof(SelectedDateRangeText));
+                OnPropertyChanged(nameof(MaxStartDate));
                 OnPropertyChanged(nameof(IsSelectedDateRangeValid));
                 GenerateReportCommand.RaiseCanExecuteChanged();
             }
@@ -76,9 +79,20 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
         }
 
         public bool IsSelectedDateRangeValid
-            => SelectedStartDate.HasValue
-                && SelectedEndDate.HasValue
-                && SelectedEndDate.Value >= SelectedStartDate.Value;
+        {
+            get
+            {
+                if (SelectedStartDate is null || SelectedEndDate is null) return false;
+                if (SelectedStartDate.Value < _today) return false;
+                if (SelectedEndDate.Value < SelectedStartDate.Value) return false;
+
+                return true;
+            }
+        }
+
+        public DateTime MinStartDate => _today;
+        public DateTime? MaxStartDate => SelectedEndDate;
+        public DateTime MinEndDate => SelectedStartDate ?? _today;
 
         private void GenerateReport()
         {
