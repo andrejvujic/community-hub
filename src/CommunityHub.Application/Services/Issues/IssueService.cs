@@ -13,8 +13,8 @@ namespace CommunityHub.Application.Services.Issues
 
         public IssueService() : base(new IssueMapper()) { }
 
-        public List<IssueDto> GetAllByBuilding(long buildingId)
-            => MapToDto(_issueRepository.GetAllByBuilding(buildingId));
+        public List<IssueDto> GetAllByBuilding(long buildingId, DateTime? fromDate = null, DateTime? toDate = null)
+            => MapToDto(_issueRepository.GetAllByBuilding(buildingId, fromDate, toDate));
 
         public List<IssueDto> GetAllByBuildingAndResident(long buildingId, long residentId)
             => MapToDto(_issueRepository.GetAllByBuildingAndResident(buildingId, residentId));

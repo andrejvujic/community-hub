@@ -12,7 +12,6 @@ namespace CommunityHub.Ui.Views.BuildingManager
         {
             InitializeComponent();
             _viewModel = new MyBuildingsPageViewModel(user, navigationService);
-
             DataContext = _viewModel;
         }
     }

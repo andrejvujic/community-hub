@@ -224,11 +224,21 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Width="*" CanUserSort="False" Header="Status">
+                    <DataGridTemplateColumn
+                        Width="*"
+                        CanUserSort="False"
+                        Header="Status">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="12,0,0,0" VerticalAlignment="Center" Orientation="Horizontal">
-                                    <materialDesign:PackIcon Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center">
+                                <StackPanel
+                                    Margin="12,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="18"
+                                        Height="18"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center">
                                         <materialDesign:PackIcon.Style>
                                             <Style TargetType="materialDesign:PackIcon">
                                                 <Setter Property="Kind" Value="ClockOutline" />

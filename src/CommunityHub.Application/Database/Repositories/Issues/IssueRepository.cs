@@ -25,12 +25,12 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 			return issue.CopyWith(id: id);
 		}
 
-		public List<Issue> GetAllByBuilding(long buildingId)
+		public List<Issue> GetAllByBuilding(long buildingId, DateTime? from = null, DateTime? to = null)
 		{
 			using var connection = DatabaseConnection.Create();
 
 			var query = DatabaseQuery.Create(
-				@"SELECT
+                @"SELECT
 					reported_issue.id AS reported_issue_id,
 					reported_issue.description,
 					reported_issue.reported_date,
@@ -47,12 +47,17 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 					u.surname AS resident_surname
 	
 					FROM reported_issues reported_issue INNER JOIN users u on reported_issue.resident_id = u.id 
-					WHERE reported_issue.building_id = @building_id
+					WHERE reported_issue.building_id = @building_id AND
+					(@from::date IS NULL OR reported_issue.reported_date >= @from::date) AND
+					(@to::date IS NULL OR reported_issue.reported_date <= @to::date)
 					ORDER BY reported_issue.reported_date ASC;"
-				)
-				.AddParameter("@building_id", buildingId);
+                )
+				.AddParameter("@building_id", buildingId)
+				.AddParameter("@from", from)
+                .AddParameter("@to", to);
 
-			List<Issue> issues = [];
+
+            List<Issue> issues = [];
 
 			connection.ExecuteReader(query, reader => issues.Add(_issueMapper.MapToEntity(reader)));
 

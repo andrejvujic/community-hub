@@ -10,14 +10,14 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
     <PackageReference Include="Npgsql" Version="10.0.1" />
     <PackageReference Include="PDFsharp-MigraDoc" Version="6.2.4" />
+    <PackageReference Include="QuestPDF" Version="2026.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="..\CommunityHub.Ui\Resources\Fonts\GoogleSans.ttf"
-                      LogicalName="CommunityHub.Application.Resources.Fonts.GoogleSans.ttf" />
+    <EmbeddedResource Include="..\CommunityHub.Ui\Resources\Fonts\GoogleSans.ttf" LogicalName="CommunityHub.Application.Resources.Fonts.GoogleSans.ttf" />
   </ItemGroup>
 
 </Project>
