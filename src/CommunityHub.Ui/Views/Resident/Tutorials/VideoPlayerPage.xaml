@@ -42,12 +42,8 @@
                 VerticalAlignment="Center"/>
         </Grid>
 
-        <Border
-            Grid.Row="1"
-            Margin="8,8,8,16"
-            Background="{StaticResource ResidentCardBackgroundBrush}"
-            BorderBrush="{StaticResource ResidentBorderBrush}"
-            BorderThickness="1">
+        <Grid
+            Grid.Row="1">
             <Grid Margin="8">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -55,7 +51,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" ClipToBounds="True">
+                <Grid Grid.Row="0">
                     <Grid Background="{StaticResource ResidentCardBackgroundBrush}">
                         <TextBlock
                             Text="Video se učitava..."
@@ -119,6 +115,6 @@
                     </Button>
                 </Grid>
             </Grid>
-        </Border>
+        </Grid>
     </Grid>
 </navigation:MainNavigationConsumerPage>
