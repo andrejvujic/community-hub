@@ -6,12 +6,12 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodBudge
 {
     public class BudgetExpenseDto
     {
-        public long Id { get; private set; }
-        public BudgetCategoryBalanceDto BudgetCategoryBalance { get; private set; }
-        public UserDto Coordinator { get; private set; }
-        public decimal Amount { get; private set; }
-        public string Description { get; private set; }
-        public DateOnly ExpenseDate { get; private set; }
+        public long Id { get; set; }
+        public BudgetCategoryBalanceDto BudgetCategoryBalance { get; set; }
+        public UserDto Coordinator { get; set; }
+        public decimal Amount { get; set; }
+        public string Description { get; set; }
+        public DateOnly ExpenseDate { get; set; }
 
         public string AmountDisplay => $"{Amount:N2} RSD";
         public string DateDisplay => ExpenseDate.ToString("dd.MM.yyyy.");
