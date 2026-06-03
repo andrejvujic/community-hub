@@ -16,6 +16,8 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="..\CommunityHub.Ui\Resources\Fonts\GoogleSans.ttf"
+                      LogicalName="CommunityHub.Application.Resources.Fonts.GoogleSans.ttf" />
   </ItemGroup>
 
 </Project>
