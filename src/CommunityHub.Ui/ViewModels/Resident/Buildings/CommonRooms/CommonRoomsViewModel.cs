@@ -22,15 +22,20 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
             _userId = userId;
             _buildingId = buildingId;
             OpenCommonRoomDetailsCommand = new(OpenCommonRoomDetailsPage);
+            OpenRentalReportCommand = new(OpenRentalReportPage);
         }
 
         public RelayCommand<CommonRoomDto> OpenCommonRoomDetailsCommand { get; }
+        public RelayCommand OpenRentalReportCommand { get; }
 
         private void OpenCommonRoomDetailsPage(CommonRoomDto? commonRoom)
         {
             if (commonRoom is null) return;
             Push(new CommonRoomDetailsPage(_userId, commonRoom));
         }
+
+        private void OpenRentalReportPage()
+            => Push(new CommonRoomRentalReportPage(_userId, _buildingId));
 
         public void UpdateCommonRooms()
         {
