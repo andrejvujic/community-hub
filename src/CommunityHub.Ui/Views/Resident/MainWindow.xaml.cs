@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace CommunityHub.Ui.Views.Resident
 {
-    public partial class MainWindow : MainNavigatorHostWindow, IAlertHost
+    public partial class MainWindow : MainNavigationHostWindow, IAlertServiceHost
     {
         private readonly long _userId;
         public MainWindow(long userId)
@@ -19,7 +19,7 @@ namespace CommunityHub.Ui.Views.Resident
 
         public override Frame Frame => MainFrame;
 
-        // IAlertHost:
+        // IAlertServiceHost:
         public FrameworkElement Root => AlertRoot;
         public TextBlock TypeTextBlock => AlertTypeTextBlock;
         public TextBlock TitleTextBlock => AlertTitleTextBlock;

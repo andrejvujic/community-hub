@@ -5,18 +5,24 @@
     xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="ApartmentAccessRequestsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <conv:StatusToStringConverter x:Key="RequestStatusConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:StatusToStringConverter x:Key="RequestStatusConverter" />
+        </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Margin="10,25,40,0">
+    <Grid Margin="10,25,40,0" Background="{StaticResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -25,32 +31,16 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <TextBlock
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Cursor="Hand"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    FontSize="28"
-                    MouseLeftButtonDown="LeftArrow_Click"
-                    Text="&#xf060;" />
-            </Grid>
-
-            <Grid Grid.Column="1">
-                <TextBlock
-                    x:Name="streetInfo"
-                    Margin="15,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    FontSize="21"
-                    Text="{Binding StreetInfo}" />
-            </Grid>
+            <TextBlock
+                x:Name="streetInfo"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource InterFontFamily}"
+                FontSize="22"
+                FontWeight="Normal"
+                Foreground="#1C1E21"
+                Text="{Binding StreetInfo}" />
         </Grid>
 
         <Grid Grid.Row="1" Margin="0,0,40,0">
@@ -61,7 +51,7 @@
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Cursor="Hand"
-                FontSize="20"
+                FontSize="16"
                 SelectedIndex="{Binding StatusFilterSelectedIndex, Mode=TwoWay}">
                 <ComboBoxItem Content="Svi" IsSelected="True" />
                 <ComboBoxItem Content="Čeka odobrenje" />
@@ -73,36 +63,88 @@
         <Grid Grid.Row="2" Margin="50,0,40,0">
             <DataGrid
                 x:Name="requestsDataGrid"
-                MaxHeight="292"
                 Margin="0,15,0,0"
-                VerticalAlignment="Top"
+                VerticalAlignment="Stretch"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                FontSize="20"
+                CanUserDeleteRows="False"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="True"
+                FontSize="18"
                 HeadersVisibility="Column"
                 IsReadOnly="True"
                 ItemsSource="{Binding ApartmentAccessRequests}"
-                RowHeight="40"
+                RowHeight="44"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 SelectedItem="{Binding SelectedRequest, Mode=TwoWay}"
                 SelectionMode="Single"
                 SelectionUnit="FullRow">
 
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#F0F2F5" />
+                        <Setter Property="Foreground" Value="#1C1E21" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Padding" Value="12,8,12,8" />
+                        <Setter Property="BorderBrush" Value="#DDDFE2" />
+                        <Setter Property="BorderThickness" Value="0,0,1,1" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="Padding" Value="12,0,12,0" />
+                        <Setter Property="BorderThickness" Value="0,0,0,1" />
+                        <Setter Property="BorderBrush" Value="#000000" />
+                        <Setter Property="Background" Value="Transparent" />
                     </Style>
                 </DataGrid.CellStyle>
 
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Setter Property="IsHitTestVisible" Value="False" />
-                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Foreground" Value="#1C1E21" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Status}" Value="waiting">
                                 <Setter Property="IsHitTestVisible" Value="True" />
                                 <Setter Property="Background" Value="White" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="waiting">
+                                <Setter Property="Cursor" Value="Hand" />
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Status}" Value="waiting" />
+                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="#DCE8D8" />
+                                <Setter Property="Foreground" Value="#123B63" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Status}" Value="waiting" />
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" Value="#DCE8D8" />
+                                <Setter Property="Foreground" Value="#123B63" />
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="accepted">
+                                <Setter Property="Background" Value="#D3D3D3" />
+                                <Setter Property="Foreground" Value="#606770" />
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="rejected">
+                                <Setter Property="Background" Value="#D3D3D3" />
+                                <Setter Property="Foreground" Value="#606770" />
+                                <Setter Property="IsHitTestVisible" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -113,38 +155,129 @@
                         Width="*"
                         Binding="{Binding Applicant.Name}"
                         CanUserSort="False"
-                        Header="Ime stanara" />
+                        Header="Ime stanara">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Left" />
+                                <Setter Property="Margin" Value="12,0,0,0" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
                         Width="*"
                         Binding="{Binding Applicant.Surname}"
                         CanUserSort="False"
-                        Header="Prezime stanara" />
+                        Header="Prezime stanara">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Left" />
+                                <Setter Property="Margin" Value="12,0,0,0" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn
-                        Width="Auto"
+                        Width="140"
                         Binding="{Binding Apartment.Number}"
                         CanUserSort="False"
                         Header="Broj stana">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Right" />
+                                <Setter Property="TextAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn
-                        Width="*"
+                        Width="170"
                         Binding="{Binding CreationDate, StringFormat='dd.MM.yyyy.'}"
-                        Header="Datum kreiranja">
+                        Header="Datum kreiranja ↕">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="TextAlignment" Value="Right" />
+                                <Setter Property="TextAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn
+                    <DataGridTemplateColumn
                         Width="*"
-                        Binding="{Binding Status, Converter={StaticResource RequestStatusConverter}}"
                         CanUserSort="False"
-                        Header="Status" />
+                        Header="Status">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel
+                                    Margin="12,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="18"
+                                        Height="18"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center">
+                                        <materialDesign:PackIcon.Style>
+                                            <Style TargetType="materialDesign:PackIcon">
+                                                <Setter Property="Kind" Value="ClockOutline" />
+                                                <Setter Property="Foreground" Value="#C69200" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="accepted">
+                                                        <Setter Property="Kind" Value="CheckCircle" />
+                                                        <Setter Property="Foreground" Value="#1B8A2F" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="rejected">
+                                                        <Setter Property="Kind" Value="CloseCircle" />
+                                                        <Setter Property="Foreground" Value="#C0392B" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="waiting">
+                                                        <Setter Property="Kind" Value="ClockOutline" />
+                                                        <Setter Property="Foreground" Value="#C69200" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:PackIcon.Style>
+                                    </materialDesign:PackIcon>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Foreground="#1C1E21"
+                                        Text="{Binding Status, Converter={StaticResource RequestStatusConverter}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                        <Setter Property="Foreground" Value="#123B63" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
@@ -155,7 +288,8 @@
             Height="220"
             Margin="50,20,40,20"
             VerticalAlignment="Bottom"
-            BorderBrush="black"
+            Background="#F0F2F5"
+            BorderBrush="#DDDFE2"
             BorderThickness="2"
             CornerRadius="4">
             <Grid
@@ -180,6 +314,8 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             FontSize="22"
+                            FontStyle="Italic"
+                            Foreground="#1C1E21"
                             Text="Status:" />
                     </Grid>
                     <Grid
@@ -216,6 +352,8 @@
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
                                 FontSize="14"
+                                FontStyle="Italic"
+                                Foreground="#606770"
                                 Text="(opcionalno)" />
                         </Grid>
 
@@ -224,42 +362,61 @@
                                 Margin="10,0,15,0"
                                 HorizontalAlignment="Left"
                                 FontSize="22"
+                                FontStyle="Italic"
+                                Foreground="#1C1E21"
                                 Text="Obrazloženje:" />
                         </Grid>
 
                     </Grid>
 
                     <Grid Grid.Column="1" HorizontalAlignment="Left">
-                        <TextBox
-                            x:Name="commentTextBox"
+                        <Border
                             Width="400"
                             Height="100"
-                            AcceptsReturn="True"
-                            FontSize="22"
-                            IsEnabled="{Binding IsCommentEnabled}"
-                            Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" />
+                            BorderBrush="#DDDFE2"
+                            BorderThickness="2">
+                            <TextBox
+                                x:Name="commentTextBox"
+                                Padding="8,6,8,6"
+                                AcceptsReturn="True"
+                                Background="White"
+                                BorderThickness="0"
+                                FontSize="16"
+                                Foreground="#1C1E21"
+                                IsEnabled="{Binding IsCommentEnabled}"
+                                Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto" />
+                        </Border>
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="2" Margin="0,10,0,10">
+                <Grid Grid.Row="2" Margin="0,3,0,0">
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             x:Name="cancelButton"
                             Width="100"
                             Margin="0,0,15,0"
-                            Click="CancelButton_Click"
+                            Padding="0,8,0,8"
+                            Background="#0F5AA6"
+                            BorderBrush="#0F5AA6"
+                            Command="{Binding CancelCommand}"
                             Cursor="Hand"
-                            FontSize="20">
+                            FontSize="16"
+                            Foreground="White">
                             Otkaži
                         </Button>
                         <Button
                             x:Name="confirmButton"
                             Width="100"
                             Margin="0,0,15,0"
-                            Click="ConfirmButton_Click"
+                            Padding="0,8,0,8"
+                            Background="#0F5AA6"
+                            BorderBrush="#0F5AA6"
+                            Command="{Binding ConfirmCommand}"
                             Cursor="Hand"
-                            FontSize="20"
+                            FontSize="16"
+                            Foreground="White"
                             IsEnabled="True">
                             Potvrdi
                         </Button>

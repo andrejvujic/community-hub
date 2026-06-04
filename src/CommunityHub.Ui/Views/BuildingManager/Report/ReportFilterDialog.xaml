@@ -1,0 +1,100 @@
+﻿<Window
+    x:Class="CommunityHub.Ui.Views.BuildingManager.Report.ReportFilterDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Title="Generiši izveštaj"
+    Width="450"
+    Height="300"
+    FontFamily="{StaticResource InterFontFamily}"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border
+        BorderBrush="Black"
+        BorderThickness="2"
+        CornerRadius="5">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                FontSize="21"
+                FontWeight="SemiBold"
+                Text="Generiši izveštaj" />
+
+            <StackPanel Grid.Row="1" Margin="0,20,0,0">
+                <TextBlock Margin="0,0,0,5" Text="Zgrada" />
+                <ComboBox
+                    DisplayMemberPath="DisplayName"
+                    ItemsSource="{Binding BuildingOptions}"
+                    SelectedItem="{Binding SelectedBuildingOption, Mode=TwoWay}" />
+            </StackPanel>
+
+            <Grid Grid.Row="2" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Margin="0,0,0,5" Text="Od datuma" />
+                    <DatePicker DisplayDateEnd="{x:Static sys:DateTime.Today}" SelectedDate="{Binding FromDate, Mode=TwoWay}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Margin="0,0,0,5" Text="Do datuma" />
+                    <DatePicker DisplayDateEnd="{x:Static sys:DateTime.Today}" SelectedDate="{Binding ToDate, Mode=TwoWay}" />
+                </StackPanel>
+            </Grid>
+
+            <TextBlock
+                Grid.Row="4"
+                Margin="0,20,0,0"
+                FontSize="14"
+                Foreground="{StaticResource ErrorMessageBrush}"
+                Text="{Binding ValidationMessage}" />
+
+            <StackPanel
+                Grid.Row="5"
+                Margin="0,30,0,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    Width="90"
+                    Margin="0,0,10,0"
+                    Background="#0F5AA6"
+                    BorderBrush="#0F5AA6"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    Content="Otkaži"
+                    Foreground="White" />
+                <Button
+                    Width="90"
+                    Background="#0F5AA6"
+                    BorderBrush="#0F5AA6"
+                    Command="{Binding ConfirmCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    Content="Potvrdi"
+                    Foreground="White" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

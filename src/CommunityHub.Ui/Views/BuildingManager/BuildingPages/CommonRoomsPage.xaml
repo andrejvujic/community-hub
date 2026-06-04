@@ -7,16 +7,54 @@
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="CommonRoomsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
-    Loaded="CommonRoomsPage_Loaded"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <conv:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:RentalTypeToStringConverter x:Key="RentalTypeToStringConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+            <Style x:Key="GroupBoxHeaderStyle" TargetType="GroupBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GroupBox">
+                            <Border
+                                Background="White"
+                                BorderBrush="Black"
+                                BorderThickness="2"
+                                CornerRadius="3">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Border
+                                        Grid.Row="0"
+                                        Padding="10,5,10,5"
+                                        Background="{StaticResource NavBarDefaultBackgroundBrush}">
+                                        <TextBlock
+                                            FontSize="{TemplateBinding FontSize}"
+                                            Foreground="White"
+                                            Text="{TemplateBinding Header}" />
+                                    </Border>
+                                    <Grid Grid.Row="1">
+                                        <ContentPresenter Margin="0,0,0,0" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Margin="10,25,40,0">
@@ -26,32 +64,16 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <TextBlock
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Cursor="Hand"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    FontSize="28"
-                    MouseLeftButtonDown="LeftArrow_Click"
-                    Text="&#xf060;" />
-            </Grid>
-
-            <Grid Grid.Column="1">
-                <TextBlock
-                    x:Name="streetInfo"
-                    Margin="15,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    FontSize="21"
-                    Text="{Binding StreetInfo}" />
-            </Grid>
+            <TextBlock
+                x:Name="streetInfo"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource InterFontFamily}"
+                FontSize="22"
+                FontWeight="Normal"
+                Foreground="#1C1E21"
+                Text="{Binding StreetInfo}" />
         </Grid>
 
         <Grid Grid.Row="1" Margin="20,25,20,20">
@@ -110,159 +132,180 @@
                         BorderBrush="Black"
                         BorderThickness="2"
                         FontSize="19"
-                        Header="Podaci">
-                        <Grid Margin="15,25,15,5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Grid
-                                Grid.Row="0"
-                                Margin="0,0,0,8"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock Text="Naziv prostorije:" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="1"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBox
-                                    x:Name="nameTextBox"
-                                    Width="400"
-                                    Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="2"
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="13"
-                                    Foreground="Red"
-                                    Text="{Binding NameError}"
-                                    Visibility="{Binding IsNameErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="3"
-                                Margin="0,15,0,8"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock Text="Opis prostorije:" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="4"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBox
-                                    x:Name="descriptionTextBox"
-                                    Width="400"
-                                    Height="60"
-                                    AcceptsReturn="True"
-                                    FontSize="15"
-                                    Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="5"
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock
-                                    FontSize="13"
-                                    Foreground="Red"
-                                    Text="{Binding DescriptionError}"
-                                    Visibility="{Binding IsDescriptionErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="6"
-                                Margin="0,15,0,8"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock Text="Sprat:" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="7"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <xctk:IntegerUpDown
-                                    x:Name="floorsUpDown"
-                                    Width="70"
-                                    Increment="1"
-                                    Maximum="{Binding FloorMaximum}"
-                                    Minimum="1"
-                                    TextAlignment="Center"
-                                    Value="{Binding SelectedFloor, Mode=TwoWay}" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="8"
-                                Margin="0,15,0,8"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <TextBlock Text="Način iznajmljivanja:" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="9"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center">
-                                <ComboBox
-                                    x:Name="rentalTypeComboBox"
-                                    Padding="10,4,10,4"
-                                    Cursor="Hand"
-                                    SelectedIndex="{Binding SelectedRentalTypeIndex, Mode=TwoWay}">
-                                    <ComboBoxItem Content="jedan dan" IsSelected="True" />
-                                    <ComboBoxItem Content="više dana" />
-                                </ComboBox>
-                            </Grid>
-
-                            <Grid
-                                Grid.Row="11"
-                                Margin="0,30,0,0"
+                        Header="Podaci"
+                        Style="{StaticResource GroupBoxHeaderStyle}">
+                        <DockPanel>
+                            <StackPanel
+                                Margin="0,0,10,10"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
-                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                    <Button
-                                        x:Name="cancelButton"
-                                        Width="100"
-                                        Margin="0,0,15,0"
-                                        Padding="0,8,0,8"
-                                        Click="CancelButton_Click"
-                                        Cursor="Hand">
-                                        Otkaži
-                                    </Button>
-                                    <Button
-                                        x:Name="confirmButton"
-                                        Width="100"
-                                        Margin="0,0,15,0"
-                                        Padding="0,8,0,8"
-                                        Click="ConfirmButton_Click"
+                                DockPanel.Dock="Bottom"
+                                Orientation="Horizontal">
+                                <Button
+                                    x:Name="cancelButton"
+                                    Width="100"
+                                    Margin="0,0,15,0"
+                                    Padding="0,8,0,8"
+                                    Background="#0F5AA6"
+                                    BorderBrush="#0F5AA6"
+                                    Command="{Binding CancelCommand}"
+                                    Cursor="Hand"
+                                    FontSize="16"
+                                    Foreground="White">
+                                    Otkaži
+                                </Button>
+                                <Button
+                                    x:Name="confirmButton"
+                                    Width="100"
+                                    Margin="0,0,15,0"
+                                    Padding="0,8,0,8"
+                                    Background="#0F5AA6"
+                                    BorderBrush="#0F5AA6"
+                                    Command="{Binding ConfirmCommand}"
+                                    Cursor="Hand"
+                                    FontSize="16"
+                                    Foreground="White">
+                                    Potvrdi
+                                </Button>
+                            </StackPanel>
+                            <Grid Margin="15,15,15,15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid
+                                    Grid.Row="0"
+                                    Margin="0,0,0,8"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBlock Text="Naziv prostorije:" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBox
+                                        x:Name="nameTextBox"
+                                        Width="400"
+                                        Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="2"
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        FontSize="13"
+                                        Foreground="{StaticResource ErrorMessageBrush}"
+                                        Text="{Binding NameError}"
+                                        Visibility="{Binding IsNameErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="3"
+                                    Margin="0,15,0,8"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBlock Text="Opis prostorije:" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="4"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <Border
+                                        Width="400"
+                                        Height="70"
+                                        BorderBrush="#DDDFE2"
+                                        BorderThickness="2">
+                                        <TextBox
+                                            x:Name="descriptionTextBox"
+                                            Padding="8,6,8,6"
+                                            AcceptsReturn="True"
+                                            Background="White"
+                                            BorderThickness="0"
+                                            FontSize="15"
+                                            Foreground="#1C1E21"
+                                            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                            TextWrapping="Wrap"
+                                            VerticalScrollBarVisibility="Auto" />
+                                    </Border>
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="5"
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBlock
+                                        FontSize="13"
+                                        Foreground="{StaticResource ErrorMessageBrush}"
+                                        Text="{Binding DescriptionError}"
+                                        Visibility="{Binding IsDescriptionErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="6"
+                                    Margin="0,5,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBlock FontSize="17" Text="Sprat:" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="7"
+                                    Margin="0,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <xctk:IntegerUpDown
+                                        x:Name="floorsUpDown"
+                                        Width="70"
+                                        FontSize="15"
+                                        Increment="1"
+                                        Maximum="{Binding FloorMaximum}"
+                                        Minimum="1"
+                                        TextAlignment="Center"
+                                        Value="{Binding SelectedFloor, Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="8"
+                                    Margin="0,15,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <TextBlock FontSize="17" Text="Način iznajmljivanja:" />
+                                </Grid>
+
+                                <Grid
+                                    Grid.Row="9"
+                                    Margin="0,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center">
+                                    <ComboBox
+                                        x:Name="rentalTypeComboBox"
+                                        Width="170"
+                                        Padding="8,4,8,4"
                                         Cursor="Hand"
-                                        IsEnabled="True">
-                                        Potvrdi
-                                    </Button>
-                                </StackPanel>
+                                        FontSize="15"
+                                        SelectedIndex="{Binding SelectedRentalTypeIndex, Mode=TwoWay}">
+                                        <ComboBoxItem Content="jedan dan" IsSelected="True" />
+                                        <ComboBoxItem Content="više dana" />
+                                    </ComboBox>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </DockPanel>
                     </GroupBox>
                 </Grid>
             </Grid>
@@ -280,54 +323,162 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
-                    <TextBlock FontSize="25" Text="Pregled zajedničkih prostorija" />
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock FontSize="25" Text="Pregled zajedničkih prostorija" />
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            Foreground="#0F5AA6"
+                            Kind="CalendarMonth" />
+                    </StackPanel>
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="0,20,0,20">
                     <DataGrid
                         x:Name="commonRoomsDataGrid"
+                        MaxHeight="200"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
-                        FontSize="14"
+                        CanUserDeleteRows="False"
+                        CanUserReorderColumns="False"
+                        CanUserResizeColumns="False"
+                        CanUserResizeRows="False"
+                        CanUserSortColumns="True"
+                        FontSize="16"
                         HeadersVisibility="Column"
                         IsReadOnly="True"
                         ItemsSource="{Binding CommonRooms}"
+                        RowHeight="40"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        SelectionChanged="CommonRoomsDataGrid_SelectionChanged"
+                        SelectedItem="{Binding SelectedCommonRoom, Mode=TwoWay}"
                         SelectionMode="Single"
                         SelectionUnit="FullRow">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#F0F2F5" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                                <Setter Property="FontSize" Value="15" />
+                                <Setter Property="Padding" Value="12,8,12,8" />
+                                <Setter Property="BorderBrush" Value="#DDDFE2" />
+                                <Setter Property="BorderThickness" Value="0,0,1,1" />
+                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="12,0,12,0" />
+                                <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                <Setter Property="BorderBrush" Value="#000000" />
+                                <Setter Property="Background" Value="Transparent" />
                             </Style>
                         </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="#1C1E21" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" Value="#DCE8D8" />
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True">
+                                        <Setter Property="Background" Value="#DCE8D8" />
+                                        <Setter Property="Foreground" Value="#123B63" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
 
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Width="*"
                                 Binding="{Binding Name}"
-                                Header="Naziv prostorije" />
+                                CanUserSort="False"
+                                Header="Naziv prostorije">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Left" />
+                                        <Setter Property="Margin" Value="12,0,0,0" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="Foreground" Value="#1C1E21" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                <Setter Property="Foreground" Value="#123B63" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
                             <DataGridTextColumn
                                 Width="*"
                                 Binding="{Binding FloorNumber}"
-                                Header="Sprat" />
+                                CanUserSort="False"
+                                Header="Sprat">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="Foreground" Value="#1C1E21" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                <Setter Property="Foreground" Value="#123B63" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
-                            <DataGridTextColumn
-                                Width="*"
-                                Binding="{Binding RentalType, Converter={StaticResource RentalTypeToStringConverter}}"
-                                Header="Način iznajmljivanja" />
-
-                            <DataGridTemplateColumn Width="*" Header="Akcija">
+                            <DataGridTemplateColumn Width="*" CanUserSort="False" Header="Način iznajmljivanja">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                                            FontSize="25"
-                                            Text="&#xf133;" />
+                                        <StackPanel Margin="12,0,0,0" VerticalAlignment="Center" Orientation="Horizontal">
+                                            <materialDesign:PackIcon Width="18" Height="18" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                <materialDesign:PackIcon.Style>
+                                                    <Style TargetType="materialDesign:PackIcon">
+                                                        <Setter Property="Kind" Value="Calendar" />
+                                                        <Setter Property="Foreground" Value="#0F5AA6" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RentalType}" Value="MultiDay">
+                                                                <Setter Property="Kind" Value="CalendarRange" />
+                                                                <Setter Property="Foreground" Value="#0F5AA6" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RentalType}" Value="OneDay">
+                                                                <Setter Property="Kind" Value="Calendar" />
+                                                                <Setter Property="Foreground" Value="#0F5AA6" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </materialDesign:PackIcon.Style>
+                                            </materialDesign:PackIcon>
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                Foreground="#1C1E21"
+                                                Text="{Binding RentalType, Converter={StaticResource RentalTypeToStringConverter}}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                                <Setter Property="Foreground" Value="#123B63" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -343,7 +494,7 @@
                             IsEnabled="True"
                             SelectedDatesChanged="Calendar_SelectedDatesChanged"
                             SelectionMode="MultipleRange"
-                            Visibility="Hidden" />
+                            Visibility="{Binding IsCalendarVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </Viewbox>
                 </Grid>
             </Grid>

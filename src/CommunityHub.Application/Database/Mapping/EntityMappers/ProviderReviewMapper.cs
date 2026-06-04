@@ -1,4 +1,4 @@
-﻿using CommunityHub.Application.Domain.ServiceBookings;
+﻿using CommunityHub.Application.Domain.JobListingBookings;
 using CommunityHub.Application.Domain.Users;
 using System.Data;
 

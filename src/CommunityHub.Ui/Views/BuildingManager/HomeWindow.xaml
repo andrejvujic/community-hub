@@ -4,19 +4,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Building Manager"
     Margin="0,0,0,0"
-    FontFamily="{StaticResource AppFontFamily}"
+    FontFamily="{StaticResource InterFontFamily}"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
+    WindowStyle="None"
     mc:Ignorable="d">
 
-    <Grid>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
 
-        <!--  Icons: https://fontawesome.com/search?ip=classic&ic=free-collection  -->
-
+    <Grid Background="{StaticResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
             <RowDefinition Height="75" />
             <RowDefinition Height="*" />
             <RowDefinition Height="55" />
@@ -24,6 +33,207 @@
 
         <Border
             Grid.Row="0"
+            BorderBrush="LightGray"
+            BorderThickness="0,0,0,2">
+            <Grid Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Width="40"
+                        Height="20"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding BackCommand}"
+                        Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Opacity" Value="1" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="20"
+                            Text="&#xf053;" />
+                    </Button>
+
+                    <Border
+                        Grid.Column="1"
+                        Width="1"
+                        Margin="4,7,4,7"
+                        BorderBrush="Black"
+                        BorderThickness="1,0,0,0" />
+
+                    <Button
+                        Grid.Column="2"
+                        Width="40"
+                        Height="20"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding ForwardCommand}"
+                        Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Opacity" Value="0.5" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="True">
+                                        <Setter Property="Opacity" Value="1" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="20"
+                            Text="&#xf054;" />
+                    </Button>
+                </Grid>
+
+                <Grid
+                    Grid.Column="1"
+                    Background="Transparent"
+                    MouseLeftButtonDown="TitleBarDragArea_MouseLeftButtonDown" />
+
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Width="40"
+                        Height="20"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="MinimizeButton_Click"
+                        Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Opacity" Value="0.7" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="1" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="15"
+                            Text="&#xf068;" />
+                    </Button>
+
+                    <Border
+                        Grid.Column="1"
+                        Width="1"
+                        Margin="4,7,4,7"
+                        BorderBrush="Black"
+                        BorderThickness="1,0,0,0" />
+
+                    <Button
+                        Grid.Column="2"
+                        Width="40"
+                        Height="20"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="MaximizeRestoreButton_Click"
+                        Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Opacity" Value="0.7" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="1" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="15"
+                            Text="&#xf2d0;" />
+                    </Button>
+
+                    <Border
+                        Grid.Column="3"
+                        Width="1"
+                        Margin="4,7,4,7"
+                        BorderBrush="Black"
+                        BorderThickness="1,0,0,0" />
+
+                    <Button
+                        Grid.Column="4"
+                        Width="40"
+                        Height="20"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="CloseButton_Click"
+                        Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Foreground" Value="Black" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Opacity" Value="0.7" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="1" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                            FontSize="15"
+                            Text="&#xf00d;" />
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+
+        <Border
+            Grid.Row="1"
             BorderBrush="Gray"
             BorderThickness="0,0,0,2">
             <Grid>
@@ -34,11 +244,13 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0">
+                <Grid
+                    Grid.Column="0"
+                    Background="{StaticResource NavBarDefaultBackgroundBrush}"
+                    TextElement.Foreground="{StaticResource NavBarDefaultForegroundBrush}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -47,8 +259,15 @@
                     <Grid
                         Grid.Column="0"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Home">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Home"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <TextBlock
                             Margin="40,0,0,0"
                             HorizontalAlignment="Center"
@@ -57,11 +276,19 @@
                             FontSize="28"
                             Text="&#xe4da;" />
                     </Grid>
+
                     <Grid
                         Grid.Column="1"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Home">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Home"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <TextBlock
                             Margin="16,0,0,0"
                             HorizontalAlignment="Left"
@@ -79,17 +306,32 @@
                     <Grid
                         x:Name="navBarHomeItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Home">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Home"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource NavBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedNavItem}" Value="Home">
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -122,17 +364,32 @@
                     <Grid
                         x:Name="navBarAssemblyItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Assembly">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Assembly"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource NavBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedNavItem}" Value="Assembly">
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -165,17 +422,32 @@
                     <Grid
                         x:Name="navBarMyBuildingsItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
                         Tag="MyBuildings">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="MyBuildings"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource NavBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedNavItem}" Value="MyBuildings">
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -208,17 +480,32 @@
                     <Grid
                         x:Name="navBarRegistrationItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
                         Tag="Registration">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Registration"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource NavBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedNavItem}" Value="Registration">
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -249,19 +536,34 @@
                     BorderBrush="Gray"
                     BorderThickness="0,0,2,0">
                     <Grid
-                        x:Name="navBarHelpItem"
+                        x:Name="navBarLogOutItem"
                         Cursor="Hand"
-                        MouseLeftButtonDown="NavBarItem_Click"
-                        Tag="Help">
+                        Tag="LogOut">
+
+                        <Grid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="LogOut"
+                                Gesture="LeftClick" />
+                        </Grid.InputBindings>
+
                         <Grid.Style>
                             <Style TargetType="Grid">
+                                <Setter Property="Background" Value="{StaticResource NavBarDefaultBackgroundBrush}" />
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarDefaultForegroundBrush}" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="LightGray" />
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding SelectedNavItem}" Value="LogOut">
+                                        <Setter Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                        <Setter Property="TextElement.Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -269,65 +571,28 @@
 
                         <Grid Grid.Column="0">
                             <TextBlock
-                                Margin="20,0,0,0"
+                                Margin="25,0,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                 FontSize="28"
-                                Text="&#xf059;" />
+                                Text="&#xf08b;" />
                         </Grid>
                         <Grid Grid.Column="1">
                             <TextBlock
-                                Margin="16,0,20,0"
+                                Margin="16,0,16,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontSize="24"
-                                Text="Pomoć" />
+                                Text="Odjavi se" />
                         </Grid>
                     </Grid>
                 </Border>
 
                 <Grid
-                    x:Name="navBarLogOutItem"
                     Grid.Column="6"
-                    Cursor="Hand"
-                    MouseLeftButtonDown="NavBarItem_Click"
-                    Tag="LogOut">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="LightGray" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid Grid.Column="0">
-                        <TextBlock
-                            Margin="25,0,0,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                            FontSize="28"
-                            Text="&#xf08b;" />
-                    </Grid>
-                    <Grid Grid.Column="1">
-                        <TextBlock
-                            Margin="16,0,16,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            FontSize="24"
-                            Text="Odjavi se" />
-                    </Grid>
-                </Grid>
-
-                <Grid Grid.Column="7">
+                    Background="{StaticResource NavBarDefaultBackgroundBrush}"
+                    TextElement.Foreground="{StaticResource NavBarDefaultForegroundBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -357,14 +622,15 @@
 
         <Frame
             x:Name="HomeFrame"
-            Grid.Row="1"
+            Grid.Row="2"
+            Content="{Binding CurrentPage}"
             NavigationUIVisibility="Hidden" />
 
         <Border
-            Grid.Row="2"
+            Grid.Row="3"
             BorderBrush="Gray"
             BorderThickness="0,2,0,0">
-            <Grid>
+            <Grid Background="{StaticResource FooterBackgroundBrush}" TextElement.Foreground="{StaticResource FooterForegroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />

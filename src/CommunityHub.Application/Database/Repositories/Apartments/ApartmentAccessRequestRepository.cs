@@ -1,8 +1,9 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
+using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories.Apartments
 {
@@ -267,7 +268,8 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
                 INNER JOIN cities city ON address.city_id = city.id
                 INNER JOIN countries country ON city.country_id = country.id
                 WHERE building_manager.id = @userId AND building.id = @buildingId AND
-                (request.status = @status OR @status IS NULL);"
+                (request.status = @status OR @status IS NULL)
+                ORDER BY request_id;"
             )
             .AddParameter("userId", userId)
             .AddParameter("buildingId", buildingId)

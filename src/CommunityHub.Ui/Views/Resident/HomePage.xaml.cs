@@ -2,12 +2,11 @@
 using CommunityHub.Ui.ViewModels.Resident;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings.Browse;
-using CommunityHub.Ui.Views.Resident.Notifications;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident
 {
-    public partial class HomePage : MainNavigatorConsumerPage
+    public partial class HomePage : MainNavigationConsumerPage
     {
         private readonly HomeViewModel _viewModel;
 
@@ -15,36 +14,16 @@ namespace CommunityHub.Ui.Views.Resident
         {
             InitializeComponent();
             
-            _viewModel = new HomeViewModel(userId);
+            _viewModel = new HomeViewModel(userId, this);
             DataContext = _viewModel;
-            _viewModel.Initialize();
 
-            OpenBuildingsPage();
+            LocalFrame.Navigate(new BuildingsPage(_viewModel.UserId));
         }
 
-        private void OpenNotificationsPage()
-        {
-            Push(
-                new NotificationsPage(_viewModel.UserId),
-                onPop: _ => _viewModel.UpdateUnreadNotificationCount()
-            );
-        }
+        private void OpenBuildingsPageButton_Click(object sender, MouseButtonEventArgs e)
+            => LocalFrame.Navigate(new BuildingsPage(_viewModel.UserId));
 
-        private void OpenBuildingsPage() => LocalFrame.Navigate(
-            new BuildingsPage(_viewModel.UserId)
-        );
-
-        private void OpenApartmentAccessRequestsPage() => LocalFrame.Navigate(
-            new ApartmentAccessRequestsPage(_viewModel.UserId)
-        );
-
-        private void TopBar_NotificationsItemClick(object sender, MouseButtonEventArgs e)
-                => OpenNotificationsPage();
-
-        private void BottomBar_RequestsItemClick(object sender, MouseButtonEventArgs e) => OpenApartmentAccessRequestsPage();
-        private void BottomBar_BuildingsItemClick(object sender, MouseButtonEventArgs e) => OpenBuildingsPage();
-
-
-
+        private void OpenApartmentAccessRequestsPageButton_Click(object sender, MouseButtonEventArgs e)
+            => LocalFrame.Navigate(new ApartmentAccessRequestsPage(_viewModel.UserId));
     }
 }

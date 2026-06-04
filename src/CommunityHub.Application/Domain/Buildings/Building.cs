@@ -7,7 +7,7 @@ namespace CommunityHub.Application.Domain.Buildings
     {
         public long Id { get;  private set; }
         public int FloorCount { get; private set; }
-        public int? ApartmentCount { get; private set; }
+        public int ApartmentCount { get; private set; }
         public User Manager {  get; private set; }
 
         public Address Address { get; private set; }
@@ -21,7 +21,7 @@ namespace CommunityHub.Application.Domain.Buildings
 
         public Building(
             int floorCount,
-            int? apartmentCount,
+            int apartmentCount,
             User manager,
             Address address,
             long id = 0

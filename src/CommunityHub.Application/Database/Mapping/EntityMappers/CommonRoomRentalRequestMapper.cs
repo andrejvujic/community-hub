@@ -49,8 +49,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         {
             return new Dictionary<string, object?>
             {
-                { "resident_id", entity.Resident?.Id },
-                { "common_room_id", entity.CommonRoom?.Id },
+                { "resident_id", entity.ResidentId },
+                { "common_room_id", entity.CommonRoomId },
                 { "requested_start_date", entity.RequestedStartDate },
                 { "requested_end_date", entity.RequestedEndDate },
                 { "proposed_start_date", entity.ProposedStartDate },

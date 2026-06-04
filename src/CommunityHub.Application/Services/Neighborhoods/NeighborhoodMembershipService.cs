@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
 using CommunityHub.Application.MappersDto.Neighborhoods;
 using CommunityHub.Application.MappersDto.TrustRecords;
 using CommunityHub.Application.MappersDto.Users;
@@ -35,7 +35,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
             var membership = new NeighborhoodMembership(
                 0,
                 DateTime.Now,
-                _neighborhoodMapper.MapToDomain(neighborhoodDto)
+                _neighborhoodMapper.MapToEntity(neighborhoodDto)
             );
             var createdMembership = _neighborhoodMembershipRepository.Create(membership);
             return _neighborhoodMembershipMapper.MapToDto(createdMembership);
@@ -43,7 +43,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public void CreateMembershipAndUpdate(CitizenDto citizenDto, NeighborhoodDto neighborhoodDto)
         {
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
             var membership = new NeighborhoodMembership(
                 0,
                 DateTime.Now,
@@ -58,5 +58,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
             => _neighborhoodMembershipRepository.GetTrustRecordsByNeighborhoodId(neighborhoodId)
                 .Select(_citizenTrustRecordMapper.MapToDto)
                 .ToList();
+
+        public int GetCitizenCountByCoordinator(long coordinatorId)
+            => _neighborhoodMembershipRepository.GetCitizenCountByCoordinatorId(coordinatorId);
     }
 }

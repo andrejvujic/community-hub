@@ -13,29 +13,29 @@ namespace CommunityHub.Application.MappersDto.Apartments
             if (apartmentAccessRequest == null) throw new ArgumentNullException(nameof(apartmentAccessRequest));
 
             return new ApartmentAccessRequestDto(
-                apartmentAccessRequest.Id,
-                apartmentAccessRequest.ApplicantId,
-                apartmentAccessRequest.Applicant != null ? _userMapper.MapToDto(apartmentAccessRequest.Applicant) : null,
-                apartmentAccessRequest.ApartmentId,
-                apartmentAccessRequest.Apartment != null ? _apartmentMapper.MapToDto(apartmentAccessRequest.Apartment) : null,
-                apartmentAccessRequest.Comment,
-                apartmentAccessRequest.Status,
-                apartmentAccessRequest.CreationDate
+                id: apartmentAccessRequest.Id,
+                applicantId: apartmentAccessRequest.ApplicantId,
+                applicant: apartmentAccessRequest.Applicant is not null ? _userMapper.MapToDto(apartmentAccessRequest.Applicant) : null,
+                apartmentId: apartmentAccessRequest.ApartmentId,
+                apartment: apartmentAccessRequest.Apartment is not null ? _apartmentMapper.MapToDto(apartmentAccessRequest.Apartment) : null,
+                comment: apartmentAccessRequest.Comment,
+                status: apartmentAccessRequest.Status,
+                creationDate: apartmentAccessRequest.CreationDate
             );
         }
-        public ApartmentAccessRequest MapToDomain(ApartmentAccessRequestDto dto)
+        public ApartmentAccessRequest MapToEntity(ApartmentAccessRequestDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new ApartmentAccessRequest(
-                dto.ApplicantId,
-                dto.ApartmentId,
-                dto.Status,
-                dto.CreationDate,
-                dto.Id,
-                dto.Comment,
-                dto.Applicant != null ? _userMapper.MapToDomain(dto.Applicant) : null,
-                apartment: dto.Apartment != null ? _apartmentMapper.MapToDomain(dto.Apartment) : null
+                applicantId: dto.ApplicantId,
+                apartmentId: dto.ApartmentId,
+                status: dto.Status,
+                creationDate: dto.CreationDate,
+                id: dto.Id,
+                comment: dto.Comment,
+                applicant: dto.Applicant is not null ? _userMapper.MapToEntity(dto.Applicant) : null,
+                apartment: dto.Apartment is not null ? _apartmentMapper.MapToEntity(dto.Apartment) : null
             );
         }
     }

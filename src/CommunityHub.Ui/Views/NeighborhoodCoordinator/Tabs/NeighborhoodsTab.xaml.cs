@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
@@ -23,6 +24,20 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             _viewModel = new NeighborhoodsTabViewModel(coordinatorId);
             DataContext = _viewModel;
             _viewModel.LoadNeighborhoods();
+
+
+            Window.GetWindow(this).KeyDown += NeighborhoodsTab_KeyDown;
+        }
+
+        private void NeighborhoodsTab_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!IsVisible) return;
+
+            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                && Keyboard.IsKeyDown(Key.N))
+            {
+                RegisterButton_Click(sender, e);
+            }
         }
 
         private void NeighborhoodsTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

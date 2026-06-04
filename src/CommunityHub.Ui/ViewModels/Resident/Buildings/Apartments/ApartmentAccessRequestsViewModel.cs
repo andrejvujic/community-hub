@@ -2,22 +2,39 @@
 using CommunityHub.Application.Domain.Apartments.AccessRequests;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.Services.Apartments;
+using CommunityHub.Application.Services.Dtos.Apartments;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Apartments;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
 {
-    public class ApartmentAccessRequestsViewModel : INotifyPropertyChanged
+    public class ApartmentAccessRequestsViewModel : BaseViewModel
     {
         private readonly ApartmentAccessRequestService _accessRequestService = new();
         public long UserId { get; set; }
 
-        public ObservableCollection<ApartmentAccessRequest> Requests { get; private set; } = new();
+        public ObservableCollection<ApartmentAccessRequestDto> Requests { get; private set; } = new();
         public bool HasRequests { get => Requests.Count > 0; }
 
-        public ApartmentAccessRequestsViewModel(long userId)
+        public ApartmentAccessRequestsViewModel(long userId, MainNavigationConsumerPage page) : base(page)
         {
             UserId = userId;
+
+            OpenRequestDetailsCommand = new(OpenRequestDetailsPage);
+        }
+
+        public RelayCommand<ApartmentAccessRequestDto> OpenRequestDetailsCommand { get; }
+
+        private void OpenRequestDetailsPage(ApartmentAccessRequestDto? request)
+        {
+            if (request is null) return;
+
+            Push(
+                new ApartmentAccessRequestDetailsPage(request),
+                onPop: _ => UpdateRequests()
+            );
         }
 
         public void UpdateRequests()
@@ -67,8 +84,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
                 new("Čeka odobrenje", value: Status.Waiting)
             ];
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -4,9 +4,12 @@ using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Services.CommonRooms;
 using CommunityHub.Application.Services.Dtos.Buildings;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -27,7 +30,14 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
+
+            LoadCommonRooms();
+            CancelCommand = new RelayCommand<object>(_ => Cancel());
+            ConfirmCommand = new RelayCommand<object>(_ => Confirm(), _ => CanConfirm());
         }
+
+        public RelayCommand<object> CancelCommand { get; }
+        public RelayCommand<object> ConfirmCommand { get; }
 
         private CommonRoomDto? _selectedCommonRoom;
         public CommonRoomDto? SelectedCommonRoom
@@ -37,6 +47,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             {
                 _selectedCommonRoom = value;
                 OnPropertyChanged();
+                LoadReservedDatesForSelectedRoom();
             }
         }
 
@@ -121,6 +132,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 _nameError = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsNameErrorVisible));
+                ConfirmCommand.RaiseCanExecuteChanged();
             }
         }
         public bool IsNameErrorVisible => ShowValidationErrors && !string.IsNullOrWhiteSpace(NameError);
@@ -134,6 +146,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 _descriptionError = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsDescriptionErrorVisible));
+                ConfirmCommand.RaiseCanExecuteChanged();
             }
         }
         public bool IsDescriptionErrorVisible => ShowValidationErrors && !string.IsNullOrWhiteSpace(DescriptionError);
@@ -153,24 +166,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             foreach (var room in commonRooms)
                 CommonRooms.Add(room);
         }
-        public void HandleSelectedCommonRoomChanged(CommonRoomDto? commonRoomDto)
-        {
-            SelectedCommonRoom = commonRoomDto;
-            ReservedDates.Clear();
-
-            if (commonRoomDto == null)
-            {
-                IsCalendarVisible = false;
-                return;
-            }
-
-            var reservedDates = _commonRoomRentalRequestService.GetReservedDates(commonRoomDto.Id, Building.Id);
-
-            foreach (var date in reservedDates)
-                ReservedDates.Add(date);
-
-            IsCalendarVisible = true;
-        }
+ 
         public bool ValidateForm()
         {
             ShowValidationErrors = true;
@@ -206,6 +202,60 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             ShowValidationErrors = false;
             NameError = string.Empty;
             DescriptionError = string.Empty;
+        }
+        private void LoadReservedDatesForSelectedRoom()
+        {
+            ReservedDates.Clear();
+
+            if (SelectedCommonRoom == null)
+            {
+                IsCalendarVisible = false;
+                return;
+            }
+
+            var reservedDates = _commonRoomRentalRequestService.GetReservedDates(
+                SelectedCommonRoom.Id,
+                Building.Id);
+
+            foreach (var date in reservedDates)
+                ReservedDates.Add(date);
+
+            IsCalendarVisible = true;
+        }
+        private void Cancel()
+        {
+            var dialogService = new DialogService();
+
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da otkažete kreiranje zajedničke prostorije?");
+            
+            if (confirm)
+                ResetForm();
+        }
+        private void Confirm()
+        {
+            if (!ValidateForm())
+                return;
+
+            var dialogService = new DialogService();
+
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da kreirate zajedničku prostoriju?");
+            if (!confirm)
+                return;
+
+            CreateCommonRoom();
+            ResetForm();
+            LoadCommonRooms();
+
+            dialogService.ShowInfo("Čestitamo", "Zajednička prostorija je uspešno kreirana.");
+        }
+        private bool CanConfirm()
+        {
+            return !string.IsNullOrWhiteSpace(Name)
+                && !string.IsNullOrWhiteSpace(Description);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

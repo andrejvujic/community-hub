@@ -1,16 +1,34 @@
-﻿using CommunityHub.Application.Domain;
-using CommunityHub.Application.Domain.Buildings;
+﻿using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Application.Services.Dtos.Images;
+using CommunityHub.Application.Services.Images;
+using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 {
     public class BuildingDetailsViewModel : INotifyPropertyChanged
     {
-        public Building Building { get; }
+        private readonly ImageService _imageService = new();
+        public BuildingDto Building { get; }
 
-        public BuildingDetailsViewModel(Building building)
+        public BuildingDetailsViewModel(BuildingDto building)
         {
             Building = building;
+
+            LoadImages();
+
+            GoToNextImageCommand = new(GoToNextImage, () => HasNextImage);
+            GoToPreviousImageCommand = new(GoToPreviousImage, () => HasPreviousImage);
+        }
+
+        public RelayCommand GoToNextImageCommand { get; }
+        public RelayCommand GoToPreviousImageCommand { get; }
+
+        private void LoadImages()
+        {
+            if (Building.HasImages) return;
+            Building.Images = _imageService.GetByBuilding(Building.Id);
+            OnPropertyChanged(nameof(Building));
         }
 
         private int _currentImageIndex = 0;
@@ -26,10 +44,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
                 OnPropertyChanged(nameof(CurrentImageText));
                 OnPropertyChanged(nameof(HasPreviousImage));
                 OnPropertyChanged(nameof(HasNextImage));
+
+                GoToNextImageCommand.RaiseCanExecuteChanged();
+                GoToPreviousImageCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public Image? CurrentImage
+        public ImageDto? CurrentImage
         {
             get
             {
@@ -58,7 +79,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Browse
 
         public bool HasPreviousImage { get => CurrentImageIndex > 0; }
         public bool HasNextImage { get => CurrentImageIndex < Building.Images.Count - 1; }
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

@@ -1,9 +1,7 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Database.Repositories.Shared;
-using CommunityHub.Application.Database.Repositories.Shared.Addresses;
 using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories
@@ -169,6 +167,25 @@ namespace CommunityHub.Application.Database.Repositories
             .AddParameter("id", neighborhoodId)
             .AddParameter("budget", newBudget)
             .Execute();
+        }
+
+        public int GetNeighborhoodCountsByCoordinatorId(long coordinatorId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT 
+                    COUNT(DISTINCT n.id) AS neighborhood_count
+                FROM neighborhoods n
+                LEFT JOIN neighborhood_memberships nm ON nm.neighborhood_id = n.id
+                LEFT JOIN citizens m ON m.membership_id = nm.id
+                WHERE n.coordinator_id = @coordinator_id"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            int neighborhoodCount = 0;
+            query.ExecuteReader(reader =>
+            {
+                neighborhoodCount = reader.GetInt32(reader.GetOrdinal("neighborhood_count"));
+            });
+            return neighborhoodCount;
         }
     }
 }

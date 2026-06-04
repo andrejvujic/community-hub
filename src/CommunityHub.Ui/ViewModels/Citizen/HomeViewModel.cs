@@ -1,7 +1,18 @@
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.Citizen;
+using CommunityHub.Ui.Views.Citizen.Donations;
+using CommunityHub.Ui.Views.Citizen.Events;
+using CommunityHub.Ui.Views.Citizen.LocalFacilities;
+using CommunityHub.Ui.Views.Citizen.Meetings;
+using CommunityHub.Ui.Views.Citizen.Neighborhoods;
+using CommunityHub.Ui.Views.Citizen.TrustRecords;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace CommunityHub.Ui.ViewModels.Citizen
@@ -14,9 +25,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         private CitizenDto? _currentUser;
         private string _statusBarText = "Kartica: Glavni meni";
         private string _selectedTabTag = "Main Menu";
+        private bool _tooltipEnabled = true;
+        private SolidColorBrush? _activeTabColor;
+        private SolidColorBrush? _inactiveTabColor;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler<TabNavigationEventArgs>? TabNavigationRequested;
+        public event EventHandler? CloseRequested;
 
         public CitizenDto? CurrentUser
         {
@@ -51,15 +66,71 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             }
         }
 
-        public HomeViewModel(long userId)
+        public bool TooltipEnabled
         {
-            _userId = userId;
-            LoadCurrentUser();
-            UpdateEventStatusesIfReady();
+            get => _tooltipEnabled;
+            set
+            {
+                if (_tooltipEnabled == value) return;
+                _tooltipEnabled = value;
+                OnPropertyChanged(nameof(TooltipEnabled));
+            }
         }
 
-        public void Initialize(SolidColorBrush activeTabColor)
+        public SolidColorBrush? ActiveTabColor
         {
+            get => _activeTabColor;
+            set
+            {
+                if (_activeTabColor == value) return;
+                _activeTabColor = value;
+                OnPropertyChanged(nameof(ActiveTabColor));
+            }
+        }
+
+        public SolidColorBrush? InactiveTabColor
+        {
+            get => _inactiveTabColor;
+            set
+            {
+                if (_inactiveTabColor == value) return;
+                _inactiveTabColor = value;
+                OnPropertyChanged(nameof(InactiveTabColor));
+            }
+        }
+
+        public ICommand SelectTabCommand { get; }
+        public ICommand CloseWindowCommand { get; }
+        public ICommand ToggleTooltipCommand { get; }
+
+        public static HomeViewModel CreateWithResources(long userId, Window window)
+        {
+            var activeTabColor = (SolidColorBrush)window.FindResource("ActiveTabBrush");
+            var inactiveTabColor = (SolidColorBrush)window.FindResource("BackgroundBrush");
+            return new HomeViewModel(userId, activeTabColor, inactiveTabColor);
+        }
+
+        public HomeViewModel(long userId, SolidColorBrush? activeTabColor = null, SolidColorBrush? inactiveTabColor = null)
+        {
+            _userId = userId;
+            _activeTabColor = activeTabColor;
+            _inactiveTabColor = inactiveTabColor;
+
+            SelectTabCommand = new RelayCommand<string?>(
+                execute: (tabTag) => HandleTabClick(tabTag ?? ""),
+                canExecute: (tabTag) => !string.IsNullOrEmpty(tabTag)
+            );
+
+            CloseWindowCommand = new RelayCommand<object>(
+                execute: (_) => CloseRequested?.Invoke(this, EventArgs.Empty),
+                canExecute: (_) => true
+            );
+
+            ToggleTooltipCommand = new RelayCommand<object>(
+                execute: (_) => TooltipEnabled = !TooltipEnabled,
+                canExecute: (_) => true
+            );
+
             LoadCurrentUser();
             UpdateEventStatusesIfReady();
         }
@@ -71,25 +142,23 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 
             SelectedTabTag = tabTag;
             StatusBarText = $"Kartica: {GetTabDisplayName(tabTag)}";
-            TabNavigationRequested?.Invoke(this, new TabNavigationEventArgs { TabTag = tabTag });
+            var page = GetPageForTab(tabTag);
+            TabNavigationRequested?.Invoke(this, new TabNavigationEventArgs { TabTag = tabTag, Page = page });
         }
 
-        public void HandleKeyDown(System.Windows.Input.Key key)
+        public Page? GetPageForTab(string tabTag)
         {
-            var tabTag = key switch
+            return tabTag switch
             {
-                System.Windows.Input.Key.F1 => "Main Menu",
-                System.Windows.Input.Key.F2 => "Neighborhoods",
-                System.Windows.Input.Key.F3 => "Events",
-                System.Windows.Input.Key.F4 => "Trust Records",
-                System.Windows.Input.Key.F5 => "Meetings",
-                System.Windows.Input.Key.F6 => "Local Facilities",
-                System.Windows.Input.Key.F7 => "Donations",
+                "Main Menu" => new MainMenuPage(_userId),
+                "Neighborhoods" => new NeighborhoodsPage(_userId),
+                "Events" => new EventsPage(_userId),
+                "Trust Records" => new TrustRecordsPage(_userId),
+                "Meetings" => new MeetingsPage(_userId),
+                "Local Facilities" => new LocalFacilitiesPage(_userId),
+                "Donations" => new DonationsPage(_userId),
                 _ => null,
             };
-
-            if (tabTag != null)
-                HandleTabClick(tabTag);
         }
 
         private void LoadCurrentUser()
@@ -103,7 +172,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
                 "Main Menu" => "Glavni meni",
                 "Neighborhoods" => "Kvartovi",
                 "Events" => "Događaji",
-                "Trust Records" => "Rekord povjerenja",
+                "Trust Records" => "Evidencije poverenja",
                 "Meetings" => "Sastanci",
                 "Local Facilities" => "Lokalni objekti",
                 "Donations" => "Donacije",
@@ -128,5 +197,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
     public class TabNavigationEventArgs : EventArgs
     {
         public string TabTag { get; set; } = "";
+        public Page? Page { get; set; }
     }
 }

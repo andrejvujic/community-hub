@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Neighborhoods;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Helpers.Sorting;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods
@@ -397,6 +397,28 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             .AddParameter("neighborhood_id", neighborhoodId);
 
             return query.ExecuteScalar(val => val != null);
+        }
+
+        public (int Accepted, int Rejected, int Pending) GetRequestStatsByCoordinatorId(long coordinatorId)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    COUNT(*) FILTER (WHERE r.status = 'accepted') AS accepted_count,
+                    COUNT(*) FILTER (WHERE r.status = 'rejected') AS rejected_count,
+                    COUNT(*) FILTER (WHERE r.status = 'waiting')  AS pending_count
+                FROM neighborhood_access_requests r
+                INNER JOIN neighborhoods n ON r.neighborhood_id = n.id
+                WHERE n.coordinator_id = @coordinator_id"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            int accepted = 0, rejected = 0, pending = 0;
+            query.ExecuteReader(reader =>
+            {
+                accepted = reader.GetInt32(reader.GetOrdinal("accepted_count"));
+                rejected = reader.GetInt32(reader.GetOrdinal("rejected_count"));
+                pending = reader.GetInt32(reader.GetOrdinal("pending_count"));
+            });
+            return (accepted, rejected, pending);
         }
     }
 }

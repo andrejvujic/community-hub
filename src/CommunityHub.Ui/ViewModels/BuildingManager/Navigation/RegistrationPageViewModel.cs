@@ -1,9 +1,22 @@
-﻿using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Domain.Addresses;
+using CommunityHub.Application.Domain.Apartments;
+using CommunityHub.Application.Domain.Buildings;
+using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.MappersDto.Addresses;
 using CommunityHub.Application.Services.Addresses;
+using CommunityHub.Application.Services.Apartments;
+using CommunityHub.Application.Services.Buildings;
 using CommunityHub.Application.Services.Dtos.Addresses;
+using CommunityHub.Application.Services.Images;
+using CommunityHub.Ui.Helpers.Commands;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
+using DomainImage = CommunityHub.Application.Domain.Image;
+
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
 {
@@ -14,11 +27,22 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
         private readonly StreetService _streetService;
         private readonly AddressService _addressService;
         private readonly StreetSectionService _streetSectionService;
+        private readonly BuildingService _buildingService = new();
+        private readonly ImageService _imageService = new();
+        private readonly ApartmentService _apartmentService = new();
+
+        private readonly StreetMapper _streetMapper = new();
+        private readonly CountryMapper _countryMapper = new();
+        private readonly CityMapper _cityMapper = new();
+
         public User User { get; }
         public ObservableCollection<CountryDto> Countries { get; } = [];
         public ObservableCollection<CityDto> Cities { get; } = [];
         public ObservableCollection<StreetDto> Streets { get; } = [];
         public ObservableCollection<string> SelectedImagePaths { get; } = [];
+
+        public RelayCommand<object> ChooseImageCommand { get; }
+        public RelayCommand<string> RemoveImageCommand { get; }
 
         public RegistrationPageViewModel(User user)
         {
@@ -28,6 +52,12 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             _streetService = new StreetService();
             _addressService = new AddressService();
             _streetSectionService = new StreetSectionService();
+
+            ChooseImageCommand = new RelayCommand<object>(_ => OnChooseImage());
+            RemoveImageCommand = new RelayCommand<string>(OnRemoveImage);
+
+            LoadCountries();
+            UpdateImageValidation();
         }
 
         private CountryDto? _selectedCountry;
@@ -44,6 +74,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                     OnPropertyChanged(nameof(IsCityEnabled));
                     OnPropertyChanged(nameof(IsCountryValid));
                     OnPropertyChanged(nameof(IsStreetEnabled));
+                    OnPropertyChanged(nameof(CanConfirm));
                 }
             }
         }
@@ -145,7 +176,6 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsNeighborhoodValid));
                     OnPropertyChanged(nameof(CanConfirm));
-
                 }
             }
         }
@@ -317,6 +347,126 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.Navigation
             OnPropertyChanged(nameof(IsImageValid));
             OnPropertyChanged(nameof(CanConfirm));
         }
+        private void OnChooseImage()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;",
+                Title = "Izaberite slike zgrade"
+            };
+
+            if (dialog.ShowDialog() == true)
+                AddImages(dialog.FileNames);
+        }
+        private void OnRemoveImage(string? filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return;
+
+            RemoveImage(filePath);
+        }
+        private Address CreateAddress()
+        {
+            var address = new Address(
+                id: 0,
+                street: _streetMapper.MapToEntity(SelectedStreet!),
+                streetNumber: StreetNumber,
+                neighborhood: Neighborhood,
+                city: _cityMapper.MapToEntity(SelectedCity!),
+                country: _countryMapper.MapToEntity(SelectedCountry!)
+            );
+
+            return _addressService.Create(address);
+        }
+        private Building CreateBuilding(Address address, int floorCount, int apartmentCount)
+        {
+            var building = new Building(
+                floorCount: floorCount,
+                apartmentCount: apartmentCount,
+                manager: User,
+                address: address
+            );
+
+            return _buildingService.Create(building);
+        }
+        private void CreateImages(Building building)
+        {
+            foreach (string imagePath in SelectedImagePaths)
+            {
+                DomainImage image = DomainImage.ForBuilding(
+                    id: 0,
+                    path: imagePath,
+                    buildingId: building.Id
+                );
+
+                _imageService.Create(image);
+            }
+        }
+        private void CreateApartments(Building building, List<(int Number, int Floor)> apartmentEntries)
+        {
+            foreach (var entry in apartmentEntries)
+            {
+                Apartment apartment = new Apartment(
+                    id: 0,
+                    number: entry.Number,
+                    floorNumber: entry.Floor,
+                    building: building
+                );
+
+                _apartmentService.Create(apartment);
+            }
+        }
+        public bool ConfirmRegistration(int floorCount, List<(int Number, int Floor)> apartmentEntries)
+        {
+            if (!CanConfirm)
+                return false;
+
+            var dialogService = new DialogService();
+
+            bool confirm = dialogService.ShowConfirmation(
+                "Potvrda registracije zgrade",
+                "Da li ste sigurni da želite da potvrdite registraciju zgrade?");
+
+            if(!confirm)
+                return false;
+
+            var address = CreateAddress();
+            var building = CreateBuilding(address, floorCount, apartmentEntries.Count);
+            CreateImages(building);
+            CreateApartments(building, apartmentEntries);
+
+            dialogService.ShowInfo(
+                "Čestitamo",
+                "Uspešno ste registrovali zgradu.");
+
+            ResetForm();
+
+            return true;
+        }
+        public void ResetForm()
+        {
+            SelectedCountry = null;
+            SelectedCity = null;
+            SelectedStreet = null;
+            StreetNumber = string.Empty;
+            Neighborhood = string.Empty;
+            SelectedImagePaths.Clear();
+            ErrorMessage = null;
+            ImageErrorMessage = string.Empty;
+            AreApartmentsValid = false;
+
+            LoadCountries();
+            UpdateImageValidation();
+
+            OnPropertyChanged(nameof(CanConfirm));
+        }
+        public void ResetFloorsAndApartments()
+        {
+            AreApartmentsValid = false;
+            OnPropertyChanged(nameof(CanConfirm));
+        }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

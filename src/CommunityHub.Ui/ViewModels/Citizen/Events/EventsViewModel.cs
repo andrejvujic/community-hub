@@ -3,8 +3,10 @@ using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Application.Domain.Events;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
 {
@@ -18,8 +20,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         private CitizenDto? _citizen;
         private ObservableCollection<CommunityEventDto> _events = new();
         private object? _membership;
+        private CommunityEventDto? _selectedEvent;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ApplyToVolunteerRequested;
+        public event EventHandler? PrintReportRequested;
+        public event EventHandler? MyEventsRequested;
 
         public CitizenDto? Citizen
         {
@@ -34,6 +40,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         public ObservableCollection<CommunityEventDto> Events => _events;
 
+        public CommunityEventDto? SelectedEvent
+        {
+            get => _selectedEvent;
+            set
+            {
+                if (_selectedEvent == value) return;
+                _selectedEvent = value;
+                OnPropertyChanged(nameof(SelectedEvent));
+            }
+        }
+
         public object? Membership
         {
             get => _membership;
@@ -45,9 +62,18 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             }
         }
 
+        public ICommand ApplyToVolunteerCommand { get; }
+        public ICommand PrintReportCommand { get; }
+        public ICommand MyEventsCommand { get; }
+
         public EventsViewModel(long userId)
         {
             _userId = userId;
+
+            ApplyToVolunteerCommand = new RelayCommand<object>(_ => ApplyToVolunteerRequested?.Invoke(this, EventArgs.Empty));
+            PrintReportCommand = new RelayCommand<object>(_ => PrintReportRequested?.Invoke(this, EventArgs.Empty));
+            MyEventsCommand = new RelayCommand<object>(_ => MyEventsRequested?.Invoke(this, EventArgs.Empty));
+
             LoadData();
         }
 
@@ -77,6 +103,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
             foreach (var eventDto in events)
                 _events.Add(eventDto);
+
+            if (_events.Count > 0)
+            {
+                SelectedEvent = _events[0];
+            }
         }
 
         public string? CanApplyToVolunteer(long selectedEventId)
@@ -91,6 +122,16 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
             return null;
         }
+
+        public string? ValidateApplyToVolunteer()
+        {
+            if (SelectedEvent == null)
+                return "Izaberite događaj pre prijave.";
+
+            return CanApplyToVolunteer(SelectedEvent.Id);
+        }
+
+        public long GetCitizenId() => _citizen?.Id ?? 0;
 
         protected void OnPropertyChanged(string propertyName)
         {

@@ -16,6 +16,7 @@ using CommunityHub.Application.Database.Repositories.Ads.TimeSlots;
 using System.Windows;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.MappersDto.Buildings;
+using CommunityHub.Application.Services.Dtos.Users;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -106,8 +107,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             set { _archivedAdsCount = value; OnPropertyChanged(); }
         }
 
-        private string _mostHelpfulResident = string.Empty;
-        public string MostHelpfulResident
+        private UserDto? _mostHelpfulResident;
+        public UserDto? MostHelpfulResident
         {
             get => _mostHelpfulResident;
             set { _mostHelpfulResident = value; OnPropertyChanged(); }
@@ -193,10 +194,13 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 
             LoadYears();
 
-            SelectedYear = Years.Last();
+            if (Years.Any())
+                SelectedYear = Years.Last();
+
             SelectedMonth = "Svi";
 
             LoadStaticData();
+            LoadPageData();
             OnPropertyChanged(nameof(SelectedYear));
             OnPropertyChanged(nameof(SelectedMonth));
         }
@@ -278,7 +282,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                     Values = new[] { offerCount },
                     Pushout = 0,
                     HoverPushout = 0,
-                    Fill = new SolidColorPaint(SKColor.Parse("#01696f"))
+                    Fill = new SolidColorPaint(SKColor.Parse("#DCE8D8"))
                 },
                 new PieSeries<int>
                 {
@@ -286,7 +290,7 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                     Values = new[] { requestCount },
                     Pushout = 0,
                     HoverPushout = 0,
-                    Fill = new SolidColorPaint(SKColor.Parse("#964219"))
+                    Fill = new SolidColorPaint(SKColor.Parse("#BAD7F5"))
                 }
             };
         }
@@ -321,8 +325,8 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 new Axis
                 {
                     Labels = labels,
-                    TextSize = 10,
-                    LabelsRotation = -65,
+                    TextSize = 12,
+                    LabelsRotation = -75,
                     Padding = new LiveChartsCore.Drawing.Padding(4)
                 }
             };
@@ -353,15 +357,17 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
                 {
                     Name = "Traži pomoć",
                     Values = categoryStats.Select(s => s.RequestCount).ToArray(),
-                    Fill = new SolidColorPaint(SKColor.Parse("#d4e8e6")),
-                    MaxBarWidth = 15
+                    Fill = new SolidColorPaint(SKColor.Parse("#BAD7F5")),
+                    MaxBarWidth = 15,
+                    DataLabelsSize = 14
                 },
                 new ColumnSeries<int>
                 {
                     Name = "Nudi pomoć",
                     Values = categoryStats.Select(s => s.OfferCount).ToArray(),
-                    Fill = new SolidColorPaint(SKColor.Parse("#01696f")),
-                    MaxBarWidth = 15
+                    Fill = new SolidColorPaint(SKColor.Parse("#DCE8D8")),
+                    MaxBarWidth = 15,
+                    DataLabelsSize = 14
                 }
            };
         }

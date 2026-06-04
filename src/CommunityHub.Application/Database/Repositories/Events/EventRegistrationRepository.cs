@@ -1,6 +1,6 @@
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Events;
-using CommunityHub.Application.Domain.Events.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Events;
 
 namespace CommunityHub.Application.Database.Repositories.Events
 {

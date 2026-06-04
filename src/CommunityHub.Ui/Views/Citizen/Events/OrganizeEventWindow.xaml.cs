@@ -13,32 +13,41 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             InitializeComponent();
             _viewModel = new OrganizeEventViewModel(userId);
             this.DataContext = _viewModel;
-        }
-
-        private void AddItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.AddItem();
-        }
-
-        private void ItemInputBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
+            DateTextBox.TextChanged += (s, e) => _viewModel.ParseAndSetDate(DateTextBox.Text);
+            _viewModel.PropertyChanged += (s, e) =>
             {
-                _viewModel.AddItem();
-                e.Handled = true;
+                if (e.PropertyName == nameof(OrganizeEventViewModel.SelectedDate))
+                {
+                    if (_viewModel.SelectedDate.HasValue)
+                    {
+                        DateTextBox.Text = _viewModel.SelectedDate.Value.ToString("d.M.yyyy.");
+                    }
+                }
+            };
+
+            if (_viewModel != null)
+            {
+                _viewModel.CloseRequested += (_, _) => Close();
+                _viewModel.ConfirmRequested += (_, _) =>
+                {
+                    DialogResult = true;
+                    Close();
+                };
+                _viewModel.ToggleCalendarRequested += (_, _) => DatePickerPopup.IsOpen = !DatePickerPopup.IsOpen;
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            _viewModel.Submit();
-            this.DialogResult = true;
-            this.Close();
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
 
-        private void DiscardButton_Click(object sender, RoutedEventArgs e)
+        private void EventCalendar_SelectedDatesChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            this.Close();
+            DatePickerPopup.IsOpen = false;
         }
     }
 }

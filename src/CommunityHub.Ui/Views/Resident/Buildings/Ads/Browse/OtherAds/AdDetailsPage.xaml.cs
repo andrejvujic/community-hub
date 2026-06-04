@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Ui.Helpers.Navigation;
 using System.Windows.Input;
 using CommunityHub.Application.Domain.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
@@ -10,15 +11,15 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
         TimeSlots
     }
 
-    public partial class AdDetailsPage : MainNavigatorConsumerPage
+    public partial class AdDetailsPage : MainNavigationConsumerPage
     {
         private readonly long _userId;
 
-        public Ad Ad { get; }
+        public AdDto Ad { get; }
 
         public AdDetailsPage(
             long userId,
-            Ad ad,
+            AdDto ad,
             AdDetailsPageTab initialTab = AdDetailsPageTab.Information
         )
         {

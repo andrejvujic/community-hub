@@ -25,7 +25,7 @@ namespace CommunityHub.Application.MappersDto.Issues
                 issue.Building != null ? _buildingMapper.MapToDto(issue.Building) : null
             );
         }
-        public Issue MapToDomain(IssueDto dto)
+        public Issue MapToEntity(IssueDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -36,8 +36,8 @@ namespace CommunityHub.Application.MappersDto.Issues
                 dto.Status,
                 dto.ResidentId,
                 dto.BuildingId,
-                dto.Resident != null ? _userMapper.MapToDomain(dto.Resident) : null,
-                dto.Building != null ? _buildingMapper.MapToDomain(dto.Building) : null,
+                dto.Resident != null ? _userMapper.MapToEntity(dto.Resident) : null,
+                dto.Building != null ? _buildingMapper.MapToEntity(dto.Building) : null,
                 dto.Id
             );
         }

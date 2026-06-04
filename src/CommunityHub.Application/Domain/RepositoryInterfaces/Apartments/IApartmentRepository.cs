@@ -1,0 +1,14 @@
+﻿using CommunityHub.Application.Domain.Apartments;
+
+namespace CommunityHub.Application.Domain.RepositoryInterfaces.Apartments
+{
+    public interface IApartmentRepository
+    {
+        public Apartment Create(Apartment apartment);
+        public Apartment? Get(long id);
+        public List<Apartment> GetByBuildingId(long buildingId);
+        public long? FindIdByBuildingAndNumber(long buildingId, int apartmentNumber);
+
+        public bool Exists(long buildingId, int apartmentNumber);
+    }
+}

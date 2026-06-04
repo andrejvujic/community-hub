@@ -9,8 +9,10 @@
         Height="380"
         Width="400"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
-    <Grid Margin="24">
+        ResizeMode="NoResize"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Grid Margin="24"
+          TextElement.Foreground="{DynamicResource PrimaryTextBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -24,6 +26,7 @@
                    Grid.Row="0"
                    Text="{Binding Title}"
                    FontSize="16"
+                   FontWeight="SemiBold"
                    TextWrapping="Wrap"
                    Margin="0,0,0,20"/>
 
@@ -32,7 +35,9 @@
                        FontSize="14"
                        VerticalAlignment="Center"
                        Width="200"/>
-            <ComboBox SelectedIndex="{Binding SelectedQualityIndex}" Width="70" FontSize="14">
+            <ComboBox Style="{StaticResource ComboBoxStyle}"
+                      SelectedIndex="{Binding SelectedQualityIndex}"
+                      Width="70" FontSize="14">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
                 <ComboBoxItem Content="3"/>
@@ -46,7 +51,9 @@
                        FontSize="14"
                        VerticalAlignment="Center"
                        Width="200"/>
-            <ComboBox SelectedIndex="{Binding SelectedCommunicationIndex}" Width="70" FontSize="14">
+            <ComboBox Style="{StaticResource ComboBoxStyle}"
+                      SelectedIndex="{Binding SelectedCommunicationIndex}"
+                      Width="70" FontSize="14">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
                 <ComboBoxItem Content="3"/>
@@ -62,13 +69,14 @@
 
         <TextBox x:Name="CommentTextBox"
                  Grid.Row="4"
+                 Style="{StaticResource TextBoxStyle}"
                  FontSize="14"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto"
+                 VerticalContentAlignment="Top"
                  Margin="0,0,0,16"
                  Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"/>
-
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -76,17 +84,17 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="Odustani"
-                    Height="40"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Height="40" 
                     Margin="0,0,8,0"
                     FontSize="14"
-                    Cursor="Hand"
                     Click="CancelButton_Click"/>
             <Button Grid.Column="1"
                     Content="Potvrdi"
-                    Height="40"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Height="40" 
                     Margin="8,0,0,0"
                     FontSize="14"
-                    Cursor="Hand"
                     Click="ConfirmButton_Click"/>
         </Grid>
     </Grid>

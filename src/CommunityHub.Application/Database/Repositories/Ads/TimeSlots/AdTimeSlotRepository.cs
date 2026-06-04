@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using System.Diagnostics;
 
 namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
@@ -80,6 +80,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
                     ad.description,
                     ad.start_date,
                     ad.end_date,
+                    ad.is_subscribed_to_matching_ads,
 
                     author.id AS author_user_id,
                     author.name AS author_name,
@@ -101,6 +102,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
                     offer_ad.description AS offer_ad_description,
                     offer_ad.start_date AS offer_ad_start_date,
                     offer_ad.end_date AS offer_ad_end_date,
+                    offer_ad.is_subscribed_to_matching_ads AS offer_ad_is_subscribed_to_matching_ads,
 
                     offer_ad_author.id AS offer_ad_author_user_id,
                     offer_ad_author.name AS offer_ad_author_name,
@@ -118,6 +120,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
                     request_ad.description AS request_ad_description,
                     request_ad.start_date AS request_ad_start_date,
                     request_ad.end_date AS request_ad_end_date,
+                    request_ad.is_subscribed_to_matching_ads AS request_ad_is_subscribed_to_matching_ads,
 
                     request_ad_author.id AS request_ad_author_user_id,
                     request_ad_author.name AS request_ad_author_name,
@@ -181,6 +184,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
                     ad.description,
                     ad.start_date,
                     ad.end_date,
+                    ad.is_subscribed_to_matching_ads,
 
                     author.id AS author_user_id,
                     author.name AS author_name,
@@ -202,6 +206,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
                     offer_ad.description AS offer_ad_description,
                     offer_ad.start_date AS offer_ad_start_date,
                     offer_ad.end_date AS offer_ad_end_date,
+                    offer_ad.is_subscribed_to_matching_ads AS offer_ad_is_subscribed_to_matching_ads,
 
                     offer_ad_author.id AS offer_ad_author_user_id,
                     offer_ad_author.name AS offer_ad_author_name,
@@ -219,6 +224,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads.TimeSlots
                     request_ad.description AS request_ad_description,
                     request_ad.start_date AS request_ad_start_date,
                     request_ad.end_date AS request_ad_end_date,
+                    request_ad.is_subscribed_to_matching_ads AS request_ad_is_subscribed_to_matching_ads,
 
                     request_ad_author.id AS request_ad_author_user_id,
                     request_ad_author.name AS request_ad_author_name,

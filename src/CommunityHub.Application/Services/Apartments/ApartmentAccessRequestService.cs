@@ -1,10 +1,10 @@
 ﻿using CommunityHub.Application.Domain.Apartments.AccessRequests;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
 using CommunityHub.Application.Helpers.Sorting;
 using CommunityHub.Application.MappersDto.Apartments;
 using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Application.Domain.Apartments;
 using CommunityHub.Application.Domain;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 
 namespace CommunityHub.Application.Services.Apartments
 {
@@ -17,7 +17,7 @@ namespace CommunityHub.Application.Services.Apartments
         PendingRequestExists
     }
 
-    public class ApartmentAccessRequestService
+    public class ApartmentAccessRequestService : BaseService<ApartmentAccessRequest, ApartmentAccessRequestDto>
     {
         private readonly IApartmentRepository _apartmentRepository = Injector.CreateInstance<IApartmentRepository>();
         private readonly IApartmentAccessRequestRepository _apartmentAccessRequestRepository
@@ -26,10 +26,17 @@ namespace CommunityHub.Application.Services.Apartments
         private readonly ApartmentMembershipService _apartmentMembershipService = new();
         private readonly ApartmentAccessRequestMapper _apartmentAccessRequestMapper = new();
 
-        public void Create(ApartmentAccessRequest request)
-            => _apartmentAccessRequestRepository.Create(request);
 
-        public void Cancel(ApartmentAccessRequest request)
+        public ApartmentAccessRequestService() : base(mapper: new ApartmentAccessRequestMapper()) { }
+
+        public void Create(ApartmentAccessRequestDto request)
+        {
+           _apartmentAccessRequestRepository.Create(
+               MapToEntity(request)
+           );
+        }
+
+        public void Cancel(ApartmentAccessRequestDto request)
         {
             if (!request.IsPending)
                 throw new InvalidOperationException("Only pendning requests can be cancelled.");
@@ -38,15 +45,17 @@ namespace CommunityHub.Application.Services.Apartments
         }
 
 
-        public List<ApartmentAccessRequest> GetByApplicant(
+        public List<ApartmentAccessRequestDto> GetByApplicant(
             long applicantId,
             Status? status = null,
             RequestOrder order = RequestOrder.Unspecified
-        ) => _apartmentAccessRequestRepository.GetByApplicant(
+        ) => MapToDto(
+            _apartmentAccessRequestRepository.GetByApplicant(
                 applicantId,
                 status: status,
                 order: order
-              );
+              )
+            );
 
         public AccessRequestValidationResult ValidateAccessRequest(long residentId, long buildingId, int apartmentNumber)
         {
@@ -89,7 +98,7 @@ namespace CommunityHub.Application.Services.Apartments
 
         public bool UpdateStatus(ApartmentAccessRequestDto requestDto, Status newStatus, string comment)
         {
-            var domainRequest = _apartmentAccessRequestMapper.MapToDomain(requestDto);
+            var domainRequest = _apartmentAccessRequestMapper.MapToEntity(requestDto);
 
             var updatedRequest = domainRequest.CopyWith(status: newStatus, comment: comment);
 

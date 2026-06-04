@@ -18,7 +18,7 @@ namespace CommunityHub.Application.MappersDto.Addresses
                 _streetMapper.MapToDto(streetSection.Street)
             );
         }
-        public StreetSection MapToDomain(StreetSectionDto dto)
+        public StreetSection MapToEntity(StreetSectionDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -26,7 +26,7 @@ namespace CommunityHub.Application.MappersDto.Addresses
                 dto.StartNumber,
                 dto.EndNumber,
                 dto.Side,
-                _streetMapper.MapToDomain(dto.Street),
+                _streetMapper.MapToEntity(dto.Street),
                 dto.Id
             );
         }

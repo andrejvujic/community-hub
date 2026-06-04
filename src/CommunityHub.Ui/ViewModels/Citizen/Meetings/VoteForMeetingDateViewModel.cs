@@ -1,5 +1,7 @@
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 {
@@ -9,6 +11,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
         private DateTime? _selectedDate;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? ConfirmRequested;
+        public event EventHandler? CancelRequested;
+        public event EventHandler? CloseRequested;
+        public event EventHandler? ToggleCalendarRequested;
 
         public NeighborhoodMeetingDto Meeting => _meeting;
 
@@ -32,9 +38,66 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 
         public bool CanConfirm => SelectedDate.HasValue;
 
+        public ICommand ConfirmCommand { get; }
+        public ICommand CancelCommand { get; }
+        public ICommand CloseCommand { get; }
+        public ICommand ToggleCalendarCommand { get; }
+
         public VoteForMeetingDateViewModel(NeighborhoodMeetingDto meeting)
         {
             _meeting = meeting;
+            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
+            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            ToggleCalendarCommand = new RelayCommand<object>(_ => RequestToggleCalendar());
+        }
+
+        public void ParseAndSetDate(string dateText)
+        {
+            dateText = dateText?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(dateText))
+            {
+                SelectedDate = null;
+                return;
+            }
+
+            if (DateTime.TryParse(dateText, out DateTime parsedDate))
+            {
+                if (parsedDate >= DisplayDateStart && parsedDate <= DisplayDateEnd)
+                {
+                    SelectedDate = parsedDate;
+                }
+                else
+                {
+                    SelectedDate = null;
+                }
+            }
+            else
+            {
+                SelectedDate = null;
+            }
+        }
+
+        public void RequestConfirm()
+        {
+            if (CanConfirm)
+                ConfirmRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestCancel()
+        {
+            CancelRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestToggleCalendar()
+        {
+            ToggleCalendarRequested?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -45,4 +108,5 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
         }
     }
 }
+
 

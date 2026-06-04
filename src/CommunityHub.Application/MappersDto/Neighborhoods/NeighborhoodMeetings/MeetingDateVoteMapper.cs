@@ -21,13 +21,13 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodMeetings
             );
         }
 
-        public MeetingDateVote MapToDomain(MeetingDateVoteDto dto)
+        public MeetingDateVote MapToEntity(MeetingDateVoteDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new MeetingDateVote(
-                _neighborhoodMeetingMapper.MapToDomain(dto.Meeting),
-                _citizenMapper.MapToDomain(dto.Citizen),
+                _neighborhoodMeetingMapper.MapToEntity(dto.Meeting),
+                _citizenMapper.MapToEntity(dto.Citizen),
                 dto.VotedDate,
                 dto.Id
             );

@@ -3,12 +3,14 @@ using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.MappersDto.Buildings;
 using CommunityHub.Application.Services.CommonRooms;
+using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
+using CommunityHub.Ui.Helpers.BuildingManagerAlerts;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using CommunityHub.Application.Services.Dtos.CommonRooms;
-using CommunityHub.Application.Services.Dtos.Buildings;
 
 namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
 {
@@ -74,11 +76,20 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             set { _multiDayPanelVisibility = value; OnPropertyChanged(); }
         }
 
+        public RelayCommand<DateTime> ApproveOneDaySuggestionCommand { get; }
+        public RelayCommand<SuggestedDateRangeViewModel> AcceptMultiDaySuggestionCommand { get; }
+
         public CommonRoomRentalRequestsPageViewModel(User user, Building building)
         {
             User = user;
             Building = building;
             BuildingDto = _buildingMapper.MapToDto(building);
+
+            RefreshRentalRequests();
+
+            ApproveOneDaySuggestionCommand = new RelayCommand<DateTime>(day => ApproveOneDaySuggestion(day));
+            AcceptMultiDaySuggestionCommand = new RelayCommand<SuggestedDateRangeViewModel>(
+                range => AcceptMultiDaySuggestion(range!.StartDate, range.EndDate));
         }
 
         public void RefreshRentalRequests()
@@ -96,6 +107,12 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
         private void ShowManagerAction(CommonRoomRentalRequestDto? request)
         {
             SetVisibility();
+
+            if (request == null)
+            {
+                DefaultActionTextVisibility = Visibility.Visible;
+                return;
+            }
 
             switch (request?.Status)
             {
@@ -154,28 +171,40 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager.BuildingPages
             if (SelectedRentalRequest == null)
                 return;
 
-            var result = MessageBox.Show("Da li želite da promenite datum rezervacije?", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No) return;
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da promenite datum rezervacije?"
+            );
+
+            if (!confirm) return;
 
             _rentalRequestService.ApproveOneDaySuggestion(SelectedRentalRequest, day);
             AutoProcessRentalRequestStatuses();
             RefreshRentalRequests();
             OneDayPanelVisibility = Visibility.Collapsed;
+            SelectedRentalRequest = null;
         }
         public void AcceptMultiDaySuggestion(DateTime proposedStartDate, DateTime proposedEndDate)
         {
             if (SelectedRentalRequest == null)
                 return;
 
-            var result = MessageBox.Show("Da li želite da promenite opseg rezervacije", "Potvrda", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var dialogService = new DialogService();
 
-            if (result == MessageBoxResult.No) return;
+            var confirm = dialogService.ShowConfirmation(
+                "Potvrda",
+                "Da li želite da promenite opseg rezervacije?"
+            );
+
+            if (!confirm) return;
 
             _rentalRequestService.AcceptMultiDaySuggestion(SelectedRentalRequest, proposedStartDate, proposedEndDate);
             AutoProcessRentalRequestStatuses();
             RefreshRentalRequests();
             MultiDayPanelVisibility = Visibility.Collapsed;
+            SelectedRentalRequest = null;
         }
 
 

@@ -1,12 +1,12 @@
-﻿using CommunityHub.Application.Domain.Ads;
+﻿using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Navigation;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds
 {
-    public partial class AdInformationPage : MainNavigatorConsumerPage
+    public partial class AdInformationPage : MainNavigationConsumerPage
     {
-        public Ad Ad { get; }
-        public AdInformationPage(Ad ad)
+        public AdDto Ad { get; }
+        public AdInformationPage(AdDto ad)
         {
             InitializeComponent();
             DataContext = this;

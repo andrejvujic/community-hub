@@ -23,12 +23,12 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodMeetings
             );
         }
 
-        public NeighborhoodMeeting MapToDomain(NeighborhoodMeetingDto dto)
+        public NeighborhoodMeeting MapToEntity(NeighborhoodMeetingDto dto)
         {
             if(dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new NeighborhoodMeeting(
-                _neighborhoodMapper.MapToDomain(dto.Neighborhood),
+                _neighborhoodMapper.MapToEntity(dto.Neighborhood),
                 dto.Theme,
                 dto.MeetingTime,
                 dto.DateRangeStart,

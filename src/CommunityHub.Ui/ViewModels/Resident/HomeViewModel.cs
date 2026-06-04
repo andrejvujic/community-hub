@@ -1,21 +1,29 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Notifications;
-using System.ComponentModel;
+using CommunityHub.Application.Services.ResidentAssemblies;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Notifications;
+using CommunityHub.Ui.Views.Resident.Tutorials;
 
 namespace CommunityHub.Ui.ViewModels.Resident
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : BaseViewModel
     {
         private readonly NotificationService _notificationService;
         private readonly AdService _adService;
+        private readonly AssemblyService _assemblyService;
 
-        public long UserId { get; }
+        public HomeViewModel(
+            long userId,
+            IMainNavigationConsumer navigationConsumer
+        ) : base(navigationConsumer) {
+            UserId = userId;
 
-        public HomeViewModel(long userId) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -25,16 +33,35 @@ namespace CommunityHub.Ui.ViewModels.Resident
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
-            UserId = userId;
+            _assemblyService = new();
+
+            OpenNotificationsCommand = new(OpenNotificationsPage);
+            OpenTutorialsCommand = new(OpenTutorialsPage);
+
+            Initialize();
         }
 
-        public void Initialize()
+        public long UserId { get; }
+        public RelayCommand OpenNotificationsCommand { get; }
+        public RelayCommand OpenTutorialsCommand { get; }
+
+        private void OpenNotificationsPage()
+            => Push(
+                new NotificationsPage(UserId),
+                onPop: _ => UpdateUnreadNotificationCount()
+            );
+
+        private void OpenTutorialsPage()
+            => Push(new TutorialsPage());
+
+        private void Initialize()
         {
             UpdateUnreadNotificationCount();
             _adService.ArchiveExpiredAds();
+            _assemblyService.RefreshStatusForAllAssemblies();
         }
 
-        public void UpdateUnreadNotificationCount()
+        private void UpdateUnreadNotificationCount()
         {
             UnreadNotificationCount = _notificationService.GetNotificationCountForUser(
                 UserId,
@@ -46,7 +73,7 @@ namespace CommunityHub.Ui.ViewModels.Resident
         public int UnreadNotificationCount
         {
             get => _unreadNotificationCount;
-            set
+            private set
             {
                 if (_unreadNotificationCount == value) return;
                 _unreadNotificationCount = value;
@@ -68,8 +95,5 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
         public bool HasUnreadNotifications => UnreadNotificationCount > 0;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

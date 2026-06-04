@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
-using CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
 
 namespace CommunityHub.Application.Database.Repositories.CommonRooms
 {
@@ -136,7 +136,11 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
             return reservedDates;
         }
 
-        public List<CommonRoomRentalRequest> GetAllByBuildingId(long buildingId)
+        public List<CommonRoomRentalRequest> GetAllByBuildingId(
+            long buildingId,
+            DateTime? from = null,
+            DateTime? to = null
+        )
         {
             using var connection = DatabaseConnection.Create();
 
@@ -167,16 +171,23 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
                    common_room_rental_request.common_room_id = common_room.id
                    INNER JOIN users resident ON
                    common_room_rental_request.resident_id = resident.id
-                   WHERE common_room.building_id = @building_id;"
+                   WHERE common_room.building_id = @building_id AND
+                     (@from::date IS NULL OR common_room_rental_request.requested_start_date >= @from::date) AND
+                     (@to::date IS NULL OR common_room_rental_request.requested_end_date <= @to::date)  
+                   ORDER BY common_room_rental_request_id;"
             )
-            .AddParameter("building_id", buildingId);
+            .AddParameter("building_id", buildingId)
+            .AddParameter("from", from)
+            .AddParameter("to", to);
 
             var rentalRequests = new List<CommonRoomRentalRequest>();
-            connection.ExecuteReader(query, reader =>
-            {
-                var commonRoomRentalRequest = _commonRoomRentalRequestMapper.MapToEntity(reader);
-                rentalRequests.Add(commonRoomRentalRequest);
-            });
+            connection.ExecuteReader(
+                query, 
+                reader => {
+                    var commonRoomRentalRequest = _commonRoomRentalRequestMapper.MapToEntity(reader);
+                    rentalRequests.Add(commonRoomRentalRequest);
+                }
+            );
 
             return rentalRequests;
         }

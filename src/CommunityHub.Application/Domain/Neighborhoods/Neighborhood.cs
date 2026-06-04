@@ -8,7 +8,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods
         public long Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public int Budget { get; private set; }
+        public decimal Budget { get; private set; }
         public City City { get; private set; }
         public Country Country { get; private set; }
         public User Coordinator { get; private set; }
@@ -18,7 +18,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods
         public Neighborhood(
             string name,
             string description,
-            int budget,
+            decimal budget,
             City city,
             Country country,
             User coordinator,
@@ -42,7 +42,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods
             long? id = null,
             string? name = null,
             string? description = null,
-            int? budget = null,
+            decimal? budget = null,
             City? city = null,
             Country? country = null,
             User? coordinator = null,

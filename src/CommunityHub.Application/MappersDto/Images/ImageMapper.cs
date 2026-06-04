@@ -17,7 +17,7 @@ namespace CommunityHub.Application.MappersDto.Images
                 image.JobListingId
             );
         }
-        public Image MapToDomain(ImageDto dto)
+        public Image MapToEntity(ImageDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

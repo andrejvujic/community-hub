@@ -30,5 +30,7 @@
             EndTime = endTime;
             Reservation = reservation;
         }
+
+        public bool IsReserved => Reservation is not null;
     }
 }

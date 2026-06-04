@@ -7,7 +7,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 {
     public partial class MyEventsWindow : Window
     {
-        private readonly MyEventsViewModel _viewModel;
+        private MyEventsViewModel? _viewModel;
 
         public MyEventsWindow(long userId)
         {
@@ -15,12 +15,27 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             _viewModel = new MyEventsViewModel(userId);
             this.DataContext = _viewModel;
 
-            OrganizerEventsList.PreviewKeyDown += OrganizerEventsList_PreviewKeyDown;
+            if (_viewModel != null)
+            {
+                _viewModel.CloseRequested += (_, _) => Close();
+                _viewModel.OrganizeEventRequested += (_, _) => HandleOrganizeEvent();
+                _viewModel.OpenMarkVolunteersRequested += (_, eventDto) => HandleOpenMarkVolunteers(eventDto);
+            }
+
+            Loaded += (_, _) => _viewModel?.SelectFirstEvent();
         }
 
-        private void OrganizeButton_Click(object sender, RoutedEventArgs e)
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var wnd = new OrganizeEventWindow(_viewModel.UserId);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void HandleOrganizeEvent()
+        {
+            var wnd = new OrganizeEventWindow(_viewModel!.UserId);
             wnd.Owner = this;
             var dialogResult = wnd.ShowDialog();
             if (dialogResult == true)
@@ -30,27 +45,12 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             }
         }
 
-        private void OrganizerEventsList_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void HandleOpenMarkVolunteers(CommunityEventDto eventDto)
         {
-            if (e.Key == Key.Enter)
-            {
-                var selectedEvent = OrganizerEventsList.SelectedItem as CommunityEventDto;
-
-                if (!_viewModel.CanOpenMarkVolunteersWindow(selectedEvent))
-                    return;
-
-                var eventDto = _viewModel.GetEventDto(selectedEvent!.Id);
-                if (eventDto == null)
-                    return;
-
-                var wnd = new MarkVolunteersWindow(eventDto);
-                wnd.Owner = this;
-                wnd.ShowDialog();
-                e.Handled = true;
-
-                _viewModel.LoadEvents();
-            }
+            var wnd = new MarkVolunteersWindow(eventDto);
+            wnd.Owner = this;
+            wnd.ShowDialog();
+            _viewModel?.LoadEvents();
         }
     }
 }
-

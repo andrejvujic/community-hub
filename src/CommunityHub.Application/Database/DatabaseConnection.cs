@@ -4,11 +4,12 @@ using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Issues;
+using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
-using CommunityHub.Application.Domain.Services;
+using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.Domain.Users;
 using Npgsql;
 using System.Data;
@@ -18,12 +19,13 @@ namespace CommunityHub.Application.Database
 {
     public class DatabaseConnection : IDisposable
     {
+        private static readonly NpgsqlDataSource DataSource = BuildDataSource();
         private readonly IDbConnection _connection;
         private IDbTransaction? transaction;
 
         private DatabaseConnection()
         {
-            _connection = CreateNpgsqlConnection();
+            _connection = DataSource.CreateConnection();
             _connection.Open();
         }
 
@@ -117,15 +119,14 @@ namespace CommunityHub.Application.Database
             return convert(value);
         }
 
-        private static IDbConnection CreateNpgsqlConnection()
+        private static NpgsqlDataSource BuildDataSource()
         {
             var connectionString = LoadNpgsqlConnectionString();
             var builder = new NpgsqlDataSourceBuilder(connectionString);
 
             SetupEnumMapping(builder);
 
-            var dataSource = builder.Build();
-            return dataSource.CreateConnection();
+            return builder.Build();
         }
 
         private static string LoadNpgsqlConnectionString()
@@ -160,7 +161,6 @@ namespace CommunityHub.Application.Database
             builder.MapEnum<RentalType>("rental_types");
             builder.MapEnum<MeetingTheme>("meeting_themes");
             builder.MapEnum<MeetingStatus>("meeting_statuses");
-            builder.MapEnum<BudgetCategory>("budget_categories");
             builder.MapEnum<RentalRequestStatus>("common_room_rental_statuses");
             builder.MapEnum<EventStatus>("event_statuses");
             builder.MapEnum<NotificationStatus>("notification_statuses");
@@ -168,6 +168,8 @@ namespace CommunityHub.Application.Database
             builder.MapEnum<AdEventType>("ad_event_types");
             builder.MapEnum<IssuePriority>("reported_issue_priorities");
             builder.MapEnum<IssueStatus>("reported_issue_statuses");
+            builder.MapEnum<AssemblyStatus>("assembly_statuses");
+            builder.MapEnum<AssemblyTopicStatus>("assembly_topic_types");
         }
 
         public void Dispose()

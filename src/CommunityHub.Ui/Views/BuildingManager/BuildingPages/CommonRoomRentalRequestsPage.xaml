@@ -6,16 +6,63 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager.BuildingPages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="CommonRoomRentalRequestsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
-    Loaded="CommonRoomRentalRequestsPage_Loaded"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <conv:RentalTypeToStringConverter x:Key="RentalTypeConverter" />
-        <conv:RentalRequestStatusToStringConverter x:Key="RentalStatusConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <conv:RentalTypeToStringConverter x:Key="RentalTypeConverter" />
+            <conv:RentalRequestStatusToStringConverter x:Key="RentalStatusConverter" />
+
+            <Style x:Key="ActionButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="#0F5AA6" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="BorderBrush" Value="#0F5AA6" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="Padding" Value="10,8,10,8" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border
+                                x:Name="ButtonBorder"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                    <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource NavBarHoverBackgroundBrush}" />
+                                    <Setter Property="Foreground" Value="{StaticResource NavBarHoverForegroundBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#0F3E7D" />
+                                    <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#0F3E7D" />
+                                    <Setter Property="Foreground" Value="White" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#CCCCCC" />
+                                    <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#CCCCCC" />
+                                    <Setter Property="Foreground" Value="#666666" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Margin="10,25,0,0">
@@ -25,40 +72,24 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <TextBlock
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Cursor="Hand"
-                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                    FontSize="28"
-                    MouseLeftButtonDown="LeftArrow_Click"
-                    Text="&#xf060;" />
-            </Grid>
-
-            <Grid Grid.Column="1">
-                <TextBlock
-                    x:Name="streetInfo"
-                    Margin="15,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    FontSize="21"
-                    Text="{Binding StreetInfo}" />
-            </Grid>
+            <TextBlock
+                x:Name="streetInfo"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource InterFontFamily}"
+                FontSize="22"
+                FontWeight="Normal"
+                Foreground="#1C1E21"
+                Text="{Binding StreetInfo}" />
         </Grid>
 
         <Border
             Grid.Row="1"
             Margin="35,30,45,30"
+            Background="White"
             BorderBrush="Black"
-            BorderThickness="2"
-            MouseLeftButtonDown="RentalRequestCard_Click">
+            BorderThickness="2">
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="700" />
@@ -67,141 +98,285 @@
 
                 <Border
                     Grid.Column="0"
+                    Background="White"
                     BorderBrush="Black"
                     BorderThickness="0,0,2,0">
-                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                        <ItemsControl ItemsSource="{Binding RentalRequests}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
 
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border
-                                        Width="600"
-                                        Height="160"
-                                        Margin="20,15,20,15"
-                                        HorizontalAlignment="Center"
-                                        BorderBrush="Black"
-                                        BorderThickness="2"
-                                        CornerRadius="3"
-                                        Cursor="Hand"
-                                        MouseLeftButtonDown="RentalRequestCard_Click">
+                    <ListBox
+                        Background="White"
+                        BorderThickness="0"
+                        ItemsSource="{Binding RentalRequests}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        SelectedItem="{Binding SelectedRentalRequest, Mode=TwoWay}">
 
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Background" Value="White" />
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="LightGray" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
 
-                                        <Grid Margin="20,14,20,14">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="ItemBorder" Background="{TemplateBinding Background}">
+                                                <ContentPresenter />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="ItemBorder" Property="Background" Value="Transparent" />
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="ItemBorder" Property="Background" Value="Transparent" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
 
-                                            <Grid Grid.Row="0">
-                                                <TextBlock FontSize="20">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Width="600"
+                                    MinHeight="160"
+                                    Margin="20,15,20,15"
+                                    HorizontalAlignment="Center"
+                                    BorderBrush="Black"
+                                    BorderThickness="2"
+                                    CornerRadius="3"
+                                    Cursor="Hand">
+
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#F0F0F0" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource SideBarHoverBackgroundBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid Margin="20,14,20,14">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Row="0">
+                                            <TextBlock FontSize="20">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                                <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                                <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}Prostorija: {0}">
+                                                        <Binding Path="CommonRoom.Name" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1" Margin="0,12,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <TextBlock FontSize="17">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="Black" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
                                                     <TextBlock.Text>
-                                                        <MultiBinding StringFormat="{}Prostorija: {0}">
-                                                            <Binding Path="CommonRoom.Name" />
+                                                        <MultiBinding StringFormat="{}Stanar: {0} {1}">
+                                                            <Binding Path="Resident.Name" />
+                                                            <Binding Path="Resident.Surname" />
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
                                             </Grid>
 
-                                            <Grid Grid.Row="1" Margin="0,12,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="1">
+                                                <TextBlock FontSize="17">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding RequestedStartDate, StringFormat='Početni datum: {0:dd.MM.yyyy.}'}" />
+                                                            <Setter Property="Foreground" Value="Black" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
+                                                                        <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Text" Value="{Binding ProposedStartDate, StringFormat='Predloženi početak: {0:dd.MM.yyyy.}'}" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Grid>
 
-                                                <Grid Grid.Column="0">
-                                                    <TextBlock FontSize="17">
-                                                        <TextBlock.Text>
-                                                            <MultiBinding StringFormat="{}Stanar: {0} {1}">
-                                                                <Binding Path="Resident.Name" />
-                                                                <Binding Path="Resident.Surname" />
-                                                            </MultiBinding>
-                                                        </TextBlock.Text>
-                                                    </TextBlock>
-                                                </Grid>
+                                        <Grid Grid.Row="2" Margin="0,12,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                                <Grid Grid.Column="1">
-                                                    <TextBlock FontSize="17">
+                                            <Grid Grid.Column="0">
+                                                <TextBlock FontSize="17">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding CommonRoom.RentalType, Converter={StaticResource RentalTypeConverter}, StringFormat='Način iznajmljivanja: {0}'}" />
+                                                            <Setter Property="Foreground" Value="Black" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+
+                                            <Grid Grid.Column="1">
+                                                <TextBlock FontSize="17">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding RequestedEndDate, StringFormat='Krajnji datum: {0:dd.MM.yyyy.}'}" />
+                                                            <Setter Property="Foreground" Value="Black" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                </DataTrigger>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
+                                                                        <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="Text" Value="{Binding ProposedEndDate, StringFormat='Predloženi kraj: {0:dd.MM.yyyy.}'}" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid Grid.Row="3" Margin="0,12,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="1">
+                                                <Grid VerticalAlignment="Center">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon
+                                                        Grid.Column="0"
+                                                        Width="18"
+                                                        Height="18"
+                                                        Margin="0,0,8,0"
+                                                        VerticalAlignment="Center">
+                                                        <materialDesign:PackIcon.Style>
+                                                            <Style TargetType="materialDesign:PackIcon">
+                                                                <Setter Property="Kind" Value="ClockOutline" />
+                                                                <Setter Property="Foreground" Value="#C69200" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Status}" Value="Approved">
+                                                                        <Setter Property="Kind" Value="CheckCircle" />
+                                                                        <Setter Property="Foreground" Value="#1B8A2F" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Status}" Value="Rejected">
+                                                                        <Setter Property="Kind" Value="CloseCircle" />
+                                                                        <Setter Property="Foreground" Value="#C0392B" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Status}" Value="Waiting">
+                                                                        <Setter Property="Kind" Value="ClockOutline" />
+                                                                        <Setter Property="Foreground" Value="#C69200" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Status}" Value="WaitingDateChange">
+                                                                        <Setter Property="Kind" Value="CalendarClock" />
+                                                                        <Setter Property="Foreground" Value="#C69200" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </materialDesign:PackIcon.Style>
+                                                    </materialDesign:PackIcon>
+                                                    <TextBlock Grid.Column="1" FontSize="16" TextWrapping="Wrap">
                                                         <TextBlock.Style>
                                                             <Style TargetType="TextBlock">
-                                                                <Setter Property="Text" Value="{Binding RequestedStartDate, StringFormat='Početni datum: {0:dd.MM.yyyy.}'}" />
+                                                                <Setter Property="Text" Value="{Binding Status, Converter={StaticResource RentalStatusConverter}, StringFormat='Status: {0}'}" />
+                                                                <Setter Property="Foreground" Value="Black" />
                                                                 <Style.Triggers>
-                                                                    <MultiDataTrigger>
-                                                                        <MultiDataTrigger.Conditions>
-                                                                            <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
-                                                                            <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
-                                                                        </MultiDataTrigger.Conditions>
-                                                                        <Setter Property="Text" Value="{Binding ProposedStartDate, StringFormat='Predloženi početak: {0:dd.MM.yyyy.}'}" />
-                                                                    </MultiDataTrigger>
+                                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                                                        <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                                        <Setter Property="Foreground" Value="{StaticResource SideBarHoverForegroundBrush}" />
+                                                                    </DataTrigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </TextBlock.Style>
                                                     </TextBlock>
-                                                </Grid>
-                                            </Grid>
-
-                                            <Grid Grid.Row="2" Margin="0,12,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <Grid Grid.Column="0">
-                                                    <TextBlock FontSize="17" Text="{Binding CommonRoom.RentalType, Converter={StaticResource RentalTypeConverter}, StringFormat='Način iznajmljivanja: {0}'}" />
-                                                </Grid>
-
-                                                <Grid Grid.Column="1">
-                                                    <TextBlock FontSize="17">
-                                                        <TextBlock.Style>
-                                                            <Style TargetType="TextBlock">
-                                                                <Setter Property="Text" Value="{Binding RequestedEndDate, StringFormat='Krajnji datum: {0:dd.MM.yyyy.}'}" />
-                                                                <Style.Triggers>
-                                                                    <MultiDataTrigger>
-                                                                        <MultiDataTrigger.Conditions>
-                                                                            <Condition Binding="{Binding CommonRoom.RentalType}" Value="MultiDay" />
-                                                                            <Condition Binding="{Binding Status}" Value="WaitingDateChange" />
-                                                                        </MultiDataTrigger.Conditions>
-                                                                        <Setter Property="Text" Value="{Binding ProposedEndDate, StringFormat='Predloženi kraj: {0:dd.MM.yyyy.}'}" />
-                                                                    </MultiDataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </TextBlock.Style>
-                                                    </TextBlock>
-                                                </Grid>
-                                            </Grid>
-
-                                            <Grid Grid.Row="3" Margin="0,12,0,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <Grid Grid.Column="1">
-                                                    <TextBlock FontSize="16" Text="{Binding Status, Converter={StaticResource RentalStatusConverter}, StringFormat='Status: {0}'}" />
                                                 </Grid>
                                             </Grid>
                                         </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Border>
 
                 <Grid Grid.Column="1">
@@ -215,10 +390,10 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             FontSize="29"
-                            Text="Akcija upravnika" />
+                            Text="Postupanje po zahtevu" />
                     </Grid>
 
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Background="White">
                         <TextBlock
                             x:Name="defaultActionText"
                             HorizontalAlignment="Center"
@@ -273,21 +448,23 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
 
-                            <ItemsControl ItemsSource="{Binding SuggestedOneDayDates}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button
-                                            Margin="0,6,0,6"
-                                            Padding="10,6,10,6"
-                                            Click="OneDaySuggestionButton_Click"
-                                            Cursor="Hand"
-                                            FontSize="15"
-                                            Tag="{Binding}">
-                                            <TextBlock Text="{Binding StringFormat={}{0:dd.MM.yyyy.}}" />
-                                        </Button>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <ScrollViewer Height="260" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding SuggestedOneDayDates}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button
+                                                Margin="0,6,0,6"
+                                                Padding="10,6,10,6"
+                                                Command="{Binding DataContext.ApproveOneDaySuggestionCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"
+                                                FontSize="15"
+                                                Style="{StaticResource ActionButtonStyle}">
+                                                <TextBlock Text="{Binding StringFormat={}{0:dd.MM.yyyy.}}" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
 
                             <TextBlock
                                 Margin="0,20,0,0"
@@ -308,20 +485,22 @@
                                 TextAlignment="Center"
                                 TextWrapping="Wrap" />
 
-                            <ItemsControl ItemsSource="{Binding SuggestedMultiDayRanges}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button
-                                            Margin="0,6,0,6"
-                                            Padding="10,6,10,6"
-                                            Click="MultiDaySuggestionButton_Click"
-                                            Content="{Binding DisplayText}"
-                                            Cursor="Hand"
-                                            FontSize="15"
-                                            Tag="{Binding}" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <ScrollViewer Height="260" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding SuggestedMultiDayRanges}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button
+                                                Margin="0,6,0,6"
+                                                Padding="10,6,10,6"
+                                                Command="{Binding DataContext.AcceptMultiDaySuggestionCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"
+                                                Content="{Binding DisplayText}"
+                                                FontSize="15"
+                                                Style="{StaticResource ActionButtonStyle}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
 
                             <TextBlock
                                 Margin="0,20,0,0"

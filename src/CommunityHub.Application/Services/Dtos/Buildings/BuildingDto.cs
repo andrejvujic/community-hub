@@ -8,7 +8,7 @@ namespace CommunityHub.Application.Services.Dtos.Buildings
     {
         public long Id { get; set; }
         public int FloorCount { get; set; }
-        public int? ApartmentCount { get; set; }
+        public int ApartmentCount { get; set; }
         public UserDto Manager { get; set; }
         public AddressDto Address { get; set; }
         public string DisplayAddress { get; set; }
@@ -19,7 +19,7 @@ namespace CommunityHub.Application.Services.Dtos.Buildings
         public BuildingDto(
             long id,
             int floorCount,
-            int? apartmentCount,
+            int apartmentCount,
             UserDto manager,
             AddressDto address,
             string displayAddress,

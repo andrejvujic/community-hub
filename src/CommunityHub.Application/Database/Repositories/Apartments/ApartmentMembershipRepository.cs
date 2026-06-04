@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Apartments;
-using CommunityHub.Application.Domain.Apartments.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Apartments;
 
 namespace CommunityHub.Application.Database.Repositories.Apartments
 {
@@ -181,7 +181,7 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
         public List<ApartmentMembership> GetByUserAndBuilding(long userId, long buildingId)
         {
             using var connection = DatabaseConnection.Create();
-            
+
             var query = DatabaseQuery.Create(
                 @"SELECT
                 membership.id as membership_id,
@@ -248,6 +248,34 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             return memberships;
         }
 
+        public List<long> GetApartmentIdsByResidentAndBuilding(long residentId, long buildingId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT membership.apartment_id
+                FROM apartment_memberships membership
+                INNER JOIN apartments apartment ON membership.apartment_id = apartment.id
+                WHERE membership.building_resident_id = @resident_id
+                    AND apartment.building_id = @building_id;"
+            )
+            .AddParameter("resident_id", residentId)
+            .AddParameter("building_id", buildingId);
+
+            List<long> apartmentIds = new();
+
+            connection.ExecuteReader(
+                query,
+                reader => apartmentIds.Add(
+                    reader.GetInt64(
+                        reader.GetOrdinal("apartment_id")
+                    )
+                )
+            );
+
+            return apartmentIds;
+        }
+
         public bool Exists(long apartmentId)
         {
             using var connection = DatabaseConnection.Create();
@@ -279,6 +307,24 @@ namespace CommunityHub.Application.Database.Repositories.Apartments
             .AddParameter("resident_id", residentId);
 
             return connection.ExecuteScalar(query, Convert.ToBoolean);
+        }
+
+        public int CountResidentsForManagerBuildings(long managerId)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                @"SELECT COUNT(am.id)
+                    FROM users u
+                    JOIN buildings b ON u.id = b.building_manager_id
+                    JOIN apartments ap ON b.id = ap.building_id
+                    JOIN apartment_memberships am ON ap.id = am.apartment_id
+                    WHERE u.id = @managerId
+                    AND u.user_role = 'building_manager';"
+                )
+            .AddParameter("managerId", managerId);
+
+            return connection.ExecuteScalar(query, Convert.ToInt32);
         }
     }
 }

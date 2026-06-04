@@ -24,17 +24,17 @@ namespace CommunityHub.Application.Services.Dtos.CommonRooms
         public RentalRequestStatus Status { get; set; }
 
         public CommonRoomRentalRequestDto(
-            long id,
             long commonRoomId,
-            CommonRoomDto? commonRoom,
             long residentId,
-            UserDto? resident,
             DateTime requestedStartDate,
             DateTime requestedEndDate,
-            DateTime? proposedStartDate,
-            DateTime? proposedEndDate,
-            DateTime? assignedDate,
-            RentalRequestStatus status
+            RentalRequestStatus status,
+            CommonRoomDto? commonRoom = null,
+            UserDto? resident = null,
+            DateTime? assignedDate = null,
+            DateTime? proposedStartDate = null,
+            DateTime? proposedEndDate = null,
+            long id = 0
         )
         {
             Id = id;
@@ -49,5 +49,11 @@ namespace CommunityHub.Application.Services.Dtos.CommonRooms
             AssignedDate = assignedDate;
             Status = status;
         }
+
+        public bool IsApproved => Status is RentalRequestStatus.Approved;
+        public bool IsPending
+            => Status is RentalRequestStatus.Waiting || Status is RentalRequestStatus.WaitingDateChange;
+
+        public bool HasProposedDateRange => ProposedStartDate is not null && ProposedEndDate is not null;
     }
 }

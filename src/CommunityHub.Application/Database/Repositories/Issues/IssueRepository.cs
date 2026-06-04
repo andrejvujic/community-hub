@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Issues;
-using CommunityHub.Application.Domain.Issues.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Issues;
 
 namespace CommunityHub.Application.Database.Repositories.Issues
 {
@@ -8,12 +8,29 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 	{
 		private readonly IssueMapper _issueMapper = new();
 
-		public List<Issue> GetAllByBuilding(long buildingId)
+		public Issue Create(Issue issue)
 		{
 			using var connection = DatabaseConnection.Create();
 
 			var query = DatabaseQuery.Create(
-				@"SELECT
+				@"INSERT INTO reported_issues
+					(description, reported_date, priority, status, resident_id, building_id)
+				VALUES
+					(@description, @reported_date, @priority, @status, @resident_id, @building_id)
+				RETURNING id;"
+			).ExtendParameters(_issueMapper.MapToQueryParameters(issue));
+
+			long id = connection.ExecuteScalar(query, Convert.ToInt64);
+
+			return issue.CopyWith(id: id);
+		}
+
+		public List<Issue> GetAllByBuilding(long buildingId, DateTime? from = null, DateTime? to = null)
+		{
+			using var connection = DatabaseConnection.Create();
+
+			var query = DatabaseQuery.Create(
+                @"SELECT
 					reported_issue.id AS reported_issue_id,
 					reported_issue.description,
 					reported_issue.reported_date,
@@ -30,12 +47,17 @@ namespace CommunityHub.Application.Database.Repositories.Issues
 					u.surname AS resident_surname
 	
 					FROM reported_issues reported_issue INNER JOIN users u on reported_issue.resident_id = u.id 
-					WHERE reported_issue.building_id = @building_id
+					WHERE reported_issue.building_id = @building_id AND
+					(@from::date IS NULL OR reported_issue.reported_date >= @from::date) AND
+					(@to::date IS NULL OR reported_issue.reported_date <= @to::date)
 					ORDER BY reported_issue.reported_date ASC;"
-				)
-				.AddParameter("@building_id", buildingId);
+                )
+				.AddParameter("@building_id", buildingId)
+				.AddParameter("@from", from)
+                .AddParameter("@to", to);
 
-			List<Issue> issues = [];
+
+            List<Issue> issues = [];
 
 			connection.ExecuteReader(query, reader => issues.Add(_issueMapper.MapToEntity(reader)));
 

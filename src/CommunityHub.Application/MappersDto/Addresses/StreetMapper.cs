@@ -11,7 +11,7 @@ namespace CommunityHub.Application.MappersDto.Addresses
 
             return new StreetDto(street.Id, street.Name);
         }
-        public Street MapToDomain(StreetDto dto)
+        public Street MapToEntity(StreetDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 

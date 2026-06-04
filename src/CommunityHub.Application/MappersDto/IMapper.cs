@@ -3,6 +3,6 @@
     public interface IMapper<TDomain, TDto>
     {
         TDto MapToDto(TDomain domain);
-        TDomain MapToDomain(TDto dto);
+        TDomain MapToEntity(TDto dto);
     }
 }

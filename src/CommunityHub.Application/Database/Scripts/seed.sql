@@ -403,12 +403,12 @@ INSERT INTO job_listings (id, service_name, description, billing_type, city_id, 
 (3,  'Popravka igrališta',        'Servisiranje i zamena dotrajalih delova na dečijim igralištima.',                        'per_job',  2, 1, 23);
  
 INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VALUES
-(1,  15000.00, '2025-01-01', '2026-05-20', 1),
-(2,  16500.00, '2026-05-21', '2026-12-31', 1),
-(3,   1200.00, '2025-01-01', '2026-05-20', 2),
-(4,   1400.00, '2026-05-21', '2026-12-31', 2),
-(5,  12000.00, '2025-01-01', '2026-05-20', 3),
-(6, 13500.00, '2026-05-21', '2026-12-31', 3);
+(1,  15000.00, '2025-01-01', '2026-05-24', 1),
+(2,  16500.00, '2026-05-25', '2026-12-31', 1),
+(3,   1200.00, '2025-01-01', '2026-05-24', 2),
+(4,   1400.00, '2026-05-25', '2026-12-31', 2),
+(5,  12000.00, '2025-01-01', '2026-05-24', 3),
+(6, 13500.00, '2026-05-25', '2026-12-31', 3);
  
 INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
 (1,  '2026-02-10', NULL,    NULL, 15000.00, FALSE, 1,  1,  NULL),
@@ -785,7 +785,98 @@ INSERT INTO reported_issues (description, reported_date, priority, status, resid
 ('Sijalica u hodniku na 2. spratu je pregorela.', '2026-03-18', 'can_wait', 'resolved', 2, 1),
 ('Curenje vode iz cevi u podrumu, mokri zidovi.', '2026-04-01', 'should_be_resolved_soon', 'potentially_resolved', 3, 1),
 ('Interfon na glavnom ulazu ne funkcioniše.', '2026-04-15', 'should_be_resolved_soon', 'open', 4, 1),
-('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1);
+('Pukotine na fasadi vidljive sa ulice.', '2026-04-22', 'can_wait', 'open', 5, 1),
+('Ne radi rasveta u hodniku na 1. spratu.', '2026-05-02', 'should_be_resolved_soon', 'open', 7, 6),
+('Ulazna vrata zgrade se tesko zatvaraju i brava zapinje.', '2026-05-06', 'can_wait', 'open', 9, 6),
+('U podrumu se oseca jak miris vlage i vide se tragovi curenja.', '2026-05-11', 'urgent', 'potentially_resolved', 17, 6),
+('Interfon na glavnom ulazu ne radi za nekoliko stanova.', '2026-05-19', 'should_be_resolved_soon', 'open', 19, 6);
+
+INSERT INTO assemblies (id, building_id, starts_at, status) VALUES
+(1,  1,  '2026-06-10 18:00:00', 'scheduled'),
+(2,  2,  '2026-06-12 19:00:00', 'confirmed'),
+(3,  3,  '2026-06-08 17:30:00', 'cancelled'),
+(4,  4,  '2026-06-15 18:30:00', 'scheduled'),
+(5,  5,  '2026-06-18 20:00:00', 'confirmed'),
+(6,  6,  '2026-06-07 18:00:00', 'scheduled'),
+(7,  7,  '2026-06-20 19:00:00', 'scheduled'),
+(8,  8,  '2026-06-22 18:00:00', 'confirmed'),
+(9,  9,  '2026-06-25 19:30:00', 'scheduled'),
+(10, 10, '2026-06-28 17:00:00', 'cancelled'),
+(12,  1,  '2026-05-30 10:00:00', 'cancelled');
+
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 5),
+(1, 7),
+(1, 8),
+(1, 10),
+(1, 12),
+(1, 15),
+(1, 18),
+(1, 20);
+
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(2, 25),
+(2, 26),
+(2, 27),
+(2, 28),
+(2, 29),
+(2, 30),
+(2, 31),
+(2, 32),
+(2, 33),
+(2, 34),
+(2, 35),
+(2, 36),
+(2, 37),
+(2, 38),
+(2, 39),
+(2, 40),
+(2, 41),
+(2, 42),
+(2, 43),
+(2, 44),
+(2, 45),
+(2, 46),
+(2, 47);
+
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES
+(3, 70),
+(3, 71),
+(3, 72),
+(3, 73),
+(3, 74);
+
+INSERT INTO assembly_attendances (assembly_id, apartment_id) VALUES 
+(6, 125),
+(6, 129),
+(6, 130);
+
+
+INSERT INTO assembly_topics
+(description, assembly_id, author_id, topic_type) VALUES
+('Pregled troskova odrzavanja zgrade', 1, 1, 'accepted'),
+('Plan redovnog servisa lifta', 1, 1, 'accepted'),
+('Uredjenje ulaza i zajednickih hodnika', 1, 1, 'accepted'),
+('Popravka interfona na glavnom ulazu', 1, 6, 'suggested'),
+('Predlog dnevnog reda i organizacije sastanka', 6, 1, 'accepted'),
+('Servis protivpozarnog aparata', 6, 16, 'suggested'),
+('Zamena sijalica u hodnicima', 1, 9, 'suggested'),
+('Postavljanje dodatnih kamera u ulazu', 1, 17, 'suggested'),
+('Sanacija vlage u podrumu', 1, 6, 'accepted'),
+('Popravka ulaznih vrata', 2, 7, 'accepted'),
+('Organizacija dezinfekcije zgrade', 3, 8, 'accepted'),
+('Zamena tabli sa obavestenjima', 4, 9, 'accepted'),
+('Ciscenje podruma', 5, 10, 'accepted'),
+('Farbanje ograde', 7, 17, 'accepted'),
+('Postavljanje novog zvonceta', 8, 18, 'accepted'),
+('Uredjenje dvorista', 9, 19, 'accepted'),
+('Uvodjenje video nadzora', 10, 20, 'accepted'),
+('Pregled troskova odrzavanja zgrade', 12, 1, 'accepted'),
+('Popravka lifta', 6, 16, 'suggested');
+
 
 INSERT INTO images (path, building_id) VALUES
 ('/Resources/Images/building_0.jpg', 1),
@@ -931,40 +1022,50 @@ INSERT INTO facility_reservations (id, start_datetime, end_datetime, facility_id
 (11, '2026-06-01 11:00:00', '2026-06-01 14:00:00', 2,  1),
 (12, '2026-06-10 15:00:00', '2026-06-10 18:00:00', 3,  2);
 
-INSERT INTO budget_category_balances (category, neighborhood_id, total_amount) VALUES
-('street_maintenance', 1, 200000.00),
-('park_maintenance',   1, 150000.00),
-('lighting',           1, 80000.00),
-('cleanliness',        1, 120000.00),
-('greenery',           1, 100000.00),
-('emergency_repairs',  1, 100000.00),
-('playgrounds',        1, 50000.00),
-('sports_facilities',  1, 50000.00),
-('street_maintenance', 6, 100000.00),
-('park_maintenance',   6, 50000.00),
-('lighting',           6, 40000.00),
-('cleanliness',        6, 80000.00),
-('greenery',           6, 50000.00),
-('emergency_repairs',  6, 60000.00),
-('playgrounds',        6, 20000.00),
-('sports_facilities',  6, 20000.00),
-('street_maintenance', 11, 120000.00),
-('park_maintenance',   11, 60000.00),
-('lighting',           11, 50000.00),
-('cleanliness',        11, 70000.00),
-('greenery',           11, 50000.00),
-('emergency_repairs',  11, 80000.00),
-('playgrounds',        11, 20000.00),
-('sports_facilities',  11, 20000.00);
-
+INSERT INTO budget_categories (id, name) VALUES
+(1, 'Uređenje ulica'),
+(2, 'Uređenje parkova'),
+(3, 'Rasveta'),
+(4, 'Čistoća'),
+(5, 'Zelenilo'),
+(6, 'Hitne popravke'),
+(7, 'Dečija igrališta'),
+(8, 'Sportski tereni');
+ 
+INSERT INTO budget_category_balances (category_id, neighborhood_id, total_amount) VALUES
+(1, 1, 200000.00),
+(2, 1, 150000.00),
+(3, 1,  80000.00),
+(4, 1, 120000.00),
+(5, 1, 100000.00),
+(6, 1, 100000.00),
+(7, 1,  50000.00),
+(8, 1,  50000.00),
+(1, 6, 100000.00),
+(2, 6,  50000.00),
+(3, 6,  40000.00),
+(4, 6,  80000.00),
+(5, 6,  50000.00),
+(6, 6,  60000.00),
+(7, 6,  20000.00),
+(8, 6,  20000.00),
+(1, 11, 120000.00),
+(2, 11,  60000.00),
+(3, 11,  50000.00),
+(4, 11,  70000.00),
+(5, 11,  50000.00),
+(6, 11,  80000.00),
+(7, 11,  20000.00),
+(8, 11,  20000.00);
+ 
 INSERT INTO budget_expenses (amount, description, expense_date, budget_category_balance_id, coordinator_id) VALUES
-(12500.50, 'Popravka ulične svetiljke u Njegoševoj', '2026-04-20', 3, 11),
-(45000.00, 'Asfaltiranje udarne rupe kod hrama', '2026-04-25', 1, 11),
-(8200.00,  'Nove sadnice za Karađorđev park', '2026-05-01', 5, 11),
-(5600.00,  'Zamena peska u peskarniku na igralištu', '2026-04-15', 15, 11),
-(15000.00, 'Hitna sanacija vodovodne cevi', '2026-04-28', 14, 11),
-(22000.00, 'Farbanje klupa u glavnom parku', '2026-05-02', 18, 11),
-(3100.00,  'Nabavka kesa za komunalni otpad', '2026-04-10', 20, 11);
+(12500.50, 'Popravka ulične svetiljke u Njegoševoj', '2026-04-20', 3,  11),
+(45000.00, 'Asfaltiranje udarne rupe kod hrama',     '2026-04-25', 1,  11),
+( 8200.00, 'Nove sadnice za Karađorđev park',        '2026-05-01', 5,  11),
+( 5600.00, 'Zamena peska u peskarniku na igralištu', '2026-04-15', 7,  11),
+(15000.00, 'Hitna sanacija vodovodne cevi',          '2026-04-28', 6,  11),
+(22000.00, 'Farbanje klupa u glavnom parku',         '2026-05-02', 2,  11),
+( 3100.00, 'Nabavka kesa za komunalni otpad',        '2026-04-10', 4,  11);
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (16, '2026-04-01', 1), (17, '2026-04-01', 1), (18, '2026-04-01', 1), (19, '2026-04-01', 1), (20, '2026-04-01', 1), (21, '2026-04-01', 1),
@@ -982,26 +1083,42 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (133, 11, 'accepted', '2026-03-25'), (134, 11, 'accepted', '2026-03-25'), (135, 11, 'accepted', '2026-03-25'), (136, 11, 'accepted', '2026-03-25'), (137, 11, 'accepted', '2026-03-25'), (138, 11, 'accepted', '2026-03-25');
 
 INSERT INTO neighborhood_meetings (id, theme, meeting_time, date_range_start, date_range_end, scheduled_date, status, neighborhood_id) VALUES
-(11, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 1),
-(12, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 1),
-(13, 'welcome', '11:00', '2026-05-18', '2026-05-23', NULL, 'in_preparation', 1),
-(14, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 6),
-(15, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 6),
-(16, 'welcome', '11:00', '2026-05-18', '2026-05-22', NULL, 'in_preparation', 6),
-(17, 'welcome', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 11),
-(18, 'motivation', '11:00', '2026-05-19', '2026-05-23', NULL, 'in_preparation', 11),
-(19, 'welcome', '11:00', '2026-05-18', '2026-05-22', NULL, 'in_preparation', 11);
+(11, 'welcome', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
+(12, 'motivation', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 1),
+(13, 'welcome', '20:00', '2026-05-23', '2026-05-28', NULL, 'in_preparation', 1),
+(14, 'welcome', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
+(15, 'motivation', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 6),
+(16, 'welcome', '20:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 6),
+(17, 'welcome', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
+(18, 'motivation', '20:00', '2026-05-24', '2026-05-28', NULL, 'in_preparation', 11),
+(19, 'welcome', '20:00', '2026-05-23', '2026-05-27', NULL, 'in_preparation', 11);
 
 INSERT INTO meeting_date_votes (id, voted_date, meeting_id, citizen_id) VALUES
-(11, '2026-05-19', 11, 121), (12, '2026-05-20', 11, 122),
-(13, '2026-05-19', 12, 123), (14, '2026-05-21', 12, 124),
-(15, '2026-05-18', 13, 125), (16, '2026-05-19', 13, 126),
-(17, '2026-05-19', 14, 127), (18, '2026-05-20', 14, 128),
-(19, '2026-05-19', 15, 129), (20, '2026-05-21', 15, 130),
-(21, '2026-05-18', 16, 131), (22, '2026-05-19', 16, 132),
-(23, '2026-05-19', 17, 133), (24, '2026-05-20', 17, 134),
-(25, '2026-05-19', 18, 135), (26, '2026-05-21', 18, 136),
-(27, '2026-05-18', 19, 137), (28, '2026-05-19', 19, 138);
+(11, '2026-05-24', 11, 121), (12, '2026-05-25', 11, 122),
+(13, '2026-05-23', 12, 123), (14, '2026-05-26', 12, 124),
+(15, '2026-05-23', 13, 125), (16, '2026-05-24', 13, 126),
+(17, '2026-05-24', 14, 127), (18, '2026-05-25', 14, 128),
+(19, '2026-05-24', 15, 129), (20, '2026-05-26', 15, 130),
+(21, '2026-05-23', 16, 131), (22, '2026-05-24', 16, 132),
+(23, '2026-05-24', 17, 133), (24, '2026-05-25', 17, 134),
+(25, '2026-05-24', 18, 135), (26, '2026-05-26', 18, 136),
+(27, '2026-05-23', 19, 137), (28, '2026-05-24', 19, 138);
+
+INSERT INTO budget_donations (id, amount, donation_date, neighborhood_id, budget_category_id, citizen_id) VALUES
+(1, 50.00, '2026-04-15', 1, 1, 121),
+(2, 100.00, '2026-04-20', 1, 2, 122),
+(3, 75.50, '2026-05-05', 1, 3, 123),
+(4, 200.00, '2026-05-10', 1, 4, 124),
+(5, 150.00, '2026-05-15', 1, 5, 125),
+(6, 80.00, '2026-04-18', 6, 1, 127),
+(7, 120.00, '2026-05-01', 6, 2, 128),
+(8, 95.00, '2026-05-12', 6, 3, 129),
+(9, 300.00, '2026-05-20', 6, 4, 130),
+(10, 175.00, '2026-06-01', 6, 5, 131),
+(11, 60.00, '2026-04-25', 11, 1, 133),
+(12, 140.00, '2026-05-08', 11, 2, 134),
+(13, 85.00, '2026-05-18', 11, 3, 135),
+(14, 250.00, '2026-06-05', 11, 4, 136);
 
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (34, '2026-04-15', 1),
@@ -1021,12 +1138,6 @@ INSERT INTO neighborhood_access_requests (citizen_id, neighborhood_id, status, c
 (141, 1, 'accepted', '2026-04-25'),
 (142, 1, 'accepted', '2026-05-05');
  
--- ============================================================
--- 4. KVART 6 (Mali Bajmok) — NAJVIŠE NEAKTIVNIH građana
---    Membership stariji od godinu dana + totalEvents < 5 → Inactive
---    Dodajemo membership-e sa datumom pre 2025-05-18 (pre godinu dana)
---    i NE dodajemo event registrations → organized=0, volunteered=0 < 5
--- ============================================================
 INSERT INTO neighborhood_memberships (id, acceptance_date, neighborhood_id) VALUES
 (38, '2024-03-01', 6),
 (39, '2024-04-01', 6),
@@ -1125,6 +1236,46 @@ INSERT INTO event_registrations (id, attended, event_id, citizen_id) VALUES
 (18, TRUE, 18, 158),
 (19, TRUE, 19, 158),
 (20, TRUE, 20, 158);
+
+INSERT INTO facility_votes (id, facility_id, citizen_id) VALUES
+(1, 1, 101),
+(2, 2, 101),
+(3, 1, 105),
+(4, 3, 105),
+(5, 2, 111),
+(6, 3, 111),
+(7, 1, 102),
+(8, 3, 102),
+(9, 2, 112),
+(10, 4, 103),
+(11, 5, 103),
+(12, 4, 113),
+(13, 6, 104),
+(14, 7, 114),
+(15, 8, 106),
+(16, 9, 107),
+(17, 10, 108);
+
+INSERT INTO coordinator_reviews (id, rating, comment, created_at, neighborhood_id, reviewer_id, is_removed) VALUES
+(1, 5, NULL, '2026-02-15 10:30:00', 1, 101, false),
+(2, 4, NULL, '2026-02-20 14:45:00', 1, 105, false),
+(3, 2, 'Koordinator nije dostupan.', '2026-03-01 09:15:00', 1, 111, false),
+(4, 5, NULL, '2026-02-18 16:20:00', 2, 102, false),
+(5, 3, 'Spora komunikacija sa stanovnicima.', '2026-02-25 11:00:00', 2, 112, false),
+(6, 4, NULL, '2026-03-05 13:30:00', 2, 117, false),
+(7, 5, NULL, '2026-02-22 10:00:00', 3, 103, false),
+(8, 5, NULL, '2026-02-28 15:45:00', 3, 113, false),
+(9, 4, NULL, '2026-03-03 12:15:00', 3, 118, false),
+(10, 5, NULL, '2026-02-17 09:30:00', 4, 104, false),
+(11, 4, NULL, '2026-02-24 14:00:00', 4, 119, false),
+(12, 5, NULL, '2026-03-02 11:20:00', 4, 109, false),
+(13, 4, NULL, '2026-02-19 10:45:00', 5, 120, false),
+(14, 5, NULL, '2026-02-26 16:30:00', 5, 110, false);
+
+INSERT INTO review_reports (id, review_id, reporter_id, created_at) VALUES
+(1, 3, 105, '2026-03-02 10:00:00'),
+(2, 3, 112, '2026-03-03 11:30:00'),
+(3, 5, 102, '2026-03-01 09:45:00');
 
 SELECT setval(
     pg_get_serial_sequence('public.users', 'id'),
@@ -1313,6 +1464,12 @@ SELECT setval(
 );
 
 SELECT setval(
+    pg_get_serial_sequence('public.assemblies', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.assemblies), 0),
+    true
+);
+
+SELECT setval(
     pg_get_serial_sequence('public.images', 'id'),
     COALESCE((SELECT MAX(id) FROM public.images), 0),
     true
@@ -1321,6 +1478,54 @@ SELECT setval(
 SELECT setval(
     pg_get_serial_sequence('public.neighborhood_meetings', 'id'),
     COALESCE((SELECT MAX(id) FROM public.neighborhood_meetings), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.facility_reservations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.facility_reservations), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.facility_votes', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.facility_votes), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.coordinator_reviews', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.coordinator_reviews), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.review_reports', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.review_reports), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_categories', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.budget_categories), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_category_balances', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.budget_category_balances), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_expenses', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.budget_expenses), 0),
+    true
+);
+
+SELECT setval(
+    pg_get_serial_sequence('public.budget_donations', 'id'),
+    COALESCE((SELECT MAX(id) FROM public.budget_donations), 0),
     true
 );
 

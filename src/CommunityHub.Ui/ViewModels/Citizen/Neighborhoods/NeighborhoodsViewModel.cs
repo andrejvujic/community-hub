@@ -3,8 +3,10 @@ using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 {
@@ -22,6 +24,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         private string _errorMessage = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? SearchRequested;
+        public event EventHandler? RequestAccessRequested;
+        public event EventHandler? CoordinatorRequested;
+        public event EventHandler? MyAccessRequestsRequested;
 
         public CitizenDto? CurrentUser
         {
@@ -65,11 +71,31 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public NeighborhoodSearchParameters? LastSearchParameters => _searchParameters;
 
+        public ICommand SearchCommand { get; }
+        public ICommand AccessOrCoordinatorCommand { get; }
+        public ICommand MyAccessRequestsCommand { get; }
+
         public NeighborhoodsViewModel(long userId)
         {
             _userId = userId;
+
+            SearchCommand = new RelayCommand<object>(_ => SearchRequested?.Invoke(this, EventArgs.Empty));
+            AccessOrCoordinatorCommand = new RelayCommand<object>(_ =>
+            {
+                if (Membership != null)
+                    CoordinatorRequested?.Invoke(this, EventArgs.Empty);
+                else
+                    RequestAccessRequested?.Invoke(this, EventArgs.Empty);
+            });
+            MyAccessRequestsCommand = new RelayCommand<object>(_ => MyAccessRequestsRequested?.Invoke(this, EventArgs.Empty));
+
             LoadCurrentUser();
             LoadNeighborhoods();
+
+            if (Neighborhoods.Count > 0)
+            {
+                SelectedNeighborhood = Neighborhoods[0];
+            }
         }
 
         private void LoadCurrentUser()
@@ -126,6 +152,18 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             }
 
             return true;
+        }
+
+        public string GetAccessResultMessage(NeighborhoodDto neighborhood)
+        {
+            if (CurrentUser?.Membership != null)
+            {
+                return "Vaša adresa pripada ovom kvartu. Bićete automatski pridruženi kvartu.";
+            }
+            else
+            {
+                return "Vaša adresa ne pripada ovom kvartu. Biće kreiran zahtev za pristup.";
+            }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

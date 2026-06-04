@@ -19,14 +19,14 @@ namespace CommunityHub.Application.MappersDto.Events
             );
         }
 
-        public EventItemAssignment MapToDomain(EventItemAssignmentDto dto)
+        public EventItemAssignment MapToEntity(EventItemAssignmentDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new EventItemAssignment(
                 dto.Id,
-                _eventRegistrationMapper.MapToDomain(dto.Registration),
-                _eventItemMapper.MapToDomain(dto.Item)
+                _eventRegistrationMapper.MapToEntity(dto.Registration),
+                _eventItemMapper.MapToEntity(dto.Item)
             );
         }
     }

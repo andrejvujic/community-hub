@@ -1,11 +1,40 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.CityFacilities;
 
 namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacilities
 {
-    public class CityFacilityRepository
+    public class CityFacilityRepository : ICityFacilityRepository
     {
         private readonly CityFacilityMapper _cityFacilityMapper = new CityFacilityMapper();
+
+        public CityFacility? GetById(long id)
+        {
+            var query = PostgresQuery.Create(
+                @"SELECT
+                    city_facility.id AS city_facility_id,
+                    city_facility.name AS city_facility_name,
+
+                    city.id AS facility_city_id,
+                    city.name AS facility_city_name,
+
+                    country.id AS facility_country_id,
+                    country.name AS facility_country_name
+
+                FROM city_facilities city_facility
+                INNER JOIN cities city ON city.id = city_facility.city_id
+                INNER JOIN countries country ON country.id = city.country_id
+                WHERE city_facility.id = @id"
+            ).AddParameter("id", id);
+
+            CityFacility? facility = null;
+            query.ExecuteReader(reader =>
+            {
+                facility = _cityFacilityMapper.MapToEntity(reader);
+            });
+
+            return facility;
+        }
 
         public List<CityFacility> GetByCityId(long cityId)
         {

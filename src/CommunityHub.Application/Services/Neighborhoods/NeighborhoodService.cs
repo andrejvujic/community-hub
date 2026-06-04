@@ -1,5 +1,5 @@
-﻿using CommunityHub.Application.Domain.Addresses.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Neighborhoods.RepositoryInterfaces;
+﻿using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.MappersDto.Addresses;
 using CommunityHub.Application.MappersDto.Neighborhoods;
@@ -26,7 +26,7 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public NeighborhoodDto Create(NeighborhoodDto neighborhoodDto)
         {
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
             var created = _neighborhoodRepository.Create(neighborhood);
 
             return _neighborhoodMapper.MapToDto(created);
@@ -52,9 +52,15 @@ namespace CommunityHub.Application.Services.Neighborhoods
 
         public bool AddressIsInNeighborhood(NeighborhoodDto neighborhoodDto, AddressDto addressDto)
         {
-            var neighborhood = _neighborhoodMapper.MapToDomain(neighborhoodDto);
-            var address = _addressMapper.MapToDomain(addressDto);
+            var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
+            var address = _addressMapper.MapToEntity(addressDto);
             return neighborhood.Contains(address);
         }
+
+        public int GetNeighborhoodCountsByCoordinator(long coordinatorId)
+            => _neighborhoodRepository.GetNeighborhoodCountsByCoordinatorId(coordinatorId);
+
+        public void UpdateBudget(long neighborhoodId, int newBudget)
+            => _neighborhoodRepository.UpdateBudget(neighborhoodId, newBudget);
     }
 }

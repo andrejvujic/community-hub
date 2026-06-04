@@ -27,5 +27,7 @@ namespace CommunityHub.Application.Services.Dtos.CommonRooms
             FloorNumber = floorNumber;
             RentalType = rentalType;
         }
+        public bool IsMultiDayRental => RentalType is RentalType.MultiDay;
+        public bool IsSingleDayRental => RentalType is RentalType.OneDay;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
@@ -19,6 +20,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
             _viewModel = new ScheduleMeetingWindowViewModel(neighborhood, fixedTheme);
             DataContext = _viewModel;
 
+            FromDatePicker.DisplayDateStart = _viewModel.MinDate;
+            FromDatePicker.DisplayDateEnd = _viewModel.MaxDate;
+
+            ToDatePicker.DisplayDateStart = _viewModel.MinDate;
+            ToDatePicker.DisplayDateEnd = _viewModel.MaxDate;
+
             if (!_viewModel.HasFixedTheme)
                 ThemeComboBox.SelectedIndex = 0;
         }
@@ -33,11 +40,23 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
             var (success, error) = _viewModel.TryCreate();
             if (!success)
             {
-                MessageBox.Show(error, "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                new InfoDialog("Greška", error, this).ShowDialog();
                 return;
             }
 
             DialogResult = true;
+        }
+
+        private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(char.IsDigit);
+        }
+
+        private void NumberTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.V &&
+                (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                e.Handled = true;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

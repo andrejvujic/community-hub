@@ -3,19 +3,32 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MyBuildingsPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    Loaded="MyBuildingsPage_Loaded"
     mc:Ignorable="d">
+
     <Page.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
     </Page.Resources>
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadBuildingsCommand}" CommandParameter="{x:Null}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-        <Grid>
+        <Grid Background="{StaticResource AppBackgroundBrush}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="65" />
@@ -28,30 +41,38 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
+
                 <Grid Grid.Column="0">
                     <TextBlock
                         Margin="15,15,0,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="32"
+                        Foreground="{StaticResource PageTitleBrush}"
                         Text="Moje zgrade" />
                 </Grid>
+
                 <Grid Grid.Column="1">
                     <Button
                         Margin="0,0,20,0"
-                        Padding="10,4,10,4"
+                        Padding="14,6,14,6"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                        Background="#0F5AA6"
+                        BorderBrush="#0F5AA6"
+                        Command="{Binding GenerateReportCommand}"
                         Content="Generiši izveštaj"
                         Cursor="Hand"
-                        FontSize="16" />
+                        FontSize="15"
+                        FontWeight="SemiBold"
+                        Foreground="White" />
                 </Grid>
             </Grid>
 
             <Grid Grid.Row="1">
                 <Border
                     Margin="0,5,450,0"
-                    BorderBrush="Black"
+                    BorderBrush="#8E8A80"
                     BorderThickness="0,2,0,0" />
             </Grid>
 
@@ -76,10 +97,11 @@
                                     Width="520"
                                     Height="150"
                                     Margin="10"
-                                    Background="White"
-                                    BorderBrush="Black"
-                                    BorderThickness="2"
-                                    CornerRadius="3">
+                                    Background="#FCFBF7"
+                                    BorderBrush="#D6D1C4"
+                                    BorderThickness="1"
+                                    ClipToBounds="True"
+                                    CornerRadius="12">
 
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -90,12 +112,10 @@
                                         <Image
                                             Grid.Column="0"
                                             Height="150"
-                                            Margin="0,0,0,0"
                                             VerticalAlignment="Center"
                                             Source="{Binding CoverImage.Path}"
                                             Stretch="UniformToFill"
                                             Visibility="{Binding HasImages, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
 
                                         <Grid Grid.Column="1" Margin="15,0,0,0">
                                             <Grid.RowDefinitions>
@@ -105,10 +125,9 @@
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-
                                             <StackPanel
                                                 Grid.Row="0"
-                                                Margin="0,10,0,0"
+                                                Margin="0,12,0,0"
                                                 Orientation="Horizontal">
                                                 <TextBlock
                                                     VerticalAlignment="Center"
@@ -118,7 +137,8 @@
                                                     Margin="6,0,0,0"
                                                     VerticalAlignment="Center"
                                                     FontSize="16"
-                                                    FontWeight="SemiBold">
+                                                    FontWeight="SemiBold"
+                                                    Foreground="#1F1F1F">
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0} {1}, {2}">
                                                             <Binding Path="Address.Street.Name" />
@@ -129,12 +149,11 @@
                                                 </TextBlock>
                                             </StackPanel>
 
-
                                             <TextBlock
                                                 Grid.Row="1"
-                                                Margin="0,8,0,0"
+                                                Margin="0,10,0,0"
                                                 FontSize="14"
-                                                Foreground="Black">
+                                                Foreground="#444444">
                                                 <TextBlock.Text>
                                                     <MultiBinding StringFormat="{}{0}, {1}">
                                                         <Binding Path="Address.City.Name" />
@@ -143,12 +162,11 @@
                                                 </TextBlock.Text>
                                             </TextBlock>
 
-
                                             <TextBlock
                                                 Grid.Row="2"
-                                                Margin="0,4,0,0"
+                                                Margin="0,6,0,0"
                                                 FontSize="12"
-                                                Foreground="Black">
+                                                Foreground="#666666">
                                                 <TextBlock.Text>
                                                     <MultiBinding StringFormat="{}Spratova: {0} | Stanova: {1}">
                                                         <Binding Path="FloorCount" />
@@ -157,22 +175,30 @@
                                                 </TextBlock.Text>
                                             </TextBlock>
 
-
                                             <TextBlock
                                                 Grid.Row="3"
                                                 Margin="0,0,15,15"
-                                                Padding="7,5,7,5"
+                                                Padding="10,6,10,6"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Cursor="Hand"
-                                                FontSize="16"
-                                                MouseLeftButtonDown="Details_Click"
+                                                FontSize="15"
                                                 Text="Detalji  →">
+                                                <TextBlock.InputBindings>
+                                                    <MouseBinding
+                                                        Command="{Binding DataContext.DetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                        CommandParameter="{Binding}"
+                                                        Gesture="LeftClick" />
+                                                </TextBlock.InputBindings>
+
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="#0F5AA6" />
+                                                        <Setter Property="Background" Value="Transparent" />
                                                         <Style.Triggers>
                                                             <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="LightGray" />
+                                                                <Setter Property="Background" Value="#E8F1FB" />
+                                                                <Setter Property="Foreground" Value="#0A3F78" />
                                                             </Trigger>
                                                         </Style.Triggers>
                                                     </Style>

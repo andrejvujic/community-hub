@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
-using CommunityHub.Application.Domain.ServiceBookings;
+﻿using CommunityHub.Application.Domain.JobListingBookings;
 
 namespace CommunityHub.Ui.ViewModels
 {

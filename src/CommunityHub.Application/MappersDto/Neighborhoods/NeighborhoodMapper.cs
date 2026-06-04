@@ -31,7 +31,7 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods
             );
         }
 
-        public Neighborhood MapToDomain(NeighborhoodDto dto)
+        public Neighborhood MapToEntity(NeighborhoodDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -39,12 +39,12 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods
                 dto.Name,
                 dto.Description,
                 dto.Budget,
-                _cityMapper.MapToDomain(dto.City),
-                _countryMapper.MapToDomain(dto.Country),
-                _userMapper.MapToDomain(dto.Coordinator),
+                _cityMapper.MapToEntity(dto.City),
+                _countryMapper.MapToEntity(dto.Country),
+                _userMapper.MapToEntity(dto.Coordinator),
                 dto.Id,
-                dto.StreetSections?.Select(_streetSectionMapper.MapToDomain).ToList(),
-                dto.Images?.Select(_imageMapper.MapToDomain).ToList()
+                dto.StreetSections?.Select(_streetSectionMapper.MapToEntity).ToList(),
+                dto.Images?.Select(_imageMapper.MapToEntity).ToList()
             );
         }
     }

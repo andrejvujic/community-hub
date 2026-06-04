@@ -1,33 +1,71 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Buildings;
-using CommunityHub.Application.Domain.Buildings.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Buildings;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Buildings;
+using CommunityHub.Application.Services.Dtos.Buildings;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Apartments;
+using CommunityHub.Ui.Views.Resident.Buildings.Browse;
+using CommunityHub.Ui.Views.Resident.Buildings.Search;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SearchBuildingsViewModel : INotifyPropertyChanged
+    public class SearchBuildingsViewModel : BaseViewModel
     {
-        public long UserId { get; }
-
+        private readonly long _userId;
         private readonly BuildingService _buildingService = new BuildingService();
+        private readonly Action _scrollSearchResultsToTop;
 
-        public ObservableCollection<Building> SearchResults { get; } = new();
+        public ObservableCollection<BuildingDto> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;
 
-        public SearchBuildingsViewModel(long userId)
+        public SearchBuildingsViewModel(
+            long userId,
+            MainNavigationConsumerPage page,
+            Action scrollSearchResultsToTop
+        ) : base(page)
         {
-            UserId = userId;
+            _userId = userId;
+            _scrollSearchResultsToTop = scrollSearchResultsToTop;
+
+            OpenSearchCriteriaCommand = new(OpenSearchCriteriaPage);
+            ResetSearchCommand = new(ResetSearch);
+            OpenBuildingDetailsCommand = new(OpenBuildingDetailsPage);
+            OpenRequestApartmentAccessCommand = new(OpenRequestApartmentAccessPage);
+        }
+
+        public RelayCommand OpenSearchCriteriaCommand { get; }
+        public RelayCommand ResetSearchCommand { get; }
+        public RelayCommand<BuildingDto> OpenBuildingDetailsCommand { get; }
+        public RelayCommand<BuildingDto> OpenRequestApartmentAccessCommand { get; }
+
+        private void OpenSearchCriteriaPage()
+            => Push(
+                new SearchCriteriaPage(SetSearchParameters, SearchParameters),
+                onPop: _ => UpdateSearchResults()
+            );
+
+        private void OpenBuildingDetailsPage(BuildingDto? building)
+        {
+            if (building is null) return;
+            Push(new BuildingDetailsPage(building));
+        }
+
+        private void OpenRequestApartmentAccessPage(BuildingDto? building)
+        {
+            if (building is null) return;
+            Push(new RequestApartmentAccessPage(_userId, building));
         }
 
 
         private BuildingSearchParameters? _searchParameters;
-        public BuildingSearchParameters? SearchParameters
+        private BuildingSearchParameters? SearchParameters
         {
             get => _searchParameters;
-            private set
+            set
             {
                 if (_searchParameters == value) return;
                 _searchParameters = value;
@@ -38,11 +76,18 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 
         public bool HasSetSearchParameters => SearchParameters is not null;
 
-        public void SetSearchParameters(BuildingSearchParameters searchParameters)
+        private void SetSearchParameters(BuildingSearchParameters searchParameters)
             => SearchParameters = searchParameters;
 
-        public void ResetSearchParameters()
+        private void ResetSearchParameters()
             => SearchParameters = null;
+
+        private void ResetSearch()
+        {
+            ResetSearchParameters();
+            UpdateSearchResults();
+            _scrollSearchResultsToTop();
+        }
 
         public void UpdateSearchResults()
         {
@@ -57,8 +102,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

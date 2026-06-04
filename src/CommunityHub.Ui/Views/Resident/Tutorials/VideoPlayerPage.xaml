@@ -1,0 +1,187 @@
+<navigation:MainNavigationConsumerPage x:Class="CommunityHub.Ui.Views.Resident.Tutorials.VideoPlayerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:navigation="clr-namespace:CommunityHub.Ui.Helpers.Navigation"
+      mc:Ignorable="d"
+      Title="VideoPlayer"
+      FontFamily="{StaticResource AppFontFamily}"
+      Background="{StaticResource ResidentPageBackgroundBrush}"
+      Foreground="{StaticResource ResidentTextPrimaryBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{StaticResource ResidentHeaderBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Column="0"
+                MouseLeftButtonDown="BackButton_Click"
+                Background="Transparent">
+                <TextBlock
+                    Text="&#xf177;"
+                    FontSize="24"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Grid>
+
+            <TextBlock
+                Grid.Column="1"
+                Text="{Binding Title}"
+                FontSize="20"
+                TextTrimming="CharacterEllipsis"
+                VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid
+            Grid.Row="1">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid Background="{StaticResource ResidentCardBackgroundBrush}">
+                        <TextBlock
+                            Text="Video se učitava..."
+                            FontSize="18"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource ResidentTextSecondaryBrush}"/>
+                        <MediaElement
+                            x:Name="VideoElement"
+                            Source="{Binding VideoUri}"
+                            LoadedBehavior="Manual"
+                            UnloadedBehavior="Stop"
+                            MediaOpened="VideoElement_MediaOpened"
+                            MediaEnded="VideoElement_MediaEnded"
+                            FocusableChanged="VideoElement_FocusableChanged"
+                            Stretch="Uniform"/>
+                    </Grid>
+                </Grid>
+
+                <Slider
+                    x:Name="ProgressSlider"
+                    Grid.Row="2"
+                    Margin="0,16,0,16"
+                    Minimum="0"
+                    Maximum="{Binding DurationSeconds}"
+                    Value="{Binding PositionSeconds, Mode=TwoWay}"
+                    IsEnabled="{Binding IsLoaded}"
+                    VerticalAlignment="Center"
+                    ValueChanged="ProgressSlider_ValueChanged">
+                    <Slider.Template>
+                        <ControlTemplate TargetType="{x:Type Slider}">
+                            <Grid VerticalAlignment="Center">
+
+                                <Track x:Name="PART_Track"
+                                   Height="36"
+                                   IsDirectionReversed="False">
+
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton
+                                            Command="{x:Static Slider.DecreaseLarge}"
+                                            Height="16"
+                                            Background="{StaticResource ResidentSecondaryBrush}"
+                                            BorderBrush="{StaticResource ResidentBorderBrush}"
+                                            BorderThickness="1"
+                                            Focusable="False" />
+                                    </Track.DecreaseRepeatButton>
+
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton
+                                            Command="{x:Static Slider.IncreaseLarge}"
+                                            Height="16"
+                                            Background="{StaticResource ResidentSecondaryBrush}"
+                                            BorderBrush="{StaticResource ResidentBorderBrush}"
+                                            BorderThickness="1"
+                                            Focusable="False" />
+                                    </Track.IncreaseRepeatButton>
+
+                                    <Track.Thumb>
+                                        <Thumb 
+                                            Width="36"
+                                            Height="36">
+                                            <Thumb.Template>
+                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                    <Rectangle
+                                                        Fill="{StaticResource ResidentPrimaryBrush}"
+                                                        Stroke="{StaticResource ResidentActionBorderBrush}"
+                                                        StrokeThickness="1" />
+                                                </ControlTemplate>
+                                            </Thumb.Template>
+                                        </Thumb>
+                                    </Track.Thumb>
+
+                                </Track>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Slider.Template>
+                </Slider>
+
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Height="56"
+                        Click="PauseButton_Click"
+                        IsEnabled="{Binding CanPause}"
+                        Style="{StaticResource ResidentPrimaryActionButtonStyle}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock
+                                Text="&#xf04c;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="18"
+                                VerticalAlignment="Center"
+                                Margin="0,0,8,0"/>
+                            <TextBlock
+                                Text="Pauziraj"
+                                FontSize="18"
+                                VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Grid.Column="2"
+                        Height="56"
+                        Click="PlayButton_Click"
+                        IsEnabled="{Binding CanPlay}"
+                        Style="{StaticResource ResidentPrimaryActionButtonStyle}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock
+                                Text="&#xf04b;"
+                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                                FontSize="18"
+                                VerticalAlignment="Center"
+                                Margin="0,0,8,0"/>
+                            <TextBlock
+                                Text="Nastavi"
+                                FontSize="18"
+                                VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</navigation:MainNavigationConsumerPage>

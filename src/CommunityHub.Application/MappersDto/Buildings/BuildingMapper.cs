@@ -13,33 +13,34 @@ namespace CommunityHub.Application.MappersDto.Buildings
         private readonly ImageMapper _imageMapper = new();
         public BuildingDto MapToDto(Building building)
         {
-            if (building == null) throw new ArgumentNullException(nameof(building));
+            if (building == null) throw new ArgumentNullException("Can't convert null reference to BuildingDto.");
 
             return new BuildingDto(
-                building.Id,
-                building.FloorCount,
-                building.ApartmentCount,
-                _userMapper.MapToDto(building.Manager),
-                _addressMapper.MapToDto(building.Address),
-                building.DisplayAddress,
+                id: building.Id,
+                floorCount: building.FloorCount,
+                apartmentCount: building.ApartmentCount,
+                manager: _userMapper.MapToDto(building.Manager),
+                address: _addressMapper.MapToDto(building.Address),
+                displayAddress: building.DisplayAddress,
                 building.Images?.Select(_imageMapper.MapToDto).ToList()
             );
         }
-        public Building MapToDomain(BuildingDto dto)
-        {
-            if (dto == null) throw new ArgumentNullException(nameof(dto));
 
-            var images = dto.Images?.Select(_imageMapper.MapToDomain).ToList();
+        public Building MapToEntity(BuildingDto dto)
+        {
+            if (dto == null) throw new ArgumentNullException("Can't convert null reference to Building.");
+
+            var images = dto.Images?.Select(_imageMapper.MapToEntity).ToList();
 
             var building = new Building(
-                dto.FloorCount,
-                dto.ApartmentCount,
-                _userMapper.MapToDomain(dto.Manager),
-                _addressMapper.MapToDomain(dto.Address),
-                dto.Id
+                id: dto.Id,
+                floorCount: dto.FloorCount,
+                apartmentCount: dto.ApartmentCount,
+                manager: _userMapper.MapToEntity(dto.Manager),
+                address: _addressMapper.MapToEntity(dto.Address)
             );
 
-            return images is { Count: > 0 }
+            return images is not null && images.Count > 0
                 ? building.CopyWith(images: images)
                 : building;
         }

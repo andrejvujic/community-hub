@@ -1,4 +1,5 @@
 ﻿using CommunityHub.Application.Domain.Apartments.AccessRequests;
+using CommunityHub.Application.Services.Dtos.Apartments;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments;
 using System.Windows;
@@ -8,7 +9,7 @@ using System.Windows.Controls.Primitives;
 namespace CommunityHub.Ui.Views.Resident.Apartments
 {
 
-    public partial class ApartmentAccessRequestsPage : MainNavigatorConsumerPage
+    public partial class ApartmentAccessRequestsPage : MainNavigationConsumerPage
     {
 
         private readonly ApartmentAccessRequestsViewModel _viewModel;
@@ -16,21 +17,9 @@ namespace CommunityHub.Ui.Views.Resident.Apartments
         public ApartmentAccessRequestsPage(long userId)
         {
             InitializeComponent();
-            _viewModel = new ApartmentAccessRequestsViewModel(userId);
+            _viewModel = new ApartmentAccessRequestsViewModel(userId, this);
             DataContext = _viewModel;
             _viewModel.UpdateRequests();
-        }
-
-        private void OpenRequestDetailsPageButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not ApartmentAccessRequest request) return;
-
-            Push(
-                new ApartmentAccessRequestDetailsPage(request),
-                onPop: _ => _viewModel.UpdateRequests()
-            );
         }
 
         private void OpenSortAndFilterMenu_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)

@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
 
 namespace CommunityHub.Application.Database.Repositories.CommonRooms
 {
@@ -24,7 +24,7 @@ namespace CommunityHub.Application.Database.Repositories.CommonRooms
             return commonRoom.CopyWith(id: generatedId);
         }
 
-        public List<CommonRoom> GetByBuilding(long buildingId)
+        public List<CommonRoom> GetAllByBuildingId(long buildingId)
         {
             using var connection = DatabaseConnection.Create();
 

@@ -1,55 +1,16 @@
-﻿using CommunityHub.Application;
-using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
+﻿using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Navigation;
-using System.ComponentModel;
-using System.Windows;
+using CommunityHub.Ui.ViewModels.Resident.Buildings.Ads;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.Ads.Browse.MyAds
 {
-    public partial class MyAdInfoPage : MainNavigatorConsumerPage, IAlertConsumer, INotifyPropertyChanged
+    public partial class MyAdInfoPage : MainNavigationConsumerPage, IAlertServiceConsumer
     {
-        private readonly AdService _adService;
-
-        public Ad Ad { get; }
-
-        public MyAdInfoPage(Ad ad)
+        public MyAdInfoPage(AdDto ad)
         {
-            _adService = new(
-                Injector.CreateInstance<IAdRepository>(),
-                Injector.CreateInstance<IAdTimeSlotRepository>()
-            );
-
             InitializeComponent();
-            DataContext = this;
-
-            Ad = ad;
+            DataContext = new MyAdInfoViewModel(ad, this);
         }
-
-        private void ArchiveAdButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this is IAlertConsumer consumer)
-                consumer.ShowAlert(
-                    Alert.Create(
-                        "Upozorenje",
-                        "Da li ste sigurni da želite da arhivirate oglas? Vaš oglas više neće biti vidljiv ostalim stanarima na oglasnoj tabli. Rezervisani termini neće biti izgubljeni.",
-                        AlertType.Warning
-                    )
-                    .AddOption("Otkaži")
-                    .AddOption(
-                        "Nastavi",
-                        callback: () => {
-                            _adService.Archive(Ad);
-                            OnPropertyChanged(nameof(Ad));
-                        }
-                    )
-                );
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

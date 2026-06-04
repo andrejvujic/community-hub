@@ -5,32 +5,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CommunityHub.Ui.Views.BuildingManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     Title="BuildingInfoPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    FontFamily="{StaticResource AppFontFamily}"
+    FontFamily="{StaticResource InterFontFamily}"
     mc:Ignorable="d">
 
-    <Grid Margin="10,25,40,0">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Themes/MaterialDesignTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Margin="10,25,40,0" Background="{StaticResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBlock
-                Margin="10,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Cursor="Hand"
-                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
-                FontSize="28"
-                MouseLeftButtonDown="LeftArrow_Click"
-                Text="&#xf060;" />
-        </Grid>
-
-        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="*" />
@@ -57,8 +53,11 @@
                             Cursor="Hand"
                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                             FontSize="28"
-                            MouseLeftButtonDown="PreviousImage_Click"
-                            Text="&#x3c;" />
+                            Text="&#x3c;">
+                            <TextBlock.InputBindings>
+                                <MouseBinding Command="{Binding PreviousImageCommand}" Gesture="LeftClick" />
+                            </TextBlock.InputBindings>
+                        </TextBlock>
                     </Grid>
 
                     <Grid Grid.Column="1">
@@ -75,8 +74,11 @@
                             Cursor="Hand"
                             FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                             FontSize="28"
-                            MouseLeftButtonDown="NextImage_Click"
-                            Text="&#x3e;" />
+                            Text="&#x3e;">
+                            <TextBlock.InputBindings>
+                                <MouseBinding Command="{Binding NextImageCommand}" Gesture="LeftClick" />
+                            </TextBlock.InputBindings>
+                        </TextBlock>
                     </Grid>
                 </Grid>
 
@@ -93,7 +95,7 @@
         </Grid>
 
 
-        <Grid Grid.Row="2" Margin="0,50,0,0">
+        <Grid Grid.Row="1" Margin="0,50,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
@@ -123,7 +125,10 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid Grid.Column="0">
-                            <TextBlock FontSize="20" Text="Ulica i broj:" />
+                            <TextBlock
+                                FontSize="20"
+                                FontStyle="Italic"
+                                Text="Ulica i broj:" />
                         </Grid>
 
                         <Grid Grid.Column="1" HorizontalAlignment="Right">
@@ -154,6 +159,7 @@
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontSize="20"
+                                FontStyle="Italic"
                                 Text="Naselje:" />
                         </Grid>
 
@@ -181,6 +187,7 @@
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontSize="20"
+                                FontStyle="Italic"
                                 Text="Grad:" />
                         </Grid>
 
@@ -219,6 +226,7 @@
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontSize="20"
+                                FontStyle="Italic"
                                 Text="Država:" />
                         </Grid>
 
@@ -246,6 +254,7 @@
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontSize="20"
+                                FontStyle="Italic"
                                 Text="Broj spratova:" />
                         </Grid>
 
@@ -273,6 +282,7 @@
                             <TextBlock
                                 HorizontalAlignment="Left"
                                 FontSize="20"
+                                FontStyle="Italic"
                                 Text="Broj stanova:" />
                         </Grid>
 

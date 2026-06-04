@@ -23,7 +23,7 @@ namespace CommunityHub.Application.MappersDto.Users
                 _countryMapper.MapToDto(serviceProvider.Country));
         }
 
-        public ServiceProvider MapToDomain(ServiceProviderDto dto)
+        public ServiceProvider MapToEntity(ServiceProviderDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -33,8 +33,8 @@ namespace CommunityHub.Application.MappersDto.Users
                 dto.Password,
                 dto.Name,
                 dto.Surname,
-                _cityMapper.MapToDomain(dto.City),
-                _countryMapper.MapToDomain(dto.Country));
+                _cityMapper.MapToEntity(dto.City),
+                _countryMapper.MapToEntity(dto.Country));
         }
     }
 }

@@ -1,0 +1,59 @@
+﻿<Window x:Class="CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows.ConfirmDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize">
+    <Border Background="{DynamicResource WindowBackgroundBrush}"
+            BorderBrush="{DynamicResource SidebarBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="30">
+        <StackPanel Width="360">
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="&#xf059;"
+                           FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                           FontSize="22"
+                           Foreground="#F0A500"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"/>
+                <TextBlock x:Name="TitleText"
+                           FontSize="18" FontWeight="Bold"
+                           Foreground="{DynamicResource TabItemForegroundBrush}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <TextBlock x:Name="MessageText"
+                       FontSize="15"
+                       Foreground="{DynamicResource TabItemForegroundBrush}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,24"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="NoButton"
+                        Content="Ne"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Width="90" Height="36"
+                        Margin="0,0,10,0"
+                        Padding="0"
+                        Click="NoButton_Click"/>
+                <Button x:Name="YesButton"
+                        Content="Da"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Width="90" Height="36"
+                        Padding="0"
+                        IsDefault="True"
+                        Click="YesButton_Click"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </Border>
+</Window>

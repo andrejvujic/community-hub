@@ -1,6 +1,6 @@
 using CommunityHub.Application.Database.Repositories;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Users;
 using CommunityHub.Application.Domain.Users;
-using CommunityHub.Application.Domain.Users.RepositoryInterfaces;
 using CommunityHub.Application.MappersDto;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.Services.Dtos.Users;

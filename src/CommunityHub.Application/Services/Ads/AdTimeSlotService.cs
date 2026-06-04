@@ -1,13 +1,15 @@
-﻿using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
+﻿using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
+using CommunityHub.Application.MappersDto.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
 
 namespace CommunityHub.Application.Services.Ads
 {
-    public class AdTimeSlotService
+    public class AdTimeSlotService: BaseService<AdTimeSlot, AdTimeSlotDto>
     {
         private readonly IAdTimeSlotRepository _timeSlotRepository;
 
-        public AdTimeSlotService(IAdTimeSlotRepository timeSlotRepository)
+        public AdTimeSlotService(IAdTimeSlotRepository timeSlotRepository) : base(mapper: new AdTimeSlotMapper())
         {
             _timeSlotRepository = timeSlotRepository;
         }
@@ -26,22 +28,26 @@ namespace CommunityHub.Application.Services.Ads
             );
         }
 
-        public List<AdTimeSlot> GetReservableTimeSlotsForUser(long adId, long userId)
+        public List<AdTimeSlotDto> GetReservableTimeSlotsForUser(long adId, long userId)
         {
             var adTimeSlots = _timeSlotRepository.GetTimeSlotsByAd(adId);
             var userTimeSlots = _timeSlotRepository.GetTimeSlotsByAuthor(userId);
 
-            return adTimeSlots.Where(
+            var reservableTimeSlots = adTimeSlots.Where(
                 adTimeSlot => userTimeSlots.Any(
                     userTimeSlot => userTimeSlot.Matches(adTimeSlot)
                 )
-            ).ToList(); 
+            ).ToList();
+
+            return MapToDto(reservableTimeSlots);
         }
 
-        public List<AdTimeSlot> GetReservedTimeSlotsForAd(long adId)
+        public List<AdTimeSlotDto> GetReservedTimeSlotsForAd(long adId)
         {
             var timeSlots = _timeSlotRepository.GetTimeSlotsByAd(adId);
-            return timeSlots.Where(timeSlot => timeSlot.IsReserved).ToList();
+            return MapToDto(
+                timeSlots.Where(timeSlot => timeSlot.IsReserved).ToList()
+            );
         }
     }
 }

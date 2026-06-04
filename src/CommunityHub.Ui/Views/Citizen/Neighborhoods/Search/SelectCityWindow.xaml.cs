@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search;
 
@@ -13,23 +14,25 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
         {
             InitializeComponent();
             _viewModel = new SelectCityViewModel(selectedCountry);
+            _viewModel.ConfirmRequested += (_, _) =>
+            {
+                SelectedCity = _viewModel.SelectedCity;
+                DialogResult = true;
+            };
+            _viewModel.CancelRequested += (_, _) =>
+            {
+                DialogResult = false;
+            };
+            _viewModel.CloseRequested += (_, _) => Close();
             DataContext = _viewModel;
+
+            Loaded += (s, e) => CitiesList.Focus();
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            _viewModel.Search();
-        }
-
-        private void Confirm_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedCity = _viewModel.SelectedCity;
-            DialogResult = true;
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }

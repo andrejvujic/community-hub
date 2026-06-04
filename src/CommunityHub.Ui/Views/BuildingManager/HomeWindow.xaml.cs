@@ -1,76 +1,50 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using CommunityHub.Application.Domain.Users;
+﻿using CommunityHub.Application.Domain.Users;
+using CommunityHub.Ui.Navigation;
 using CommunityHub.Ui.ViewModels.BuildingManager;
+using System.Windows;
 
 namespace CommunityHub.Ui.Views.BuildingManager
 {
     public partial class HomeWindow : Window
     {
         private readonly HomeWindowViewModel _viewModel;
-        private Grid? _selectedNavBarItem = null;
         public HomeWindow(User user)
         {
             InitializeComponent();
-            _viewModel = new HomeWindowViewModel(user);
+
+            IAppNavigationService navigationService = new AppNavigationService();
+
+            _viewModel = new HomeWindowViewModel(user, navigationService);
             DataContext = _viewModel;
-            HomeFrame.Navigate(new HomePage(user));
         }
-        private void NavBarItem_Click(object sender, MouseButtonEventArgs e)
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            var clicked = sender as Grid;
-            if (clicked == null)
+            WindowState = WindowState.Minimized;
+        }
+        private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else
+                WindowState = WindowState.Maximized;
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void TitleBarDragArea_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                MaximizeRestoreButton_Click(sender, e);
                 return;
-
-            if (!string.IsNullOrEmpty(clicked.Name) && clicked.Name.StartsWith("navBar"))
-                SetNavBarItemBackground(clicked);
-            
-            string? tag = clicked.Tag?.ToString();
-            NavigateTo(tag);
-        }
-        private void SetNavBarItemBackground(Grid item)
-        {
-            if (_selectedNavBarItem != null)
-                _selectedNavBarItem.ClearValue(BackgroundProperty);
-
-            _selectedNavBarItem = item;
-            _selectedNavBarItem.Background = Brushes.LightGray;
-        }
-        private void NavigateTo(string? tag)
-        {
-            switch (tag)
-            {
-                case "Home":
-                    HomeFrame.Navigate(new HomePage(_viewModel.User));
-                    break;
-                case "Assembly":
-                    HomeFrame.Navigate(new AssemblyPage(_viewModel.User));
-                    break;
-                case "MyBuildings":
-                    HomeFrame.Navigate(new MyBuildingsPage(_viewModel.User));
-                    break;
-                case "Registration":
-                    HomeFrame.Navigate(new RegistrationPage(_viewModel.User));
-                    break;
-                case "Help":
-                    //TODO: Implementirati Help Page
-                    break;
-                case "LogOut":
-                    HandleLogOut();
-                    break;
             }
-        }
-        private void HandleLogOut()
-        {
-            MessageBoxResult result = MessageBox.Show("Da li ste sigurni da želite da se odjavite?", "Pažnja", MessageBoxButton.YesNo);
 
-            if (result == MessageBoxResult.Yes)
+            if (e.ButtonState == System.Windows.Input.MouseButtonState.Pressed)
             {
-                LogInForm logInForm = new LogInForm();
-                logInForm.Show();
-                this.Close();
+                DragMove();
             }
         }
     }

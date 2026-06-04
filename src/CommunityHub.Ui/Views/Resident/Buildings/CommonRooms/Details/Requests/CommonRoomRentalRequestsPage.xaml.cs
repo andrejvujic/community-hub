@@ -1,45 +1,21 @@
-﻿using CommunityHub.Application.Database.Repositories;
-using CommunityHub.Application.Domain.CommonRooms;
-using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+﻿using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms;
-using System.Windows;
-using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident.Buildings.CommonRooms.Details.Requests
 {
-    public partial class CommonRoomRentalRequestsPage : MainNavigatorConsumerPage
+    public partial class CommonRoomRentalRequestsPage : MainNavigationConsumerPage
     {
         private readonly CommonRoomRentalRequestsViewModel _viewModel;
 
-        public CommonRoomRentalRequestsPage(long userId, CommonRoom commonRoom)
+        public CommonRoomRentalRequestsPage(long userId, CommonRoomDto commonRoom)
         {
             InitializeComponent();
-            _viewModel = new CommonRoomRentalRequestsViewModel(userId, commonRoom);
+            _viewModel = new CommonRoomRentalRequestsViewModel(userId, commonRoom, this);
             DataContext = _viewModel;
 
             _viewModel.UpdateRenalRequests();
         }
 
-        private void RequestCommonRoomRentalButton_Click(object sender, RoutedEventArgs e)
-            => Push(
-                    new RequestCommonRoomRentalPage(
-                        _viewModel.UserId,
-                        _viewModel.CommonRoom
-                    ),
-                    onPop: _ => _viewModel.UpdateRenalRequests()
-               );
-
-        private void RentalRequestItem_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is not FrameworkElement element) return;
-
-            if (element.DataContext is not CommonRoomRentalRequest request) return;
-
-            Push(
-                new CommonRoomRentalRequestDetailsPage(request),
-                onPop: _ => _viewModel.UpdateRenalRequests()
-            );
-        }
     }
 }

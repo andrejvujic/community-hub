@@ -1,7 +1,7 @@
 ﻿using System.Net.WebSockets;
 using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.Addresses.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
 
 namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
 {

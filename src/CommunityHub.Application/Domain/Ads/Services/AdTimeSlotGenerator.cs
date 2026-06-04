@@ -3,7 +3,7 @@ using CommunityHub.Application.Domain.Ads.TimeSlots;
 
 namespace CommunityHub.Application.Domain.Ads.Services
 {
-    public class AdTimeSlotGenerator : IAdTimeSlotGenerator
+    public class AdTimeSlotGenerator 
     {
         public List<AdTimeSlot> GenerateTimeSlots(
             Ad ad,

@@ -1,24 +1,26 @@
 ﻿using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
+using CommunityHub.Application.Services.Dtos.Addresses;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 {
-    public class SelectCityViewModel : INotifyPropertyChanged
+    public class SelectCityViewModel : BaseViewModel
     {
         private readonly CityService _cityService = new();
 
-        private readonly Action<City?> _setCity;
+        private readonly Action<CityDto?> _setCity;
 
-        public Country SelectedCountry { get; }
+        public CountryDto SelectedCountry { get; }
 
-        private City? _selectedCity;
-        public City? SelectedCity
+        private CityDto? _selectedCity;
+        public CityDto? SelectedCity
         {
             get => _selectedCity;
-            set
+            private set
             {
                 if (_selectedCity == value) return;
                 _selectedCity = value;
@@ -26,19 +28,26 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             }
         }
 
-        public ObservableCollection<City> SearchResults { get; } = new();
+        public ObservableCollection<CityDto> SearchResults { get; } = new();
         public bool HasSearchResults => SearchResults.Count > 0;
 
         public SelectCityViewModel(
-            Action<City?> setCity,
-            Country selectedCountry,
-            City? selectedCity = null
-        )
+            Action<CityDto?> setCity,
+            CountryDto selectedCountry,
+            IMainNavigationConsumer navigationConsumer,
+            CityDto? selectedCity = null
+        ) : base(navigationConsumer)
         {
             _setCity = setCity;
             SelectedCountry = selectedCountry;
             SelectedCity = selectedCity;
+
+            SearchCommand = new(UpdateSearchResults);
+            SelectCityCommand = new(SelectCity);
         }
+
+        public RelayCommand SearchCommand { get; }
+        public RelayCommand<CityDto> SelectCityCommand { get; }
 
         private string _searchText;
         public string SearchText
@@ -55,7 +64,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public bool HasSetSearchText => !string.IsNullOrEmpty(SearchText);
 
         private CitySearchParameters GetSearchParameters() => new CitySearchParameters(
-            country: SelectedCountry,
+            countryId: SelectedCountry.Id,
             name: SearchText
         );
 
@@ -69,23 +78,33 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
             OnPropertyChanged(nameof(HasSearchResults));
         }
 
-        public bool IsCitySelected(City City)
+        private bool IsCitySelected(CityDto City)
             => SelectedCity == City;
 
-        public void ResetSelectedCity()
+        private void ResetSelectedCity()
         {
             SelectedCity = null;
             _setCity.Invoke(null);
         }
 
-        public void UpdateSelectedCity(City city)
+        private void UpdateSelectedCity(CityDto city)
         {
             SelectedCity = city;
             _setCity.Invoke(SelectedCity);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void SelectCity(CityDto? city)
+        {
+            if (city is null) return;
+            if (IsCitySelected(city))
+            {
+                ResetSelectedCity();
+                return;
+            }
+
+            UpdateSelectedCity(city);
+            Pop();
+        }
+
     }
 }

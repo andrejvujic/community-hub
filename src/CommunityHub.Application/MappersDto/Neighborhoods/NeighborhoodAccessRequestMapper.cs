@@ -22,13 +22,13 @@ namespace CommunityHub.Application.MappersDto.Neighborhoods
             );
         }
 
-        public NeighborhoodAccessRequest MapToDomain(NeighborhoodAccessRequestDto dto)
+        public NeighborhoodAccessRequest MapToEntity(NeighborhoodAccessRequestDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
             return new NeighborhoodAccessRequest(
-                _citizenMapper.MapToDomain(dto.Citizen),
-                _neighborhoodMapper.MapToDomain(dto.Neighborhood),
+                _citizenMapper.MapToEntity(dto.Citizen),
+                _neighborhoodMapper.MapToEntity(dto.Neighborhood),
                 dto.Status,
                 dto.CreationDate,
                 dto.Comment

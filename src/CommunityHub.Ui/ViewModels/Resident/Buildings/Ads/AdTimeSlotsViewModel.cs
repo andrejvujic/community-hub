@@ -1,18 +1,20 @@
 ﻿using CommunityHub.Application;
-using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Application.Services.Dtos.Notifications;
 using CommunityHub.Application.Services.Notifications;
+using CommunityHub.Ui.Helpers.Alerts;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
-    public class AdTimeSlotsViewModel : INotifyPropertyChanged
+    public class AdTimeSlotsViewModel : BaseViewModel
     {
         private readonly NotificationService _notificationService;
 
@@ -20,15 +22,15 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
         private readonly AdTimeSlotReservationService _timeSlotReservationService;
 
         public long UserId { get; }
-        public Ad Ad { get; }
+        public AdDto Ad { get; }
 
         public bool HasReservableTimeSlots { get => ReservableTimeSlotGroups.Count > 0; }
-        public ObservableCollection<AdTimeSlotGroup> ReservableTimeSlotGroups { get; } = new();
+        public ObservableCollection<AdTimeSlotGroupDto> ReservableTimeSlotGroups { get; } = new();
 
         public bool HasSelectedTimeSlots => SelectedTimeSlots.Count > 0;
-        public ObservableCollection<AdTimeSlot> SelectedTimeSlots { get; } = new();
+        public ObservableCollection<AdTimeSlotDto> SelectedTimeSlots { get; } = new();
 
-        public AdTimeSlotsViewModel(long userId, Ad ad) {
+        public AdTimeSlotsViewModel(long userId, AdDto ad, MainNavigationConsumerPage page) : base(page) {
             _notificationService = new(
                 Injector.CreateInstance<INotificationRepository>()
             );
@@ -44,9 +46,52 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 
             UserId = userId;
             Ad = ad;
+
+            ReserveCommand = new(Reserve);
+            OnTimeSlotClickCommand = new(OnTimeSlotClick);
         }
 
-        public void ReserveSelectedTimeSlots()
+        public RelayCommand ReserveCommand { get; }
+        public RelayCommand<AdTimeSlotDto> OnTimeSlotClickCommand { get; }
+
+        public void Reserve()
+        {
+            if (!Ad.IsActive)
+            {
+                ShowErrorAlert();
+                DeselectAllTimeSlots();
+                return;
+            }
+
+            ReserveSelectedTimeSlots();
+
+            ShowSuccessAlert();
+
+            UpdateReservableTimeSlots();
+
+            DeselectAllTimeSlots();
+        }
+
+        private void ShowErrorAlert()
+            => ShowAlert(
+                    Alert.Create(
+                        "Rezervacija nije moguća",
+                        "Rezervacija termina nije moguća za ovaj oglas zato što je arhiviran.",
+                        type: AlertType.Error
+                    )
+                    .AddOption("U redu")
+                );
+
+        private void ShowSuccessAlert()
+            => ShowAlert(
+                Alert.Create(
+                    "Rezervacija uspješna",
+                    "Uspješno ste rezervisali termine. Autor oglasa je obaviješten o vašoj rezervaciji."
+                )
+                .AddOption("U redu")
+            );
+
+        private void ReserveSelectedTimeSlots()
         {
             var reservations = _timeSlotReservationService.Reserve(
                 UserId,
@@ -54,15 +99,16 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             );
 
             _notificationService.Create(
-                Notification.Create(
-                    Ad.Author.Id,
-                    "Nova rezervacija",
-                    "Napravljena je nova rezervacija za vaš oglas.",
-                    NotificationType.AdEvent,
-                    details: new AdEventNotificationDetails(
+                new NotificationDto(
+                    recipientId: Ad.AuthorId,
+                    title: "Nova rezervacija",
+                    message: "Napravljena je nova rezervacija za vaš oglas.",
+                    type: NotificationType.AdEvent,
+                    details: new AdEventNotificationDetailsDto(
                         Ad.Id,
                         AdEventType.AdTimeSlotsReserved
-                    )
+                    ),
+                    sentAt: DateTime.Now
                 )
             );
         }
@@ -79,24 +125,37 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 ReservableTimeSlotGroups.Add(group);
         }
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlot> timeSlots)
+        private List<AdTimeSlotGroupDto> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 
             return groups.Select(timeSlots =>
-                        new AdTimeSlotGroup(
+                        new AdTimeSlotGroupDto(
                             timeSlots.First().StartTime.Date,
                             [.. timeSlots]
                         )
                     ).ToList();
         }
 
-        public bool IsTimeSlotSelected(AdTimeSlot timeSlot)
+        private void OnTimeSlotClick(AdTimeSlotDto? timeSlot)
+        {
+            if (timeSlot is null || timeSlot.IsReserved) return;
+
+            if (IsTimeSlotSelected(timeSlot))
+            {
+                DeselectTimeSlot(timeSlot);
+                return;
+            }
+ 
+            SelectTimeSlot(timeSlot);
+        }
+
+        public bool IsTimeSlotSelected(AdTimeSlotDto timeSlot)
         {
             return SelectedTimeSlots.Contains(timeSlot);
         }
 
-        public void SelectTimeSlot(AdTimeSlot timeSlot)
+        public void SelectTimeSlot(AdTimeSlotDto timeSlot)
         {
             SelectedTimeSlots.Add(timeSlot);
 
@@ -104,7 +163,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasSelectedTimeSlots));
         }
 
-        public void DeselectTimeSlot(AdTimeSlot timeSlot)
+        public void DeselectTimeSlot(AdTimeSlotDto timeSlot)
         {
             if (!IsTimeSlotSelected(timeSlot))
                 throw new ArgumentException("Time slot is not selected.");
@@ -122,8 +181,5 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasSelectedTimeSlots));
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

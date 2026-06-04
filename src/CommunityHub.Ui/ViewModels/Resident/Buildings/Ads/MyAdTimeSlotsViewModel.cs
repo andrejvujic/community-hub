@@ -1,28 +1,51 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Ads.RepositoryInterfaces;
-using CommunityHub.Application.Domain.Ads.TimeSlots;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Services.Ads;
+using CommunityHub.Application.Services.Dtos.Ads;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Helpers.Navigation;
+using CommunityHub.Ui.Views.Resident.Buildings.Ads.OtherAds;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
 {
-    public class MyAdTimeSlotsViewModel : INotifyPropertyChanged
+    public class MyAdTimeSlotsViewModel : BaseViewModel
     {
         private readonly AdTimeSlotService _timeSlotService;
 
-        public ObservableCollection<AdReservation> Reservations { get; } = new();
+        public ObservableCollection<AdReservationDto> Reservations { get; } = new();
         public bool HasReservations { get => Reservations.Count > 0; }
 
-        public Ad Ad { get; }
-        public MyAdTimeSlotsViewModel(Ad ad)
+        private readonly long _userId;
+        public AdDto Ad { get; }
+
+        public MyAdTimeSlotsViewModel(
+            long userId,
+            AdDto ad,
+            IMainNavigationConsumer navigationConsumer
+        ) : base(navigationConsumer)
         {
             _timeSlotService = new(
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
+            _userId = userId;
             Ad = ad;
+
+            OpenAdDetailsCommand = new(OpenAdDetailsPage);
+        }
+
+        public RelayCommand<AdReservationDto> OpenAdDetailsCommand { get; }
+
+        private void OpenAdDetailsPage(AdReservationDto? reservation)
+        {
+            if (reservation is null) return;
+
+            Push(
+                new AdDetailsPage(_userId, reservation.Ad),
+                onPop: _ => UpdateReservations()
+            );
         }
 
         public void UpdateReservations()
@@ -37,19 +60,19 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             OnPropertyChanged(nameof(HasReservations));
         }   
 
-        private List<AdTimeSlotGroup> GroupTimeSlotsByDay(List<AdTimeSlot> timeSlots)
+        private List<AdTimeSlotGroupDto> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 
             return groups.Select(timeSlots =>
-                        new AdTimeSlotGroup(
+                        new AdTimeSlotGroupDto(
                             timeSlots.First().StartTime.Date,
                             [.. timeSlots]
                         )
                     ).ToList();
         }
 
-        private List<AdReservation> GroupTimeSlotsByAd(List<AdTimeSlot> timeSlots)
+        private List<AdReservationDto> GroupTimeSlotsByAd(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => {
                 var reservation = timeSlot.Reservation!;
@@ -59,15 +82,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
             return groups.Select(timeSlots => {
                 var reservation = timeSlots.First().Reservation!;
 
-                return new AdReservation(
+                return new AdReservationDto(
                     Ad.Type is AdType.Offer ? reservation.RequestAd! : reservation.OfferAd!,
                     GroupTimeSlotsByDay([.. timeSlots])
                 );
             }).ToList();
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-                   => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

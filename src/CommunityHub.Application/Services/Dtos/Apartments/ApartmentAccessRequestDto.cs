@@ -15,14 +15,14 @@ namespace CommunityHub.Application.Services.Dtos.Apartments
         public DateTime CreationDate { get; set; }
 
         public ApartmentAccessRequestDto(
-            long id,
             long applicantId,
-            UserDto? applicant,
             long apartmentId,
-            ApartmentDto? apartment,
-            string? comment,
             Status status,
-            DateTime creationDate
+            DateTime creationDate,
+            string? comment = null,
+            UserDto? applicant = null,
+            ApartmentDto? apartment = null,
+            long id = 0
         )
         {
             Id = id;
@@ -34,5 +34,8 @@ namespace CommunityHub.Application.Services.Dtos.Apartments
             Status = status;
             CreationDate = creationDate;
         }
+
+        public bool IsPending => Status is Status.Waiting;
+        public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
     }
 }

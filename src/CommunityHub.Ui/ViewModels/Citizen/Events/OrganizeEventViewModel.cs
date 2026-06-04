@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Services.Events;
+using CommunityHub.Ui.Helpers.Commands;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
 {
@@ -11,11 +13,23 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         private readonly CommunityEventService _eventService = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event EventHandler? CloseRequested;
+        public event EventHandler? ConfirmRequested;
+        public event EventHandler? ToggleCalendarRequested;
+
+        public ICommand CloseCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand AddItemCommand { get; }
+        public ICommand ToggleCalendarCommand { get; }
 
         public OrganizeEventViewModel(long userId)
         {
             _userId = userId;
             _items = new ObservableCollection<string>();
+            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            SaveCommand = new RelayCommand<object>(_ => RequestConfirm(), _ => IsFormValid);
+            AddItemCommand = new RelayCommand<object>(_ => AddItem());
+            ToggleCalendarCommand = new RelayCommand<object>(_ => RequestToggleCalendar());
         }
 
         private string _name = string.Empty;
@@ -56,6 +70,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 OnPropertyChanged(nameof(IsFormValid));
             }
         }
+
+        public DateTime DisplayDateStart => DateTime.Today;
+        public DateTime DisplayDateEnd => DateTime.Today.AddYears(2);
 
         private string _hour = string.Empty;
         public string Hour
@@ -191,9 +208,53 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             );
         }
 
+        public void ParseAndSetDate(string dateText)
+        {
+            dateText = dateText?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(dateText))
+            {
+                SelectedDate = null;
+                return;
+            }
+
+            if (DateTime.TryParseExact(dateText, "d.M.yyyy.", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+            {
+                if (parsedDate >= DisplayDateStart && parsedDate <= DisplayDateEnd)
+                {
+                    SelectedDate = parsedDate;
+                }
+                else
+                {
+                    SelectedDate = null;
+                }
+            }
+            else
+            {
+                SelectedDate = null;
+            }
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void RequestClose()
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestConfirm()
+        {
+            if (!IsFormValid) return;
+            Submit();
+            ConfirmRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RequestToggleCalendar()
+        {
+            ToggleCalendarRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }

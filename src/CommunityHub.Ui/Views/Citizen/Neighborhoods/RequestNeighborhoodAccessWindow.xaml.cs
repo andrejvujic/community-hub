@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using CommunityHub.Ui.ViewModels.Citizen.Neighborhoods;
 
 namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
@@ -14,22 +15,27 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
             _viewModel = new RequestNeighborhoodAccessViewModel(neighborhoodName);
             DataContext = _viewModel;
             InitializeComponent();
+
+            if (_viewModel != null)
+            {
+                _viewModel.ConfirmRequested += (_, _) =>
+                {
+                    DialogResult = true;
+                    Close();
+                };
+                _viewModel.CancelRequested += (_, _) =>
+                {
+                    DialogResult = false;
+                    Close();
+                };
+                _viewModel.CloseRequested += (_, _) => Close();
+            }
         }
 
-        private void Confirm_Click(object sender, RoutedEventArgs e)
+        private void Header_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (_viewModel != null)
-                _viewModel.Confirmed = true;
-            DialogResult = true;
-            Close();
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            if (_viewModel != null)
-                _viewModel.Confirmed = false;
-            DialogResult = false;
-            Close();
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }

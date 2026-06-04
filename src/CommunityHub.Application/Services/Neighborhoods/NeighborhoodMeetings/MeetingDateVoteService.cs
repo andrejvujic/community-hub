@@ -1,9 +1,9 @@
 ﻿using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings.RepositoryInterfaces;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodMeetings;
 
 namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
 {
@@ -31,7 +31,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
         {
             var meeting = _meetingRepository.GetById(meetingId)!;
             var citizenDto = _citizenService.GetCitizenById(citizenId)!;
-            var citizenDomain = _citizenMapper.MapToDomain(citizenDto);
+            var citizenDomain = _citizenMapper.MapToEntity(citizenDto);
 
             var vote = new MeetingDateVote(meeting, citizenDomain, votedDate);
             var created = _meetingDateVoteRepository.Create(vote);

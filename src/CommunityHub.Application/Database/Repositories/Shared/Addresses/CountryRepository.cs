@@ -1,6 +1,6 @@
 ﻿using CommunityHub.Application.Database.Mapping.EntityMappers;
 using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Domain.Addresses.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.Addresses;
 using CommunityHub.Application.Helpers.Search;
 
 namespace CommunityHub.Application.Database.Repositories.Shared.Addresses;
@@ -8,6 +8,26 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses;
 public class CountryRepository : ICountryRepository
 {
     private readonly CountryMapper _countryMapper = new CountryMapper();
+
+    public Country? GetById(long id)
+    {
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
+            "SELECT id AS country_id, name AS country_name FROM countries WHERE id = @id"
+        ).AddParameter("id", id);
+
+        Country? country = null;
+        
+        connection.ExecuteReader(
+            query,
+            reader => country = _countryMapper.MapToEntity(
+                reader
+            )
+        );
+
+        return country;
+    }
 
     public List<Country> GetAll()
     {

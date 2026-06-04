@@ -1,24 +1,26 @@
 ﻿using CommunityHub.Application.Domain.CommonRooms;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
-using CommunityHub.Application.Domain.CommonRooms.RepositoryInterfaces;
+using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
 using CommunityHub.Application.MappersDto.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms;
 
 namespace CommunityHub.Application.Services.CommonRooms
 {
-    public class CommonRoomService
+    public class CommonRoomService: BaseService<CommonRoom, CommonRoomDto>
     {
         private readonly ICommonRoomRepository _commonRoomRepository
             = Injector.CreateInstance<ICommonRoomRepository>();
 
         private readonly CommonRoomMapper _commonRoomMapper = new();
 
-        public List<CommonRoom> GetByBuilding(long buildingId)
-            => _commonRoomRepository.GetByBuilding(buildingId);
+        public CommonRoomService() : base(new CommonRoomMapper()) {}
+
+        public List<CommonRoomDto> GetByBuilding(long buildingId)
+            => MapToDto(_commonRoomRepository.GetAllByBuildingId(buildingId));
 
         public List<CommonRoomDto> GetAllByBuilding(long buildingId)
         {
-            var commonRooms = _commonRoomRepository.GetByBuilding(buildingId);
+            var commonRooms = _commonRoomRepository.GetAllByBuildingId(buildingId);
 
             return commonRooms.Select(_commonRoomMapper.MapToDto).ToList();
         }
