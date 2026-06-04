@@ -27,6 +27,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="64"/>
                 <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="64"/>
             </Grid.ColumnDefinitions>
 
             <Label
@@ -89,6 +90,21 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
             </Grid>
+
+            <Button
+                Grid.Column="3"
+                Background="Transparent"
+                BorderThickness="0"
+                Cursor="Hand"
+                ToolTip="Odjavi se"
+                Command="{Binding LogoutCommand}">
+                <TextBlock
+                    Text="&#xf08b;"
+                    FontSize="24"
+                    FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Button>
 
         </Grid>
 
