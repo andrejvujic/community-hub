@@ -24,7 +24,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                     ad_status,
                     description,
                     start_date,
-                    end_date)
+                    end_date,
+                    is_subscribed_to_matching_ads)
                 VALUES 
                     (@building_id,
                     @author_id,
@@ -33,7 +34,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                     @ad_status,
                     @description,
                     @start_date,
-                    @end_date)
+                    @end_date,
+                    @is_subscribed_to_matching_ads)
                 RETURNING id"
             ).ExtendParameters(_adMapper.MapToQueryParameters(ad));
 
@@ -56,7 +58,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                         ad_status = @ad_status,
                         description = @description,
                         start_date = @start_date,
-                        end_date = @end_date
+                        end_date = @end_date,
+                        is_subscribed_to_matching_ads = @is_subscribed_to_matching_ads
                     WHERE id = @id"
                 )
                 .AddParameter("id", ad.Id)
@@ -81,7 +84,8 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                             ad_status = @ad_status,
                             description = @description,
                             start_date = @start_date,
-                            end_date = @end_date
+                            end_date = @end_date,
+                            is_subscribed_to_matching_ads = @is_subscribed_to_matching_ads
                         WHERE id = @id"
                     )
                     .AddParameter("id", ad.Id)
@@ -107,6 +111,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                     ad.description,
                     ad.start_date,
                     ad.end_date,
+                    ad.is_subscribed_to_matching_ads,
 
                     author.id AS author_user_id,
                     author.name AS author_name,
@@ -150,6 +155,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                     ad.description,
                     ad.start_date,
                     ad.end_date,
+                    ad.is_subscribed_to_matching_ads,
 
                     author.id AS author_user_id,
                     author.name AS author_name,
@@ -193,6 +199,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                     ad.description,
                     ad.start_date,
                     ad.end_date,
+                    ad.is_subscribed_to_matching_ads,
 
                     author.id AS author_user_id,
                     author.name AS author_name,
@@ -242,6 +249,7 @@ namespace CommunityHub.Application.Database.Repositories.Ads
                     ad.description,
                     ad.start_date,
                     ad.end_date,
+                    ad.is_subscribed_to_matching_ads,
 
                     author.id AS author_user_id,
                     author.name AS author_name,

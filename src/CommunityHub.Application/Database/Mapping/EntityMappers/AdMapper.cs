@@ -29,6 +29,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 
             var startDate = reader.GetDateTime(reader.GetOrdinal("start_date"));
             var endDate = reader.GetDateTime(reader.GetOrdinal("end_date"));
+            var isSubscribedToMatchingAds = reader.GetBoolean(reader.GetOrdinal("is_subscribed_to_matching_ads"));
 
             return new Ad(
                 authorId: authorId,
@@ -40,6 +41,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 description: description,
                 startDate: startDate,
                 endDate: endDate,
+                isSubscribedToMatchingAds: isSubscribedToMatchingAds,
                 id: id
             );
         }
@@ -55,7 +57,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 { "ad_status", entity.Status },
                 { "ad_type", entity.Type },
                 { "start_date", entity.StartDate },
-                { "end_date", entity.EndDate }
+                { "end_date", entity.EndDate },
+                { "is_subscribed_to_matching_ads", entity.IsSubscribedToMatchingAds }
             };
         }
     }

@@ -1,8 +1,6 @@
 using CommunityHub.Application;
-using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
-using CommunityHub.Application.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
@@ -15,7 +13,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
     {
         private readonly long _userId;
         private readonly AdService _adService;
-        private readonly AdMatchSubscriptionService _adMatchSubscriptionService;
 
         public AdDto Ad { get; }
         public ObservableCollection<AdDto> MatchingAds { get; } = new();
@@ -33,20 +30,13 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 Injector.CreateInstance<IAdTimeSlotRepository>()
             );
 
-            _adMatchSubscriptionService = new(
-                Injector.CreateInstance<IAdRepository>(),
-                Injector.CreateInstance<IAdMatchSubscriptionRepository>(),
-                Injector.CreateInstance<IAdTimeSlotRepository>(),
-                Injector.CreateInstance<INotificationRepository>()
-            );
-
             _userId = userId;
             Ad = ad;
             OpenAdDetailsCommand = new(OpenAdDetailsPage);
 
             LoadMatchingAds();
             if (!HasMatchingAds)
-                CreateAdMatchSubscription();
+                SubscribeToMatchingAds();
         }
 
         private void LoadMatchingAds()
@@ -56,13 +46,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 MatchingAds.Add(ad);
         }
 
-        private void CreateAdMatchSubscription()
-            => _adMatchSubscriptionService.Create(
-                new AdMatchSubscriptionDto(
-                    subscribedAd: Ad,
-                    subscribedAdId: Ad.Id
-                )
-            );
+        private void SubscribeToMatchingAds()
+            => _adService.SubscribeToMatchingAds(Ad);
 
         private void OpenAdDetailsPage(AdDto? ad)
         {

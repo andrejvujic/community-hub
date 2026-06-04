@@ -19,6 +19,7 @@ namespace CommunityHub.Application.Domain.Ads
 
         public DateTime StartDate { get; }
         public DateTime EndDate { get; }
+        public bool IsSubscribedToMatchingAds { get; private set; }
 
         public Ad(
             long authorId,
@@ -29,6 +30,7 @@ namespace CommunityHub.Application.Domain.Ads
             string description,
             DateTime startDate,
             DateTime endDate,
+            bool isSubscribedToMatchingAds = false,
             User? author = null,
             long id = 0
         ) {
@@ -49,6 +51,7 @@ namespace CommunityHub.Application.Domain.Ads
 
             StartDate = startDate;
             EndDate = endDate;
+            IsSubscribedToMatchingAds = isSubscribedToMatchingAds;
         }
 
         public void Archive()
@@ -56,6 +59,12 @@ namespace CommunityHub.Application.Domain.Ads
             if (IsArchived) throw new InvalidOperationException("Ad is already archived.");
             Status = AdStatus.Archived;
         }
+
+        public void SubscribeToMatchingAds()
+            => IsSubscribedToMatchingAds = true;
+
+        public void UnsubscribeFromMatchingAds()
+            => IsSubscribedToMatchingAds = false;
 
         public bool IsOffer => Type is AdType.Offer;
         public bool IsRequest => Type is AdType.Request;
@@ -112,7 +121,8 @@ namespace CommunityHub.Application.Domain.Ads
             AdStatus? status = null,
             string? description = null,
             DateTime? startDate = null,
-            DateTime? endDate = null
+            DateTime? endDate = null,
+            bool? isSubscribedToMatchingAds = null
         )
         {
             return new Ad(
@@ -125,6 +135,7 @@ namespace CommunityHub.Application.Domain.Ads
                 description: description ?? Description,
                 startDate: startDate ?? StartDate,
                 endDate: endDate ?? EndDate,
+                isSubscribedToMatchingAds: isSubscribedToMatchingAds ?? IsSubscribedToMatchingAds,
                 id: id ?? Id
             );
         }

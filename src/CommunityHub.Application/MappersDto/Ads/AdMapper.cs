@@ -20,7 +20,8 @@ namespace CommunityHub.Application.MappersDto.Ads
                 status: ad.Status,
                 description: ad.Description,
                 startDate: ad.StartDate,
-                endDate: ad.EndDate
+                endDate: ad.EndDate,
+                isSubscribedToMatchingAds: ad.IsSubscribedToMatchingAds
             );
         }
         public Ad MapToEntity(AdDto dto)
@@ -36,6 +37,7 @@ namespace CommunityHub.Application.MappersDto.Ads
                 dto.Description,
                 dto.StartDate,
                 dto.EndDate,
+                dto.IsSubscribedToMatchingAds,
                 dto.Author is not null ? _userMapper.MapToEntity(dto.Author) : null,
                 dto.Id
             );
