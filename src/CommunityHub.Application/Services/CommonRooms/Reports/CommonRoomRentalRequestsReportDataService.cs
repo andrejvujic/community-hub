@@ -1,6 +1,9 @@
 using CommunityHub.Application.Domain.CommonRooms;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.RepositoryInterfaces.CommonRooms;
+using CommunityHub.Application.MappersDto.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms.Reports;
 
 namespace CommunityHub.Application.Services.CommonRooms.Reports
 {
@@ -8,8 +11,10 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
     {
         private readonly ICommonRoomRepository _commonRoomRepository = Injector.CreateInstance<ICommonRoomRepository>();
         private readonly ICommonRoomRentalRequestRepository _commonRoomRentalRequestRepository = Injector.CreateInstance<ICommonRoomRentalRequestRepository>();
+        private readonly CommonRoomMapper _commonRoomMapper = new();
+        private readonly CommonRoomRentalRequestMapper _rentalRequestMapper = new();
 
-        public List<CommonRoomRentalRequestsReport> GenerateForBuilding(
+        public List<CommonRoomRentalRequestsReportDto> GenerateForBuilding(
             long buildingId,
             DateTime from,
             DateTime to
@@ -22,14 +27,12 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
                 to: to
             );
 
-            var commonRoomsById = new Dictionary<long, CommonRoom>();
-            foreach (var commonRoom in commonRooms)
-                commonRoomsById[commonRoom.Id] = commonRoom;
+            var commonRoomsById = commonRooms.ToDictionary(commonRoom => commonRoom.Id);
 
             return GroupRentalRequestsByCommonRoom(commonRoomsById, rentalRequests);
         }
 
-        private static List<CommonRoomRentalRequestsReport> GroupRentalRequestsByCommonRoom(
+        private List<CommonRoomRentalRequestsReportDto> GroupRentalRequestsByCommonRoom(
             Dictionary<long, CommonRoom> commonRooms,
             List<CommonRoomRentalRequest> rentalRequests
         )
@@ -37,9 +40,9 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             var reportsByCommonRoomId = rentalRequests
                 .GroupBy(r => r.CommonRoomId)
                 .Select(
-                    group => new CommonRoomRentalRequestsReport(
-                        commonRooms[group.Key],
-                        group.ToList()
+                    group => new CommonRoomRentalRequestsReportDto(
+                        _commonRoomMapper.MapToDto(commonRooms[group.Key]),
+                        group.Select(_rentalRequestMapper.MapToDto).ToList()
                     )
                 )
                 .ToDictionary(report => report.CommonRoom.Id);
@@ -48,7 +51,10 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
                 .Values
                 .Select(commonRoom => reportsByCommonRoomId.TryGetValue(commonRoom.Id, out var report)
                     ? report
-                    : new CommonRoomRentalRequestsReport(commonRoom, new List<CommonRoomRentalRequest>()))
+                    : new CommonRoomRentalRequestsReportDto(
+                        _commonRoomMapper.MapToDto(commonRoom),
+                        new List<CommonRoomRentalRequestDto>()
+                    ))
                 .ToList();
         }
     }

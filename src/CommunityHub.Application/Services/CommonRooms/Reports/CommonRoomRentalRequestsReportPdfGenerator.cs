@@ -1,4 +1,6 @@
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
+using CommunityHub.Application.Services.Dtos.CommonRooms;
+using CommunityHub.Application.Services.Dtos.CommonRooms.Reports;
 using MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -13,7 +15,7 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
         private readonly CultureInfo _culture = new("sr-Latn-RS");
 
         public string GenerateToDownloads(
-            IReadOnlyList<CommonRoomRentalRequestsReport> reports,
+            IReadOnlyList<CommonRoomRentalRequestsReportDto> reports,
             DateTime from,
             DateTime to
         )
@@ -41,7 +43,7 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
         }
 
         private Document CreateDocument(
-            IReadOnlyList<CommonRoomRentalRequestsReport> reports,
+            IReadOnlyList<CommonRoomRentalRequestsReportDto> reports,
             DateTime from,
             DateTime to
         )
@@ -111,7 +113,7 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             PredefinedFontsAndChars.ErrorFontName = ReportFontResolver.FontFamilyName;
         }
 
-        private void AddCommonRoomReport(Section section, CommonRoomRentalRequestsReport report)
+        private void AddCommonRoomReport(Section section, CommonRoomRentalRequestsReportDto report)
         {
             var title = section.AddParagraph(report.CommonRoom.Name);
             title.Style = "CommonRoomTitle";
@@ -185,7 +187,7 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
         private string FormatDateRange(DateTime from, DateTime to)
             => $"{FormatDate(from)} - {FormatDate(to)}";
 
-        private string FormatProposedDateRange(CommonRoomRentalRequest request)
+        private string FormatProposedDateRange(CommonRoomRentalRequestDto request)
         {
             if (request.ProposedStartDate is null || request.ProposedEndDate is null)
                 return "Nema";
@@ -193,14 +195,14 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             return FormatDateRange(request.ProposedStartDate.Value, request.ProposedEndDate.Value);
         }
 
-        private string FormatAssignedDate(CommonRoomRentalRequest request, RentalType rentalType)
+        private string FormatAssignedDate(CommonRoomRentalRequestDto request, RentalType rentalType)
         {
             return request.AssignedDate is null || rentalType is RentalType.MultiDay
                 ? "Nema"
                 : FormatDate(request.AssignedDate.Value);
         }
 
-        private static string FormatResident(CommonRoomRentalRequest request)
+        private static string FormatResident(CommonRoomRentalRequestDto request)
         {
             if (request.Resident is null)
                 return "/";
