@@ -1,4 +1,5 @@
-﻿using CommunityHub.Application.Services.Dtos.Neighborhoods;
+﻿using CommunityHub.Application.Domain.JobListingBookings;
+using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Services;
 using CommunityHub.Application.Services.Dtos.Users;
 
@@ -16,16 +17,37 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
         public bool IsSubstitution { get; set; }
         public ServiceProviderDto? SubstitutingProvider { get; set; }
         public ServiceProviderDto ActualProvider => SubstitutingProvider ?? Listing.Provider;
-        public decimal TotalPrice => DurationHours.HasValue
-            ? UnitPrice * DurationHours.Value
-            : UnitPrice;
+        public ProviderReviewDto? Review { get; set; }
+
+        public string ProviderName =>
+            $"{ActualProvider.Name} {ActualProvider.Surname}";
+
+        public string ScheduledDateTime => ScheduledTime.HasValue
+            ? $"{ScheduledDate:dd.MM.yyyy.} u {ScheduledTime.Value:HH:mm} h"
+            : $"{ScheduledDate:dd.MM.yyyy.}";
+
+        public string TotalPriceView => DurationHours.HasValue
+            ? $"{TotalPrice:N2} RSD ({DurationHours}h)"
+            : $"{TotalPrice:N2} RSD";
+
+        public string RatingView => Review is not null
+            ? $"{Review.AverageRating:F2}"
+            : "/";
 
         public bool IsFinished(DateTime at)
         {
             if (DurationHours.HasValue && ScheduledTime.HasValue)
+            {
                 return ScheduledDate.ToDateTime(ScheduledTime.Value).AddHours(DurationHours.Value) <= at;
+            }
             return ScheduledDate < DateOnly.FromDateTime(at);
         }
+
+        public string Status => IsFinished(DateTime.Now) ? "Izvršeno" : "Zakazano";
+
+        public decimal TotalPrice => DurationHours.HasValue
+            ? UnitPrice * DurationHours.Value
+            : UnitPrice;
 
         public BookedJobDto(
             long id,
@@ -36,7 +58,8 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
             TimeOnly? scheduledTime = null,
             int? durationHours = null,
             bool isSubstitution = false,
-            ServiceProviderDto? substitutingProvider = null)
+            ServiceProviderDto? substitutingProvider = null,
+            ProviderReviewDto? review = null)
         {
             Id = id;
             Listing = listing;
@@ -47,6 +70,7 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
             UnitPrice = unitPrice;
             IsSubstitution = isSubstitution;
             SubstitutingProvider = substitutingProvider;
+            Review = review;
         }
     }
 }

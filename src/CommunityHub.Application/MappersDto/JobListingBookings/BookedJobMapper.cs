@@ -11,10 +11,20 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
         private readonly JobListingMapper _listingMapper = new();
         private readonly NeighborhoodMapper _neighborhoodMapper = new();
         private readonly ServiceProviderMapper _providerMapper = new();
+        private readonly bool _mapReview;
+
+        public BookedJobMapper(bool mapReview = true)
+        {
+            _mapReview = mapReview;
+        }
 
         public BookedJobDto MapToDto(BookedJob bookedJob)
         {
             if (bookedJob == null) throw new ArgumentNullException(nameof(bookedJob));
+
+            ProviderReviewDto? reviewDto = null;
+            if (_mapReview && bookedJob.Review != null)
+                reviewDto = new ProviderReviewMapper(mapReview: false).MapToDto(bookedJob.Review);
 
             return new BookedJobDto(
                 bookedJob.Id,
@@ -27,12 +37,17 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
                 bookedJob.IsSubstitution,
                 bookedJob.SubstitutingProvider != null
                     ? _providerMapper.MapToDto(bookedJob.SubstitutingProvider)
-                    : null);
+                    : null,
+                reviewDto);
         }
 
         public BookedJob MapToEntity(BookedJobDto dto)
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
+
+            ProviderReview? review = null;
+            if (_mapReview && dto.Review != null)
+                review = new ProviderReviewMapper(mapReview: false).MapToEntity(dto.Review);
 
             return new BookedJob(
                 _listingMapper.MapToEntity(dto.Listing),
@@ -45,7 +60,8 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
                 dto.IsSubstitution,
                 dto.SubstitutingProvider != null
                     ? _providerMapper.MapToEntity(dto.SubstitutingProvider)
-                    : null);
+                    : null,
+                review);
         }
     }
 }

@@ -77,7 +77,9 @@ namespace CommunityHub.Application.Domain.JobListings
             int? durationHours)
         {
             if (BillingType == BillingType.PerHour && durationHours is null) return null;
-            if (BillingType == BillingType.PerHour && durationHours > 14) return null;
+
+            if (BillingType == BillingType.PerHour && durationHours > 14)
+                throw new ArgumentException("Trajanje usluge ne može biti duže od 14 sati.");
 
             var prices = _priceList.OrderBy(p => p.ValidFrom).ToList();
             var today = DateOnly.FromDateTime(DateTime.Today);

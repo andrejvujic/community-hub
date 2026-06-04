@@ -81,10 +81,10 @@
                          Grid.Row="1" 
                          Margin="10,0,10,10"
                          ItemsSource="{Binding Neighborhoods}"
+                         SelectedItem="{Binding SelectedNeighborhood}"
                          Style="{StaticResource NeighborhoodListBoxStyle}"
                          ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
-                         SelectionChanged="NeighborhoodsListBox_SelectionChanged">
+                         ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
                 </ListBox>
             </Grid>
         </Border>
@@ -129,10 +129,10 @@
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <ListBox x:Name="JobListingsListBox"
                                          ItemsSource="{Binding JobListings}"
+                                         SelectedItem="{Binding SelectedListing}"
                                          ItemContainerStyle="{StaticResource JobListingItemStyle}"
                                          BorderThickness="0"
-                                         Background="Transparent"
-                                         SelectionChanged="JobListingsListBox_SelectionChanged">
+                                         Background="Transparent">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -219,7 +219,7 @@
                                             <Button x:Name="PrevImageButton"
                                                     Style="{StaticResource IconButtonStyle}"
                                                     Margin="0,0,10,0"
-                                                    Click="PrevImageButton_Click">
+                                                    Command="{Binding PrevImageCommand}">
                                                 <TextBlock Text="&#xf30a;"
                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                            FontSize="16"
@@ -227,7 +227,7 @@
                                             </Button>
                                             <Button x:Name="NextImageButton"
                                                     Style="{StaticResource IconButtonStyle}"
-                                                    Click="NextImageButton_Click">
+                                                    Command="{Binding NextImageCommand}">
                                                 <TextBlock Text="&#xf30b;"
                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                            FontSize="16"
@@ -258,7 +258,7 @@
                                                      Width="60"
                                                      FontSize="20"
                                                      VerticalContentAlignment="Center"
-                                                     Text="1"
+                                                     Text="{Binding DurationHoursInput, UpdateSourceTrigger=PropertyChanged}"
                                                      HorizontalContentAlignment="Right"
                                                      PreviewTextInput="NumberTextBox_PreviewTextInput"
                                                      PreviewKeyDown="NumberTextBox_PreviewKeyDown"/>
@@ -274,7 +274,7 @@
                                             Width="260"
                                             Height="50"
                                             Margin="0,0,0,10"
-                                            Click="FindSlotButton_Click"/>
+                                            Command="{Binding FindSlotCommand}"/>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -297,20 +297,20 @@
                         <DataGrid x:Name="ScheduledServicesDataGrid"
                                   Grid.Row="0"
                                   ItemsSource="{Binding ScheduledServices}"
+                                  SelectedItem="{Binding SelectedScheduledService}"
                                   Style="{StaticResource DataGridStyle}"
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
                                   CellStyle="{StaticResource DataGridCellStyle}"
                                   FontSize="14"
-                                  Margin="0,0,0,10"
-                                  SelectionChanged="ScheduledServicesDataGrid_SelectionChanged">
+                                  Margin="0,0,0,10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Usluga" Binding="{Binding ServiceName}" CanUserSort="False" Width="*"/>
+                                <DataGridTextColumn Header="Usluga" Binding="{Binding Listing.ServiceName}" CanUserSort="False" Width="*"/>
                                 <DataGridTextColumn Header="Serviser" Binding="{Binding ProviderName}" CanUserSort="False" Width="*"/>
                                 <DataGridTextColumn Header="Datum i vreme" Binding="{Binding ScheduledDateTime}" CanUserSort="False" Width="150"/>
-                                <DataGridTextColumn Header="Cena" Binding="{Binding TotalPrice}" CanUserSort="False" Width="150"/>
+                                <DataGridTextColumn Header="Cena" Binding="{Binding TotalPriceView}" CanUserSort="False" Width="150"/>
                                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" CanUserSort="False" Width="100"/>
-                                <DataGridTextColumn Header="Ocena" Binding="{Binding Rating}" CanUserSort="False" Width="70"/>
+                                <DataGridTextColumn Header="Ocena" Binding="{Binding RatingView}" CanUserSort="False" Width="70"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -320,13 +320,13 @@
                                     Width="150"
                                     Margin="0,0,10,0"
                                     FontSize="14"
-                                    Click="EditReviewButton_Click"/>
+                                    Command="{Binding EditReviewCommand}"/>
                             <Button Content="Oceni uslugu"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     Width="150"
                                     Margin="0,0,10,0"
                                     FontSize="14"
-                                    Click="ReviewButton_Click"/>
+                                    Command="{Binding ReviewCommand}"/>
                         </StackPanel>
                     </Grid>
                 </Border>
