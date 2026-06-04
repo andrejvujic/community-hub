@@ -230,7 +230,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void OpenReviewWindow(BookedJobDto selected)
         {
             if (Coordinator is null) return;
-            /*
             var window = new ProviderReviewWindow(selected, Coordinator) 
             { 
                 Owner = GetActiveWindow() 
@@ -240,8 +239,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             {
                 LoadScheduledServices();
             }
-            */
-           new InfoDialog("ne uradjeno", "nisam jos ovaj viemvmodeluradio.", GetActiveWindow()).ShowDialog();
         }
 
         public bool LoadCoordinator() 

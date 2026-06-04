@@ -32,6 +32,7 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
                 _neighborhoodMapper.MapToDto(bookedJob.Neighborhood),
                 bookedJob.ScheduledDate,
                 bookedJob.UnitPrice,
+                bookedJob.IsFinished(DateTime.Now) ? "Izvršeno" : "Zakazano",
                 bookedJob.ScheduledTime,
                 bookedJob.DurationHours,
                 bookedJob.IsSubstitution,

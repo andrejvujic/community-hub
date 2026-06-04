@@ -26,14 +26,12 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
             ? $"{ScheduledDate:dd.MM.yyyy.} u {ScheduledTime.Value:HH:mm} h"
             : $"{ScheduledDate:dd.MM.yyyy.}";
 
-        public string TotalPriceView => DurationHours.HasValue
-            ? $"{TotalPrice:N2} RSD ({DurationHours}h)"
-            : $"{TotalPrice:N2} RSD";
-
         public string RatingView => Review is not null
             ? $"{Review.AverageRating:F2}"
             : "/";
 
+        public string Status { get; set; }
+        /*
         public bool IsFinished(DateTime at)
         {
             if (DurationHours.HasValue && ScheduledTime.HasValue)
@@ -44,10 +42,14 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
         }
 
         public string Status => IsFinished(DateTime.Now) ? "Izvršeno" : "Zakazano";
-
+        */
         public decimal TotalPrice => DurationHours.HasValue
             ? UnitPrice * DurationHours.Value
             : UnitPrice;
+
+        public string TotalPriceView => DurationHours.HasValue
+            ? $"{TotalPrice:N2} RSD ({DurationHours}h)"
+            : $"{TotalPrice:N2} RSD";
 
         public BookedJobDto(
             long id,
@@ -55,6 +57,7 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
             NeighborhoodDto neighborhood,
             DateOnly scheduledDate,
             decimal unitPrice,
+            string status,
             TimeOnly? scheduledTime = null,
             int? durationHours = null,
             bool isSubstitution = false,
@@ -68,6 +71,7 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
             ScheduledTime = scheduledTime;
             DurationHours = durationHours;
             UnitPrice = unitPrice;
+            Status = status;
             IsSubstitution = isSubstitution;
             SubstitutingProvider = substitutingProvider;
             Review = review;
