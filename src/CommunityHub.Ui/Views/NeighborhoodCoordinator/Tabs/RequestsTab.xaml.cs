@@ -5,18 +5,19 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
     public partial class RequestsTab : UserControl
     {
-        private RequestsTabViewModel _viewModel = null!;
+        private readonly RequestsTabViewModel _viewModel;
 
         public RequestsTab()
         {
             InitializeComponent();
+
+            _viewModel = new RequestsTabViewModel();
+            DataContext = _viewModel;
         }
 
         public void Initialize(long coordinatorId)
         {
-            _viewModel = new RequestsTabViewModel(coordinatorId);
-            DataContext = _viewModel;
-            _viewModel.LoadRequests(null);
+            _viewModel.Initialize(coordinatorId);
         }
     }
 }

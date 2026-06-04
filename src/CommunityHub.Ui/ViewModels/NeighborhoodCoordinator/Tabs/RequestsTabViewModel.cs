@@ -16,7 +16,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly NeighborhoodAccessRequestService _neighborhoodAccessRequestService = new();
         private readonly NeighborhoodMembershipService _neighborhoodMembershipService = new();
         private readonly CitizenService _citizenService = new();
-        private readonly long _coordinatorId;
+        private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodAccessRequestDto> Requests { get; } = new();
 
@@ -52,12 +52,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public bool CanActOnRequest =>
             SelectedRequest != null && SelectedRequest.Status == NeighborhoodAccessRequestStatus.Waiting;
 
-        public RequestsTabViewModel(long coordinatorId)
+        public RequestsTabViewModel()
         {
-            _coordinatorId = coordinatorId;
-
             AcceptCommand = new RelayCommand(ExecuteAccept, () => CanActOnRequest);
             RejectCommand = new RelayCommand(ExecuteReject, () => CanActOnRequest);
+        }
+
+        public void Initialize(long coordinatorId)
+        {
+            _coordinatorId = coordinatorId;
+            LoadRequests(null);
         }
 
         public void LoadRequests(NeighborhoodAccessRequestStatus? status)
