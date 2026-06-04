@@ -48,7 +48,6 @@ namespace CommunityHub.Application
             { typeof(IAdRepository), new AdRepository() },
             { typeof(IAdTimeSlotRepository), new AdTimeSlotRepository() },
             { typeof(IAdTimeSlotReservationRepository), new AdTimeSlotReservationRepository() },
-            { typeof(IAdMatchSubscriptionRepository), new AdMatchSubscriptionRepository() },
             { typeof(IBuildingRepository), new BuildingRepository() },
             { typeof(IApartmentRepository), new ApartmentRepository() },
             { typeof(IApartmentAccessRequestRepository), new ApartmentAccessRequestRepository() },

@@ -20,6 +20,7 @@ namespace CommunityHub.Application.Services.Dtos.Ads
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public bool IsSubscribedToMatchingAds { get; set; }
 
         public AdDto(
             long authorId,
@@ -30,6 +31,7 @@ namespace CommunityHub.Application.Services.Dtos.Ads
             string description,
             DateTime startDate,
             DateTime endDate,
+            bool isSubscribedToMatchingAds = false,
             UserDto? author = null,
             long id = 0
         )
@@ -44,6 +46,7 @@ namespace CommunityHub.Application.Services.Dtos.Ads
             Description = description;
             StartDate = startDate;
             EndDate = endDate;
+            IsSubscribedToMatchingAds = isSubscribedToMatchingAds;
         }
 
         public bool IsOffer => Type is AdType.Offer;

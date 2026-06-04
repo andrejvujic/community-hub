@@ -1,6 +1,5 @@
 ﻿using CommunityHub.Application;
 using CommunityHub.Application.Domain.Ads;
-using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Ads;
@@ -34,7 +33,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
         private readonly DateTime _today = DateTime.Today;
 
         private readonly AdService _adService;
-        private readonly AdMatchSubscriptionService _adMatchSubscriptionService;
 
         private readonly long _userId;
         private readonly long _buildingId;
@@ -48,13 +46,6 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
             _adService = new(
                 Injector.CreateInstance<IAdRepository>(),
                 Injector.CreateInstance<IAdTimeSlotRepository>()
-            );
-
-            _adMatchSubscriptionService = new(
-                Injector.CreateInstance<IAdRepository>(),
-                Injector.CreateInstance<IAdMatchSubscriptionRepository>(),
-                Injector.CreateInstance<IAdTimeSlotRepository>(),
-                Injector.CreateInstance<INotificationRepository>()
             );
 
             _userId = userId;
@@ -125,7 +116,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads.Create
             if (validationResult is PublishmentValidationResult.Valid)
             {
                 var publishedAd = _adService.Publish(ad);
-                _adMatchSubscriptionService.NotifyAuthorsOfSubscribedMatchingAds(publishedAd);
+                _adService.NotifyAuthorsOfSubscribedMatchingAds(publishedAd);
                 return new(validationResult, publishedAd);
             }
 

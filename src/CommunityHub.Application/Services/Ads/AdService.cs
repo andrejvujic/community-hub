@@ -8,6 +8,9 @@ using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Services;
 using CommunityHub.Application.MappersDto.Users;
 using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Domain.Notifications;
+using CommunityHub.Application.Domain.Notifications.Details;
+using CommunityHub.Application.Domain.Notifications.RepositoryInterfaces;
 
 namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 {
@@ -20,6 +23,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
     public class AdService : BaseService<Ad, AdDto>
     {
         private readonly IAdRepository _adRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly AdTimeSlotService _adTimeSlotService;
         private readonly AdTimeSlotGenerator _adTimeSlotGenerator;
         private readonly AdMapper _adMapper = new();
@@ -30,6 +34,7 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
         ) : base(mapper: new AdMapper())
         {
             _adRepository = adRepository;
+            _notificationRepository = Injector.CreateInstance<INotificationRepository>();
             _adTimeSlotService = new(adTimeSlotRepository);
             _adTimeSlotGenerator = new();
         }
@@ -127,6 +132,49 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
                 .Select(ad => ad.AuthorId)
                 .Distinct()
                 .ToList();
+        }
+
+        public AdDto SubscribeToMatchingAds(AdDto ad)
+        {
+            var subscribedAd = MapToEntity(ad);
+            subscribedAd.SubscribeToMatchingAds();
+            _adRepository.Update(subscribedAd);
+            return MapToDto(subscribedAd);
+        }
+
+        public void NotifyAuthorsOfSubscribedMatchingAds(AdDto referenceAd)
+        {
+            var referenceAdEntity = MapToEntity(referenceAd);
+            var subscribedAds = _adRepository
+                .GetByBuilding(referenceAd.BuildingId)
+                .Where(ad =>
+                    ad.IsSubscribedToMatchingAds &&
+                    ad.Matches(referenceAdEntity)
+                )
+                .ToList();
+
+            var notifications = subscribedAds
+                .Select(ad => ad.AuthorId)
+                .Distinct()
+                .Select(authorId => new Notification(
+                    recipientId: authorId,
+                    title: "Pronađen kompatibilan oglas",
+                    message: "Na oglasnoj tabli se pojavio oglas sa odgovarajućom kategorijom i podudarnim datumima.",
+                    type: NotificationType.AdEvent,
+                    details: new AdEventNotificationDetails(
+                        referenceAd.Id,
+                        AdEventType.MatchingAdCreated
+                    ),
+                    sentAt: DateTime.Now
+                ))
+                .ToList();
+
+            _notificationRepository.CreateMany(notifications);
+
+            foreach (var ad in subscribedAds)
+                ad.UnsubscribeFromMatchingAds();
+
+            _adRepository.UpdateMany(subscribedAds);
         }
 
         public int GetAdsCountByStatus(long buildingId, AdStatus status)
