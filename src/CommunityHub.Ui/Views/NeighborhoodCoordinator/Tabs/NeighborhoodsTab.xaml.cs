@@ -7,19 +7,21 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
     public partial class NeighborhoodsTab : UserControl
     {
-        private NeighborhoodsTabViewModel _viewModel = null!;
+        private readonly NeighborhoodsTabViewModel _viewModel;
 
         public NeighborhoodsTab()
         {
             InitializeComponent();
+
+            _viewModel = new NeighborhoodsTabViewModel();
+            DataContext = _viewModel;
+
             this.IsVisibleChanged += NeighborhoodsTab_IsVisibleChanged;
         }
 
         public void Initialize(long coordinatorId)
         {
-            _viewModel = new NeighborhoodsTabViewModel(coordinatorId);
-            DataContext = _viewModel;
-            _viewModel.LoadNeighborhoods();
+            _viewModel.Initialize(coordinatorId);
 
             Window.GetWindow(this).KeyDown += NeighborhoodsTab_KeyDown;
         }

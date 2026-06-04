@@ -17,7 +17,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly NeighborhoodMembershipService _neighborhoodMembershipService = new();
         private readonly StreetSectionService _streetSectionService = new();
-        private readonly long _coordinatorId;
+        private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
         public ObservableCollection<StreetSectionDto> NeighborhoodStreetSections { get; } = new();
@@ -41,10 +41,15 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public bool IsDetailVisible => SelectedNeighborhood != null;
 
-        public NeighborhoodsTabViewModel(long coordinatorId)
+        public NeighborhoodsTabViewModel()
+        {
+            RegisterCommand = new RelayCommand(ExecuteRegister);
+        }
+
+        public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
-            RegisterCommand = new RelayCommand(ExecuteRegister);
+            LoadNeighborhoods();
         }
 
         private void ExecuteRegister()
