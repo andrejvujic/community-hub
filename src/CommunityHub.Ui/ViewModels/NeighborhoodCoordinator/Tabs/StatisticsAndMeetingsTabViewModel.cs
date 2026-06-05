@@ -310,8 +310,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 Owner = GetActiveWindow()
             };
 
+            var owner = GetActiveWindow();
+
             if (window.ShowDialog() == true)
+            {
                 LoadMeetings();
+                new InfoDialog("Uspeh", "Glasanje za novi sastanak je pokrenuto.", owner).ShowDialog();
+            }
+
         }
 
         private void ExecuteConfirmTiedDate()
@@ -325,8 +331,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 "Da li ste sigurni da želite da potvrdite ovaj termin?",
                 owner);
 
-            confirmDialog.ShowDialog();
-            if (!confirmDialog.Confirmed) return;
+            if (confirmDialog.ShowDialog() != true) return;
 
             _meetingService.UpdateScheduledDate(SelectedMeeting.Id, SelectedTiedDateOption.Date);
             _meetingService.UpdateStatus(SelectedMeeting.Id, MeetingStatus.Scheduled);

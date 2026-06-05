@@ -64,14 +64,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ConfirmDialog(
+            var confirmDialog = new ConfirmDialog(
                 "Potvrda odjave",
                 "Da li ste sigurni da želite da se odjavite?",
                 owner: this);
 
-            dialog.ShowDialog();
-
-            if (!dialog.Confirmed) return;
+            if (confirmDialog.ShowDialog() != true) return;
 
             LogInForm loginForm = new LogInForm();
             loginForm.Show();
