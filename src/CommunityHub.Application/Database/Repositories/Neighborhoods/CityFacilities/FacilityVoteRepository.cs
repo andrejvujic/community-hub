@@ -71,12 +71,14 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public FacilityVote? GetById(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE facility_vote.id = @id"
             ).AddParameter("id", id);
 
             FacilityVote? vote = null;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 vote = _facilityVoteMapper.MapToEntity(reader);
             });
@@ -85,12 +87,14 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public List<FacilityVote> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE neighborhood.id = @neighborhood_id ORDER BY facility_vote.id"
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<FacilityVote> votes = new List<FacilityVote>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var vote = _facilityVoteMapper.MapToEntity(reader);
                 if (vote is not null) votes.Add(vote);
@@ -100,13 +104,15 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public FacilityVote? GetByFacilityIdAndCitizenId(long facilityId, long citizenId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE city_facility.id = @facility_id AND citizen.id = @citizen_id"
             ).AddParameter("facility_id", facilityId)
              .AddParameter("citizen_id", citizenId);
 
             FacilityVote? vote = null;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 vote = _facilityVoteMapper.MapToEntity(reader);
             });
@@ -115,46 +121,51 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public int GetVoteCountByFacilityId(long facilityId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "SELECT COUNT(*) FROM facility_votes WHERE facility_id = @facility_id"
             ).AddParameter("facility_id", facilityId);
 
-            object? result = query.ExecuteScalar(value => value);
-            return result != null ? Convert.ToInt32(result) : 0;
+            return connection.ExecuteScalar(query, value => value != null ? Convert.ToInt32(value) : 0);
         }
 
         public FacilityVote Create(FacilityVote vote)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO facility_votes (facility_id, citizen_id)
                 VALUES (@facility_id, @citizen_id)
                 RETURNING id"
             )
             .ExtendParameters(_facilityVoteMapper.MapToQueryParameters(vote));
 
-            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return vote.CopyWith(id: id);
         }
 
         public void DeleteByFacilityIdAndCitizenId(long facilityId, long citizenId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "DELETE FROM facility_votes WHERE facility_id = @facility_id AND citizen_id = @citizen_id"
             )
             .AddParameter("facility_id", facilityId)
             .AddParameter("citizen_id", citizenId);
 
-            query.GetRowsAffectedCount();
+            connection.GetRowsAffectedCount(query);
         }
 
         public void DeleteAllByFacilityId(long facilityId)
         {
-            PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "DELETE FROM facility_votes WHERE facility_id = @facility_id"
             )
-            .AddParameter("facility_id", facilityId)
-            .GetRowsAffectedCount();
+            .AddParameter("facility_id", facilityId);
+
+            connection.GetRowsAffectedCount(query);
         }
     }
 }

@@ -71,12 +71,13 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
         public CoordinatorReview? GetById(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE coordinator_review.id = @id"
             ).AddParameter("id", id);
 
             CoordinatorReview? review = null;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 review = _reviewMapper.MapToEntity(reader);
             });
@@ -85,12 +86,13 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
         public List<CoordinatorReview> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE coordinator_review.neighborhood_id = @neighborhood_id AND coordinator_review.is_removed = false ORDER BY coordinator_review.created_at DESC"
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<CoordinatorReview> reviews = new List<CoordinatorReview>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var review = _reviewMapper.MapToEntity(reader);
                 if (review is not null) reviews.Add(review);
@@ -100,12 +102,13 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
         public List<CoordinatorReview> GetByCoordinatorId(long coordinatorId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE neighborhood.coordinator_id = @coordinator_id AND coordinator_review.is_removed = false ORDER BY coordinator_review.created_at DESC"
             ).AddParameter("coordinator_id", coordinatorId);
 
             var reviews = new List<CoordinatorReview>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var review = _reviewMapper.MapToEntity(reader);
                 if (review is not null) reviews.Add(review);
@@ -115,34 +118,37 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
         public int GetRemovedReviewCountByReviewerId(long neighborhoodId, long reviewerId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "SELECT COUNT(*) FROM coordinator_reviews WHERE neighborhood_id = @neighborhood_id AND reviewer_id = @reviewer_id AND is_removed = true"
             ).AddParameter("neighborhood_id", neighborhoodId).AddParameter("reviewer_id", reviewerId);
 
-            return query.ExecuteScalar<int>(value => Convert.ToInt32(value));
+            return connection.ExecuteScalar(query, Convert.ToInt32);
         }
 
         public CoordinatorReview Create(CoordinatorReview review)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO coordinator_reviews (rating, comment, created_at, neighborhood_id, reviewer_id, is_removed)
                 VALUES (@rating, @comment, @created_at, @neighborhood_id, @reviewer_id, @is_removed)
                 RETURNING id"
             )
             .ExtendParameters(_reviewMapper.MapToQueryParameters(review));
 
-            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return review.CopyWith(id: id);
         }
 
         public void MarkAsRemoved(long reviewId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "UPDATE coordinator_reviews SET is_removed = true WHERE id = @id"
             ).AddParameter("id", reviewId);
 
-            query.GetRowsAffectedCount();
+            connection.GetRowsAffectedCount(query);
         }
     }
 }

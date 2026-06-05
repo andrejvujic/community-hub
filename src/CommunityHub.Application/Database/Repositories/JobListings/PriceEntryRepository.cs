@@ -9,7 +9,9 @@ namespace CommunityHub.Application.Database.Repositories.JobListings
 
         public List<PriceEntry> GetByJobListingId(long jobListingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     price_entry.id AS price_entry_id,
                     price_entry.amount,
@@ -22,7 +24,7 @@ namespace CommunityHub.Application.Database.Repositories.JobListings
             ).AddParameter("job_listing_id", jobListingId);
 
             List<PriceEntry> priceEntries = new List<PriceEntry>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var priceEntry = _priceEntryMapper.MapToEntity(reader);
                 if (priceEntry is not null) priceEntries.Add(priceEntry);

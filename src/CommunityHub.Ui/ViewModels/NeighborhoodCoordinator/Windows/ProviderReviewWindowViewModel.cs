@@ -1,61 +1,59 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.JobListingBookings;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
     public class ProviderReviewWindowViewModel : INotifyPropertyChanged
     {
         private readonly ProviderReviewService _providerReviewService = new();
-        private readonly BookedJobWithReviewDto _bookedJobWithReview;
+        private readonly BookedJobDto _bookedJob;
         private readonly UserDto _coordinator;
 
-        public string Title => _bookedJobWithReview.Review == null
-            ? $"Ocenite uslugu: {_bookedJobWithReview.ServiceName}"
-            : $"Izmenite recenziju: {_bookedJobWithReview.ServiceName}";
+        public string Title => _bookedJob.Review == null
+            ? $"Ocenite uslugu: {_bookedJob.Listing.ServiceName}"
+            : $"Izmenite recenziju: {_bookedJob.Listing.ServiceName}";
 
-        public bool IsEditing => _bookedJobWithReview.Review != null;
-        public int QualityIndex => IsEditing ? ExistingQuality - 1 : -1;
-        public int CommunicationIndex => IsEditing ? ExistingCommunication - 1 : -1;
+        public bool IsEditing => _bookedJob.Review != null;
 
-        private int ExistingQuality => _bookedJobWithReview.Review?.QualityRating ?? 0;
-        private int ExistingCommunication => _bookedJobWithReview.Review?.CommunicationRating ?? 0;
-
-        private string _comment;
+        private string _comment = string.Empty;
         public string Comment
         {
             get => _comment;
-            set
-            {
-                _comment = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(CanConfirm));
+            set 
+            { 
+                _comment = value; 
+                OnPropertyChanged(); 
+                OnPropertyChanged(nameof(CanConfirm)); 
             }
         }
 
-        private int _selectedQualityIndex;
+        private int _selectedQualityIndex = -1;
         public int SelectedQualityIndex
         {
             get => _selectedQualityIndex;
-            set
+            set 
             {
-                _selectedQualityIndex = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(CanConfirm));
+                _selectedQualityIndex = value; 
+                OnPropertyChanged(); 
+                OnPropertyChanged(nameof(CanConfirm)); 
             }
         }
 
-        private int _selectedCommunicationIndex;
+        private int _selectedCommunicationIndex = -1;
         public int SelectedCommunicationIndex
         {
             get => _selectedCommunicationIndex;
-            set
-            {
-                _selectedCommunicationIndex = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(CanConfirm));
+            set 
+            { 
+                _selectedCommunicationIndex = value; 
+                OnPropertyChanged(); 
+                OnPropertyChanged(nameof(CanConfirm)); 
             }
         }
 
@@ -64,34 +62,87 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             SelectedCommunicationIndex >= 0 &&
             !string.IsNullOrWhiteSpace(Comment);
 
-        public ProviderReviewWindowViewModel(BookedJobWithReviewDto bookedJobWithReview, UserDto coordinator)
+        public RelayCommand ConfirmCommand { get; }
+        public RelayCommand CancelCommand { get; }
+
+        public ProviderReviewDto? SavedReview { get; private set; }
+        public bool? DialogResult { get; private set; }
+
+        public ProviderReviewWindowViewModel(BookedJobDto bookedJob, UserDto coordinator)
         {
-            _bookedJobWithReview = bookedJobWithReview;
+            _bookedJob = bookedJob;
             _coordinator = coordinator;
-            _comment = _bookedJobWithReview.Review?.Comment ?? string.Empty;
-            _selectedQualityIndex = QualityIndex;
-            _selectedCommunicationIndex = CommunicationIndex;
+
+            if (IsEditing)
+            {
+                Comment = _bookedJob.Review!.Comment ?? string.Empty;
+                SelectedQualityIndex = _bookedJob.Review.QualityRating - 1;
+                SelectedCommunicationIndex = _bookedJob.Review.CommunicationRating - 1;
+            }
+
+            ConfirmCommand = new RelayCommand(ExecuteConfirm);
+            CancelCommand = new RelayCommand(ExecuteCancel);
         }
 
-        public (bool Success, string? Error) TrySubmit()
+        private void ExecuteConfirm()
         {
-            if (SelectedQualityIndex < 0 || SelectedCommunicationIndex < 0)
-                return (false, "Molimo odaberite obe ocene.");
-
-            if (string.IsNullOrWhiteSpace(Comment))
-                return (false, "Komentar je obavezan deo recenzije.");
+            if (!ValidateInput()) return;
 
             int quality = SelectedQualityIndex + 1;
             int communication = SelectedCommunicationIndex + 1;
 
-            SavedReview = IsEditing
-                ? _providerReviewService.Update(_bookedJobWithReview.Review!, quality, communication, Comment.Trim())
-                : _providerReviewService.Create(_bookedJobWithReview.BookedJob, _coordinator, quality, communication, Comment.Trim());
+            if (IsEditing)
+            {
+                SavedReview = _providerReviewService.Update(_bookedJob.Review!, quality, communication, Comment.Trim());
+            }
+            else
+            {
+                SavedReview = _providerReviewService.Create(_bookedJob, _coordinator, quality, communication, Comment.Trim());
+            }
 
-            return (true, null);
+            CloseWindow(true);
         }
 
-        public ProviderReviewDto? SavedReview { get; private set; }
+        private bool ValidateInput()
+        {
+            var activeWindow = GetActiveWindow();
+
+            if (SelectedQualityIndex < 0)
+            {
+                new InfoDialog("Nepotpuni podaci", "Molimo Vas da izaberete ocenu za kvalitet izvršene usluge.", activeWindow).ShowDialog();
+                return false;
+            }
+
+            if (SelectedCommunicationIndex < 0)
+            {
+                new InfoDialog("Nepotpuni podaci", "Molimo Vas da izaberete ocenu za komunikaciju sa serviserom.", activeWindow).ShowDialog();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Comment))
+            {
+                new InfoDialog("Nepotpuni podaci", "Molimo Vas da unesete komentar. Obrazloženje recenzije je obavezno.", activeWindow).ShowDialog();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ExecuteCancel() => CloseWindow(false);
+
+        private void CloseWindow(bool result)
+        {
+            var window = GetActiveWindow();
+            if (window is ProviderReviewWindow view)
+            {
+                view.DialogResult = result;
+                view.Close();
+            }
+        }
+
+        private Window GetActiveWindow() =>
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            ?? System.Windows.Application.Current.MainWindow;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)

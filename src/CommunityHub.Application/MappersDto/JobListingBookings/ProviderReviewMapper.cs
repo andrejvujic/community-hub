@@ -6,16 +6,23 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
 {
     public class ProviderReviewMapper : IMapper<ProviderReview, ProviderReviewDto>
     {
-        private readonly BookedJobMapper _bookedJobMapper = new();
         private readonly UserMapper _userMapper = new();
+        private readonly bool _mapReview;
+
+        public ProviderReviewMapper(bool mapReview = true)
+        {
+            _mapReview = mapReview;
+        }
 
         public ProviderReviewDto MapToDto(ProviderReview providerReview)
         {
             if (providerReview == null) throw new ArgumentNullException(nameof(providerReview));
 
+            var bookedJobDto = new BookedJobMapper(mapReview: false).MapToDto(providerReview.BookedJob);
+
             return new ProviderReviewDto(
                 providerReview.Id,
-                _bookedJobMapper.MapToDto(providerReview.BookedJob),
+                bookedJobDto,
                 _userMapper.MapToDto(providerReview.Coordinator),
                 providerReview.QualityRating,
                 providerReview.CommunicationRating,
@@ -28,8 +35,10 @@ namespace CommunityHub.Application.MappersDto.JobListingBookings
         {
             if (dto == null) throw new ArgumentNullException(nameof(dto));
 
+            var bookedJob = new BookedJobMapper(mapReview: false).MapToEntity(dto.BookedJob);
+
             return new ProviderReview(
-                _bookedJobMapper.MapToEntity(dto.BookedJob),
+                bookedJob,
                 _userMapper.MapToEntity(dto.Coordinator),
                 dto.QualityRating,
                 dto.CommunicationRating,

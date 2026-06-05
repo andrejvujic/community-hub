@@ -23,6 +23,18 @@ namespace CommunityHub.Application.Services.JobListingBookings
                 .Select(_bookedJobMapper.MapToDto)
                 .ToList();
 
+        public bool CanReview(BookedJobDto dto)
+        {
+            var entity = _bookedJobMapper.MapToEntity(dto);
+            return entity != null && entity.CanReviewBeCreated(DateTime.Now);
+        }
+
+        public bool CanEditReview(BookedJobDto dto)
+        {
+            var entity = _bookedJobMapper.MapToEntity(dto);
+            return entity != null && entity.CanReviewBeEdited(DateTime.Now);
+        }
+
         public AvailableJobSlotDto? FindFirstAvailableSlot(JobListingDto jobListing, int? durationHours)
         {
             var joblisting = _jobListingMapper.MapToEntity(jobListing);

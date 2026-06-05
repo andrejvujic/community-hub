@@ -6,8 +6,13 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class ProviderReviewMapper : EntityMapper<ProviderReview>
     {
-        private readonly BookedJobMapper _bookedJobMapper = new BookedJobMapper();
+        private readonly BookedJobMapper _bookedJobMapper;
         private readonly UserMapper _userMapper = new UserMapper();
+
+        public ProviderReviewMapper(BookedJobMapper? bookedJobMapper = null)
+        {
+            _bookedJobMapper = bookedJobMapper ?? new BookedJobMapper(mapReview: false);
+        }
 
         public override ProviderReview? MapToEntity(IDataReader reader)
         {
@@ -18,7 +23,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             BookedJob? bookedJob = _bookedJobMapper.MapToEntity(reader);
             if (bookedJob is null) return null;
 
-            User? coordinator = _userMapper.MapToEntity(reader.WithPrefix("coordinator"));
+            User? coordinator = _userMapper.MapToEntity(reader.WithPrefix("review_coordinator"));
             if (coordinator is null) return null;
 
             int qualityRating = reader.GetInt32(reader.GetOrdinal("quality_rating"));
