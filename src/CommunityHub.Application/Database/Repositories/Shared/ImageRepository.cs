@@ -51,7 +51,9 @@ namespace CommunityHub.Application.Database.Repositories.Shared
 
         public List<Image> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     image.id AS image_id,
                     image.path AS path,
@@ -62,7 +64,7 @@ namespace CommunityHub.Application.Database.Repositories.Shared
             .AddParameter("neighborhood_id", neighborhoodId);
 
             var images = new List<Image>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var image = _imageMapper.MapToEntity(reader);
                 if (image is not null) images.Add(image);

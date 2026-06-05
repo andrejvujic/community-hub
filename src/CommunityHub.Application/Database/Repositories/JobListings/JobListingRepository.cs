@@ -15,7 +15,9 @@ public class JobListingRepository : IJobListingRepository
 
     public List<JobListing> GetByProviderId(long providerId)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT
                 jl.id AS job_listing_id,
                 jl.service_name,
@@ -60,7 +62,7 @@ public class JobListingRepository : IJobListingRepository
 
         var dict = new Dictionary<long, JobListing>();
 
-        query.ExecuteReader(reader =>
+        connection.ExecuteReader(query, reader =>
         {
             var listing = _mapper.MapToEntity(reader);
             if (listing is null) return;
@@ -85,47 +87,58 @@ public class JobListingRepository : IJobListingRepository
 
     public JobListing Create(JobListing listing)
     {
-        long newId = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+        connection.BeginTransaction();
+
+        var query = DatabaseQuery.Create(
             @"INSERT INTO job_listings (service_name, description, billing_type, city_id, country_id, provider_id)
               VALUES (@service_name, @description, @billing_type, @city_id, @country_id, @provider_id)
               RETURNING id"
-        )
-        .ExtendParameters(_mapper.MapToQueryParameters(listing))
-        .ExecuteScalar<long>(v => Convert.ToInt64(v));
+        ).ExtendParameters(_mapper.MapToQueryParameters(listing));
+
+        long newId = connection.ExecuteScalar(query, Convert.ToInt64);
 
         var savedPrices = new List<PriceEntry>();
         foreach (var entry in listing.PriceList)
         {
-            var savedEntry = AddPriceEntry(entry.CopyWith(jobListingId: newId));
-            savedPrices.Add(savedEntry);
+            var priceQuery = DatabaseQuery.Create(
+                @"INSERT INTO price_entries (amount, valid_from, valid_to, job_listing_id)
+                  VALUES (@amount, @valid_from, @valid_to, @job_listing_id)
+                  RETURNING id"
+            ).ExtendParameters(_priceMapper.MapToQueryParameters(entry.CopyWith(jobListingId: newId)));
+
+            long priceId = connection.ExecuteScalar(priceQuery, Convert.ToInt64);
+            savedPrices.Add(entry.CopyWith(id: priceId, jobListingId: newId));
         }
+
+        connection.CommitTransaction();
 
         var savedImages = new List<Image>();
         foreach (var image in listing.WorkSamples)
-        {
-            var savedImage = _imageRepository.Create(image);
-            savedImages.Add(savedImage);
-        }
+            savedImages.Add(_imageRepository.Create(image));
 
         return listing.CopyWith(id: newId, priceList: savedPrices, workSamples: savedImages);
     }
 
     public PriceEntry AddPriceEntry(PriceEntry entry)
     {
-        long newId = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"INSERT INTO price_entries (amount, valid_from, valid_to, job_listing_id)
               VALUES (@amount, @valid_from, @valid_to, @job_listing_id)
               RETURNING id"
-        )
-        .ExtendParameters(_priceMapper.MapToQueryParameters(entry))
-        .ExecuteScalar<long>(v => Convert.ToInt64(v));
+        ).ExtendParameters(_priceMapper.MapToQueryParameters(entry));
 
+        long newId = connection.ExecuteScalar(query, Convert.ToInt64);
         return entry.CopyWith(id: newId);
     }
 
     public List<JobListing> GetByCityAndCountry(long cityId, long countryId)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT
             job_listing.id AS job_listing_id,
             job_listing.service_name,
@@ -180,7 +193,7 @@ public class JobListingRepository : IJobListingRepository
 
         var dict = new Dictionary<long, JobListing>();
 
-        query.ExecuteReader(reader =>
+        connection.ExecuteReader(query, reader =>
         {
             var listing = _mapper.MapToEntity(reader);
             if (listing is null) return;

@@ -104,14 +104,16 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
 
         public List<BookedJob> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT {SelectColumns} {FromJoins}
                    WHERE booked_job.neighborhood_id = @neighborhood_id
                    ORDER BY booked_job.scheduled_date, booked_job.scheduled_time"
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BookedJob> bookedJobs = new List<BookedJob>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var bookedJob = _bookedJobMapper.MapToEntity(reader);
                 if (bookedJob is not null) bookedJobs.Add(bookedJob);
             });
@@ -120,7 +122,9 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
 
         public BookedJob Create(BookedJob bookedJob)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO booked_jobs
                     (scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id)
                   VALUES
@@ -129,14 +133,16 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
             )
             .ExtendParameters(_bookedJobMapper.MapToQueryParameters(bookedJob));
             
-            long bookedJobId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long bookedJobId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return bookedJob.CopyWith(id: bookedJobId);
         }
 
         public List<BookedJob> GetByServiceProviderId(long serviceProviderId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     booked_job.id AS booked_job_id,
                     booked_job.scheduled_date,
@@ -204,7 +210,7 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
             ).AddParameter("service_provider_id", serviceProviderId);
 
             List<BookedJob> bookedJobs = new List<BookedJob>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var bookedJob = _bookedJobMapper.MapToEntity(reader);
                 if (bookedJob is not null) bookedJobs.Add(bookedJob);
             });
@@ -213,7 +219,9 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
 
         public List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> GetOccupiedSlots(long jobListingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     booked_job.scheduled_date,
                     booked_job.scheduled_time,
@@ -224,7 +232,7 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
             ).AddParameter("job_listing_id", jobListingId);
 
             var results = new List<(DateOnly, TimeOnly?, int?)>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var date = DateOnly.FromDateTime(
                     reader.GetDateTime(reader.GetOrdinal("scheduled_date")));

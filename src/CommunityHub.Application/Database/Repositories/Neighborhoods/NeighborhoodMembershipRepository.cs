@@ -13,20 +13,24 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
         public NeighborhoodMembership Create(NeighborhoodMembership membership)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO neighborhood_memberships (acceptance_date, neighborhood_id) 
                 VALUES (@acceptance_date, @neighborhood_id) 
                 RETURNING id"
             ).ExtendParameters(_neighborhoodMembershipMapper.MapToQueryParameters(membership));
 
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long generatedId = connection.ExecuteScalar(query, Convert.ToInt64);
             
             return membership.CopyWith(id: generatedId);
         }
 
         public List<Citizen> GetCitizensByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 citizens.id AS user_id, 
                 citizens.username, 
@@ -72,7 +76,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ).AddParameter("id", neighborhoodId);
 
             List<Citizen> members = new List<Citizen>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 members.Add(_citizenMapper.MapToEntity(reader));
             });
             return members;
@@ -80,7 +84,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
         public List<CitizenTrustRecord> GetTrustRecordsByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 citizens.id AS user_id, 
                 citizens.username, 
@@ -135,7 +141,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
             List<CitizenTrustRecord> citizenTrustRecords = new List<CitizenTrustRecord>();
 
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 var citizen = _citizenMapper.MapToEntity(reader);
                 int organized = reader.GetInt32(reader.GetOrdinal("organized_count"));
                 int volunteered = reader.GetInt32(reader.GetOrdinal("volunteered_count"));
@@ -148,7 +154,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
         public int GetCitizenCountByCoordinatorId(long coordinatorId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT COUNT(DISTINCT nm.id) AS citizen_count
                 FROM neighborhood_memberships nm
                 INNER JOIN neighborhoods n ON nm.neighborhood_id = n.id
@@ -156,7 +164,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ).AddParameter("coordinator_id", coordinatorId);
 
             int count = 0;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
                 count = reader.GetInt32(reader.GetOrdinal("citizen_count")));
             return count;
         }

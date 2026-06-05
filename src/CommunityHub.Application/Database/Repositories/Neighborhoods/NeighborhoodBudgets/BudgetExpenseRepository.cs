@@ -58,7 +58,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public List<BudgetExpense> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT {SelectColumns} 
                 {FromJoins} 
                 WHERE budget_category_balance.neighborhood_id = @neighborhood_id 
@@ -66,7 +68,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BudgetExpense> budgetExpenses = new List<BudgetExpense>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var budgetExpense = _budgetExpenseMapper.MapToEntity(reader);
                 if (budgetExpense is not null) budgetExpenses.Add(budgetExpense);
@@ -76,7 +78,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public BudgetExpense Create(BudgetExpense budgetExpense)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO budget_expenses 
                 (amount, description, expense_date, budget_category_balance_id, coordinator_id)
                 VALUES 
@@ -85,7 +89,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             )
             .ExtendParameters(_budgetExpenseMapper.MapToQueryParameters(budgetExpense));
             
-            long budgetExpenseId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long budgetExpenseId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return budgetExpense.CopyWith(id: budgetExpenseId);
         }

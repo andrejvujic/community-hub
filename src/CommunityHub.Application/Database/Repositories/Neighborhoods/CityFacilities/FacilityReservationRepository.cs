@@ -52,12 +52,14 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public List<FacilityReservation> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE neighborhood.id = @neighborhood_id ORDER BY facility_reservation.start_datetime DESC"
             ).AddParameter("neighborhood_id", neighborhoodId);
             
             List<FacilityReservation> reservations = new List<FacilityReservation>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var reservation = facilityReservationMapper.MapToEntity(reader);
                 if (reservation is not null) reservations.Add(reservation);
@@ -67,12 +69,14 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public List<FacilityReservation> GetByFacilityId(long facilityId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE facility_reservation.facility_id = @facility_id ORDER BY facility_reservation.start_datetime"
             ).AddParameter("facility_id", facilityId);
 
             List<FacilityReservation> reservations = new List<FacilityReservation>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var reservation = facilityReservationMapper.MapToEntity(reader);
                 if (reservation is not null) reservations.Add(reservation);
@@ -82,14 +86,16 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public FacilityReservation Create(FacilityReservation reservation)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO facility_reservations (start_datetime, end_datetime, facility_id, neighborhood_id)
                 VALUES (@start_datetime, @end_datetime, @facility_id, @neighborhood_id)
                 RETURNING id"
             )
             .ExtendParameters(facilityReservationMapper.MapToQueryParameters(reservation));
-            
-            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return reservation.CopyWith(id: id);
         }

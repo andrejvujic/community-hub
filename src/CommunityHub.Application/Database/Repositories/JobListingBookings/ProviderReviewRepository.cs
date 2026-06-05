@@ -9,66 +9,66 @@ public class ProviderReviewRepository : IProviderReviewRepository
     private readonly ProviderReviewMapper _mapper = new ProviderReviewMapper();
 
     private const string SelectColumns = @"
-    pr.id AS review_id,
-    pr.quality_rating,
-    pr.communication_rating,
-    pr.comment AS review_comment,
-    pr.created_at AS review_created_at,
-    pr.updated_at,
-    bj.id AS booked_job_id,
-    bj.scheduled_date,
-    bj.scheduled_time,
-    bj.duration_hours,
-    bj.unit_price,
-    bj.is_substitution,
-    jl.id AS job_listing_id,
-    jl.service_name,
-    jl.description,
-    jl.billing_type,
-    lc.id AS listing_city_city_id,
-    lc.name AS listing_city_city_name,
-    lco.id AS listing_country_country_id,
-    lco.name AS listing_country_country_name,
-    pu.id AS user_id,
-    pu.username,
-    pu.password,
-    pu.name,
-    pu.surname,
-    pu.user_role,
-    pc.id AS provider_city_city_id,
-    pc.name AS provider_city_city_name,
-    pco.id AS provider_country_country_id,
-    pco.name AS provider_country_country_name,
-    n.id AS neighborhood_id,
-    n.name AS neighborhood_name,
-    n.description,
-    n.budget,
-    nc.id AS city_id,
-    nc.name AS city_name,
-    nco.id AS country_id,
-    nco.name AS country_name,
-    cu.id AS coordinator_user_id,
-    cu.username AS coordinator_username,
-    cu.password AS coordinator_password,
-    cu.name AS coordinator_name,
-    cu.surname AS coordinator_surname,
-    cu.user_role AS coordinator_user_role,
-    rev_u.id AS review_coordinator_user_id,
-    rev_u.username AS review_coordinator_username,
-    rev_u.password AS review_coordinator_password,
-    rev_u.name AS review_coordinator_name,
-    rev_u.surname AS review_coordinator_surname,
-    rev_u.user_role AS review_coordinator_user_role,
-    sub_u.id AS sub_provider_user_id,
-    sub_u.username AS sub_provider_username,
-    sub_u.password AS sub_provider_password,
-    sub_u.name AS sub_provider_name,
-    sub_u.surname AS sub_provider_surname,
-    sub_u.user_role AS sub_provider_user_role,
-    sub_c.id AS sub_provider_city_id,
-    sub_c.name AS sub_provider_city_name,
-    sub_co.id AS sub_provider_country_id,
-    sub_co.name AS sub_provider_country_name";
+        pr.id AS review_id,
+        pr.quality_rating,
+        pr.communication_rating,
+        pr.comment AS review_comment,
+        pr.created_at AS review_created_at,
+        pr.updated_at,
+        bj.id AS booked_job_id,
+        bj.scheduled_date,
+        bj.scheduled_time,
+        bj.duration_hours,
+        bj.unit_price,
+        bj.is_substitution,
+        jl.id AS job_listing_id,
+        jl.service_name,
+        jl.description,
+        jl.billing_type,
+        lc.id AS listing_city_city_id,
+        lc.name AS listing_city_city_name,
+        lco.id AS listing_country_country_id,
+        lco.name AS listing_country_country_name,
+        pu.id AS user_id,
+        pu.username,
+        pu.password,
+        pu.name,
+        pu.surname,
+        pu.user_role,
+        pc.id AS provider_city_city_id,
+        pc.name AS provider_city_city_name,
+        pco.id AS provider_country_country_id,
+        pco.name AS provider_country_country_name,
+        n.id AS neighborhood_id,
+        n.name AS neighborhood_name,
+        n.description,
+        n.budget,
+        nc.id AS city_id,
+        nc.name AS city_name,
+        nco.id AS country_id,
+        nco.name AS country_name,
+        cu.id AS coordinator_user_id,
+        cu.username AS coordinator_username,
+        cu.password AS coordinator_password,
+        cu.name AS coordinator_name,
+        cu.surname AS coordinator_surname,
+        cu.user_role AS coordinator_user_role,
+        rev_u.id AS review_coordinator_user_id,
+        rev_u.username AS review_coordinator_username,
+        rev_u.password AS review_coordinator_password,
+        rev_u.name AS review_coordinator_name,
+        rev_u.surname AS review_coordinator_surname,
+        rev_u.user_role AS review_coordinator_user_role,
+        sub_u.id AS sub_provider_user_id,
+        sub_u.username AS sub_provider_username,
+        sub_u.password AS sub_provider_password,
+        sub_u.name AS sub_provider_name,
+        sub_u.surname AS sub_provider_surname,
+        sub_u.user_role AS sub_provider_user_role,
+        sub_c.id AS sub_provider_city_id,
+        sub_c.name AS sub_provider_city_name,
+        sub_co.id AS sub_provider_country_id,
+        sub_co.name AS sub_provider_country_name";
 
     private const string FromJoins = @"
         FROM provider_reviews pr
@@ -92,12 +92,14 @@ public class ProviderReviewRepository : IProviderReviewRepository
 
     public List<ProviderReview> GetByProviderId(long providerId)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             $"SELECT {SelectColumns} {FromJoins} WHERE jl.provider_id = @provider_id ORDER BY pr.created_at DESC"
         ).AddParameter("provider_id", providerId);
 
         var reviews = new List<ProviderReview>();
-        query.ExecuteReader(reader =>
+        connection.ExecuteReader(query, reader =>
         {
             var review = _mapper.MapToEntity(reader);
             if (review is not null) reviews.Add(review);
@@ -107,88 +109,92 @@ public class ProviderReviewRepository : IProviderReviewRepository
 
     public ProviderReview? GetByBookedJobId(long bookedJobId)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             $"SELECT {SelectColumns} {FromJoins} WHERE pr.booked_job_id = @booked_job_id"
         ).AddParameter("booked_job_id", bookedJobId);
 
         ProviderReview? result = null;
-        query.ExecuteReader(reader => result = _mapper.MapToEntity(reader));
+        connection.ExecuteReader(query, reader => result = _mapper.MapToEntity(reader));
         return result;
     }
 
     public ProviderReview Create(ProviderReview review)
     {
-        long newId = PostgresQuery.Create(
-            @"INSERT INTO provider_reviews
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
+             @"INSERT INTO provider_reviews
                 (quality_rating, communication_rating, comment, created_at, booked_job_id, coordinator_id)
               VALUES
                 (@quality_rating, @communication_rating, @comment, @created_at, @booked_job_id, @coordinator_id)
               RETURNING id"
-        )
-        .ExtendParameters(_mapper.MapToQueryParameters(review))
-        .AddParameter("created_at", review.CreatedAt)
-        .ExecuteScalar<long>(v => Convert.ToInt64(v));
+        ).ExtendParameters(_mapper.MapToQueryParameters(review))
+         .AddParameter("created_at", review.CreatedAt);
 
-        return review.CopyWith(id: newId);
+        long Id = connection.ExecuteScalar(query, Convert.ToInt64);
+
+        return review.CopyWith(id: Id);
     }
 
     public ProviderReview Update(ProviderReview review)
     {
+        using var connection = DatabaseConnection.Create();
         DateTime updatedAt = DateTime.UtcNow;
 
-        PostgresQuery.Create(
+        var query = DatabaseQuery.Create(
             @"UPDATE provider_reviews
-              SET quality_rating = @quality_rating,
-                  communication_rating = @communication_rating,
-                  comment = @comment,
-                  updated_at = @updated_at
-              WHERE id = @id"
+          SET quality_rating = @quality_rating,
+              communication_rating = @communication_rating,
+              comment = @comment,
+              updated_at = @updated_at
+          WHERE id = @id"
         )
         .AddParameter("id", review.Id)
         .AddParameter("quality_rating", review.QualityRating)
         .AddParameter("communication_rating", review.CommunicationRating)
         .AddParameter("comment", review.Comment)
-        .AddParameter("updated_at", updatedAt)
-        .GetRowsAffectedCount();
+        .AddParameter("updated_at", updatedAt);
 
+        connection.GetRowsAffectedCount(query);
         return review.CopyWith(updatedAt: updatedAt);
     }
 
     public decimal? GetAverageRatingForProvider(long providerId)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT AVG((pr.quality_rating + pr.communication_rating) / 2.0)
-              FROM provider_reviews pr
-              INNER JOIN booked_jobs bj ON bj.id = pr.booked_job_id
-              INNER JOIN job_listings jl ON jl.id = bj.job_listing_id
-              WHERE jl.provider_id = @provider_id"
+          FROM provider_reviews pr
+          INNER JOIN booked_jobs bj ON bj.id = pr.booked_job_id
+          INNER JOIN job_listings jl ON jl.id = bj.job_listing_id
+          WHERE jl.provider_id = @provider_id"
         ).AddParameter("provider_id", providerId);
 
-        return query.ExecuteScalar<decimal?>(value =>
+        return connection.ExecuteScalar(query, value =>
         {
-            if (value == null || value == DBNull.Value) return null;
+            if (value == null || value == DBNull.Value) return (decimal?)null;
             return Convert.ToDecimal(value);
         });
     }
-    
+
     public Dictionary<long, ProviderReview> GetAllByNeighborhood(long neighborhoodId)
     {
-        var query = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             $"SELECT {SelectColumns} {FromJoins} WHERE bj.neighborhood_id = @neighborhood_id"
-        )
-        .AddParameter("neighborhood_id", neighborhoodId);
+        ).AddParameter("neighborhood_id", neighborhoodId);
 
         var reviewsMap = new Dictionary<long, ProviderReview>();
-
-        query.ExecuteReader(reader =>
+        connection.ExecuteReader(query, reader =>
         {
             var review = _mapper.MapToEntity(reader);
             if (review != null)
-            {
                 reviewsMap[review.BookedJob.Id] = review;
-            }
         });
-
         return reviewsMap;
     }
 }

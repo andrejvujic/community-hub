@@ -9,7 +9,9 @@ public class ServiceProviderRepository
 
     public ServiceProvider? GetById(long id)
     {
-        var query = PostgresQuery.Create(
+        var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT
                 u.id AS user_id,
                 u.username,
@@ -29,13 +31,15 @@ public class ServiceProviderRepository
         ).AddParameter("id", id);
 
         ServiceProvider? result = null;
-        query.ExecuteReader(reader => result = _mapper.MapToEntity(reader));
+        connection.ExecuteReader(query, reader => result = _mapper.MapToEntity(reader));
         return result;
     }
 
     public List<ServiceProvider> GetByLocation(long cityId, long countryId)
     {
-        var query = PostgresQuery.Create(
+        var connection = DatabaseConnection.Create();
+
+        var query = DatabaseQuery.Create(
             @"SELECT
                 u.id AS user_id,
                 u.username,
@@ -57,7 +61,7 @@ public class ServiceProviderRepository
         .AddParameter("country_id", countryId);
 
         var providers = new List<ServiceProvider>();
-        query.ExecuteReader(reader =>
+        connection.ExecuteReader(query, reader =>
         {
             var provider = _mapper.MapToEntity(reader);
             if (provider is not null) providers.Add(provider);
@@ -67,24 +71,27 @@ public class ServiceProviderRepository
 
     public ServiceProvider Create(ServiceProvider provider)
     {
-        // INSERT u tabelu users i dobijamo generisani ID
-        var userQuery = PostgresQuery.Create(
+        using var connection = DatabaseConnection.Create();
+        connection.BeginTransaction();
+
+        var userQuery = DatabaseQuery.Create(
             @"INSERT INTO users (username, password, name, surname, user_role)
               VALUES (@username, @password, @name, @surname, @user_role)
               RETURNING id"
         ).ExtendParameters(_mapper.MapToUserParameters(provider));
 
-        long generatedId = userQuery.ExecuteScalar<long>(value => Convert.ToInt64(value));
+        long generatedId = connection.ExecuteScalar(userQuery, Convert.ToInt64);
 
-        // INSERT u tabelu service_providers sa istim ID-om
-        PostgresQuery.Create(
+        var providerQuery = DatabaseQuery.Create(
             @"INSERT INTO service_providers (id, city_id, country_id)
               VALUES (@id, @city_id, @country_id)"
         )
         .AddParameter("id", generatedId)
         .AddParameter("city_id", provider.City.Id)
-        .AddParameter("country_id", provider.Country.Id)
-        .GetRowsAffectedCount();
+        .AddParameter("country_id", provider.Country.Id);
+
+        connection.GetRowsAffectedCount(providerQuery);
+        connection.CommitTransaction();
 
         return provider.CopyWith(id: generatedId);
     }
