@@ -7,27 +7,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
     public partial class ServiceBookingConfirmationWindow : Window
     {
         private readonly BookingConfirmationWindowViewModel _viewModel;
-        public bool Confirmed { get; private set; }
 
         public ServiceBookingConfirmationWindow(JobListingDto listing, AvailableJobSlotDto slot)
         {
             InitializeComponent();
             _viewModel = new BookingConfirmationWindowViewModel(listing, slot);
             DataContext = _viewModel;
-        }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            Confirmed = true;
-            DialogResult = true;
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Confirmed = false;
-            DialogResult = false;
-            Close();
         }
     }
 }

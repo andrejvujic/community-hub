@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Services.Dtos.Services;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
@@ -36,10 +38,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public Visibility PerJobVisibility => IsPerJob ? Visibility.Visible : Visibility.Collapsed;
         public Visibility PriceChangeVisibility => IsPriceChanged ? Visibility.Visible : Visibility.Collapsed;
 
+        public RelayCommand ConfirmCommand { get; }
+        public RelayCommand CancelCommand { get; }
+
         public BookingConfirmationWindowViewModel(JobListingDto jobListing, AvailableJobSlotDto availableJobSlot)
         {
             _jobListing = jobListing;
             _availableJobSlot = availableJobSlot;
+
+            ConfirmCommand = new RelayCommand(ExecuteConfirm);
+            CancelCommand = new RelayCommand(ExecuteCancel);
         }
 
         private string BuildPriceChangeInfo()
@@ -53,6 +61,20 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 
             return $"Prvi slobodan termin nije u opsegu datuma za koji važi trenutna cena.\n" +
                    $"Nova cena koja važi od {validFrom} iznosi {_availableJobSlot.Price:N2} RSD.";
+        }
+
+        private void ExecuteConfirm() => CloseWindow(true);
+
+        private void ExecuteCancel() => CloseWindow(false);
+
+        private void CloseWindow(bool result)
+        {
+            var window = System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
+            if (window is ServiceBookingConfirmationWindow view)
+            {
+                view.DialogResult = result;
+                view.Close();
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
