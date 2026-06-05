@@ -1,12 +1,15 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.TrustRecords;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -16,11 +19,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly NeighborhoodMeetingService _meetingService = new();
         private readonly MeetingDateVoteService _voteService = new();
         private readonly NeighborhoodMembershipService _membershipService = new();
-        private readonly long _coordinatorId;
+        private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
         public ObservableCollection<NeighborhoodMeetingDto> Meetings { get; } = new();
         public ObservableCollection<TiedDateOption> TiedDateOptions { get; } = new();
+
+        public RelayCommand ScheduleMeetingCommand { get; }
+        public RelayCommand ScheduleWelcomeCommand { get; }
+        public RelayCommand ScheduleMotivationCommand { get; }
+        public RelayCommand ConfirmTiedDateCommand { get; }
 
         private NeighborhoodDto? _selectedNeighborhood;
         public NeighborhoodDto? SelectedNeighborhood
@@ -42,11 +50,11 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int TotalCitizens
         {
             get => _totalCitizens;
-            private set 
-            { 
-                _totalCitizens = value; 
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(TotalCitizensText)); 
+            private set
+            {
+                _totalCitizens = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TotalCitizensText));
             }
         }
 
@@ -54,12 +62,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int NewCount
         {
             get => _newCount;
-            private set 
-            { 
-                _newCount = value; 
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(NewCountText)); 
-                OnPropertyChanged(nameof(NewPercentText)); 
+            private set
+            {
+                _newCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(NewCountText));
+                OnPropertyChanged(nameof(NewPercentText));
             }
         }
 
@@ -67,12 +75,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int InactiveCount
         {
             get => _inactiveCount;
-            private set 
-            { 
-                _inactiveCount = value; 
-                OnPropertyChanged(); 
+            private set
+            {
+                _inactiveCount = value;
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(InactiveCountText));
-                OnPropertyChanged(nameof(InactivePercentText)); 
+                OnPropertyChanged(nameof(InactivePercentText));
             }
         }
 
@@ -80,12 +88,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int ActiveCount
         {
             get => _activeCount;
-            private set 
-            { 
-                _activeCount = value; 
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(ActiveCountText)); 
-                OnPropertyChanged(nameof(ActivePercentText)); 
+            private set
+            {
+                _activeCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ActiveCountText));
+                OnPropertyChanged(nameof(ActivePercentText));
             }
         }
 
@@ -93,11 +101,11 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int ProminentCount
         {
             get => _prominentCount;
-            private set 
-            { 
-                _prominentCount = value; 
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(ProminentCountText)); 
+            private set
+            {
+                _prominentCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ProminentCountText));
                 OnPropertyChanged(nameof(ProminentPercentText));
             }
         }
@@ -106,12 +114,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int TrustworthyCount
         {
             get => _trustworthyCount;
-            private set 
-            { 
-                _trustworthyCount = value; 
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(TrustworthyCountText)); 
-                OnPropertyChanged(nameof(TrustworthyPercentText)); 
+            private set
+            {
+                _trustworthyCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TrustworthyCountText));
+                OnPropertyChanged(nameof(TrustworthyPercentText));
             }
         }
 
@@ -179,6 +187,18 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 _selectedMeeting = value;
                 OnPropertyChanged();
                 LoadTiedDates();
+
+                if (HasTiedDates)
+                {
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        new InfoDialog(
+                            "Izjednačeni termini",
+                            "Postoji izjednačen broj glasova. Odaberite jedan od termina.",
+                            GetActiveWindow()
+                        ).ShowDialog();
+                    });
+                }
             }
         }
 
@@ -198,16 +218,28 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public bool CanConfirmTiedDate => SelectedTiedDateOption != null;
 
-        public StatisticsAndMeetingsTabViewModel(long coordinatorId)
+        public StatisticsAndMeetingsTabViewModel()
+        {
+            ScheduleMeetingCommand = new RelayCommand(() => OpenScheduleWindow(null));
+            ScheduleWelcomeCommand = new RelayCommand(() => OpenScheduleWindow(MeetingTheme.Welcome));
+            ScheduleMotivationCommand = new RelayCommand(() => OpenScheduleWindow(MeetingTheme.Motivation));
+            ConfirmTiedDateCommand = new RelayCommand(ExecuteConfirmTiedDate, () => CanConfirmTiedDate);
+        }
+
+        public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
+            LoadNeighborhoods();
         }
+
+        private Window GetActiveWindow() =>
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            ?? System.Windows.Application.Current.MainWindow;
 
         public void LoadNeighborhoods()
         {
             Neighborhoods.Clear();
-            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
-            foreach (var n in neighborhoods)
+            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
                 Neighborhoods.Add(n);
         }
 
@@ -248,15 +280,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             int maxCount = new[] { NewCount, InactiveCount, ActiveCount, ProminentCount, TrustworthyCount }.Max();
             ShowWelcomeRecommendation = maxCount == NewCount && NewCount > 0;
             ShowMotivationRecommendation = !ShowWelcomeRecommendation && maxCount == InactiveCount && InactiveCount > 0;
-
-            OnPropertyChanged(nameof(TotalCitizens));
-            OnPropertyChanged(nameof(NewCount));
-            OnPropertyChanged(nameof(InactiveCount));
-            OnPropertyChanged(nameof(ActiveCount));
-            OnPropertyChanged(nameof(ProminentCount));
-            OnPropertyChanged(nameof(TrustworthyCount));
-            OnPropertyChanged(nameof(ShowWelcomeRecommendation));
-            OnPropertyChanged(nameof(ShowMotivationRecommendation));
         }
 
         private void LoadTiedDates()
@@ -278,19 +301,45 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             OnPropertyChanged(nameof(HasTiedDates));
         }
 
-        public void ConfirmTiedDate()
+        private void OpenScheduleWindow(MeetingTheme? theme)
+        {
+            if (SelectedNeighborhood is null) return;
+
+            var window = new ScheduleMeetingWindow(SelectedNeighborhood, theme)
+            {
+                Owner = GetActiveWindow()
+            };
+
+            if (window.ShowDialog() == true)
+                LoadMeetings();
+        }
+
+        private void ExecuteConfirmTiedDate()
         {
             if (SelectedMeeting is null || SelectedTiedDateOption is null) return;
+
+            var owner = GetActiveWindow();
+
+            var confirmDialog = new ConfirmDialog(
+                "Potvrda termina",
+                "Da li ste sigurni da želite da potvrdite ovaj termin?",
+                owner);
+
+            confirmDialog.ShowDialog();
+            if (!confirmDialog.Confirmed) return;
 
             _meetingService.UpdateScheduledDate(SelectedMeeting.Id, SelectedTiedDateOption.Date);
             _meetingService.UpdateStatus(SelectedMeeting.Id, MeetingStatus.Scheduled);
             LoadMeetings();
+
+            new InfoDialog("Uspeh", "Termin je uspešno zakazan.", owner).ShowDialog();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
     public class TiedDateOption
     {
         public DateOnly Date { get; }
