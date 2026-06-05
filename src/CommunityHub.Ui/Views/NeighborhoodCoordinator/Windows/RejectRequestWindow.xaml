@@ -14,14 +14,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="MessageLabel" 
-                   Grid.Row="0" 
+        <TextBlock Grid.Row="0"
+                   Text="{Binding MessageText}"
                    TextWrapping="Wrap" 
                    Margin="0,0,0,10" 
                    FontSize="14"/>
-        <TextBox x:Name="CommentTextBox" 
-                 Grid.Row="1" 
+        <TextBox Grid.Row="1" 
                  Style="{StaticResource TextBoxStyle}"
+                 Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap" 
                  AcceptsReturn="True" 
                  VerticalContentAlignment="Top"
@@ -30,12 +30,12 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button Content="Odustani"
                     Style="{StaticResource SecondaryButtonStyle}"
-                    Click="Cancel_Click"
+                    Command="{Binding CancelCommand}"
                     Margin="0,0,10,0"
                     Padding="15,5"/>
             <Button Content="Potvrdi"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Click="Confirm_Click"
+                    Command="{Binding ConfirmCommand}"
                     Padding="15,5"/>
         </StackPanel>
     </Grid>
