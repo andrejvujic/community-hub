@@ -17,11 +17,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly BudgetCategoryBalanceService _balanceService = new();
         private readonly BudgetExpenseService _expenseService = new();
+        private readonly BudgetDonationService _donationService = new();
         private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
         public ObservableCollection<BudgetCategoryBalanceDto> BudgetCategories { get; } = new();
         public ObservableCollection<BudgetExpenseDto> Expenses { get; } = new();
+        public ObservableCollection<BudgetDonationDto> Donations { get; } = new();
 
         private NeighborhoodDto? _selectedNeighborhood;
         public NeighborhoodDto? SelectedNeighborhood
@@ -57,6 +59,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     DonationsTitleText = $"Donacije: {_selectedCategoryBalance.Category.Name}";
                     ExpensesTitleText = $"Troškovi: {_selectedCategoryBalance.Category.Name}";
                     LoadExpensesForSelectedCategory();
+                    LoadDonationsForSelectedCategory();
                 }
             }
         }
@@ -151,7 +154,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             BudgetCategories.Clear();
             var allExpenses = _expenseService.GetByNeighborhood(SelectedNeighborhood.Id);
-            var balances = _balanceService.GetByNeighborhood(SelectedNeighborhood.Id, allExpenses);
+            var allDonations = _donationService.GetDonationsForNeighborhood(SelectedNeighborhood.Id);
+            var balances = _balanceService.GetByNeighborhood(SelectedNeighborhood.Id, allExpenses, allDonations);
             foreach (var b in balances)
             {
                 BudgetCategories.Add(b);
@@ -168,6 +172,19 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             foreach (var ex in categoryExpenses)
                 Expenses.Add(ex);
+        }
+
+        private void LoadDonationsForSelectedCategory()
+        {
+            Donations.Clear();
+            if (SelectedNeighborhood == null || SelectedCategoryBalance == null) return;
+
+            var categoryDonations = _donationService.GetDonationsForCategory(
+                SelectedNeighborhood.Id, 
+                SelectedCategoryBalance.Category.Id);
+
+            foreach (var d in categoryDonations)
+                Donations.Add(d);
         }
 
         private void ExecuteRegisterExpense()

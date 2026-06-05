@@ -15,7 +15,10 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
         public List<BudgetCategoryBalanceDto> GetByNeighborhood(long neighborhoodId)
             => MapToDto(_budgetCategoryBalanceRepository.GetByNeighborhoodId(neighborhoodId));
 
-        public List<BudgetCategoryBalanceDto> GetByNeighborhood(long neighborhoodId, List<BudgetExpenseDto> budgetExpenseDtos)
+        public List<BudgetCategoryBalanceDto> GetByNeighborhood(
+            long neighborhoodId, 
+            List<BudgetExpenseDto> budgetExpenseDtos,
+            List<BudgetDonationDto> budgetDonationDtos)
         {
             var budgetCategoryBalanceDtos = MapToDto(_budgetCategoryBalanceRepository.GetByNeighborhoodId(neighborhoodId));
 
@@ -24,6 +27,9 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
                 dto.TotalExpenses = budgetExpenseDtos
                     .Where(e => e.BudgetCategoryBalance.Id == dto.Id)
                     .Sum(e => e.Amount);
+                dto.TotalDonations = budgetDonationDtos
+                    .Where(d => d.BudgetCategory.Id == dto.Category.Id)
+                    .Sum(d => d.Amount);
             }
 
             return budgetCategoryBalanceDtos;
