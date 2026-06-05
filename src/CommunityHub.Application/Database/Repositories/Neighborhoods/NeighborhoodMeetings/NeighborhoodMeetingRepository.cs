@@ -10,7 +10,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public NeighborhoodMeeting? GetById(long meetingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 neighborhood_meetings.id AS meeting_id, 
                 neighborhood_meetings.theme AS meeting_theme, 
@@ -47,7 +49,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             ).AddParameter("id", meetingId);
 
             NeighborhoodMeeting? meeting = null;
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 meeting = _neighborhoodMeetingMapper.MapToEntity(reader);
             });
             return meeting;
@@ -55,7 +57,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public List<NeighborhoodMeeting> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 neighborhood_meetings.id AS meeting_id, 
                 neighborhood_meetings.theme AS meeting_theme, 
@@ -93,7 +97,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             ).AddParameter("id", neighborhoodId);
 
             List<NeighborhoodMeeting> meetings = new List<NeighborhoodMeeting>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 meetings.Add(_neighborhoodMeetingMapper.MapToEntity(reader));
             });
             return meetings;
@@ -102,38 +106,46 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public void UpdateStatus(long meetingId, MeetingStatus newStatus)
         {
-            PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE neighborhood_meetings 
                 SET status = @status 
                 WHERE id = @id"
             )
             .AddParameter("status", newStatus)
-            .AddParameter("id", meetingId)
-            .Execute();
+            .AddParameter("id", meetingId);
+
+            connection.Execute(query);
         }
         public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate)
         {
-            PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE neighborhood_meetings 
                 SET scheduled_date = @date 
                 WHERE id = @id"
             )
             .AddParameter("date", scheduledDate.ToDateTime(TimeOnly.MinValue))
-            .AddParameter("id", meetingId)
-            .Execute();
+            .AddParameter("id", meetingId);
+
+            connection.Execute(query);
         }
 
 
         public NeighborhoodMeeting Create(NeighborhoodMeeting meeting)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO neighborhood_meetings 
                 (theme, meeting_time, date_range_start, date_range_end, status, neighborhood_id) 
                 VALUES (@theme, @meeting_time, @date_range_start, @date_range_end, @status, @neighborhood_id) 
                 RETURNING id"
             ).ExtendParameters(_neighborhoodMeetingMapper.MapToQueryParameters(meeting));
 
-            long neighborhoodMeetingId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long neighborhoodMeetingId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return meeting.CopyWith(id: neighborhoodMeetingId);
         }

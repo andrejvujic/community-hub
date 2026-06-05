@@ -13,7 +13,9 @@ namespace CommunityHub.Application.Database.Repositories
 
         public List<Neighborhood> GetByCoordinatorId(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                 neighborhood.id AS neighborhood_id,
                 neighborhood.name AS neighborhood_name,
@@ -51,7 +53,7 @@ namespace CommunityHub.Application.Database.Repositories
 
             Dictionary<long, Neighborhood> neighborhoods = new Dictionary<long, Neighborhood>();
 
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 Neighborhood newNeighborhood = _neighborhoodMapper.MapToEntity(reader);
                 if (!neighborhoods.TryGetValue(newNeighborhood.Id, out Neighborhood? existingNeighborhood))
                 {
@@ -70,7 +72,9 @@ namespace CommunityHub.Application.Database.Repositories
 
         public Neighborhood Create(Neighborhood neighborhood)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO neighborhoods 
                 (name, description, budget, city_id, coordinator_id) 
                 VALUES 
@@ -79,14 +83,16 @@ namespace CommunityHub.Application.Database.Repositories
             )
             .ExtendParameters(_neighborhoodMapper.MapToQueryParameters(neighborhood));
 
-            long neighborhoodId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long neighborhoodId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return neighborhood.CopyWith(id: neighborhoodId);
         }
 
         public List<Neighborhood> Search(NeighborhoodSearchParameters searchParameters)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 neighborhood.id AS neighborhood_id,
                 neighborhood.name AS neighborhood_name,
@@ -138,7 +144,7 @@ namespace CommunityHub.Application.Database.Repositories
 
             Dictionary<long, Neighborhood> neighborhoods = new Dictionary<long, Neighborhood>();
 
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 Neighborhood newNeighborhood = _neighborhoodMapper.MapToEntity(reader);
 
                 if (!neighborhoods.TryGetValue(newNeighborhood.Id, out Neighborhood? existingNeighborhood))
@@ -159,19 +165,24 @@ namespace CommunityHub.Application.Database.Repositories
 
         public void UpdateBudget(long neighborhoodId, int newBudget)
         {
-            PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE neighborhoods
                 SET budget = @budget
                 WHERE id = @id"
             )
             .AddParameter("id", neighborhoodId)
-            .AddParameter("budget", newBudget)
-            .Execute();
+            .AddParameter("budget", newBudget);
+
+            connection.Execute(query);
         }
 
         public int GetNeighborhoodCountsByCoordinatorId(long coordinatorId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                     COUNT(DISTINCT n.id) AS neighborhood_count
                 FROM neighborhoods n
@@ -181,7 +192,7 @@ namespace CommunityHub.Application.Database.Repositories
             ).AddParameter("coordinator_id", coordinatorId);
 
             int neighborhoodCount = 0;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 neighborhoodCount = reader.GetInt32(reader.GetOrdinal("neighborhood_count"));
             });

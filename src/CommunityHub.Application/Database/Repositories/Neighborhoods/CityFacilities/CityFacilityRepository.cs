@@ -10,7 +10,8 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public CityFacility? GetById(long id)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     city_facility.id AS city_facility_id,
                     city_facility.name AS city_facility_name,
@@ -28,7 +29,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             ).AddParameter("id", id);
 
             CityFacility? facility = null;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 facility = _cityFacilityMapper.MapToEntity(reader);
             });
@@ -38,7 +39,8 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
 
         public List<CityFacility> GetByCityId(long cityId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     city_facility.id AS city_facility_id,
                     city_facility.name AS city_facility_name,
@@ -57,7 +59,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             ).AddParameter("city_id", cityId);
 
             List<CityFacility> cityFacilities = new List<CityFacility>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var facility = _cityFacilityMapper.MapToEntity(reader);
                 if (facility is not null) cityFacilities.Add(facility);

@@ -10,31 +10,37 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public MeetingDateVote Create(MeetingDateVote vote)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO meeting_date_votes (voted_date, meeting_id, citizen_id) 
                 VALUES (@voted_date, @meeting_id, @citizen_id) 
                 RETURNING id"
             ).ExtendParameters(_voteMapper.MapToQueryParameters(vote));
 
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long generatedId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return vote.CopyWith(id: generatedId);
         }
 
         public void UpdateDate(long voteId, DateOnly newDate)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 "UPDATE meeting_date_votes SET voted_date = @votedDate WHERE id = @id"
             )
             .AddParameter("votedDate", newDate.ToDateTime(TimeOnly.MinValue))
             .AddParameter("id", voteId);
 
-            query.GetRowsAffectedCount();
+            connection.GetRowsAffectedCount(query);
         }
 
         public MeetingDateVote? GetByMeetingIdAndCitizenId(long meetingId, long citizenId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 v.id, v.voted_date, 
         
@@ -98,14 +104,16 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             .AddParameter("citizenId", citizenId);
 
             MeetingDateVote? vote = null;
-            query.ExecuteReader(reader => vote = _voteMapper.MapToEntity(reader));
+            connection.ExecuteReader(query, reader => vote = _voteMapper.MapToEntity(reader));
 
             return vote;
         }
 
         public Dictionary<DateOnly, int> GetVoteCountsForMeeting(long meetingId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT voted_date, COUNT(*) as vote_count 
                 FROM meeting_date_votes 
                 WHERE meeting_id = @meetingId 
@@ -113,7 +121,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             ).AddParameter("meetingId", meetingId);
 
             var voteCounts = new Dictionary<DateOnly, int>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var date = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("voted_date")));
                 var count = reader.GetInt32(reader.GetOrdinal("vote_count"));

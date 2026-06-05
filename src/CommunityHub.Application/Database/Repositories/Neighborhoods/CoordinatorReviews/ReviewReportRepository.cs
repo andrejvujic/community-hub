@@ -83,12 +83,13 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
         public List<ReviewReport> GetByReviewId(long reviewId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 $"SELECT {SelectColumns} {FromJoins} WHERE coordinator_review.id = @review_id ORDER BY review_report.created_at DESC"
             ).AddParameter("review_id", reviewId);
 
             var reports = new List<ReviewReport>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 reports.Add(_reportMapper.MapToEntity(reader));
             });
@@ -97,36 +98,36 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Coordinat
 
         public int GetReportCountByReviewId(long reviewId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "SELECT COUNT(*) FROM review_reports WHERE review_id = @review_id"
             ).AddParameter("review_id", reviewId);
 
-            object? result = query.ExecuteScalar(value => value);
-            return result != null ? Convert.ToInt32(result) : 0;
+            return connection.ExecuteScalar(query, value => value != null ? Convert.ToInt32(value) : 0);
         }
 
         public bool HasUserReportedReview(long reviewId, long reporterId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 "SELECT COUNT(*) FROM review_reports WHERE review_id = @review_id AND reporter_id = @reporter_id"
-            )
-            .AddParameter("review_id", reviewId)
-            .AddParameter("reporter_id", reporterId);
+            ).AddParameter("review_id", reviewId)
+             .AddParameter("reporter_id", reporterId);
 
-            object? result = query.ExecuteScalar(value => value);
-            return result != null && Convert.ToInt32(result) > 0;
+            return connection.ExecuteScalar(query, value => value != null && Convert.ToInt32(value) > 0);
         }
 
         public ReviewReport Create(ReviewReport report)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO review_reports (review_id, reporter_id, created_at)
                 VALUES (@review_id, @reporter_id, @created_at)
                 RETURNING id"
             )
             .ExtendParameters(_reportMapper.MapToQueryParameters(report));
 
-            long id = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long id = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return report.CopyWith(id: id);
         }

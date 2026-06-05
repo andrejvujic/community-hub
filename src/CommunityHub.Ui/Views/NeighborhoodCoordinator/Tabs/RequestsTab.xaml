@@ -36,7 +36,8 @@
                         Text="&#xf002;"/>
             <ComboBox x:Name="StatusFilterComboBox" 
                       Style="{StaticResource ComboBoxStyle}"
-                      SelectionChanged="StatusFilterComboBox_SelectionChanged"
+                      SelectedValuePath="Tag"
+                      SelectedValue="{Binding SelectedStatusFilter}"
                       SelectedIndex="0" 
                       Width="165" 
                       FontSize="16">
@@ -57,8 +58,7 @@
                   Style="{StaticResource DataGridStyle}"
                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                   RowStyle="{StaticResource DataGridRowStyle}"
-                  CellStyle="{StaticResource DataGridCellStyle}"
-                  SelectionChanged="RequestsDataGrid_SelectionChanged">
+                  CellStyle="{StaticResource DataGridCellStyle}">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Ime" Binding="{Binding Citizen.Name}" CanUserSort="False" Width="*" />
@@ -103,7 +103,7 @@
 
             <Button IsEnabled="{Binding CanActOnRequest}"
                     Style="{StaticResource SecondaryButtonStyle}"
-                    Click="RejectButton_Click"
+                    Command="{Binding RejectCommand}"
                     Margin="0,0,10,0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xf00d;"
@@ -117,7 +117,7 @@
 
             <Button IsEnabled="{Binding CanActOnRequest}"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Click="AcceptButton_Click">
+                    Command="{Binding AcceptCommand}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="&#xf00c;"
                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"

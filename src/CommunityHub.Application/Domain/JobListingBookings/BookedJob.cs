@@ -15,12 +15,36 @@ namespace CommunityHub.Application.Domain.JobListingBookings
         public decimal UnitPrice { get; private set; }
         public bool IsSubstitution { get; private set; }
         public ServiceProvider? SubstitutingProvider { get; private set; }
+        public ProviderReview? Review { get; private set; }
 
         public decimal TotalPrice => DurationHours.HasValue
             ? UnitPrice * DurationHours.Value
             : UnitPrice;
 
         public ServiceProvider ActualProvider => SubstitutingProvider ?? Listing.Provider;
+
+        public bool CanReviewBeCreated(DateTime now)
+        {
+            if (Review != null) return false;
+            return CompletionDateTime() <= now && (now - CompletionDateTime()).TotalDays <= 10;
+        }
+
+        public bool CanReviewBeEdited(DateTime now)
+        {
+            if (Review == null) return false;
+            return (now - Review.CreatedAt).TotalDays <= 3;
+        }
+
+        private DateTime CompletionDateTime()
+        {
+            if (Listing.BillingType == BillingType.PerHour
+                && ScheduledTime.HasValue
+                && DurationHours.HasValue)
+            {
+                return ScheduledDate.ToDateTime(ScheduledTime.Value).AddHours(DurationHours.Value);
+            }
+            return ScheduledDate.ToDateTime(new TimeOnly(23, 59, 59));
+        }
 
         public bool IsFinished(DateTime at)
         {
@@ -40,7 +64,8 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             TimeOnly? scheduledTime = null,
             int? durationHours = null,
             bool isSubstitution = false,
-            ServiceProvider? substitutingProvider = null
+            ServiceProvider? substitutingProvider = null,
+            ProviderReview? review = null
         )
         {
             ValidateBillingConsistency(listing, scheduledTime, durationHours);
@@ -55,6 +80,7 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             UnitPrice = unitPrice;
             IsSubstitution = isSubstitution;
             SubstitutingProvider = substitutingProvider;
+            Review = review;
         }
 
         public BookedJob CopyWith(
@@ -66,7 +92,8 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             int? durationHours = null,
             decimal? unitPrice = null,
             bool? isSubstitution = null,
-            ServiceProvider? substitutingProvider = null
+            ServiceProvider? substitutingProvider = null,
+            ProviderReview? review = null
         )
         {
             var newIsSubstitution = isSubstitution ?? IsSubstitution;
@@ -81,7 +108,8 @@ namespace CommunityHub.Application.Domain.JobListingBookings
                 scheduledTime ?? ScheduledTime,
                 durationHours ?? DurationHours,
                 newIsSubstitution,
-                newSubstitutingProvider
+                newSubstitutingProvider,
+                review ?? Review
             );
         }
 
