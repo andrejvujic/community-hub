@@ -1,26 +1,20 @@
 ﻿using System.Windows;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
     public partial class RejectRequestWindow : Window
     {
-        public string Comment { get; private set; }
+        private readonly RejectRequestWindowViewModel _viewModel;
+
+        public string Comment => _viewModel.Comment;
 
         public RejectRequestWindow(string ime, string prezime, string kvart)
         {
             InitializeComponent();
-            MessageLabel.Text = $"Napišite razlog odbijanja zahteva korisnika {ime} {prezime} za pristup kvartu {kvart}:";
-        }
 
-        private void Confirm_Click(object sender, RoutedEventArgs e)
-        {
-            Comment = CommentTextBox.Text;
-            DialogResult = true;
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
+            _viewModel = new RejectRequestWindowViewModel(ime, prezime, kvart);
+            DataContext = _viewModel;
         }
     }
 }

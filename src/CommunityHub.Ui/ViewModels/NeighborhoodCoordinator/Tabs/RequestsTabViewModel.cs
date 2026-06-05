@@ -94,9 +94,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                          ?? System.Windows.Application.Current.MainWindow;
 
             var confirmMsg = $"Da li ste sigurni da želite da prihvatite zahtev korisnika {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} za pristup kvartu {SelectedRequest.Neighborhood.Name}?";
-            var confirm = new ConfirmDialog("Potvrda prihvatanja", confirmMsg, window);
-            confirm.ShowDialog();
-            if (!confirm.Confirmed) return;
+            var confirmDialog = new ConfirmDialog("Potvrda prihvatanja", confirmMsg, window);
+            if (confirmDialog.ShowDialog() != true) return;
 
             _neighborhoodAccessRequestService.Accept(SelectedRequest);
             var membership = _neighborhoodMembershipService.Create(SelectedRequest.Neighborhood);

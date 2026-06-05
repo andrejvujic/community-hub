@@ -38,7 +38,9 @@
                       Width="200" 
                       Height="30" 
                       Padding="10,0,0,0"
-                      Visibility="{Binding SelectableThemeVisibility}">
+                      Visibility="{Binding SelectableThemeVisibility}"
+                      SelectedValue="{Binding SelectedTheme}"
+                      SelectedValuePath="Tag">
                 <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Welcome}"
                               Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}"/>
                 <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Motivation}"
@@ -90,14 +92,18 @@
                             Style="{StaticResource DatePickerStyle}"
                             FontSize="20" 
                             Height="30"
-                            SelectedDate="{Binding FromDate}"/>
+                            SelectedDate="{Binding FromDate}"
+                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
+                            DisplayDateEnd="{Binding MaxDate, Mode=OneWay}"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Do" FontSize="20" Margin="0,0,0,5"/>
                 <DatePicker x:Name="ToDatePicker"
                             Style="{StaticResource DatePickerStyle}"
                             FontSize="20" Height="30"
-                            SelectedDate="{Binding ToDate}"/>
+                            SelectedDate="{Binding ToDate}"
+                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
+                            DisplayDateEnd="{Binding MaxDate, Mode=OneWay}"/>
             </StackPanel>
         </Grid>
 
@@ -107,13 +113,13 @@
                     HorizontalAlignment="Left"
                     Width="170" 
                     Height="45"
-                    Click="CancelButton_Click"/>
+                    Command="{Binding CancelCommand}"/>
             <Button Content="Pokreni glasanje"
                     Style="{StaticResource PrimaryButtonStyle}"
                     HorizontalAlignment="Right"
                     Width="170" 
                     Height="45"
-                    Click="StartVotingButton_Click"/>
+                    Command="{Binding StartVotingCommand}"/>
         </Grid>
     </Grid>
 </Window>
