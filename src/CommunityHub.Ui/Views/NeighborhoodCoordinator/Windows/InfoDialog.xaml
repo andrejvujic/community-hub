@@ -25,13 +25,13 @@
                            Foreground="#2196F3"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"/>
-                <TextBlock x:Name="TitleText"
+                <TextBlock Text="{Binding Title}"
                            FontSize="18" FontWeight="Bold"
                            Foreground="{DynamicResource TabItemForegroundBrush}"
                            VerticalAlignment="Center"/>
             </StackPanel>
 
-            <TextBlock x:Name="MessageText"
+            <TextBlock Text="{Binding Message}"
                        FontSize="15"
                        Foreground="{DynamicResource TabItemForegroundBrush}"
                        TextWrapping="Wrap"
@@ -43,7 +43,7 @@
                     HorizontalAlignment="Right"
                     Padding="0"
                     IsDefault="True"
-                    Click="OkButton_Click"/>
+                    Command="{Binding OkCommand}"/>
 
         </StackPanel>
     </Border>

@@ -10,12 +10,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
     public class ProfileTabViewModel : INotifyPropertyChanged
     {
-        private readonly long _coordinatorId;
         private readonly CoordinatorReviewService _reviewService = new();
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly UserService _userService = new();
         private readonly NeighborhoodAccessRequestService _requestService = new();
         private readonly NeighborhoodMembershipService _membershipService = new();
+        private long _coordinatorId;
 
         public ObservableCollection<CoordinatorReviewDto> Reviews { get; } = new();
 
@@ -41,9 +41,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             private set { _averageRatingLastYear = value; OnPropertyChanged(); }
         }
 
-        public ProfileTabViewModel(long coordinatorId)
+        public ProfileTabViewModel()
+        {
+        }
+
+        public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
+            LoadData();
         }
 
         public void LoadData()

@@ -1,20 +1,19 @@
 ﻿using System.Windows;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
-    /// <summary>
-    /// Interaction logic for InfoDialog.xaml
-    /// </summary>
     public partial class InfoDialog : Window
     {
+        private readonly InfoDialogViewModel _viewModel;
+
         public InfoDialog(string title, string message, Window owner)
         {
             InitializeComponent();
-            TitleText.Text = title;
-            MessageText.Text = message;
             Owner = owner;
-        }
 
-        private void OkButton_Click(object sender, RoutedEventArgs e) => Close();
+            _viewModel = new InfoDialogViewModel(title, message);
+            DataContext = _viewModel;
+        }
     }
 }

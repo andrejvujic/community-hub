@@ -47,8 +47,7 @@
                      SelectedItem="{Binding SelectedNeighborhood}"
                      Style="{StaticResource NeighborhoodListBoxStyle}"
                      ItemContainerStyle="{StaticResource NeighborhoodListBoxItemStyle}"
-                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}"
-                     SelectionChanged="NeighborhoodsListBox_SelectionChanged">
+                     ItemTemplate="{StaticResource NeighborhoodListItemTemplate}">
                 </ListBox>
             </Grid>
         </Border>
@@ -161,7 +160,7 @@
                                     Height="40"
                                     Padding="0"
                                     Visibility="{Binding ShowWelcomeRecommendation, Converter={StaticResource BoolToVisibility}}"
-                                    Click="WelcomeMeetingButton_Click">
+                                    Command="{Binding ScheduleWelcomeCommand}">
                                 <TextBlock Text="Zakaži sastanak dobrodošlice"/>
                             </Button>
 
@@ -172,7 +171,7 @@
                                     Height="40"
                                     Padding="0"
                                     Visibility="{Binding ShowMotivationRecommendation, Converter={StaticResource BoolToVisibility}}"
-                                    Click="MotivationMeetingButton_Click">
+                                    Command="{Binding ScheduleMotivationCommand}">
                                 <TextBlock Text="Zakaži sastanak motivacije"/>
                             </Button>
                         </Grid>
@@ -197,7 +196,7 @@
                             <Button HorizontalAlignment="Right" 
                                     Style="{StaticResource SecondaryButtonStyle}"
                                     Padding="5" 
-                                    Click="ScheduleNewMeetingButton_Click">
+                                    Command="{Binding ScheduleMeetingCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xf067;" 
                                                FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free" 
@@ -216,8 +215,7 @@
                                   RowStyle="{StaticResource DataGridRowStyle}"
                                   CellStyle="{StaticResource DataGridCellStyle}"
                                   Grid.Row="1" 
-                                  FontSize="16"
-                                  SelectionChanged="MeetingsDataGrid_SelectionChanged">
+                                  FontSize="16">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeConverter}}" Width="130"/>
                                 <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTimeDisplay}" Width="100"/>
@@ -294,7 +292,7 @@
                                     VerticalAlignment="Center"
                                     Padding="15,8"
                                     IsEnabled="{Binding CanConfirmTiedDate}"
-                                    Click="ConfirmTermButton_Click"/>
+                                    Command="{Binding ConfirmTiedDateCommand}"/>
                         </Grid>
                     </Grid>
                 </Border>

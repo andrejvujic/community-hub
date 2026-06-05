@@ -1,31 +1,22 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
-using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
-    /// <summary>
-    /// Interaction logic for HomeWindow.xaml
-    /// </summary>
     public partial class HomeWindow : Window
     {
-        private readonly HomeWindowViewModel _homeWindowViewModel = new();
+        private readonly HomeWindowViewModel _viewModel;
         private readonly long _userId;
 
         public HomeWindow(long userId)
         {
             InitializeComponent();
-            _userId = userId;
-            if (!_homeWindowViewModel.LoadUser(userId))
-            {
-                new InfoDialog("Greška", "Korisnik nije pronađen.", this).ShowDialog();
-                Close();
-                return;
-            }
 
-            UserInfoTextBlock.Text = _homeWindowViewModel.UserDisplayName;
+            _userId = userId;
+            _viewModel = new HomeWindowViewModel(userId);
+            DataContext = _viewModel;
+
             InitializeTabs();
         }
 
@@ -39,44 +30,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             NeighborhoodBudgetTab.Initialize(_userId);
             ProfileTab.Initialize(_userId);
         }
- 
-        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
 
-        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ThemeComboBox.SelectedItem is not ComboBoxItem selected) return;
-
-            string themePath = selected.Content.ToString() == "Tamna"
-                ? "/Resources/Themes/DarkTheme.xaml"
-                : "/Resources/Themes/LightTheme.xaml";
-
-            var themeDict = new ResourceDictionary
-            {
-                Source = new Uri(themePath, UriKind.Relative)
-            };
-
-            var mergedDicts = System.Windows.Application.Current.Resources.MergedDictionaries;
-
-            mergedDicts[0] = themeDict;
-        }
-
-        private void LogoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new ConfirmDialog(
-                "Potvrda odjave",
-                "Da li ste sigurni da želite da se odjavite?",
-                owner: this);
-
-            dialog.ShowDialog();
-
-            if (!dialog.Confirmed) return;
-
-            LogInForm loginForm = new LogInForm();
-            loginForm.Show();
-            this.Close();
-        }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
@@ -86,17 +40,18 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
                     MainTabControl.SelectedIndex = e.Key - Key.D1;
                     e.Handled = true;
                 }
-                else if (Keyboard.IsKeyDown(Key.Q))
+                else if (e.Key == Key.Q)
                 {
-                    LogoutButton_Click(sender, e);
+                    if (_viewModel.LogoutCommand.CanExecute(null))
+                        _viewModel.LogoutCommand.Execute(null);
                 }
-                else if (Keyboard.IsKeyDown(Key.T))
+                else if (e.Key == Key.T)
                 {
-                    ThemeComboBox.SelectedIndex = ThemeComboBox.SelectedIndex == 0 ? 1 : 0;
+                    _viewModel.SelectedThemeIndex = _viewModel.SelectedThemeIndex == 0 ? 1 : 0;
                 }
-                else if (Keyboard.IsKeyDown(Key.L))
+                else if (e.Key == Key.L)
                 {
-                    LanguageComboBox.SelectedIndex = LanguageComboBox.SelectedIndex == 0 ? 1 : 0;
+                    _viewModel.SelectedLanguageIndex = _viewModel.SelectedLanguageIndex == 0 ? 1 : 0;
                 }
             }
         }
