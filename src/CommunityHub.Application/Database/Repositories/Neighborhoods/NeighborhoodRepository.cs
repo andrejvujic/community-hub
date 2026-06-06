@@ -163,7 +163,7 @@ namespace CommunityHub.Application.Database.Repositories
             return neighborhoods.Values.ToList();
         }
 
-        public void UpdateBudget(long neighborhoodId, int newBudget)
+        public void UpdateBudget(long neighborhoodId, decimal newBudget)
         {
             using var connection = DatabaseConnection.Create();
 

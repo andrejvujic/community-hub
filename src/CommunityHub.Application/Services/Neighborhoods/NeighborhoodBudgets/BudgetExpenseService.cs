@@ -29,13 +29,11 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
             decimal amount,
             string description)
         {
-            if (amount > balanceDto.TotalAmount)
-                throw new InvalidOperationException(
-                    $"Nedovoljno sredstava u kategoriji. Raspoloživo: {balanceDto.TotalAmount:N2} RSD, " +
-                    $"traženo: {amount:N2} RSD.");
+            var balance = _budgetCategoryBalanceMapper.MapToEntity(balanceDto);
+            balance = balance.RecordExpense(amount);
 
             var expense = new BudgetExpense(
-                _budgetCategoryBalanceMapper.MapToEntity(balanceDto),
+                balance,
                 _userMapper.MapToEntity(coordinatorDto),
                 amount,
                 description,

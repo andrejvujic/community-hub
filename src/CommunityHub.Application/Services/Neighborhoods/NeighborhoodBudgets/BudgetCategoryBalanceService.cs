@@ -35,15 +35,13 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
             return budgetCategoryBalanceDtos;
         }
 
-        public decimal UpdateTotalAmount(
+        public void UpdateTotalAmount(
             BudgetCategoryBalanceDto balanceDto,
-            decimal amountChange)
+            decimal newAmount)
         {
             var balance = MapToEntity(balanceDto);
-            var newCategoryAmount = balance.TotalAmount + amountChange;
-            _budgetCategoryBalanceRepository.UpdateTotalAmount(balance.Id, newCategoryAmount);
-
-            return balance.Neighborhood.Budget + amountChange;
+            var updatedBalance = balance.RecordExpense(newAmount);
+            _budgetCategoryBalanceRepository.UpdateTotalAmount(updatedBalance.Id, updatedBalance.TotalAmount);
         }
     }
 }

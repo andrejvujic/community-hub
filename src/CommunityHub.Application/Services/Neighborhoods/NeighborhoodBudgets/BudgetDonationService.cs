@@ -45,7 +45,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
 
         private void UpdateNeighborhoodBudget(Neighborhood neighborhood, decimal amount)
         {
-            var newNeighborhoodBudget = (int)(neighborhood.Budget + amount);
+            var newNeighborhoodBudget = neighborhood.Budget + amount;
             _neighborhoodRepository.UpdateBudget(neighborhood.Id, newNeighborhoodBudget);
         }
     }

@@ -41,7 +41,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
             FindSlots(CityFacilityDto facilityDto, int durationHours, DateTime rangeStart, DateTime rangeEnd)
         {
             var cityFacility = _cityFacilityMapper.MapToEntity(facilityDto);
-            var reservations = _reservationRepository.GetByFacilityId(facilityDto.Id);
+            var reservations = _reservationRepository.GetByFacilityId(cityFacility.Id);
             var (slotInRange, slotsOutside) = cityFacility.FindSlots(reservations, durationHours, rangeStart, rangeEnd);
 
             return (

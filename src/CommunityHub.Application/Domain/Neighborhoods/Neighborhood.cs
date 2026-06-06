@@ -15,6 +15,14 @@ namespace CommunityHub.Application.Domain.Neighborhoods
         public List<StreetSection> StreetSections { get; private set; } = new List<StreetSection>();
         public List<Image> Images { get; private set; } = new List<Image>();
 
+        public Neighborhood DeductFromBudget(decimal amount)
+        {
+            if (amount > Budget)
+                throw new InvalidOperationException("Nedovoljno sredstava u budžetu.");
+
+            return CopyWith(budget: Budget - amount);
+        }
+
         public Neighborhood(
             string name,
             string description,

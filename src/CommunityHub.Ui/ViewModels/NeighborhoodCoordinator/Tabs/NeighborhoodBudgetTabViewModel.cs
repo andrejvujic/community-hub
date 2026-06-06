@@ -223,13 +223,19 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void SaveExpenseAndRefresh(Window window, decimal amount, string desc)
         {
             var coordinator = SelectedNeighborhood!.Coordinator;
-            _expenseService.Create(SelectedCategoryBalance!, coordinator, amount, desc);
 
-            decimal newBudget = _balanceService.UpdateTotalAmount(SelectedCategoryBalance!, -amount);
-            _neighborhoodService.UpdateBudget(SelectedNeighborhood.Id, (int)newBudget);
-
-            new InfoDialog("Uspeh", "Trošak je uspešno evidentiran.", window).ShowDialog();
-            ResetAndRefreshForm();
+            try
+            {
+                _expenseService.Create(SelectedCategoryBalance!, coordinator, amount, desc);
+                _balanceService.UpdateTotalAmount(SelectedCategoryBalance!, amount);
+                _neighborhoodService.DeductFromBudget(SelectedNeighborhood!, amount);
+                new InfoDialog("Uspeh", "Trošak je uspešno evidentiran.", window).ShowDialog();
+                ResetAndRefreshForm();
+            }
+            catch (InvalidOperationException ex)
+            {
+                new InfoDialog("Nedovoljno sredstava", ex.Message, window).ShowDialog();
+            }
         }
 
         private void ResetAndRefreshForm()
