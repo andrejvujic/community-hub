@@ -27,34 +27,26 @@ namespace CommunityHub.Application.Services.JobListingBookings
                     kvp => kvp.Key,
                     kvp => _providerReviewMapper.MapToDto(kvp.Value));
 
-        public ProviderReviewDto Create(BookedJobDto bookedJobDto, UserDto coordinatorDto, 
-            int quality, int communication, string? comment)
+        public ProviderReviewDto Create(BookedJobDto bookedJobDto, UserDto coordinatorDto,
+            int quality, int communication, string comment)
         {
             var bookedJob = _bookedJobMapper.MapToEntity(bookedJobDto);
             var coordinator = _userMapper.MapToEntity(coordinatorDto);
 
-            var review = new ProviderReview(
-                bookedJob, 
-                coordinator, 
-                quality, 
-                communication, 
-                DateTime.Now, 
-                comment: comment
-            );
+            var review = bookedJob.CreateReview(coordinator, quality, communication, comment, DateTime.Now);
 
             var created = _providerReviewRepository.Create(review);
             return _providerReviewMapper.MapToDto(created);
         }
 
-        public ProviderReviewDto Update(ProviderReviewDto providerReviewDto, int quality, int communication, string? comment)
+        public ProviderReviewDto Update(ProviderReviewDto providerReviewDto,
+            int quality, int communication, string comment)
         {
             var review = _providerReviewMapper.MapToEntity(providerReviewDto);
-            var updated = review.CopyWith(
-                qualityRating: quality,
-                communicationRating: communication,
-                comment: comment);
 
-            var saved = _providerReviewRepository.Update(updated);
+            review.Update(quality, communication, comment, DateTime.Now);
+
+            var saved = _providerReviewRepository.Update(review);
             return _providerReviewMapper.MapToDto(saved);
         }
     }

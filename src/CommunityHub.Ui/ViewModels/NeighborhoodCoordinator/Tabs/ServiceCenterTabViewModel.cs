@@ -264,8 +264,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadScheduledServices()
         {
-
-            _providerReviewService.GetAllByNeighborhood(SelectedNeighborhood!.Id);
             ScheduledServices.Clear();
             if (SelectedNeighborhood is null) return;
 

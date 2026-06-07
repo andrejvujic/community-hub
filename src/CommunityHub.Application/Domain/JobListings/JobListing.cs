@@ -110,7 +110,7 @@ namespace CommunityHub.Application.Domain.JobListings
                : FindPerHourSlot(candidate, durationHours!.Value, bookedJobs, priceEntry.Amount, isPriceChanged);
         }
 
-        private static AvailableJobSlot? FindPerJobSlot(
+        private AvailableJobSlot? FindPerJobSlot(
             DateOnly candidate,
             List<BookedJob> bookedJobs,
             decimal price,
@@ -122,7 +122,7 @@ namespace CommunityHub.Application.Domain.JobListings
             return new AvailableJobSlot(candidate, price, isPriceChanged);
         }
 
-        private static AvailableJobSlot? FindPerHourSlot(
+        private AvailableJobSlot? FindPerHourSlot(
             DateOnly candidate,
             int durationHours,
             List<BookedJob> bookedJobs,
@@ -144,7 +144,7 @@ namespace CommunityHub.Application.Domain.JobListings
             return new AvailableJobSlot(candidate, price, isPriceChanged, time: freeTime, durationHours: durationHours);
         }
 
-        private static TimeOnly? FindFreeHourSlot(
+        private TimeOnly? FindFreeHourSlot(
             List<(TimeOnly Start, TimeOnly End)> occupied,
             int durationHours)
         {

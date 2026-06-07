@@ -32,7 +32,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods.CityFacilities
             return (null, slotsOutside);
         }
 
-        private static List<AvailableFacilitySlot> FindAllSlotsInRange(
+        private List<AvailableFacilitySlot> FindAllSlotsInRange(
             List<FacilityReservation> reservations,
             DateTime rangeStart,
             DateTime rangeEnd,
@@ -65,7 +65,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods.CityFacilities
             return slots;
         }
 
-        private static DateTime AdvanceToValidTime(DateTime current, int durationHours)
+        private DateTime AdvanceToValidTime(DateTime current, int durationHours)
         {
             var dayStart = current.Date.AddHours(8);
             var dayEnd = current.Date.AddHours(22);

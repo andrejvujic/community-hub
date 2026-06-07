@@ -90,17 +90,23 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 
             int quality = SelectedQualityIndex + 1;
             int communication = SelectedCommunicationIndex + 1;
-
-            if (IsEditing)
+            try
             {
-                SavedReview = _providerReviewService.Update(_bookedJob.Review!, quality, communication, Comment.Trim());
-            }
-            else
-            {
-                SavedReview = _providerReviewService.Create(_bookedJob, _coordinator, quality, communication, Comment.Trim());
-            }
+                if (IsEditing)
+                {
+                    SavedReview = _providerReviewService.Update(_bookedJob.Review!, quality, communication, Comment.Trim());
+                }
+                else
+                {
+                    SavedReview = _providerReviewService.Create(_bookedJob, _coordinator, quality, communication, Comment.Trim());
+                }
 
-            CloseWindow(true);
+                CloseWindow(true);
+            }
+            catch (InvalidOperationException ex)
+            {
+                new InfoDialog("Greška", ex.Message, GetActiveWindow()).ShowDialog();
+            }
         }
 
         private bool ValidateInput()
