@@ -93,22 +93,22 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 
         public void RefreshData()
         {
+            var selectedCategoryId = SelectedCategory?.Category.Id;
             _categories.Clear();
 
             var neighborhoodId = _citizen!.Membership!.Neighborhood.Id;
+
+            PopulateBudgetData(neighborhoodId);
+
+            SelectedCategory = Categories.FirstOrDefault(c => c.Category.Id == selectedCategoryId) ?? Categories.FirstOrDefault();
+        }
+
+        public void PopulateBudgetData(long neighborhoodId)
+        {
             var balanceDtos = _balanceService.GetByNeighborhood(neighborhoodId);
+            foreach (var balanceDto in balanceDtos) _categories.Add(balanceDto);
 
-            foreach (var balanceDto in balanceDtos)
-            {
-                _categories.Add(balanceDto);
-            }
-
-            if (_categories.Count > 0)
-            {
-                SelectedCategory = _categories[0];
-            }
-
-            var updatedCitizen = _citizenService.GetCitizenById(_citizen.Id);
+            var updatedCitizen = _citizenService.GetCitizenById(_citizen!.Id);
             if (updatedCitizen?.Membership?.Neighborhood != null)
             {
                 NeighborhoodBudgetTotal = updatedCitizen.Membership.Neighborhood.Budget;
