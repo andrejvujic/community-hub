@@ -105,43 +105,31 @@ namespace CommunityHub.Ui.ViewModels.BuildingManager
 
         private void OnNavigated(AppNavigationState state)
         {
-            switch (state.PageTag)
-            {
-                case "Home":
-                    SelectedNavItem = "Home";
-                    CurrentPage = new HomePage(User);
-                    break;
-
-                case "Assembly":
-                    SelectedNavItem = "Assembly";
-                    CurrentPage = new AssemblyPage(User);
-                    break;
-
-                case "MyBuildings":
-                    SelectedNavItem = "MyBuildings";
-                    CurrentPage = new MyBuildingsPage(User, _navigationService);
-                    break;
-
-                case "Registration":
-                    SelectedNavItem = "Registration";
-                    CurrentPage = new RegistrationPage(User);
-                    break;
-
-                case "BuildingDetails":
-                    SelectedNavItem = "MyBuildings";
-                    if (state.Building != null)
-                    {
-                        CurrentPage = new BuildingDetailsPage(User, state.Building, _navigationService, state.SectionTag);
-                    }
-                    break;
-
-                case "Help":
-                    SelectedNavItem = "Help";
-                    break;
-            }
+            SelectedNavItem = GetSelectedNavItem(state.PageTag);
+            CurrentPage = CreatePage(state);
 
             RefreshNavigationButtons();
         }
+
+        private string? GetSelectedNavItem(string pageTag) => pageTag switch
+        {
+            "Home" => "Home",
+            "Assembly" => "Assembly",
+            "MyBuildings" => "MyBuildings",
+            "Registration" => "Registration",
+            "BuildingDetails" => "MyBuildings",
+            _ => SelectedNavItem
+        };
+
+        private Page? CreatePage(AppNavigationState state) => state.PageTag switch
+        {
+            "Home" => new HomePage(User),
+            "Assembly" => new AssemblyPage(User),
+            "MyBuildings" => new MyBuildingsPage(User, _navigationService),
+            "Registration" => new RegistrationPage(User),
+            "BuildingDetails" when state.Building != null => new BuildingDetailsPage(User, state.Building, _navigationService, state.SectionTag),
+            _ => CurrentPage
+        };
 
         private void RefreshNavigationButtons()
         {
