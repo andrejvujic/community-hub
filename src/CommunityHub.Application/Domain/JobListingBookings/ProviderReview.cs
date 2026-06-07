@@ -38,6 +38,18 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             return bookedJob.ScheduledDate.ToDateTime(TimeOnly.MaxValue);
         }
 
+        public void Update(int qualityRating, int communicationRating, string? comment, DateTime now)
+        {
+            if (!IsEditable(now))
+                throw new InvalidOperationException(
+                    "Recenzija se može menjati samo u roku od 3 dana od kreiranja.");
+
+            QualityRating = qualityRating;
+            CommunicationRating = communicationRating;
+            Comment = comment;
+            UpdatedAt = now;
+        }
+
         public ProviderReview(
             BookedJob bookedJob,
             User coordinator,
