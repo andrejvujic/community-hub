@@ -55,6 +55,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             SearchCommand = new RelayCommand<object>(_ => LoadCountries(SearchQuery));
 
             LoadCountries();
+
             if (initial != null)
             {
                 SelectedCountry = initial;
@@ -67,15 +68,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public void LoadCountries(string? searchQuery = null)
         {
+            var selectedCountryId = _selectedCountry?.Id;
+
             Countries.Clear();
             var results = string.IsNullOrWhiteSpace(searchQuery) ? _countryRepository.GetAll() : _countryRepository.Search(new CountrySearchParameters(searchQuery));
 
             foreach (var country in results) Countries.Add(_countryMapper.MapToDto(country));
 
-            if (SelectedCountry == null && Countries.Count > 0)
-            {
-                SelectedCountry = Countries[0];
-            }
+            SelectedCountry = Countries.FirstOrDefault(c => c.Id == selectedCountryId) ?? Countries.FirstOrDefault();
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

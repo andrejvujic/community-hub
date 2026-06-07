@@ -91,30 +91,25 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 
             if (citizen?.Membership?.Neighborhood.Id == null)
             {
-                Meetings = new ObservableCollection<NeighborhoodMeetingDto>();
                 Membership = null;
                 return;
             }
 
-            var neighborhoodId = citizen.Membership.Neighborhood.Id;
+            PopulateMeetingData(citizen.Membership.Neighborhood.Id);
 
+            Membership = citizen.Membership;
+            SelectedMeeting = Meetings.FirstOrDefault(m => m.Id == selectedMeetingId) ?? Meetings.FirstOrDefault();
+        }
+
+        private void PopulateMeetingData(long neighborhoodId)
+        {
             var meetings = _meetingService.GetByNeighborhood(neighborhoodId);
             var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
             _meetingService.ProcessPendingMeetings(neighborhoodId, voteCounts);
 
             var updated = _meetingService.GetByNeighborhood(neighborhoodId);
             Meetings = new ObservableCollection<NeighborhoodMeetingDto>(updated);
-            Membership = citizen.Membership;
-
-            if (selectedMeetingId.HasValue)
-            {
-                SelectedMeeting = Meetings.FirstOrDefault(m => m.Id == selectedMeetingId.Value);
-            }
-            else if (Meetings.Count > 0)
-            {
-                SelectedMeeting = Meetings[0];
-            }
-        }
+        }   
 
         private void UpdateCurrentVote()
         {

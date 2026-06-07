@@ -91,6 +91,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             Requests.Clear();
             foreach (var request in requests) Requests.Add(request);
             ApplyGrouping();
+
+            SelectedRequest = Requests.FirstOrDefault();
         }
 
         public void DeleteRequest(NeighborhoodAccessRequestDto request)

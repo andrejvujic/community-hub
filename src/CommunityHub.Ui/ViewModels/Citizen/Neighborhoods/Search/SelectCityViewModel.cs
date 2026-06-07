@@ -89,22 +89,16 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public void LoadCities(string? searchQuery = null)
         {
+            var selectedCityId = _selectedCity?.Id;
+            
             Cities.Clear();
+            if (SelectedCountry == null) return;
 
-            if (SelectedCountry == null)
-                return;
+            var results = string.IsNullOrWhiteSpace(searchQuery) ? _cityRepository.GetByCountryId(SelectedCountry.Id) : _cityRepository.Search(new CitySearchParameters(SelectedCountry.Id, searchQuery));
 
-            var results = string.IsNullOrWhiteSpace(searchQuery)
-                ? _cityRepository.GetByCountryId(SelectedCountry.Id)
-                : _cityRepository.Search(new CitySearchParameters(SelectedCountry.Id, searchQuery));
+            foreach (var city in results) Cities.Add(_cityMapper.MapToDto(city));
 
-            foreach (var city in results)
-                Cities.Add(_cityMapper.MapToDto(city));
-
-            if (SelectedCity == null && Cities.Count > 0)
-            {
-                SelectedCity = Cities[0];
-            }
+            SelectedCity = Cities.FirstOrDefault(c => c.Id == selectedCityId) ?? Cities.FirstOrDefault();
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

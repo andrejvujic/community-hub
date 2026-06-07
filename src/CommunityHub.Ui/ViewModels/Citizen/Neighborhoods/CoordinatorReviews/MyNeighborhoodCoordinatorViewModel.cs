@@ -138,14 +138,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             Reviews.Clear();
             foreach (var review in reviews) Reviews.Add(review);
 
-            if (selectedReviewId.HasValue)
-            {
-                SelectedReview = Reviews.FirstOrDefault(review => review is CoordinatorReviewDto dto && dto.Id == selectedReviewId.Value);
-            }
-            else if (Reviews.Count > 0)
-            {
-                SelectedReview = Reviews[0];
-            }
+            SelectedReview = Reviews.FirstOrDefault(r => r is CoordinatorReviewDto dto && dto.Id == selectedReviewId) ?? Reviews.FirstOrDefault();
         }
 
         public void ExecuteReport(long reviewId)

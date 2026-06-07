@@ -95,14 +95,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             Neighborhoods.Clear();
             foreach (var neighborhood in neighborhoods) Neighborhoods.Add(neighborhood);
 
-            if (selectedId.HasValue)
-            {
-                SelectedNeighborhood = Neighborhoods.FirstOrDefault(n => n.Id == selectedId);
-            }
-            else if (Neighborhoods.Count > 0)
-            {
-                SelectedNeighborhood = Neighborhoods[0];
-            }
+            SelectedNeighborhood = Neighborhoods.FirstOrDefault(n => n.Id == selectedId) ?? Neighborhoods.FirstOrDefault();
         }
 
         public void PerformSearch(NeighborhoodSearchParameters? searchParameters)

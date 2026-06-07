@@ -14,6 +14,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
         private long _neighborhoodId;
         private readonly FacilityReservationService _facilityReservationService = new();
         private static readonly CultureInfo SerbianCulture = new CultureInfo("sr-Latn-RS");
+        private ReservationStatisticItem? _selectedStatistic;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? CloseRequested;
@@ -36,6 +37,19 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
                     _totalReservations = value;
                     OnPropertyChanged(nameof(TotalReservations));
                     OnPropertyChanged(nameof(TotalReservationsText));
+                }
+            }
+        }
+
+        public ReservationStatisticItem? SelectedStatistic
+        {
+            get => _selectedStatistic;
+            set
+            {
+                if (_selectedStatistic != value)
+                {
+                    _selectedStatistic = value;
+                    OnPropertyChanged(nameof(SelectedStatistic));
                 }
             }
         }
@@ -125,6 +139,16 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
             Statistics.Clear();
             TotalReservations = 0;
 
+            var allReservations = _facilityReservationService.GetByNeighborhoodId(_neighborhoodId);
+            var filteredReservations = allReservations.Where(r => IsInPeriod(r.StartDatetime)).ToList();
+
+            PopulateReservations();
+
+            SelectedStatistic = Statistics.FirstOrDefault();
+        }
+
+        public void PopulateReservations()
+        {
             var allReservations = _facilityReservationService.GetByNeighborhoodId(_neighborhoodId);
             var filteredReservations = allReservations.Where(r => IsInPeriod(r.StartDatetime)).ToList();
 

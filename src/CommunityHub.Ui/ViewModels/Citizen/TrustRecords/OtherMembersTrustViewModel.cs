@@ -12,6 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         private readonly long _userId;
         private readonly long _neighborhoodId;
         private readonly CitizenTrustRecordService _trustRecordService = new();
+        private CitizenTrustRecordDto? _selectedTrustRecord;
 
         private ObservableCollection<CitizenTrustRecordDto> _trustRecords = new();
 
@@ -31,6 +32,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
             }
         }
 
+        public CitizenTrustRecordDto? SelectedTrustRecord
+        {
+            get => _selectedTrustRecord;
+            set
+            {
+                if (_selectedTrustRecord == value) return;
+                _selectedTrustRecord = value;
+                OnPropertyChanged(nameof(SelectedTrustRecord));
+            }
+        }
+
         public OtherMembersTrustViewModel(long userId, long neighborhoodId)
         {
             _userId = userId;
@@ -43,6 +55,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         {
             var records = _trustRecordService.GetNeighborhoodTrustRecords(_neighborhoodId, _userId);
             TrustRecords = new ObservableCollection<CitizenTrustRecordDto>(records);
+
+            SelectedTrustRecord = TrustRecords.FirstOrDefault();
         }
 
         protected void OnPropertyChanged(string propertyName)

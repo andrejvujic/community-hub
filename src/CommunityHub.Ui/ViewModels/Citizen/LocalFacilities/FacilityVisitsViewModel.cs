@@ -27,10 +27,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
 
             LoadVisitDates(facilityId);
 
-            if (VisitDates.Count > 0)
-            {
-                SelectedVisitDate = VisitDates[0];
-            }
+            SelectedVisitDate = VisitDates.FirstOrDefault();
         }
 
         private void LoadVisitDates(long facilityId)
