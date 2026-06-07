@@ -15,16 +15,10 @@ namespace CommunityHub.Ui.Views.Citizen.LocalFacilities
 
             if (viewModel != null)
             {
-                viewModel.CloseRequested += (_, _) =>
-                {
-                    Close();
-                };
+                viewModel.CloseRequested += (_, _) => { Close(); };
             }
 
-            Loaded += (_, _) =>
-            {
-                VisitDatesListBox.Focus();
-            };
+            Loaded += (_, _) => { VisitDatesListBox.Focus(); };
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)

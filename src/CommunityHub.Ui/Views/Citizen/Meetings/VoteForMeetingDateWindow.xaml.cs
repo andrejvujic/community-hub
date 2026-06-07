@@ -16,23 +16,12 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
             InitializeComponent();
 
             _viewModel = new VoteForMeetingDateViewModel(meeting);
-            _viewModel.ConfirmRequested += (_, _) => 
-            {
-                this.DialogResult = true;
-            };
-            _viewModel.CancelRequested += (_, _) => 
-            {
-                this.DialogResult = false;
-            };
-            _viewModel.CloseRequested += (_, _) => Close();
+            _viewModel.ConfirmRequested += (_, _) => { this.DialogResult = true; };
+            _viewModel.CancelRequested += (_, _) => { this.DialogResult = false; };
             _viewModel.ToggleCalendarRequested += (_, _) => CalendarPopup.IsOpen = !CalendarPopup.IsOpen;
 
             DataContext = _viewModel;
-            Loaded += (s, e) => 
-            {
-                VoteDateTextBox.Focus();
-                VoteDateTextBox.SelectAll();
-            };
+            Loaded += (s, e) =>  { VoteDateTextBox.Focus(); VoteDateTextBox.SelectAll(); };
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)

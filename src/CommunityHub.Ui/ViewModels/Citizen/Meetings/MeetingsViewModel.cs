@@ -86,6 +86,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 
         private void LoadData()
         {
+            var selectedMeetingId = _selectedMeeting?.Id;
             var citizen = _citizenService.GetCitizenById(_userId);
 
             if (citizen?.Membership?.Neighborhood.Id == null)
@@ -105,7 +106,11 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
             Meetings = new ObservableCollection<NeighborhoodMeetingDto>(updated);
             Membership = citizen.Membership;
 
-            if (Meetings.Count > 0)
+            if (selectedMeetingId.HasValue)
+            {
+                SelectedMeeting = Meetings.FirstOrDefault(m => m.Id == selectedMeetingId.Value);
+            }
+            else if (Meetings.Count > 0)
             {
                 SelectedMeeting = Meetings[0];
             }
