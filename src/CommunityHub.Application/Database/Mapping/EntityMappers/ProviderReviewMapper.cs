@@ -6,8 +6,17 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
 {
     public class ProviderReviewMapper : EntityMapper<ProviderReview>
     {
-        private readonly BookedJobMapper _bookedJobMapper = new BookedJobMapper();
+        private readonly BookedJobMapper _bookedJobMapper;
         private readonly UserMapper _userMapper = new UserMapper();
+
+
+        public ProviderReviewMapper(BookedJobMapper? bookedJobMapper = null)
+        {
+            _bookedJobMapper = bookedJobMapper ?? new BookedJobMapper(
+                providerReviewMapper: this
+            );
+        }
+
 
         public override ProviderReview? MapToEntity(IDataReader reader)
         {

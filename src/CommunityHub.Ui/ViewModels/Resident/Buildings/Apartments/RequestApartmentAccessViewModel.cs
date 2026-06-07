@@ -15,7 +15,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Apartments
         public long UserId { get; }
         public BuildingDto Building { get; }
 
-        public RequestApartmentAccessViewModel(long userId, BuildingDto building, MainNavigationConsumerPage page) : base(page) {
+        public RequestApartmentAccessViewModel(long userId, BuildingDto building, IMainNavigationConsumer navigationConsumer) : base(navigationConsumer) {
             UserId = userId;
             Building = building;
         }

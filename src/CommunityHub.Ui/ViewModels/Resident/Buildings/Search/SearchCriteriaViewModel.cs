@@ -15,9 +15,9 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
 
         public SearchCriteriaViewModel(
             Action<BuildingSearchParameters> setSearchParameters,
-            MainNavigationConsumerPage page,
+            IMainNavigationConsumer navigationConsumer,
             BuildingSearchParameters? initialSearchParameters = null
-        ) : base(page) {
+        ) : base(navigationConsumer) {
             _setSerachParameters = setSearchParameters;
             ApplyInitialSearchParameters(initialSearchParameters);
 
