@@ -1,19 +1,19 @@
-﻿using CommunityHub.Application.Domain;
+﻿using System.Data;
+using System.Text.Json;
+using CommunityHub.Application.Domain;
 using CommunityHub.Application.Domain.Addresses;
 using CommunityHub.Application.Domain.Ads;
 using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Domain.Issues;
 using CommunityHub.Application.Domain.JobListings;
-using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Domain.Notifications;
 using CommunityHub.Application.Domain.Notifications.Details;
 using CommunityHub.Application.Domain.ResidentAssemblies;
 using CommunityHub.Application.Domain.Users;
 using Npgsql;
-using System.Data;
-using System.Text.Json;
 
 namespace CommunityHub.Application.Database
 {
@@ -162,6 +162,7 @@ namespace CommunityHub.Application.Database
             builder.MapEnum<MeetingTheme>("meeting_themes");
             builder.MapEnum<MeetingStatus>("meeting_statuses");
             builder.MapEnum<RentalRequestStatus>("common_room_rental_statuses");
+            builder.MapEnum<NeighborhoodAccessRequestStatus>("neighborhood_access_request_statuses");
             builder.MapEnum<EventStatus>("event_statuses");
             builder.MapEnum<NotificationStatus>("notification_statuses");
             builder.MapEnum<NotificationType>("notification_types");

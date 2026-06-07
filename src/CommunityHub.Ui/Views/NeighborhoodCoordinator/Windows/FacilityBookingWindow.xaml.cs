@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
@@ -9,6 +8,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
     public partial class FacilityBookingWindow : Window
     {
+        private readonly FacilityBookingWindowViewModel _viewModel;
+
         public FacilityBookingWindow(
             CityFacilityDto facility,
             NeighborhoodDto neighborhood,
@@ -17,20 +18,11 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
             CityFacilitiesTabViewModel tabViewModel)
         {
             InitializeComponent();
-            DataContext = new FacilityBookingWindowViewModel(
-                facility, neighborhood, slotInRange, slotsOutsideRange, tabViewModel,
-                OnConfirmed, OnCancelled);
-        }
 
-        private void OnConfirmed() 
-        { 
-            DialogResult = true; 
-            Close(); 
-        }
-        private void OnCancelled() 
-        { 
-            DialogResult = false; 
-            Close(); 
+            _viewModel= new FacilityBookingWindowViewModel(
+                facility, neighborhood, slotInRange, slotsOutsideRange, tabViewModel);
+            
+            DataContext = _viewModel;
         }
     }
 }

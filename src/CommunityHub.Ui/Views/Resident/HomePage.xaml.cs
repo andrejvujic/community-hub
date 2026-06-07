@@ -17,7 +17,6 @@ namespace CommunityHub.Ui.Views.Resident
             InitializeComponent();
             
             _viewModel = new HomeViewModel(userId, this);
-            _viewModel.LogoutRequested += OnLogoutRequested;
             DataContext = _viewModel;
 
             LocalFrame.Navigate(new BuildingsPage(_viewModel.UserId));
@@ -28,11 +27,5 @@ namespace CommunityHub.Ui.Views.Resident
 
         private void OpenApartmentAccessRequestsPageButton_Click(object sender, MouseButtonEventArgs e)
             => LocalFrame.Navigate(new ApartmentAccessRequestsPage(_viewModel.UserId));
-
-        private void OnLogoutRequested(object? sender, EventArgs e)
-        {
-            new LogInForm().Show();
-            Window.GetWindow(this)?.Close();
-        }
     }
 }

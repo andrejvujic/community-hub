@@ -16,6 +16,9 @@ namespace CommunityHub.Application.Domain.Neighborhoods.CityFacilities
                 DateTime rangeStart,
                 DateTime rangeEnd)
         {
+            if (durationHours > 14)
+                throw new ArgumentException("Nije moguće rezervisati termin duži od 14h.");
+
             var ordered = existingReservations.OrderBy(r => r.StartDatetime).ToList();
 
             var slotInRange = FindAllSlotsInRange(ordered, rangeStart, rangeEnd, durationHours, maxSlots: 1)

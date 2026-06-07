@@ -41,7 +41,8 @@
                                FontSize="30"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TabItemForegroundBrush}"
-                               HorizontalAlignment="Left"/>    
+                               HorizontalAlignment="Left"
+                               Text="{Binding UserDisplayName}"/>    
                 </StackPanel>
                 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -56,8 +57,7 @@
                               Width="80"
                               Height="40"
                               Style="{StaticResource ComboBoxStyle}"
-                              SelectedIndex="0"
-                              SelectionChanged="LanguageComboBox_SelectionChanged"
+                              SelectedIndex="{Binding SelectedLanguageIndex}"
                               Margin="0,0,15,0"
                               FontSize="16">    
                         <ComboBoxItem Content="SRP" Tag="sr"/>
@@ -74,8 +74,7 @@
                               Width="110"
                               Height="40"
                               Style="{StaticResource ComboBoxStyle}"
-                              SelectedIndex="0"
-                              SelectionChanged="ThemeComboBox_SelectionChanged"
+                              SelectedIndex="{Binding SelectedThemeIndex}"
                               FontSize="16"
                               Margin="0,0,20,0">
                         <ComboBoxItem Content="Svetla"/>
@@ -84,7 +83,7 @@
 
                     <Button Content="Odjavi se (Ctrl + Q)"
                             Style="{StaticResource SecondaryButtonStyle}"
-                            Click="LogoutButton_Click"
+                            Command="{Binding LogoutCommand}"
                             Margin="20,0,20,0"
                             Height="40"
                             Width="200"

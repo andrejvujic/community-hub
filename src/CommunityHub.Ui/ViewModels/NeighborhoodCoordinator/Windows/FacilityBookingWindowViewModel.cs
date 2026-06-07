@@ -1,28 +1,27 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CommunityHub.Application.Domain.Neighborhoods.CityFacilities;
+using System.Windows;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
     public class FacilityBookingWindowViewModel : INotifyPropertyChanged
     {
         private readonly CityFacilitiesTabViewModel _tabViewModel;
-        private readonly Action _closeConfirmed;
-        private readonly Action _closeCancelled;
         private AvailableFacilitySlotDto? _confirmedSlot;
 
         public ObservableCollection<AvailableFacilitySlotDto> AvailableSlots { get; } = new();
 
-        public string Title { get; }
-        public string Status { get; }
+        public string Title { get; private set; } = string.Empty;
+        public string Status { get; private set; } = string.Empty;
         public string NeighborhoodText { get; }
         public string FacilityText { get; }
-        public string? SlotText { get; }
+        public string? SlotText { get; private set; }
         public bool HasSlotInRange { get; }
         public bool HasNoSlotInRange => !HasSlotInRange;
 
@@ -37,40 +36,46 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public RelayCommand CancelCommand { get; }
 
         public FacilityBookingWindowViewModel(
-            CityFacilityDto facility,
-            NeighborhoodDto neighborhood,
-            AvailableFacilitySlotDto? slotInRange,
-            List<AvailableFacilitySlotDto> slotsOutsideRange,
-            CityFacilitiesTabViewModel tabViewModel,
-            Action closeConfirmed,
-            Action closeCancelled)
+            CityFacilityDto facility, NeighborhoodDto neighborhood,
+            AvailableFacilitySlotDto? slotInRange, List<AvailableFacilitySlotDto> slotsOutsideRange,
+            CityFacilitiesTabViewModel tabViewModel)
         {
             _tabViewModel = tabViewModel;
-            _closeConfirmed = closeConfirmed;
-            _closeCancelled = closeCancelled;
             _confirmedSlot = slotInRange;
-
             NeighborhoodText = $"Stanovnici kvarta: {neighborhood.Name}";
             FacilityText = $"Objekat: {facility.Name}";
             HasSlotInRange = slotInRange is not null;
 
-            if (slotInRange is not null)
+            SetupStatusText(facility, neighborhood, slotInRange);
+            SetupOutsideSlots(slotsOutsideRange);
+
+            ConfirmCommand = new RelayCommand(ExecuteConfirm);
+            CancelCommand = new RelayCommand(ExecuteCancel);
+        }
+
+        private void SetupStatusText(CityFacilityDto facility, NeighborhoodDto neighborhood, AvailableFacilitySlotDto? slot)
+        {
+            if (slot is not null)
             {
                 Title = "Potvrda rezervacije — Termin pronađen";
                 Status = $"Sistem je pronašao slobodan termin za posetu objekta {facility.Name} u zadatom opsegu za stanovnike kvarta {neighborhood.Name}.";
-                SlotText = $"Termin: {slotInRange.DisplayText}";
+                SlotText = $"Termin: {slot.DisplayText}";
             }
             else
             {
                 Title = "Potvrda rezervacije — Termin zauzet";
                 Status = "Nažalost, nema slobodnih termina u zadatom opsegu. Sistem je pronašao prve slobodne termine van opsega.";
-                foreach (var s in slotsOutsideRange)
-                    AvailableSlots.Add(s);
-                SelectedSlot = AvailableSlots.FirstOrDefault();
             }
+        }
 
-            ConfirmCommand = new RelayCommand(ExecuteConfirm);
-            CancelCommand = new RelayCommand(_closeCancelled);
+        private void SetupOutsideSlots(List<AvailableFacilitySlotDto> slotsOutsideRange)
+        {
+            if (HasSlotInRange) return;
+
+            foreach (var s in slotsOutsideRange)
+                AvailableSlots.Add(s);
+
+            SelectedSlot = AvailableSlots.FirstOrDefault();
         }
 
         private void ExecuteConfirm()
@@ -79,7 +84,21 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             if (slot is null) return;
 
             _tabViewModel.Book(slot);
-            _closeConfirmed();
+            CloseWindow(true);
+        }
+
+        private void ExecuteCancel() => CloseWindow(false);
+
+        private void CloseWindow(bool result)
+        {
+            var window = System.Windows.Application.Current.Windows
+                .OfType<Window>().FirstOrDefault(w => w.IsActive);
+
+            if (window is FacilityBookingWindow dialog)
+            {
+                dialog.DialogResult = result;
+                dialog.Close();
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

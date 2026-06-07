@@ -38,17 +38,13 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
             OpenNotificationsCommand = new(OpenNotificationsPage);
             OpenTutorialsCommand = new(OpenTutorialsPage);
-            LogoutCommand = new(ConfirmLogout);
 
             Initialize();
         }
 
-        public event EventHandler? LogoutRequested;
-
         public long UserId { get; }
         public RelayCommand OpenNotificationsCommand { get; }
         public RelayCommand OpenTutorialsCommand { get; }
-        public RelayCommand LogoutCommand { get; }
 
         private void OpenNotificationsPage()
             => Push(
@@ -58,20 +54,6 @@ namespace CommunityHub.Ui.ViewModels.Resident
 
         private void OpenTutorialsPage()
             => Push(new TutorialsPage());
-
-        private void ConfirmLogout()
-            => ShowAlert(
-                Alert.Create(
-                    "Potvrda odjave",
-                    "Da li ste sigurni da želite da se odjavite?",
-                    AlertType.Question
-                )
-                .AddOption("Otkaži")
-                .AddOption(
-                    "Odjavi se",
-                    () => LogoutRequested?.Invoke(this, EventArgs.Empty)
-                )
-            );
 
         private void Initialize()
         {

@@ -1,10 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -13,9 +16,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly NeighborhoodAccessRequestService _neighborhoodAccessRequestService = new();
         private readonly NeighborhoodMembershipService _neighborhoodMembershipService = new();
         private readonly CitizenService _citizenService = new();
-        private readonly long _coordinatorId;
+        private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodAccessRequestDto> Requests { get; } = new();
+
+        public RelayCommand AcceptCommand { get; }
+        public RelayCommand RejectCommand { get; }
 
         private NeighborhoodAccessRequestDto? _selectedRequest;
         public NeighborhoodAccessRequestDto? SelectedRequest
@@ -30,12 +36,32 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
         }
 
+        private NeighborhoodAccessRequestStatus? _selectedStatusFilter;
+        public NeighborhoodAccessRequestStatus? SelectedStatusFilter
+        {
+            get => _selectedStatusFilter;
+            set
+            {
+                if (_selectedStatusFilter == value) return;
+                _selectedStatusFilter = value;
+                OnPropertyChanged();
+                LoadRequests(_selectedStatusFilter);
+            }
+        }
+
         public bool CanActOnRequest =>
             SelectedRequest != null && SelectedRequest.Status == NeighborhoodAccessRequestStatus.Waiting;
 
-        public RequestsTabViewModel(long coordinatorId)
+        public RequestsTabViewModel()
+        {
+            AcceptCommand = new RelayCommand(ExecuteAccept, () => CanActOnRequest);
+            RejectCommand = new RelayCommand(ExecuteReject, () => CanActOnRequest);
+        }
+
+        public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
+            LoadRequests(null);
         }
 
         public void LoadRequests(NeighborhoodAccessRequestStatus? status)
@@ -48,55 +74,52 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             SelectedRequest = null;
         }
 
-        public bool Reject(string comment)
+        private void UpdateLocalRequestList(NeighborhoodAccessRequestStatus status, string? comment = null)
         {
-            if (SelectedRequest == null || SelectedRequest.Status != NeighborhoodAccessRequestStatus.Waiting)
-                return false;
-
-            _neighborhoodAccessRequestService.Reject(SelectedRequest, comment);
-
+            if (SelectedRequest == null) return;
             int index = Requests.IndexOf(SelectedRequest);
-            if (index >= 0)
-            {
-                var updatedRequest = new NeighborhoodAccessRequestDto(
-                    SelectedRequest.Citizen,
-                    SelectedRequest.Neighborhood,
-                    NeighborhoodAccessRequestStatus.Rejected,
-                    SelectedRequest.CreationDate,
-                    comment
-                );
-                Requests[index] = updatedRequest;
-                SelectedRequest = updatedRequest;
-            }
+            if (index < 0) return;
 
+            var updated = new NeighborhoodAccessRequestDto(
+                SelectedRequest.Citizen, SelectedRequest.Neighborhood, status, SelectedRequest.CreationDate, comment);
+            Requests[index] = updated;
+            SelectedRequest = updated;
             OnPropertyChanged(nameof(CanActOnRequest));
-            return true;
         }
 
-        public bool Accept()
+        private void ExecuteAccept()
         {
-            if (SelectedRequest == null || SelectedRequest.Status != NeighborhoodAccessRequestStatus.Waiting)
-                return false;
+            if (SelectedRequest == null) return;
+            var window = System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                         ?? System.Windows.Application.Current.MainWindow;
+
+            var confirmMsg = $"Da li ste sigurni da želite da prihvatite zahtev korisnika {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} za pristup kvartu {SelectedRequest.Neighborhood.Name}?";
+            var confirmDialog = new ConfirmDialog("Potvrda prihvatanja", confirmMsg, window);
+            if (confirmDialog.ShowDialog() != true) return;
 
             _neighborhoodAccessRequestService.Accept(SelectedRequest);
-            var newMembership = _neighborhoodMembershipService.Create(SelectedRequest.Neighborhood);
-            _citizenService.UpdateMembership(SelectedRequest.Citizen.Id, newMembership.Id);
+            var membership = _neighborhoodMembershipService.Create(SelectedRequest.Neighborhood);
+            _citizenService.UpdateMembership(SelectedRequest.Citizen.Id, membership.Id);
 
-            int index = Requests.IndexOf(SelectedRequest);
-            if (index >= 0)
-            {
-                var updatedRequest = new NeighborhoodAccessRequestDto(
-                    SelectedRequest.Citizen,
-                    SelectedRequest.Neighborhood,
-                    NeighborhoodAccessRequestStatus.Accepted,
-                    SelectedRequest.CreationDate
-                );
-                Requests[index] = updatedRequest;
-                SelectedRequest = updatedRequest;
-            }
+            UpdateLocalRequestList(NeighborhoodAccessRequestStatus.Accepted);
+            var infoMsg = $"Korisnik {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} je postao novi član kvarta {SelectedRequest.Neighborhood.Name}.";
+            new InfoDialog("Prihvaćen zahtev", infoMsg, window).ShowDialog();
+        }
 
-            OnPropertyChanged(nameof(CanActOnRequest));
-            return true;
+        private void ExecuteReject()
+        {
+            if (SelectedRequest == null) return;
+            var window = System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                         ?? System.Windows.Application.Current.MainWindow;
+
+            var dialog = new RejectRequestWindow(SelectedRequest.Citizen.Name, SelectedRequest.Citizen.Surname, SelectedRequest.Neighborhood.Name) { Owner = window };
+            if (dialog.ShowDialog() != true) return;
+
+            _neighborhoodAccessRequestService.Reject(SelectedRequest, dialog.Comment);
+            UpdateLocalRequestList(NeighborhoodAccessRequestStatus.Rejected, dialog.Comment);
+
+            var infoMsg = $"Korisniku {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} je odbijen zahtev za pristup kvartu {SelectedRequest.Neighborhood.Name}.";
+            new InfoDialog("Odbijen zahtev", infoMsg, window).ShowDialog();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -43,7 +43,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public List<BudgetCategoryBalance> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT {SelectColumns} 
                 {FromJoins} 
                 WHERE budget_category_balance.neighborhood_id = @neighborhood_id 
@@ -51,7 +53,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BudgetCategoryBalance> budgetCategoryBalances = new List<BudgetCategoryBalance>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var budgetCategoryBalance = _budgetCategoryBalanceMapper.MapToEntity(reader);
                 if (budgetCategoryBalance is not null) budgetCategoryBalances.Add(budgetCategoryBalance);
@@ -61,14 +63,17 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public void UpdateTotalAmount(long id, decimal newAmount)
         {
-            PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE budget_category_balances
                 SET total_amount = @total_amount
                 WHERE id = @id"
             )
             .AddParameter("id", id)
-            .AddParameter("total_amount", newAmount)
-            .Execute();
+            .AddParameter("total_amount", newAmount);
+            
+            connection.Execute(query);
         }
     }
 }

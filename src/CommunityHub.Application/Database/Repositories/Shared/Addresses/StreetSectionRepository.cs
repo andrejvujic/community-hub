@@ -43,7 +43,9 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
 
         public List<StreetSection> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 street_sections.id AS street_section_id, 
                 street_sections.start_number, 
@@ -59,14 +61,15 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
             ).AddParameter("id", neighborhoodId);
 
             List<StreetSection> sections = new List<StreetSection>();
-            query.ExecuteReader(reader => {
+            connection.ExecuteReader(query, reader => {
                 sections.Add(_streetSectionMapper.MapToEntity(reader));
             });
             return sections;
         }
         public StreetSection Create(StreetSection section, long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO street_sections 
                 (start_number, end_number, side, street_id, neighborhood_id) 
                 VALUES 
@@ -76,7 +79,7 @@ namespace CommunityHub.Application.Database.Repositories.Shared.Addresses
             .ExtendParameters(_streetSectionMapper.MapToQueryParameters(section))
             .AddParameter("neighborhood_id", neighborhoodId);
 
-            long generatedId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long generatedId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return section.CopyWith(id: generatedId);
         }

@@ -1,5 +1,6 @@
 ﻿namespace CommunityHub.Application.Services.Dtos.ServiceBookings
 {
+    /*
     public class BookedJobWithReviewDto
     {
         public BookedJobDto BookedJob { get; }
@@ -36,4 +37,5 @@
 
         public void SetReview(ProviderReviewDto review) => Review = review;
     }
+    */
 }

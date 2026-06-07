@@ -11,13 +11,11 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
         private readonly JobListingMapper _listingMapper = new JobListingMapper();
         private readonly NeighborhoodMapper _neighborhoodMapper = new NeighborhoodMapper();
         private readonly ServiceProviderMapper _providerMapper = new ServiceProviderMapper();
-        private readonly ProviderReviewMapper _providerReviewMapper;
+        private readonly bool _mapReview;
 
-        public BookedJobMapper(ProviderReviewMapper? providerReviewMapper = null)
+        public BookedJobMapper(bool mapReview = true)
         {
-            _providerReviewMapper = providerReviewMapper ?? new ProviderReviewMapper(
-                bookedJobMapper: this 
-            );
+            _mapReview = mapReview;
         }
 
         public override BookedJob? MapToEntity(IDataReader reader)
@@ -55,6 +53,14 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                         reader.WithPrefix("sub_provider"));
             }
 
+            ProviderReview? review = null;
+            if (_mapReview && reader.HasColumn("review_id"))
+            {
+                review = new ProviderReviewMapper(new BookedJobMapper(mapReview: false))
+                    .MapToEntity(reader);
+            }
+
+
             return new BookedJob(
                 listing,
                 neighborhood,
@@ -64,7 +70,8 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
                 scheduledTime: scheduledTime,
                 durationHours: durationHours,
                 isSubstitution: isSubstitution,
-                substitutingProvider: substitutingProvider
+                substitutingProvider: substitutingProvider,
+                review: review
             );
         }
 

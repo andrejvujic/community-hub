@@ -9,27 +9,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
     {
         private readonly ProviderReviewWindowViewModel _viewModel;
 
-        public ProviderReviewDto? SavedReview => _viewModel.SavedReview;
-
-        public ProviderReviewWindow(BookedJobWithReviewDto bookedJobWithReviewDto, UserDto coordinator)
+        public ProviderReviewWindow(BookedJobDto bookedJob, UserDto coordinator)
         {
             InitializeComponent();
-            _viewModel = new ProviderReviewWindowViewModel(bookedJobWithReviewDto, coordinator);
+
+            _viewModel = new ProviderReviewWindowViewModel(bookedJob, coordinator);
             DataContext = _viewModel;
         }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            var (success, error) = _viewModel.TrySubmit();
-            if (!success)
-            {
-                new InfoDialog("Nevažeći unos", error, this).ShowDialog();
-                return;
-            }
-            DialogResult = true;
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-            => DialogResult = false;
     }
 }

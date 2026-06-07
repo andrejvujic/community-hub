@@ -11,7 +11,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
         public List<NeighborhoodAccessRequest> GetWaitingByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 neighborhood_access_requests.status, 
                 neighborhood_access_requests.creation_date, 
@@ -63,7 +65,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ).AddParameter("neighborhoodId", neighborhoodId);
 
             List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
-            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
 
             return requests;
         }
@@ -80,7 +82,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
         public List<NeighborhoodAccessRequest> GetByCitizenId(long citizenId, RequestOrder order = RequestOrder.Unspecified)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT 
                 neighborhood_access_requests.status, 
                 neighborhood_access_requests.creation_date, 
@@ -140,14 +144,16 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ;
 
             List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
-            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
 
             return requests;
         }
 
         public List<NeighborhoodAccessRequest> GetWaitingByCitizenId(long citizenId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 neighborhood_access_requests.status, 
                 neighborhood_access_requests.creation_date, 
@@ -203,14 +209,16 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ).AddParameter("citizenId", citizenId);
 
             List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
-            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
 
             return requests;
         }
 
         public List<NeighborhoodAccessRequest> GetByCoordinatorId(long coordinatorId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT 
                 neighborhood_access_requests.status, 
                 neighborhood_access_requests.creation_date, 
@@ -266,13 +274,15 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ).AddParameter("coordinatorId", coordinatorId);
 
             List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
-            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
 
             return requests;
         }
 
         public List<NeighborhoodAccessRequest> GetByCoordinatorIdAndStatus(long coordinatorId, NeighborhoodAccessRequestStatus? status)
         {
+            using var connection = DatabaseConnection.Create();
+
             string queryText = @"
                 SELECT 
                 neighborhood_access_requests.status, 
@@ -332,7 +342,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
                 queryText += " AND neighborhood_access_requests.status = @status";
             }
 
-            var query = PostgresQuery.Create(queryText)
+            var query = DatabaseQuery.Create(queryText)
                 .AddParameter("coordinatorId", coordinatorId);
 
             if (status.HasValue)
@@ -341,22 +351,24 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             }
 
             List<NeighborhoodAccessRequest> requests = new List<NeighborhoodAccessRequest>();
-            query.ExecuteReader(reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
+            connection.ExecuteReader(query, reader => requests.Add(_neighborhoodAccessRequestMapper.MapToEntity(reader)));
 
             return requests;
         }
 
         public void Update(NeighborhoodAccessRequest request)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"UPDATE neighborhood_access_requests 
                     SET status = @status, 
                     comment = @comment 
                     WHERE citizen_id = @citizen_id AND neighborhood_id = @neighborhood_id"
             )
             .ExtendParameters(_neighborhoodAccessRequestMapper.MapToQueryParameters(request));
-
-            query.GetRowsAffectedCount();
+            
+            connection.GetRowsAffectedCount(query);
         }
 
         public bool Create(NeighborhoodAccessRequest request)
@@ -401,7 +413,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
 
         public (int Accepted, int Rejected, int Pending) GetRequestStatsByCoordinatorId(long coordinatorId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"SELECT
                     COUNT(*) FILTER (WHERE r.status = 'accepted') AS accepted_count,
                     COUNT(*) FILTER (WHERE r.status = 'rejected') AS rejected_count,
@@ -412,7 +426,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods
             ).AddParameter("coordinator_id", coordinatorId);
 
             int accepted = 0, rejected = 0, pending = 0;
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 accepted = reader.GetInt32(reader.GetOrdinal("accepted_count"));
                 rejected = reader.GetInt32(reader.GetOrdinal("rejected_count"));
