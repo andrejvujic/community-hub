@@ -24,19 +24,9 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
         private void HandleApplyToVolunteer()
         {
-            var validationError = _viewModel?.ValidateApplyToVolunteer();
-            if (!string.IsNullOrEmpty(validationError))
-            {
-                MessageBox.Show(validationError, "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             var wnd = new ApplyToVolunteerWindow(_viewModel!.GetCitizenId(), _viewModel.SelectedEvent!.Id);
             wnd.Owner = Window.GetWindow(this);
-            if (wnd.ShowDialog() == true)
-            {
-                _viewModel.RefreshEvents();
-            }
+            if (wnd.ShowDialog() == true) _viewModel.RefreshEvents();
         }
 
         private void HandlePrintReport()
@@ -48,10 +38,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
         {
             var wnd = new MyEventsWindow(_viewModel?.GetCitizenId() ?? 0);
             wnd.Owner = Window.GetWindow(this);
-            if (wnd.ShowDialog() == true)
-            {
-                _viewModel?.RefreshEvents();
-            }
+            if (wnd.ShowDialog() == true) _viewModel?.RefreshEvents();
         }
     }
 }

@@ -48,6 +48,20 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 if (_selectedEvent == value) return;
                 _selectedEvent = value;
                 OnPropertyChanged(nameof(SelectedEvent));
+                OnPropertyChanged(nameof(CanApplyToVolunteer));
+            }
+        }
+
+        public bool CanApplyToVolunteer
+        {
+            get
+            {
+                if (SelectedEvent == null) return false;
+
+                bool isInPreparation = SelectedEvent.Status == EventStatus.Preparation;
+                bool isAlreadyRegistered = _registrationService.IsAlreadyRegistered(_citizen!.Id, SelectedEvent.Id);
+
+                return isInPreparation && !isAlreadyRegistered;
             }
         }
 
@@ -81,19 +95,19 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         {
             Citizen = _citizenService.GetCitizenById(_userId);
 
-            if (_citizen?.Membership != null)
-            {
-                RefreshEvents();
-                Membership = _citizen.Membership;
-            }
-            else
+            if (_citizen?.Membership == null)
             {
                 Membership = null;
+                return;
             }
+
+            RefreshEvents();
+            Membership = _citizen.Membership;
         }
 
         public void RefreshEvents()
         {
+            var selectedId = _selectedEvent?.Id;
             _events.Clear();
 
             if (_citizen?.Membership == null) return;
@@ -101,34 +115,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             var neighborhoodId = _citizen.Membership.Neighborhood.Id;
             var events = _eventService.GetByNeighborhoodId(neighborhoodId);
 
-            foreach (var eventDto in events)
-                _events.Add(eventDto);
+            foreach (var eventDto in events) _events.Add(eventDto);
 
-            if (_events.Count > 0)
-            {
-                SelectedEvent = _events[0];
-            }
-        }
-
-        public string? CanApplyToVolunteer(long selectedEventId)
-        {
-            var eventDto = _eventService.GetById(selectedEventId);
-
-            if (eventDto!.Status != EventStatus.Preparation)
-                return "Prijava je dozvoljena samo dok je događaj u pripremi.";
-
-            if (_registrationService.IsAlreadyRegistered(_citizen!.Id, selectedEventId))
-                return "Već ste se prijavili za ovaj događaj.";
-
-            return null;
-        }
-
-        public string? ValidateApplyToVolunteer()
-        {
-            if (SelectedEvent == null)
-                return "Izaberite događaj pre prijave.";
-
-            return CanApplyToVolunteer(SelectedEvent.Id);
+            SelectedEvent = Events.FirstOrDefault(n => n.Id == selectedId) ?? Events.FirstOrDefault();
         }
 
         public long GetCitizenId() => _citizen?.Id ?? 0;

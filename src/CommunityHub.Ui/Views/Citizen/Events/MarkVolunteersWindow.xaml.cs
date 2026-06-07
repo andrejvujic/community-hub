@@ -19,8 +19,6 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             {
                 _viewModel.CloseRequested += (_, _) => Close();
             }
-
-            Loaded += (_, _) => _viewModel?.SelectFirstRegistration();
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)

@@ -80,11 +80,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
             CurrentUser = _citizenService.GetCitizenById(_userId);
             LoadNeighborhoods();
-
-            if (Neighborhoods.Count > 0)
-            {
-                SelectedNeighborhood = Neighborhoods[0];
-            }
         }
 
         public void LoadNeighborhoods()

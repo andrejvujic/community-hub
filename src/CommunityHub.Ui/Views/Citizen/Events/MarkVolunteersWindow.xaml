@@ -86,7 +86,7 @@
                 <TextBlock Grid.Row="2" Text="Volonteri:" FontWeight="Bold" FontSize="14" Margin="0,0,0,8" Foreground="{StaticResource TextBrush}" />
 
                 <DataGrid Grid.Row="3" Style="{StaticResource PrimaryDataGrid}" AutoGenerateColumns="False" HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False"
-                          ItemsSource="{Binding Event.Registrations}" SelectedItem="{Binding SelectedRegistration}" RowStyle="{StaticResource DataGridRowStyle}" ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}">
+                          ItemsSource="{Binding Registrations}" SelectedItem="{Binding SelectedRegistration}" RowStyle="{StaticResource DataGridRowStyle}" ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Volonter" Width="*" IsReadOnly="True" CellStyle="{StaticResource DataGridCellStyle}">
                             <DataGridTextColumn.Binding>
