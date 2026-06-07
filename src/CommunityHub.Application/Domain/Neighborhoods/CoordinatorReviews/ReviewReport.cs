@@ -1,4 +1,5 @@
 using CommunityHub.Application.Domain.Users;
+using CommunityHub.Application.Domain.TrustRecords;
 
 namespace CommunityHub.Application.Domain.Neighborhoods.CoordinatorReviews
 {
@@ -35,6 +36,11 @@ namespace CommunityHub.Application.Domain.Neighborhoods.CoordinatorReviews
                 createdAt ?? CreatedAt,
                 id ?? Id
             );
+        }
+
+        public bool IsTrusted(TrustStatus trustStatus)
+        {
+            return trustStatus == TrustStatus.Prominent || trustStatus == TrustStatus.Trustworthy;
         }
     }
 }

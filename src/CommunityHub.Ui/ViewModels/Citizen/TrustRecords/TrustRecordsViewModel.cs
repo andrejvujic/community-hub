@@ -1,3 +1,4 @@
+using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Services.Dtos.TrustRecords;
 using CommunityHub.Application.Services.TrustRecords;
 using CommunityHub.Application.Services.Users;
@@ -53,7 +54,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         private void LoadData()
         {
             TrustRecord = _trustRecordService.GetTrustRecord(_userId);
-            NeighborhoodId = _citizenService.GetNeighborhoodIdForCitizen(_userId);
+            var citizen = _citizenService.GetCitizenById(_userId);
+            NeighborhoodId = citizen?.Membership?.Neighborhood.Id;
         }
 
         protected void OnPropertyChanged(string propertyName)

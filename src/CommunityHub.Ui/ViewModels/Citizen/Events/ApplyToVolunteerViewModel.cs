@@ -65,7 +65,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
-        public ICommand CloseCommand { get; }
         public ICommand ToggleItemCommand { get; }
 
         public ApplyToVolunteerViewModel(long userId, long eventId)
@@ -73,10 +72,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             _userId = userId;
             _eventId = eventId;
 
-            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
-            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            ToggleItemCommand = new RelayCommand<object>(_ => ToggleSelectedItem());
+            ConfirmCommand = new RelayCommand<object>(_ => { Register(); ConfirmRequested?.Invoke(this, EventArgs.Empty); });
+            CancelCommand = new RelayCommand<object>(_ => CancelRequested?.Invoke(this, EventArgs.Empty));
+            ToggleItemCommand = new RelayCommand<object>(_ => { if (SelectedItem != null) SelectedItem.IsChecked = !SelectedItem.IsChecked; });
 
             LoadData();
         }
@@ -87,6 +85,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             Citizen = _citizenService.GetCitizenById(_userId);
 
             PopulateItems();
+            SelectedItem = Items.FirstOrDefault();
+
             OnPropertyChanged(nameof(EventName));
             OnPropertyChanged(nameof(EventStart));
         }
@@ -102,36 +102,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public void Register()
         {
             var registration = _registrationService.CreateRegistration(_citizen!.Id, _eventId);
-            AssignSelectedItems(registration.Id);
-            _eventService.UpdateEventStatusIfReady(_eventId);
-        }
-
-        public void RequestConfirm()
-        {
-            Register();
-            ConfirmRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestCancel()
-        {
-            CancelRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void ToggleSelectedItem()
-        {
-            if (SelectedItem != null)
-                SelectedItem.IsChecked = !SelectedItem.IsChecked;
-        }
-
-        private void AssignSelectedItems(long registrationId)
-        {
             foreach (var selection in Items.Where(s => s.IsChecked))
-                _assignmentService.CreateAssignment(registrationId, selection.Item.Id, _eventId);
+                _assignmentService.CreateAssignment(registration!.Id, selection.Item.Id, _eventId); 
+            _eventService.UpdateEventStatusIfReady(_eventId);
         }
 
         protected void OnPropertyChanged(string propertyName)

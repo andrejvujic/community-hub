@@ -46,19 +46,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 
         private void LoadExpenses()
         {
-            var expenses = _expenseService.GetByCategory(_category.Category.Id);
-            foreach (var expense in expenses)
-            {
-                Expenses.Add(expense);
-            }
-        }
+            var selectedExpenseId = _selectedExpense?.Id;
 
-        public void SelectFirstExpense()
-        {
-            if (Expenses.Count > 0)
-            {
-                SelectedExpense = Expenses[0];
-            }
+            var expenses = _expenseService.GetByCategory(_category.Category.Id);
+            foreach (var expense in expenses) Expenses.Add(expense);
+
+            SelectedExpense = Expenses.FirstOrDefault(e => e.Id == selectedExpenseId) ?? Expenses.FirstOrDefault();
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

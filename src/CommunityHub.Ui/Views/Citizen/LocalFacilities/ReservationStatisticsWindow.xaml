@@ -112,6 +112,7 @@
 
             <DataGrid x:Name="StatisticsGrid" Grid.Row="3" 
                       ItemsSource="{Binding Statistics}"
+                      SelectedItem="{Binding SelectedStatistic, Mode=TwoWay}"
                       Style="{StaticResource PrimaryDataGrid}" 
                       ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"

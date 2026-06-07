@@ -18,17 +18,8 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
             if (_viewModel != null)
             {
-                _viewModel.ConfirmRequested += (_, _) =>
-                {
-                    DialogResult = true;
-                    Close();
-                };
-                _viewModel.CancelRequested += (_, _) =>
-                {
-                    DialogResult = false;
-                    Close();
-                };
-                _viewModel.CloseRequested += (_, _) => Close();
+                _viewModel.ConfirmRequested += (_, _) => { DialogResult = true; };
+                _viewModel.CancelRequested += (_, _) => { DialogResult = false; };
             }
         }
 

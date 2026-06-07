@@ -13,7 +13,7 @@
         <KeyBinding Key="NumPad1" Modifiers="Ctrl" Command="{Binding ToggleSortCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding ToggleFilterCommand}" />
         <KeyBinding Key="NumPad2" Modifiers="Ctrl" Command="{Binding ToggleFilterCommand}" />
-        <KeyBinding Key="X" Modifiers="Ctrl" Command="{Binding DeleteSelectedCommand}" />
+        <KeyBinding Key="X" Modifiers="Ctrl" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedRequest}" />
     </Window.InputBindings>
 
     <Window.Resources>

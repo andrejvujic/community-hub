@@ -21,7 +21,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         private CitizenDto? _currentUser;
         private NeighborhoodDto? _selectedNeighborhood;
         private NeighborhoodSearchParameters? _searchParameters;
-        private string _errorMessage = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? SearchRequested;
@@ -38,6 +37,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 _currentUser = value;
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(Membership));
+                OnPropertyChanged(nameof(CanRequestAccess));
             }
         }
 
@@ -51,23 +51,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 if (_selectedNeighborhood == value) return;
                 _selectedNeighborhood = value;
                 OnPropertyChanged(nameof(SelectedNeighborhood));
-                if (value != null)
-                    LoadStreetSections(value);
-            }
-        }
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set
-            {
-                if (_errorMessage == value) return;
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
+                OnPropertyChanged(nameof(CanRequestAccess));
+                if (value != null) _neighborhoodService.LoadStreetSections(value);
             }
         }
 
         public NeighborhoodMembershipDto? Membership => CurrentUser?.Membership;
+
+        public bool CanRequestAccess => SelectedNeighborhood != null && !_neighborhoodAccessRequestService.HasPendingRequest(_userId, SelectedNeighborhood.Id) && Membership == null;
 
         public NeighborhoodSearchParameters? LastSearchParameters => _searchParameters;
 
@@ -82,40 +73,24 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             SearchCommand = new RelayCommand<object>(_ => SearchRequested?.Invoke(this, EventArgs.Empty));
             AccessOrCoordinatorCommand = new RelayCommand<object>(_ =>
             {
-                if (Membership != null)
-                    CoordinatorRequested?.Invoke(this, EventArgs.Empty);
-                else
-                    RequestAccessRequested?.Invoke(this, EventArgs.Empty);
+                if (Membership != null) CoordinatorRequested?.Invoke(this, EventArgs.Empty);
+                else RequestAccessRequested?.Invoke(this, EventArgs.Empty);
             });
             MyAccessRequestsCommand = new RelayCommand<object>(_ => MyAccessRequestsRequested?.Invoke(this, EventArgs.Empty));
 
-            LoadCurrentUser();
-            LoadNeighborhoods();
-
-            if (Neighborhoods.Count > 0)
-            {
-                SelectedNeighborhood = Neighborhoods[0];
-            }
-        }
-
-        private void LoadCurrentUser()
-        {
             CurrentUser = _citizenService.GetCitizenById(_userId);
+            LoadNeighborhoods();
         }
 
         public void LoadNeighborhoods()
         {
-            ErrorMessage = string.Empty;
-
             var neighborhoods = _neighborhoodService.Search(_searchParameters);
-            Neighborhoods.Clear();
-            foreach (var neighborhood in neighborhoods)
-                Neighborhoods.Add(neighborhood);
-        }
+            var selectedId = _selectedNeighborhood?.Id;
 
-        private void LoadStreetSections(NeighborhoodDto neighborhood)
-        {
-            _neighborhoodService.LoadStreetSections(neighborhood);
+            Neighborhoods.Clear();
+            foreach (var neighborhood in neighborhoods) Neighborhoods.Add(neighborhood);
+
+            SelectedNeighborhood = Neighborhoods.FirstOrDefault(n => n.Id == selectedId) ?? Neighborhoods.FirstOrDefault();
         }
 
         public void PerformSearch(NeighborhoodSearchParameters? searchParameters)
@@ -127,24 +102,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         public bool RequestNeighborhoodAccess(NeighborhoodDto selectedNeighborhood)
         {
             if (CurrentUser == null)
-            {
-                ErrorMessage = "Korisnik nije učitan.";
                 return false;
-            }
-
-            ErrorMessage = string.Empty;
-
-            if (_neighborhoodAccessRequestService.HasPendingRequest(_userId, selectedNeighborhood.Id))
-            {
-                ErrorMessage = "Već postoji zahtev za pristup ovom kvartu.";
-                return false;
-            }
 
             if (_neighborhoodService.AddressIsInNeighborhood(selectedNeighborhood, CurrentUser.Address))
             {
                 _neighborhoodMembershipService.CreateMembershipAndUpdate(CurrentUser, selectedNeighborhood);
                 _neighborhoodAccessRequestService.AutoRejectOtherRequests(CurrentUser, selectedNeighborhood.Id);
-                LoadCurrentUser();
+                CurrentUser = _citizenService.GetCitizenById(_userId);
             }
             else
             {

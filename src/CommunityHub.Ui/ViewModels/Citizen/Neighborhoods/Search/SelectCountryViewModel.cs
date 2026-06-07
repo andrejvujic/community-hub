@@ -19,11 +19,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ConfirmRequested;
         public event EventHandler? CancelRequested;
-        public event EventHandler? CloseRequested;
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
-        public ICommand CloseCommand { get; }
         public ICommand SearchCommand { get; }
 
         public CountryDto? SelectedCountry
@@ -52,12 +50,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public SelectCountryViewModel(CountryDto? initial = null)
         {
-            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
-            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            SearchCommand = new RelayCommand<object>(_ => Search());
+            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty));
+            CancelCommand = new RelayCommand<object>(_ => CancelRequested?.Invoke(this, EventArgs.Empty));
+            SearchCommand = new RelayCommand<object>(_ => LoadCountries(SearchQuery));
 
             LoadCountries();
+
             if (initial != null)
             {
                 SelectedCountry = initial;
@@ -70,38 +68,14 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public void LoadCountries(string? searchQuery = null)
         {
+            var selectedCountryId = _selectedCountry?.Id;
+
             Countries.Clear();
-            var results = string.IsNullOrWhiteSpace(searchQuery)
-                ? _countryRepository.GetAll()
-                : _countryRepository.Search(new CountrySearchParameters(searchQuery));
+            var results = string.IsNullOrWhiteSpace(searchQuery) ? _countryRepository.GetAll() : _countryRepository.Search(new CountrySearchParameters(searchQuery));
 
-            foreach (var country in results)
-                Countries.Add(_countryMapper.MapToDto(country));
+            foreach (var country in results) Countries.Add(_countryMapper.MapToDto(country));
 
-            if (SelectedCountry == null && Countries.Count > 0)
-            {
-                SelectedCountry = Countries[0];
-            }
-        }
-
-        public void Search()
-        {
-            LoadCountries(SearchQuery);
-        }
-
-        public void RequestConfirm()
-        {
-            ConfirmRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestCancel()
-        {
-            CancelRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
+            SelectedCountry = Countries.FirstOrDefault(c => c.Id == selectedCountryId) ?? Countries.FirstOrDefault();
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

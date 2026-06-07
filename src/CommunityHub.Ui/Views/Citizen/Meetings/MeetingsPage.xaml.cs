@@ -22,13 +22,6 @@ namespace CommunityHub.Ui.Views.Citizen.Meetings
 
         private void HandleVote()
         {
-            var validationError = _viewModel?.ValidateVote();
-            if (!string.IsNullOrEmpty(validationError))
-            {
-                MessageBox.Show(validationError, "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             var selected = _viewModel?.SelectedMeeting;
             var wnd = new VoteForMeetingDateWindow(selected!);
             wnd.Owner = Window.GetWindow(this);

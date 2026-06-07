@@ -43,6 +43,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
                 if (_selectedMeeting == value) return;
                 _selectedMeeting = value;
                 OnPropertyChanged(nameof(SelectedMeeting));
+                OnPropertyChanged(nameof(CanVote));
                 UpdateCurrentVote();
             }
         }
@@ -72,6 +73,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 
         public bool HasVoted => CurrentVote != null;
 
+        public bool CanVote => SelectedMeeting != null && SelectedMeeting.Status == MeetingStatus.InPreparation;
+
         public ICommand VoteCommand { get; }
 
         public MeetingsViewModel(long userId)
@@ -83,30 +86,30 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
 
         private void LoadData()
         {
+            var selectedMeetingId = _selectedMeeting?.Id;
             var citizen = _citizenService.GetCitizenById(_userId);
 
             if (citizen?.Membership?.Neighborhood.Id == null)
             {
-                Meetings = new ObservableCollection<NeighborhoodMeetingDto>();
                 Membership = null;
                 return;
             }
 
-            var neighborhoodId = citizen.Membership.Neighborhood.Id;
+            PopulateMeetingData(citizen.Membership.Neighborhood.Id);
 
+            Membership = citizen.Membership;
+            SelectedMeeting = Meetings.FirstOrDefault(m => m.Id == selectedMeetingId) ?? Meetings.FirstOrDefault();
+        }
+
+        private void PopulateMeetingData(long neighborhoodId)
+        {
             var meetings = _meetingService.GetByNeighborhood(neighborhoodId);
             var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
             _meetingService.ProcessPendingMeetings(neighborhoodId, voteCounts);
 
             var updated = _meetingService.GetByNeighborhood(neighborhoodId);
             Meetings = new ObservableCollection<NeighborhoodMeetingDto>(updated);
-            Membership = citizen.Membership;
-
-            if (Meetings.Count > 0)
-            {
-                SelectedMeeting = Meetings[0];
-            }
-        }
+        }   
 
         private void UpdateCurrentVote()
         {
@@ -117,17 +120,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
             }
 
             CurrentVote = _voteService.GetByMeetingIdAndCitizenId(_selectedMeeting.Id, _userId);
-        }
-
-        public string? ValidateVote()
-        {
-            if (SelectedMeeting == null)
-                return "Izaberite sastanak iz tabele.";
-
-            if (SelectedMeeting.Status != MeetingStatus.InPreparation)
-                return "Može se glasati samo za sastanke koji su u statusu pripreme.";
-
-            return null;
         }
 
         public void ProcessVote(long meetingId, DateOnly votedDate)

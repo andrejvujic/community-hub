@@ -1,4 +1,5 @@
 using CommunityHub.Application.Services.Dtos.Users;
+using CommunityHub.Application.Domain.TrustRecords;
 
 namespace CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews
 {
@@ -20,6 +21,11 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReview
             Review = review;
             Reporter = reporter;
             CreatedAt = createdAt;
+        }
+
+        public bool IsTrusted(TrustStatus trustStatus)
+        {
+            return trustStatus == TrustStatus.Prominent || trustStatus == TrustStatus.Trustworthy;
         }
     }
 }
