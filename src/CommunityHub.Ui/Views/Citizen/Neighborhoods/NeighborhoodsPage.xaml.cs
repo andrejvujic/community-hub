@@ -37,25 +37,15 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
 
         private void HandleRequestAccess()
         {
-            if (_viewModel?.SelectedNeighborhood == null)
-            {
-                MessageBox.Show("Izaberite kvart pre slanja zahteva.", "Obaveštenje", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            var dlg = new RequestNeighborhoodAccessWindow(_viewModel.SelectedNeighborhood.Name ?? string.Empty);
+            var dlg = new RequestNeighborhoodAccessWindow(_viewModel!.SelectedNeighborhood!.Name ?? string.Empty);
             dlg.Owner = Window.GetWindow(this);
-            if (dlg.ShowDialog() != true || !dlg.Confirmed)
-                return;
+            if (dlg.ShowDialog() != true || !dlg.Confirmed) return;
 
             if (_viewModel.RequestNeighborhoodAccess(_viewModel.SelectedNeighborhood))
             {
                 var message = _viewModel.GetAccessResultMessage(_viewModel.SelectedNeighborhood);
                 MessageBox.Show(message, "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (!string.IsNullOrEmpty(_viewModel.ErrorMessage))
-            {
-                MessageBox.Show(_viewModel.ErrorMessage, "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                _viewModel.LoadNeighborhoods();
             }
         }
 

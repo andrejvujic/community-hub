@@ -43,6 +43,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
                 if (_selectedMeeting == value) return;
                 _selectedMeeting = value;
                 OnPropertyChanged(nameof(SelectedMeeting));
+                OnPropertyChanged(nameof(CanVote));
                 UpdateCurrentVote();
             }
         }
@@ -71,6 +72,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
         }
 
         public bool HasVoted => CurrentVote != null;
+
+        public bool CanVote => SelectedMeeting != null && SelectedMeeting.Status == MeetingStatus.InPreparation;
 
         public ICommand VoteCommand { get; }
 
@@ -117,17 +120,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Meetings
             }
 
             CurrentVote = _voteService.GetByMeetingIdAndCitizenId(_selectedMeeting.Id, _userId);
-        }
-
-        public string? ValidateVote()
-        {
-            if (SelectedMeeting == null)
-                return "Izaberite sastanak iz tabele.";
-
-            if (SelectedMeeting.Status != MeetingStatus.InPreparation)
-                return "Može se glasati samo za sastanke koji su u statusu pripreme.";
-
-            return null;
         }
 
         public void ProcessVote(long meetingId, DateOnly votedDate)
