@@ -7,15 +7,14 @@
         public BudgetCategory Category { get; private set; }
         public decimal TotalAmount { get; private set; }
 
-        public BudgetCategoryBalance RecordExpense(decimal amount)
+        public void RecordExpense(decimal amount)
         {
             if (amount > TotalAmount)
                 throw new InvalidOperationException(
                     $"Nedovoljno sredstava u kategoriji. Raspoloživo: {TotalAmount:N2} RSD, " +
                     $"traženo: {amount:N2} RSD.");
 
-
-            return CopyWith(totalAmount: TotalAmount - amount);
+            TotalAmount -= amount;
         }
 
         public BudgetCategoryBalance(

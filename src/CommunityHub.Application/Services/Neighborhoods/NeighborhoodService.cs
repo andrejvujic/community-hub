@@ -63,8 +63,8 @@ namespace CommunityHub.Application.Services.Neighborhoods
         public void DeductFromBudget(NeighborhoodDto neighborhoodDto, decimal amount)
         {
             var neighborhood = _neighborhoodMapper.MapToEntity(neighborhoodDto);
-            var updated = neighborhood.DeductFromBudget(amount);
-            _neighborhoodRepository.UpdateBudget(updated.Id, (int)updated.Budget);
+            neighborhood.DeductFromBudget(amount);
+            _neighborhoodRepository.UpdateBudget(neighborhood.Id, neighborhood.Budget);
         }
     }
 }

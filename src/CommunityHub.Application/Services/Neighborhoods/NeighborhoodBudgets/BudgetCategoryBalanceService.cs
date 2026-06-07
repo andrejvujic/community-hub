@@ -40,8 +40,8 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
             decimal newAmount)
         {
             var balance = MapToEntity(balanceDto);
-            var updatedBalance = balance.RecordExpense(newAmount);
-            _budgetCategoryBalanceRepository.UpdateTotalAmount(updatedBalance.Id, updatedBalance.TotalAmount);
+            balance.RecordExpense(newAmount);
+            _budgetCategoryBalanceRepository.UpdateTotalAmount(balance.Id, balance.TotalAmount);
         }
     }
 }

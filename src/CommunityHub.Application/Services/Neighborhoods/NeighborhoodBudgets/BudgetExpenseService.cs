@@ -30,7 +30,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
             string description)
         {
             var balance = _budgetCategoryBalanceMapper.MapToEntity(balanceDto);
-            balance = balance.RecordExpense(amount);
+            balance.RecordExpense(amount);
 
             var expense = new BudgetExpense(
                 balance,
