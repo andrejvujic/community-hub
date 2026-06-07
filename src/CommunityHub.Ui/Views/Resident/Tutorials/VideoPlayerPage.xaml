@@ -68,7 +68,6 @@
                             UnloadedBehavior="Stop"
                             MediaOpened="VideoElement_MediaOpened"
                             MediaEnded="VideoElement_MediaEnded"
-                            FocusableChanged="VideoElement_FocusableChanged"
                             Stretch="Uniform"/>
                     </Grid>
                 </Grid>

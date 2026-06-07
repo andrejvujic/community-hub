@@ -1,7 +1,9 @@
 ﻿using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident;
+using CommunityHub.Ui.Views;
 using CommunityHub.Ui.Views.Resident.Apartments;
 using CommunityHub.Ui.Views.Resident.Buildings.Browse;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.Views.Resident

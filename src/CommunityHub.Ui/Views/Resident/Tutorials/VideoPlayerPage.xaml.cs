@@ -1,6 +1,5 @@
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.ViewModels.Resident.Tutorials;
-using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -12,9 +11,6 @@ namespace CommunityHub.Ui.Views.Resident.Tutorials
         private readonly DispatcherTimer _progressTimer = new();
         private readonly DispatcherTimer _resumePlayingTimer = new();
         private bool _isUpdatingProgress = false;
-
-
-
 
         public VideoPlayerPage(string title, string videoPath)
         {
@@ -126,12 +122,6 @@ namespace CommunityHub.Ui.Views.Resident.Tutorials
             if (!_viewModel.IsLoaded || _viewModel.IsPlaying) return;
             VideoElement.Play();
             _viewModel.Play();
-        }
-
-        private void VideoElement_FocusableChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool isFocusable && isFocusable)
-                Debug.Write(isFocusable);
         }
     }
 }

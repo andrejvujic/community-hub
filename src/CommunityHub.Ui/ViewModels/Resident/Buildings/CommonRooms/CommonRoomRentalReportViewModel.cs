@@ -9,8 +9,8 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
 {
     public class CommonRoomRentalReportViewModel : BaseViewModel
     {
-        private readonly CommonRoomRentalRequestsReportDataService _reportDataService = new();
-        private readonly CommonRoomRentalRequestsReportPdfGenerator _pdfGenerator = new();
+        private readonly RentalRequestsReportDataService _reportDataService = new();
+        private readonly RentalRequestsReportPdfGenerator _pdfGenerator = new();
         private readonly CultureInfo _culture = new("sr-Latn-RS");
         private readonly DateTime _today = DateTime.Today;
 
@@ -123,7 +123,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.CommonRooms
                     AlertType.Info
                 )
                 .AddOption("U redu")
-                .AddOption("Prikaži", () => OpenPdf(filePath))
+                .AddOption(
+                    "Prikaži", 
+                    () => OpenPdf(filePath)
+                )
             );
         }
 
