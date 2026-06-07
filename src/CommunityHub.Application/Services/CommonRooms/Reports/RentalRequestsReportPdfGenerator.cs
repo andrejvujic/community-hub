@@ -69,14 +69,11 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             var dateRange = section.AddParagraph($"Opseg datuma: {_formatter.FormatDate(from)} - {_formatter.FormatDate(to)}");
             dateRange.Style = "Subtitle";
 
-            if (reports.Count == 0)
-            {
+            if (reports.Count > 0)
+                foreach (var report in reports)
+                    AddCommonRoomReport(section, report);
+            else
                 section.AddParagraph("Nema zahtjeva za izabrani opseg datuma.");
-                return document;
-            }
-
-            foreach (var report in reports)
-                AddCommonRoomReport(section, report);
 
             return document;
         }

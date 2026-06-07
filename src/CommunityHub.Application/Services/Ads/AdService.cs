@@ -142,16 +142,28 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
             return MapToDto(subscribedAd);
         }
 
-        public void NotifyAuthorsOfSubscribedMatchingAds(AdDto referenceAd)
+
+        public List<AdDto> GetMatchingSubscribedAds(AdDto referenceAd)
         {
             var referenceAdEntity = MapToEntity(referenceAd);
-            var subscribedAds = _adRepository
-                .GetByBuilding(referenceAd.BuildingId)
-                .Where(ad =>
+
+            var ads = _adRepository
+                .GetByBuilding(referenceAd.BuildingId);
+
+            var matchingSubscribedAds = ads.Where(
+                ad =>
                     ad.IsSubscribedToMatchingAds &&
                     ad.Matches(referenceAdEntity)
                 )
                 .ToList();
+
+            return MapToDto(matchingSubscribedAds);
+        }
+        public void NotifyAuthorsOfSubscribedMatchingAds(AdDto referenceAd)
+        {
+            var subscribedAds = MapToEntity(
+                GetMatchingSubscribedAds(referenceAd)
+            );
 
             var notifications = subscribedAds
                 .Select(ad => ad.AuthorId)
@@ -173,7 +185,6 @@ namespace CommunityHub.Application.Modules.Buildings.Core.Services.Ads
 
             foreach (var ad in subscribedAds)
                 ad.UnsubscribeFromMatchingAds();
-
             _adRepository.UpdateMany(subscribedAds);
         }
 
