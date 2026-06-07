@@ -56,10 +56,10 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Organizovani događaji" Width="1.1*" Binding="{Binding Organized}" ElementStyle="{StaticResource CenterAligned}"/>
-                <DataGridTextColumn Header="Broj volontiranja" Width="0.9*" Binding="{Binding Volunteered}" ElementStyle="{StaticResource CenterAligned}"/>
+                <DataGridTextColumn Header="Organizovano" Width="0.7*" Binding="{Binding Organized}" ElementStyle="{StaticResource CenterAligned}"/>
+                <DataGridTextColumn Header="Volontiranja" Width="0.7*" Binding="{Binding Volunteered}" ElementStyle="{StaticResource CenterAligned}"/>
                 <DataGridTextColumn Header="Datum pridruživanja" Width="1.1*" Binding="{Binding Citizen.Membership.AcceptanceDate, StringFormat=d}" ElementStyle="{StaticResource CenterAligned}"/>
-                <DataGridTextColumn Header="Status" Width="1*" Binding="{Binding TrustStatus, Converter={StaticResource TrustStatusToStringConverter}}" ElementStyle="{StaticResource CenterAligned}"/>
+                <DataGridTextColumn Header="Status" Width="1.2*" Binding="{Binding TrustStatus, Converter={StaticResource TrustStatusToStringConverter}}" ElementStyle="{StaticResource CenterAligned}"/>
 
                 <DataGridTemplateColumn Header="Nivo" Width="0.5*" CellStyle="{StaticResource CenteredDataGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>

@@ -35,7 +35,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         {
             _userId = userId;
             _neighborhoodId = neighborhoodId;
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
             LoadData();
         }
 
@@ -43,11 +43,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         {
             var records = _trustRecordService.GetNeighborhoodTrustRecords(_neighborhoodId, _userId);
             TrustRecords = new ObservableCollection<CitizenTrustRecordDto>(records);
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
         protected void OnPropertyChanged(string propertyName)

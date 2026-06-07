@@ -65,7 +65,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 
             WizardHelperCommand = new RelayCommand<object>(_ => WizardHelperRequested?.Invoke(this, EventArgs.Empty));
 
-            LoadCurrentUser();
+            CurrentUser = _citizenService.GetCitizenById(_userId);
             UpdateDateTime();
             _timer.Start();
         }
@@ -74,11 +74,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         {
             _timer.Tick -= Timer_Tick;
             _timer.Stop();
-        }
-
-        private void LoadCurrentUser()
-        {
-            CurrentUser = _citizenService.GetCitizenById(_userId);
         }
 
         private void Timer_Tick(object? sender, EventArgs e) => UpdateDateTime();
