@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
+using CommunityHub.Application.Domain.Neighborhoods;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 {
@@ -65,7 +66,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         public ICommand ToggleSortCommand { get; }
         public ICommand ToggleFilterCommand { get; }
         public ICommand DeleteCommand { get; }
-        public ICommand DeleteSelectedCommand { get; }
 
         private NeighborhoodAccessRequestDto? _selectedRequest;
 
@@ -74,11 +74,13 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             _userId = userId;
             RequestsView = CollectionViewSource.GetDefaultView(Requests);
 
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            ToggleSortCommand = new RelayCommand<object>(_ => ToggleSort());
-            ToggleFilterCommand = new RelayCommand<object>(_ => ToggleFilter());
-            DeleteCommand = new RelayCommand<NeighborhoodAccessRequestDto>(request => RequestDelete(request));
-            DeleteSelectedCommand = new RelayCommand<object>(_ => DeleteSelected(), _ => CanDeleteSelected());
+            CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
+            ToggleSortCommand = new RelayCommand<object>(_ => SelectedOrder = SelectedOrder == RequestOrder.CreationDateDescending ? RequestOrder.CreationDateAscending : RequestOrder.CreationDateDescending);
+            ToggleFilterCommand = new RelayCommand<object>(_ => FilterByStatus = !FilterByStatus);
+            DeleteCommand = new RelayCommand<NeighborhoodAccessRequestDto>(
+                request => DeleteRequested?.Invoke(this, new DeleteRequestedEventArgs(request)),
+                request => request != null && request.Status == NeighborhoodAccessRequestStatus.Waiting
+            );
 
             LoadRequests();
         }
@@ -87,10 +89,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         {
             var requests = _accessRequestService.GetByCitizenId(_userId, _selectedOrder, _filterByStatus);
             Requests.Clear();
-            foreach (var request in requests)
-            {
-                Requests.Add(request);
-            }
+            foreach (var request in requests) Requests.Add(request);
             ApplyGrouping();
         }
 
@@ -98,46 +97,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         {
             _accessRequestService.Delete(request.Citizen.Id, request.Neighborhood.Id);
             Requests.Remove(request);
-        }
-
-        public void ToggleSort()
-        {
-            SelectedOrder = SelectedOrder == RequestOrder.CreationDateDescending
-                ? RequestOrder.CreationDateAscending
-                : RequestOrder.CreationDateDescending;
-        }
-
-        public void ToggleFilter()
-        {
-            FilterByStatus = !FilterByStatus;
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestDelete(NeighborhoodAccessRequestDto request)
-        {
-            DeleteRequested?.Invoke(this, new DeleteRequestedEventArgs(request));
-        }
-
-        public void DeleteSelected()
-        {
-            if (_selectedRequest != null)
-            {
-                RequestDelete(_selectedRequest);
-            }
-        }
-
-        public bool CanDeleteSelected()
-        {
-            return _selectedRequest != null && IsRequestDeletable(_selectedRequest);
-        }
-
-        private bool IsRequestDeletable(NeighborhoodAccessRequestDto request)
-        {
-            return request.Status == CommunityHub.Application.Domain.Neighborhoods.NeighborhoodAccessRequestStatus.Waiting;
         }
 
         private void ApplyGrouping()

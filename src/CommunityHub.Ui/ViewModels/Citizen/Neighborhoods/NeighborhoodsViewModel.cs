@@ -93,8 +93,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             var selectedId = _selectedNeighborhood?.Id;
 
             Neighborhoods.Clear();
-            foreach (var neighborhood in neighborhoods)
-                Neighborhoods.Add(neighborhood);
+            foreach (var neighborhood in neighborhoods) Neighborhoods.Add(neighborhood);
 
             if (selectedId.HasValue)
             {

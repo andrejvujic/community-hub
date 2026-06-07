@@ -21,11 +21,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ConfirmRequested;
         public event EventHandler? CancelRequested;
-        public event EventHandler? CloseRequested;
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
-        public ICommand CloseCommand { get; }
         public ICommand SearchCommand { get; }
 
         public CountryDto? SelectedCountry
@@ -37,7 +35,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
                 _selectedCountry = value;
                 OnPropertyChanged(nameof(SelectedCountry));
                 LoadCities();
-                UpdateCitiesEnabledState();
+
+                IsCitiesEnabled = SelectedCountry != null;
             }
         }
 
@@ -78,10 +77,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public SelectCityViewModel(CountryDto? selectedCountry = null)
         {
-            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
-            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            SearchCommand = new RelayCommand<object>(_ => Search());
+            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty));
+            CancelCommand = new RelayCommand<object>(_ => CancelRequested?.Invoke(this, EventArgs.Empty));
+            SearchCommand = new RelayCommand<object>(_ => LoadCities(SearchQuery));
 
             if (selectedCountry != null)
             {
@@ -107,31 +105,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             {
                 SelectedCity = Cities[0];
             }
-        }
-
-        public void Search()
-        {
-            LoadCities(SearchQuery);
-        }
-
-        public void RequestConfirm()
-        {
-            ConfirmRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestCancel()
-        {
-            CancelRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void UpdateCitiesEnabledState()
-        {
-            IsCitiesEnabled = SelectedCountry != null;
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

@@ -14,22 +14,9 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
         {
             InitializeComponent();
             _viewModel = new SearchCriteriaViewModel(initial);
-            _viewModel.ConfirmRequested += (_, _) =>
-            {
-                Result = _viewModel.BuildSearchParameters();
-                DialogResult = true;
-            };
-            _viewModel.CancelRequested += (_, _) =>
-            {
-                DialogResult = false;
-            };
-            _viewModel.CloseRequested += (_, _) => Close();
-            _viewModel.ClearRequested += (_, _) =>
-            {
-                _viewModel.Clear();
-                Result = null;
-                DialogResult = true;
-            };
+            _viewModel.ConfirmRequested += (_, _) => { Result = _viewModel.BuildSearchParameters(); DialogResult = true; };
+            _viewModel.CancelRequested += (_, _) => { DialogResult = false; };
+            _viewModel.ClearRequested += (_, _) => { _viewModel.Clear(); Result = null; DialogResult = true; };
             DataContext = _viewModel;
 
             Loaded += (_, _) => NameTextBox.Focus();
