@@ -411,12 +411,15 @@ INSERT INTO price_entries (id, amount, valid_from, valid_to, job_listing_id) VAL
 (6, 13500.00, '2026-05-25', '2026-12-31', 3);
  
 INSERT INTO booked_jobs (id, scheduled_date, scheduled_time, duration_hours, unit_price, is_substitution, job_listing_id, neighborhood_id, substituting_provider_id) VALUES
-(1,  '2026-02-10', NULL,    NULL, 15000.00, FALSE, 1,  1,  NULL),
-(2,  '2026-03-05', NULL,    NULL, 15000.00, FALSE, 1,  2,  NULL),
-(3,  '2026-03-20', '09:00', 3,    1200.00,  FALSE, 2,  1,  NULL),
-(4,  '2026-04-10', '08:00', 4,    1200.00,  FALSE, 2,  2,  NULL),
-(8,  '2026-02-20', NULL,    NULL, 12000.00, FALSE, 3,  3,  NULL),
-(9,  '2026-04-01', NULL,    NULL, 12000.00, FALSE, 3,  4,  NULL);
+(1,  '2026-02-10', NULL, NULL, 15000.00, FALSE, 1,  1, NULL),
+(2,  '2026-03-05', NULL, NULL, 15000.00, FALSE, 1,  2, NULL),
+(3,  '2026-03-20', '09:00', 3, 1200.00,  FALSE, 2,  1, NULL),
+(4,  '2026-04-10', '08:00', 4, 1200.00,  FALSE, 2,  2, NULL),
+(5,  '2026-06-15', NULL, NULL, 12000.00, FALSE, 1,  1, NULL),
+(6,  '2026-06-07', NULL, NULL, 12000.00, FALSE, 1,  1, NULL),
+(7,  '2026-06-08', '17:00', 2, 12000.00, FALSE, 2,  1, NULL),
+(8,  '2026-02-20', NULL, NULL, 12000.00, FALSE, 3,  3, NULL),
+(9,  '2026-04-01', NULL, NULL, 12000.00, FALSE, 3,  4, NULL);
  
 INSERT INTO leave_requests (id, start_date, end_date, status, created_at, provider_id) VALUES
 (1, '2026-04-20', '2026-04-27', 'accepted', '2026-04-05 10:00:00', 21),
