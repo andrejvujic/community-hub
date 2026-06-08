@@ -55,6 +55,22 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             return ScheduledDate < DateOnly.FromDateTime(at);
         }
 
+        public ProviderReview CreateReview(
+            User coordinator,
+            int qualityRating,
+            int communicationRating,
+            string comment,
+            DateTime now)
+        {
+            if (!CanReviewBeCreated(now))
+                throw new InvalidOperationException(
+                    "Ocenjivanje nije moguće. Ova usluga ne može biti ocenjena.");
+
+            var review = new ProviderReview(this, coordinator, qualityRating, communicationRating, now, comment: comment);
+            Review = review;
+            return review;
+        }
+
         public BookedJob(
             JobListing listing,
             Neighborhood neighborhood,

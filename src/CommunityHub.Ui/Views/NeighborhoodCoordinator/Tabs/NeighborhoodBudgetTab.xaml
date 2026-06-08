@@ -87,6 +87,7 @@
                     <StackPanel Grid.Column="0" Margin="0,0,5,0">
                         <TextBlock x:Name="DonationsTitleTextBlock" Text="{Binding DonationsTitleText}" FontWeight="SemiBold" Margin="0,0,0,5"/>
                         <DataGrid x:Name="DonationsDataGrid"
+                                  ItemsSource="{Binding Donations}"
                                   Style="{StaticResource DataGridStyle}"
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
@@ -94,8 +95,8 @@
                                   Height="190"
                                   FontSize="16">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Iznos" CanUserSort="False" Width="*" />
-                                <DataGridTextColumn Header="Datum" CanUserSort="False" Width="*" />
+                                <DataGridTextColumn Header="Iznos" Binding="{Binding AmountDisplay}" CanUserSort="False" Width="*" />
+                                <DataGridTextColumn Header="Datum" Binding="{Binding DateDisplay}" CanUserSort="False" Width="*" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>

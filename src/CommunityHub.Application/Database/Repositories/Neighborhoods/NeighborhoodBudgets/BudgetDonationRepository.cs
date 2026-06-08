@@ -21,12 +21,6 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             budget_category.id AS budget_category_id,
             budget_category.name AS budget_category_name,
 
-            city.id AS city_id,
-            city.name AS city_name,
-
-            country.id AS country_id,
-            country.name AS country_name,
-
             coordinator.id AS coordinator_user_id,
             coordinator.username AS coordinator_username,
             coordinator.password AS coordinator_password,
@@ -34,27 +28,47 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             coordinator.surname AS coordinator_surname,
             coordinator.user_role AS coordinator_user_role,
 
-            citizen.id AS citizen_id,
-            citizen.username AS citizen_username,
-            citizen.password AS citizen_password,
-            citizen.name AS citizen_name,
-            citizen.surname AS citizen_surname,
-            citizen.user_role AS citizen_user_role,
-            citizen.address_id,
-            citizen.membership_id";
+            citizen.id AS user_id,
+            citizen.username AS username,
+            citizen.password AS password,
+            citizen.name AS name,
+            citizen.surname AS surname,
+            citizen.user_role AS user_role,
+            citizen.membership_id,
+
+            membership.id AS membership_id,
+            membership.acceptance_date AS acceptance_date,
+
+            address.id AS address_id,
+            address.street_number AS street_number,
+            address.neighborhood AS neighborhood,
+
+            street.id AS street_id,
+            street.name AS street_name,
+
+            city.id AS city_id,
+            city.name AS city_name,
+
+            country.id AS country_id,
+            country.name AS country_name";
 
         private const string FromJoins = @"
             FROM budget_donations budget_donation
             INNER JOIN neighborhoods neighborhood ON neighborhood.id = budget_donation.neighborhood_id
-            INNER JOIN cities city ON city.id = neighborhood.city_id
-            INNER JOIN countries country ON country.id = city.country_id
             INNER JOIN users coordinator ON coordinator.id = neighborhood.coordinator_id
             INNER JOIN budget_categories budget_category ON budget_category.id = budget_donation.budget_category_id
-            INNER JOIN citizens citizen ON citizen.id = budget_donation.citizen_id";
+            INNER JOIN citizens citizen ON citizen.id = budget_donation.citizen_id
+            INNER JOIN addresses address ON address.id = citizen.address_id
+            INNER JOIN streets street ON street.id = address.street_id
+            INNER JOIN cities city ON city.id = address.city_id
+            INNER JOIN countries country ON country.id = city.country_id
+            LEFT JOIN neighborhood_memberships membership ON membership.id = citizen.membership_id";
 
         public List<BudgetDonation> GetByNeighborhoodId(long neighborhoodId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT {SelectColumns} 
                 {FromJoins} 
                 WHERE budget_donation.neighborhood_id = @neighborhood_id 
@@ -62,7 +76,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             ).AddParameter("neighborhood_id", neighborhoodId);
 
             List<BudgetDonation> budgetDonations = new List<BudgetDonation>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var budgetDonation = _budgetDonationMapper.MapToEntity(reader);
                 if (budgetDonation is not null) budgetDonations.Add(budgetDonation);
@@ -72,7 +86,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public List<BudgetDonation> GetByNeighborhoodIdAndCategoryId(long neighborhoodId, long categoryId)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 $@"SELECT {SelectColumns} 
                 {FromJoins} 
                 WHERE budget_donation.neighborhood_id = @neighborhood_id 
@@ -83,7 +99,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             .AddParameter("category_id", categoryId);
 
             List<BudgetDonation> budgetDonations = new List<BudgetDonation>();
-            query.ExecuteReader(reader =>
+            connection.ExecuteReader(query, reader =>
             {
                 var budgetDonation = _budgetDonationMapper.MapToEntity(reader);
                 if (budgetDonation is not null) budgetDonations.Add(budgetDonation);
@@ -93,7 +109,9 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
         public BudgetDonation Create(BudgetDonation budgetDonation)
         {
-            var query = PostgresQuery.Create(
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
                 @"INSERT INTO budget_donations 
                 (amount, donation_date, neighborhood_id, budget_category_id, citizen_id)
                 VALUES 
@@ -102,7 +120,7 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
             )
             .ExtendParameters(_budgetDonationMapper.MapToQueryParameters(budgetDonation));
 
-            long budgetDonationId = query.ExecuteScalar<long>(value => Convert.ToInt64(value));
+            long budgetDonationId = connection.ExecuteScalar(query, Convert.ToInt64);
 
             return budgetDonation.CopyWith(id: budgetDonationId);
         }

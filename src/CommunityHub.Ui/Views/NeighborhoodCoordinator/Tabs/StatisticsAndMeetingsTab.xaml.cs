@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
@@ -12,6 +13,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public StatisticsAndMeetingsTab()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
+
             _viewModel = new StatisticsAndMeetingsTabViewModel();
             DataContext = _viewModel;
         }
