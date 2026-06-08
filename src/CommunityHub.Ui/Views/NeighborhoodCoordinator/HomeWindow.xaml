@@ -100,7 +100,7 @@
 
             <TabItem Header="Početna (Ctrl+1)"
                      Style="{StaticResource SidebarTabItemStyle}">
-                <Grid/>
+                <tabs:DashboardTab x:Name="DashboardTab" />
             </TabItem>
 
             <TabItem Header="Kvartovi i članstva (Ctrl+2)"

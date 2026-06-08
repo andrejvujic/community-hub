@@ -8,5 +8,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             InitializeComponent();
         }
+
+        public void Initialize(long coordinatorId)
+        {
+        }
     }
 }

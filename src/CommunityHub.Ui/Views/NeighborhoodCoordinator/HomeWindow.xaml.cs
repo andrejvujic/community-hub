@@ -29,6 +29,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             CityFacilitiesTab.Initialize(_userId);
             NeighborhoodBudgetTab.Initialize(_userId);
             ProfileTab.Initialize(_userId);
+            DashboardTab.Initialize(_userId);
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
