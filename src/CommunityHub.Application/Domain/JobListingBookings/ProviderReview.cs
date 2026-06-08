@@ -10,13 +10,13 @@ namespace CommunityHub.Application.Domain.JobListingBookings
         public User Coordinator { get; private set; }
         public int QualityRating { get; private set; }
         public int CommunicationRating { get; private set; }
-        public string? Comment { get; private set; }
+        public string Comment { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
 
         public decimal AverageRating => (QualityRating + CommunicationRating) / 2m;
 
-        public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
+        public bool HasComment => string.IsNullOrWhiteSpace(Comment);
 
         public bool IsEditable(DateTime now) => (now - CreatedAt).TotalDays <= 3;
 
@@ -38,7 +38,7 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             return bookedJob.ScheduledDate.ToDateTime(TimeOnly.MaxValue);
         }
 
-        public void Update(int qualityRating, int communicationRating, string? comment, DateTime now)
+        public void Update(int qualityRating, int communicationRating, string comment, DateTime now)
         {
             if (!IsEditable(now))
                 throw new InvalidOperationException(
@@ -57,7 +57,7 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             int communicationRating,
             DateTime createdAt,
             long id = 0,
-            string? comment = null,
+            string comment = "",
             DateTime? updatedAt = null
         )
         {
@@ -94,7 +94,7 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             User? coordinator = null,
             int? qualityRating = null,
             int? communicationRating = null,
-            string? comment = null,
+            string? comment = "",
             DateTime? createdAt = null,
             DateTime? updatedAt = null
         )

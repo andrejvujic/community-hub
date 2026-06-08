@@ -31,9 +31,7 @@ namespace CommunityHub.Application.Database.Mapping.EntityMappers
             DateTime createdAt = reader.GetDateTime(reader.GetOrdinal("review_created_at"));
 
             int commentOrdinal = reader.GetOrdinal("review_comment");
-            string? comment = reader.IsDBNull(commentOrdinal)
-                ? null
-                : reader.GetString(commentOrdinal);
+            string comment = reader.GetString(commentOrdinal);
 
             int updatedAtOrdinal = reader.GetOrdinal("updated_at");
             DateTime? updatedAt = reader.IsDBNull(updatedAtOrdinal)

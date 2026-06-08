@@ -59,7 +59,7 @@ namespace CommunityHub.Application.Domain.JobListingBookings
             User coordinator,
             int qualityRating,
             int communicationRating,
-            string? comment,
+            string comment,
             DateTime now)
         {
             if (!CanReviewBeCreated(now))
