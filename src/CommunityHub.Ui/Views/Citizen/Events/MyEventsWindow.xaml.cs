@@ -21,8 +21,6 @@ namespace CommunityHub.Ui.Views.Citizen.Events
                 _viewModel.OrganizeEventRequested += (_, _) => HandleOrganizeEvent();
                 _viewModel.OpenMarkVolunteersRequested += (_, eventDto) => HandleOpenMarkVolunteers(eventDto);
             }
-
-            Loaded += (_, _) => _viewModel?.SelectFirstEvent();
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)

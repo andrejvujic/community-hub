@@ -16,29 +16,11 @@ namespace CommunityHub.Ui.Views.Citizen.Events
 
             if (_viewModel != null)
             {
-                _viewModel.ConfirmRequested += (_, _) =>
-                {
-                    DialogResult = true;
-                    Close();
-                };
-                _viewModel.CancelRequested += (_, _) =>
-                {
-                    DialogResult = false;
-                    Close();
-                };
-                _viewModel.CloseRequested += (_, _) =>
-                {
-                    DialogResult = false;
-                    Close();
-                };
+                _viewModel.ConfirmRequested += (_, _) => { DialogResult = true; };
+                _viewModel.CancelRequested += (_, _) => { DialogResult = false; };
             }
 
-            Loaded += (_, _) =>
-            {
-                if (_viewModel?.Items.Count > 0)
-                    _viewModel.SelectedItem = _viewModel.Items[0];
-                ItemsListBox.Focus();
-            };
+            Loaded += (_, _) => { ItemsListBox.Focus(); };
         }
 
         private void Header_MouseDown(object sender, MouseButtonEventArgs e)

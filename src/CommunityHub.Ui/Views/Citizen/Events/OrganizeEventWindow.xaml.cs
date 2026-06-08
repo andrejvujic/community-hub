@@ -28,11 +28,7 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             if (_viewModel != null)
             {
                 _viewModel.CloseRequested += (_, _) => Close();
-                _viewModel.ConfirmRequested += (_, _) =>
-                {
-                    DialogResult = true;
-                    Close();
-                };
+                _viewModel.ConfirmRequested += (_, _) => DialogResult = true;
                 _viewModel.ToggleCalendarRequested += (_, _) => DatePickerPopup.IsOpen = !DatePickerPopup.IsOpen;
             }
         }

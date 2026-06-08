@@ -28,8 +28,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             _organizerEvents = new ObservableCollection<CommunityEventDto>();
             _volunteerEvents = new ObservableCollection<CommunityEventDto>();
 
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            OrganizeEventCommand = new RelayCommand<object>(_ => RequestOrganizeEvent());
+            CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
+            OrganizeEventCommand = new RelayCommand<object>(_ => OrganizeEventRequested?.Invoke(this, EventArgs.Empty));
             OpenMarkVolunteersCommand = new RelayCommand<object>(_ => RequestOpenMarkVolunteers());
 
             LoadEvents();
@@ -92,28 +92,20 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
             var volunteerEvents = _eventService.GetByVolunteerCitizenId(_userId);
             VolunteerEvents = new ObservableCollection<CommunityEventDto>(volunteerEvents);
-        }
 
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
+            SelectFirstEvent();
         }
 
         public void SelectFirstEvent()
         {
             if (OrganizerEvents.Count > 0)
             {
-                SelectedOrganizerEvent = OrganizerEvents[0];
+                SelectedOrganizerEvent = OrganizerEvents.FirstOrDefault();
             }
-            else if (VolunteerEvents.Count > 0)
+            else
             {
-                SelectedVolunteerEvent = VolunteerEvents[0];
+                SelectedVolunteerEvent = VolunteerEvents.FirstOrDefault();
             }
-        }
-
-        public void RequestOrganizeEvent()
-        {
-            OrganizeEventRequested?.Invoke(this, EventArgs.Empty);
         }
 
         public void RequestOpenMarkVolunteers()

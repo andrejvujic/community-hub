@@ -23,8 +23,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
         public ObservableCollection<NeighborhoodMeetingDto> Meetings { get; } = new();
-        public ObservableCollection<TiedDateOption> TiedDateOptions { get; } = new();
-
+        public ObservableCollection<DateOnly> TiedDateOptions { get; } = new();
         public RelayCommand ScheduleMeetingCommand { get; }
         public RelayCommand ScheduleWelcomeCommand { get; }
         public RelayCommand ScheduleMotivationCommand { get; }
@@ -204,8 +203,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public bool HasTiedDates => TiedDateOptions.Count > 0;
 
-        private TiedDateOption? _selectedTiedDateOption;
-        public TiedDateOption? SelectedTiedDateOption
+        private DateOnly? _selectedTiedDateOption;
+        public DateOnly? SelectedTiedDateOption
         {
             get => _selectedTiedDateOption;
             set
@@ -295,8 +294,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             var voteCounts = _voteService.GetVoteCountsForMeeting(SelectedMeeting.Id);
             if (!NeighborhoodMeeting.HasTiedDates(voteCounts)) return;
 
+
             foreach (var d in NeighborhoodMeeting.GetTiedDates(voteCounts))
-                TiedDateOptions.Add(new TiedDateOption(d));
+                TiedDateOptions.Add(d);
 
             OnPropertyChanged(nameof(HasTiedDates));
         }
@@ -333,7 +333,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             if (confirmDialog.ShowDialog() != true) return;
 
-            _meetingService.UpdateScheduledDate(SelectedMeeting.Id, SelectedTiedDateOption.Date);
+            _meetingService.UpdateScheduledDate(SelectedMeeting.Id, SelectedTiedDateOption.Value);
             _meetingService.UpdateStatus(SelectedMeeting.Id, MeetingStatus.Scheduled);
             LoadMeetings();
 
@@ -343,13 +343,5 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public class TiedDateOption
-    {
-        public DateOnly Date { get; }
-        public string Display => Date.ToString("dd.MM.yyyy.");
-
-        public TiedDateOption(DateOnly date) => Date = date;
     }
 }

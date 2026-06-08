@@ -22,12 +22,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ConfirmRequested;
         public event EventHandler? CancelRequested;
-        public event EventHandler? CloseRequested;
         public event EventHandler? ClearRequested;
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
-        public ICommand CloseCommand { get; }
         public ICommand ClearCommand { get; }
 
         public string NameFilter
@@ -116,10 +114,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
 
         public SearchCriteriaViewModel(NeighborhoodSearchParameters? initial = null)
         {
-            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
-            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            ClearCommand = new RelayCommand<object>(_ => RequestClear());
+            ConfirmCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty));
+            CancelCommand = new RelayCommand<object>(_ => CancelRequested?.Invoke(this, EventArgs.Empty));
+            ClearCommand = new RelayCommand<object>(_ => ClearRequested?.Invoke(this, EventArgs.Empty));
 
             if (initial != null)
             {
@@ -151,26 +148,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.Search
             AddressFilter = string.Empty;
             SelectedCountry = null;
             SelectedCity = null;
-        }
-
-        public void RequestConfirm()
-        {
-            ConfirmRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestCancel()
-        {
-            CancelRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestClear()
-        {
-            ClearRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void UpdateCountryButtonContent()

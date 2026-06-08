@@ -150,7 +150,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding AccessOrCoordinatorCommand}"
+                    <Button x:Name="RequestAccessButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding AccessOrCoordinatorCommand}" IsEnabled="{Binding CanRequestAccess}"
                             Visibility="{Binding Membership, Converter={StaticResource NullToVisibility}}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Zahtev za pristup kvartu<LineBreak/>(Ctrl + 1)</TextBlock>
                     </Button>

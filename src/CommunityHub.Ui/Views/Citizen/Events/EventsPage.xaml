@@ -51,9 +51,9 @@
                 <DataGrid x:Name="EventsGrid" Grid.Column="0" AutoGenerateColumns="False" HeadersVisibility="Column" 
                           Style="{StaticResource PrimaryDataGrid}" ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}" RowStyle="{StaticResource DataGridRowStyle}" CellStyle="{StaticResource DataGridCellStyle}" IsReadOnly="True" ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Naziv događaja" Binding="{Binding Name}" Width="1*"/>
-                        <DataGridTextColumn Header="Datum" Binding="{Binding EventStart, StringFormat=d}" Width="0.6*"/>
-                        <DataGridTextColumn Header="Vreme" Binding="{Binding EventStart, StringFormat=t}" Width="0.6*"/>
+                        <DataGridTextColumn Header="Naziv događaja" Binding="{Binding Name}" Width="1.2*"/>
+                        <DataGridTextColumn Header="Datum" Binding="{Binding EventStart, StringFormat=d}" Width="0.5*"/>
+                        <DataGridTextColumn Header="Vreme" Binding="{Binding EventStart, StringFormat=t}" Width="0.5*"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource EventStatusToString}}" Width="0.6*"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -149,7 +149,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Command="{Binding ApplyToVolunteerCommand}">
+                        <Button x:Name="ApplyVolunteerButton" Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0" Command="{Binding ApplyToVolunteerCommand}" IsEnabled="{Binding CanApplyToVolunteer}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
                         </Button>
 

@@ -17,8 +17,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             InitializeComponent();
             _viewModel = new SearchCriteriaViewModel(
                 setSearchParameters: setSearchParameters,
-                page: this,
-                initialSearchParameters: initialSearchParameters
+                initialSearchParameters: initialSearchParameters,
+                navigationConsumer: this
             );
             DataContext = _viewModel;
         }

@@ -26,10 +26,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         {
             _userId = userId;
             _items = new ObservableCollection<string>();
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-            SaveCommand = new RelayCommand<object>(_ => RequestConfirm(), _ => IsFormValid);
+            CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
+            SaveCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty), _ => IsFormValid);
             AddItemCommand = new RelayCommand<object>(_ => AddItem());
-            ToggleCalendarCommand = new RelayCommand<object>(_ => RequestToggleCalendar());
+            ToggleCalendarCommand = new RelayCommand<object>(_ => ToggleCalendarRequested?.Invoke(this, EventArgs.Empty));
         }
 
         private string _name = string.Empty;
@@ -174,8 +174,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public void AddItem()
         {
             var input = ItemInput.Trim();
-            if (string.IsNullOrEmpty(input))
-                return;
+            if (string.IsNullOrEmpty(input)) return;
 
             if (!Items.Contains(input))
             {
@@ -238,23 +237,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestConfirm()
-        {
-            if (!IsFormValid) return;
-            Submit();
-            ConfirmRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestToggleCalendar()
-        {
-            ToggleCalendarRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 }

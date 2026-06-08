@@ -1,5 +1,6 @@
-using CommunityHub.Application.Services.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Domain.Users;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Services.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
@@ -88,35 +89,33 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
 
         private void LoadData()
         {
+            var selectedFacilityId = _selectedFacility?.Id;
             var citizen = _citizenService.GetCitizenById(_userId);
 
             if (citizen?.Membership?.Neighborhood.City?.Id == null)
             {
-                Facilities = new ObservableCollection<CityFacilityDto>();
                 Membership = null;
                 return;
             }
 
-            var facilities = _facilityService.GetByCityId(citizen.Membership.Neighborhood.City.Id);
-            PopulateFacilityData(facilities);
+            PopulateFacilityData(citizen.Membership.Neighborhood.City.Id);
 
-            Facilities = new ObservableCollection<CityFacilityDto>(facilities);
             Membership = citizen.Membership;
-
-            if (Facilities.Count > 0)
-            {
-                SelectedFacility = Facilities[0];
-            }
+            SelectedFacility = Facilities.FirstOrDefault(f => f.Id == selectedFacilityId) ?? Facilities.FirstOrDefault();
         }
 
-        private void PopulateFacilityData(List<CityFacilityDto> facilities)
+        private void PopulateFacilityData(long cityId)
         {
+            var facilities = _facilityService.GetByCityId(cityId);
+
             foreach (var facility in facilities)
             {
                 facility.VoteCount = _voteService.GetVoteCountByFacilityId(facility.Id);
                 facility.LastVisitDate = _reservationService.GetLastVisitDateForFacility(facility.Id);
                 facility.VotedByMe = _voteService.GetByFacilityIdAndCitizenId(facility.Id, _userId) != null;
             }
+
+            Facilities = new ObservableCollection<CityFacilityDto>(facilities);
         }
 
         public void RemoveVote()

@@ -65,7 +65,7 @@
                       Margin="0,0,0,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Naziv objekta" Binding="{Binding Name, Mode=OneWay}" Width="1.1*" />
-                        <DataGridTextColumn Header="Poslednja poseta" Binding="{Binding LastVisitDate, StringFormat=d, Mode=OneWay}" Width="1*" />
+                        <DataGridTextColumn Header="Poslednja poseta" Binding="{Binding LastVisitDateDisplay, Mode=OneWay}" Width="1*" />
                         <DataGridTextColumn Header="Ukupno glasova" Binding="{Binding VoteCount, Mode=OneWay}" Width="0.7*" />
                         <DataGridTextColumn Header="Ima moj glas" Binding="{Binding VotedByMe, Converter={StaticResource BooleanToCheckmark}, Mode=OneWay}" Width="0.6*" CellStyle="{StaticResource CenteredDataGridCellStyle}" />
                     </DataGrid.Columns>

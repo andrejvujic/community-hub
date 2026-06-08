@@ -125,7 +125,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Ads
                 ReservableTimeSlotGroups.Add(group);
         }
 
-        private List<AdTimeSlotGroupDto> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
+        private static List<AdTimeSlotGroupDto> GroupTimeSlotsByDay(List<AdTimeSlotDto> timeSlots)
         {
             var groups = timeSlots.GroupBy(timeSlot => timeSlot.StartTime.Date);
 

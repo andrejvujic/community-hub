@@ -47,15 +47,12 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Issues
 
             var issue = _issueService.Create(
                 new IssueDto(
-                    id: 0,
                     description: Description.Trim(),
                     reportedAt: DateTime.Today,
                     priority: SelectedPriority!.Value,
                     status: IssueStatus.Open,
                     residentId: _userId,
-                    resident: null,
-                    buildingId: _buildingId,
-                    building: null
+                    buildingId: _buildingId
                 )
             );
 
@@ -65,7 +62,10 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Issues
                     "Vaš problem je uspješno prijavljen upravniku zgrade.",
                     AlertType.Info
                 )
-                .AddOption("U redu", () => Pop(issue))
+                .AddOption(
+                    "U redu", 
+                    () => Pop(issue)
+                )
             );
         }
 

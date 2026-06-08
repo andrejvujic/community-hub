@@ -35,5 +35,10 @@ namespace CommunityHub.Application.Services.Dtos.Users
             Address = address;
             Membership = membership;
         }
+
+        public bool CanWriteCoordinatorReview(int removedReviewCount, bool hasRecentReviewThisMonth)
+        {
+            return removedReviewCount < 3 && !hasRecentReviewThisMonth;
+        }
     }
 }

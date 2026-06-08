@@ -50,5 +50,10 @@ namespace CommunityHub.Application.Domain.Users
         {
             return CopyWith(membership: membership);
         }
+
+        public bool CanWriteCoordinatorReview(int removedReviewCount, bool hasRecentReviewThisMonth)
+        {
+            return removedReviewCount < 3 && !hasRecentReviewThisMonth;
+        }
     }
 }

@@ -14,10 +14,7 @@ namespace CommunityHub.Ui.Views.Citizen.LocalFacilities
 
             if (viewModel != null)
             {
-                viewModel.CloseRequested += (_, _) =>
-                {
-                    Close();
-                };
+                viewModel.CloseRequested += (_, _) => { Close(); };
             }
         }
 
