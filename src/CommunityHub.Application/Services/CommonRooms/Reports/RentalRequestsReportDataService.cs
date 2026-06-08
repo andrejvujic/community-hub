@@ -7,7 +7,7 @@ using CommunityHub.Application.Services.Dtos.CommonRooms.Reports;
 
 namespace CommunityHub.Application.Services.CommonRooms.Reports
 {
-    public class CommonRoomRentalRequestsReportDataService
+    public class RentalRequestsReportDataService
     {
         private readonly ICommonRoomRepository _commonRoomRepository = Injector.CreateInstance<ICommonRoomRepository>();
         private readonly ICommonRoomRentalRequestRepository _commonRoomRentalRequestRepository = Injector.CreateInstance<ICommonRoomRentalRequestRepository>();

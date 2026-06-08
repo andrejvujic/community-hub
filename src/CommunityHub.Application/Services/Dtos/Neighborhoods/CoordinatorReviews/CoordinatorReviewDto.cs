@@ -32,5 +32,15 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReview
             IsRemoved = isRemoved;
             ReportCount = 0;
         }
+
+        public bool ShouldBeRemoved(int totalReportCount, int trustedReportCount)
+        {
+            return totalReportCount >= 10 || trustedReportCount >= 5;
+        }
+
+        public bool CanUserReport(long userId, bool hasUserAlreadyReported)
+        {
+            return Reviewer.Id != userId && !hasUserAlreadyReported;
+        }
     }
 }

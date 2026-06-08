@@ -25,36 +25,16 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ConfirmRequested;
         public event EventHandler? CancelRequested;
-        public event EventHandler? CloseRequested;
 
         public ICommand ConfirmCommand { get; }
         public ICommand CancelCommand { get; }
-        public ICommand CloseCommand { get; }
 
         public RequestNeighborhoodAccessViewModel(string neighborhoodName)
         {
             _neighborhoodName = neighborhoodName;
 
-            ConfirmCommand = new RelayCommand<object>(_ => RequestConfirm());
-            CancelCommand = new RelayCommand<object>(_ => RequestCancel());
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
-        }
-
-        public void RequestConfirm()
-        {
-            Confirmed = true;
-            ConfirmRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestCancel()
-        {
-            Confirmed = false;
-            CancelRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
+            ConfirmCommand = new RelayCommand<object>(_ => { Confirmed = true; ConfirmRequested?.Invoke(this, EventArgs.Empty); });
+            CancelCommand = new RelayCommand<object>(_ => { Confirmed = false; CancelRequested?.Invoke(this, EventArgs.Empty); });
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

@@ -22,10 +22,9 @@ namespace CommunityHub.Ui.Views.Citizen.TrustRecords
 
         private void HandleShowOtherMembersTrust()
         {
-            if (_viewModel?.NeighborhoodId.HasValue != true || _viewModel?.TrustRecord?.Citizen == null)
-                return;
+            if (_viewModel?.NeighborhoodId.HasValue != true || _viewModel?.TrustRecord?.Citizen == null) return;
 
-            var wnd = new OtherMembersTrustWindow(_viewModel.TrustRecord.Citizen.Id, _viewModel.NeighborhoodId.Value);
+            var wnd = new OtherMembersTrustWindow(_viewModel.TrustRecord.Citizen.Id, _viewModel.NeighborhoodId!.Value);
             wnd.Owner = Window.GetWindow(this);
             wnd.ShowDialog();
         }

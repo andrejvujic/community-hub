@@ -175,40 +175,24 @@ namespace CommunityHub.Application.Services.Issues.Reports
                 .BorderColor(Colors.Grey.Lighten2)
                 .Background(Colors.Grey.Lighten4)
                 .Padding(12)
-                .Column(itemColumn =>
+                .Column(column =>
                 {
-                    itemColumn.Spacing(6);
+                    column.Spacing(6);
 
-                    itemColumn.Item().Text(text =>
-                    {
-                        text.Span("Stanar: ").SemiBold();
-                        text.Span($"{item.Resident!.Name} {item.Resident.Surname}");
-                    });
-
-                    itemColumn.Item().Text(text =>
-                    {
-                        text.Span("Prijavljeno: ").SemiBold();
-                        text.Span($"{item.ReportedAt:dd.MM.yyyy.}");
-                    });
-
-                    itemColumn.Item().Text(text =>
-                    {
-                        text.Span("Prioritet: ").SemiBold();
-                        text.Span(IssuePriorityFormatter.Format(item.Priority));
-                    });
-
-                    itemColumn.Item().Text(text =>
-                    {
-                        text.Span("Status: ").SemiBold();
-                        text.Span(IssueStatusFormatter.Format(item.Status));
-                    });
-
-                    itemColumn.Item().Text(text =>
-                    {
-                        text.Span("Opis: ").SemiBold();
-                        text.Span(item.Description);
-                    });
+                    AddLabeledText(column, "Stanar: ", $"{item.Resident!.Name} {item.Resident.Surname}");
+                    AddLabeledText(column, "Prijavljeno: ", $"{item.ReportedAt:dd.MM.yyyy.}");
+                    AddLabeledText(column, "Prioritet: ", IssuePriorityFormatter.Format(item.Priority));
+                    AddLabeledText(column, "Status: ", IssueStatusFormatter.Format(item.Status));
+                    AddLabeledText(column, "Opis: ", item.Description);
                 });
+        }
+        private static void AddLabeledText(ColumnDescriptor column, string label, string value)
+        {
+            column.Item().Text(text =>
+            {
+                text.Span(label).SemiBold();
+                text.Span(value);
+            });
         }
     }
 }

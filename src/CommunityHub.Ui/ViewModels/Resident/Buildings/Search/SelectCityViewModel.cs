@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Domain.Addresses;
-using CommunityHub.Application.Helpers.Search;
+﻿using CommunityHub.Application.Helpers.Search;
 using CommunityHub.Application.Services.Addresses;
 using CommunityHub.Application.Services.Dtos.Addresses;
 using CommunityHub.Ui.Helpers.Commands;
@@ -49,7 +48,7 @@ namespace CommunityHub.Ui.ViewModels.Resident.Buildings.Search
         public RelayCommand SearchCommand { get; }
         public RelayCommand<CityDto> SelectCityCommand { get; }
 
-        private string _searchText;
+        private string _searchText = string.Empty;
         public string SearchText
         {
             get => _searchText;

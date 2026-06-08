@@ -24,11 +24,5 @@ namespace CommunityHub.Application.Services.Users
 
         public void UpdateMembership(long citizenId, long membershipId)
             => _citizenRepository.UpdateMembership(citizenId, membershipId);
-
-        public long? GetNeighborhoodIdForCitizen(long citizenId)
-        {
-            var citizen = _citizenRepository.GetById(citizenId);
-            return citizen?.Membership?.Neighborhood.Id;
-        }
     }
 }

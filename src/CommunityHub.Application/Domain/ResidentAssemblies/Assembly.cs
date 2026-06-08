@@ -92,7 +92,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
         }
 
 
-        public double GetAttendancePercentage()
+        private double GetAttendancePercentage()
         {
             if (BuildingApartmentCount <= 0)
                 return 0.0;
@@ -100,7 +100,7 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
             return _attendances.Count / (double)BuildingApartmentCount;
         }
 
-        public double? GetHoursLeftUntilStart()
+        private double? GetHoursLeftUntilStart()
         {
             var now = DateTime.Now;
 
@@ -113,13 +113,13 @@ namespace CommunityHub.Application.Domain.ResidentAssemblies
         public bool HasSufficientAttendance =>
             GetAttendancePercentage() > AttendancePercentageThreshold;
 
-        public bool CanBeConfirmed =>
+        private bool CanBeConfirmed =>
             Status is AssemblyStatus.Scheduled && HasSufficientAttendance;
 
-        public bool CanBeUnconfirmed =>
+        private bool CanBeUnconfirmed =>
             Status is AssemblyStatus.Confirmed && !HasSufficientAttendance;
 
-        public bool CanBeCancelled
+        private bool CanBeCancelled
         {
             get
             {

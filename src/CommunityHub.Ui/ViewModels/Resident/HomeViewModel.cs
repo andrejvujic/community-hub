@@ -5,6 +5,7 @@ using CommunityHub.Application.Domain.RepositoryInterfaces.Ads;
 using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Notifications;
 using CommunityHub.Application.Services.ResidentAssemblies;
+using CommunityHub.Ui.Helpers.Alerts;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Helpers.Navigation;
 using CommunityHub.Ui.Views.Resident.Notifications;

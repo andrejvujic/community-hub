@@ -14,15 +14,15 @@ namespace CommunityHub.Application.MappersDto.Issues
             if (issue == null) throw new ArgumentNullException(nameof(issue));
 
             return new IssueDto(
-                issue.Id,
-                issue.Description,
-                issue.ReportedAt,
-                issue.Priority,
-                issue.Status,
-                issue.ResidentId,
-                issue.Resident != null ? _userMapper.MapToDto(issue.Resident) : null,
-                issue.BuildingId,
-                issue.Building != null ? _buildingMapper.MapToDto(issue.Building) : null
+                id: issue.Id,
+                description: issue.Description,
+                reportedAt: issue.ReportedAt,
+                priority: issue.Priority,
+                status: issue.Status,
+                residentId: issue.ResidentId,
+                resident: issue.Resident != null ? _userMapper.MapToDto(issue.Resident) : null,
+                buildingId: issue.BuildingId,
+                building: issue.Building != null ? _buildingMapper.MapToDto(issue.Building) : null
             );
         }
         public Issue MapToEntity(IssueDto dto)

@@ -21,8 +21,8 @@ namespace CommunityHub.Ui.Views.Resident.Buildings.Search
             _viewModel = new SelectCityViewModel(
                 setCity: setCity,
                 selectedCountry: selectedCountry,
-                navigationConsumer: this,
-                selectedCity: selectedCity
+                selectedCity: selectedCity,
+                navigationConsumer: this
             );
             DataContext = _viewModel;
 

@@ -108,14 +108,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         {
             if (SelectedReview is CoordinatorReviewDto review)
             {
-                if (review.Reviewer.Id == _userId)
-                {
-                    CanReportSelectedReview = false;
-                }
-                else
-                {
-                    CanReportSelectedReview = !_reportService.HasUserReportedReview(review.Id, _userId);
-                }
+                bool hasUserAlreadyReported = _reportService.HasUserReportedReview(review.Id, _userId);
+                CanReportSelectedReview = review.CanUserReport(_userId, hasUserAlreadyReported);
             }
             else
             {
@@ -139,16 +133,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 
         private void LoadReviews()
         {
+            var selectedReviewId = (SelectedReview as CoordinatorReviewDto)?.Id;
             var reviews = _reviewService.GetByNeighborhoodId(_neighborhoodId);
             Reviews.Clear();
-            foreach (var review in reviews)
-            {
-                Reviews.Add(review);
-            }
-            if (Reviews.Count > 0)
-            {
-                SelectedReview = Reviews[0];
-            }
+            foreach (var review in reviews) Reviews.Add(review);
+
+            SelectedReview = Reviews.FirstOrDefault(r => r is CoordinatorReviewDto dto && dto.Id == selectedReviewId) ?? Reviews.FirstOrDefault();
         }
 
         public void ExecuteReport(long reviewId)
@@ -161,7 +151,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             _reportService.Create(reportDto);
 
             int totalReports = _reportService.GetReportCountByReviewId(reviewId);
-            if (totalReports >= 10 || CountTrustedReports(reviewId) >= 5)
+            int trustedReports = CountTrustedReports(reviewId);
+
+            if (review.ShouldBeRemoved(totalReports, trustedReports))
             {
                 _reviewService.MarkAsRemoved(reviewId);
                 UpdateCanWriteNewReview();
@@ -191,7 +183,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             foreach (var report in reports)
             {
                 var trustRecord = _trustRecordService.GetTrustRecord(report.Reporter.Id);
-                if (trustRecord!.TrustStatus == TrustStatus.Prominent || trustRecord.TrustStatus == TrustStatus.Trustworthy)
+                if (report.IsTrusted(trustRecord!.TrustStatus))
                 {
                     trustedCount++;
                 }
@@ -203,18 +195,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
         private void UpdateCanWriteNewReview()
         {
             int removedReviewCount = _reviewService.GetRemovedReviewCountByReviewerId(_neighborhoodId, _userId);
-            if (removedReviewCount >= 3)
-            {
-                CanWriteNewReview = false;
-                ((RelayCommand<object>)WriteNewReviewCommand).RaiseCanExecuteChanged();
-                return;
-            }
-
             var allReviews = _reviewService.GetByNeighborhoodId(_neighborhoodId);
-            var now = DateTime.Now;
-            var userRecentReview = allReviews.FirstOrDefault(r => r.Reviewer.Id == _userId && r.CreatedAt.Year == now.Year && r.CreatedAt.Month == now.Month);
+            var userRecentReview = allReviews.FirstOrDefault(r => r.Reviewer.Id == _userId && r.CreatedAt.Year == DateTime.Now.Year && r.CreatedAt.Month == DateTime.Now.Month);
 
-            CanWriteNewReview = userRecentReview == null;
+            var reviewer = _citizenService.GetCitizenById(_userId);
+            CanWriteNewReview = reviewer!.CanWriteCoordinatorReview(removedReviewCount, userRecentReview != null);
+
             ((RelayCommand<object>)WriteNewReviewCommand).RaiseCanExecuteChanged();
         }
 

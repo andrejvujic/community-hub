@@ -51,5 +51,15 @@ namespace CommunityHub.Application.Domain.Neighborhoods.CoordinatorReviews
                 id ?? Id
             );
         }
+
+        public bool ShouldBeRemoved(int totalReportCount, int trustedReportCount)
+        {
+            return totalReportCount >= 10 || trustedReportCount >= 5;
+        }
+
+        public bool CanUserReport(long userId, bool hasUserAlreadyReported)
+        {
+            return Reviewer.Id != userId && !hasUserAlreadyReported;
+        }
     }
 }

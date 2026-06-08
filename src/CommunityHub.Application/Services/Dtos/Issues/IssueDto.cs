@@ -20,15 +20,15 @@ namespace CommunityHub.Application.Services.Dtos.Issues
         public BuildingDto? Building { get; set; }
 
         public IssueDto(
-            long id,
             string description,
             DateTime reportedAt,
             IssuePriority priority,
             IssueStatus status,
             long residentId,
-            UserDto? resident,
             long buildingId,
-            BuildingDto? building
+            UserDto? resident = null,
+            BuildingDto? building = null,
+            long id = 0
         )
         {
             Id = id;

@@ -1,18 +1,15 @@
-using CommunityHub.Application.Domain.CommonRooms.RentalRequests;
-using CommunityHub.Application.Services.Dtos.CommonRooms;
 using CommunityHub.Application.Services.Dtos.CommonRooms.Reports;
 using MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using PdfSharp.Fonts;
-using System.Globalization;
 
 namespace CommunityHub.Application.Services.CommonRooms.Reports
 {
-    public class CommonRoomRentalRequestsReportPdfGenerator
+    public class RentalRequestsReportPdfGenerator
     {
-        private readonly CultureInfo _culture = new("sr-Latn-RS");
+        private readonly RentalRequestsReportFormatter _formatter = new();
 
         public string GenerateToDownloads(
             IReadOnlyList<CommonRoomRentalRequestsReportDto> reports,
@@ -23,14 +20,21 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             ConfigureFont();
 
             var downloadsPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                Environment.GetFolderPath(
+                    Environment.SpecialFolder.UserProfile
+                ),
                 "Downloads"
             );
 
             var fileName = $"izvjestaj-zahtjevi-zajednicke-prostorije-{DateTime.Now:yyyyMMdd-HHmmss}.pdf";
             var filePath = Path.Combine(downloadsPath, fileName);
 
-            var document = CreateDocument(reports, from, to);
+            var document = CreateDocument(
+                reports: reports, 
+                from: from, 
+                to: to
+            );
+
             var renderer = new PdfDocumentRenderer
             {
                 Document = document
@@ -62,17 +66,14 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             var title = section.AddParagraph("Izvještaj o zahtjevima za iznajmljivanje zajedničkih prostorija");
             title.Style = "Title";
 
-            var dateRange = section.AddParagraph($"Opseg datuma: {FormatDate(from)} - {FormatDate(to)}");
+            var dateRange = section.AddParagraph($"Opseg datuma: {_formatter.FormatDate(from)} - {_formatter.FormatDate(to)}");
             dateRange.Style = "Subtitle";
 
-            if (reports.Count == 0)
-            {
+            if (reports.Count > 0)
+                foreach (var report in reports)
+                    AddCommonRoomReport(section, report);
+            else
                 section.AddParagraph("Nema zahtjeva za izabrani opseg datuma.");
-                return document;
-            }
-
-            foreach (var report in reports)
-                AddCommonRoomReport(section, report);
 
             return document;
         }
@@ -120,7 +121,7 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             title.Format.KeepWithNext = true;
 
             var information = section.AddParagraph(
-                $"Tip iznajmljivanja: {FormatRentalType(report.CommonRoom.RentalType)}\n" +
+                $"Tip iznajmljivanja: {_formatter.FormatRentalType(report.CommonRoom.RentalType)}\n" +
                 $"Ukupno zahtjeva: {report.TotalRequestsCount} | " +
                 $"Odobreno: {report.ApprovedRequestsCount} | " +
                 $"Na čekanju: {report.PendingRequestsCount} | " +
@@ -163,11 +164,11 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             foreach (var request in report.RentalRequests)
             {
                 var row = table.AddRow();
-                AddCell(row, 0, FormatResident(request));
-                AddCell(row, 1, FormatDateRange(request.RequestedStartDate, request.RequestedEndDate));
-                AddCell(row, 2, FormatProposedDateRange(request));
-                AddCell(row, 3, FormatAssignedDate(request, report.CommonRoom.RentalType));
-                AddCell(row, 4, FormatStatus(request.Status));
+                AddCell(row, 0, _formatter.FormatResident(request));
+                AddCell(row, 1, _formatter.FormatDateRange(request.RequestedStartDate, request.RequestedEndDate));
+                AddCell(row, 2, _formatter.FormatProposedDateRange(request));
+                AddCell(row, 3, _formatter.FormatAssignedDate(request, report.CommonRoom.RentalType));
+                AddCell(row, 4, _formatter.FormatStatus(request.Status));
             }
 
             section.AddParagraph().Format.SpaceAfter = Unit.FromPoint(8);
@@ -180,54 +181,5 @@ namespace CommunityHub.Application.Services.CommonRooms.Reports
             paragraph.Format.SpaceAfter = Unit.FromPoint(2);
             row.Cells[index].VerticalAlignment = VerticalAlignment.Center;
         }
-
-        private string FormatDate(DateTime date)
-            => date.ToString("dd.MM.yyyy.", _culture);
-
-        private string FormatDateRange(DateTime from, DateTime to)
-            => $"{FormatDate(from)} - {FormatDate(to)}";
-
-        private string FormatProposedDateRange(CommonRoomRentalRequestDto request)
-        {
-            if (request.ProposedStartDate is null || request.ProposedEndDate is null)
-                return "Nema";
-
-            return FormatDateRange(request.ProposedStartDate.Value, request.ProposedEndDate.Value);
-        }
-
-        private string FormatAssignedDate(CommonRoomRentalRequestDto request, RentalType rentalType)
-        {
-            return request.AssignedDate is null || rentalType is RentalType.MultiDay
-                ? "Nema"
-                : FormatDate(request.AssignedDate.Value);
-        }
-
-        private static string FormatResident(CommonRoomRentalRequestDto request)
-        {
-            if (request.Resident is null)
-                return "/";
-
-            return $"{request.Resident.Name} {request.Resident.Surname}";
-        }
-
-        private static string FormatStatus(RentalRequestStatus status)
-            => status switch
-            {
-                RentalRequestStatus.Approved => "Odobren",
-                RentalRequestStatus.Waiting => "Na čekanju",
-                RentalRequestStatus.Rejected => "Odbijen",
-                RentalRequestStatus.WaitingDateChange => "Čeka promjenu datuma",
-                _ => status.ToString()
-            };
-
-        private static string FormatRentalType(RentalType type)
-            => type switch
-            {
-                RentalType.OneDay => "Jednodnevno",
-                RentalType.MultiDay => "Višednevno",
-                _ => type.ToString()
-            };
     }
-
-
 }

@@ -14,16 +14,8 @@ namespace CommunityHub.Ui.Views.Citizen.Neighborhoods
         {
             InitializeComponent();
             _viewModel = new SelectCityViewModel(selectedCountry);
-            _viewModel.ConfirmRequested += (_, _) =>
-            {
-                SelectedCity = _viewModel.SelectedCity;
-                DialogResult = true;
-            };
-            _viewModel.CancelRequested += (_, _) =>
-            {
-                DialogResult = false;
-            };
-            _viewModel.CloseRequested += (_, _) => Close();
+            _viewModel.ConfirmRequested += (_, _) => { SelectedCity = _viewModel.SelectedCity; DialogResult = true; };
+            _viewModel.CancelRequested += (_, _) => { DialogResult = false; };
             DataContext = _viewModel;
 
             Loaded += (s, e) => CitiesList.Focus();

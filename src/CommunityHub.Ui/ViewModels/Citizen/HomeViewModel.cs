@@ -116,29 +116,17 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             _activeTabColor = activeTabColor;
             _inactiveTabColor = inactiveTabColor;
 
-            SelectTabCommand = new RelayCommand<string?>(
-                execute: (tabTag) => HandleTabClick(tabTag ?? ""),
-                canExecute: (tabTag) => !string.IsNullOrEmpty(tabTag)
-            );
+            SelectTabCommand = new RelayCommand<string?>(execute: (tabTag) => HandleTabClick(tabTag ?? ""), canExecute: (tabTag) => !string.IsNullOrEmpty(tabTag));
+            CloseWindowCommand = new RelayCommand<object>(execute: (_) => CloseRequested?.Invoke(this, EventArgs.Empty), canExecute: (_) => true);
+            ToggleTooltipCommand = new RelayCommand<object>(execute: (_) => TooltipEnabled = !TooltipEnabled, canExecute: (_) => true);
 
-            CloseWindowCommand = new RelayCommand<object>(
-                execute: (_) => CloseRequested?.Invoke(this, EventArgs.Empty),
-                canExecute: (_) => true
-            );
-
-            ToggleTooltipCommand = new RelayCommand<object>(
-                execute: (_) => TooltipEnabled = !TooltipEnabled,
-                canExecute: (_) => true
-            );
-
-            LoadCurrentUser();
+            CurrentUser = _citizenService.GetCitizenById(_userId);
             UpdateEventStatusesIfReady();
         }
 
         public void HandleTabClick(string tabTag)
         {
-            if (string.IsNullOrEmpty(tabTag) || SelectedTabTag == tabTag)
-                return;
+            if (string.IsNullOrEmpty(tabTag) || SelectedTabTag == tabTag) return;
 
             SelectedTabTag = tabTag;
             StatusBarText = $"Kartica: {GetTabDisplayName(tabTag)}";
@@ -161,11 +149,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             };
         }
 
-        private void LoadCurrentUser()
-        {
-            CurrentUser = _citizenService.GetCitizenById(_userId);
-        }
-
         private string GetTabDisplayName(string tabTag) =>
             tabTag switch
             {
@@ -181,13 +164,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 
         private void UpdateEventStatusesIfReady()
         {
-            if (CurrentUser?.Membership == null)
-                return;
+            if (CurrentUser?.Membership == null) return;
 
-            Task.Run(() =>
-            {
-                _communityEventService.UpdateEventStatusesForNeighborhood(CurrentUser.Membership.Neighborhood.Id);
-            });
+            Task.Run(() => { _communityEventService.UpdateEventStatusesForNeighborhood(CurrentUser.Membership.Neighborhood.Id); });
         }
 
         protected void OnPropertyChanged(string propertyName) =>

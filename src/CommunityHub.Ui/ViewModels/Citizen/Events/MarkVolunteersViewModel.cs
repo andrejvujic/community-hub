@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using CommunityHub.Application.Services.Dtos.Events;
@@ -12,8 +13,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         private CommunityEventDto? _event;
         private EventRegistrationDto? _selectedRegistration;
 
+        private readonly ObservableCollection<EventRegistrationDto> _registrations = new();
+
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? CloseRequested;
+
+        public ObservableCollection<EventRegistrationDto> Registrations => _registrations;
 
         public ICommand CloseCommand { get; }
         public ICommand UpdateAttendanceCommand { get; }
@@ -21,8 +26,10 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public MarkVolunteersViewModel(CommunityEventDto eventDto)
         {
             _event = eventDto;
-            CloseCommand = new RelayCommand<object>(_ => RequestClose());
+            CloseCommand = new RelayCommand<object>(_ => { MarkUnattendedAsAbsent(); CloseRequested?.Invoke(this, EventArgs.Empty); });
             UpdateAttendanceCommand = new RelayCommand<EventRegistrationDto>(reg => UpdateAttendanceForRegistration(reg));
+        
+            RefreshEvent();
         }
 
         public CommunityEventDto? Event
@@ -62,34 +69,25 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             if (_event?.Registrations != null)
             {
                 var registrationToSelect = _event.Registrations.FirstOrDefault(r => r.Id == registration.Id);
-                if (registrationToSelect != null)
-                {
-                    SelectedRegistration = registrationToSelect;
-                }
-            }
-        }
-
-        public void RequestClose()
-        {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void SelectFirstRegistration()
-        {
-            if (_event?.Registrations?.Count > 0)
-            {
-                SelectedRegistration = _event.Registrations[0];
+                if (registrationToSelect != null) SelectedRegistration = registrationToSelect;
             }
         }
 
         public void RefreshEvent()
         {
+            var selectedId = _selectedRegistration?.Id;
+
             if (_event == null) return;
             var updated = _eventService.GetById(_event.Id);
-            if (updated != null)
+            if (updated != null) Event = updated;
+
+            _registrations.Clear();
+            if (_event?.Registrations != null)
             {
-                Event = updated;
+                foreach (var reg in _event.Registrations) _registrations.Add(reg);
             }
+
+            SelectedRegistration = _event!.Registrations.FirstOrDefault(r => r.Id == selectedId) ?? _event.Registrations.FirstOrDefault();
         }
 
         public void MarkUnattendedAsAbsent()
@@ -97,11 +95,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             if (_event?.Registrations == null) return;
 
             var unattendedRegistrations = _event.Registrations.Where(r => r.Attended == null).ToList();
-
-            foreach (var reg in unattendedRegistrations)
-            {
-                UpdateAttendance(reg.Id, false);
-            }
+            foreach (var reg in unattendedRegistrations) UpdateAttendance(reg.Id, false);
         }
 
         protected void OnPropertyChanged(string propertyName)

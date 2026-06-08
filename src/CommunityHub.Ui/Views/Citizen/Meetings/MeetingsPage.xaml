@@ -133,7 +133,7 @@
                         </StackPanel>
                     </Border>
 
-                    <Button Grid.Row="1" Height="56" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,12,0,0" Command="{Binding VoteCommand}">
+                    <Button Grid.Row="1" Height="56" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="0,12,0,0" Command="{Binding VoteCommand}" IsEnabled="{Binding CanVote}">
                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                             Glasaj za vreme sastanka<LineBreak/>(Ctrl + 1)
                         </TextBlock>
