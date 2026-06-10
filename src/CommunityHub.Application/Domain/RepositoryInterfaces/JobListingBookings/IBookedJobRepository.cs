@@ -8,6 +8,7 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.JobListingBooking
         public BookedJob Create(BookedJob bookedJob);
         public List<BookedJob> GetByServiceProviderId(long serviceProviderId);
         public List<(DateOnly Date, TimeOnly? Time, int? DurationHours)> GetOccupiedSlots(long jobListingId);
-        List<BookedJob> GetRecentUnreviewedByCoordinatorId(long coordinatorId, int days = 7);
+        public List<BookedJob> GetRecentUnreviewedByCoordinatorId(long coordinatorId, int days = 7);
+        public List<BookedJob> GetEditableByCoordinatorId(long coordinatorId, int editWindowDays = 3);
     }
 }

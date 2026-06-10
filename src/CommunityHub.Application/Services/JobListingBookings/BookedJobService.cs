@@ -64,5 +64,10 @@ namespace CommunityHub.Application.Services.JobListingBookings
             => _bookedJobRepository.GetRecentUnreviewedByCoordinatorId(coordinatorId)
                 .Select(_bookedJobMapper.MapToDto)
                 .ToList();
+
+        public List<BookedJobDto> GetEditableByCoordinator(long coordinatorId)
+            => _bookedJobRepository.GetEditableByCoordinatorId(coordinatorId)
+                .Select(_bookedJobMapper.MapToDto)
+                .ToList();
     }
 }
