@@ -124,5 +124,26 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.Neighborh
 
             return budgetDonation.CopyWith(id: budgetDonationId);
         }
+
+        public List<BudgetDonation> GetRecentByCoordinatorId(long coordinatorId, int days = 7)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                $@"SELECT {SelectColumns}
+                   {FromJoins}
+                   WHERE coordinator.id = @coordinator_id
+                     AND budget_donation.donation_date >= CURRENT_DATE - INTERVAL '{days} days'
+                   ORDER BY budget_donation.donation_date DESC"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            var results = new List<BudgetDonation>();
+            connection.ExecuteReader(query, reader =>
+            {
+                var donation = _budgetDonationMapper.MapToEntity(reader);
+                if (donation is not null) results.Add(donation);
+            });
+            return results;
+        }
     }
 }
