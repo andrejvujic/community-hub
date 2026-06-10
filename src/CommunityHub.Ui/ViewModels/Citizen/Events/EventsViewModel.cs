@@ -1,8 +1,9 @@
+using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
-using CommunityHub.Application.Domain.Events;
+using CommunityHub.Ui.Helpers;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -49,6 +50,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _selectedEvent = value;
                 OnPropertyChanged(nameof(SelectedEvent));
                 OnPropertyChanged(nameof(CanApplyToVolunteer));
+                OnPropertyChanged(nameof(ApplyToVolunteerTooltip));
             }
         }
 
@@ -62,6 +64,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 bool isAlreadyRegistered = _registrationService.IsAlreadyRegistered(_citizen!.Id, SelectedEvent.Id);
 
                 return isInPreparation && !isAlreadyRegistered;
+            }
+        }
+
+        public string ApplyToVolunteerTooltip
+        {
+            get
+            {
+                if (!TooltipState.IsEnabled) return null;
+                if (!CanApplyToVolunteer) return ApplyDisabledReason;
+                return null;
+            }
+        }
+
+        public string ApplyDisabledReason
+        {
+            get
+            {
+                if (SelectedEvent == null) return "Prvo morate izabrati događaj";
+                if (SelectedEvent.Status != EventStatus.Preparation) return "Možete se prijaviti samo za događaje koji su u pripremi";
+                return "Već ste prijavljeni za ovaj događaj";
             }
         }
 
@@ -87,6 +109,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             ApplyToVolunteerCommand = new RelayCommand<object>(_ => ApplyToVolunteerRequested?.Invoke(this, EventArgs.Empty));
             PrintReportCommand = new RelayCommand<object>(_ => PrintReportRequested?.Invoke(this, EventArgs.Empty));
             MyEventsCommand = new RelayCommand<object>(_ => MyEventsRequested?.Invoke(this, EventArgs.Empty));
+
+            TooltipState.OnPropertyChanged += (s, e) => { OnPropertyChanged(nameof(ApplyToVolunteerTooltip)); };
 
             LoadData();
         }
