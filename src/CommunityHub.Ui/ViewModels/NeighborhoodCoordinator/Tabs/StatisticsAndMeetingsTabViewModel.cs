@@ -253,14 +253,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             if (SelectedNeighborhood is null) return;
 
-            var meetings = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
-            var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
-            _meetingService.ProcessPendingMeetings(SelectedNeighborhood.Id, voteCounts);
-
-            var updated = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
             Meetings.Clear();
             SelectedMeeting = null;
-            foreach (var m in updated)
+
+            foreach (var m in _meetingService.GetByNeighborhood(SelectedNeighborhood.Id))
                 Meetings.Add(m);
         }
 
@@ -291,11 +287,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedMeeting.Status != MeetingStatus.InPreparation) return;
             if (!SelectedMeeting.IsTied) return;
 
-            var voteCounts = _voteService.GetVoteCountsForMeeting(SelectedMeeting.Id);
-            if (!NeighborhoodMeeting.HasTiedDates(voteCounts)) return;
-
-
-            foreach (var d in NeighborhoodMeeting.GetTiedDates(voteCounts))
+            foreach (var d in _meetingService.GetTiedDatesForMeeting(SelectedMeeting.Id))
                 TiedDateOptions.Add(d);
 
             OnPropertyChanged(nameof(HasTiedDates));
