@@ -85,7 +85,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     TypeLabel = "Servisna usluga",
                     DateText = $"Datum: {job.ScheduledDate:dd.MM.yyyy.}",
                     Description = $"Serviser '{providerName}' je obavio uslugu \"{job.Listing.ServiceName}\". " +
-                                  $"Trošak od {job.TotalPrice:N2} RSD je evidentiran u rashodima.",
+                                  $"Trošak od {job.TotalPrice:N2} RSD je evidentiran u rashodima. " +
+                                  $"Oceniti možete još {FormatReviewDeadline(job)}.",
                     ActionLabel = "Oceni",
                     ActionCommand = new RelayCommand(() => OpenReviewWindow(capturedJob, isEdit: false))
                 });
@@ -107,14 +108,57 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     TypeLabel = "Izmena recenzije",
                     DateText = $"Datum usluge: {job.ScheduledDate:dd.MM.yyyy.}",
                     Description = $"Recenzija za uslugu \"{job.Listing.ServiceName}\" servisera '{providerName}' " +
-                                  $"može se izmeniti još " +
-                                  $"{3 - (DateTime.Now - job.Review!.CreatedAt).Days} dan/a." +
-                                  $"Trenutna prosečna ocena {((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}/5.00.",
+                                  $"može se izmeniti još {FormatEditDeadline(job.Review!.CreatedAt)}. \n" +
+                                  $"Trenutna ocena: kvalitet {job.Review.QualityRating}/5, " +
+                                  $"komunikacija {job.Review.CommunicationRating}/5 " +
+                                  $"(prosek {((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}/5).",
                     ActionLabel = "Izmeni",
                     ActionCommand = new RelayCommand(() => OpenReviewWindow(capturedJob, isEdit: true))
                 });
             }
         }
+
+        private static string FormatReviewDeadline(BookedJobDto job)
+        {
+            DateTime completionTime = job.ScheduledTime.HasValue && job.DurationHours.HasValue
+                ? job.ScheduledDate.ToDateTime(job.ScheduledTime.Value).AddHours(job.DurationHours.Value)
+                : job.ScheduledDate.ToDateTime(new TimeOnly(23, 59, 59));
+
+            TimeSpan remaining = completionTime.AddDays(10) - DateTime.Now;
+            return FormatTimeSpan(remaining);
+        }
+
+        private static string FormatEditDeadline(DateTime createdAt)
+        {
+            TimeSpan remaining = createdAt.AddDays(3) - DateTime.Now;
+            return FormatTimeSpan(remaining);
+        }
+
+        private static string FormatTimeSpan(TimeSpan remaining)
+        {
+            if (remaining <= TimeSpan.Zero) return "manje od minut";
+
+            int totalDays = (int)remaining.TotalDays;
+            int hours = remaining.Hours;
+            int minutes = remaining.Minutes;
+
+            if (totalDays >= 1 && hours > 0)
+                return $"{totalDays} {Dan(totalDays)} i {hours} {Sat(hours)}";
+
+            if (totalDays >= 1)
+                return $"{totalDays} {Dan(totalDays)}";
+
+            if (hours >= 1 && minutes > 0)
+                return $"{hours} {Sat(hours)} i {minutes} min";
+
+            if (hours >= 1)
+                return $"{hours} {Sat(hours)}";
+
+            return $"{minutes} min";
+        }
+
+        private static string Dan(int n) => n == 1 ? "dan" : n is 2 or 3 or 4 ? "dana" : "dana";
+        private static string Sat(int n) => n == 1 ? "sat" : n is 2 or 3 or 4 ? "sata" : "sati";
 
         private void ExecuteViewRequests()
         {

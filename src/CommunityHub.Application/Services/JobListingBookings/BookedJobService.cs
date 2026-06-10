@@ -60,13 +60,18 @@ namespace CommunityHub.Application.Services.JobListingBookings
             return _bookedJobMapper.MapToDto(created);
         }
 
+        private List<BookedJob> GetAllFinishedByCoordinator(long coordinatorId)
+            => _bookedJobRepository.GetAllFinishedByCoordinatorId(coordinatorId);
+
         public List<BookedJobDto> GetRecentUnreviewedByCoordinator(long coordinatorId)
-            => _bookedJobRepository.GetRecentUnreviewedByCoordinatorId(coordinatorId)
+            => GetAllFinishedByCoordinator(coordinatorId)
+                .Where(j => j.CanReviewBeCreated(DateTime.Now))
                 .Select(_bookedJobMapper.MapToDto)
                 .ToList();
 
         public List<BookedJobDto> GetEditableByCoordinator(long coordinatorId)
-            => _bookedJobRepository.GetEditableByCoordinatorId(coordinatorId)
+            => GetAllFinishedByCoordinator(coordinatorId)
+                .Where(j => j.CanReviewBeEdited(DateTime.Now))
                 .Select(_bookedJobMapper.MapToDto)
                 .ToList();
     }
