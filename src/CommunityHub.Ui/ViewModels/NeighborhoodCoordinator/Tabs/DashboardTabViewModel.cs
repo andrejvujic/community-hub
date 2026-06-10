@@ -1,12 +1,15 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CommunityHub.Application.Services.JobListingBookings;
 using CommunityHub.Ui.Helpers.Commands;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
     public class DashboardTabViewModel : INotifyPropertyChanged
     {
+        private readonly BookedJobService _bookedJobService = new();
+
         private long _coordinatorId;
 
         public ObservableCollection<DashboardNotification> Notifications { get; } = new();
@@ -55,6 +58,25 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void LoadNotifications()
         {
             Notifications.Clear();
+            AddUnreviewedServiceNotifications();
+        }
+        private void AddUnreviewedServiceNotifications()
+        {
+            var unreviewed = _bookedJobService.GetRecentUnreviewedByCoordinator(_coordinatorId);
+
+            foreach (var job in unreviewed)
+            {
+                var providerName = $"{job.Listing.Provider.Name} {job.Listing.Provider.Surname}".Trim();
+                Notifications.Add(new DashboardNotification
+                {
+                    Icon = "\uf7d9",
+                    TypeLabel = "Servisna usluga",
+                    DateText = $"Datum: {job.ScheduledDate:dd.MM.yyyy.}",
+                    Description = $"Serviser '{providerName}' je obavio uslugu \"{job.Listing.ServiceName}\". " +
+                                  $"Trošak od {job.TotalPrice:N0} RSD je evidentiran u rashodima.",
+                    ActionLabel = "Oceni",
+                });
+            }
         }
 
         private void ExecuteViewRequests()
