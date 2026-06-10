@@ -1,5 +1,3 @@
-using CommunityHub.Application.Services.Dtos.Neighborhoods;
-
 namespace CommunityHub.Application.Services.Dtos.Neighborhoods
 {
     public class NeighborhoodMembershipDto

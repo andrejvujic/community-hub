@@ -92,5 +92,26 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
                 .Select(_neighborhoodMeetingMapper.MapToDto)
                 .ToList();
         }
+
+        public List<NeighborhoodMeetingDto> GetRecentlyScheduledByCoordinator(long coordinatorId)
+        {
+            var meetings = _neighborhoodMeetingRepository.GetByCoordinatorId(coordinatorId);
+
+            var voteCounts = meetings.ToDictionary(
+                m => m.Id,
+                m => _meetingDateVoteRepository.GetVoteCountsForMeeting(m.Id));
+
+            foreach (var meeting in meetings.Where(m => m.IsTied || m.IsExpired))
+                ProcessSingleMeeting(meeting, voteCounts[meeting.Id]);
+
+            return _neighborhoodMeetingRepository.GetByCoordinatorId(coordinatorId)
+                .Where(m => m.Status == MeetingStatus.Scheduled 
+                         && m.ScheduledDate.HasValue
+                         && m.ScheduledDate.Value >= DateOnly.FromDateTime(DateTime.Today.AddDays(-7)))
+                .OrderByDescending(m => m.ScheduledDate.Value)
+                .ThenByDescending(m => m.MeetingTime)
+                .Select(_neighborhoodMeetingMapper.MapToDto)
+                .ToList();
+        }
     }
 }

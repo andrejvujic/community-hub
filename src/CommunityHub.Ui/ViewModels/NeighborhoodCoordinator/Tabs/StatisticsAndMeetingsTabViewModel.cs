@@ -17,7 +17,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
     {
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly NeighborhoodMeetingService _meetingService = new();
-        private readonly MeetingDateVoteService _voteService = new();
         private readonly NeighborhoodMembershipService _membershipService = new();
         private long _coordinatorId;
 

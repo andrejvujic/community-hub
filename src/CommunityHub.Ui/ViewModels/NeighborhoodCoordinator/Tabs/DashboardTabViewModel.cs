@@ -2,10 +2,13 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using CommunityHub.Application.Domain.TrustRecords;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.JobListingBookings;
+using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
@@ -17,6 +20,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly BookedJobService _bookedJobService = new();
         private readonly UserService _userService = new();
         private readonly BudgetDonationService _budgetDonationService = new();
+        private readonly NeighborhoodMeetingService _neighborhoodMeetingService = new();
+        private readonly NeighborhoodMembershipService _neighborhoodMembershipService = new();
+        private readonly NeighborhoodService _neighborhoodService = new();
 
         private long _coordinatorId;
         private UserDto? _coordinator;
@@ -73,6 +79,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             AddDonationNotifications();
             AddUnreviewedServiceNotifications();
             AddEditableReviewNotifications();
+            AddTiedMeetingNotifications();
+            AddScheduledMeetingNotifications();
+            AddMeetingRecommendationNotifications();
         }
 
         private void AddDonationNotifications()
@@ -146,6 +155,53 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
         }
 
+        private void AddScheduledMeetingNotifications()
+        {
+            var scheduled = _neighborhoodMeetingService.GetRecentlyScheduledByCoordinator(_coordinatorId);
+
+            foreach (var meeting in scheduled)
+            {
+                Notifications.Add(new DashboardNotification
+                {
+                    Icon = "\uf274",
+                    TypeLabel = "Sastanak zakazan",
+                    DateText = $"Datum: {meeting.ScheduledDate:dd.MM.yyyy.}",
+                    Description = $"Glasanje za sastanak teme \"{meeting.Theme}\" u kvartu {meeting.Neighborhood.Name} " +
+                                  $"je završeno. Konačan termin: {meeting.ScheduledDate:dd.MM.yyyy.} u {meeting.MeetingTime:HH:mm}.",
+                    ActionLabel = "Prikaži sastanke",
+                    //ActionCommand 
+                });
+            }
+        }
+
+        private void AddTiedMeetingNotifications()
+        {
+            var tiedMeetings = _neighborhoodMeetingService.GetTiedMeetingsByCoordinator(_coordinatorId);
+
+            foreach (var meeting in tiedMeetings)
+            {
+                var deadline = meeting.DateRangeStart.ToDateTime(meeting.MeetingTime).AddHours(-3);
+                var remaining = deadline - DateTime.Now;
+                var remainingText = FormatTimeSpan(remaining);
+                var capturedMeeting = meeting;
+
+                var tiedDates = _neighborhoodMeetingService.GetTiedDatesForMeeting(meeting.Id);
+                var datesText = string.Join(", ", tiedDates.Select(d => d.ToString("dd.MM.yyyy.")));
+
+                Notifications.Add(new DashboardNotification
+                {
+                    Icon = "\uf017",
+                    TypeLabel = "Izjednačeno glasanje",
+                    DateText = $"Rok za izbor: {deadline:dd.MM.yyyy. HH:mm}",
+                    Description = $"Glasanje za sastanak teme \"{meeting.Theme}\" u kvartu {meeting.Neighborhood.Name} " +
+                                  $"je izjednačeno. Preostalo vreme za izbor termina: {remainingText}.\n" +
+                                  $"Izjednačeni datumi: {datesText}.",
+                    ActionLabel = "Izaberi termin",
+                    //ActionCommand
+                });
+            }
+        }
+
         private static string FormatReviewDeadline(BookedJobDto job)
         {
             DateTime completionTime = job.ScheduledTime.HasValue && job.DurationHours.HasValue
@@ -187,6 +243,60 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         private static string Dan(int n) => n == 1 ? "dan" : n is 2 or 3 or 4 ? "dana" : "dana";
         private static string Sat(int n) => n == 1 ? "sat" : n is 2 or 3 or 4 ? "sata" : "sati";
+
+        private void AddMeetingRecommendationNotifications()
+        {
+            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
+
+            foreach (var neighborhood in neighborhoods)
+            {
+                var records = _neighborhoodMembershipService.GetTrustRecordsByNeighborhood(neighborhood.Id);
+                if (records.Count == 0) continue;
+
+                int newCount = records.Count(r => r.TrustStatus == TrustStatus.New);
+                int inactiveCount = records.Count(r => r.TrustStatus == TrustStatus.Inactive);
+                int total = records.Count;
+
+                int maxCount = new[]
+                {
+                    newCount, inactiveCount,
+                    records.Count(r => r.TrustStatus == TrustStatus.Active),
+                    records.Count(r => r.TrustStatus == TrustStatus.Prominent),
+                    records.Count(r => r.TrustStatus == TrustStatus.Trustworthy)
+                }.Max();
+
+                if (maxCount == newCount && newCount > 0)
+                {
+                    double pct = Math.Round((double)newCount / total * 100, 2);
+                    Notifications.Add(new DashboardNotification
+                    {
+                        Icon = "\uf0eb",
+                        TypeLabel = "Preporuka sistema",
+                        DateText = $"Kvart: {neighborhood.Name}",
+                        Description = $"U kvartu {neighborhood.Name} je najveći broj novih građana " +
+                                      $"({newCount} od {total}, {pct}%). " +
+                                      $"Predlog: Organizujte sastanak dobrodošlice.",
+                        ActionLabel = "Organizuj",
+                        //ActionCommand
+                    });
+                }
+                else if (maxCount == inactiveCount && inactiveCount > 0)
+                {
+                    double pct = Math.Round((double)inactiveCount / total * 100, 2);
+                    Notifications.Add(new DashboardNotification
+                    {
+                        Icon = "\uf0eb",
+                        TypeLabel = "Preporuka sistema",
+                        DateText = $"Kvart: {neighborhood.Name}",
+                        Description = $"U kvartu {neighborhood.Name} je najveći broj neaktivnih građana " +
+                                      $"({inactiveCount} od {total}, {pct}%). " +
+                                      $"Predlog: Organizujte sastanak motivacije.",
+                        ActionLabel = "Organizuj",
+                        //ActionCommand
+                    });
+                }
+            }
+        }
 
         private void ExecuteViewRequests()
         {
