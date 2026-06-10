@@ -1,16 +1,23 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using CommunityHub.Application.Services.Dtos.ServiceBookings;
+using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.JobListingBookings;
+using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
     public class DashboardTabViewModel : INotifyPropertyChanged
     {
         private readonly BookedJobService _bookedJobService = new();
+        private readonly UserService _userService = new();
 
         private long _coordinatorId;
+        private UserDto? _coordinator;
 
         public ObservableCollection<DashboardNotification> Notifications { get; } = new();
 
@@ -42,6 +49,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
+            _coordinator = _userService.Get(_coordinatorId);
             LoadDashboard();
         }
 
@@ -60,21 +68,25 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             Notifications.Clear();
             AddUnreviewedServiceNotifications();
         }
+
         private void AddUnreviewedServiceNotifications()
         {
+            if (_coordinator is null) return;
             var unreviewed = _bookedJobService.GetRecentUnreviewedByCoordinator(_coordinatorId);
 
             foreach (var job in unreviewed)
             {
                 var providerName = $"{job.Listing.Provider.Name} {job.Listing.Provider.Surname}".Trim();
+                var capturedJob = job;
                 Notifications.Add(new DashboardNotification
                 {
-                    Icon = "\uf7d9",
+                    Icon = "🔧",
                     TypeLabel = "Servisna usluga",
                     DateText = $"Datum: {job.ScheduledDate:dd.MM.yyyy.}",
                     Description = $"Serviser '{providerName}' je obavio uslugu \"{job.Listing.ServiceName}\". " +
-                                  $"Trošak od {job.TotalPrice:N0} RSD je evidentiran u rashodima.",
+                                  $"Trošak od {job.TotalPrice:N2} RSD je evidentiran u rashodima.",
                     ActionLabel = "Oceni",
+                    ActionCommand = new RelayCommand(() => OpenReviewWindow(capturedJob, isEdit: false))
                 });
             }
         }
@@ -90,6 +102,21 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void ExecuteGenerateReport()
         {
         }
+
+        private void OpenReviewWindow(BookedJobDto job, bool isEdit)
+        {
+            if (_coordinator is null) return;
+
+            var owner = GetActiveWindow();
+            var window = new ProviderReviewWindow(job, _coordinator) { Owner = owner };
+
+            if (window.ShowDialog() == true)
+                LoadNotifications();
+        }
+
+        private Window GetActiveWindow() =>
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            ?? System.Windows.Application.Current.MainWindow;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
