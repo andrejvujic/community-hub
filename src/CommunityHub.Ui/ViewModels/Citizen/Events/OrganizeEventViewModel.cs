@@ -185,8 +185,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 if (string.IsNullOrWhiteSpace(Description)) errors.Add("- Opis događaja je obavezan");
                 if (SelectedDate == null) errors.Add("- Datum je obavezan (format: d.M.yyyy.)");
                 if (!CommunityEvent.TryParseEventStart(SelectedDate, Hour, Minute, out _)) errors.Add("- Vreme nije ispravno (sati 0-23, minuti 0-59)");
-                if (!CommunityEvent.TryParseDuration(DurationHour, DurationMinute, out var duration) || duration <= 0) errors.Add("- Trajanje mora biti veće od 0");
-                if (!CommunityEvent.TryParseMinVolunteers(Volunteers, out var volunteers) || volunteers < 1) errors.Add("- Potrebno je najmanje 1 volonter");
+                if (!CommunityEvent.TryParseDuration(DurationHour, DurationMinute, out var duration) || duration <= 0) errors.Add("- Trajanje mora biti veće od 0 (minuti 0-59)");
+                if (!CommunityEvent.TryParseMinVolunteers(Volunteers, out var volunteers) || volunteers < 1) errors.Add("- Potreban je najmanje 1 volonter");
                 if (Items.Count == 0) errors.Add("- Morate dodati bar jednu potrebnu stvar");
 
                 return $"Nije moguće sačuvati događaj. Ispravite sledeće greške:\n{string.Join("\n", errors)}";
