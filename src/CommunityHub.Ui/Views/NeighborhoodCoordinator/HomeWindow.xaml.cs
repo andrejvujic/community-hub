@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
 {
@@ -29,7 +30,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             CityFacilitiesTab.Initialize(_userId);
             NeighborhoodBudgetTab.Initialize(_userId);
             ProfileTab.Initialize(_userId);
-            DashboardTab.Initialize(_userId);
+            DashboardTab.Initialize(_userId, (neighborhoodId, budgetCategoryId) =>
+            {
+                MainTabControl.SelectedIndex = 6;
+
+                if (NeighborhoodBudgetTab.DataContext is NeighborhoodBudgetViewModel budgetViewModel)
+                {
+                    budgetViewModel.SelectBudgetCategory(neighborhoodId, budgetCategoryId);
+                }
+            });
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

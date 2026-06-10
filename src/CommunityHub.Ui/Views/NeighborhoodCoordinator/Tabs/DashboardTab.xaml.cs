@@ -14,9 +14,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             DataContext = _viewModel;
         }
 
-        public void Initialize(long coordinatorId)
+        public void Initialize(long userId, Action<long, long> navigateToBudget)
         {
-            _viewModel.Initialize(coordinatorId);
+            if (DataContext is DashboardTabViewModel viewModel)
+            {
+                viewModel.Initialize(userId, navigateToBudget);
+            }
         }
     }
 }

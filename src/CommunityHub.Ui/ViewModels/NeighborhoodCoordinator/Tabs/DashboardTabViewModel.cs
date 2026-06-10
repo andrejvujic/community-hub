@@ -26,6 +26,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public RelayCommand ViewRequestsCommand { get; }
         public RelayCommand RegisterNeighborhoodCommand { get; }
         public RelayCommand GenerateReportCommand { get; }
+        private Action<long, long>? _navigateToBudgetAction;
 
         private int _pendingRequestsCount;
         public int PendingRequestsCount
@@ -48,9 +49,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             GenerateReportCommand = new RelayCommand(ExecuteGenerateReport);
         }
 
-        public void Initialize(long coordinatorId)
+        public void Initialize(long coordinatorId, Action<long, long> navigateToBudgetAction)
         {
             _coordinatorId = coordinatorId;
+            _navigateToBudgetAction = navigateToBudgetAction;
             _coordinator = _userService.Get(_coordinatorId);
             LoadDashboard();
         }
@@ -79,6 +81,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             foreach (var donation in donations)
             {
+                var capturedDonation = donation;
+
                 Notifications.Add(new DashboardNotification
                 {
                     Icon = "\uf0d6",
@@ -87,12 +91,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     Description = $"Izvršena je uplata u iznosu od {donation.Amount:N0} RSD " +
                                   $"za budžet kvarta {donation.Neighborhood.Name} " +
                                   $"(kategorija: {donation.BudgetCategory.Name}).",
-                    ActionLabel = "Detalji budžeta (Ctrl + 7)",
-                    //ActionCommand = 
+                    ActionLabel = "Detalji budžeta",
+                    ActionCommand = new RelayCommand(() =>
+                        _navigateToBudgetAction?.Invoke(capturedDonation.Neighborhood.Id, capturedDonation.BudgetCategory.Id))
                 });
             }
         }
-
+   
         private void AddUnreviewedServiceNotifications()
         {
             if (_coordinator is null) return;

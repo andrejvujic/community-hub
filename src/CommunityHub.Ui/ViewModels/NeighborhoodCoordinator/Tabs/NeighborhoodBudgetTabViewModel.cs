@@ -254,6 +254,21 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return false;
         }
 
+        public void SelectBudgetCategory(long neighborhoodId, long budgetCategoryId)
+        {
+            var neighborhood = Neighborhoods.FirstOrDefault(n => n.Id == neighborhoodId);
+            if (neighborhood != null)
+            {
+                SelectedNeighborhood = neighborhood;
+
+                var categoryBalance = BudgetCategories.FirstOrDefault(b => b.Category.Id == budgetCategoryId);
+                if (categoryBalance != null)
+                {
+                    SelectedCategoryBalance = categoryBalance;
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
