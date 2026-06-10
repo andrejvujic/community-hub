@@ -5,6 +5,7 @@ using System.Windows;
 using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.JobListingBookings;
+using CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
@@ -15,6 +16,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
     {
         private readonly BookedJobService _bookedJobService = new();
         private readonly UserService _userService = new();
+        private readonly BudgetDonationService _budgetDonationService = new();
 
         private long _coordinatorId;
         private UserDto? _coordinator;
@@ -66,8 +68,29 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void LoadNotifications()
         {
             Notifications.Clear();
+            AddDonationNotifications();
             AddUnreviewedServiceNotifications();
             AddEditableReviewNotifications();
+        }
+
+        private void AddDonationNotifications()
+        {
+            var donations = _budgetDonationService.GetRecentByCoordinator(_coordinatorId);
+
+            foreach (var donation in donations)
+            {
+                Notifications.Add(new DashboardNotification
+                {
+                    Icon = "\uf0d6",
+                    TypeLabel = "Donacija građana",
+                    DateText = $"Datum: {donation.DonationDate:dd.MM.yyyy.}",
+                    Description = $"Izvršena je uplata u iznosu od {donation.Amount:N0} RSD " +
+                                  $"za budžet kvarta {donation.Neighborhood.Name} " +
+                                  $"(kategorija: {donation.BudgetCategory.Name}).",
+                    ActionLabel = "Detalji budžeta (Ctrl + 7)",
+                    //ActionCommand = 
+                });
+            }
         }
 
         private void AddUnreviewedServiceNotifications()
@@ -105,14 +128,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 Notifications.Add(new DashboardNotification
                 {
                     Icon = "\uf7d9",
-                    TypeLabel = "Izmena recenzije",
+                    TypeLabel = "Servisna usluga",
                     DateText = $"Datum usluge: {job.ScheduledDate:dd.MM.yyyy.}",
                     Description = $"Recenzija za uslugu \"{job.Listing.ServiceName}\" servisera '{providerName}' " +
                                   $"može se izmeniti još {FormatEditDeadline(job.Review!.CreatedAt)}. \n" +
                                   $"Trenutna ocena: kvalitet {job.Review.QualityRating}/5, " +
                                   $"komunikacija {job.Review.CommunicationRating}/5 " +
                                   $"(prosek {((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}/5).",
-                    ActionLabel = "Izmeni",
+                    ActionLabel = "Izmeni recenziju",
                     ActionCommand = new RelayCommand(() => OpenReviewWindow(capturedJob, isEdit: true))
                 });
             }
