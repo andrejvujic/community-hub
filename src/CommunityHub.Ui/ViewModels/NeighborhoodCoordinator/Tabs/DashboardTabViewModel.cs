@@ -67,6 +67,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             Notifications.Clear();
             AddUnreviewedServiceNotifications();
+            AddEditableReviewNotifications();
         }
 
         private void AddUnreviewedServiceNotifications()
@@ -80,13 +81,37 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 var capturedJob = job;
                 Notifications.Add(new DashboardNotification
                 {
-                    Icon = "🔧",
+                    Icon = "\uf7d9",
                     TypeLabel = "Servisna usluga",
                     DateText = $"Datum: {job.ScheduledDate:dd.MM.yyyy.}",
                     Description = $"Serviser '{providerName}' je obavio uslugu \"{job.Listing.ServiceName}\". " +
                                   $"Trošak od {job.TotalPrice:N2} RSD je evidentiran u rashodima.",
                     ActionLabel = "Oceni",
                     ActionCommand = new RelayCommand(() => OpenReviewWindow(capturedJob, isEdit: false))
+                });
+            }
+        }
+
+        private void AddEditableReviewNotifications()
+        {
+            if (_coordinator is null) return;
+            var editable = _bookedJobService.GetEditableByCoordinator(_coordinatorId);
+
+            foreach (var job in editable)
+            {
+                var providerName = $"{job.Listing.Provider.Name} {job.Listing.Provider.Surname}".Trim();
+                var capturedJob = job;
+                Notifications.Add(new DashboardNotification
+                {
+                    Icon = "\uf7d9",
+                    TypeLabel = "Izmena recenzije",
+                    DateText = $"Datum usluge: {job.ScheduledDate:dd.MM.yyyy.}",
+                    Description = $"Recenzija za uslugu \"{job.Listing.ServiceName}\" servisera '{providerName}' " +
+                                  $"može se izmeniti još " +
+                                  $"{3 - (DateTime.Now - job.Review!.CreatedAt).Days} dan/a." +
+                                  $"Trenutna prosečna ocena {((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}/5.00.",
+                    ActionLabel = "Izmeni",
+                    ActionCommand = new RelayCommand(() => OpenReviewWindow(capturedJob, isEdit: true))
                 });
             }
         }

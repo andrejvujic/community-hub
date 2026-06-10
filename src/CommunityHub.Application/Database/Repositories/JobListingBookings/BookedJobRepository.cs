@@ -275,7 +275,7 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
             return results;
         }
 
-        public List<BookedJob> GetRecentReviewedEditableByCoordinatorId(long coordinatorId, int editWindowDays = 3)
+        public List<BookedJob> GetEditableByCoordinatorId(long coordinatorId, int editWindowDays = 3)
         {
             using var connection = DatabaseConnection.Create();
 
