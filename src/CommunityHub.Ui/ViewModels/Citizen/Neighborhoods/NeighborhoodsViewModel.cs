@@ -74,7 +74,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             AccessOrCoordinatorCommand = new RelayCommand<object>(_ =>
             {
                 if (Membership != null) CoordinatorRequested?.Invoke(this, EventArgs.Empty);
-                else RequestAccessRequested?.Invoke(this, EventArgs.Empty);
+                else if (CanRequestAccess) RequestAccessRequested?.Invoke(this, EventArgs.Empty);
             });
             MyAccessRequestsCommand = new RelayCommand<object>(_ => MyAccessRequestsRequested?.Invoke(this, EventArgs.Empty));
 
