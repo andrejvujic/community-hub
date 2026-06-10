@@ -252,5 +252,27 @@ namespace CommunityHub.Application.Database.Repositories.JobListingBookings
 
             return results;
         }
+
+        public List<BookedJob> GetRecentUnreviewedByCoordinatorId(long coordinatorId, int days = 7)
+        {
+            using var connection = DatabaseConnection.Create();
+
+            var query = DatabaseQuery.Create(
+                $@"SELECT {SelectColumns} {FromJoins}
+                   WHERE coordinator.id = @coordinator_id
+                     AND booked_job.scheduled_date >= CURRENT_DATE - INTERVAL '{days} days'
+                     AND booked_job.scheduled_date <= CURRENT_DATE
+                     AND pr.id IS NULL
+                   ORDER BY booked_job.scheduled_date DESC, booked_job.scheduled_time DESC"
+            ).AddParameter("coordinator_id", coordinatorId);
+
+            var results = new List<BookedJob>();
+            connection.ExecuteReader(query, reader =>
+            {
+                var bookedJob = _bookedJobMapper.MapToEntity(reader);
+                if (bookedJob is not null) results.Add(bookedJob);
+            });
+            return results;
+        }
     }
 }
