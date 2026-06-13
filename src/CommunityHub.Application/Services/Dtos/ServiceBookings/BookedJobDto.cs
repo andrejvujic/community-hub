@@ -1,5 +1,4 @@
-﻿using CommunityHub.Application.Domain.JobListingBookings;
-using CommunityHub.Application.Services.Dtos.Neighborhoods;
+﻿using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Services;
 using CommunityHub.Application.Services.Dtos.Users;
 
@@ -31,18 +30,7 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
             : "/";
 
         public string Status { get; set; }
-        /*
-        public bool IsFinished(DateTime at)
-        {
-            if (DurationHours.HasValue && ScheduledTime.HasValue)
-            {
-                return ScheduledDate.ToDateTime(ScheduledTime.Value).AddHours(DurationHours.Value) <= at;
-            }
-            return ScheduledDate < DateOnly.FromDateTime(at);
-        }
-
-        public string Status => IsFinished(DateTime.Now) ? "Izvršeno" : "Zakazano";
-        */
+        
         public decimal TotalPrice => DurationHours.HasValue
             ? UnitPrice * DurationHours.Value
             : UnitPrice;

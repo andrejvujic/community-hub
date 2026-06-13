@@ -119,12 +119,19 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             return vote;
         }
 
-        public int GetVoteCountByFacilityId(long facilityId)
+        public int GetVoteCountByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId)
         {
             using var connection = DatabaseConnection.Create();
             var query = DatabaseQuery.Create(
-                "SELECT COUNT(*) FROM facility_votes WHERE facility_id = @facility_id"
-            ).AddParameter("facility_id", facilityId);
+                @"SELECT COUNT(*) 
+                FROM facility_votes fv
+                INNER JOIN citizens c ON c.id = fv.citizen_id
+                INNER JOIN neighborhood_memberships nm ON nm.id = c.membership_id
+                WHERE fv.facility_id = @facility_id
+                AND nm.neighborhood_id = @neighborhood_id"
+            )
+            .AddParameter("facility_id", facilityId)
+            .AddParameter("neighborhood_id", neighborhoodId);
 
             return connection.ExecuteScalar(query, value => value != null ? Convert.ToInt32(value) : 0);
         }
@@ -157,13 +164,20 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             connection.GetRowsAffectedCount(query);
         }
 
-        public void DeleteAllByFacilityId(long facilityId)
+        public void DeleteAllByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId)
         {
             using var connection = DatabaseConnection.Create();
             var query = DatabaseQuery.Create(
-                "DELETE FROM facility_votes WHERE facility_id = @facility_id"
+                @"DELETE FROM facility_votes
+                WHERE facility_id = @facility_id
+                AND citizen_id IN (
+                    SELECT c.id FROM citizens c
+                    INNER JOIN neighborhood_memberships nm ON nm.id = c.membership_id
+                    WHERE nm.neighborhood_id = @neighborhood_id
+                )"
             )
-            .AddParameter("facility_id", facilityId);
+            .AddParameter("facility_id", facilityId)
+            .AddParameter("neighborhood_id", neighborhoodId);
 
             connection.GetRowsAffectedCount(query);
         }

@@ -17,7 +17,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
     {
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly NeighborhoodMeetingService _meetingService = new();
-        private readonly MeetingDateVoteService _voteService = new();
         private readonly NeighborhoodMembershipService _membershipService = new();
         private long _coordinatorId;
 
@@ -235,14 +234,27 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
             ?? System.Windows.Application.Current.MainWindow;
 
+        public void SelectNeighborhood(long neighborhoodId)
+        {
+            var neighborhood = Neighborhoods.FirstOrDefault(n => n.Id == neighborhoodId);
+            if (neighborhood != null)
+                SelectedNeighborhood = neighborhood;
+        }
         public void LoadNeighborhoods()
         {
+            var previously = SelectedNeighborhood;
             Neighborhoods.Clear();
-            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
+
+            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
+            foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
+
+            SelectedNeighborhood = previously != null
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+                : null;
         }
 
-        private void LoadMeetingsAndStatistics()
+        public void LoadMeetingsAndStatistics()
         {
             if (SelectedNeighborhood is null) return;
             LoadMeetings();
@@ -253,14 +265,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             if (SelectedNeighborhood is null) return;
 
-            var meetings = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
-            var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
-            _meetingService.ProcessPendingMeetings(SelectedNeighborhood.Id, voteCounts);
-
-            var updated = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
             Meetings.Clear();
             SelectedMeeting = null;
-            foreach (var m in updated)
+
+            foreach (var m in _meetingService.GetByNeighborhood(SelectedNeighborhood.Id))
                 Meetings.Add(m);
         }
 
@@ -291,11 +299,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedMeeting.Status != MeetingStatus.InPreparation) return;
             if (!SelectedMeeting.IsTied) return;
 
-            var voteCounts = _voteService.GetVoteCountsForMeeting(SelectedMeeting.Id);
-            if (!NeighborhoodMeeting.HasTiedDates(voteCounts)) return;
-
-
-            foreach (var d in NeighborhoodMeeting.GetTiedDates(voteCounts))
+            foreach (var d in _meetingService.GetTiedDatesForMeeting(SelectedMeeting.Id))
                 TiedDateOptions.Add(d);
 
             OnPropertyChanged(nameof(HasTiedDates));

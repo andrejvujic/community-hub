@@ -7,5 +7,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Nei
         public List<BudgetDonation> GetByNeighborhoodId(long neighborhoodId);
         public List<BudgetDonation> GetByNeighborhoodIdAndCategoryId(long neighborhoodId, long categoryId);
         public BudgetDonation Create(BudgetDonation budgetDonation);
+        public List<BudgetDonation> GetRecentByCoordinatorId(long coordinatorId, int days = 7);
     }
 }

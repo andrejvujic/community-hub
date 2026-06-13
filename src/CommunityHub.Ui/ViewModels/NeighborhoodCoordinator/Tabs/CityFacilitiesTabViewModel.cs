@@ -107,9 +107,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadNeighborhoods()
         {
+            var previously = SelectedNeighborhood;
             Neighborhoods.Clear();
-            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
+
+            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
+            foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
+
+            SelectedNeighborhood = previously != null
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+                : null;
         }
 
         private void LoadFacilities()
@@ -120,7 +127,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             var facilities = _facilityService.GetByCityId(SelectedNeighborhood.City.Id);
             foreach (var f in facilities)
-                f.VoteCount = _voteService.GetVoteCountByFacilityId(f.Id);
+                f.VoteCount = _voteService.GetVoteCountByFacilityAndNeighborhoodId(f.Id, SelectedNeighborhood.Id);
 
             foreach (var f in facilities.OrderByDescending(f => f.VoteCount))
                 Facilities.Add(f);
@@ -205,7 +212,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public FacilityReservationDto Book(AvailableFacilitySlotDto slot)
         {
             var created = _reservationService.Book(SelectedFacility!, SelectedNeighborhood!, slot);
-            _voteService.DeleteAllByFacilityId(SelectedFacility!.Id);
+            _voteService.DeleteAllByFacilityAndNeighborhoodId(SelectedFacility!.Id, SelectedNeighborhood!.Id);
             LoadReservations();
             LoadFacilities();
             return created;

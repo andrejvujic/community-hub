@@ -142,12 +142,22 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadNeighborhoods()
         {
+            var previously = SelectedNeighborhood;
+            var previousCategoryId = SelectedCategoryBalance?.Category.Id;
             Neighborhoods.Clear();
+
             var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
             foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
-        }
 
+            SelectedNeighborhood = previously != null
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+                : null;
+
+            if (previousCategoryId.HasValue)
+                SelectedCategoryBalance = BudgetCategories.FirstOrDefault(b => b.Category.Id == previousCategoryId);
+        }
+            
         private void LoadBudgetData()
         {
             if (SelectedNeighborhood == null) return;
@@ -252,6 +262,21 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             new InfoDialog(title, msg, win).ShowDialog();
             return false;
+        }
+
+        public void SelectBudgetCategory(long neighborhoodId, long budgetCategoryId)
+        {
+            var neighborhood = Neighborhoods.FirstOrDefault(n => n.Id == neighborhoodId);
+            if (neighborhood != null)
+            {
+                SelectedNeighborhood = neighborhood;
+
+                var categoryBalance = BudgetCategories.FirstOrDefault(b => b.Category.Id == budgetCategoryId);
+                if (categoryBalance != null)
+                {
+                    SelectedCategoryBalance = categoryBalance;
+                }
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

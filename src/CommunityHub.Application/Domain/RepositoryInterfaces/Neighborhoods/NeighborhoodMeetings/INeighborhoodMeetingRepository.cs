@@ -9,5 +9,6 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Nei
         public void UpdateStatus(long meetingId, MeetingStatus newStatus);
         public void UpdateScheduledDate(long meetingId, DateOnly scheduledDate);
         public NeighborhoodMeeting Create(NeighborhoodMeeting meeting);
+        public List<NeighborhoodMeeting> GetByCoordinatorId(long coordinatorId);
     }
 }

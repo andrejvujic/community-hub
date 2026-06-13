@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
@@ -16,6 +17,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             _viewModel = new ServiceCenterTabViewModel();
             DataContext = _viewModel;
+            this.IsVisibleChanged += ServiceCenterTab_IsVisibleChanged;
         }
 
         public void Initialize(long coordinatorId)
@@ -32,6 +34,16 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if (e.Key == Key.V && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
                 e.Handled = true;
+        }
+
+        private void ServiceCenterTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                _viewModel.LoadNeighborhoods();
+                _viewModel.LoadJobListings();
+                _viewModel.LoadScheduledServices();
+            }
         }
     }
 }

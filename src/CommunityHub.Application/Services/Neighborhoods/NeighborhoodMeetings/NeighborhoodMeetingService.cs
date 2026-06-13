@@ -9,12 +9,31 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
     {
         private readonly INeighborhoodMeetingRepository _neighborhoodMeetingRepository 
             = Injector.CreateInstance<INeighborhoodMeetingRepository>();
+        private readonly IMeetingDateVoteRepository _meetingDateVoteRepository
+            = Injector.CreateInstance<IMeetingDateVoteRepository>();
         private readonly NeighborhoodMeetingMapper _neighborhoodMeetingMapper = new();
 
         public List<NeighborhoodMeetingDto> GetByNeighborhood(long neighborhoodId)
-            => _neighborhoodMeetingRepository.GetByNeighborhoodId(neighborhoodId)
+        {
+            var meetings = _neighborhoodMeetingRepository.GetByNeighborhoodId(neighborhoodId);
+
+            var voteCounts = meetings.ToDictionary(
+                m => m.Id,
+                m => _meetingDateVoteRepository.GetVoteCountsForMeeting(m.Id));
+
+            foreach (var meeting in meetings.Where(m => m.IsTied || m.IsExpired))
+                ProcessSingleMeeting(meeting, voteCounts[meeting.Id]);
+
+            return _neighborhoodMeetingRepository.GetByNeighborhoodId(neighborhoodId)
                 .Select(_neighborhoodMeetingMapper.MapToDto)
                 .ToList();
+        }
+
+        public List<DateOnly> GetTiedDatesForMeeting(long meetingId)
+        {
+            var voteCounts = _meetingDateVoteRepository.GetVoteCountsForMeeting(meetingId);
+            return NeighborhoodMeeting.GetTiedDates(voteCounts);
+        }
 
         public NeighborhoodMeetingDto Create(NeighborhoodMeetingDto neighborhoodMeetingDto)
         {
@@ -55,6 +74,44 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings
                 case MeetingOutcome.TooEarly:
                     break;
             }
+        }
+
+        public List<NeighborhoodMeetingDto> GetTiedMeetingsByCoordinator(long coordinatorId)
+        {
+            var meetings = _neighborhoodMeetingRepository.GetByCoordinatorId(coordinatorId);
+
+            var voteCounts = meetings.ToDictionary(
+                m => m.Id,
+                m => _meetingDateVoteRepository.GetVoteCountsForMeeting(m.Id));
+
+            foreach (var meeting in meetings.Where(m => m.IsTied || m.IsExpired))
+                ProcessSingleMeeting(meeting, voteCounts[meeting.Id]);
+
+            return _neighborhoodMeetingRepository.GetByCoordinatorId(coordinatorId)
+                .Where(m => m.IsTied)
+                .Select(_neighborhoodMeetingMapper.MapToDto)
+                .ToList();
+        }
+
+        public List<NeighborhoodMeetingDto> GetRecentlyScheduledByCoordinator(long coordinatorId)
+        {
+            var meetings = _neighborhoodMeetingRepository.GetByCoordinatorId(coordinatorId);
+
+            var voteCounts = meetings.ToDictionary(
+                m => m.Id,
+                m => _meetingDateVoteRepository.GetVoteCountsForMeeting(m.Id));
+
+            foreach (var meeting in meetings.Where(m => m.IsTied || m.IsExpired))
+                ProcessSingleMeeting(meeting, voteCounts[meeting.Id]);
+
+            return _neighborhoodMeetingRepository.GetByCoordinatorId(coordinatorId)
+                .Where(m => m.Status == MeetingStatus.Scheduled 
+                         && m.ScheduledDate.HasValue
+                         && m.ScheduledDate.Value >= DateOnly.FromDateTime(DateTime.Today.AddDays(-7)))
+                .OrderByDescending(m => m.ScheduledDate.Value)
+                .ThenByDescending(m => m.MeetingTime)
+                .Select(_neighborhoodMeetingMapper.MapToDto)
+                .ToList();
         }
     }
 }
