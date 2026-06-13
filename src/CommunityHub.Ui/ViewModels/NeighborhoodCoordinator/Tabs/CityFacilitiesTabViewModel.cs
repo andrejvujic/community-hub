@@ -127,7 +127,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             var facilities = _facilityService.GetByCityId(SelectedNeighborhood.City.Id);
             foreach (var f in facilities)
-                f.VoteCount = _voteService.GetVoteCountByFacilityId(f.Id);
+                f.VoteCount = _voteService.GetVoteCountByFacilityAndNeighborhoodId(f.Id, SelectedNeighborhood.Id);
 
             foreach (var f in facilities.OrderByDescending(f => f.VoteCount))
                 Facilities.Add(f);

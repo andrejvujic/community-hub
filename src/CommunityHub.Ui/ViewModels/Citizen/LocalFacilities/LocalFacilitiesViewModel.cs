@@ -98,19 +98,19 @@ namespace CommunityHub.Ui.ViewModels.Citizen.LocalFacilities
                 return;
             }
 
-            PopulateFacilityData(citizen.Membership.Neighborhood.City.Id);
+            PopulateFacilityData(citizen.Membership.Neighborhood.City.Id, citizen.Membership.Neighborhood.Id);
 
             Membership = citizen.Membership;
             SelectedFacility = Facilities.FirstOrDefault(f => f.Id == selectedFacilityId) ?? Facilities.FirstOrDefault();
         }
 
-        private void PopulateFacilityData(long cityId)
+        private void PopulateFacilityData(long cityId, long neighborhoodId)
         {
             var facilities = _facilityService.GetByCityId(cityId);
 
             foreach (var facility in facilities)
             {
-                facility.VoteCount = _voteService.GetVoteCountByFacilityId(facility.Id);
+                facility.VoteCount = _voteService.GetVoteCountByFacilityAndNeighborhoodId(facility.Id, neighborhoodId);
                 facility.LastVisitDate = _reservationService.GetLastVisitDateForFacility(facility.Id);
                 facility.VotedByMe = _voteService.GetByFacilityIdAndCitizenId(facility.Id, _userId) != null;
             }
