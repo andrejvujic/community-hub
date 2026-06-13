@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Controls;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
+using System.Windows.Markup;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
@@ -12,6 +13,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public DashboardTab()
         {
             InitializeComponent();
+            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
+
             _viewModel = new DashboardTabViewModel();
             DataContext = _viewModel;
             this.IsVisibleChanged += DashboardTab_IsVisibleChanged;
@@ -34,7 +37,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         private void DashboardTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
-                _viewModel?.LoadDashboard();
+                _viewModel.LoadDashboard();
         }
 
         private void DashboardTab_KeyDown(object sender, KeyEventArgs e)

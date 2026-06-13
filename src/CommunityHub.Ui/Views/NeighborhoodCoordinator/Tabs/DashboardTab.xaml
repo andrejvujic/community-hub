@@ -50,7 +50,7 @@
 
     <Grid Background="{DynamicResource WindowBackgroundBrush}"
           TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
-          Cursor="Hand">
+          Cursor="Arrow">
 
         <Border Background="{DynamicResource PanelBackgroundBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
@@ -158,17 +158,20 @@
                                               IsChecked="{Binding ShowServiceFilter, Mode=TwoWay}" 
                                               Style="{StaticResource NotificationFilterToggleStyle}" 
                                               Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
-                                              Margin="5,0,5,0"/>
+                                              Margin="5,0,5,0"
+                                              Cursor="Hand"/>
                                 <ToggleButton Content="Sastanci (Ctrl+M)" 
                                               IsChecked="{Binding ShowMeetingsFilter, Mode=TwoWay}" 
                                               Style="{StaticResource NotificationFilterToggleStyle}" 
                                               Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
-                                              Margin="5,0,5,0"/>
+                                              Margin="5,0,5,0"
+                                              Cursor="Hand"/>
                                 <ToggleButton Content="Donacije (Ctrl+D)" 
                                               IsChecked="{Binding ShowDonationsFilter, Mode=TwoWay}" 
                                               Style="{StaticResource NotificationFilterToggleStyle}" 
                                               Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
-                                              Margin="5,0,5,0"/>
+                                              Margin="5,0,5,0"
+                                              Cursor="Hand"/>
                             </UniformGrid>
 
                             <ListBox ItemsSource="{Binding Notifications}"

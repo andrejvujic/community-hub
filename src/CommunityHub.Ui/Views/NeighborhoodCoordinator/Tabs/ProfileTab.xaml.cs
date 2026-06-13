@@ -27,7 +27,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if ((bool)e.NewValue)
             {
-                _viewModel?.LoadData();
+                _viewModel.LoadData();
             }
         }
     }

@@ -107,9 +107,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadNeighborhoods()
         {
+            var previously = SelectedNeighborhood;
             Neighborhoods.Clear();
-            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
+
+            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
+            foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
+
+            SelectedNeighborhood = previously != null
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+                : null;
         }
 
         private void LoadFacilities()
