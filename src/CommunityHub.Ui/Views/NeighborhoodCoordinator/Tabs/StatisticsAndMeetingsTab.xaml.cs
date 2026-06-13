@@ -17,6 +17,8 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             _viewModel = new StatisticsAndMeetingsTabViewModel();
             DataContext = _viewModel;
+
+            this.IsVisibleChanged += StatisticsAndMeetingsTab_IsVisibleChanged;
         }
 
         public void Initialize(long coordinatorId)
@@ -32,6 +34,15 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             {
                 if (_viewModel.ScheduleMeetingCommand.CanExecute(null))
                     _viewModel.ScheduleMeetingCommand.Execute(null);
+            }
+        }
+
+        private void StatisticsAndMeetingsTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                _viewModel.LoadNeighborhoods();
+                _viewModel.LoadMeetingsAndStatistics();
             }
         }
     }

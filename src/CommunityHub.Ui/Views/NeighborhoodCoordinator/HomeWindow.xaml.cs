@@ -30,15 +30,24 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator
             CityFacilitiesTab.Initialize(_userId);
             NeighborhoodBudgetTab.Initialize(_userId);
             ProfileTab.Initialize(_userId);
-            DashboardTab.Initialize(_userId, (neighborhoodId, budgetCategoryId) =>
-            {
-                MainTabControl.SelectedIndex = 6;
 
-                if (NeighborhoodBudgetTab.DataContext is NeighborhoodBudgetViewModel budgetViewModel)
+            DashboardTab.Initialize(_userId,
+                navigateToBudget: (neighborhoodId, budgetCategoryId) =>
                 {
-                    budgetViewModel.SelectBudgetCategory(neighborhoodId, budgetCategoryId);
-                }
-            });
+                    MainTabControl.SelectedIndex = 6;
+                    if (NeighborhoodBudgetTab.DataContext is NeighborhoodBudgetViewModel vm)
+                        vm.SelectBudgetCategory(neighborhoodId, budgetCategoryId);
+                },
+                navigateToMeetings: neighborhoodId =>
+                {
+                    MainTabControl.SelectedIndex = 3;
+                    if (StatisticsAndMeetingsTab.DataContext is StatisticsAndMeetingsTabViewModel vm)
+                        vm.SelectNeighborhood(neighborhoodId);
+                },
+                navigateToRequests: () =>
+                {
+                    MainTabControl.SelectedIndex = 2;
+                });
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

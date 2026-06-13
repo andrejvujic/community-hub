@@ -234,14 +234,27 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
             ?? System.Windows.Application.Current.MainWindow;
 
+        public void SelectNeighborhood(long neighborhoodId)
+        {
+            var neighborhood = Neighborhoods.FirstOrDefault(n => n.Id == neighborhoodId);
+            if (neighborhood != null)
+                SelectedNeighborhood = neighborhood;
+        }
         public void LoadNeighborhoods()
         {
+            var previously = SelectedNeighborhood;
             Neighborhoods.Clear();
-            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
+
+            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
+            foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
+
+            SelectedNeighborhood = previously != null
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+                : null;
         }
 
-        private void LoadMeetingsAndStatistics()
+        public void LoadMeetingsAndStatistics()
         {
             if (SelectedNeighborhood is null) return;
             LoadMeetings();

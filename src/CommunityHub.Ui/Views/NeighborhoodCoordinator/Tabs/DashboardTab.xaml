@@ -7,6 +7,47 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <Style x:Key="NotificationFilterToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ItemBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid Background="{DynamicResource WindowBackgroundBrush}"
           TextElement.Foreground="{DynamicResource PrimaryTextBrush}"
           Cursor="Hand">
@@ -48,28 +89,58 @@
                             <TextBlock Text="{Binding PendingRequestsText}"
                                        FontSize="17"
                                        Margin="0,0,0,10"/>
-                            <Button Content="Pregledaj zahteve"
+                            <Button Content="Pregledaj zahteve (Ctrl+2)"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     FontSize="15"
-                                    Padding="16,8"
+                                    Padding="0"
+                                    Height="40"
                                     Command="{Binding ViewRequestsCommand}"/>
                         </StackPanel>
                     </Border>
 
-                    <Button Grid.Column="1"
-                            Content="Registruj novi kvart  (Ctrl+N)"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            FontSize="22"
-                            Padding="16,8"
-                            Margin="0,0,10,0"
-                            Command="{Binding RegisterNeighborhoodCommand}"/>
+                    <Border Grid.Column="1"
+                            Background="{DynamicResource SurfaceBackgroundBrush}"
+                            BorderBrush="{DynamicResource ItemBorderBrush}"
+                            BorderThickness="1.5"
+                            CornerRadius="8"
+                            Padding="12">
+                        <StackPanel VerticalAlignment="Center">
+                            <Button Content="Registruj novi kvart (Ctrl+N)"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    VerticalAlignment="Center"
+                                    FontSize="15"
+                                    Padding="0"
+                                    Height="40"
+                                    Command="{Binding RegisterNeighborhoodCommand}"/>
+                        </StackPanel>
+                    </Border>
 
-                    <Button Grid.Column="2"
-                            Content="Generiši izveštaj o rezervacijama  (Ctrl+I)"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            FontSize="22"
-                            Padding="16,8"
-                            Command="{Binding GenerateReportCommand}"/>
+                    <Border Grid.Column="2"
+                            Background="{DynamicResource SurfaceBackgroundBrush}"
+                            BorderBrush="{DynamicResource ItemBorderBrush}"
+                            BorderThickness="1.5"
+                            CornerRadius="8"
+                            Padding="12"
+                            Margin="0,0,10,0">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
+                                <TextBlock Text="Od:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker SelectedDate="{Binding ReportFrom}"
+                                            Style="{StaticResource DatePickerStyle}"
+                                            Width="140" Margin="0,0,8,0"/>
+                                <TextBlock Text="Do:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker SelectedDate="{Binding ReportTo}" 
+                                            Style="{StaticResource DatePickerStyle}"
+                                            Width="140"/>
+                            </StackPanel>
+                            <Button Content="Generiši izveštaj o rezervacijama  (Ctrl+I)"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    FontSize="15"
+                                    Padding="0"
+                                    Height="40"
+                                    Command="{Binding GenerateReportCommand}"/>
+                        </StackPanel>
+                    </Border>
                 </Grid>
 
                 <Border Grid.Row="2"
@@ -81,7 +152,26 @@
                         Padding="10">
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ListBox ItemsSource="{Binding Notifications}"
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                            <UniformGrid Columns="3" Margin="0,0,0,8">
+                                <ToggleButton Content="Servisi (Ctrl+S)" 
+                                              IsChecked="{Binding ShowServiceFilter, Mode=TwoWay}" 
+                                              Style="{StaticResource NotificationFilterToggleStyle}" 
+                                              Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
+                                              Margin="5,0,5,0"/>
+                                <ToggleButton Content="Sastanci (Ctrl+M)" 
+                                              IsChecked="{Binding ShowMeetingsFilter, Mode=TwoWay}" 
+                                              Style="{StaticResource NotificationFilterToggleStyle}" 
+                                              Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
+                                              Margin="5,0,5,0"/>
+                                <ToggleButton Content="Donacije (Ctrl+D)" 
+                                              IsChecked="{Binding ShowDonationsFilter, Mode=TwoWay}" 
+                                              Style="{StaticResource NotificationFilterToggleStyle}" 
+                                              Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
+                                              Margin="5,0,5,0"/>
+                            </UniformGrid>
+
+                            <ListBox ItemsSource="{Binding Notifications}"
                                  BorderThickness="0"
                                  Background="Transparent"
                                  Cursor="Arrow">
@@ -149,7 +239,7 @@
                                         <Button Grid.Column="1"
                                                 Content="{Binding ActionLabel}"
                                                 Style="{StaticResource SecondaryButtonStyle}"
-                                                MinWidth="160"
+                                                Width="160"
                                                 FontSize="15"
                                                 Padding="16,10"
                                                 VerticalAlignment="Center"
@@ -160,6 +250,7 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+                        </StackPanel>
                     </ScrollViewer>
                 </Border>
 
