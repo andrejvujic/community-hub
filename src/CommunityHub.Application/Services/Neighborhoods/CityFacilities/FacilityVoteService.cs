@@ -44,7 +44,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
             }
         }
 
-        public void DeleteAllByFacilityId(long facilityId)
-            => _voteRepository.DeleteAllByFacilityId(facilityId);
+        public void DeleteAllByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId)
+            => _voteRepository.DeleteAllByFacilityAndNeighborhoodId(facilityId, neighborhoodId);
     }
 }

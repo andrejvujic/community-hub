@@ -7,9 +7,9 @@ namespace CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.Cit
         FacilityVote? GetById(long id);
         FacilityVote? GetByFacilityIdAndCitizenId(long facilityId, long citizenId);
         List<FacilityVote> GetByNeighborhoodId(long neighborhoodId);
-        int GetVoteCountByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId);
-        FacilityVote Create(FacilityVote vote);
+        public int GetVoteCountByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId);
+        public FacilityVote Create(FacilityVote vote);
         void DeleteByFacilityIdAndCitizenId(long facilityId, long citizenId);
-        public void DeleteAllByFacilityId(long facilityId);
+        public void DeleteAllByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId);
     }
 }

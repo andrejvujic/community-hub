@@ -212,7 +212,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public FacilityReservationDto Book(AvailableFacilitySlotDto slot)
         {
             var created = _reservationService.Book(SelectedFacility!, SelectedNeighborhood!, slot);
-            _voteService.DeleteAllByFacilityId(SelectedFacility!.Id);
+            _voteService.DeleteAllByFacilityAndNeighborhoodId(SelectedFacility!.Id, SelectedNeighborhood!.Id);
             LoadReservations();
             LoadFacilities();
             return created;

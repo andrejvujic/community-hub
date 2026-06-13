@@ -164,13 +164,20 @@ namespace CommunityHub.Application.Database.Repositories.Neighborhoods.CityFacil
             connection.GetRowsAffectedCount(query);
         }
 
-        public void DeleteAllByFacilityId(long facilityId)
+        public void DeleteAllByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId)
         {
             using var connection = DatabaseConnection.Create();
             var query = DatabaseQuery.Create(
-                "DELETE FROM facility_votes WHERE facility_id = @facility_id"
+                @"DELETE FROM facility_votes
+                WHERE facility_id = @facility_id
+                AND citizen_id IN (
+                    SELECT c.id FROM citizens c
+                    INNER JOIN neighborhood_memberships nm ON nm.id = c.membership_id
+                    WHERE nm.neighborhood_id = @neighborhood_id
+                )"
             )
-            .AddParameter("facility_id", facilityId);
+            .AddParameter("facility_id", facilityId)
+            .AddParameter("neighborhood_id", neighborhoodId);
 
             connection.GetRowsAffectedCount(query);
         }
