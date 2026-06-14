@@ -5,23 +5,28 @@ using QuestPDF.Infrastructure;
 
 namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
 {
-    public class FacilityReservationReportPdfDocument : IDocument
+    public class FacilityReservationsReportPdfDocument : IDocument
     {
-        private readonly string _reportTitle;
+        private static readonly string DarkBlue = "#1e3a5f";
+        private static readonly string AccentBlue = "#3b7dd8";
+        private static readonly string LightBg = "#f7f9fc";
+
+        private readonly string _neighborhoodName;
         private readonly DateTime _fromDate;
         private readonly DateTime _toDate;
-        private readonly List<FacilityReservationReportSection> _sections;
+        private readonly List<FacilityReservationDto> _reservations;
+        private readonly FacilityReservationsReportFormatter _formatter = new();
 
-        public FacilityReservationReportPdfDocument(
-            string reportTitle,
+        public FacilityReservationsReportPdfDocument(
+            string neighborhoodName,
             DateTime fromDate,
             DateTime toDate,
-            List<FacilityReservationReportSection> sections)
+            List<FacilityReservationDto> reservations)
         {
-            _reportTitle = reportTitle;
+            _neighborhoodName = neighborhoodName;
             _fromDate = fromDate;
             _toDate = toDate;
-            _sections = sections;
+            _reservations = reservations;
         }
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
@@ -34,152 +39,179 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
         private void ComposePage(PageDescriptor page)
         {
             page.Size(PageSizes.A4);
-            page.MarginLeft(30);
-            page.MarginRight(30);
-            page.MarginTop(30);
-            page.MarginBottom(10);
+            page.MarginLeft(0);
+            page.MarginRight(0);
+            page.MarginTop(0);
+            page.MarginBottom(0);
             page.PageColor(Colors.White);
             page.DefaultTextStyle(x => x
-                .FontFamily("Lato")
+                .FontFamily("Arial")
                 .FontSize(11)
                 .FontColor(Colors.Grey.Darken4));
 
             page.Header().ShowOnce().Element(ComposeHeader);
-            page.Content().PaddingTop(20).Element(ComposeContent);
-            page.Footer().AlignCenter().Text(text =>
-            {
-                text.DefaultTextStyle(x => x.FontSize(10).FontColor(Colors.Grey.Darken1));
-                text.Span("Strana ");
-                text.CurrentPageNumber();
-                text.Span(" / ");
-                text.TotalPages();
-            });
+            page.Content().PaddingHorizontal(36).PaddingTop(24).Element(ComposeContent);
+            page.Footer().Element(ComposeFooter);
         }
 
         private void ComposeHeader(IContainer container)
         {
-            container.Column(column =>
-            {
-                column.Spacing(6);
-
-                column.Item()
-                    .Text("Izveštaj o rezervacijama gradskih objekata")
-                    .FontSize(20)
-                    .SemiBold()
-                    .FontColor(Colors.Black);
-
-                column.Item().Height(10);
-
-                column.Item().Text(text =>
+            container
+                .Background(DarkBlue)
+                .PaddingLeft(36)
+                .PaddingRight(36)
+                .PaddingTop(28)
+                .PaddingBottom(22)
+                .Column(column =>
                 {
-                    text.Span("Obuhvat: ").SemiBold();
-                    text.Span(_reportTitle);
-                });
+                    column.Spacing(4);
 
-                column.Item().Text(text =>
-                {
-                    text.Span("Period: ").SemiBold();
-                    text.Span($"{_fromDate:dd.MM.yyyy.} - {_toDate:dd.MM.yyyy.}");
-                });
+                    column.Item()
+                        .Text("Izveštaj o rezervacijama gradskih objekata")
+                        .FontSize(17)
+                        .Bold()
+                        .FontColor(Colors.White);
 
-                column.Item().Text(text =>
-                {
-                    text.Span("Generisano: ").SemiBold();
-                    text.Span($"{DateTime.Now:dd.MM.yyyy. HH:mm}h");
+                    column.Item().Height(12);
+
+                    column.Item().Text(text =>
+                    {
+                        text.DefaultTextStyle(x => x.FontSize(10).FontColor("#a8c4e0"));
+                        text.Span("Kvart: ");
+                        text.Span(_neighborhoodName).Bold().FontColor(Colors.White);
+                    });
+
+                    column.Item().Text(text =>
+                    {
+                        text.DefaultTextStyle(x => x.FontSize(10).FontColor("#a8c4e0"));
+                        text.Span("Period: ");
+                        text.Span(_formatter.FormatDateRange(_fromDate, _toDate)).Bold().FontColor(Colors.White);
+                    });
+
+                    column.Item().Text(text =>
+                    {
+                        text.DefaultTextStyle(x => x.FontSize(10).FontColor("#a8c4e0"));
+                        text.Span("Ukupno rezervacija: ");
+                        text.Span(_reservations.Count.ToString()).Bold().FontColor(Colors.White);
+                        text.Span("   |   ").FontColor("#a8c4e0");
+                        text.Span("Generisano: ");
+                        text.Span(_formatter.FormatGeneratedAt()).Bold().FontColor(Colors.White);
+                    });
                 });
-            });
         }
 
         private void ComposeContent(IContainer container)
         {
             container.Column(column =>
             {
-                column.Spacing(14);
+                column.Spacing(18);
 
-                if (_sections.Count == 0)
+                if (_reservations.Count == 0)
                 {
-                    column.Item().Element(ComposeEmptyState);
+                    column.Item()
+                        .PaddingTop(12)
+                        .Text("Nema rezervacija gradskih objekata za izabrani period.")
+                        .FontColor(Colors.Grey.Darken1);
                     return;
                 }
 
-                foreach (var section in _sections)
-                {
-                    if (section.Items == null || section.Items.Count == 0)
-                        continue;
+                var grouped = _reservations
+                    .GroupBy(r => r.Facility.Name)
+                    .OrderBy(g => g.Key);
 
-                    column.Item().Element(c => ComposeSection(c, section));
+                foreach (var group in grouped)
+                {
+                    column.Item().Element(c => ComposeFacilitySection(c, group.Key, group.ToList()));
                 }
             });
         }
 
-        private void ComposeEmptyState(IContainer container)
+        private void ComposeFacilitySection(IContainer container, string facilityName, List<FacilityReservationDto> reservations)
         {
-            container.Text("Nema rezervacija za izabrani period.");
-        }
-
-        private void ComposeSection(IContainer container, FacilityReservationReportSection section)
-        {
-            container.PaddingTop(6).Column(sectionColumn =>
+            container.Column(column =>
             {
-                sectionColumn.Spacing(8);
+                column.Spacing(6);
 
-                sectionColumn.Item()
-                    .Text(section.FacilityName)
-                    .FontSize(15)
-                    .SemiBold()
-                    .FontColor(Colors.Black);
+                column.Item()
+                    .BorderLeft(3)
+                    .BorderColor(DarkBlue)
+                    .PaddingLeft(8)
+                    .Text(facilityName.ToUpper())
+                    .FontSize(11)
+                    .Bold()
+                    .FontColor(DarkBlue)
+                    .LetterSpacing(0.07f);
 
-                sectionColumn.Item().Element(c => ComposeSectionSummary(c, section));
+                column.Item()
+                    .PaddingLeft(11)
+                    .Text(text =>
+                    {
+                        text.DefaultTextStyle(x => x.FontSize(10).FontColor(Colors.Grey.Medium));
+                        text.Span("Broj poseta: ");
+                        text.Span(reservations.Count.ToString());
+                    });
 
-                sectionColumn.Item()
-                    .LineHorizontal(1)
-                    .LineColor(Colors.Grey.Lighten2);
-
-                foreach (var item in section.Items)
+                foreach (var reservation in reservations.OrderBy(r => r.StartDatetime))
                 {
-                    sectionColumn.Item().Element(c => ComposeReservationCard(c, item));
+                    column.Item().Element(c => ComposeReservationCard(c, reservation));
                 }
             });
         }
 
-        private void ComposeSectionSummary(IContainer container, FacilityReservationReportSection section)
-        {
-            var totalCount = section.Items.Count;
-
-            container.Text(text =>
-            {
-                text.DefaultTextStyle(x => x.FontSize(10).FontColor(Colors.Grey.Darken2));
-
-                text.Span("Ukupno: ").SemiBold();
-                text.Span(totalCount.ToString());
-            });
-        }
-
-        private void ComposeReservationCard(IContainer container, FacilityReservationDto item)
+        private void ComposeReservationCard(IContainer container, FacilityReservationDto reservation)
         {
             container
-                .Border(1)
-                .BorderColor(Colors.Grey.Lighten2)
-                .Background(Colors.Grey.Lighten4)
-                .Padding(12)
+                .Background(LightBg)
+                .BorderLeft(3)
+                .BorderColor(AccentBlue)
+                .Padding(9)
+                .PaddingLeft(12)
                 .Column(column =>
                 {
-                    column.Spacing(6);
+                    column.Spacing(2);
 
-                    AddLabeledText(column, "Objekat: ", item.Facility.Name);
-                    AddLabeledText(column, "Kvart: ", item.Neighborhood.Name);
-                    AddLabeledText(column, "Početak: ", item.StartDatetime.ToString("dd.MM.yyyy. HH:mm"));
-                    AddLabeledText(column, "Kraj: ", item.EndDatetime.ToString("dd.MM.yyyy. HH:mm"));
+                    AddRow(column, "Datum posete", _formatter.FormatDate(reservation.StartDatetime));
+                    AddRow(column, "Početak / Kraj",
+                        $"{_formatter.FormatTime(reservation.StartDatetime)} – {_formatter.FormatTime(reservation.EndDatetime)}");
+                    AddRow(column, "Trajanje", _formatter.FormatDuration(reservation.StartDatetime, reservation.EndDatetime));
                 });
         }
 
-        private static void AddLabeledText(ColumnDescriptor column, string label, string value)
+        private static void AddRow(ColumnDescriptor column, string label, string value)
         {
-            column.Item().Text(text =>
+            column.Item().Row(row =>
             {
-                text.Span(label).SemiBold();
-                text.Span(value);
+                row.RelativeItem().Text(label).FontSize(10).FontColor("#555555");
+                row.RelativeItem().AlignRight().Text(value).FontSize(10).Bold().FontColor("#111111");
             });
+        }
+
+        private void ComposeFooter(IContainer container)
+        {
+            container
+                .BorderTop(2)
+                .BorderColor(DarkBlue)
+                .PaddingHorizontal(36)
+                .PaddingVertical(8)
+                .Row(row =>
+                {
+                    row.RelativeItem()
+                        .AlignLeft()
+                        .Text("CommunityHub")
+                        .FontSize(10)
+                        .FontColor(Colors.Grey.Medium);
+
+                    row.RelativeItem()
+                        .AlignRight()
+                        .Text(text =>
+                        {
+                            text.DefaultTextStyle(x => x.FontSize(10).Bold().FontColor(DarkBlue));
+                            text.Span("Strana ");
+                            text.CurrentPageNumber();
+                            text.Span(" / ");
+                            text.TotalPages();
+                        });
+                });
         }
     }
 }
