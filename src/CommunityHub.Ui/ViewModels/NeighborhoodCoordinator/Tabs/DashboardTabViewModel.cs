@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
@@ -11,11 +12,14 @@ using CommunityHub.Application.Services.Dtos.ServiceBookings;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.JobListingBookings;
 using CommunityHub.Application.Services.Neighborhoods;
+using CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -37,6 +41,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private Action? _navigateToRequestsAction;
 
         public ObservableCollection<DashboardNotification> Notifications { get; } = new();
+        public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
 
         public RelayCommand ViewRequestsCommand { get; }
         public RelayCommand RegisterNeighborhoodCommand { get; }
@@ -94,6 +99,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public DateTime? ReportFrom { get; set; }
         public DateTime? ReportTo { get; set; }
+        private NeighborhoodDto? _selectedReportNeighborhood;
+        public NeighborhoodDto? SelectedReportNeighborhood
+        {
+            get => _selectedReportNeighborhood;
+            set 
+            { 
+                _selectedReportNeighborhood = value; 
+                OnPropertyChanged(); 
+            }
+        }
 
         public DashboardTabViewModel()
         {
@@ -119,8 +134,95 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         private void ExecuteGenerateReport()
         {
-            var owner = GetActiveWindow();
-            new InfoDialog("Info", "Generisanje izveštaja nije implementirano.", owner).ShowDialog();
+            var window = GetActiveWindow();
+
+            if (!TryValidateReportInputs(window, out DateTime from, out DateTime to))
+                return;
+
+            var savePath = ChooseSavePath(from, ReportTo!.Value, SelectedReportNeighborhood!.Name);
+            if (savePath is null) return;
+
+            try
+            {
+                QuestPDF.Settings.License = LicenseType.Community;
+
+                var reportService = new FacilityReservationsReportService();
+                var pdfBytes = reportService.GenerateBytes(
+                    SelectedReportNeighborhood!.Name,
+                    SelectedReportNeighborhood.Id,
+                    from,
+                    to);
+
+                File.WriteAllBytes(savePath, pdfBytes);
+                AskToOpenReport(window, savePath);
+            }
+            catch (Exception ex)
+            {
+                new InfoDialog("Greška", $"Greška pri generisanju izveštaja: {ex.Message}", window).ShowDialog();
+            }
+        }
+
+        private bool TryValidateReportInputs(Window window, out DateTime from, out DateTime to)
+        {
+            from = DateTime.MinValue;
+            to = DateTime.MinValue;
+
+            if (SelectedReportNeighborhood is null)
+            {
+                new InfoDialog("Greška", "Izaberite kvart za koji želite da generišete izveštaj.", window).ShowDialog();
+                return false;
+            }
+
+            if (ReportFrom is null || ReportTo is null)
+            {
+                new InfoDialog("Greška", "Izaberite opseg datuma za izveštaj.", window).ShowDialog();
+                return false;
+            }
+
+            if (ReportFrom > ReportTo)
+            {
+                new InfoDialog("Greška", "Početni datum mora biti pre krajnjeg.", window).ShowDialog();
+                return false;
+            }
+
+            from = ReportFrom.Value;
+            to = ReportTo.Value.AddDays(1).AddSeconds(-1);
+            return true;
+        }
+
+        private static string? ChooseSavePath(DateTime from, DateTime to, string neighborhoodName)
+        {
+            var fromStr = from.ToString("dd.MM.yyyy");
+            var toStr = to.ToString("dd.MM.yyyy");
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Sačuvaj izveštaj",
+                Filter = "PDF fajlovi (*.pdf)|*.pdf",
+                FileName = $"izvestaj-rezervacije-{neighborhoodName}-{fromStr}-{toStr}.pdf",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads"
+            };
+
+            return dialog.ShowDialog() == true ? dialog.FileName : null;
+        }
+
+        private void AskToOpenReport(Window window, string savePath)
+        {
+            var confirm = new ConfirmDialog(
+                "Izveštaj generisan",
+                "Izveštaj je uspešno sačuvan. Da li želite da ga otvorite?",
+                window);
+
+            if (confirm.ShowDialog() == true)
+                OpenPdf(savePath);
+        }
+
+        private static void OpenPdf(string filePath)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(filePath)
+            {
+                UseShellExecute = true
+            });
         }
 
         public void RefreshFilters() => ApplyFilter();
@@ -141,6 +243,17 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             LoadPendingRequests();
             LoadNotifications();
+            LoadNeighborhoodsForReports();
+        }
+
+        private void LoadNeighborhoodsForReports()
+        {
+            Neighborhoods.Clear();
+            var list = _neighborhoodService.GetByCoordinator(_coordinatorId);
+            foreach (var n in list) Neighborhoods.Add(n);
+
+            ReportFrom = DateTime.Today.AddMonths(-1);
+            ReportTo = DateTime.Today;
         }
 
         private void LoadPendingRequests()

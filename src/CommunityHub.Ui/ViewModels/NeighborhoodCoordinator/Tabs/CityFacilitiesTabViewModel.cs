@@ -129,8 +129,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             _coordinatorId = coordinatorId;
             ReservationStartDate = ReservationMinDate;
             ReservationEndDate = ReservationMinDate;
-            ReportStartDate = DateTime.Now;
-            ReportEndDate = DateTime.Now;
+            ReportStartDate = DateTime.Today.AddMonths(-1);
+            ReportEndDate = DateTime.Today;
             LoadNeighborhoods();
         }
 
