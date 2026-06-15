@@ -106,7 +106,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         {
             _userId = userId;
 
-            ApplyToVolunteerCommand = new RelayCommand<object>(_ => ApplyToVolunteerRequested?.Invoke(this, EventArgs.Empty));
+            ApplyToVolunteerCommand = new RelayCommand<object>(_ => { if (CanApplyToVolunteer) ApplyToVolunteerRequested?.Invoke(this, EventArgs.Empty); });
             PrintReportCommand = new RelayCommand<object>(_ => PrintReportRequested?.Invoke(this, EventArgs.Empty));
             MyEventsCommand = new RelayCommand<object>(_ => MyEventsRequested?.Invoke(this, EventArgs.Empty));
 

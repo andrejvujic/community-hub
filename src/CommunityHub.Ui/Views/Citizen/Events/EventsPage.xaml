@@ -82,7 +82,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="260" />
+                                        <ColumnDefinition Width="220" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -100,7 +100,7 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,24,8">
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Width="100" HorizontalAlignment="Right" Margin="0,0,24,8">
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4" VerticalAlignment="Center">
                                             <Viewbox Width="20" Height="20" Margin="0,0,8,0">
                                                 <Path Data="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" Fill="#333"/>
