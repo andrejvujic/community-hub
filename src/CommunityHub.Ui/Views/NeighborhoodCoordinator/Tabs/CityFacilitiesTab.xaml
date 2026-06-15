@@ -129,9 +129,9 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Od:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                                 <DatePicker x:Name="StartDatePicker"
-                                            SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedDate="{Binding ReservationStartDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
-                                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
+                                            DisplayDateStart="{Binding ReservationMinDate, Mode=OneWay}"
                                             Height="35"
                                             FontSize="22"/>
                             </StackPanel>
@@ -139,9 +139,9 @@
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="Do:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                                 <DatePicker x:Name="EndDatePicker"
-                                            SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedDate="{Binding ReservationEndDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
-                                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
+                                            DisplayDateStart="{Binding ReservationMinDate, Mode=OneWay}"
                                             Height="35"
                                             FontSize="22"/>
                             </StackPanel>
@@ -212,22 +212,26 @@
                             <TextBlock Text="Generisanje izveštaja" FontSize="30" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                             <TextBlock Text="Generiši izveštaj o svim rezervacijama gradskih objekata" FontSize="16" Margin="0,0,0,15" TextWrapping="Wrap" HorizontalAlignment="Center"/>
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
-                                <TextBlock Text="od:" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <DatePicker x:Name="ReportStartDatePicker"
-                                            Style="{StaticResource DatePickerStyle}"
-                                            FontSize="20" 
-                                            Width="160" 
-                                            Height="30" 
-                                            Margin="0,0,15,0"/>
+                            <Grid Margin="0,0,0,15" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="do:" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <DatePicker x:Name="ReportEndDatePicker"
-                                            Style="{StaticResource DatePickerStyle}"
-                                            FontSize="20" 
-                                            Width="160" 
-                                            Height="30"/>
-                            </StackPanel>
+                                <TextBlock Grid.Column="0" Text="od:" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker Grid.Column="1" 
+                                            SelectedDate="{Binding ReportStartDate, UpdateSourceTrigger=PropertyChanged}" 
+                                            Style="{StaticResource DatePickerStyle}" 
+                                            FontSize="20" Width="160" Height="30" Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="2" Text="do:" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker Grid.Column="3" 
+                                            SelectedDate="{Binding ReportEndDate, UpdateSourceTrigger=PropertyChanged}" 
+                                            Style="{StaticResource DatePickerStyle}" 
+                                            FontSize="20" Width="160" Height="30"/>
+                            </Grid>
 
                             <Button x:Name="GenerateReportButton"
                                     Style="{StaticResource PrimaryButtonStyle}"

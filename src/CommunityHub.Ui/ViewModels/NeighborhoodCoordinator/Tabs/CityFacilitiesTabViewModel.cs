@@ -1,13 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -17,6 +21,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly CityFacilityService _facilityService = new();
         private readonly FacilityReservationService _reservationService = new();
         private readonly FacilityVoteService _voteService = new();
+        private readonly FacilityReservationsReportService _reportService = new();
         private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
@@ -26,7 +31,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public RelayCommand GenerateReportCommand { get; }
         public RelayCommand ReserveCommand { get; }
 
-        public DateTime MinDate => DateTime.Today.AddDays(1);
+        public DateTime ReservationMinDate => DateTime.Today.AddDays(1);
 
         private string _durationInput = string.Empty;
         public string DurationInput 
@@ -39,25 +44,47 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             } 
         }
 
-        private DateTime? _startDate;
-        public DateTime? StartDate 
+        private DateTime? _reservationStartDate;
+        public DateTime? ReservationStartDate 
         { 
-            get => _startDate; 
+            get => _reservationStartDate; 
             set 
             { 
-                _startDate = value; 
+                _reservationStartDate = value; 
                 OnPropertyChanged(); 
             } 
         }
 
-        private DateTime? _endDate;
-        public DateTime? EndDate 
+        private DateTime? _reservationEndDate;
+        public DateTime? ReservationEndDate 
         { 
-            get => _endDate; 
+            get => _reservationEndDate; 
             set 
-            { _endDate = value; 
+            { _reservationEndDate = value; 
                 OnPropertyChanged(); 
             } 
+        }
+
+        private DateTime? _reportStartDate;
+        public DateTime? ReportStartDate
+        {
+            get => _reportStartDate;
+            set 
+            { 
+                _reportStartDate = value; 
+                OnPropertyChanged(); 
+            }
+        }
+
+        private DateTime? _reportEndDate;
+        public DateTime? ReportEndDate
+        {
+            get => _reportEndDate;
+            set 
+            { 
+                _reportEndDate = value; 
+                OnPropertyChanged(); 
+            }
         }
 
         private NeighborhoodDto? _selectedNeighborhood;
@@ -100,8 +127,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
-            StartDate = MinDate;
-            EndDate = MinDate;
+            ReservationStartDate = ReservationMinDate;
+            ReservationEndDate = ReservationMinDate;
+            ReportStartDate = DateTime.Now;
+            ReportEndDate = DateTime.Now;
             LoadNeighborhoods();
         }
 
@@ -170,7 +199,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         }
 
         private bool TryValidateInputs(Window win, out int duration, out DateTime start, out DateTime end)
-        {
+        { 
             duration = 0; start = DateTime.MinValue; end = DateTime.MinValue;
 
             if (SelectedFacility is null) return ShowError(win, "Greška", "Izaberite objekat.");
@@ -180,10 +209,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             if (duration > 14) return ShowError(win, "Greška", "Nije moguće rezervisati termin duži od 14h.");
 
-            if (StartDate is null || EndDate is null) return ShowError(win, "Greška", "Izaberite opseg datuma.");
+            if (ReservationStartDate is null || ReservationEndDate is null) return ShowError(win, "Greška", "Izaberite opseg datuma.");
 
-            start = StartDate.Value;
-            end = EndDate.Value.AddDays(1).AddSeconds(-1);
+            start = ReservationStartDate.Value;
+            end = ReservationEndDate.Value.AddDays(1).AddSeconds(-1);
 
             return start < end || ShowError(win, "Greška", "Početni datum mora biti pre krajnjeg.");
         }
@@ -218,7 +247,101 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return created;
         }
 
-        private void ExecuteGenerateReport() { }
+        private void ExecuteGenerateReport()
+        {
+            var window = GetActiveWindow();
+
+            if (!TryValidateReportInputs(window, out DateTime from, out DateTime to))
+                return;
+
+            var savePath = ChooseSavePath(from, to, SelectedNeighborhood!.Name);
+            if (savePath is null) return;
+
+            try
+            {
+                QuestPDF.Settings.License = LicenseType.Community;
+                var pdfBytes = _reportService.GenerateBytes(
+                    SelectedNeighborhood!.Name,
+                    SelectedNeighborhood.Id,
+                    from,
+                    to);
+
+                SaveReport(pdfBytes, savePath);
+                AskToOpenReport(window, savePath);
+            }
+            catch (Exception ex)
+            {
+                ShowError(window, "Greška", $"Greška pri generisanju izveštaja: {ex.Message}");
+            }
+        }
+
+        private bool TryValidateReportInputs(Window win, out DateTime from, out DateTime to)
+        {
+            from = DateTime.MinValue;
+            to = DateTime.MinValue;
+
+            if (SelectedNeighborhood is null)
+                return ShowError(win, "Greška", "Izaberite kvart.");
+
+            if (ReportStartDate is null || ReportEndDate is null)
+                return ShowError(win, "Greška", "Izaberite opseg datuma za izveštaj.");
+
+            if (ReportStartDate > ReportEndDate)
+                return ShowError(win, "Greška", "Početni datum mora biti pre krajnjeg.");
+
+            from = ReportStartDate.Value;
+            to = ReportEndDate.Value.AddDays(1).AddSeconds(-1);
+            return true;
+        }
+
+        private static string? ChooseSavePath(DateTime from, DateTime to, string neighborhoodName)
+        {
+            var fromStr = from.ToString("dd.MM.yyyy");
+            var toStr = to.ToString("dd.MM.yyyy");
+
+            var safeName = string.Concat(neighborhoodName
+                .ToLower()
+                .Replace(" ", "-")
+                .Where(c => char.IsLetterOrDigit(c) || c == '-'));
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Sačuvaj izveštaj",
+                Filter = "PDF fajlovi (*.pdf)|*.pdf",
+                FileName = $"izvestaj-rezervacije-{safeName}-{fromStr}-{toStr}.pdf",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads"
+            };
+
+            return dialog.ShowDialog() == true ? dialog.FileName : null;
+        }
+
+        private static void SaveReport(byte[] pdfBytes, string savePath)
+        {
+            File.WriteAllBytes(savePath, pdfBytes);
+        }
+
+        private void AskToOpenReport(Window win, string savePath)
+        {
+            var confirm = new ConfirmDialog(
+                "Izveštaj generisan",
+                "Izveštaj je uspešno sačuvan. Da li želite da ga otvorite?",
+                win);
+
+            if (confirm.ShowDialog() == true)
+                OpenPdf(savePath);
+        }
+
+        private static void OpenPdf(string filePath)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(filePath)
+            {
+                UseShellExecute = true
+            });
+        }
+
+        private Window GetActiveWindow() =>
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            ?? System.Windows.Application.Current.MainWindow;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
