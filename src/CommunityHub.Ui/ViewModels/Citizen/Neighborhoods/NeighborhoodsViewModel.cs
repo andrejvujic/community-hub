@@ -4,6 +4,8 @@ using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.ViewModels.Citizen.Help;
+using CommunityHub.Ui.Views.Citizen.Help;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -27,6 +29,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         public event EventHandler? RequestAccessRequested;
         public event EventHandler? CoordinatorRequested;
         public event EventHandler? MyAccessRequestsRequested;
+        public event EventHandler? ShowHelpRequested;
 
         public CitizenDto? CurrentUser
         {
@@ -65,6 +68,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         public ICommand SearchCommand { get; }
         public ICommand AccessOrCoordinatorCommand { get; }
         public ICommand MyAccessRequestsCommand { get; }
+        public ICommand ShowHelpCommand { get; }
 
         public NeighborhoodsViewModel(long userId)
         {
@@ -77,9 +81,30 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
                 else if (CanRequestAccess) RequestAccessRequested?.Invoke(this, EventArgs.Empty);
             });
             MyAccessRequestsCommand = new RelayCommand<object>(_ => MyAccessRequestsRequested?.Invoke(this, EventArgs.Empty));
+            ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
+
 
             CurrentUser = _citizenService.GetCitizenById(_userId);
             LoadNeighborhoods();
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new QuickHelpWindow(
+                "Brza pomoć - Kvartovi",
+                "Pretražujte kvartove i pregledajte detalje o izabranim kvartovima. Ako niste član kvarta, možete podneti zahtev za pristup. " +
+                "U suprotnom, možete oceniti svojeg koordinatora, pregledati recenzije i prijaviti ih. Možete i pregledati sve poslate zahteve.",
+                new List<KeyboardShortcut>
+                {
+                    new() { Keys = "F1-F7", Description = "Brza navigacija kroz kartice" },
+                    new() { Keys = "Ctrl+T", Description = "Uključi/isključi prikaz objašnjenja" },
+                    new() { Keys = "Ctrl+S", Description = "Napredna pretraga kvartova" },
+                    new() { Keys = "Ctrl+1", Description = "Pošalji zahtev za pristup kvartu (bez članstva)" },
+                    new() { Keys = "Ctrl+1", Description = "Prikaži koordinatora kvarta (sa članstvom)" },
+                    new() { Keys = "Ctrl+2", Description = "Prikaži svoje zahteve za pristup" },
+                }
+            );
+            helpWindow.ShowDialog();
         }
 
         public void LoadNeighborhoods()

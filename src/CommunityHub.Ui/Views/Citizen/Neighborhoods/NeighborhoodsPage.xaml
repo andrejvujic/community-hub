@@ -14,6 +14,7 @@
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SearchCommand}" />
         <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding AccessOrCoordinatorCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding MyAccessRequestsCommand}" />
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>

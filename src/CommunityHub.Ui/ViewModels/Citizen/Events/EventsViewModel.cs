@@ -1,10 +1,13 @@
 using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.ViewModels.Citizen.Help;
+using CommunityHub.Ui.Views.Citizen.Help;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -27,6 +30,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public event EventHandler? ApplyToVolunteerRequested;
         public event EventHandler? PrintReportRequested;
         public event EventHandler? MyEventsRequested;
+        public event EventHandler? ShowHelpRequested;
 
         public CitizenDto? Citizen
         {
@@ -101,6 +105,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public ICommand ApplyToVolunteerCommand { get; }
         public ICommand PrintReportCommand { get; }
         public ICommand MyEventsCommand { get; }
+        public ICommand ShowHelpCommand { get; }
 
         public EventsViewModel(long userId)
         {
@@ -109,10 +114,29 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             ApplyToVolunteerCommand = new RelayCommand<object>(_ => { if (CanApplyToVolunteer) ApplyToVolunteerRequested?.Invoke(this, EventArgs.Empty); });
             PrintReportCommand = new RelayCommand<object>(_ => PrintReportRequested?.Invoke(this, EventArgs.Empty));
             MyEventsCommand = new RelayCommand<object>(_ => MyEventsRequested?.Invoke(this, EventArgs.Empty));
+            ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
 
             TooltipState.OnPropertyChanged += (s, e) => { OnPropertyChanged(nameof(ApplyToVolunteerTooltip)); };
 
             LoadData();
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new QuickHelpWindow(
+                "Brza pomoć - Događaji",
+                "Pregledajte sve događaje u vašem kvartu. Možete se prijaviti za volontiranje, štampati izveštaje o događajima i pregledati svoje događaje. " +
+                "Takođe, možete upravljati svojim događajima i pregledati informacije o volonterskim prijavama, kao i organizovati novi događaj.",
+                new List<KeyboardShortcut>
+                {
+                    new() { Keys = "F1-F7", Description = "Brza navigacija kroz kartice" },
+                    new() { Keys = "Ctrl+T", Description = "Uključi/isključi prikaz objašnjenja" },
+                    new() { Keys = "Ctrl+1", Description = "Prijavi se za volontiranje" },
+                    new() { Keys = "Ctrl+2", Description = "Štampaj izveštaj o događaju" },
+                    new() { Keys = "Ctrl+3", Description = "Pregledaj svoje događaje i volontiranja" },
+                }
+            );
+            helpWindow.ShowDialog();
         }
 
         private void LoadData()
