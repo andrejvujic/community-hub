@@ -13,6 +13,7 @@
     <Page.InputBindings>
         <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ViewExpenseHistoryCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding MakeDonationCommand}" />
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>

@@ -21,7 +21,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ShowOtherMembersTrustRequested;
-        public event EventHandler? ShowHelpRequested;
 
         public CitizenTrustRecordDto? TrustRecord
         {

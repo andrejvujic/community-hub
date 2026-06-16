@@ -30,7 +30,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public event EventHandler? ApplyToVolunteerRequested;
         public event EventHandler? PrintReportRequested;
         public event EventHandler? MyEventsRequested;
-        public event EventHandler? ShowHelpRequested;
 
         public CitizenDto? Citizen
         {

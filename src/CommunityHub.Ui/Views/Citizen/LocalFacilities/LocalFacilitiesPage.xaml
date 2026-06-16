@@ -14,6 +14,7 @@
         <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ViewHistoryCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding ViewStatisticsCommand}" />
         <KeyBinding Key="Space" Command="{Binding ToggleVoteCommand}" />
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>

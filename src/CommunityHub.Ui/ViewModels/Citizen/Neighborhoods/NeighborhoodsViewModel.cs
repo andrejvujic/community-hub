@@ -29,7 +29,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
         public event EventHandler? RequestAccessRequested;
         public event EventHandler? CoordinatorRequested;
         public event EventHandler? MyAccessRequestsRequested;
-        public event EventHandler? ShowHelpRequested;
 
         public CitizenDto? CurrentUser
         {

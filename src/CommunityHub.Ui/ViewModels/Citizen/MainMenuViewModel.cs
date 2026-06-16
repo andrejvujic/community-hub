@@ -24,7 +24,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? WizardHelperRequested;
-        public event EventHandler? HelpRequested;
 
         public CitizenDto? CurrentUser
         {
