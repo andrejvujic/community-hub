@@ -12,6 +12,7 @@
 
     <Page.InputBindings>
         <KeyBinding Key="W" Modifiers="Ctrl" Command="{Binding WizardHelperCommand}" />
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>

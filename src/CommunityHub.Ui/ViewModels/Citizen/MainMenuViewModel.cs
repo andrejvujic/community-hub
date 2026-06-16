@@ -1,8 +1,11 @@
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.ViewModels.Citizen.Help;
+using CommunityHub.Ui.Views.Citizen.Help;
 using System.ComponentModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -21,6 +24,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? WizardHelperRequested;
+        public event EventHandler? HelpRequested;
 
         public CitizenDto? CurrentUser
         {
@@ -56,6 +60,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         }
 
         public ICommand WizardHelperCommand { get; }
+        public ICommand ShowHelpCommand { get; }
+
 
         public MainMenuViewModel(long userId)
         {
@@ -64,10 +70,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             _timer.Tick += Timer_Tick;
 
             WizardHelperCommand = new RelayCommand<object>(_ => WizardHelperRequested?.Invoke(this, EventArgs.Empty));
+            ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
 
             CurrentUser = _citizenService.GetCitizenById(_userId);
             UpdateDateTime();
             _timer.Start();
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new QuickHelpWindow(
+                "Brza pomoć - Glavni meni",
+                "Pregled vašeg profila i osnovnih informacija. Odavde možete pokrenuti sistem za pomoć.",
+                new List<KeyboardShortcut>
+                {
+                    new() { Keys = "F1-F7", Description = "Brza navigacija kroz kartice" },
+                    new() { Keys = "Ctrl+T", Description = "Uključi/isključi prikaz objašnjenja" },
+                    new() { Keys = "Ctrl+W", Description = "Pokreni sistem za pomoć" }
+                }
+            );
+            helpWindow.ShowDialog();
         }
 
         public void Cleanup()
