@@ -3,14 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         mc:Ignorable="d" 
-        d:DesignHeight="400" d:DesignWidth="500"
+        d:DesignHeight="530" d:DesignWidth="700"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Height="400" Width="600"
+        Height="530" Width="700"
         Topmost="True">
 
     <Window.InputBindings>
@@ -24,10 +25,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Background="{StaticResource BackgroundBrush}" 
+    <Border Background="{StaticResource AlternatingRowBrush}" 
             BorderBrush="{StaticResource TextBrush}" 
             BorderThickness="2">
         <Grid>
@@ -35,11 +37,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" 
                     Background="{StaticResource AccentBrush}" 
-                    Padding="15,10" 
+                    Padding="10,10" 
                     BorderBrush="{StaticResource TextBrush}" 
                     BorderThickness="0,0,0,2">
                 <Grid>
@@ -74,17 +77,34 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="1" Padding="30,20" Background="{StaticResource BackgroundBrush}" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding CurrentStep.Description}" 
-                           FontSize="16" 
-                           Foreground="{StaticResource TextBrush}" 
-                           TextWrapping="Wrap"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
+            <Border Grid.Row="1" Padding="10,10" Background="{StaticResource AlternatingRowBrush}">
+                <Grid Grid.Row="1" Margin="10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" 
+                        Text="{Binding CurrentStep.Description}" 
+                        FontSize="16" 
+                        Foreground="{StaticResource TextBrush}" 
+                        TextWrapping="Wrap"
+                        HorizontalAlignment="Center"
+                        TextAlignment="Center"/>
+
+                    <Image Grid.Row="2" 
+                        Source="{Binding CurrentStep.Image}"
+                        Stretch="Uniform"
+                        MaxWidth="450"
+                        MaxHeight="280"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"/>
+                </Grid>
             </Border>
 
             <Border Grid.Row="2" 
-                    Padding="12,10" 
+                    Padding="6,10" 
                     HorizontalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -127,6 +147,13 @@
                         </Viewbox>
                     </Button>
                 </Grid>
+            </Border>
+
+            <Border Grid.Row="3" BorderBrush="{StaticResource TextBrush}" BorderThickness="0,2,0,0" Padding="5,2,5,2" Background="{StaticResource AccentBrush}" Height="24">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Esc - Zatvori" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource TextBrush}" Margin="0,0,130,0"/>
+                    <TextBlock Text="Strelice levo/desno - Listaj" VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource TextBrush}"/>
+                </StackPanel>
             </Border>
         </Grid>
     </Border>

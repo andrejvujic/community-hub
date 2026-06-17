@@ -1,6 +1,7 @@
 ﻿using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Help
 {
@@ -63,4 +64,5 @@ public class WizardStep
 {
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";
+    public BitmapImage? Image { get; set; }
 }
