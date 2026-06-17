@@ -1,9 +1,10 @@
+using CommunityHub.Application.Domain.Events;
+using CommunityHub.Application.Services.Events;
+using CommunityHub.Ui.Helpers;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using CommunityHub.Application.Domain.Events;
-using CommunityHub.Application.Services.Events;
-using CommunityHub.Ui.Helpers.Commands;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
 {
@@ -42,6 +43,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _name = value;
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -55,6 +57,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _description = value;
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -68,6 +71,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _selectedDate = value;
                 OnPropertyChanged(nameof(SelectedDate));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -84,6 +88,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _hour = value;
                 OnPropertyChanged(nameof(Hour));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -97,6 +102,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _minute = value;
                 OnPropertyChanged(nameof(Minute));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -110,6 +116,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _durationHour = value;
                 OnPropertyChanged(nameof(DurationHour));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -123,6 +130,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _durationMinute = value;
                 OnPropertyChanged(nameof(DurationMinute));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -136,6 +144,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _volunteers = value;
                 OnPropertyChanged(nameof(Volunteers));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -148,6 +157,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 if (_itemInput == value) return;
                 _itemInput = value;
                 OnPropertyChanged(nameof(ItemInput));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -160,6 +170,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 if (_items == value) return;
                 _items = value;
                 OnPropertyChanged(nameof(Items));
+            }
+        }
+
+        public string SaveButtonTooltip
+        {
+            get
+            {
+                if (!TooltipState.IsEnabled || IsFormValid) return null;
+
+                var errors = new List<string>();
+
+                if (string.IsNullOrWhiteSpace(Name)) errors.Add("- Naziv događaja je obavezan");
+                if (string.IsNullOrWhiteSpace(Description)) errors.Add("- Opis događaja je obavezan");
+                if (SelectedDate == null) errors.Add("- Datum je obavezan (format: d.M.yyyy.)");
+                if (!CommunityEvent.TryParseEventStart(SelectedDate, Hour, Minute, out _)) errors.Add("- Vreme nije ispravno (sati 0-23, minuti 0-59)");
+                if (!CommunityEvent.TryParseDuration(DurationHour, DurationMinute, out var duration) || duration <= 0) errors.Add("- Trajanje mora biti veće od 0 (minuti 0-59)");
+                if (!CommunityEvent.TryParseMinVolunteers(Volunteers, out var volunteers) || volunteers < 1) errors.Add("- Potreban je najmanje 1 volonter");
+                if (Items.Count == 0) errors.Add("- Morate dodati bar jednu potrebnu stvar");
+
+                return $"Nije moguće sačuvati događaj. Ispravite sledeće greške:\n{string.Join("\n", errors)}";
             }
         }
 
@@ -181,6 +211,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 Items.Add(input);
                 ItemInput = string.Empty;
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -188,6 +219,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         {
             Items.Remove(item);
             OnPropertyChanged(nameof(IsFormValid));
+            OnPropertyChanged(nameof(SaveButtonTooltip));
         }
 
         public void Submit()

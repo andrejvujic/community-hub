@@ -2,6 +2,7 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      xmlns:helpers="clr-namespace:CommunityHub.Ui.Helpers"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d"
@@ -13,6 +14,7 @@
         <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding ViewHistoryCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding ViewStatisticsCommand}" />
         <KeyBinding Key="Space" Command="{Binding ToggleVoteCommand}" />
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>
@@ -24,6 +26,8 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibility" />
             <converters:BooleanToCheckmarkConverter x:Key="BooleanToCheckmark" />
+            <converters:TooltipVisibilityConverter x:Key="TooltipVisibilityConverter" />
+            <helpers:TooltipStateProxy x:Key="TooltipStateProxy" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -90,7 +94,9 @@
                                     <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,0,0,12">
                                         Niste još glasali za posetu ovog objekta. Ako glasate, kasnije možete ukloniti svoj glas. Imate pravo da date glas za više objekata. <LineBreak/>
                                     </TextBlock>
-                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding ToggleVoteCommand}">
+                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding ToggleVoteCommand}"
+                                    ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                                    ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Glasajte za posetu odabranog objekta'}">
                                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="12">
                                             Dodaj glas<LineBreak/>(Space)
                                         </TextBlock>
@@ -101,7 +107,9 @@
                                     <TextBlock TextAlignment="Center" FontSize="20" Foreground="{StaticResource TextBrush}" TextWrapping="Wrap" Margin="0,0,0,12">
                                         Već ste glasali za posetu ovog objekta. Ako želite, možete ukloniti svoj glas. Imate pravo da date glas za više objekata. <LineBreak/>
                                     </TextBlock>
-                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding ToggleVoteCommand}">
+                                    <Button Height="52" Width="200" HorizontalAlignment="Center" Style="{StaticResource PrimaryButton}" Padding="16,0,16,0" Command="{Binding ToggleVoteCommand}"
+                                    ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                                    ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Uklonite glas za posetu odabranog objekta'}">
                                         <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="12">
                                             Ukloni glas<LineBreak/>(Space)
                                         </TextBlock>
@@ -118,13 +126,17 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding ViewHistoryCommand}">
+                        <Button Grid.Column="0" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding ViewHistoryCommand}"
+                        ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Pregled datuma svih poseta izabranog objekta'}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                                 Istorija poseta objekta<LineBreak/>(Ctrl + 1)
                             </TextBlock>
                         </Button>
 
-                        <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding ViewStatisticsCommand}">
+                        <Button Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Command="{Binding ViewStatisticsCommand}"
+                        ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Mesečna i godišnja statistika rezervacija objekata u vašem kvartu'}">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">
                                 Statistika rezervacija<LineBreak/>(Ctrl + 2)
                             </TextBlock>

@@ -1,6 +1,7 @@
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
 using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.Citizen;
 using CommunityHub.Ui.Views.Citizen.Donations;
@@ -74,6 +75,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
                 if (_tooltipEnabled == value) return;
                 _tooltipEnabled = value;
                 OnPropertyChanged(nameof(TooltipEnabled));
+                TooltipState.IsEnabled = value;
             }
         }
 

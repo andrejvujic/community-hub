@@ -1,6 +1,8 @@
 <Window x:Class="CommunityHub.Ui.Views.Citizen.Events.OrganizeEventWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+        xmlns:helpers="clr-namespace:CommunityHub.Ui.Helpers"
         Height="625" Width="850" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Language="sr-Latn-RS">
@@ -16,6 +18,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:TooltipVisibilityConverter x:Key="TooltipVisibilityConverter" />
+            <helpers:TooltipStateProxy x:Key="TooltipStateProxy" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -55,7 +59,9 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Naziv događaja:" VerticalAlignment="Center" Foreground="{StaticResource TextBrush}" FontSize="16" />
                     <Grid Grid.Column="1" Margin="12,0,0,0">
-                        <TextBox x:Name="NameBox" Height="32" VerticalContentAlignment="Center" Padding="8,0,0,0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,1,1,1" />
+                        <TextBox x:Name="NameBox" Height="32" VerticalContentAlignment="Center" Padding="8,0,0,0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1,1,1,1"
+                        ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - unesite naziv događaja'}"/>
                         <TextBlock Text="Unesite naziv događaja" Foreground="{StaticResource GridLineBrush}" Margin="10,8,0,0" VerticalAlignment="Top" FontSize="12" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -74,7 +80,9 @@
                 <StackPanel Grid.Row="1" Margin="0,0,0,12">
                     <TextBlock Text="Opis:" Foreground="{StaticResource TextBrush}" FontSize="16" Margin="0,0,0,4" />
                     <Grid Height="100">
-                        <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="8" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                        <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="8" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1"
+                        ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - unesite opis događaja'}"/>
                         <TextBlock Text="Kratko objasnite o čemu je događaj" Foreground="{StaticResource GridLineBrush}" Margin="10,10,0,0" TextWrapping="Wrap" IsHitTestVisible="False" VerticalAlignment="Top" FontSize="12">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -116,17 +124,20 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="DateTextBox" 
-                                     Grid.Column="0"
-                                     Background="{StaticResource BackgroundBrush}"
-                                     Foreground="{StaticResource TextBrush}"
-                                     BorderBrush="{StaticResource TextBrush}"
-                                     BorderThickness="1,1,0,1"
-                                     Padding="8,6"
-                                     FontSize="13"
-                                     Height="32"
-                                     VerticalAlignment="Center"
-                                     VerticalContentAlignment="Center"
-                                     CaretBrush="{StaticResource TextBrush}"/>
+                                    Grid.Column="0"
+                                    Background="{StaticResource BackgroundBrush}"
+                                    Foreground="{StaticResource TextBrush}"
+                                    BorderBrush="{StaticResource TextBrush}"
+                                    BorderThickness="1,1,0,1"
+                                    Padding="8,6"
+                                    FontSize="13"
+                                    Height="32"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    CaretBrush="{StaticResource TextBrush}"
+                                    ToolTipService.InitialShowDelay="150" 
+                                    ToolTipService.BetweenShowDelay="0"
+                                    ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Unesite datum u formatu d.m.yyyy. ili koristite kalendar'}"/>
                             <Button x:Name="DatePickerButton" 
                                     Grid.Column="1"
                                     Background="{StaticResource AccentBrush}"
@@ -138,7 +149,10 @@
                                     Command="{Binding ToggleCalendarCommand}"
                                     Content="▼"
                                     FontSize="10"
-                                    Foreground="{StaticResource TextBrush}"/>
+                                    Foreground="{StaticResource TextBrush}"
+                                    ToolTipService.InitialShowDelay="150" 
+                                    ToolTipService.BetweenShowDelay="0"
+                                    ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Otvori kalendar za izbor datuma'}"/>
                             <Popup x:Name="DatePickerPopup" Placement="Bottom" PlacementTarget="{Binding ElementName=DatePickerButton}" AllowsTransparency="True" PopupAnimation="Slide">
                                 <Calendar x:Name="EventCalendar" 
                                           Background="{StaticResource BackgroundBrush}"
@@ -159,9 +173,13 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="HourBox" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                            <TextBox x:Name="HourBox" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
+                            ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                            ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - sati početka događaja (0-23)'}"/>
                             <TextBlock Text=":" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6,0,6,0" Foreground="{StaticResource TextBrush}" />
-                            <TextBox x:Name="MinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                            <TextBox x:Name="MinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
+                            ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                            ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - minuti početka događaja (0-59)'}"/>
                         </Grid>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Trajanje:" VerticalAlignment="Center" Margin="0,0,8,12" Foreground="{StaticResource TextBrush}" FontSize="16" />
@@ -171,13 +189,19 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="DurationHourBox" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding DurationHour, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                            <TextBox x:Name="DurationHourBox" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding DurationHour, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
+                            ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                            ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - broj sati trajanja događaja'}"/>
                             <TextBlock Text=":" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6,0,6,0" Foreground="{StaticResource TextBrush}" />
-                            <TextBox x:Name="DurationMinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding DurationMinute, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                            <TextBox x:Name="DurationMinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding DurationMinute, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
+                            ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                            ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - broj minuta trajanja događaja'}"/>
                         </Grid>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Potrebno volontera:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource TextBrush}" FontSize="16" />
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="VolunteersBox" Height="32" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Volunteers, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="VolunteersBox" Height="32" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Volunteers, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
+                        ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - minimalan potreban broj volontera'}"/>
                     </Grid>
 
                     <StackPanel Grid.Column="2">
@@ -193,8 +217,12 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="32" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="ItemInputBox" Grid.Column="0" Height="32" VerticalContentAlignment="Center" Padding="8,0,0,0" Margin="0,0,8,0" Text="{Binding ItemInput, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
-                                <Button Grid.Column="1" x:Name="AddItemButton" Height="32" Command="{Binding AddItemCommand}" Style="{StaticResource PrimaryButton}" Padding="8,4">
+                                <TextBox x:Name="ItemInputBox" Grid.Column="0" Height="32" VerticalContentAlignment="Center" Padding="8,0,0,0" Margin="0,0,8,0" Text="{Binding ItemInput, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
+                                ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                                ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Unesite naziv stavke i pritisnite + da je dodate na listu'}"/>
+                                <Button Grid.Column="1" x:Name="AddItemButton" Height="32" Command="{Binding AddItemCommand}" Style="{StaticResource PrimaryButton}" Padding="8,4"
+                                ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                                ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Dodaj stavku na listu'}">
                                     <TextBlock Text="+" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Button>
                             </Grid>
@@ -213,7 +241,18 @@
                     <Button Grid.Column="0" x:Name="DiscardButton" Command="{Binding CloseCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,4,0" Padding="6,6">
                         <TextBlock TextAlignment="Center">Odbaci događaj<LineBreak/>(Esc)</TextBlock>
                     </Button>
-                    <Button Grid.Column="1" x:Name="SaveButton" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" Margin="4,0,0,0" Padding="6,6">
+                    <Button Grid.Column="1" x:Name="SaveButton" Command="{Binding SaveCommand}" Margin="4,0,0,0" Padding="6,6" IsEnabled="{Binding IsFormValid}"
+                    ToolTipService.ShowOnDisabled="True" ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+                                <Setter Property="ToolTip" Value="{x:Null}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="ToolTip" Value="{Binding SaveButtonTooltip}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <TextBlock TextAlignment="Center">Sačuvaj događaj<LineBreak/>(Enter)</TextBlock>
                     </Button>
                 </Grid>

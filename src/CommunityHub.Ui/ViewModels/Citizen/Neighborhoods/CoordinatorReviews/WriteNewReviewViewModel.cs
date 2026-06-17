@@ -1,3 +1,4 @@
+using CommunityHub.Ui.Helpers;
 using CommunityHub.Ui.Helpers.Commands;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -26,6 +27,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                     OnPropertyChanged(nameof(IsCommentRequired));
                     OnPropertyChanged(nameof(CommentLabel));
                     OnPropertyChanged(nameof(IsValid));
+                    OnPropertyChanged(nameof(ConfirmDisabledReason));
+                    OnPropertyChanged(nameof(ConfirmTooltip));
                     ((RelayCommand<object>)ConfirmCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -57,8 +60,30 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                     _comment = value;
                     OnPropertyChanged(nameof(Comment));
                     OnPropertyChanged(nameof(IsValid));
+                    OnPropertyChanged(nameof(ConfirmDisabledReason));
+                    OnPropertyChanged(nameof(ConfirmTooltip));
                     ((RelayCommand<object>)ConfirmCommand).RaiseCanExecuteChanged();
                 }
+            }
+        }
+
+        public string ConfirmDisabledReason
+        {
+            get
+            {
+                if (Rating < 1 || Rating > 5) return "Ocena mora biti između 1 i 5";
+                if (IsCommentRequired && string.IsNullOrWhiteSpace(Comment)) return "Za ocene manje od 3 zvezdice, morate napisati obrazloženje";
+                return string.Empty;
+            }
+        }
+
+        public string ConfirmTooltip
+        {
+            get
+            {
+                if (!TooltipState.IsEnabled) return null;
+                if (!IsValid) return ConfirmDisabledReason;
+                return null;
             }
         }
 
@@ -88,6 +113,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                 if (param is int starIndex) Rating = starIndex;
                 else if (param is string starStr && int.TryParse(starStr, out int parsed)) Rating = parsed;
             });
+
+            TooltipState.OnPropertyChanged += (s, e) => { OnPropertyChanged(nameof(ConfirmTooltip)); };
         }
 
         protected void OnPropertyChanged(string propertyName)

@@ -3,13 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+      xmlns:helpers="clr-namespace:CommunityHub.Ui.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
       Language="sr-Latn-RS"
       Title="Glavni Meni">
 
     <Page.InputBindings>
-        <KeyBinding Key="W" Modifiers="Ctrl" Command="{Binding WizardHelperCommand}" />
+        <KeyBinding Key="W" Modifiers="Ctrl" Command="{Binding HelpWizardCommand}" />
+        <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>
@@ -17,6 +20,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:TooltipVisibilityConverter x:Key="TooltipVisibilityConverter" />
+            <helpers:TooltipStateProxy x:Key="TooltipStateProxy" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -72,8 +77,10 @@
 
         <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,120,0" BorderBrush="{StaticResource TextBrush}" BorderThickness="3" Background="{StaticResource AlternatingRowBrush}" Padding="30">
             <StackPanel Width="280" VerticalAlignment="Center">
-                <TextBlock Text="Ponovo pokreni čarobnjaka&#10;za pomoć" TextAlignment="Center" FontSize="20" Margin="0,0,0,20" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
-                <Button Padding="5" TextBlock.TextAlignment="Center" Content="Čarobnjak za pomoć&#10;(Ctrl + W)" Style="{StaticResource LargeButton}" Command="{Binding WizardHelperCommand}" />
+                <TextBlock Text="Ponovo pokreni sistem&#10;za pomoć" TextAlignment="Center" FontSize="20" Margin="0,0,0,20" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
+                <Button Padding="5" TextBlock.TextAlignment="Center" Content="Sistem za pomoć&#10;(Ctrl + W)" Style="{StaticResource LargeButton}" Command="{Binding HelpWizardCommand}" ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                     ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Pokreni čarobnjaka koji objašnjava sve funkcionalnosti sistema'}">
+                </Button>
             </StackPanel>
         </Border>
 
