@@ -11,7 +11,7 @@
       Title="Glavni Meni">
 
     <Page.InputBindings>
-        <KeyBinding Key="W" Modifiers="Ctrl" Command="{Binding WizardHelperCommand}" />
+        <KeyBinding Key="W" Modifiers="Ctrl" Command="{Binding HelpWizardCommand}" />
         <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
     </Page.InputBindings>
 
@@ -78,7 +78,7 @@
         <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,120,0" BorderBrush="{StaticResource TextBrush}" BorderThickness="3" Background="{StaticResource AlternatingRowBrush}" Padding="30">
             <StackPanel Width="280" VerticalAlignment="Center">
                 <TextBlock Text="Ponovo pokreni sistem&#10;za pomoć" TextAlignment="Center" FontSize="20" Margin="0,0,0,20" Foreground="{StaticResource TextBrush}" FontWeight="SemiBold"/>
-                <Button Padding="5" TextBlock.TextAlignment="Center" Content="Sistem za pomoć&#10;(Ctrl + W)" Style="{StaticResource LargeButton}" Command="{Binding WizardHelperCommand}" ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
+                <Button Padding="5" TextBlock.TextAlignment="Center" Content="Sistem za pomoć&#10;(Ctrl + W)" Style="{StaticResource LargeButton}" Command="{Binding HelpWizardCommand}" ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
                      ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Pokreni čarobnjaka koji objašnjava sve funkcionalnosti sistema'}">
                 </Button>
             </StackPanel>

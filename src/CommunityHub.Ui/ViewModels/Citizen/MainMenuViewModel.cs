@@ -23,7 +23,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen
         private string _currentTime = "";
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public event EventHandler? WizardHelperRequested;
 
         public CitizenDto? CurrentUser
         {
@@ -58,7 +57,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             }
         }
 
-        public ICommand WizardHelperCommand { get; }
+        public ICommand HelpWizardCommand { get; }
         public ICommand ShowHelpCommand { get; }
 
 
@@ -68,12 +67,75 @@ namespace CommunityHub.Ui.ViewModels.Citizen
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += Timer_Tick;
 
-            WizardHelperCommand = new RelayCommand<object>(_ => WizardHelperRequested?.Invoke(this, EventArgs.Empty));
+            HelpWizardCommand = new RelayCommand<object>(_ => StartWizard());
             ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
 
             CurrentUser = _citizenService.GetCitizenById(_userId);
             UpdateDateTime();
             _timer.Start();
+        }
+
+        private void StartWizard()
+        {
+            var steps = new List<WizardStep>
+            {
+                new WizardStep
+                {
+                    Title = "Dobrodošli u Community Hub!",
+                    Description = "Ovaj čarobnjak će vas provesti kroz glavne funkcionalnosti aplikacije."
+                },
+                new WizardStep
+                {
+                    Title = "Navigacija",
+                    Description = "Koristite F1-F7 tastere za brzo prebacivanje između kartica. Na svakoj kartici možete pronaći dodatne informacije i opcije."
+                },
+                new WizardStep
+                {
+                    Title = "Glavni meni",
+                    Description = "Ovde vidite svoje osnovne informacije - ime, prezime, adresu i članstvo u kvartu. Odavde možete ponovo pokrenuti i sistem pomoći"
+                },
+                new WizardStep
+                {
+                    Title = "Kvartovi",
+                    Description = "Ovde vidite spisak svih kvartova i možete poslati zahtev za pristup. Možete i ocenjivati koordinatora svog kvarta."
+                },
+                new WizardStep
+                {
+                    Title = "Događaji",
+                    Description = "Ovde vidite informacije o svim dođajima u vašem kvartu. Možete se prijavljivati za volontiranje na događaje u pripremi ili organizovati nove događaje."
+                },
+                new WizardStep
+                {
+                    Title = "Evidencije poverenja",
+                    Description = "Ovde vidite informacije o svom statusu poverenja u kvartu. Statusi su:\n" +
+                    "Novi član - u kvartu kraće od godinu dana\nNeaktivan građanin - manje od 5 volontiranja i organizovanih događaja\n" +
+                    "Aktivan građanin - više od 5 volontiranja i organizovanih događaja\nIstaknut građanin - više od 10 volontiranja i organizovanih događaja\n" +
+                    "Građanin od poverenja - više od 15 volontiranja i organizovanih događaja"
+                },
+                new WizardStep
+                {
+                    Title = "Sastanci",
+                    Description = "Ovde vidite informacije o svim sastancima u vašem kvartu. Možete glasati za datume sastanaka u pripremi."
+                },
+                new WizardStep
+                {
+                    Title = "Lokalni objekti",
+                    Description = "Ovde vidite informacije o lokalnim objektima u vašem kvartu. Možete glasati za posetu objekata, gledati istoriju i statistiku rezervacija."
+                },
+                new WizardStep
+                {
+                    Title = "Donacije",
+                    Description = "Ovde vidite budžet svojeg kvarta. Možete donirati novac kvartu za kategorije po vašem izboru"
+                },
+                new WizardStep
+                {
+                    Title = "Spremni ste!",
+                    Description = "Sada znate osnove. Istražite sve kartice i otkrijte šta sve Community Hub nudi!"
+                }
+            };
+
+            var wizard = new HelpWizardWindow(steps);
+            wizard.ShowDialog();
         }
 
         private void ShowHelp()
