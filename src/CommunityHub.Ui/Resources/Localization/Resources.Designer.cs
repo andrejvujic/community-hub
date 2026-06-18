@@ -601,6 +601,150 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prihvaćeni: .
+        /// </summary>
+        internal static string Profile_Accepted {
+            get {
+                return ResourceManager.GetString("Profile_Accepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prosečna recenzija.
+        /// </summary>
+        internal static string Profile_AverageRating {
+            get {
+                return ResourceManager.GetString("Profile_AverageRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prosečna ocena u poslednjih godinu dana: .
+        /// </summary>
+        internal static string Profile_AverageRatingLastYear {
+            get {
+                return ResourceManager.GetString("Profile_AverageRatingLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj građana kvartova.
+        /// </summary>
+        internal static string Profile_CitizenCount {
+            get {
+                return ResourceManager.GetString("Profile_CitizenCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Komentar.
+        /// </summary>
+        internal static string Profile_Comment {
+            get {
+                return ResourceManager.GetString("Profile_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Koordinator kvarta.
+        /// </summary>
+        internal static string Profile_CoordinatorRole {
+            get {
+                return ResourceManager.GetString("Profile_CoordinatorRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posao.
+        /// </summary>
+        internal static string Profile_Job {
+            get {
+                return ResourceManager.GetString("Profile_Job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj kvartova.
+        /// </summary>
+        internal static string Profile_NeighborhoodCount {
+            get {
+                return ResourceManager.GetString("Profile_NeighborhoodCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Na čekanju: .
+        /// </summary>
+        internal static string Profile_Pending {
+            get {
+                return ResourceManager.GetString("Profile_Pending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lični podaci.
+        /// </summary>
+        internal static string Profile_PersonalInfo {
+            get {
+                return ResourceManager.GetString("Profile_PersonalInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocena.
+        /// </summary>
+        internal static string Profile_Rating {
+            get {
+                return ResourceManager.GetString("Profile_Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odbijeni: .
+        /// </summary>
+        internal static string Profile_Rejected {
+            get {
+                return ResourceManager.GetString("Profile_Rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj zahteva.
+        /// </summary>
+        internal static string Profile_RequestCount {
+            get {
+                return ResourceManager.GetString("Profile_RequestCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recenzije.
+        /// </summary>
+        internal static string Profile_Reviews {
+            get {
+                return ResourceManager.GetString("Profile_Reviews", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ukupna prosečna ocena: .
+        /// </summary>
+        internal static string Profile_TotalAverageRating {
+            get {
+                return ResourceManager.GetString("Profile_TotalAverageRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dobrodošli na profilnu stranicu.
+        /// </summary>
+        internal static string Profile_Welcome {
+            get {
+                return ResourceManager.GetString("Profile_Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to izvestaj-rezervacije-{0}-{1}-{2}.pdf.
         /// </summary>
         internal static string Report_FileName {

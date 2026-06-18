@@ -18,21 +18,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             _viewModel = new DashboardTabViewModel();
             DataContext = _viewModel;
             this.IsVisibleChanged += DashboardTab_IsVisibleChanged;
-            
+
             TranslationSource.Instance.PropertyChanged += (s, e) =>
             {
-                if (TranslationSource.Instance.CurrentCulture != null)
+                if (this.IsVisible)
                 {
-                    this.Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
-
-                    var tempFrom = _viewModel.ReportFrom;
-                    var tempTo = _viewModel.ReportTo;
-
-                    _viewModel.ReportFrom = null;
-                    _viewModel.ReportTo = null;
-
-                    _viewModel.ReportFrom = tempFrom;
-                    _viewModel.ReportTo = tempTo;
+                    RefreshLanguageAndDatePickers();
                 }
             };
         }
@@ -54,7 +45,27 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         private void DashboardTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
+            {
                 _viewModel.LoadDashboard();
+                RefreshLanguageAndDatePickers();
+            }
+        }
+
+        private void RefreshLanguageAndDatePickers()
+        {
+            if (TranslationSource.Instance.CurrentCulture != null)
+            {
+                this.Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
+
+                var tempFrom = _viewModel.ReportFrom;
+                var tempTo = _viewModel.ReportTo;
+
+                _viewModel.ReportFrom = null;
+                _viewModel.ReportTo = null;
+
+                _viewModel.ReportFrom = tempFrom;
+                _viewModel.ReportTo = tempTo;
+            }
         }
 
         private void DashboardTab_KeyDown(object sender, KeyEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
@@ -21,9 +22,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             TranslationSource.Instance.PropertyChanged += (s, e) =>
             {
-                if (MembersDataGrid != null && MembersDataGrid.ItemsSource != null)
+                if (this.IsVisible)
                 {
-                    MembersDataGrid.Items.Refresh();
+                    RefreshTabLanguagesAndGrids();
                 }
             };
         }
@@ -52,7 +53,28 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         private void NeighborhoodsTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
+            {
                 _viewModel.LoadNeighborhoods();
+                RefreshTabLanguagesAndGrids();
+            }
+        }
+
+        private void RefreshTabLanguagesAndGrids()
+        {
+            if (TranslationSource.Instance.CurrentCulture != null)
+            {
+                this.Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
+            }
+
+            if (StreetsDataGrid != null && StreetsDataGrid.ItemsSource != null)
+            {
+                StreetsDataGrid.Items.Refresh();
+            }
+
+            if (MembersDataGrid != null && MembersDataGrid.ItemsSource != null)
+            {
+                MembersDataGrid.Items.Refresh();
+            }
         }
     }
 }

@@ -289,4 +289,21 @@
     <data name="Even"><value>Even numbers</value></data>
     <data name="Odd"><value>Odd numbers</value></data>
     <data name="Both"><value>All numbers</value></data>
+
+    <data name="Profile_Welcome"><value>Welcome to your profile page</value></data>
+    <data name="Profile_PersonalInfo"><value>Personal info</value></data>
+    <data name="Profile_Job"><value>Job</value></data>
+    <data name="Profile_CoordinatorRole"><value>Neighborhood coordinator</value></data>
+    <data name="Profile_CitizenCount"><value>Neighborhood citizen count</value></data>
+    <data name="Profile_NeighborhoodCount"><value>Neighborhood count</value></data>
+    <data name="Profile_RequestCount"><value>Request count</value></data>
+    <data name="Profile_Accepted"><value>Accepted: </value></data>
+    <data name="Profile_Rejected"><value>Rejected: </value></data>
+    <data name="Profile_Pending"><value>Pending: </value></data>
+    <data name="Profile_AverageRating"><value>Average rating</value></data>
+    <data name="Profile_Reviews"><value>Reviews</value></data>
+    <data name="Profile_Rating"><value>Rating</value></data>
+    <data name="Profile_Comment"><value>Comment</value></data>
+    <data name="Profile_TotalAverageRating"><value>Total average rating: </value></data>
+    <data name="Profile_AverageRatingLastYear"><value>Average rating in the last year: </value></data>
 </root>

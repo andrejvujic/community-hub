@@ -10,7 +10,7 @@
              mc:Ignorable="d" d:DesignHeight="700" d:DesignWidth="1100">
 
     <UserControl.Resources>
-        <ns:EnumLocalizationConverter x:Key="ParityConverter" />
+        <ns:EnumLocalizationConverter x:Key="EnumLocalizationConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <ns:LocalizedDateConverter x:Key="DateConverter" />
     </UserControl.Resources>
@@ -130,6 +130,7 @@
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,10"/>
                         <DataGrid ItemsSource="{Binding NeighborhoodStreetSections}"
+                                  x:Name="StreetsDataGrid"
                                   Style="{StaticResource DataGridStyle}"
                                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
@@ -152,7 +153,7 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="{ns:Loc Neighborhoods_Side}" Binding="{Binding Side, Converter={StaticResource ParityConverter}}" Width="100"/>
+                                <DataGridTextColumn Header="{ns:Loc Neighborhoods_Side}" Binding="{Binding Side, Converter={StaticResource EnumLocalizationConverter}}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
 

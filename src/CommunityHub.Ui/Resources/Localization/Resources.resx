@@ -289,4 +289,21 @@
     <data name="Even"><value>Parni brojevi</value></data>
     <data name="Odd"><value>Neparni brojevi</value></data>
     <data name="Both"><value>Svi brojevi</value></data>
+
+    <data name="Profile_Welcome"><value>Dobrodošli na profilnu stranicu</value></data>
+    <data name="Profile_PersonalInfo"><value>Lični podaci</value></data>
+    <data name="Profile_Job"><value>Posao</value></data>
+    <data name="Profile_CoordinatorRole"><value>Koordinator kvarta</value></data>
+    <data name="Profile_CitizenCount"><value>Broj građana kvartova</value></data>
+    <data name="Profile_NeighborhoodCount"><value>Broj kvartova</value></data>
+    <data name="Profile_RequestCount"><value>Broj zahteva</value></data>
+    <data name="Profile_Accepted"><value>Prihvaćeni: </value></data>
+    <data name="Profile_Rejected"><value>Odbijeni: </value></data>
+    <data name="Profile_Pending"><value>Na čekanju: </value></data>
+    <data name="Profile_AverageRating"><value>Prosečna recenzija</value></data>
+    <data name="Profile_Reviews"><value>Recenzije</value></data>
+    <data name="Profile_Rating"><value>Ocena</value></data>
+    <data name="Profile_Comment"><value>Komentar</value></data>
+    <data name="Profile_TotalAverageRating"><value>Ukupna prosečna ocena: </value></data>
+    <data name="Profile_AverageRatingLastYear"><value>Prosečna ocena u poslednjih godinu dana: </value></data>
 </root>
