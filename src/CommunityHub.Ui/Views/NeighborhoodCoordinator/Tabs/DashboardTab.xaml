@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
+             xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -66,7 +67,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Text="Dobrodošli nazad u aplikaciju!"
+                           Text="{ns:Loc Dashboard_Welcome}"
                            FontSize="24"
                            FontWeight="Bold"
                            Margin="20,20,20,15"/>
@@ -89,7 +90,7 @@
                             <TextBlock Text="{Binding PendingRequestsText}"
                                        FontSize="17"
                                        Margin="0,0,0,10"/>
-                            <Button Content="Pregledaj zahteve (Ctrl+2)"
+                            <Button Content="{ns:Loc Dashboard_ViewRequests}"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     FontSize="15"
                                     Padding="0"
@@ -105,7 +106,7 @@
                             CornerRadius="8"
                             Padding="12">
                         <StackPanel VerticalAlignment="Center">
-                            <Button Content="Registruj novi kvart (Ctrl+N)"
+                            <Button Content="{ns:Loc Dashboard_RegisterNeighborhood}"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     VerticalAlignment="Center"
                                     FontSize="15"
@@ -130,7 +131,7 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
-                                    <TextBlock Text="Kvart:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{ns:Loc Neighborhood_Label}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                     <ComboBox ItemsSource="{Binding Neighborhoods}"
                                               SelectedItem="{Binding SelectedReportNeighborhood}"
                                               DisplayMemberPath="Name"
@@ -140,17 +141,17 @@
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0">
-                                    <TextBlock Text="Od:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{ns:Loc Dashboard_DateFrom}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                     <DatePicker SelectedDate="{Binding ReportFrom}"
                                                 Style="{StaticResource DatePickerStyle}"
                                                 Width="140" Margin="0,0,12,0"/>
-                                    <TextBlock Text="Do:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{ns:Loc Dashboard_DateTo}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                     <DatePicker SelectedDate="{Binding ReportTo}"
                                                 Style="{StaticResource DatePickerStyle}"
                                                 Width="140"/>
                                 </StackPanel>
                             </Grid>
-                            <Button Content="Generiši izveštaj o rezervacijama  (Ctrl+I)"
+                            <Button Content="{ns:Loc Dashboard_GenerateReport}"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     FontSize="15"
                                     Padding="0"
@@ -171,19 +172,19 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                             <UniformGrid Columns="3" Margin="0,0,0,8">
-                                <ToggleButton Content="Servisi (Ctrl+S)" 
+                                <ToggleButton Content="{ns:Loc Dashboard_FilterServices}"
                                               IsChecked="{Binding ShowServiceFilter, Mode=TwoWay}" 
                                               Style="{StaticResource NotificationFilterToggleStyle}" 
                                               Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
                                               Margin="5,0,5,0"
                                               Cursor="Hand"/>
-                                <ToggleButton Content="Sastanci (Ctrl+M)" 
+                                <ToggleButton Content="{ns:Loc Dashboard_FilterMeetings}"
                                               IsChecked="{Binding ShowMeetingsFilter, Mode=TwoWay}" 
                                               Style="{StaticResource NotificationFilterToggleStyle}" 
                                               Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
                                               Margin="5,0,5,0"
                                               Cursor="Hand"/>
-                                <ToggleButton Content="Donacije (Ctrl+D)" 
+                                <ToggleButton Content="{ns:Loc Dashboard_FilterDonations}"
                                               IsChecked="{Binding ShowDonationsFilter, Mode=TwoWay}" 
                                               Style="{StaticResource NotificationFilterToggleStyle}" 
                                               Checked="FilterToggle_Changed" Unchecked="FilterToggle_Changed" 
@@ -243,7 +244,8 @@
                                                 <TextBlock Text="{Binding TypeLabel}"
                                                            FontSize="17"
                                                            FontWeight="SemiBold"
-                                                           VerticalAlignment="Center"/>
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
                                                 <TextBlock Text="{Binding DateText}"
                                                            FontSize="15"
                                                            VerticalAlignment="Center"

@@ -68,6 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="NewFolder\" />
     <Folder Include="ViewModels\Resident\Buildings\Ads\Browse\" />
     <Folder Include="ViewModels\Resident\Buildings\Create\" />
     <Folder Include="ViewModels\Shared\" />
@@ -76,9 +77,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources\Localization\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Views\Resident\Buildings\Ads\Create\SelectAdCategoryPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localization\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

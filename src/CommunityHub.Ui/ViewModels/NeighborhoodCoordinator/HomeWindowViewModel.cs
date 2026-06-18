@@ -33,6 +33,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
                 if (_selectedLanguageIndex == value) return;
                 _selectedLanguageIndex = value;
                 OnPropertyChanged();
+                ApplyLanguage();
             }
         }
 
@@ -55,6 +56,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
         {
             LogoutCommand = new RelayCommand(ExecuteLogout);
             LoadUser(userId);
+            ((App)System.Windows.Application.Current).ChangeLanguage("sr-RS");
         }
 
         public bool LoadUser(long userId)
@@ -64,6 +66,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
 
             UserDisplayName = $"{user.Name} {user.Surname} - Koordinator kvarta";
             return true;
+        }
+
+        private void ApplyLanguage()
+        {
+            string culture = SelectedLanguageIndex == 1 ? "en-US" : "sr-RS";
+            ((App)System.Windows.Application.Current).ChangeLanguage(culture);
         }
 
         private void ApplyTheme()

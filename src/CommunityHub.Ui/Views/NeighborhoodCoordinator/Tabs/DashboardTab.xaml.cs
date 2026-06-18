@@ -1,8 +1,9 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
-using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
+using System.Windows.Input;
 using System.Windows.Markup;
+using CommunityHub.Ui.Resources.Localization;
+using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 {
@@ -13,11 +14,27 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public DashboardTab()
         {
             InitializeComponent();
-            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
 
             _viewModel = new DashboardTabViewModel();
             DataContext = _viewModel;
             this.IsVisibleChanged += DashboardTab_IsVisibleChanged;
+            
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                if (TranslationSource.Instance.CurrentCulture != null)
+                {
+                    this.Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
+
+                    var tempFrom = _viewModel.ReportFrom;
+                    var tempTo = _viewModel.ReportTo;
+
+                    _viewModel.ReportFrom = null;
+                    _viewModel.ReportTo = null;
+
+                    _viewModel.ReportFrom = tempFrom;
+                    _viewModel.ReportTo = tempTo;
+                }
+            };
         }
 
         public void Initialize(long userId,

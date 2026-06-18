@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Dashboard_Welcome" xml:space="preserve">
+    <value>Dobro došli nazad u aplikaciju!</value>
+  </data>
+  <data name="Dashboard_ViewRequests" xml:space="preserve">
+    <value>Pregledaj zahteve (Ctrl+2)</value>
+  </data>
+  <data name="Dashboard_RegisterNeighborhood" xml:space="preserve">
+    <value>Registruj novi kvart (Ctrl+N)</value>
+  </data>
+  <data name="Dashboard_GenerateReport" xml:space="preserve">
+    <value>Generiši izveštaj o rezervacijama (Ctrl+I)</value>
+  </data>
+  <data name="Dashboard_FilterServices" xml:space="preserve">
+    <value>Servisi (Ctrl+S)</value>
+  </data>
+  <data name="Dashboard_FilterMeetings" xml:space="preserve">
+    <value>Sastanci (Ctrl+M)</value>
+  </data>
+  <data name="Dashboard_FilterDonations" xml:space="preserve">
+    <value>Donacije (Ctrl+D)</value>
+  </data>
+  <data name="Dashboard_DateFrom" xml:space="preserve">
+    <value>Od:</value>
+  </data>
+  <data name="Dashboard_DateTo" xml:space="preserve">
+    <value>Do:</value>
+  </data>
+  <data name="Dashboard_Neighborhood" xml:space="preserve">
+    <value>Kvart: {0}</value>
+  </data>
+  <data name="PendingRequests_Text" xml:space="preserve">
+    <value>Broj zahteva na čekanju - {0}</value>
+  </data>
+  <data name="Notification_TiedVoting_Type" xml:space="preserve">
+    <value>Izjednačeno glasanje</value>
+  </data>
+  <data name="Notification_TiedVoting_Deadline" xml:space="preserve">
+    <value>Rok za izbor: {0}</value>
+  </data>
+  <data name="Notification_TiedVoting_Description" xml:space="preserve">
+    <value>Glasanje za sastanak teme "{0}" u kvartu {1} je izjednačeno. Preostalo vreme za izbor termina: {2}.\nIzjednačeni datumi: {3}.</value>
+  </data>
+  <data name="Notification_TiedVoting_Action" xml:space="preserve">
+    <value>Izaberi termin</value>
+  </data>
+  <data name="Notification_Recommendation_Type" xml:space="preserve">
+    <value>Preporuka sistema</value>
+  </data>
+  <data name="Notification_Recommendation_Action" xml:space="preserve">
+    <value>Organizuj</value>
+  </data>
+  <data name="Notification_Recommendation_Welcome" xml:space="preserve">
+    <value>U kvartu {0} je najveći broj novih građana ({1} od {2}, {3}%).\nPredlog: Organizujte sastanak dobrodošlice.</value>
+  </data>
+  <data name="Notification_Recommendation_Motivation" xml:space="preserve">
+    <value>U kvartu {0} je najveći broj neaktivnih građana ({1} od {2}, {3}%).\nPredlog: Organizujte sastanak motivacije.</value>
+  </data>
+  <data name="Notification_Scheduled_Type" xml:space="preserve">
+    <value>Sastanak zakazan</value>
+  </data>
+  <data name="Notification_Scheduled_Date" xml:space="preserve">
+    <value>Datum: {0}</value>
+  </data>
+  <data name="Notification_Scheduled_Description" xml:space="preserve">
+    <value>Glasanje za sastanak teme "{0}" u kvartu {1} je završeno.\nKonačan termin: {2} u {3}.</value>
+  </data>
+  <data name="Notification_Scheduled_Action" xml:space="preserve">
+    <value>Prikaži sastanke</value>
+  </data>
+  <data name="Notification_Service_Type" xml:space="preserve">
+    <value>Servisna usluga</value>
+  </data>
+  <data name="Notification_Service_Date" xml:space="preserve">
+    <value>Datum: {0}</value>
+  </data>
+  <data name="Notification_Service_Description" xml:space="preserve">
+    <value>Serviser '{0}' je obavio uslugu "{1}". Trošak {2} RSD.\nOceniti možete još {3}.</value>
+  </data>
+  <data name="Notification_Service_Action" xml:space="preserve">
+    <value>Oceni</value>
+  </data>
+  <data name="Notification_EditReview_Type" xml:space="preserve">
+    <value>Izmena recenzije</value>
+  </data>
+  <data name="Notification_EditReview_Date" xml:space="preserve">
+    <value>Datum usluge: {0}</value>
+  </data>
+  <data name="Notification_EditReview_Description" xml:space="preserve">
+    <value>Recenzija za uslugu "{0}" servisera '{1}' može se izmeniti još {2}.\nTrenutna ocena: kvalitet {3}/5, komunikacija {4}/5 (prosek {5}/5).</value>
+  </data>
+  <data name="Notification_EditReview_Action" xml:space="preserve">
+    <value>Izmeni recenziju</value>
+  </data>
+  <data name="Notification_Donation_Type" xml:space="preserve">
+    <value>Donacija građana</value>
+  </data>
+  <data name="Notification_Donation_Date" xml:space="preserve">
+    <value>Datum: {0}</value>
+  </data>
+  <data name="Notification_Donation_Description" xml:space="preserve">
+    <value>Izvršena je uplata u iznosu od {0} RSD za budžet kvarta {1} (kategorija: {2}).</value>
+  </data>
+  <data name="Notification_Donation_Action" xml:space="preserve">
+    <value>Detalji budžeta</value>
+  </data>
+  <data name="MeetingTheme_Welcome" xml:space="preserve">
+    <value>Dobrodošlica</value>
+  </data>
+  <data name="MeetingTheme_Motivation" xml:space="preserve">
+    <value>Motivacija</value>
+  </data>
+  <data name="Report_SaveTitle" xml:space="preserve">
+    <value>Sačuvaj izveštaj</value>
+  </data>
+  <data name="Report_SaveFilter" xml:space="preserve">
+    <value>PDF fajlovi (*.pdf)|*.pdf</value>
+  </data>
+  <data name="Report_FileName" xml:space="preserve">
+    <value>izvestaj-rezervacije-{0}-{1}-{2}.pdf</value>
+  </data>
+  <data name="Report_Success_Title" xml:space="preserve">
+    <value>Izveštaj generisan</value>
+  </data>
+  <data name="Report_Success_Message" xml:space="preserve">
+    <value>Izveštaj je uspešno sačuvan. Da li želite da ga otvorite?</value>
+  </data>
+  <data name="Error_Title" xml:space="preserve">
+    <value>Greška</value>
+  </data>
+  <data name="Error_SelectNeighborhood" xml:space="preserve">
+    <value>Izaberite kvart za koji želite da generišete izveštaj.</value>
+  </data>
+  <data name="Error_SelectDates" xml:space="preserve">
+    <value>Izaberite opseg datuma za izveštaj.</value>
+  </data>
+  <data name="Error_DateOrder" xml:space="preserve">
+    <value>Početni datum mora biti pre krajnjeg.</value>
+  </data>
+  <data name="Error_Generate" xml:space="preserve">
+    <value>Greška pri generisanju izveštaja: {0}</value>
+  </data>
+  <data name="Success_Title" xml:space="preserve">
+    <value>Uspeh</value>
+  </data>
+  <data name="Review_EditSuccess" xml:space="preserve">
+    <value>Recenzija je uspešno izmenjena.</value>
+  </data>
+  <data name="Review_RateSuccess" xml:space="preserve">
+    <value>Usluga je uspešno ocenjena.</value>
+  </data>
+  <data name="Meeting_ScheduleSuccess" xml:space="preserve">
+    <value>Glasanje za novi sastanak je pokrenuto.</value>
+  </data>
+  <data name="Neighborhood_Label" xml:space="preserve">
+    <value>Kvart: </value>
+  </data>
+</root>

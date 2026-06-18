@@ -20,6 +20,7 @@ using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -94,11 +95,32 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 OnPropertyChanged(nameof(PendingRequestsText)); 
             }
         }
+        
+        public string PendingRequestsText => TranslationSource.Instance.Format("PendingRequests_Text", PendingRequestsCount);
 
-        public string PendingRequestsText => $"Broj zahteva na čekanju - {PendingRequestsCount}";
 
-        public DateTime? ReportFrom { get; set; }
-        public DateTime? ReportTo { get; set; }
+        private DateTime? _reportFrom;
+        public DateTime? ReportFrom
+        {
+            get => _reportFrom;
+            set
+            {
+                _reportFrom = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? _reportTo;
+        public DateTime? ReportTo
+        {
+            get => _reportTo;
+            set
+            {
+                _reportTo = value;
+                OnPropertyChanged();
+            }
+        }
+
         private NeighborhoodDto? _selectedReportNeighborhood;
         public NeighborhoodDto? SelectedReportNeighborhood
         {
@@ -115,6 +137,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             ViewRequestsCommand = new RelayCommand(ExecuteViewRequests);
             RegisterNeighborhoodCommand = new RelayCommand(ExecuteRegisterNeighborhood);
             GenerateReportCommand = new RelayCommand(ExecuteGenerateReport);
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => LoadDashboard();
         }
 
         private void ExecuteViewRequests()
@@ -158,7 +182,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
             catch (Exception ex)
             {
-                new InfoDialog("Greška", $"Greška pri generisanju izveštaja: {ex.Message}", window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], TranslationSource.Instance.Format("Error_Generate", ex.Message), window).ShowDialog();
             }
         }
 
@@ -169,19 +193,20 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             if (SelectedReportNeighborhood is null)
             {
-                new InfoDialog("Greška", "Izaberite kvart za koji želite da generišete izveštaj.", window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectNeighborhood"], window).ShowDialog();
+                
                 return false;
             }
 
             if (ReportFrom is null || ReportTo is null)
             {
-                new InfoDialog("Greška", "Izaberite opseg datuma za izveštaj.", window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectDates"], window).ShowDialog();
                 return false;
             }
 
             if (ReportFrom > ReportTo)
             {
-                new InfoDialog("Greška", "Početni datum mora biti pre krajnjeg.", window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_DateOrder"], window).ShowDialog();
                 return false;
             }
 
@@ -192,14 +217,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         private static string? ChooseSavePath(DateTime from, DateTime to, string neighborhoodName)
         {
-            var fromStr = from.ToString("dd.MM.yyyy");
-            var toStr = to.ToString("dd.MM.yyyy");
+            var fromStr = from.ToString("yyyy-MM-dd");
+            var toStr = to.ToString("yyyy-MM-dd");
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = "Sačuvaj izveštaj",
-                Filter = "PDF fajlovi (*.pdf)|*.pdf",
-                FileName = $"izvestaj-rezervacije-{neighborhoodName}-{fromStr}-{toStr}.pdf",
+                Title = TranslationSource.Instance["Report_SaveTitle"],
+                Filter = TranslationSource.Instance["Report_SaveFilter"],
+                FileName = TranslationSource.Instance.Format("Report_FileName", neighborhoodName, fromStr, toStr),
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads"
             };
 
@@ -209,8 +234,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void AskToOpenReport(Window window, string savePath)
         {
             var confirm = new ConfirmDialog(
-                "Izveštaj generisan",
-                "Izveštaj je uspešno sačuvan. Da li želite da ga otvorite?",
+                TranslationSource.Instance["Report_Success_Title"],
+                TranslationSource.Instance["Report_Success_Message"],
                 window);
 
             if (confirm.ShowDialog() == true)
@@ -234,6 +259,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             _navigateToMeetingsAction = navigateToMeetingsAction;
             _navigateToRequestsAction = navigateToRequests;
             _coordinator = _userService.Get(_coordinatorId);
+            ReportFrom = DateTime.Today.AddMonths(-1);
+            ReportTo = DateTime.Today;
 
             LoadDashboard();
         }
@@ -241,6 +268,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadDashboard()
         {
+            LoadNeighborhoodsForReports();
             LoadPendingRequests();
             LoadNotifications();
             LoadNeighborhoodsForReports();
@@ -251,9 +279,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             Neighborhoods.Clear();
             var list = _neighborhoodService.GetByCoordinator(_coordinatorId);
             foreach (var n in list) Neighborhoods.Add(n);
-
-            ReportFrom = DateTime.Today.AddMonths(-1);
-            ReportTo = DateTime.Today;
         }
 
         private void LoadPendingRequests()
@@ -290,9 +315,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             int maxCount = new[] { newCount, inactiveCount, records.Count(r => r.TrustStatus == TrustStatus.Active), records.Count(r => r.TrustStatus == TrustStatus.Prominent), records.Count(r => r.TrustStatus == TrustStatus.Trustworthy) }.Max();
 
             if (maxCount == newCount && newCount > 0)
-                list.Add(CreateRecommendationNotification(neighborhood, "Organizujte sastanak dobrodošlice", MeetingTheme.Welcome, newCount, total));
+                list.Add(CreateRecommendationNotification(neighborhood, "", MeetingTheme.Welcome, newCount, total));
             else if (maxCount == inactiveCount && inactiveCount > 0)
-                list.Add(CreateRecommendationNotification(neighborhood, "Organizujte sastanak motivacije", MeetingTheme.Motivation, inactiveCount, total));
+                list.Add(CreateRecommendationNotification(neighborhood, "", MeetingTheme.Motivation, inactiveCount, total));
         }
 
         private void AddTiedMeetingNotifications(List<DashboardNotification> list)
@@ -307,17 +332,15 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             var deadline = meeting.DateRangeStart.ToDateTime(meeting.MeetingTime).AddHours(-3);
             var remainingText = FormatTimeSpan(deadline - DateTime.Now);
             var datesText = string.Join(", ", _neighborhoodMeetingService.GetTiedDatesForMeeting(meeting.Id)
-                .Select(d => d.ToString("dd.MM.yyyy.")));
+                .Select(d => TranslationSource.Instance.FormatDate(d)));
 
             return new DashboardNotification
             {
                 Icon = "\uf017",
-                TypeLabel = "Izjednačeno glasanje",
-                DateText = $"Rok za izbor: {deadline:dd.MM.yyyy. HH:mm}",
-                Description = $"Glasanje za sastanak teme \"{ThemeDisplay(meeting.Theme)}\" u kvartu {meeting.Neighborhood.Name} " +
-                              $"je izjednačeno. Preostalo vreme za izbor termina: {remainingText}.\n" +
-                              $"Izjednačeni datumi: {datesText}.",
-                ActionLabel = "Izaberi termin",
+                TypeLabel = TranslationSource.Instance["Notification_TiedVoting_Type"],
+                DateText = TranslationSource.Instance.Format("Notification_TiedVoting_Deadline", TranslationSource.Instance.FormatDateTime(deadline)),
+                Description = TranslationSource.Instance.Format("Notification_TiedVoting_Description", ThemeDisplay(meeting.Theme), meeting.Neighborhood.Name, remainingText, datesText),
+                ActionLabel = TranslationSource.Instance["Notification_TiedVoting_Action"],
                 ActionCommand = new RelayCommand(() => _navigateToMeetingsAction?.Invoke(meeting.Neighborhood.Id)),
                 Category = DashboardNotification.NotificationCategory.Meetings,
             };
@@ -327,18 +350,18 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             double pct = Math.Round((double)count / total * 100, 2);
             string desc = theme == MeetingTheme.Welcome
-                ? $"U kvartu {neighborhood.Name} je najveći broj novih građana ({count} od {total}, {pct}%).\nPredlog: Organizujte sastanak dobrodošlice."
+                ? TranslationSource.Instance.Format("Notification_Recommendation_Welcome", neighborhood.Name, count, total, pct)
                 : theme == MeetingTheme.Motivation
-                    ? $"U kvartu {neighborhood.Name} je najveći broj neaktivnih građana ({count} od {total}, {pct}%).\nPredlog: Organizujte sastanak motivacije."
+                    ? TranslationSource.Instance.Format("Notification_Recommendation_Motivation", neighborhood.Name, count, total, pct)
                     : $"{descriptionSuffix} ({count} od {total}, {pct}%).";
 
             return new DashboardNotification
             {
                 Icon = "\uf0eb",
-                TypeLabel = "Preporuka sistema",
-                DateText = $"Kvart: {neighborhood.Name}",
+                TypeLabel = TranslationSource.Instance["Notification_Recommendation_Type"],
+                DateText = TranslationSource.Instance.Format("Dashboard_Neighborhood", neighborhood.Name),
                 Description = desc,
-                ActionLabel = "Organizuj",
+                ActionLabel = TranslationSource.Instance["Notification_Recommendation_Action"],
                 ActionCommand = new RelayCommand(() => OpenScheduleMeetingWindow(neighborhood, theme)),
                 Category = DashboardNotification.NotificationCategory.Meetings,
             };
@@ -351,17 +374,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 list.Add(CreateScheduledMeetingNotification(meeting));
         }
 
+
         private DashboardNotification CreateScheduledMeetingNotification(NeighborhoodMeetingDto meeting)
         {
             return new DashboardNotification
             {
                 Icon = "\uf274",
-                TypeLabel = "Sastanak zakazan",
-                DateText = $"Datum: {meeting.ScheduledDate:dd.MM.yyyy.}",
-                Description = $"Glasanje za sastanak teme \"{ThemeDisplay(meeting.Theme)}\" u kvartu {meeting.Neighborhood.Name} " +
-                              $"je završeno.\n" +
-                              $"Konačan termin: {meeting.ScheduledDate:dd.MM.yyyy.} u {meeting.MeetingTime:HH:mm}.",
-                ActionLabel = "Prikaži sastanke",
+                TypeLabel = TranslationSource.Instance["Notification_Scheduled_Type"],
+                DateText = TranslationSource.Instance.Format("Notification_Scheduled_Date", TranslationSource.Instance.FormatDate(meeting.ScheduledDate)),
+                Description = TranslationSource.Instance.Format("Notification_Scheduled_Description", ThemeDisplay(meeting.Theme), meeting.Neighborhood.Name, TranslationSource.Instance.FormatDate(meeting.ScheduledDate), TranslationSource.Instance.FormatTime(meeting.MeetingTime)),
+                ActionLabel = TranslationSource.Instance["Notification_Scheduled_Action"],
                 ActionCommand = new RelayCommand(() => _navigateToMeetingsAction?.Invoke(meeting.Neighborhood.Id)),
                 Category = DashboardNotification.NotificationCategory.Meetings,
             };
@@ -388,10 +410,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return new DashboardNotification
             {
                 Icon = "\uf7d9",
-                TypeLabel = "Servisna usluga",
-                DateText = $"Datum: {job.ScheduledDate:dd.MM.yyyy.}",
-                Description = $"Serviser '{providerName}' je obavio uslugu \"{job.Listing.ServiceName}\". Trošak {job.TotalPrice:N2} RSD. \nOceniti možete još {FormatTimeSpan(deadline - DateTime.Now)}.",
-                ActionLabel = "Oceni",
+                TypeLabel = TranslationSource.Instance["Notification_Service_Type"],
+                DateText = TranslationSource.Instance.Format("Notification_Service_Date", TranslationSource.Instance.FormatDate(job.ScheduledDate.ToDateTime(TimeOnly.MinValue))),
+                Description = TranslationSource.Instance.Format("Notification_Service_Description", providerName, job.Listing.ServiceName, $"{job.TotalPrice:N2}", FormatTimeSpan(deadline - DateTime.Now)),
+                ActionLabel = TranslationSource.Instance["Notification_Service_Action"],
                 ActionCommand = new RelayCommand(() => OpenReviewWindow(job, isEdit: false)),
                 Category = DashboardNotification.NotificationCategory.Service,
             };
@@ -412,14 +434,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return new DashboardNotification
             {
                 Icon = "\uf7d9",
-                TypeLabel = "Izmena recenzije",
-                DateText = $"Datum usluge: {job.ScheduledDate:dd.MM.yyyy.}",
-                Description = $"Recenzija za uslugu \"{job.Listing.ServiceName}\" servisera '{providerName}' " +
-                                  $"može se izmeniti još {FormatTimeSpan(deadline - DateTime.Now)}. \n" +
-                                  $"Trenutna ocena: kvalitet {job.Review.QualityRating}/5, " +
-                                  $"komunikacija {job.Review.CommunicationRating}/5 " +
-                                  $"(prosek {((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}/5).",
-                ActionLabel = "Izmeni recenziju",
+                TypeLabel = TranslationSource.Instance["Notification_EditReview_Type"],
+                DateText = TranslationSource.Instance.Format("Notification_EditReview_Date", TranslationSource.Instance.FormatDate(job.ScheduledDate.ToDateTime(TimeOnly.MinValue))),
+                Description = TranslationSource.Instance.Format("Notification_EditReview_Description", job.Listing.ServiceName, providerName, FormatTimeSpan(deadline - DateTime.Now), job.Review.QualityRating, job.Review.CommunicationRating, $"{((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}"),
+                ActionLabel = TranslationSource.Instance["Notification_EditReview_Action"],
                 ActionCommand = new RelayCommand(() => OpenReviewWindow(job, isEdit: true)),
                 Category = DashboardNotification.NotificationCategory.Service,
             };
@@ -437,12 +455,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return new DashboardNotification
             {
                 Icon = "\uf0d6",
-                TypeLabel = "Donacija građana",
-                DateText = $"Datum: {donation.DonationDate:dd.MM.yyyy.}",
-                Description = $"Izvršena je uplata u iznosu od {donation.Amount:N2} RSD " +
-                              $"za budžet kvarta {donation.Neighborhood.Name} " +
-                              $"(kategorija: {donation.BudgetCategory.Name}).",
-                ActionLabel = "Detalji budžeta",
+                TypeLabel = TranslationSource.Instance["Notification_Donation_Type"],
+                DateText = TranslationSource.Instance.Format("Notification_Donation_Date", TranslationSource.Instance.FormatDate(donation.DonationDate)),
+                Description = TranslationSource.Instance.Format("Notification_Donation_Description", $"{donation.Amount:N2}", donation.Neighborhood.Name, donation.BudgetCategory.Name),
+                ActionLabel = TranslationSource.Instance["Notification_Donation_Action"],
                 ActionCommand = new RelayCommand(() => _navigateToBudgetAction?.Invoke(donation.Neighborhood.Id, donation.BudgetCategory.Id)),
                 Category = DashboardNotification.NotificationCategory.Donations,
             };
@@ -460,8 +476,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     (x.Category == DashboardNotification.NotificationCategory.Donations && ShowDonationsFilter))
                 .ToList();
 
-            var recommendations = filtered.Where(x => x.TypeLabel == "Preporuka sistema").ToList();
-            var meetings = filtered.Where(x => x.Category == DashboardNotification.NotificationCategory.Meetings && x.TypeLabel != "Preporuka sistema").ToList();
+            var recommendations = filtered.Where(x => x.TypeLabel == TranslationSource.Instance["Notification_Recommendation_Type"]).ToList();
+            var meetings = filtered.Where(x => x.Category == DashboardNotification.NotificationCategory.Meetings
+                                            && x.TypeLabel != TranslationSource.Instance["Notification_Recommendation_Type"]).ToList();
             var services = filtered.Where(x => x.Category == DashboardNotification.NotificationCategory.Service).ToList();
             var donations = filtered.Where(x => x.Category == DashboardNotification.NotificationCategory.Donations).ToList();
 
@@ -481,34 +498,58 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         private static string FormatTimeSpan(TimeSpan remaining)
         {
-            if (remaining <= TimeSpan.Zero) return "manje od minut";
+            bool isEnglish = TranslationSource.Instance.CurrentCulture?.Name == "en-US";
+            if (remaining <= TimeSpan.Zero) return isEnglish ? "less than a minute" : "manje od minut";
 
             int totalDays = (int)remaining.TotalDays;
             int hours = remaining.Hours;
             int minutes = remaining.Minutes;
 
+            string andWord = isEnglish ? "and" : "i";
+            string minWord = "min";
+
             if (totalDays >= 1 && hours > 0)
-                return $"{totalDays} {Dan(totalDays)} i {hours} {Sat(hours)}";
+                return $"{totalDays} {Dan(totalDays)} {andWord} {hours} {Sat(hours)}";
 
             if (totalDays >= 1)
                 return $"{totalDays} {Dan(totalDays)}";
 
             if (hours >= 1 && minutes > 0)
-                return $"{hours} {Sat(hours)} i {minutes} min";
+                return $"{hours} {Sat(hours)} {andWord} {minutes} {minWord}";
 
             if (hours >= 1)
                 return $"{hours} {Sat(hours)}";
 
-            return $"{minutes} min";
+            return $"{minutes} {minWord}";
         }
 
-        private static string Dan(int n) => n == 1 ? "dan" : "dana";
-        private static string Sat(int n) => n == 1 ? "sat" : n is 2 or 3 or 4 ? "sata" : "sati";
+        private static string Dan(int n)
+        {
+            bool isEnglish = TranslationSource.Instance.CurrentCulture?.Name == "en-US";
+            if (isEnglish) return n == 1 ? "day" : "days";
+
+            int lastDigit = n % 10;
+            int lastTwo = n % 100;
+            if (lastDigit == 1 && lastTwo != 11) return "dan";
+            return "dana";
+        }
+
+        private static string Sat(int n)
+        {
+            bool isEnglish = TranslationSource.Instance.CurrentCulture?.Name == "en-US";
+            if (isEnglish) return n == 1 ? "hour" : "hours";
+
+            int lastDigit = n % 10;
+            int lastTwo = n % 100;
+            if (lastDigit == 1 && lastTwo != 11) return "sat";
+            if (lastDigit >= 2 && lastDigit <= 4 && (lastTwo < 10 || lastTwo > 20)) return "sata";
+            return "sati";
+        }
 
         private static string ThemeDisplay(MeetingTheme theme) => theme switch
         {
-            MeetingTheme.Welcome => "Dobrodošlica",
-            MeetingTheme.Motivation => "Motivacija",
+            MeetingTheme.Welcome => TranslationSource.Instance["MeetingTheme_Welcome"],
+            MeetingTheme.Motivation => TranslationSource.Instance["MeetingTheme_Motivation"],
             _ => theme.ToString()
         };
 
@@ -523,7 +564,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             var window = new ProviderReviewWindow(job, _coordinator) { Owner = owner };
             if (window.ShowDialog() == true)
             {
-                new InfoDialog("Uspeh", isEdit ? "Recenzija je uspešno izmenjena." : "Usluga je uspešno ocenjena.", owner).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Success_Title"], isEdit ? TranslationSource.Instance["Review_EditSuccess"] : TranslationSource.Instance["Review_RateSuccess"], owner).ShowDialog();
                 LoadNotifications();
             }
         }
@@ -534,7 +575,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             var window = new ScheduleMeetingWindow(neighborhood, theme) { Owner = owner };
             if (window.ShowDialog() == true)
             {
-                new InfoDialog("Uspeh", "Glasanje za novi sastanak je pokrenuto.", owner).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Success_Title"], TranslationSource.Instance["Meeting_ScheduleSuccess"], owner).ShowDialog();
                 LoadNotifications();
             }
         }

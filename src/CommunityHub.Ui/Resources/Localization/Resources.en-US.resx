@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Dashboard_Welcome" xml:space="preserve">
+    <value>Welcome back to the application!</value>
+  </data>
+  <data name="Dashboard_ViewRequests" xml:space="preserve">
+    <value>View requests (Ctrl+2)</value>
+  </data>
+  <data name="Dashboard_RegisterNeighborhood" xml:space="preserve">
+    <value>Register new neighborhood (Ctrl+N)</value>
+  </data>
+  <data name="Dashboard_GenerateReport" xml:space="preserve">
+    <value>Generate reservations report (Ctrl+I)</value>
+  </data>
+  <data name="Dashboard_FilterServices" xml:space="preserve">
+    <value>Services (Ctrl+S)</value>
+  </data>
+  <data name="Dashboard_FilterMeetings" xml:space="preserve">
+    <value>Meetings (Ctrl+M)</value>
+  </data>
+  <data name="Dashboard_FilterDonations" xml:space="preserve">
+    <value>Donations (Ctrl+D)</value>
+  </data>
+  <data name="Dashboard_DateFrom" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="Dashboard_DateTo" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="Dashboard_Neighborhood" xml:space="preserve">
+    <value>Neighborhood: {0}</value>
+  </data>
+  <data name="PendingRequests_Text" xml:space="preserve">
+    <value>Pending requests - {0}</value>
+  </data>
+  <data name="Notification_TiedVoting_Type" xml:space="preserve">
+    <value>Tied vote</value>
+  </data>
+  <data name="Notification_TiedVoting_Deadline" xml:space="preserve">
+    <value>Selection deadline: {0}</value>
+  </data>
+  <data name="Notification_TiedVoting_Description" xml:space="preserve">
+    <value>The vote for the "{0}" meeting in neighborhood {1} is tied. Time remaining: {2}.\nTied dates: {3}.</value>
+  </data>
+  <data name="Notification_TiedVoting_Action" xml:space="preserve">
+    <value>Select date</value>
+  </data>
+  <data name="Notification_Recommendation_Type" xml:space="preserve">
+    <value>System recommendation</value>
+  </data>
+  <data name="Notification_Recommendation_Action" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="Notification_Recommendation_Welcome" xml:space="preserve">
+    <value>Neighborhood {0} has the most new residents ({1} of {2}, {3}%).\nSuggestion: Schedule a welcome meeting.</value>
+  </data>
+  <data name="Notification_Recommendation_Motivation" xml:space="preserve">
+    <value>Neighborhood {0} has the most inactive residents ({1} of {2}, {3}%).\nSuggestion: Schedule a motivation meeting.</value>
+  </data>
+  <data name="Notification_Scheduled_Type" xml:space="preserve">
+    <value>Meeting scheduled</value>
+  </data>
+  <data name="Notification_Scheduled_Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="Notification_Scheduled_Description" xml:space="preserve">
+    <value>The vote for the "{0}" meeting in neighborhood {1} has ended.\nFinal date: {2} at {3}.</value>
+  </data>
+  <data name="Notification_Scheduled_Action" xml:space="preserve">
+    <value>View meetings</value>
+  </data>
+  <data name="Notification_Service_Type" xml:space="preserve">
+    <value>Service booking</value>
+  </data>
+  <data name="Notification_Service_Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="Notification_Service_Description" xml:space="preserve">
+    <value>Provider '{0}' completed service "{1}". Cost: {2} RSD.\nYou can rate it for another {3}.</value>
+  </data>
+  <data name="Notification_Service_Action" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Notification_EditReview_Type" xml:space="preserve">
+    <value>Edit review</value>
+  </data>
+  <data name="Notification_EditReview_Date" xml:space="preserve">
+    <value>Service date: {0}</value>
+  </data>
+  <data name="Notification_EditReview_Description" xml:space="preserve">
+    <value>Review for service "{0}" by '{1}' can be edited for another {2}.\nCurrent rating: quality {3}/5, communication {4}/5 (average {5}/5).</value>
+  </data>
+  <data name="Notification_EditReview_Action" xml:space="preserve">
+    <value>Edit review</value>
+  </data>
+  <data name="Notification_Donation_Type" xml:space="preserve">
+    <value>Citizen donation</value>
+  </data>
+  <data name="Notification_Donation_Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="Notification_Donation_Description" xml:space="preserve">
+    <value>A payment of {0} RSD was made to neighborhood {1} budget (category: {2}).</value>
+  </data>
+  <data name="Notification_Donation_Action" xml:space="preserve">
+    <value>Budget details</value>
+  </data>
+  <data name="MeetingTheme_Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="MeetingTheme_Motivation" xml:space="preserve">
+    <value>Motivation</value>
+  </data>
+  <data name="Report_SaveTitle" xml:space="preserve">
+    <value>Save report</value>
+  </data>
+  <data name="Report_SaveFilter" xml:space="preserve">
+    <value>PDF files (*.pdf)|*.pdf</value>
+  </data>
+  <data name="Report_FileName" xml:space="preserve">
+    <value>reservations-report-{0}-{1}-{2}.pdf</value>
+  </data>
+  <data name="Report_Success_Title" xml:space="preserve">
+    <value>Report generated</value>
+  </data>
+  <data name="Report_Success_Message" xml:space="preserve">
+    <value>Report saved successfully. Would you like to open it?</value>
+  </data>
+  <data name="Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Error_SelectNeighborhood" xml:space="preserve">
+    <value>Please select a neighborhood for the report.</value>
+  </data>
+  <data name="Error_SelectDates" xml:space="preserve">
+    <value>Please select a date range for the report.</value>
+  </data>
+  <data name="Error_DateOrder" xml:space="preserve">
+    <value>Start date must be before end date.</value>
+  </data>
+  <data name="Error_Generate" xml:space="preserve">
+    <value>Error generating report: {0}</value>
+  </data>
+  <data name="Success_Title" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Review_EditSuccess" xml:space="preserve">
+    <value>Review updated successfully.</value>
+  </data>
+  <data name="Review_RateSuccess" xml:space="preserve">
+    <value>Service rated successfully.</value>
+  </data>
+  <data name="Meeting_ScheduleSuccess" xml:space="preserve">
+    <value>Voting for a new meeting has started.</value>
+  </data>
+  <data name="Neighborhood_Label" xml:space="preserve">
+    <value>Neighborhood: </value>
+  </data>
+</root>
