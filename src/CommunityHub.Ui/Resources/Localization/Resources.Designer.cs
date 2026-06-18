@@ -61,6 +61,42 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Svi brojevi.
+        /// </summary>
+        internal static string Both {
+            get {
+                return ResourceManager.GetString("Both", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adresa.
+        /// </summary>
+        internal static string Common_Address {
+            get {
+                return ResourceManager.GetString("Common_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ime.
+        /// </summary>
+        internal static string Common_Name {
+            get {
+                return ResourceManager.GetString("Common_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prezime.
+        /// </summary>
+        internal static string Common_Surname {
+            get {
+                return ResourceManager.GetString("Common_Surname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Od:.
         /// </summary>
         internal static string Dashboard_DateFrom {
@@ -196,6 +232,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parni brojevi.
+        /// </summary>
+        internal static string Even {
+            get {
+                return ResourceManager.GetString("Even", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Glasanje za novi sastanak je pokrenuto..
         /// </summary>
         internal static string Meeting_ScheduleSuccess {
@@ -228,6 +273,96 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Neighborhood_Label {
             get {
                 return ResourceManager.GetString("Neighborhood_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum pristupa.
+        /// </summary>
+        internal static string Neighborhoods_AccessDate {
+            get {
+                return ResourceManager.GetString("Neighborhoods_AccessDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis kvarta.
+        /// </summary>
+        internal static string Neighborhoods_Description {
+            get {
+                return ResourceManager.GetString("Neighborhoods_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Krajnji broj.
+        /// </summary>
+        internal static string Neighborhoods_EndNumber {
+            get {
+                return ResourceManager.GetString("Neighborhoods_EndNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Galerija slika.
+        /// </summary>
+        internal static string Neighborhoods_Gallery {
+            get {
+                return ResourceManager.GetString("Neighborhoods_Gallery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spisak članova.
+        /// </summary>
+        internal static string Neighborhoods_MemberList {
+            get {
+                return ResourceManager.GetString("Neighborhoods_MemberList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moji kvartovi.
+        /// </summary>
+        internal static string Neighborhoods_MyNeighborhoods {
+            get {
+                return ResourceManager.GetString("Neighborhoods_MyNeighborhoods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strana.
+        /// </summary>
+        internal static string Neighborhoods_Side {
+            get {
+                return ResourceManager.GetString("Neighborhoods_Side", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Početni broj.
+        /// </summary>
+        internal static string Neighborhoods_StartNumber {
+            get {
+                return ResourceManager.GetString("Neighborhoods_StartNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spisak ulica.
+        /// </summary>
+        internal static string Neighborhoods_StreetList {
+            get {
+                return ResourceManager.GetString("Neighborhoods_StreetList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naziv ulice.
+        /// </summary>
+        internal static string Neighborhoods_StreetName {
+            get {
+                return ResourceManager.GetString("Neighborhoods_StreetName", resourceCulture);
             }
         }
         
@@ -444,6 +579,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Notification_TiedVoting_Type {
             get {
                 return ResourceManager.GetString("Notification_TiedVoting_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neparni brojevi.
+        /// </summary>
+        internal static string Odd {
+            get {
+                return ResourceManager.GetString("Odd", resourceCulture);
             }
         }
         

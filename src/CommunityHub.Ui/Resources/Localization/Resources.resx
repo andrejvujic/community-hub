@@ -273,4 +273,20 @@
   <data name="Neighborhood_Label" xml:space="preserve">
     <value>Kvart: </value>
   </data>
+  <data name="Neighborhoods_MyNeighborhoods"><value>Moji kvartovi</value></data>
+    <data name="Neighborhoods_Description"><value>Opis kvarta</value></data>
+    <data name="Neighborhoods_Gallery"><value>Galerija slika</value></data>
+    <data name="Neighborhoods_StreetList"><value>Spisak ulica</value></data>
+    <data name="Neighborhoods_StreetName"><value>Naziv ulice</value></data>
+    <data name="Neighborhoods_StartNumber"><value>Početni broj</value></data>
+    <data name="Neighborhoods_EndNumber"><value>Krajnji broj</value></data>
+    <data name="Neighborhoods_Side"><value>Strana</value></data>
+    <data name="Neighborhoods_MemberList"><value>Spisak članova</value></data>
+    <data name="Neighborhoods_AccessDate"><value>Datum pristupa</value></data>
+    <data name="Common_Name"><value>Ime</value></data>
+    <data name="Common_Surname"><value>Prezime</value></data>
+    <data name="Common_Address"><value>Adresa</value></data>
+    <data name="Even"><value>Parni brojevi</value></data>
+    <data name="Odd"><value>Neparni brojevi</value></data>
+    <data name="Both"><value>Svi brojevi</value></data>
 </root>

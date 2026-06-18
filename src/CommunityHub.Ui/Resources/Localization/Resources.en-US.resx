@@ -273,4 +273,20 @@
   <data name="Neighborhood_Label" xml:space="preserve">
     <value>Neighborhood: </value>
   </data>
+  <data name="Neighborhoods_MyNeighborhoods"><value>My neighborhoods</value></data>
+    <data name="Neighborhoods_Description"><value>Neighborhood description</value></data>
+    <data name="Neighborhoods_Gallery"><value>Photo gallery</value></data>
+    <data name="Neighborhoods_StreetList"><value>Street list</value></data>
+    <data name="Neighborhoods_StreetName"><value>Street name</value></data>
+    <data name="Neighborhoods_StartNumber"><value>Start number</value></data>
+    <data name="Neighborhoods_EndNumber"><value>End number</value></data>
+    <data name="Neighborhoods_Side"><value>Side</value></data>
+    <data name="Neighborhoods_MemberList"><value>Member list</value></data>
+    <data name="Neighborhoods_AccessDate"><value>Access date</value></data>
+    <data name="Common_Name"><value>Name</value></data>
+    <data name="Common_Surname"><value>Surname</value></data>
+    <data name="Common_Address"><value>Address</value></data>
+    <data name="Even"><value>Even numbers</value></data>
+    <data name="Odd"><value>Odd numbers</value></data>
+    <data name="Both"><value>All numbers</value></data>
 </root>

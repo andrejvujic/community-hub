@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
@@ -17,6 +18,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             DataContext = _viewModel;
 
             this.IsVisibleChanged += NeighborhoodsTab_IsVisibleChanged;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                if (MembersDataGrid != null && MembersDataGrid.ItemsSource != null)
+                {
+                    MembersDataGrid.Items.Refresh();
+                }
+            };
         }
 
         public void Initialize(long coordinatorId)
