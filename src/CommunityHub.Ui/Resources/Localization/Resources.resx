@@ -324,4 +324,38 @@
     <data name="Waiting"><value>Na čekanju</value></data>
     <data name="Accepted"><value>Prihvaćen</value></data>
     <data name="Rejected"><value>Odbijen</value></data>
+
+    <data name="Statistics_Title"><value>Statistika</value></data>
+    <data name="Statistics_TotalCitizens"><value>Ukupan broj građana: </value></data>
+    <data name="Statistics_NewCitizens"><value>Broj novih građana: </value></data>
+    <data name="Statistics_InactiveCitizens"><value>Broj neaktivnih građana: </value></data>
+    <data name="Statistics_ActiveCitizens"><value>Broj aktivnih građana: </value></data>
+    <data name="Statistics_ProminentCitizens"><value>Broj istaknutih građana: </value></data>
+    <data name="Statistics_TrustworthyCitizens"><value>Broj građana od poverenja: </value></data>
+    <data name="Statistics_SystemRecommendation"><value>Preporuka sistema</value></data>
+    <data name="Statistics_ScheduleWelcome"><value>Zakaži sastanak dobrodošlice</value></data>
+    <data name="Statistics_ScheduleMotivation"><value>Zakaži sastanak motivacije</value></data>
+    <data name="Statistics_WelcomeRecommendation"><value>U kvartu {0} je primećeno da je najveći broj novih građana.\nPredlažemo vam da zakažete sastanak dobrodošlice.</value></data>
+    <data name="Statistics_MotivationRecommendation"><value>U kvartu {0} je primećeno da je najveći broj neaktivnih građana.\nPredlažemo vam da zakažete sastanak motivacije.</value></data>
+
+    <data name="Meetings_Title"><value>Sastanci</value></data>
+    <data name="Meetings_ScheduleNew"><value>Zakaži novi sastanak (Ctrl + N)</value></data>
+    <data name="Meetings_Theme"><value>Tema</value></data>
+    <data name="Meetings_Time"><value>Vreme</value></data>
+    <data name="Meetings_DateRange"><value>Datum-opseg</value></data>
+    <data name="Meetings_Status"><value>Stanje</value></data>
+    <data name="Meetings_TiedTooltip"><value>Nerešen broj glasova! Potreban odabir konačnog datuma.</value></data>
+    <data name="Meetings_SelectFinalDate"><value>Odredite konačan termin</value></data>
+    <data name="Meetings_ConfirmFinalDate"><value>Potvrdite konačan termin</value></data>
+    <data name="Meetings_TiedTitle"><value>Izjednačeni termini</value></data>
+    <data name="Meetings_TiedMessage"><value>Postoji izjednačen broj glasova. Odaberite jedan od termina.</value></data>
+    <data name="Meetings_ConfirmTitle"><value>Potvrda termina</value></data>
+    <data name="Meetings_ConfirmMessage"><value>Da li ste sigurni da želite da potvrdite ovaj termin?</value></data>
+    <data name="Meetings_ConfirmedSuccess"><value>Termin je uspešno zakazan.</value></data>
+
+    <data name="Welcome"><value>Dobrodošlica</value></data>
+    <data name="Motivation"><value>Motivacija</value></data>
+    <data name="InPreparation"><value>U pripremi</value></data>
+    <data name="Scheduled"><value>Zakazan</value></data>
+    <data name="Cancelled"><value>Otkazan</value></data>
 </root>

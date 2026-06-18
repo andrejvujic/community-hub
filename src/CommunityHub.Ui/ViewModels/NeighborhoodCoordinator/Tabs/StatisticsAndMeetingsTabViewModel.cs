@@ -10,6 +10,7 @@ using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -168,12 +169,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public bool ShowAnyRecommendation => ShowWelcomeRecommendation || ShowMotivationRecommendation;
 
         public string WelcomeRecommendationText =>
-            $"U kvartu {SelectedNeighborhood?.Name} je primećeno da je najveći broj novih građana.\n" +
-            $"Predlažemo vam da zakažete sastanak dobrodošlice.";
+            TranslationSource.Instance.Format("Statistics_WelcomeRecommendation", SelectedNeighborhood?.Name);
 
         public string MotivationRecommendationText =>
-            $"U kvartu {SelectedNeighborhood?.Name} je primećeno da je najveći broj neaktivnih građana.\n" +
-            $"Predlažemo vam da zakažete sastanak motivacije.";
+            TranslationSource.Instance.Format("Statistics_MotivationRecommendation", SelectedNeighborhood?.Name);
 
         private NeighborhoodMeetingDto? _selectedMeeting;
         public NeighborhoodMeetingDto? SelectedMeeting
@@ -191,8 +190,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         new InfoDialog(
-                            "Izjednačeni termini",
-                            "Postoji izjednačen broj glasova. Odaberite jedan od termina.",
+                            TranslationSource.Instance["Meetings_TiedTitle"],
+                            TranslationSource.Instance["Meetings_TiedMessage"],
                             GetActiveWindow()
                         ).ShowDialog();
                     });
@@ -222,6 +221,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             ScheduleWelcomeCommand = new RelayCommand(() => OpenScheduleWindow(MeetingTheme.Welcome));
             ScheduleMotivationCommand = new RelayCommand(() => OpenScheduleWindow(MeetingTheme.Motivation));
             ConfirmTiedDateCommand = new RelayCommand(ExecuteConfirmTiedDate, () => CanConfirmTiedDate);
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(WelcomeRecommendationText));
+                OnPropertyChanged(nameof(MotivationRecommendationText));
+            };
         }
 
         public void Initialize(long coordinatorId)
@@ -319,7 +324,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (window.ShowDialog() == true)
             {
                 LoadMeetings();
-                new InfoDialog("Uspeh", "Glasanje za novi sastanak je pokrenuto.", owner).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Success_Title"], TranslationSource.Instance["Meeting_ScheduleSuccess"], owner).ShowDialog();
             }
 
         }
@@ -329,10 +334,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedMeeting is null || SelectedTiedDateOption is null) return;
 
             var owner = GetActiveWindow();
-
             var confirmDialog = new ConfirmDialog(
-                "Potvrda termina",
-                "Da li ste sigurni da želite da potvrdite ovaj termin?",
+                TranslationSource.Instance["Meetings_ConfirmTitle"],
+                TranslationSource.Instance["Meetings_ConfirmMessage"],
                 owner);
 
             if (confirmDialog.ShowDialog() != true) return;
@@ -341,7 +345,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             _meetingService.UpdateStatus(SelectedMeeting.Id, MeetingStatus.Scheduled);
             LoadMeetings();
 
-            new InfoDialog("Uspeh", "Termin je uspešno zakazan.", owner).ShowDialog();
+            new InfoDialog(TranslationSource.Instance["Success_Title"], TranslationSource.Instance["Meetings_ConfirmedSuccess"], owner).ShowDialog();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

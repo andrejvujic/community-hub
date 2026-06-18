@@ -324,4 +324,38 @@
     <data name="Waiting"><value>Pending</value></data>
     <data name="Accepted"><value>Accepted</value></data>
     <data name="Rejected"><value>Rejected</value></data>
+
+    <data name="Statistics_Title"><value>Statistics</value></data>
+    <data name="Statistics_TotalCitizens"><value>Total citizens: </value></data>
+    <data name="Statistics_NewCitizens"><value>New citizens: </value></data>
+    <data name="Statistics_InactiveCitizens"><value>Inactive citizens: </value></data>
+    <data name="Statistics_ActiveCitizens"><value>Active citizens: </value></data>
+    <data name="Statistics_ProminentCitizens"><value>Prominent citizens: </value></data>
+    <data name="Statistics_TrustworthyCitizens"><value>Trustworthy citizens: </value></data>
+    <data name="Statistics_SystemRecommendation"><value>System recommendation</value></data>
+    <data name="Statistics_ScheduleWelcome"><value>Schedule welcome meeting</value></data>
+    <data name="Statistics_ScheduleMotivation"><value>Schedule motivation meeting</value></data>
+    <data name="Statistics_WelcomeRecommendation"><value>Neighborhood {0} has the highest number of new citizens.\nWe suggest scheduling a welcome meeting.</value></data>
+    <data name="Statistics_MotivationRecommendation"><value>Neighborhood {0} has the highest number of inactive citizens.\nWe suggest scheduling a motivation meeting.</value></data>
+
+    <data name="Meetings_Title"><value>Meetings</value></data>
+    <data name="Meetings_ScheduleNew"><value>Schedule new meeting (Ctrl + N)</value></data>
+    <data name="Meetings_Theme"><value>Theme</value></data>
+    <data name="Meetings_Time"><value>Time</value></data>
+    <data name="Meetings_DateRange"><value>Date range</value></data>
+    <data name="Meetings_Status"><value>Status</value></data>
+    <data name="Meetings_TiedTooltip"><value>Tied vote count! Final date selection required.</value></data>
+    <data name="Meetings_SelectFinalDate"><value>Select final date</value></data>
+    <data name="Meetings_ConfirmFinalDate"><value>Confirm final date</value></data>
+    <data name="Meetings_TiedTitle"><value>Tied dates</value></data>
+    <data name="Meetings_TiedMessage"><value>There is a tied vote count. Please select one of the dates.</value></data>
+    <data name="Meetings_ConfirmTitle"><value>Confirm date</value></data>
+    <data name="Meetings_ConfirmMessage"><value>Are you sure you want to confirm this date?</value></data>
+    <data name="Meetings_ConfirmedSuccess"><value>Date successfully scheduled.</value></data>
+
+    <data name="Welcome"><value>Welcome</value></data>
+    <data name="Motivation"><value>Motivation</value></data>
+    <data name="InPreparation"><value>In Preparation</value></data>
+    <data name="Scheduled"><value>Scheduled</value></data>
+    <data name="Cancelled"><value>Cancelled</value></data>
 </root>

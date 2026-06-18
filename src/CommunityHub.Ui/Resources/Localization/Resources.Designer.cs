@@ -79,6 +79,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Otkazan.
+        /// </summary>
+        internal static string Cancelled {
+            get {
+                return ResourceManager.GetString("Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adresa.
         /// </summary>
         internal static string Common_Address {
@@ -250,11 +259,146 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to U pripremi.
+        /// </summary>
+        internal static string InPreparation {
+            get {
+                return ResourceManager.GetString("InPreparation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Glasanje za novi sastanak je pokrenuto..
         /// </summary>
         internal static string Meeting_ScheduleSuccess {
             get {
                 return ResourceManager.GetString("Meeting_ScheduleSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Termin je uspešno zakazan..
+        /// </summary>
+        internal static string Meetings_ConfirmedSuccess {
+            get {
+                return ResourceManager.GetString("Meetings_ConfirmedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Potvrdite konačan termin.
+        /// </summary>
+        internal static string Meetings_ConfirmFinalDate {
+            get {
+                return ResourceManager.GetString("Meetings_ConfirmFinalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Da li ste sigurni da želite da potvrdite ovaj termin?.
+        /// </summary>
+        internal static string Meetings_ConfirmMessage {
+            get {
+                return ResourceManager.GetString("Meetings_ConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Potvrda termina.
+        /// </summary>
+        internal static string Meetings_ConfirmTitle {
+            get {
+                return ResourceManager.GetString("Meetings_ConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum-opseg.
+        /// </summary>
+        internal static string Meetings_DateRange {
+            get {
+                return ResourceManager.GetString("Meetings_DateRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zakaži novi sastanak (Ctrl + N).
+        /// </summary>
+        internal static string Meetings_ScheduleNew {
+            get {
+                return ResourceManager.GetString("Meetings_ScheduleNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odredite konačan termin.
+        /// </summary>
+        internal static string Meetings_SelectFinalDate {
+            get {
+                return ResourceManager.GetString("Meetings_SelectFinalDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stanje.
+        /// </summary>
+        internal static string Meetings_Status {
+            get {
+                return ResourceManager.GetString("Meetings_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tema.
+        /// </summary>
+        internal static string Meetings_Theme {
+            get {
+                return ResourceManager.GetString("Meetings_Theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Postoji izjednačen broj glasova. Odaberite jedan od termina..
+        /// </summary>
+        internal static string Meetings_TiedMessage {
+            get {
+                return ResourceManager.GetString("Meetings_TiedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izjednačeni termini.
+        /// </summary>
+        internal static string Meetings_TiedTitle {
+            get {
+                return ResourceManager.GetString("Meetings_TiedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nerešen broj glasova! Potreban odabir konačnog datuma..
+        /// </summary>
+        internal static string Meetings_TiedTooltip {
+            get {
+                return ResourceManager.GetString("Meetings_TiedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vreme.
+        /// </summary>
+        internal static string Meetings_Time {
+            get {
+                return ResourceManager.GetString("Meetings_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sastanci.
+        /// </summary>
+        internal static string Meetings_Title {
+            get {
+                return ResourceManager.GetString("Meetings_Title", resourceCulture);
             }
         }
         
@@ -273,6 +417,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string MeetingTheme_Welcome {
             get {
                 return ResourceManager.GetString("MeetingTheme_Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Motivacija.
+        /// </summary>
+        internal static string Motivation {
+            get {
+                return ResourceManager.GetString("Motivation", resourceCulture);
             }
         }
         
@@ -943,6 +1096,123 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zakazan.
+        /// </summary>
+        internal static string Scheduled {
+            get {
+                return ResourceManager.GetString("Scheduled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj aktivnih građana: .
+        /// </summary>
+        internal static string Statistics_ActiveCitizens {
+            get {
+                return ResourceManager.GetString("Statistics_ActiveCitizens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj neaktivnih građana: .
+        /// </summary>
+        internal static string Statistics_InactiveCitizens {
+            get {
+                return ResourceManager.GetString("Statistics_InactiveCitizens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to U kvartu {0} je primećeno da je najveći broj neaktivnih građana.\nPredlažemo vam da zakažete sastanak motivacije..
+        /// </summary>
+        internal static string Statistics_MotivationRecommendation {
+            get {
+                return ResourceManager.GetString("Statistics_MotivationRecommendation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj novih građana: .
+        /// </summary>
+        internal static string Statistics_NewCitizens {
+            get {
+                return ResourceManager.GetString("Statistics_NewCitizens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj istaknutih građana: .
+        /// </summary>
+        internal static string Statistics_ProminentCitizens {
+            get {
+                return ResourceManager.GetString("Statistics_ProminentCitizens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zakaži sastanak motivacije.
+        /// </summary>
+        internal static string Statistics_ScheduleMotivation {
+            get {
+                return ResourceManager.GetString("Statistics_ScheduleMotivation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zakaži sastanak dobrodošlice.
+        /// </summary>
+        internal static string Statistics_ScheduleWelcome {
+            get {
+                return ResourceManager.GetString("Statistics_ScheduleWelcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preporuka sistema.
+        /// </summary>
+        internal static string Statistics_SystemRecommendation {
+            get {
+                return ResourceManager.GetString("Statistics_SystemRecommendation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistika.
+        /// </summary>
+        internal static string Statistics_Title {
+            get {
+                return ResourceManager.GetString("Statistics_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ukupan broj građana: .
+        /// </summary>
+        internal static string Statistics_TotalCitizens {
+            get {
+                return ResourceManager.GetString("Statistics_TotalCitizens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj građana od poverenja: .
+        /// </summary>
+        internal static string Statistics_TrustworthyCitizens {
+            get {
+                return ResourceManager.GetString("Statistics_TrustworthyCitizens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to U kvartu {0} je primećeno da je najveći broj novih građana.\nPredlažemo vam da zakažete sastanak dobrodošlice..
+        /// </summary>
+        internal static string Statistics_WelcomeRecommendation {
+            get {
+                return ResourceManager.GetString("Statistics_WelcomeRecommendation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uspeh.
         /// </summary>
         internal static string Success_Title {
@@ -957,6 +1227,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Waiting {
             get {
                 return ResourceManager.GetString("Waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dobrodošlica.
+        /// </summary>
+        internal static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }
