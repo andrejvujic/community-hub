@@ -306,4 +306,22 @@
     <data name="Profile_Comment"><value>Komentar</value></data>
     <data name="Profile_TotalAverageRating"><value>Ukupna prosečna ocena: </value></data>
     <data name="Profile_AverageRatingLastYear"><value>Prosečna ocena u poslednjih godinu dana: </value></data>
+
+    <data name="Requests_Title"><value>Zahtevi:</value></data>
+    <data name="Requests_FilterAll"><value>Svi</value></data>
+    <data name="Requests_Neighborhood"><value>Kvart</value></data>
+    <data name="Requests_Date"><value>Datum</value></data>
+    <data name="Requests_Status"><value>Status</value></data>
+    <data name="Requests_RejectButton"><value>Odbij zahtev</value></data>
+    <data name="Requests_AcceptButton"><value>Prihvati zahtev</value></data>
+    <data name="Requests_ConfirmAcceptTitle"><value>Potvrda prihvatanja</value></data>
+    <data name="Requests_ConfirmAccept"><value>Da li ste sigurni da želite da prihvatite zahtev korisnika {0} {1} za pristup kvartu {2}?</value></data>
+    <data name="Requests_AcceptedTitle"><value>Prihvaćen zahtev</value></data>
+    <data name="Requests_AcceptedInfo"><value>Korisnik {0} {1} je postao novi član kvarta {2}.</value></data>
+    <data name="Requests_RejectedTitle"><value>Odbijen zahtev</value></data>
+    <data name="Requests_RejectedInfo"><value>Korisniku {0} {1} je odbijen zahtev za pristup kvartu {2}.</value></data>
+
+    <data name="Waiting"><value>Na čekanju</value></data>
+    <data name="Accepted"><value>Prihvaćen</value></data>
+    <data name="Rejected"><value>Odbijen</value></data>
 </root>

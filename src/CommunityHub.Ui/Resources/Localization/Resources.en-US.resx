@@ -306,4 +306,22 @@
     <data name="Profile_Comment"><value>Comment</value></data>
     <data name="Profile_TotalAverageRating"><value>Total average rating: </value></data>
     <data name="Profile_AverageRatingLastYear"><value>Average rating in the last year: </value></data>
+
+    <data name="Requests_Title"><value>Requests:</value></data>
+    <data name="Requests_FilterAll"><value>All</value></data>
+    <data name="Requests_Neighborhood"><value>Neighborhood</value></data>
+    <data name="Requests_Date"><value>Date</value></data>
+    <data name="Requests_Status"><value>Status</value></data>
+    <data name="Requests_RejectButton"><value>Reject request</value></data>
+    <data name="Requests_AcceptButton"><value>Accept request</value></data>
+    <data name="Requests_ConfirmAcceptTitle"><value>Confirm acceptance</value></data>
+    <data name="Requests_ConfirmAccept"><value>Are you sure you want to accept the request from {0} {1} for access to neighborhood {2}?</value></data>
+    <data name="Requests_AcceptedTitle"><value>Request accepted</value></data>
+    <data name="Requests_AcceptedInfo"><value>User {0} {1} is now a member of neighborhood {2}.</value></data>
+    <data name="Requests_RejectedTitle"><value>Request rejected</value></data>
+    <data name="Requests_RejectedInfo"><value>The request from {0} {1} for access to neighborhood {2} was rejected.</value></data>
+
+    <data name="Waiting"><value>Pending</value></data>
+    <data name="Accepted"><value>Accepted</value></data>
+    <data name="Rejected"><value>Rejected</value></data>
 </root>

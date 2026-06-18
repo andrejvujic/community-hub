@@ -66,15 +66,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
                 this.Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
             }
 
-            if (StreetsDataGrid != null && StreetsDataGrid.ItemsSource != null)
-            {
-                StreetsDataGrid.Items.Refresh();
-            }
-
-            if (MembersDataGrid != null && MembersDataGrid.ItemsSource != null)
-            {
-                MembersDataGrid.Items.Refresh();
-            }
+            var currentContext = this.DataContext;
+            this.DataContext = null;
+            this.DataContext = currentContext;
         }
     }
 }

@@ -61,6 +61,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prihvaćen.
+        /// </summary>
+        internal static string Accepted {
+            get {
+                return ResourceManager.GetString("Accepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Svi brojevi.
         /// </summary>
         internal static string Both {
@@ -745,6 +754,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Odbijen.
+        /// </summary>
+        internal static string Rejected {
+            get {
+                return ResourceManager.GetString("Rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to izvestaj-rezervacije-{0}-{1}-{2}.pdf.
         /// </summary>
         internal static string Report_FileName {
@@ -790,6 +808,123 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prihvati zahtev.
+        /// </summary>
+        internal static string Requests_AcceptButton {
+            get {
+                return ResourceManager.GetString("Requests_AcceptButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Korisnik {0} {1} je postao novi član kvarta {2}..
+        /// </summary>
+        internal static string Requests_AcceptedInfo {
+            get {
+                return ResourceManager.GetString("Requests_AcceptedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prihvaćen zahtev.
+        /// </summary>
+        internal static string Requests_AcceptedTitle {
+            get {
+                return ResourceManager.GetString("Requests_AcceptedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Da li ste sigurni da želite da prihvatite zahtev korisnika {0} {1} za pristup kvartu {2}?.
+        /// </summary>
+        internal static string Requests_ConfirmAccept {
+            get {
+                return ResourceManager.GetString("Requests_ConfirmAccept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Potvrda prihvatanja.
+        /// </summary>
+        internal static string Requests_ConfirmAcceptTitle {
+            get {
+                return ResourceManager.GetString("Requests_ConfirmAcceptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum.
+        /// </summary>
+        internal static string Requests_Date {
+            get {
+                return ResourceManager.GetString("Requests_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Svi.
+        /// </summary>
+        internal static string Requests_FilterAll {
+            get {
+                return ResourceManager.GetString("Requests_FilterAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvart.
+        /// </summary>
+        internal static string Requests_Neighborhood {
+            get {
+                return ResourceManager.GetString("Requests_Neighborhood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odbij zahtev.
+        /// </summary>
+        internal static string Requests_RejectButton {
+            get {
+                return ResourceManager.GetString("Requests_RejectButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Korisniku {0} {1} je odbijen zahtev za pristup kvartu {2}..
+        /// </summary>
+        internal static string Requests_RejectedInfo {
+            get {
+                return ResourceManager.GetString("Requests_RejectedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odbijen zahtev.
+        /// </summary>
+        internal static string Requests_RejectedTitle {
+            get {
+                return ResourceManager.GetString("Requests_RejectedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Requests_Status {
+            get {
+                return ResourceManager.GetString("Requests_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zahtevi:.
+        /// </summary>
+        internal static string Requests_Title {
+            get {
+                return ResourceManager.GetString("Requests_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recenzija je uspešno izmenjena..
         /// </summary>
         internal static string Review_EditSuccess {
@@ -813,6 +948,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Success_Title {
             get {
                 return ResourceManager.GetString("Success_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Na čekanju.
+        /// </summary>
+        internal static string Waiting {
+            get {
+                return ResourceManager.GetString("Waiting", resourceCulture);
             }
         }
     }

@@ -57,6 +57,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             {
                 this.Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
 
+
                 var tempFrom = _viewModel.ReportFrom;
                 var tempTo = _viewModel.ReportTo;
 
