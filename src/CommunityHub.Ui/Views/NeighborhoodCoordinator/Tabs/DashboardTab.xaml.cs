@@ -24,6 +24,7 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
                 if (this.IsVisible)
                 {
                     RefreshLanguageAndDatePickers();
+                    _viewModel.LoadDashboard();
                 }
             };
         }

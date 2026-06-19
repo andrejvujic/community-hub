@@ -137,7 +137,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private string FormatPercent(int count)
         {
             double pct = TotalCitizens > 0 ? Math.Round((double)count / TotalCitizens * 100, 1) : 0;
-            return $"({pct}%)";
+            string formattedPct = string.Format(TranslationSource.Instance.CurrentCulture ?? System.Globalization.CultureInfo.CurrentCulture, "{0:F2}", pct);
+            return $"({formattedPct}%)";
         }
 
         private bool _showWelcomeRecommendation;

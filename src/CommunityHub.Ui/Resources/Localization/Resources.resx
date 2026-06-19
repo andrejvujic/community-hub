@@ -358,4 +358,36 @@
     <data name="InPreparation"><value>U pripremi</value></data>
     <data name="Scheduled"><value>Zakazan</value></data>
     <data name="Cancelled"><value>Otkazan</value></data>
+
+    <data name="Service_ServicesTitle"><value>Dostupne servisne usluge za kvart {0} (lokacija {1}, {2})</value></data>
+    <data name="Service_CurrentPrice"><value>Trenutna cena: {0:N2} RSD</value></data>
+    <data name="Service_PriceUnavailable"><value>Cena nije dostupna</value></data>
+    <data name="Service_Images"><value>Slike:</value></data>
+    <data name="Service_Duration"><value>Trajanje usluge (h):</value></data>
+    <data name="Service_FindSlot"><value>Pronađi prvi slobodan termin</value></data>
+    <data name="Service_ColService"><value>Usluga</value></data>
+    <data name="Service_ColProvider"><value>Serviser</value></data>
+    <data name="Service_ColDateTime"><value>Datum i vreme</value></data>
+    <data name="Service_ColPrice"><value>Cena</value></data>
+    <data name="Service_ColStatus"><value>Status</value></data>
+    <data name="Service_ColRating"><value>Ocena</value></data>
+    <data name="Service_EditReview"><value>Izmeni recenziju</value></data>
+    <data name="Service_Rate"><value>Oceni uslugu</value></data>
+    <data name="Service_InvalidDuration"><value>Molimo unesite ispravno trajanje usluge u satima.</value></data>
+    <data name="Service_DurationTooLong"><value>Nije moguće rezervisati termin duži od 14h.</value></data>
+    <data name="Service_NoSlots_Title"><value>Nema slobodnih termina</value></data>
+    <data name="Service_NoSlots_Message"><value>Nije pronađen slobodan termin u narednih 60 dana.</value></data>
+    <data name="Service_Booked_Title"><value>Zakazano</value></data>
+    <data name="Service_Booked_Message"><value>Termin je uspešno zakazan za {0}.</value></data>
+    <data name="Service_CannotReview_Title"><value>Ocenjivanje nije moguće</value></data>
+    <data name="Service_CannotReview_Message"><value>Ova usluga ne može biti ocenjena.</value></data>
+    <data name="Service_CannotEdit_Title"><value>Izmena nije dozvoljena</value></data>
+    <data name="Service_CannotEdit_Message"><value>Recenzija se može menjati samo u roku od 3 dana od kreiranja.</value></data>
+    <data name="Service_Description"><value>Opis usluge:</value></data>
+    <data name="Service_At"><value>u</value></data>
+    <data name="BookedJobStatus_Izvršeno"><value>Izvršeno</value></data>
+    <data name="BookedJobStatus_Zakazano"><value>Zakazano</value></data>
+    
+    <data name="PerHour"><value>Plaćanje po satu</value></data>
+    <data name="PerJob"><value>Plaćanje po usluzi</value></data>
 </root>

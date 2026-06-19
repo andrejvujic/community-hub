@@ -70,6 +70,24 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Izvršeno.
+        /// </summary>
+        internal static string BookedJobStatus_Izvršeno {
+            get {
+                return ResourceManager.GetString("BookedJobStatus_Izvršeno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zakazano.
+        /// </summary>
+        internal static string BookedJobStatus_Zakazano {
+            get {
+                return ResourceManager.GetString("BookedJobStatus_Zakazano", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Svi brojevi.
         /// </summary>
         internal static string Both {
@@ -763,6 +781,24 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plaćanje po satu.
+        /// </summary>
+        internal static string PerHour {
+            get {
+                return ResourceManager.GetString("PerHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plaćanje po usluzi.
+        /// </summary>
+        internal static string PerJob {
+            get {
+                return ResourceManager.GetString("PerJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prihvaćeni: .
         /// </summary>
         internal static string Profile_Accepted {
@@ -1101,6 +1137,240 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Scheduled {
             get {
                 return ResourceManager.GetString("Scheduled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to u.
+        /// </summary>
+        internal static string Service_At {
+            get {
+                return ResourceManager.GetString("Service_At", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Termin je uspešno zakazan za {0}..
+        /// </summary>
+        internal static string Service_Booked_Message {
+            get {
+                return ResourceManager.GetString("Service_Booked_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zakazano.
+        /// </summary>
+        internal static string Service_Booked_Title {
+            get {
+                return ResourceManager.GetString("Service_Booked_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recenzija se može menjati samo u roku od 3 dana od kreiranja..
+        /// </summary>
+        internal static string Service_CannotEdit_Message {
+            get {
+                return ResourceManager.GetString("Service_CannotEdit_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izmena nije dozvoljena.
+        /// </summary>
+        internal static string Service_CannotEdit_Title {
+            get {
+                return ResourceManager.GetString("Service_CannotEdit_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ova usluga ne može biti ocenjena..
+        /// </summary>
+        internal static string Service_CannotReview_Message {
+            get {
+                return ResourceManager.GetString("Service_CannotReview_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocenjivanje nije moguće.
+        /// </summary>
+        internal static string Service_CannotReview_Title {
+            get {
+                return ResourceManager.GetString("Service_CannotReview_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum i vreme.
+        /// </summary>
+        internal static string Service_ColDateTime {
+            get {
+                return ResourceManager.GetString("Service_ColDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cena.
+        /// </summary>
+        internal static string Service_ColPrice {
+            get {
+                return ResourceManager.GetString("Service_ColPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serviser.
+        /// </summary>
+        internal static string Service_ColProvider {
+            get {
+                return ResourceManager.GetString("Service_ColProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocena.
+        /// </summary>
+        internal static string Service_ColRating {
+            get {
+                return ResourceManager.GetString("Service_ColRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usluga.
+        /// </summary>
+        internal static string Service_ColService {
+            get {
+                return ResourceManager.GetString("Service_ColService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string Service_ColStatus {
+            get {
+                return ResourceManager.GetString("Service_ColStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trenutna cena: {0:N2} RSD.
+        /// </summary>
+        internal static string Service_CurrentPrice {
+            get {
+                return ResourceManager.GetString("Service_CurrentPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis usluge:.
+        /// </summary>
+        internal static string Service_Description {
+            get {
+                return ResourceManager.GetString("Service_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trajanje usluge (h):.
+        /// </summary>
+        internal static string Service_Duration {
+            get {
+                return ResourceManager.GetString("Service_Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nije moguće rezervisati termin duži od 14h..
+        /// </summary>
+        internal static string Service_DurationTooLong {
+            get {
+                return ResourceManager.GetString("Service_DurationTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izmeni recenziju.
+        /// </summary>
+        internal static string Service_EditReview {
+            get {
+                return ResourceManager.GetString("Service_EditReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pronađi prvi slobodan termin.
+        /// </summary>
+        internal static string Service_FindSlot {
+            get {
+                return ResourceManager.GetString("Service_FindSlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slike:.
+        /// </summary>
+        internal static string Service_Images {
+            get {
+                return ResourceManager.GetString("Service_Images", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Molimo unesite ispravno trajanje usluge u satima..
+        /// </summary>
+        internal static string Service_InvalidDuration {
+            get {
+                return ResourceManager.GetString("Service_InvalidDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nije pronađen slobodan termin u narednih 60 dana..
+        /// </summary>
+        internal static string Service_NoSlots_Message {
+            get {
+                return ResourceManager.GetString("Service_NoSlots_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nema slobodnih termina.
+        /// </summary>
+        internal static string Service_NoSlots_Title {
+            get {
+                return ResourceManager.GetString("Service_NoSlots_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cena nije dostupna.
+        /// </summary>
+        internal static string Service_PriceUnavailable {
+            get {
+                return ResourceManager.GetString("Service_PriceUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oceni uslugu.
+        /// </summary>
+        internal static string Service_Rate {
+            get {
+                return ResourceManager.GetString("Service_Rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dostupne servisne usluge za kvart {0} (lokacija {1}, {2}).
+        /// </summary>
+        internal static string Service_ServicesTitle {
+            get {
+                return ResourceManager.GetString("Service_ServicesTitle", resourceCulture);
             }
         }
         

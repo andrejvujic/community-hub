@@ -137,8 +137,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             ViewRequestsCommand = new RelayCommand(ExecuteViewRequests);
             RegisterNeighborhoodCommand = new RelayCommand(ExecuteRegisterNeighborhood);
             GenerateReportCommand = new RelayCommand(ExecuteGenerateReport);
-
-            TranslationSource.Instance.PropertyChanged += (s, e) => LoadDashboard();
         }
 
         private void ExecuteViewRequests()
@@ -349,11 +347,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private DashboardNotification CreateRecommendationNotification(NeighborhoodDto neighborhood, string descriptionSuffix, MeetingTheme theme, int count, int total)
         {
             double pct = Math.Round((double)count / total * 100, 2);
+            string formattedPct = pct.ToString("F2", new System.Globalization.CultureInfo(TranslationSource.Instance.CurrentCulture?.Name ?? "sr-Latn-RS"));
             string desc = theme == MeetingTheme.Welcome
-                ? TranslationSource.Instance.Format("Notification_Recommendation_Welcome", neighborhood.Name, count, total, pct)
+                ? TranslationSource.Instance.Format("Notification_Recommendation_Welcome", neighborhood.Name, count, total, formattedPct)
                 : theme == MeetingTheme.Motivation
-                    ? TranslationSource.Instance.Format("Notification_Recommendation_Motivation", neighborhood.Name, count, total, pct)
-                    : $"{descriptionSuffix} ({count} od {total}, {pct}%).";
+                    ? TranslationSource.Instance.Format("Notification_Recommendation_Motivation", neighborhood.Name, count, total, formattedPct)
+                    : $"{descriptionSuffix} ({count} od {total}, {formattedPct}%).";
 
             return new DashboardNotification
             {
@@ -407,12 +406,15 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             var providerName = $"{job.Listing.Provider.Name} {job.Listing.Provider.Surname}".Trim();
             var deadline = ReviewDeadline(job);
+            var culture = TranslationSource.Instance.CurrentCulture ?? System.Globalization.CultureInfo.CurrentCulture;
+            var formattedPrice = job.TotalPrice.ToString("N2", culture);
+
             return new DashboardNotification
             {
                 Icon = "\uf7d9",
                 TypeLabel = TranslationSource.Instance["Notification_Service_Type"],
                 DateText = TranslationSource.Instance.Format("Notification_Service_Date", TranslationSource.Instance.FormatDate(job.ScheduledDate.ToDateTime(TimeOnly.MinValue))),
-                Description = TranslationSource.Instance.Format("Notification_Service_Description", providerName, job.Listing.ServiceName, $"{job.TotalPrice:N2}", FormatTimeSpan(deadline - DateTime.Now)),
+                Description = TranslationSource.Instance.Format("Notification_Service_Description", providerName, job.Listing.ServiceName, formattedPrice, FormatTimeSpan(deadline - DateTime.Now)),
                 ActionLabel = TranslationSource.Instance["Notification_Service_Action"],
                 ActionCommand = new RelayCommand(() => OpenReviewWindow(job, isEdit: false)),
                 Category = DashboardNotification.NotificationCategory.Service,
@@ -431,12 +433,15 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             var providerName = $"{job.Listing.Provider.Name} {job.Listing.Provider.Surname}".Trim();
             var deadline = job.Review!.CreatedAt.AddDays(3);
+            var culture = TranslationSource.Instance.CurrentCulture ?? System.Globalization.CultureInfo.CurrentCulture;
+            var averageRating = (job.Review.QualityRating + job.Review.CommunicationRating) / 2.0;
+            var formattedRating = averageRating.ToString("F2", culture);
             return new DashboardNotification
             {
                 Icon = "\uf7d9",
                 TypeLabel = TranslationSource.Instance["Notification_EditReview_Type"],
                 DateText = TranslationSource.Instance.Format("Notification_EditReview_Date", TranslationSource.Instance.FormatDate(job.ScheduledDate.ToDateTime(TimeOnly.MinValue))),
-                Description = TranslationSource.Instance.Format("Notification_EditReview_Description", job.Listing.ServiceName, providerName, FormatTimeSpan(deadline - DateTime.Now), job.Review.QualityRating, job.Review.CommunicationRating, $"{((job.Review.QualityRating + job.Review.CommunicationRating) / 2.0):F2}"),
+                Description = TranslationSource.Instance.Format("Notification_EditReview_Description", job.Listing.ServiceName, providerName, FormatTimeSpan(deadline - DateTime.Now), job.Review.QualityRating, job.Review.CommunicationRating, formattedRating),
                 ActionLabel = TranslationSource.Instance["Notification_EditReview_Action"],
                 ActionCommand = new RelayCommand(() => OpenReviewWindow(job, isEdit: true)),
                 Category = DashboardNotification.NotificationCategory.Service,
@@ -452,12 +457,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         private DashboardNotification CreateDonationNotification(BudgetDonationDto donation)
         {
+            var culture = TranslationSource.Instance.CurrentCulture ?? System.Globalization.CultureInfo.CurrentCulture;
+            var formattedAmount = donation.Amount.ToString("N2", culture);
             return new DashboardNotification
             {
                 Icon = "\uf0d6",
                 TypeLabel = TranslationSource.Instance["Notification_Donation_Type"],
                 DateText = TranslationSource.Instance.Format("Notification_Donation_Date", TranslationSource.Instance.FormatDate(donation.DonationDate)),
-                Description = TranslationSource.Instance.Format("Notification_Donation_Description", $"{donation.Amount:N2}", donation.Neighborhood.Name, donation.BudgetCategory.Name),
+                Description = TranslationSource.Instance.Format("Notification_Donation_Description", formattedAmount, donation.Neighborhood.Name, donation.BudgetCategory.Name),
                 ActionLabel = TranslationSource.Instance["Notification_Donation_Action"],
                 ActionCommand = new RelayCommand(() => _navigateToBudgetAction?.Invoke(donation.Neighborhood.Id, donation.BudgetCategory.Id)),
                 Category = DashboardNotification.NotificationCategory.Donations,

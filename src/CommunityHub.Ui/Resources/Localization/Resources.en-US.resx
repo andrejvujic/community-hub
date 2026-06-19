@@ -358,4 +358,37 @@
     <data name="InPreparation"><value>In Preparation</value></data>
     <data name="Scheduled"><value>Scheduled</value></data>
     <data name="Cancelled"><value>Cancelled</value></data>
+
+
+    <data name="Service_ServicesTitle"><value>Available services for neighborhood {0} (location {1}, {2})</value></data>
+    <data name="Service_CurrentPrice"><value>Current price: {0:N2} RSD</value></data>
+    <data name="Service_PriceUnavailable"><value>Price unavailable</value></data>
+    <data name="Service_Images"><value>Images:</value></data>
+    <data name="Service_Duration"><value>Service duration (h):</value></data>
+    <data name="Service_FindSlot"><value>Find first available slot</value></data>
+    <data name="Service_ColService"><value>Service</value></data>
+    <data name="Service_ColProvider"><value>Provider</value></data>
+    <data name="Service_ColDateTime"><value>Date and time</value></data>
+    <data name="Service_ColPrice"><value>Price</value></data>
+    <data name="Service_ColStatus"><value>Status</value></data>
+    <data name="Service_ColRating"><value>Rating</value></data>
+    <data name="Service_EditReview"><value>Edit review</value></data>
+    <data name="Service_Rate"><value>Rate service</value></data>
+    <data name="Service_InvalidDuration"><value>Please enter a valid service duration in hours.</value></data>
+    <data name="Service_DurationTooLong"><value>Cannot book a slot longer than 14 hours.</value></data>
+    <data name="Service_NoSlots_Title"><value>No available slots</value></data>
+    <data name="Service_NoSlots_Message"><value>No available slot found in the next 60 days.</value></data>
+    <data name="Service_Booked_Title"><value>Booked</value></data>
+    <data name="Service_Booked_Message"><value>Appointment successfully booked for {0}.</value></data>
+    <data name="Service_CannotReview_Title"><value>Rating not possible</value></data>
+    <data name="Service_CannotReview_Message"><value>This service cannot be rated.</value></data>
+    <data name="Service_CannotEdit_Title"><value>Edit not allowed</value></data>
+    <data name="Service_CannotEdit_Message"><value>Reviews can only be edited within 3 days of creation.</value></data>
+    <data name="Service_Description"><value>Service description:</value></data>
+    <data name="Service_At"><value>at</value></data>
+    <data name="BookedJobStatus_Izvršeno"><value>Completed</value></data>
+    <data name="BookedJobStatus_Zakazano"><value>Scheduled</value></data>
+
+    <data name="PerHour"><value>Billing per hour</value></data>
+    <data name="PerJob"><value>Billing per service</value></data>
 </root>

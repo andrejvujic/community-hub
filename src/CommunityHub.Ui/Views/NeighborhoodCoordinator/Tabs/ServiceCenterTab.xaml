@@ -5,11 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
              xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
+             xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <conv:BillingTypeToStringConverter x:Key="BillingConverter" />
+        <ns:EnumLocalizationConverter x:Key="EnumLocalizationConverter" />
+        <conv:BookedJobStatusConverter x:Key="StatusConverter" />
+        <ns:LocalizedDecimalConverter x:Key="DecimalConverter" />
         
         <Style x:Key="JobListingItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
@@ -74,7 +77,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Margin="15,15,15,10">
-                    <TextBlock Text="Moji kvartovi" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{ns:Loc Neighborhoods_MyNeighborhoods}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
                 </Grid>
 
                 <ListBox x:Name="NeighborhoodsListBox" 
@@ -157,7 +160,7 @@
                                                     </TextBlock>
                                                     <TextBlock Text="{Binding CurrentPriceEntry.Amount, StringFormat='{}{0:N2} RSD'}"
                                                                FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                                    <TextBlock Text="{Binding BillingType, Converter={StaticResource BillingConverter}}"
+                                                    <TextBlock Text="{Binding BillingType, Converter={StaticResource EnumLocalizationConverter}}"
                                                                FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                                 </StackPanel>
                                             </Grid>
@@ -194,7 +197,7 @@
                                         </TextBlock.Text>
                                     </TextBlock>
 
-                                    <TextBlock Text="Opis usluge:" FontSize="16" />
+                                    <TextBlock Text="{ns:Loc Service_Description}" FontSize="16" />
                                     <TextBlock Text="{Binding SelectedListing.Description}"
                                                TextWrapping="Wrap"
                                                FontSize="14"
@@ -210,7 +213,7 @@
 
                                     <StackPanel Grid.Column="0" Margin="0,0,20,0">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="Slike:" FontSize="16" Margin="0,0,10,0"/>
+                                            <TextBlock Text="{ns:Loc Service_Images}" FontSize="16" Margin="0,0,10,0"/>
                                             <Border Width="120" Height="120" CornerRadius="8" ClipToBounds="True">
                                                 <Image Source="{Binding CurrentImage}" Stretch="UniformToFill"/>
                                             </Border>
@@ -249,7 +252,7 @@
                                         <StackPanel Orientation="Horizontal"  
                                                     Visibility="{Binding DurationPanelVisibility}" 
                                                     Margin="0,0,0,10">
-                                            <TextBlock Text="Trajanje usluge (h):" 
+                                            <TextBlock Text="{ns:Loc Service_Duration}"
                                                        FontSize="20" 
                                                        VerticalAlignment="Center" 
                                                        Margin="0,0,8,0"/>
@@ -267,7 +270,7 @@
                                     <Button x:Name="FindSlotButton"
                                             Grid.Column="1"
                                             Style="{StaticResource PrimaryButtonStyle}"
-                                            Content="Pronađi prvi slobodan termin"
+                                            Content="{ns:Loc Service_FindSlot}"
                                             FontSize="16"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Bottom"
@@ -305,23 +308,56 @@
                                   FontSize="14"
                                   Margin="0,0,0,10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Usluga" Binding="{Binding Listing.ServiceName}" CanUserSort="False" Width="*"/>
-                                <DataGridTextColumn Header="Serviser" Binding="{Binding ProviderName}" CanUserSort="False" Width="*"/>
-                                <DataGridTextColumn Header="Datum i vreme" Binding="{Binding ScheduledDateTime}" CanUserSort="False" Width="150"/>
-                                <DataGridTextColumn Header="Cena" Binding="{Binding TotalPriceView}" CanUserSort="False" Width="150"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" CanUserSort="False" Width="100"/>
-                                <DataGridTextColumn Header="Ocena" Binding="{Binding RatingView}" CanUserSort="False" Width="70"/>
+                                <DataGridTextColumn Header="{ns:Loc Service_ColService}" Binding="{Binding Listing.ServiceName}" CanUserSort="False" Width="*"/>
+                                <DataGridTextColumn Header="{ns:Loc Service_ColProvider}" Binding="{Binding ProviderName}" CanUserSort="False" Width="*"/>
+                                <DataGridTemplateColumn Header="{ns:Loc Service_ColDateTime}" CanUserSort="False" Width="160">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding>
+                                                        <MultiBinding.Converter>
+                                                            <conv:BookedJobDateTimeConverter/>
+                                                        </MultiBinding.Converter>
+                                                        <Binding Path="ScheduledDate"/>
+                                                        <Binding Path="ScheduledTime"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="{ns:Loc Service_ColPrice}" Binding="{Binding TotalPriceView}" CanUserSort="False" Width="150">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="Padding" Value="0,0,15,0"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="{ns:Loc Service_ColStatus}" 
+                                                    Binding="{Binding Status, Converter={StaticResource StatusConverter}}" 
+                                                    CanUserSort="False" Width="100" />
+                                <DataGridTemplateColumn Header="{ns:Loc Service_ColRating}" CanUserSort="False" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Right" Padding="0,0,15,0">
+                                                <Run Text="{Binding Review.AverageRating, Converter={StaticResource DecimalConverter}, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
 
                         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Button Content="Izmeni recenziju"
+                            <Button Content="{ns:Loc Service_EditReview}"
                                     Style="{StaticResource SecondaryButtonStyle}"
                                     Width="150"
                                     Margin="0,0,10,0"
                                     FontSize="14"
                                     Command="{Binding EditReviewCommand}"/>
-                            <Button Content="Oceni uslugu"
+                            <Button Content="{ns:Loc Service_Rate}"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     Width="150"
                                     Margin="0,0,10,0"

@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
+using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
@@ -18,6 +19,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
             _viewModel = new ServiceCenterTabViewModel();
             DataContext = _viewModel;
             this.IsVisibleChanged += ServiceCenterTab_IsVisibleChanged;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                if (this.IsVisible)
+                {
+                    RefreshLanguageAndBindings();
+                }
+            };
         }
 
         public void Initialize(long coordinatorId)
@@ -40,10 +49,17 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if ((bool)e.NewValue)
             {
+                RefreshLanguageAndBindings();
                 _viewModel.LoadNeighborhoods();
-                _viewModel.LoadJobListings();
-                _viewModel.LoadScheduledServices();
             }
+        }
+
+        private void RefreshLanguageAndBindings()
+        {
+            var currentCultureName = TranslationSource.Instance.CurrentCulture?.Name ?? "sr-Latn-RS";
+            this.Language = XmlLanguage.GetLanguage(currentCultureName);
+
+            _viewModel.RefreshLocalizedStrings();
         }
     }
 }
