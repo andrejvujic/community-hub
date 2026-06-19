@@ -4,7 +4,9 @@
 		xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         xmlns:helpers="clr-namespace:CommunityHub.Ui.Helpers"
         Height="470" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Language="sr-Latn-RS"
+        xml:lang="sr-RS">
 
     <Window.InputBindings>
         <KeyBinding Key="Return" Command="{Binding ConfirmCommand}" />

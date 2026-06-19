@@ -67,7 +67,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Tema" Binding="{Binding Theme, Converter={StaticResource MeetingThemeToString}}" Width="*" />
                         <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource MeetingStatusToString}}" Width="*" />
-                        <DataGridTextColumn Header="Datum/Opseg" Binding="{Binding DisplayDate}" Width="*" />
+                        <DataGridTextColumn Header="Datum/Opseg" Binding="{Binding MeetingDateDisplay}" Width="*" />
                         <DataGridTextColumn Header="Vreme" Binding="{Binding MeetingTimeDisplay}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
