@@ -11,6 +11,7 @@
         <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
         <KeyBinding Key="Return" Command="{Binding SaveCommand}" />
         <KeyBinding Key="Space" Command="{Binding AddItemCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding RemoveItemCommand}" />
     </Window.InputBindings>
 
     <Window.Resources>
@@ -137,7 +138,7 @@
                                     CaretBrush="{StaticResource TextBrush}"
                                     ToolTipService.InitialShowDelay="150" 
                                     ToolTipService.BetweenShowDelay="0"
-                                    ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Unesite datum u formatu d.m.yyyy. ili koristite kalendar'}"/>
+                                    ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Unesite predstojeći datum u formatu d.m.yyyy. ili koristite kalendar'}"/>
                             <Button x:Name="DatePickerButton" 
                                     Grid.Column="1"
                                     Background="{StaticResource AccentBrush}"
@@ -195,13 +196,13 @@
                             <TextBlock Text=":" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6,0,6,0" Foreground="{StaticResource TextBrush}" />
                             <TextBox x:Name="DurationMinuteBox" Grid.Column="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding DurationMinute, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
                             ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
-                            ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - broj minuta trajanja događaja'}"/>
+                            ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - broj minuta trajanja događaja (0-59)'}"/>
                         </Grid>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Potrebno volontera:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource TextBrush}" FontSize="16" />
                         <TextBox Grid.Row="3" Grid.Column="1" x:Name="VolunteersBox" Height="32" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Volunteers, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" 
                         ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
-                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - minimalan potreban broj volontera'}"/>
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Obavezno polje - minimalan potreban broj volontera (1+)'}"/>
                     </Grid>
 
                     <StackPanel Grid.Column="2">
@@ -227,7 +228,7 @@
                                 </Button>
                             </Grid>
 
-                            <ListBox Grid.Row="1" x:Name="ItemsListBox" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding Items}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
+                            <ListBox Grid.Row="1" x:Name="ItemsListBox" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}" BorderBrush="{StaticResource TextBrush}" BorderThickness="1" />
                         </Grid>
                     </StackPanel>
                 </Grid>
