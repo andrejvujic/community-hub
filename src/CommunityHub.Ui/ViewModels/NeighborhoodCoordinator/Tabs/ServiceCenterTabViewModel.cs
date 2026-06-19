@@ -174,7 +174,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
             catch (ArgumentException ex)
             {
-                ShowError(window, "Sistemska greška", ex.Message);
+                ShowError(window, TranslationSource.Instance["Error_Title"], ex.Message);
             }
         }
 

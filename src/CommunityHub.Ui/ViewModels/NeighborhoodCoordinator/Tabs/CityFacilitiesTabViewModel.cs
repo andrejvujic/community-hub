@@ -12,6 +12,7 @@ using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -116,7 +117,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         }
 
         public bool IsNeighborhoodSelected => SelectedNeighborhood != null;
-        public string ReservationsTitle => $"Spisak rezervacija kvarta {SelectedNeighborhood?.Name}";
+        public string ReservationsTitle => TranslationSource.Instance.Format("Facilities_ReservationList_Format", SelectedNeighborhood?.Name);
 
         public CityFacilitiesTabViewModel()
         {
@@ -186,7 +187,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
                 if (result is null || (result.Value.SlotInRange is null && result.Value.SlotsOutsideRange.Count == 0))
                 {
-                    new InfoDialog("Nema slobodnih termina", "Nije pronađen nijedan slobodan termin.", window).ShowDialog();
+                    new InfoDialog(TranslationSource.Instance["Facilities_NoSlots_Title"], TranslationSource.Instance["Facilities_NoSlots_Message"], window).ShowDialog();
                     return;
                 }
 
@@ -194,7 +195,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
             catch (ArgumentException ex)
             {
-                new InfoDialog("Greška", ex.Message, window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], ex.Message, window).ShowDialog();
             }
         }
 
@@ -202,19 +203,19 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         { 
             duration = 0; start = DateTime.MinValue; end = DateTime.MinValue;
 
-            if (SelectedFacility is null) return ShowError(win, "Greška", "Izaberite objekat.");
+            if (SelectedFacility is null) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectFacility"]);
 
             if (!int.TryParse(DurationInput?.Trim(), out duration) || duration <= 0)
-                return ShowError(win, "Greška", "Unesite ispravno trajanje u satima.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Facilities_InvalidDuration"]);
 
-            if (duration > 14) return ShowError(win, "Greška", "Nije moguće rezervisati termin duži od 14h.");
+            if (duration > 14) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Facilities_DurationTooLong"]);
 
-            if (ReservationStartDate is null || ReservationEndDate is null) return ShowError(win, "Greška", "Izaberite opseg datuma.");
+            if (ReservationStartDate is null || ReservationEndDate is null) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectDates"]);
 
             start = ReservationStartDate.Value;
             end = ReservationEndDate.Value.AddDays(1).AddSeconds(-1);
 
-            return start < end || ShowError(win, "Greška", "Početni datum mora biti pre krajnjeg.");
+            return start < end || ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_DateOrder"]);
         }
 
         private void OpenBookingWindow(Window owner, (AvailableFacilitySlotDto? SlotInRange, List<AvailableFacilitySlotDto> SlotsOutsideRange) data)
@@ -281,13 +282,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             to = DateTime.MinValue;
 
             if (SelectedNeighborhood is null)
-                return ShowError(win, "Greška", "Izaberite kvart.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectNeighborhood"]);
 
             if (ReportStartDate is null || ReportEndDate is null)
-                return ShowError(win, "Greška", "Izaberite opseg datuma za izveštaj.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectDates"]);
 
             if (ReportStartDate > ReportEndDate)
-                return ShowError(win, "Greška", "Početni datum mora biti pre krajnjeg.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_DateOrder"]);
 
             from = ReportStartDate.Value;
             to = ReportEndDate.Value.AddDays(1).AddSeconds(-1);
@@ -306,9 +307,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = "Sačuvaj izveštaj",
-                Filter = "PDF fajlovi (*.pdf)|*.pdf",
-                FileName = $"izvestaj-rezervacije-{safeName}-{fromStr}-{toStr}.pdf",
+                Title = TranslationSource.Instance["Report_SaveTitle"],
+                Filter = TranslationSource.Instance["Report_SaveFilter"],
+                FileName = TranslationSource.Instance.Format("Report_FileName", neighborhoodName, fromStr, toStr),
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads"
             };
 
@@ -323,8 +324,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private void AskToOpenReport(Window win, string savePath)
         {
             var confirm = new ConfirmDialog(
-                "Izveštaj generisan",
-                "Izveštaj je uspešno sačuvan. Da li želite da ga otvorite?",
+                TranslationSource.Instance["Report_Success_Title"],
+                TranslationSource.Instance["Report_Success_Message"],
                 win);
 
             if (confirm.ShowDialog() == true)

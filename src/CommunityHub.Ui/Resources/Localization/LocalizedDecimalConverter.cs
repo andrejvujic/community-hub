@@ -15,17 +15,6 @@ namespace CommunityHub.Ui.Resources.Localization
                 return d.ToString("F2", currentCulture);
             }
 
-            if (value is string str)
-            {
-                if (str == "/" || string.IsNullOrWhiteSpace(str))
-                    return "/";
-
-                if (double.TryParse(str, CultureInfo.InvariantCulture, out double parsedDouble))
-                {
-                    return parsedDouble.ToString("F2", currentCulture);
-                }
-            }
-
             if (value is float f)
             {
                 return f.ToString("F2", currentCulture);

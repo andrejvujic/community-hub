@@ -391,4 +391,24 @@
 
     <data name="PerHour"><value>Billing per hour</value></data>
     <data name="PerJob"><value>Billing per service</value></data>
+
+    <data name="Facilities_ReservationFor"><value>Reservation for neighborhood:</value></data>
+    <data name="Facilities_SelectFacility"><value>Select facility:</value></data>
+    <data name="Facilities_Duration"><value>Visit duration (h):</value></data>
+    <data name="Facilities_DateRange"><value>Date range:</value></data>
+    <data name="Facilities_CheckAndReserve"><value>Check availability and reserve</value></data>
+    <data name="Facilities_ReservationList"><value>Reservations for neighborhood</value></data>
+    <data name="Facilities_ReservationList_Format"><value>Reservations for neighborhood {0}</value></data>
+    <data name="Facilities_ColFacility"><value>Facility</value></data>
+    <data name="Facilities_ColDate"><value>Date</value></data>
+    <data name="Facilities_ColStart"><value>Start</value></data>
+    <data name="Facilities_ColEnd"><value>End</value></data>
+    <data name="Facilities_ReportTitle"><value>Generate report</value></data>
+    <data name="Facilities_ReportSubtitle"><value>Generate a report of all city facility reservations</value></data>
+    <data name="Facilities_GenerateReport"><value>Generate report</value></data>
+    <data name="Facilities_InvalidDuration"><value>Please enter a valid duration in hours.</value></data>
+    <data name="Facilities_DurationTooLong"><value>Cannot reserve a slot longer than 14 hours.</value></data>
+    <data name="Facilities_NoSlots_Title"><value>No available slots</value></data>
+    <data name="Facilities_NoSlots_Message"><value>No available slot found.</value></data>
+    <data name="Error_SelectFacility"><value>Please select a facility.</value></data>
 </root>

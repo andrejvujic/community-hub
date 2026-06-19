@@ -390,4 +390,24 @@
     
     <data name="PerHour"><value>Plaćanje po satu</value></data>
     <data name="PerJob"><value>Plaćanje po usluzi</value></data>
+
+    <data name="Facilities_ReservationFor"><value>Rezervacija za kvart:</value></data>
+    <data name="Facilities_SelectFacility"><value>Izaberite objekat:</value></data>
+    <data name="Facilities_Duration"><value>Trajanje posete (h):</value></data>
+    <data name="Facilities_DateRange"><value>Opseg datuma:</value></data>
+    <data name="Facilities_CheckAndReserve"><value>Proveri dostupnost i rezerviši</value></data>
+    <data name="Facilities_ReservationList"><value>Spisak rezervacija kvarta</value></data>
+    <data name="Facilities_ReservationList_Format"><value>Spisak rezervacija kvarta {0}</value></data>
+    <data name="Facilities_ColFacility"><value>Objekat</value></data>
+    <data name="Facilities_ColDate"><value>Datum</value></data>
+    <data name="Facilities_ColStart"><value>Početak</value></data>
+    <data name="Facilities_ColEnd"><value>Kraj</value></data>
+    <data name="Facilities_ReportTitle"><value>Generisanje izveštaja</value></data>
+    <data name="Facilities_ReportSubtitle"><value>Generiši izveštaj o svim rezervacijama gradskih objekata</value></data>
+    <data name="Facilities_GenerateReport"><value>Generiši izveštaj</value></data>
+    <data name="Facilities_InvalidDuration"><value>Unesite ispravno trajanje u satima.</value></data>
+    <data name="Facilities_DurationTooLong"><value>Nije moguće rezervisati termin duži od 14h.</value></data>
+    <data name="Facilities_NoSlots_Title"><value>Nema slobodnih termina</value></data>
+    <data name="Facilities_NoSlots_Message"><value>Nije pronađen nijedan slobodan termin.</value></data>
+    <data name="Error_SelectFacility"><value>Izaberite objekat.</value></data>
 </root>

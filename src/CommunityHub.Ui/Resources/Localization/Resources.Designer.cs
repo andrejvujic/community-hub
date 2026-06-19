@@ -250,6 +250,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Izaberite objekat..
+        /// </summary>
+        internal static string Error_SelectFacility {
+            get {
+                return ResourceManager.GetString("Error_SelectFacility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Izaberite kvart za koji želite da generišete izveštaj..
         /// </summary>
         internal static string Error_SelectNeighborhood {
@@ -273,6 +282,168 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Even {
             get {
                 return ResourceManager.GetString("Even", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proveri dostupnost i rezerviši.
+        /// </summary>
+        internal static string Facilities_CheckAndReserve {
+            get {
+                return ResourceManager.GetString("Facilities_CheckAndReserve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum.
+        /// </summary>
+        internal static string Facilities_ColDate {
+            get {
+                return ResourceManager.GetString("Facilities_ColDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kraj.
+        /// </summary>
+        internal static string Facilities_ColEnd {
+            get {
+                return ResourceManager.GetString("Facilities_ColEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Objekat.
+        /// </summary>
+        internal static string Facilities_ColFacility {
+            get {
+                return ResourceManager.GetString("Facilities_ColFacility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Početak.
+        /// </summary>
+        internal static string Facilities_ColStart {
+            get {
+                return ResourceManager.GetString("Facilities_ColStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opseg datuma:.
+        /// </summary>
+        internal static string Facilities_DateRange {
+            get {
+                return ResourceManager.GetString("Facilities_DateRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trajanje posete (h):.
+        /// </summary>
+        internal static string Facilities_Duration {
+            get {
+                return ResourceManager.GetString("Facilities_Duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nije moguće rezervisati termin duži od 14h..
+        /// </summary>
+        internal static string Facilities_DurationTooLong {
+            get {
+                return ResourceManager.GetString("Facilities_DurationTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generiši izveštaj.
+        /// </summary>
+        internal static string Facilities_GenerateReport {
+            get {
+                return ResourceManager.GetString("Facilities_GenerateReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unesite ispravno trajanje u satima..
+        /// </summary>
+        internal static string Facilities_InvalidDuration {
+            get {
+                return ResourceManager.GetString("Facilities_InvalidDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nije pronađen nijedan slobodan termin..
+        /// </summary>
+        internal static string Facilities_NoSlots_Message {
+            get {
+                return ResourceManager.GetString("Facilities_NoSlots_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nema slobodnih termina.
+        /// </summary>
+        internal static string Facilities_NoSlots_Title {
+            get {
+                return ResourceManager.GetString("Facilities_NoSlots_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generiši izveštaj o svim rezervacijama gradskih objekata.
+        /// </summary>
+        internal static string Facilities_ReportSubtitle {
+            get {
+                return ResourceManager.GetString("Facilities_ReportSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generisanje izveštaja.
+        /// </summary>
+        internal static string Facilities_ReportTitle {
+            get {
+                return ResourceManager.GetString("Facilities_ReportTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rezervacija za kvart:.
+        /// </summary>
+        internal static string Facilities_ReservationFor {
+            get {
+                return ResourceManager.GetString("Facilities_ReservationFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spisak rezervacija kvarta.
+        /// </summary>
+        internal static string Facilities_ReservationList {
+            get {
+                return ResourceManager.GetString("Facilities_ReservationList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spisak rezervacija kvarta {0}.
+        /// </summary>
+        internal static string Facilities_ReservationList_Format {
+            get {
+                return ResourceManager.GetString("Facilities_ReservationList_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izaberite objekat:.
+        /// </summary>
+        internal static string Facilities_SelectFacility {
+            get {
+                return ResourceManager.GetString("Facilities_SelectFacility", resourceCulture);
             }
         }
         
