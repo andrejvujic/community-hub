@@ -1,5 +1,4 @@
 using CommunityHub.Application.Domain.Events;
-using CommunityHub.Application.Modules.Buildings.Core.Services.Ads;
 using CommunityHub.Application.Services.Dtos.Events;
 using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Events;
@@ -8,8 +7,10 @@ using CommunityHub.Ui.Helpers;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.ViewModels.Citizen.Help;
 using CommunityHub.Ui.Views.Citizen.Help;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
@@ -19,6 +20,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         private readonly long _userId;
         private readonly CommunityEventService _eventService = new();
         private readonly EventRegistrationService _registrationService = new();
+        private readonly EventReportService _reportService = new();
         private readonly CitizenService _citizenService = new();
 
         private CitizenDto? _citizen;
@@ -28,8 +30,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? ApplyToVolunteerRequested;
-        public event EventHandler? PrintReportRequested;
         public event EventHandler? MyEventsRequested;
+        public event EventHandler<string>? ShowInfoMessage;
 
         public CitizenDto? Citizen
         {
@@ -43,6 +45,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         }
 
         public ObservableCollection<CommunityEventDto> Events => _events;
+        public bool CanPrintReport => SelectedEvent != null;
 
         public CommunityEventDto? SelectedEvent
         {
@@ -111,13 +114,54 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             _userId = userId;
 
             ApplyToVolunteerCommand = new RelayCommand<object>(_ => { if (CanApplyToVolunteer) ApplyToVolunteerRequested?.Invoke(this, EventArgs.Empty); });
-            PrintReportCommand = new RelayCommand<object>(_ => PrintReportRequested?.Invoke(this, EventArgs.Empty));
+            PrintReportCommand = new RelayCommand<object>(_ => PrintReport());
             MyEventsCommand = new RelayCommand<object>(_ => MyEventsRequested?.Invoke(this, EventArgs.Empty));
             ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
 
             TooltipState.OnPropertyChanged += (s, e) => { OnPropertyChanged(nameof(ApplyToVolunteerTooltip)); };
 
             LoadData();
+        }
+
+        private void PrintReport()
+        {
+            if (SelectedEvent == null)
+            {
+                MessageBox.Show("Molimo izaberite događaj za štampanje izveštaja.", "Upozorenje", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                var pdfData = _reportService.GenerateEventReport(SelectedEvent, $"{Citizen!.Name} {Citizen!.Surname}");
+
+                var saveDialog = new SaveFileDialog
+                {
+                    Filter = "PDF dokument (*.pdf)|*.pdf",
+                    FileName = $"Izvestaj_{SelectedEvent.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf",
+                    Title = "Sačuvaj izveštaj",
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                };
+
+                if (saveDialog.ShowDialog() == true)
+                {
+                    _reportService.SaveReportToFile(pdfData, saveDialog.FileName);
+
+                    var result = MessageBox.Show($"Izveštaj je uspešno sačuvan.\n\nDa li želite da otvorite PDF?","Uspešno", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = saveDialog.FileName,
+                            UseShellExecute = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Greška prilikom generisanja izveštaja:\n\n{ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ShowHelp()

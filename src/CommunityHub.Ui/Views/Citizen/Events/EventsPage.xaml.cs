@@ -1,6 +1,7 @@
+using CommunityHub.Ui.ViewModels.Citizen.Events;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
-using CommunityHub.Ui.ViewModels.Citizen.Events;
 
 namespace CommunityHub.Ui.Views.Citizen.Events
 {
@@ -16,7 +17,6 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             {
                 _viewModel = new EventsViewModel(userId);
                 _viewModel.ApplyToVolunteerRequested += (_, _) => HandleApplyToVolunteer();
-                _viewModel.PrintReportRequested += (_, _) => HandlePrintReport();
                 _viewModel.MyEventsRequested += (_, _) => HandleMyEvents();
                 DataContext = _viewModel;
             };
@@ -27,11 +27,6 @@ namespace CommunityHub.Ui.Views.Citizen.Events
             var wnd = new ApplyToVolunteerWindow(_viewModel!.GetCitizenId(), _viewModel.SelectedEvent!.Id);
             wnd.Owner = Window.GetWindow(this);
             if (wnd.ShowDialog() == true) _viewModel.RefreshEvents();
-        }
-
-        private void HandlePrintReport()
-        {
-            MessageBox.Show("Funkcionalnost štampanja izveštaja će biti implementirana.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void HandleMyEvents()
