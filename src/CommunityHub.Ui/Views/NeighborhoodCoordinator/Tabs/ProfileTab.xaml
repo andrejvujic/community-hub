@@ -20,7 +20,8 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  Background="{DynamicResource WindowBackgroundBrush}">
+                  Background="{DynamicResource WindowBackgroundBrush}"
+                  Cursor="Arrow">
         <StackPanel Margin="16">
 
             <TextBlock Text="{ns:Loc Profile_Welcome}"

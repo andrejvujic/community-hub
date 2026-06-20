@@ -410,4 +410,25 @@
     <data name="Facilities_NoSlots_Title"><value>Nema slobodnih termina</value></data>
     <data name="Facilities_NoSlots_Message"><value>Nije pronađen nijedan slobodan termin.</value></data>
     <data name="Error_SelectFacility"><value>Izaberite objekat.</value></data>
+
+    <data name="Budget_TitleFormat"><value>Detalji budžeta kvarta {0}</value></data>
+    <data name="Budget_DonationsTitle"><value>Donacije: {0}</value></data>
+    <data name="Budget_ExpensesTitle"><value>Troškovi: {0}</value></data>
+    <data name="Budget_ColCategory"><value>Kategorija</value></data>
+    <data name="Budget_ColTotalDonations"><value>Ukupne donacije</value></data>
+    <data name="Budget_ColSpent"><value>Potrošeno</value></data>
+    <data name="Budget_ColAvailable"><value>Raspoloživo</value></data>
+    <data name="Budget_ColAmount"><value>Iznos</value></data>
+    <data name="Budget_ColDate"><value>Datum</value></data>
+    <data name="Budget_ColDescription"><value>Opis</value></data>
+    <data name="Budget_NewExpense"><value>Evidencija novog troška</value></data>
+    <data name="Budget_Description"><value>Opis:</value></data>
+    <data name="Budget_Amount"><value>Iznos (RSD):</value></data>
+    <data name="Budget_Date"><value>Datum:</value></data>
+    <data name="Budget_RegisterExpense"><value>Evidentiraj trošak</value></data>
+    <data name="Budget_EnterDescription"><value>Unesite opis troška.</value></data>
+    <data name="Budget_EnterAmount"><value>Unesite ispravan iznos.</value></data>
+    <data name="Budget_ExpenseSuccess"><value>Trošak je uspešno evidentiran.</value></data>
+    <data name="Budget_InsufficientFunds_Title"><value>Nedovoljno sredstava</value></data>
+    <data name="Error_SelectCategory_Title"><value>Odaberite kategoriju</value></data>
 </root>

@@ -97,6 +97,177 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Iznos (RSD):.
+        /// </summary>
+        internal static string Budget_Amount {
+            get {
+                return ResourceManager.GetString("Budget_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iznos.
+        /// </summary>
+        internal static string Budget_ColAmount {
+            get {
+                return ResourceManager.GetString("Budget_ColAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raspoloživo.
+        /// </summary>
+        internal static string Budget_ColAvailable {
+            get {
+                return ResourceManager.GetString("Budget_ColAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kategorija.
+        /// </summary>
+        internal static string Budget_ColCategory {
+            get {
+                return ResourceManager.GetString("Budget_ColCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum.
+        /// </summary>
+        internal static string Budget_ColDate {
+            get {
+                return ResourceManager.GetString("Budget_ColDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis.
+        /// </summary>
+        internal static string Budget_ColDescription {
+            get {
+                return ResourceManager.GetString("Budget_ColDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Potrošeno.
+        /// </summary>
+        internal static string Budget_ColSpent {
+            get {
+                return ResourceManager.GetString("Budget_ColSpent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ukupne donacije.
+        /// </summary>
+        internal static string Budget_ColTotalDonations {
+            get {
+                return ResourceManager.GetString("Budget_ColTotalDonations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum:.
+        /// </summary>
+        internal static string Budget_Date {
+            get {
+                return ResourceManager.GetString("Budget_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis:.
+        /// </summary>
+        internal static string Budget_Description {
+            get {
+                return ResourceManager.GetString("Budget_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donacije: {0}.
+        /// </summary>
+        internal static string Budget_DonationsTitle {
+            get {
+                return ResourceManager.GetString("Budget_DonationsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unesite ispravan iznos..
+        /// </summary>
+        internal static string Budget_EnterAmount {
+            get {
+                return ResourceManager.GetString("Budget_EnterAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unesite opis troška..
+        /// </summary>
+        internal static string Budget_EnterDescription {
+            get {
+                return ResourceManager.GetString("Budget_EnterDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Troškovi: {0}.
+        /// </summary>
+        internal static string Budget_ExpensesTitle {
+            get {
+                return ResourceManager.GetString("Budget_ExpensesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trošak je uspešno evidentiran..
+        /// </summary>
+        internal static string Budget_ExpenseSuccess {
+            get {
+                return ResourceManager.GetString("Budget_ExpenseSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nedovoljno sredstava.
+        /// </summary>
+        internal static string Budget_InsufficientFunds_Title {
+            get {
+                return ResourceManager.GetString("Budget_InsufficientFunds_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evidencija novog troška.
+        /// </summary>
+        internal static string Budget_NewExpense {
+            get {
+                return ResourceManager.GetString("Budget_NewExpense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evidentiraj trošak.
+        /// </summary>
+        internal static string Budget_RegisterExpense {
+            get {
+                return ResourceManager.GetString("Budget_RegisterExpense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detalji budžeta kvarta {0}.
+        /// </summary>
+        internal static string Budget_TitleFormat {
+            get {
+                return ResourceManager.GetString("Budget_TitleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Otkazan.
         /// </summary>
         internal static string Cancelled {
@@ -237,6 +408,15 @@ namespace CommunityHub.Ui.Resources.Localization {
         internal static string Error_Generate {
             get {
                 return ResourceManager.GetString("Error_Generate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odaberite kategoriju.
+        /// </summary>
+        internal static string Error_SelectCategory_Title {
+            get {
+                return ResourceManager.GetString("Error_SelectCategory_Title", resourceCulture);
             }
         }
         

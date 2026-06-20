@@ -411,4 +411,25 @@
     <data name="Facilities_NoSlots_Title"><value>No available slots</value></data>
     <data name="Facilities_NoSlots_Message"><value>No available slot found.</value></data>
     <data name="Error_SelectFacility"><value>Please select a facility.</value></data>
+
+    <data name="Budget_TitleFormat"><value>Budget details for neighborhood {0}</value></data>
+    <data name="Budget_DonationsTitle"><value>Donations: {0}</value></data>
+    <data name="Budget_ExpensesTitle"><value>Expenses: {0}</value></data>
+    <data name="Budget_ColCategory"><value>Category</value></data>
+    <data name="Budget_ColTotalDonations"><value>Total donations</value></data>
+    <data name="Budget_ColSpent"><value>Spent</value></data>
+    <data name="Budget_ColAvailable"><value>Available</value></data>
+    <data name="Budget_ColAmount"><value>Amount</value></data>
+    <data name="Budget_ColDate"><value>Date</value></data>
+    <data name="Budget_ColDescription"><value>Description</value></data>
+    <data name="Budget_NewExpense"><value>Register new expense</value></data>
+    <data name="Budget_Description"><value>Description:</value></data>
+    <data name="Budget_Amount"><value>Amount (RSD):</value></data>
+    <data name="Budget_Date"><value>Date:</value></data>
+    <data name="Budget_RegisterExpense"><value>Register expense</value></data>
+    <data name="Budget_EnterDescription"><value>Please enter an expense description.</value></data>
+    <data name="Budget_EnterAmount"><value>Please enter a valid amount.</value></data>
+    <data name="Budget_ExpenseSuccess"><value>Expense successfully registered.</value></data>
+    <data name="Budget_InsufficientFunds_Title"><value>Insufficient funds</value></data>
+    <data name="Error_SelectCategory_Title"><value>Select a category</value></data>
 </root>

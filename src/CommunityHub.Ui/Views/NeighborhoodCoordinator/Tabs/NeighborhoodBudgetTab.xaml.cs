@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
@@ -19,6 +20,14 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
 
             ExpenseDatePicker.SelectedDate = DateTime.Now;
             this.IsVisibleChanged += NeighborhoodBudgetTab_IsVisibleChanged;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                if (this.IsVisible)
+                {
+                    RefreshLanguageAndBindings();
+                }
+            };
         }
 
         public void Initialize(long coordinatorId)
@@ -30,8 +39,19 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if ((bool)e.NewValue)
             {
+                RefreshLanguageAndBindings();
                 _viewModel.LoadNeighborhoods();
             }
+        }
+
+        private void RefreshLanguageAndBindings()
+        {
+            var currentCultureName = TranslationSource.Instance.CurrentCulture?.Name ?? "sr-Latn-RS";
+            this.Language = XmlLanguage.GetLanguage(currentCultureName);
+
+            BudgetCategoriesDataGrid?.Items.Refresh();
+            ExpensesDataGrid?.Items.Refresh();
+            DonationsDataGrid?.Items.Refresh();
         }
     }
 }
