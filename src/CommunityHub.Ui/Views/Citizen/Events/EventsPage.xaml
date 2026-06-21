@@ -160,10 +160,10 @@
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Prijavi se za volontiranje<LineBreak/>(Ctrl + 1)</TextBlock>
                         </Button>
 
-                        <Button Grid.Column="1" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="4,0,4,0" Command="{Binding PrintReportCommand}"
+                        <Button Grid.Column="1" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="4,0,4,0" Command="{Binding PrintReportCommand}" IsEnabled="{Binding CanPrintReport}"
                         ToolTipService.InitialShowDelay="150" ToolTipService.BetweenShowDelay="0"
-                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Štampanje izveštaja o odabranom događaju'}">
-                            <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Štampaj izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
+                        ToolTip="{Binding IsEnabled, Source={StaticResource TooltipStateProxy}, Converter={StaticResource TooltipVisibilityConverter}, ConverterParameter='Generisanje izveštaja o odabranom događaju'}">
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="13">Generiši izveštaj<LineBreak/>(Ctrl + 2)</TextBlock>
                         </Button>
 
                         <Button x:Name="MyEventsButton" Grid.Column="2" Height="52" HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Command="{Binding MyEventsCommand}"

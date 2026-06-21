@@ -75,7 +75,7 @@
                       CanUserDeleteRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Iznos (RSD)" Binding="{Binding AmountDisplay}" Width="150" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Datum" Binding="{Binding DateDisplay}" Width="150" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Datum" Binding="{Binding ExpenseDate, StringFormat=d.M.yyyy.}" Width="150" IsReadOnly="True" />
                     <DataGridTextColumn Header="Opis" Binding="{Binding Description}" Width="*" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

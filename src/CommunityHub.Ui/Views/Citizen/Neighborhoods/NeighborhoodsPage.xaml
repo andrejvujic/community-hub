@@ -15,6 +15,8 @@
         <KeyBinding Key="D1" Modifiers="Ctrl" Command="{Binding AccessOrCoordinatorCommand}" />
         <KeyBinding Key="D2" Modifiers="Ctrl" Command="{Binding MyAccessRequestsCommand}" />
         <KeyBinding Key="H" Modifiers="Ctrl" Command="{Binding ShowHelpCommand}" />
+        <KeyBinding Key="Left" Command="{Binding PreviousImagePageCommand}" />
+        <KeyBinding Key="Right" Command="{Binding NextImagePageCommand}" />
     </Page.InputBindings>
 
     <Page.Resources>
@@ -145,8 +147,13 @@
                                     </ListBox>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="1">
-                                    <ItemsControl ItemsSource="{Binding SelectedNeighborhood.Images}">
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding CurrentImages}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Vertical" />
@@ -154,15 +161,56 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Image Source="{Binding Path}" Width="240" Height="140" Margin="0,0,0,12" Stretch="UniformToFill">
+                                                <Image Source="{Binding Path}" Width="230" Height="130" Margin="0,0,0,8" Stretch="UniformToFill">
                                                     <Image.Clip>
-                                                        <RectangleGeometry Rect="0,0,240,140" RadiusX="8" RadiusY="8" />
+                                                        <RectangleGeometry Rect="0,0,230,130" RadiusX="8" RadiusY="8" />
                                                     </Image.Clip>
                                                 </Image>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                </StackPanel>
+
+                                    <Grid Grid.Row="1" Margin="0,8,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0" 
+                                            Command="{Binding PreviousImagePageCommand}"
+                                            IsEnabled="{Binding CanGoPrevious}"
+                                            Width="32" Height="32"
+                                            Margin="20,0,0,0"
+                                            Style="{StaticResource CompactButton}"
+                                            Foreground="{StaticResource TextBrush}"
+                                            ToolTip="Prethodna strana (←)">
+                                            <Viewbox Width="16" Height="16">
+                                                <Path Data="M22 10H10V5L2 12l8 7v-5h12z" Fill="{StaticResource TextBrush}"/>
+                                            </Viewbox>
+                                        </Button>
+
+                                        <TextBlock Grid.Column="1" 
+                                            Text="{Binding CurrentPageDisplay}"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Foreground="{StaticResource TextBrush}" 
+                                            FontSize="14"/>
+
+                                        <Button Grid.Column="2" 
+                                            Command="{Binding NextImagePageCommand}"
+                                            IsEnabled="{Binding CanGoNext}"
+                                            Width="32" Height="32"
+                                            Margin="0,0,20,0"
+                                            Style="{StaticResource CompactButton}"
+                                            Foreground="{StaticResource TextBrush}"
+                                            ToolTip="Sledeća strana (→)">
+                                            <Viewbox Width="16" Height="16">
+                                                <Path Data="M2 10h12V5l8 7-8 7v-5H2v-4z" Fill="{StaticResource TextBrush}"/>
+                                            </Viewbox>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </StackPanel>
                     </Grid>

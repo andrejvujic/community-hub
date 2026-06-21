@@ -12,7 +12,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 
         public string NeighborhoodName { get; }
         public string CoordinatorName { get; }
-        public string ReviewDate => DateTime.Now.ToString("d.M.yyyy");
+        public string ReviewDate => DateTime.Now.ToString("d.M.yyyy.");
 
         public int Rating
         {
