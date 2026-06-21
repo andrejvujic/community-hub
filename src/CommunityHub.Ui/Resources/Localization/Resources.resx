@@ -472,4 +472,58 @@
     <data name="Register_ErrorCity"><value>Grad je obavezno polje.</value></data>
     <data name="Register_ErrorStreets"><value>Morate dodati bar jednu ulicu.</value></data>
     <data name="Register_ErrorImages"><value>Morate dodati bar jednu sliku.</value></data>
+
+
+    <data name="Dialog_Ok"><value>U redu</value></data>
+    <data name="Dialog_Yes"><value>Da</value></data>
+    <data name="Dialog_No"><value>Ne</value></data>
+    <data name="Dialog_Cancel"><value>Odustani</value></data>
+    <data name="Dialog_Confirm"><value>Potvrdi</value></data>
+
+    <data name="Reject_Title"><value>Odbijanje zahteva</value></data>
+    <data name="Reject_Message"><value>Napišite razlog odbijanja zahteva korisnika {0} {1} za pristup kvartu {2}:</value></data>
+
+    <data name="Review_WindowTitle"><value>Ocenjivanje servisera</value></data>
+    <data name="Review_TitleNew"><value>Ocenite uslugu: {0}</value></data>
+    <data name="Review_TitleEdit"><value>Izmenite recenziju: {0}</value></data>
+    <data name="Review_Quality"><value>Kvalitet izvršenja (1-5):</value></data>
+    <data name="Review_Communication"><value>Komunikacija i korektnost (1-5):</value></data>
+    <data name="Review_Comment"><value>Komentar:</value></data>
+    <data name="Review_IncompleteTitle"><value>Nepotpuni podaci</value></data>
+    <data name="Review_MissingQuality"><value>Molimo Vas da izaberete ocenu za kvalitet izvršene usluge.</value></data>
+    <data name="Review_MissingCommunication"><value>Molimo Vas da izaberete ocenu za komunikaciju sa serviserom.</value></data>
+    <data name="Review_MissingComment"><value>Molimo Vas da unesete komentar. Obrazloženje recenzije je obavezno.</value></data>
+
+    <data name="FacilityBooking_WindowTitle"><value>Potvrda i provera termina</value></data>
+    <data name="FacilityBooking_Details"><value>Detalji:</value></data>
+    <data name="FacilityBooking_SelectSlot"><value>Odaberite termin:</value></data>
+    <data name="FacilityBooking_Confirm"><value>Potvrdi rezervaciju</value></data>
+    <data name="FacilityBooking_Neighborhood"><value>Stanovnici kvarta: {0}</value></data>
+    <data name="FacilityBooking_Facility"><value>Objekat: {0}</value></data>
+    <data name="FacilityBooking_TitleFound"><value>Potvrda rezervacije — Termin pronađen</value></data>
+    <data name="FacilityBooking_TitleNotFound"><value>Potvrda rezervacije — Termin zauzet</value></data>
+    <data name="FacilityBooking_StatusFound"><value>Sistem je pronašao slobodan termin za posetu objekta {0} u zadatom opsegu za stanovnike kvarta {1}.</value></data>
+    <data name="FacilityBooking_StatusNotFound"><value>Nažalost, nema slobodnih termina u zadatom opsegu. Sistem je pronašao prve slobodne termine van opsega.</value></data>
+    <data name="FacilityBooking_SlotText"><value>Termin: {0}</value></data>
+
+    <data name="ServiceBooking_WindowTitle"><value>Potvrda rezervacije termina</value></data>
+    <data name="ServiceBooking_ImportantNotice"><value>Važno obaveštenje</value></data>
+    <data name="ServiceBooking_Header"><value>Sistem je pronašao prvi slobodan termin za uslugu: {0} (Serviser: {1} {2}).</value></data>
+    <data name="ServiceBooking_SlotDateTime"><value>Pronađeni termin: {0} u {1}</value></data>
+    <data name="ServiceBooking_SlotDate"><value>Pronađeni termin: {0}</value></data>
+    <data name="ServiceBooking_Duration"><value>Trajanje: {0}h</value></data>
+    <data name="ServiceBooking_HourlyRate"><value>Cena po satu: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_Total"><value>Ukupan iznos za uplatu: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_PerJobPrice"><value>Cena: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_Question"><value>Da li želite da zakažete ovaj termin?</value></data>
+    <data name="ServiceBooking_QuestionPriceChanged"><value>Da li želite da zakažete ovaj termin po ovoj ceni?</value></data>
+    <data name="ServiceBooking_PriceChangeInfo"><value>Prvi slobodan termin nije u opsegu datuma za koji važi trenutna cena.\nNova cena koja važi od {0} iznosi {1:N2} RSD.</value></data>
+
+    <data name="Schedule_Title"><value>Zakazivanje sastanka</value></data>
+    <data name="Schedule_Theme"><value>Tema sastanka: </value></data>
+    <data name="Schedule_Time"><value>Vreme održavanja: </value></data>
+    <data name="Schedule_DateRange"><value>Datum održavanja u opsegu:</value></data>
+    <data name="Schedule_StartVoting"><value>Pokreni glasanje</value></data>
+    <data name="Schedule_InvalidTime"><value>Neispravno vreme (00-23h : 00-59m).</value></data>
+    <data name="Schedule_DateOrderError"><value>Početni datum mora biti pre završnog.</value></data>
 </root>

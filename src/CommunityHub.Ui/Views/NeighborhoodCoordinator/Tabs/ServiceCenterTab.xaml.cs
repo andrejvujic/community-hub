@@ -14,7 +14,6 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public ServiceCenterTab()
         {
             InitializeComponent();
-            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
 
             _viewModel = new ServiceCenterTabViewModel();
             DataContext = _viewModel;

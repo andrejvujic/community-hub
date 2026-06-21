@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
+using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
@@ -14,7 +15,9 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
         public ScheduleMeetingWindow(NeighborhoodDto neighborhood, MeetingTheme? fixedTheme = null)
         {
             InitializeComponent();
-            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
+
+            if (TranslationSource.Instance.CurrentCulture != null)
+                Language = XmlLanguage.GetLanguage(TranslationSource.Instance.CurrentCulture.Name);
 
             _viewModel = new ScheduleMeetingWindowViewModel(neighborhood, fixedTheme);
             DataContext = _viewModel;

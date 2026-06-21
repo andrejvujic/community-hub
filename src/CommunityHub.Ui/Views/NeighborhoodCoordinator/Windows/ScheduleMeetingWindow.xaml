@@ -6,14 +6,16 @@
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         xmlns:domain="clr-namespace:CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings;assembly=CommunityHub.Application"
+        xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
         mc:Ignorable="d"
-        Title="Zakazivanje sastanka" 
+        Title="{ns:Loc Schedule_Title}"
         Height="370" Width="450"
         WindowStartupLocation="CenterOwner" 
         ResizeMode="NoResize"
         Background="{DynamicResource WindowBackgroundBrush}">
     <Window.Resources>
-        <conv:MeetingThemeToStringConverter x:Key="MeetingThemeConverter" />
+        <ns:EnumLocalizationConverter x:Key="EnumLocalizationConverter" />
+        <ns:BoolToAmPmIndexConverter x:Key="BoolToAmPmIndexConverter" />
     </Window.Resources>
 
     <Grid Margin="20"
@@ -27,7 +29,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-            <TextBlock Text="Tema sastanka: " FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="{ns:Loc Schedule_Theme}" FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
             <TextBlock Text="{Binding FixedThemeDisplay}"
                        FontSize="20"
                        VerticalAlignment="Center"
@@ -42,52 +44,95 @@
                       SelectedValue="{Binding SelectedTheme}"
                       SelectedValuePath="Tag">
                 <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Welcome}"
-                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}"/>
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource EnumLocalizationConverter}}"/>
                 <ComboBoxItem Tag="{x:Static domain:MeetingTheme.Motivation}"
-                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource MeetingThemeConverter}}"/>
+                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource EnumLocalizationConverter}}"/>
             </ComboBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
-            <TextBlock Text="Vreme održavanja: " FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
-            <TextBox x:Name="HourTxt"
-                     Style="{StaticResource TextBoxStyle}"
-                     FontSize="20" Width="40" Height="30"
-                     Padding="0"
-                     HorizontalContentAlignment="Center"
-                     MaxLength="2"
-                     Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"
-                     PreviewTextInput="NumberTextBox_PreviewTextInput"
-                     PreviewKeyDown="NumberTextBox_PreviewKeyDown">
-                <TextBox.ContextMenu>
-                    <ContextMenu Visibility="Collapsed"/>
-                </TextBox.ContextMenu>
-            </TextBox>
-            <TextBlock Text=" : " FontSize="20" VerticalAlignment="Center"/>
-            <TextBox x:Name="MinuteTxt"
-                     Style="{StaticResource TextBoxStyle}"
-                     FontSize="20" Width="40" Height="30"
-                     Padding="0"
-                     HorizontalContentAlignment="Center"
-                     MaxLength="2"
-                     Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"
-                     PreviewTextInput="NumberTextBox_PreviewTextInput"
-                     PreviewKeyDown="NumberTextBox_PreviewKeyDown">
-                <TextBox.ContextMenu>
-                    <ContextMenu Visibility="Collapsed"/>
-                </TextBox.ContextMenu>
-            </TextBox>
-            <TextBlock Text=" h" FontSize="20" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <TextBlock Text="{ns:Loc Schedule_Time}" FontSize="20" VerticalAlignment="Center" FontWeight="SemiBold"/>
+
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Time24Visibility}">
+                <TextBox x:Name="HourTxt"
+                         Style="{StaticResource TextBoxStyle}"
+                         FontSize="20" Width="40" Height="30"
+                         Padding="0"
+                         HorizontalContentAlignment="Center"
+                         MaxLength="2"
+                         Text="{Binding Hour, UpdateSourceTrigger=PropertyChanged}"
+                         PreviewTextInput="NumberTextBox_PreviewTextInput"
+                         PreviewKeyDown="NumberTextBox_PreviewKeyDown">
+                    <TextBox.ContextMenu>
+                        <ContextMenu Visibility="Collapsed"/>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <TextBlock Text=" : " FontSize="20" VerticalAlignment="Center"/>
+                <TextBox x:Name="MinuteTxt"
+                         Style="{StaticResource TextBoxStyle}"
+                         FontSize="20" Width="40" Height="30"
+                         Padding="0"
+                         HorizontalContentAlignment="Center"
+                         MaxLength="2"
+                         Text="{Binding Minute, UpdateSourceTrigger=PropertyChanged}"
+                         PreviewTextInput="NumberTextBox_PreviewTextInput"
+                         PreviewKeyDown="NumberTextBox_PreviewKeyDown">
+                    <TextBox.ContextMenu>
+                        <ContextMenu Visibility="Collapsed"/>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <TextBlock Text=" h" FontSize="20" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Time12Visibility}">
+                <TextBox x:Name="Hour12Txt"
+                         Style="{StaticResource TextBoxStyle}"
+                         FontSize="20" Width="40" Height="30"
+                         Padding="0"
+                         HorizontalContentAlignment="Center"
+                         MaxLength="2"
+                         Text="{Binding Hour12, UpdateSourceTrigger=PropertyChanged}"
+                         PreviewTextInput="NumberTextBox_PreviewTextInput"
+                         PreviewKeyDown="NumberTextBox_PreviewKeyDown">
+                    <TextBox.ContextMenu>
+                        <ContextMenu Visibility="Collapsed"/>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <TextBlock Text=" : " FontSize="20" VerticalAlignment="Center"/>
+                <TextBox x:Name="Minute12Txt"
+                         Style="{StaticResource TextBoxStyle}"
+                         FontSize="20" Width="40" Height="30"
+                         Padding="0"
+                         HorizontalContentAlignment="Center"
+                         MaxLength="2"
+                         Text="{Binding Minute12, UpdateSourceTrigger=PropertyChanged}"
+                         PreviewTextInput="NumberTextBox_PreviewTextInput"
+                         PreviewKeyDown="NumberTextBox_PreviewKeyDown">
+                    <TextBox.ContextMenu>
+                        <ContextMenu Visibility="Collapsed"/>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <ComboBox x:Name="AmPmComboBox"
+                          Style="{StaticResource ComboBoxStyle}"
+                          FontSize="20"
+                          Width="70" Height="30"
+                          Padding="0"
+                          Margin="8,0,0,0"
+                          SelectedIndex="{Binding IsPm, Converter={StaticResource BoolToAmPmIndexConverter}, Mode=TwoWay}">
+                    <ComboBoxItem Content="AM"/>
+                    <ComboBoxItem Content="PM"/>
+                </ComboBox>
+            </StackPanel>
         </StackPanel>
 
-        <TextBlock Grid.Row="2" Text="Datum održavanja u opsegu:" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10"/>
+        <TextBlock Grid.Row="2" Text="{ns:Loc Schedule_DateRange}" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,10"/>
         <Grid Grid.Row="3" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                <TextBlock Text="Od" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{ns:Loc Dashboard_DateFrom}" FontSize="20" Margin="0,0,0,5"/>
                 <DatePicker x:Name="FromDatePicker"
                             Style="{StaticResource DatePickerStyle}"
                             FontSize="20" 
@@ -97,7 +142,7 @@
                             DisplayDateEnd="{Binding MaxDate, Mode=OneWay}"/>
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <TextBlock Text="Do" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="{ns:Loc Dashboard_DateTo}" FontSize="20" Margin="0,0,0,5"/>
                 <DatePicker x:Name="ToDatePicker"
                             Style="{StaticResource DatePickerStyle}"
                             FontSize="20" Height="30"
@@ -108,13 +153,13 @@
         </Grid>
 
         <Grid Grid.Row="4" Margin="0,25,0,0">
-            <Button Content="Odustani"
+            <Button Content="{ns:Loc Dialog_Cancel}"
                     Style="{StaticResource SecondaryButtonStyle}"
                     HorizontalAlignment="Left"
                     Width="170" 
                     Height="45"
                     Command="{Binding CancelCommand}"/>
-            <Button Content="Pokreni glasanje"
+            <Button Content="{ns:Loc Schedule_StartVoting}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     HorizontalAlignment="Right"
                     Width="170" 

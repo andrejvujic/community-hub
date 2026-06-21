@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
+        xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
         mc:Ignorable="d"
-        Title="Potvrda rezervacije termina"
+        Title="{ns:Loc ServiceBooking_WindowTitle}"
         Height="450"
         Width="400"
         WindowStartupLocation="CenterOwner"
@@ -60,7 +61,7 @@
                     CornerRadius="8"
                     Padding="12">
                 <StackPanel>
-                    <TextBlock Text="Važno obaveštenje"
+                    <TextBlock Text="{ns:Loc ServiceBooking_ImportantNotice}"
                                FontSize="18" 
                                FontWeight="SemiBold"
                                HorizontalAlignment="Center"
@@ -86,14 +87,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
-                    Content="Odustani"
+                    Content="{ns:Loc Dialog_Cancel}"
                     Style="{StaticResource SecondaryButtonStyle}"
                     Height="40" 
                     Margin="10,0,10,0"
                     FontSize="14"
                     Command="{Binding CancelCommand}"/>
             <Button Grid.Column="1"
-                    Content="Potvrdi"
+                    Content="{ns:Loc Dialog_Confirm}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Height="40"
                     Margin="10,0,10,0"

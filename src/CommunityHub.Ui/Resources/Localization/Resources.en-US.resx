@@ -472,4 +472,59 @@
     <data name="Register_ErrorCity"><value>City is required.</value></data>
     <data name="Register_ErrorStreets"><value>At least one street must be added.</value></data>
     <data name="Register_ErrorImages"><value>At least one image must be added.</value></data>
+
+
+    <data name="Dialog_Ok"><value>OK</value></data>
+    <data name="Dialog_Yes"><value>Yes</value></data>
+    <data name="Dialog_No"><value>No</value></data>
+    <data name="Dialog_Cancel"><value>Cancel</value></data>
+    <data name="Dialog_Confirm"><value>Confirm</value></data>
+
+    <data name="Reject_Title"><value>Reject request</value></data>
+    <data name="Reject_Message"><value>Write the reason for rejecting the request from {0} {1} for access to neighborhood {2}:</value></data>
+
+    <data name="Review_WindowTitle"><value>Rate provider</value></data>
+    <data name="Review_TitleNew"><value>Rate service: {0}</value></data>
+    <data name="Review_TitleEdit"><value>Edit review: {0}</value></data>
+    <data name="Review_Quality"><value>Quality of service (1-5):</value></data>
+    <data name="Review_Communication"><value>Communication and professionalism (1-5):</value></data>
+    <data name="Review_Comment"><value>Comment:</value></data>
+    <data name="Review_IncompleteTitle"><value>Incomplete data</value></data>
+    <data name="Review_MissingQuality"><value>Please select a rating for the quality of the service.</value></data>
+    <data name="Review_MissingCommunication"><value>Please select a rating for communication with the provider.</value></data>
+    <data name="Review_MissingComment"><value>Please enter a comment. A review explanation is required.</value></data>
+
+    <data name="FacilityBooking_WindowTitle"><value>Slot confirmation</value></data>
+    <data name="FacilityBooking_Details"><value>Details:</value></data>
+    <data name="FacilityBooking_SelectSlot"><value>Select a slot:</value></data>
+    <data name="FacilityBooking_Confirm"><value>Confirm reservation</value></data>
+    <data name="FacilityBooking_Neighborhood"><value>Neighborhood residents: {0}</value></data>
+    <data name="FacilityBooking_Facility"><value>Facility: {0}</value></data>
+    <data name="FacilityBooking_TitleFound"><value>Reservation confirmation — Slot found</value></data>
+    <data name="FacilityBooking_TitleNotFound"><value>Reservation confirmation — Slot unavailable</value></data>
+    <data name="FacilityBooking_StatusFound"><value>The system found an available slot for facility {0} within the selected range for residents of neighborhood {1}.</value></data>
+    <data name="FacilityBooking_StatusNotFound"><value>Unfortunately, no slots are available in the selected range. The system found the first available slots outside the range.</value></data>
+    <data name="FacilityBooking_SlotText"><value>Slot: {0}</value></data>
+
+    <data name="ServiceBooking_WindowTitle"><value>Booking confirmation</value></data>
+    <data name="ServiceBooking_ImportantNotice"><value>Important notice</value></data>
+    <data name="ServiceBooking_Header"><value>The system found the first available slot for service: {0} (Provider: {1} {2}).</value></data>
+    <data name="ServiceBooking_SlotDateTime"><value>Found slot: {0} at {1}</value></data>
+    <data name="ServiceBooking_SlotDate"><value>Found slot: {0}</value></data>
+    <data name="ServiceBooking_Duration"><value>Duration: {0}h</value></data>
+    <data name="ServiceBooking_HourlyRate"><value>Hourly rate: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_Total"><value>Total amount: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_PerJobPrice"><value>Price: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_Question"><value>Would you like to book this slot?</value></data>
+    <data name="ServiceBooking_QuestionPriceChanged"><value>Would you like to book this slot at this price?</value></data>
+    <data name="ServiceBooking_PriceChangeInfo"><value>The first available slot is outside the date range for the current price.\nThe new price valid from {0} is {1:N2} RSD.</value></data>
+
+    <data name="Schedule_Title"><value>Schedule meeting</value></data>
+    <data name="Schedule_Theme"><value>Meeting theme: </value></data>
+    <data name="Schedule_Time"><value>Meeting time: </value></data>
+    <data name="Schedule_DateRange"><value>Meeting date range:</value></data>
+    <data name="Schedule_StartVoting"><value>Start voting</value></data>
+    <data name="Schedule_InvalidTime"><value>Invalid time (00-23h : 00-59m).</value></data>
+    <data name="Schedule_DateOrderError"><value>Start date must be before end date.</value></data>
+    <data name="Schedule_InvalidHour12"><value>Invalid time (1-12h : 00-59m).</value></data>
 </root>

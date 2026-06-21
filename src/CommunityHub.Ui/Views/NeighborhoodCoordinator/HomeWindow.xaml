@@ -96,7 +96,7 @@
         <TabControl Grid.Row="1" 
                     x:Name="MainTabControl"
                     Style="{StaticResource SidebarTabControlStyle}"
-                    FontSize="20">
+                    FontSize="18">
 
             <TabItem Header="Početna (Ctrl+1)"
                      Style="{StaticResource SidebarTabItemStyle}">
