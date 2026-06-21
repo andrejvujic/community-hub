@@ -14,6 +14,7 @@ using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 using Microsoft.Win32;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
@@ -65,6 +66,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 _name = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanRegister));
+                OnPropertyChanged(nameof(NameError));
+                OnPropertyChanged(nameof(ShowNameError));
             }
         }
 
@@ -78,6 +81,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 _description = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanRegister));
+                OnPropertyChanged(nameof(DescriptionError));
+                OnPropertyChanged(nameof(ShowDescriptionError));
             }
         }
 
@@ -93,6 +98,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 LoadCities();
                 OnPropertyChanged(nameof(IsCityEnabled));
                 OnPropertyChanged(nameof(CanRegister));
+                OnPropertyChanged(nameof(CountryError));
+                OnPropertyChanged(nameof(ShowCountryError));
             }
         }
 
@@ -108,6 +115,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 LoadStreets();
                 OnPropertyChanged(nameof(IsStreetEnabled));
                 OnPropertyChanged(nameof(CanRegister));
+                OnPropertyChanged(nameof(CityError));
+                OnPropertyChanged(nameof(ShowCityError));
             }
         }
 
@@ -165,8 +174,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public bool HasStreetSections => AddedStreetSections.Count > 0;
 
         public string LocationLockTooltip => HasStreetSections
-            ? "Ne možete menjati lokaciju dok ne obrišete sve dodate ulice."
-            : string.Empty;
+            ? TranslationSource.Instance["Register_LocationLocked"] : string.Empty;
 
         public bool CanRegister =>
             !string.IsNullOrWhiteSpace(Name) &&
@@ -220,7 +228,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             var error = TryAddStreetSection(StartNumberInput, EndNumberInput, SelectedParityType);
             if (error != null)
             {
-                ShowDialog("Greška", error);
+                ShowDialog(TranslationSource.Instance["Error_Title"], error);
                 return;
             }
 
@@ -240,8 +248,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             var dialog = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "Images|*.jpg;*.jpeg;*.png",
-                Title = "Izaberite slike kvarta"
+                Filter = TranslationSource.Instance["Register_ImageFilter"],
+                Title = TranslationSource.Instance["Register_SelectImages"]
             };
 
             if (dialog.ShowDialog() == true)
@@ -253,6 +261,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             if (path == null) return;
             SelectedImagePaths.Remove(path);
             OnPropertyChanged(nameof(CanRegister));
+            OnPropertyChanged(nameof(ImagesError));
+            OnPropertyChanged(nameof(ShowImagesError));
         }
 
         private void ExecuteRegister()
@@ -260,7 +270,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             var errors = BuildValidationReport();
             if (!string.IsNullOrEmpty(errors))
             {
-                ShowDialog("Validacija", "Molimo popunite sledeće nedostatke:\n\n" + errors);
+                ShowDialog(TranslationSource.Instance["Register_ValidationTitle"],
+                    TranslationSource.Instance.Format("Register_ValidationPrefix", errors));
                 return;
             }
 
@@ -280,7 +291,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             foreach (var path in SelectedImagePaths)
                 _imageService.CreateForNeighborhood(path, createdNeighborhood.Id);
 
-            ShowDialog("Uspeh", $"Kvart '{Name}' je uspešno registrovan!");
+            ShowDialog(TranslationSource.Instance["Success_Title"],
+                TranslationSource.Instance.Format("Register_SuccessMessage", Name));
 
             CloseWindow(true);
         }
@@ -290,16 +302,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         private string? TryAddStreetSection(string startNumberText, string endNumberText, ParityType side)
         {
             if (SelectedStreet is null)
-                return "Izaberite ulicu.";
-
+                return TranslationSource.Instance["Register_SelectStreet"];
             if (!int.TryParse(startNumberText, out int startNumber) || !int.TryParse(endNumberText, out int endNumber))
-                return "Unesite ispravne brojeve.";
-
+                return TranslationSource.Instance["Register_InvalidNumbers"];
             if (startNumber <= 0 || endNumber <= 0)
-                return "Brojevi moraju biti veći od 0.";
-
+                return TranslationSource.Instance["Register_PositiveNumbers"];
             if (startNumber >= endNumber)
-                return "Početni broj mora biti manji od krajnjeg.";
+                return TranslationSource.Instance["Register_StartBeforeEnd"];
 
             AddedStreetSections.Add(new StreetSectionDto(0, startNumber, endNumber, side, SelectedStreet));
             NotifyStreetSectionChanged();
@@ -313,6 +322,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 SelectedImagePaths.Add(path);
 
             OnPropertyChanged(nameof(CanRegister));
+            OnPropertyChanged(nameof(ImagesError));
+            OnPropertyChanged(nameof(ShowImagesError));
         }
 
         private void NotifyStreetSectionChanged()
@@ -322,6 +333,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             OnPropertyChanged(nameof(IsCityEnabled));
             OnPropertyChanged(nameof(LocationLockTooltip));
             OnPropertyChanged(nameof(CanRegister));
+            OnPropertyChanged(nameof(StreetSectionsError));
+            OnPropertyChanged(nameof(ShowStreetSectionsError));
         }
 
         private string BuildValidationReport()
@@ -329,22 +342,17 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             var sb = new StringBuilder();
 
             if (string.IsNullOrWhiteSpace(Name))
-                sb.AppendLine("- Naziv kvarta nije unet.");
-
+                sb.AppendLine(TranslationSource.Instance["Register_ValName"]);
             if (string.IsNullOrWhiteSpace(Description))
-                sb.AppendLine("- Opis kvarta nije unet.");
-
+                sb.AppendLine(TranslationSource.Instance["Register_ValDescription"]);
             if (SelectedCountry == null)
-                sb.AppendLine("- Država nije izabrana.");
-
+                sb.AppendLine(TranslationSource.Instance["Register_ValCountry"]);
             if (SelectedCity == null)
-                sb.AppendLine("- Grad nije izabran.");
-
+                sb.AppendLine(TranslationSource.Instance["Register_ValCity"]);
             if (AddedStreetSections.Count == 0)
-                sb.AppendLine("- Morate dodati bar jednu ulicu.");
-
+                sb.AppendLine(TranslationSource.Instance["Register_ValStreets"]);
             if (SelectedImagePaths.Count == 0)
-                sb.AppendLine("- Morate dodati bar jednu sliku.");
+                sb.AppendLine(TranslationSource.Instance["Register_ValImages"]);
 
             return sb.ToString();
         }
@@ -365,6 +373,30 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 view.Close();
             }
         }
+
+        public string NameError => string.IsNullOrWhiteSpace(Name)
+            ? TranslationSource.Instance["Register_ErrorName"] : string.Empty;
+        public bool ShowNameError => !string.IsNullOrWhiteSpace(NameError);
+
+        public string DescriptionError => string.IsNullOrWhiteSpace(Description)
+            ? TranslationSource.Instance["Register_ErrorDescription"] : string.Empty;
+        public bool ShowDescriptionError => !string.IsNullOrWhiteSpace(DescriptionError);
+
+        public string CountryError => SelectedCountry == null
+            ? TranslationSource.Instance["Register_ErrorCountry"] : string.Empty;
+        public bool ShowCountryError => !string.IsNullOrWhiteSpace(CountryError);
+
+        public string CityError => SelectedCity == null
+            ? TranslationSource.Instance["Register_ErrorCity"] : string.Empty;
+        public bool ShowCityError => !string.IsNullOrWhiteSpace(CityError);
+
+        public string StreetSectionsError => AddedStreetSections.Count == 0
+            ? TranslationSource.Instance["Register_ErrorStreets"] : string.Empty;
+        public bool ShowStreetSectionsError => !string.IsNullOrWhiteSpace(StreetSectionsError);
+
+        public string ImagesError => SelectedImagePaths.Count == 0
+            ? TranslationSource.Instance["Register_ErrorImages"] : string.Empty;
+        public bool ShowImagesError => !string.IsNullOrWhiteSpace(ImagesError);
 
         private Window GetActiveWindow() =>
             System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)

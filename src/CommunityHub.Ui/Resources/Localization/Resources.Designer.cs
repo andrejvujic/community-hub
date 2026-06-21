@@ -1294,6 +1294,357 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dodaj.
+        /// </summary>
+        internal static string Register_AddButton {
+            get {
+                return ResourceManager.GetString("Register_AddButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dodate ulice.
+        /// </summary>
+        internal static string Register_AddedStreets {
+            get {
+                return ResourceManager.GetString("Register_AddedStreets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dodavanje ulica.
+        /// </summary>
+        internal static string Register_AddStreets {
+            get {
+                return ResourceManager.GetString("Register_AddStreets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odustani.
+        /// </summary>
+        internal static string Register_Cancel {
+            get {
+                return ResourceManager.GetString("Register_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grad:.
+        /// </summary>
+        internal static string Register_City {
+            get {
+                return ResourceManager.GetString("Register_City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Država:.
+        /// </summary>
+        internal static string Register_Country {
+            get {
+                return ResourceManager.GetString("Register_Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis kvarta:.
+        /// </summary>
+        internal static string Register_Description {
+            get {
+                return ResourceManager.GetString("Register_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do broja:.
+        /// </summary>
+        internal static string Register_EndNumber {
+            get {
+                return ResourceManager.GetString("Register_EndNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grad je obavezno polje..
+        /// </summary>
+        internal static string Register_ErrorCity {
+            get {
+                return ResourceManager.GetString("Register_ErrorCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Država je obavezno polje..
+        /// </summary>
+        internal static string Register_ErrorCountry {
+            get {
+                return ResourceManager.GetString("Register_ErrorCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis kvarta je obavezno polje..
+        /// </summary>
+        internal static string Register_ErrorDescription {
+            get {
+                return ResourceManager.GetString("Register_ErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Morate dodati bar jednu sliku..
+        /// </summary>
+        internal static string Register_ErrorImages {
+            get {
+                return ResourceManager.GetString("Register_ErrorImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naziv kvarta je obavezno polje..
+        /// </summary>
+        internal static string Register_ErrorName {
+            get {
+                return ResourceManager.GetString("Register_ErrorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Morate dodati bar jednu ulicu..
+        /// </summary>
+        internal static string Register_ErrorStreets {
+            get {
+                return ResourceManager.GetString("Register_ErrorStreets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slike|*.jpg;*.jpeg;*.png.
+        /// </summary>
+        internal static string Register_ImageFilter {
+            get {
+                return ResourceManager.GetString("Register_ImageFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slike kvarta.
+        /// </summary>
+        internal static string Register_Images {
+            get {
+                return ResourceManager.GetString("Register_Images", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unesite ispravne brojeve..
+        /// </summary>
+        internal static string Register_InvalidNumbers {
+            get {
+                return ResourceManager.GetString("Register_InvalidNumbers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lokacija.
+        /// </summary>
+        internal static string Register_Location {
+            get {
+                return ResourceManager.GetString("Register_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ne možete menjati lokaciju dok ne obrišete sve dodate ulice..
+        /// </summary>
+        internal static string Register_LocationLocked {
+            get {
+                return ResourceManager.GetString("Register_LocationLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naziv kvarta:.
+        /// </summary>
+        internal static string Register_Name {
+            get {
+                return ResourceManager.GetString("Register_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brojevi moraju biti veći od 0..
+        /// </summary>
+        internal static string Register_PositiveNumbers {
+            get {
+                return ResourceManager.GetString("Register_PositiveNumbers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ukloni.
+        /// </summary>
+        internal static string Register_Remove {
+            get {
+                return ResourceManager.GetString("Register_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odaberi slike....
+        /// </summary>
+        internal static string Register_SelectImages {
+            get {
+                return ResourceManager.GetString("Register_SelectImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izaberite ulicu..
+        /// </summary>
+        internal static string Register_SelectStreet {
+            get {
+                return ResourceManager.GetString("Register_SelectStreet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strana:.
+        /// </summary>
+        internal static string Register_Side {
+            get {
+                return ResourceManager.GetString("Register_Side", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Početni broj mora biti manji od krajnjeg..
+        /// </summary>
+        internal static string Register_StartBeforeEnd {
+            get {
+                return ResourceManager.GetString("Register_StartBeforeEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Od broja:.
+        /// </summary>
+        internal static string Register_StartNumber {
+            get {
+                return ResourceManager.GetString("Register_StartNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ulica:.
+        /// </summary>
+        internal static string Register_Street {
+            get {
+                return ResourceManager.GetString("Register_Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registruj Kvart.
+        /// </summary>
+        internal static string Register_Submit {
+            get {
+                return ResourceManager.GetString("Register_Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvart &apos;{0}&apos; je uspešno registrovan!.
+        /// </summary>
+        internal static string Register_SuccessMessage {
+            get {
+                return ResourceManager.GetString("Register_SuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registracija kvarta.
+        /// </summary>
+        internal static string Register_Title {
+            get {
+                return ResourceManager.GetString("Register_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Grad nije izabran..
+        /// </summary>
+        internal static string Register_ValCity {
+            get {
+                return ResourceManager.GetString("Register_ValCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Država nije izabrana..
+        /// </summary>
+        internal static string Register_ValCountry {
+            get {
+                return ResourceManager.GetString("Register_ValCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Opis kvarta nije unet..
+        /// </summary>
+        internal static string Register_ValDescription {
+            get {
+                return ResourceManager.GetString("Register_ValDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Molimo popunite sledeće nedostatke:\n\n{0}.
+        /// </summary>
+        internal static string Register_ValidationPrefix {
+            get {
+                return ResourceManager.GetString("Register_ValidationPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validacija.
+        /// </summary>
+        internal static string Register_ValidationTitle {
+            get {
+                return ResourceManager.GetString("Register_ValidationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Morate dodati bar jednu sliku..
+        /// </summary>
+        internal static string Register_ValImages {
+            get {
+                return ResourceManager.GetString("Register_ValImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Naziv kvarta nije unet..
+        /// </summary>
+        internal static string Register_ValName {
+            get {
+                return ResourceManager.GetString("Register_ValName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Morate dodati bar jednu ulicu..
+        /// </summary>
+        internal static string Register_ValStreets {
+            get {
+                return ResourceManager.GetString("Register_ValStreets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Odbijen.
         /// </summary>
         internal static string Rejected {

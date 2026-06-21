@@ -6,14 +6,16 @@
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
         xmlns:conv="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         xmlns:domain="clr-namespace:CommunityHub.Application.Domain.Addresses;assembly=CommunityHub.Application"
+        xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
         mc:Ignorable="d"
-        Title="Registracija kvarta" Height="800" Width="600"
+        Title="{ns:Loc Register_Title}" Height="800" Width="600"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource WindowBackgroundBrush}">
 
     <Window.Resources>
-        <conv:ParityToStringConverter x:Key="ParityConverter" />
+        <ns:EnumLocalizationConverter x:Key="EnumLocalizationConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -32,76 +34,98 @@
 
             <StackPanel Grid.Row="0" Margin="0,0,0,10">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                    <TextBlock Text="Naziv kvarta:" FontWeight="Bold"/>
+                    <TextBlock Text="{ns:Loc Register_Name}" FontWeight="Bold"/>
                     <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
                 </StackPanel>
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource TextBoxStyle}"/>
+                <TextBlock Text="{Binding NameError}"
+                           Foreground="#C43D5A"
+                           FontSize="11"
+                           Margin="0,3,0,0"
+                           Visibility="{Binding ShowNameError, Converter={StaticResource BoolToVis}}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Margin="0,0,0,15">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                    <TextBlock Text="Opis kvarta:" FontWeight="Bold"/>
+                    <TextBlock Text="{ns:Loc Register_Description}" FontWeight="Bold"/>
                     <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
                 </StackPanel>
-                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource TextBoxStyle}"
-                         AcceptsReturn="True" 
+                         AcceptsReturn="True"
                          TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding DescriptionError}"
+                           Foreground="#C43D5A"
+                           FontSize="11"
+                           Margin="0,3,0,0"
+                           Visibility="{Binding ShowDescriptionError, Converter={StaticResource BoolToVis}}"/>
             </StackPanel>
 
-            <GroupBox Grid.Row="2" 
-                      Header="Lokacija" 
-                      Foreground="{DynamicResource PrimaryTextBrush}"
-                      BorderBrush="{DynamicResource BorderBrush}"
-                      Margin="0,0,0,10" 
-                      Padding="10">
-                <UniformGrid Columns="2">
-                    <StackPanel Margin="0,0,5,0">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                            <TextBlock Text="Država:"/>
-                            <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
+            <GroupBox Grid.Row="2"
+          Header="{ns:Loc Register_Location}"
+          Foreground="{DynamicResource PrimaryTextBrush}"
+          BorderBrush="{DynamicResource BorderBrush}"
+          Margin="0,0,0,10"
+          Padding="10">
+                <StackPanel>
+                    <UniformGrid Columns="2">
+                        <StackPanel Margin="0,0,5,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                <TextBlock Text="{ns:Loc Register_Country}"/>
+                                <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
+                            </StackPanel>
+                            <ComboBox x:Name="CountryComboBox"
+                                      Style="{StaticResource ComboBoxStyle}"
+                                      ItemsSource="{Binding Countries}"
+                                      SelectedItem="{Binding SelectedCountry}"
+                                      IsEnabled="{Binding IsCountryEnabled}"
+                                      ToolTip="{Binding LocationLockTooltip}"
+                                      ToolTipService.ShowOnDisabled="True"
+                                      Padding="5"/>
+                            <TextBlock Text="{Binding CountryError}"
+                                       Foreground="#C43D5A"
+                                       FontSize="11"
+                                       Margin="0,3,0,0"
+                                       Visibility="{Binding ShowCountryError, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
-                        <ComboBox x:Name="CountryComboBox"
-                                  Style="{StaticResource ComboBoxStyle}"
-                                  ItemsSource="{Binding Countries}"
-                                  SelectedItem="{Binding SelectedCountry}"
-                                  IsEnabled="{Binding IsCountryEnabled}"
-                                  ToolTip="{Binding LocationLockTooltip}"
-                                  ToolTipService.ShowOnDisabled="True"
-                                  Padding="5" />
-                    </StackPanel>
-                    <StackPanel Margin="5,0,0,0">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                            <TextBlock Text="Grad:"/>
-                            <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
+                        <StackPanel Margin="5,0,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                <TextBlock Text="{ns:Loc Register_City}"/>
+                                <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
+                            </StackPanel>
+                            <ComboBox x:Name="CityComboBox"
+                                      Style="{StaticResource ComboBoxStyle}"
+                                      ItemsSource="{Binding Cities}"
+                                      SelectedItem="{Binding SelectedCity}"
+                                      IsEnabled="{Binding IsCityEnabled}"
+                                      ToolTip="{Binding LocationLockTooltip}"
+                                      ToolTipService.ShowOnDisabled="True"
+                                      Padding="5"/>
+                            <TextBlock Text="{Binding CityError}"
+                                       Foreground="#C43D5A"
+                                       FontSize="11"
+                                       Margin="0,3,0,0"
+                                       Visibility="{Binding ShowCityError, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
-                        <ComboBox x:Name="CityComboBox"
-                                  Style="{StaticResource ComboBoxStyle}"
-                                  ItemsSource="{Binding Cities}"
-                                  SelectedItem="{Binding SelectedCity}"
-                                  IsEnabled="{Binding IsCityEnabled}"
-                                  ToolTip="{Binding LocationLockTooltip}"
-                                  ToolTipService.ShowOnDisabled="True"
-                                  Padding="5" />
-                    </StackPanel>
-                </UniformGrid>
+                    </UniformGrid>
+                </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Row="3" 
-                      Header="Dodavanje ulica"
+            <GroupBox Grid.Row="3"
+                      Header="{ns:Loc Register_AddStreets}"
                       Foreground="{DynamicResource PrimaryTextBrush}"
-                      BorderBrush="{DynamicResource BorderBrush}" 
+                      BorderBrush="{DynamicResource BorderBrush}"
                       Padding="10">
                 <StackPanel>
-                    <TextBlock Text="Ulica:" Margin="0,0,0,3"/>
+                    <TextBlock Text="{ns:Loc Register_Street}" Margin="0,0,0,3"/>
                     <ComboBox x:Name="StreetComboBox"
                               Style="{StaticResource ComboBoxStyle}"
                               ItemsSource="{Binding Streets}"
                               SelectedItem="{Binding SelectedStreet}"
                               IsEnabled="{Binding IsStreetEnabled}"
                               Padding="5"
-                              Margin="0,0,0,10" />
+                              Margin="0,0,0,10"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -112,8 +136,8 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                            <TextBlock Text="Od broja:" Margin="0,0,0,3"/>
-                            <TextBox x:Name="StartNumberTextBox" 
+                            <TextBlock Text="{ns:Loc Register_StartNumber}" Margin="0,0,0,3"/>
+                            <TextBox x:Name="StartNumberTextBox"
                                      Style="{StaticResource TextBoxStyle}"
                                      Text="{Binding StartNumberInput, UpdateSourceTrigger=PropertyChanged}"
                                      TextAlignment="Right"
@@ -127,8 +151,8 @@
                             </TextBox>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="5,0,5,0">
-                            <TextBlock Text="Do broja:" Margin="0,0,0,3"/>
-                            <TextBox x:Name="EndNumberTextBox" 
+                            <TextBlock Text="{ns:Loc Register_EndNumber}" Margin="0,0,0,3"/>
+                            <TextBox x:Name="EndNumberTextBox"
                                      Style="{StaticResource TextBoxStyle}"
                                      Text="{Binding EndNumberInput, UpdateSourceTrigger=PropertyChanged}"
                                      TextAlignment="Right"
@@ -142,78 +166,88 @@
                             </TextBox>
                         </StackPanel>
                         <StackPanel Grid.Column="2" Margin="5,0,5,0">
-                            <TextBlock Text="Strana:" Margin="0,0,0,3"/>
-                            <ComboBox x:Name="SideComboBox" 
-                                      Style="{StaticResource ComboBoxStyle}"
-                                      SelectedIndex="0">
-                                <ComboBoxItem Tag="{x:Static domain:ParityType.Both}" 
-                                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
-                                <ComboBoxItem Tag="{x:Static domain:ParityType.Even}" 
-                                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
-                                <ComboBoxItem Tag="{x:Static domain:ParityType.Odd}" 
-                                              Content="{Binding RelativeSource={RelativeSource Self}, Path=Tag, Converter={StaticResource ParityConverter}}" />
+                            <TextBlock Text="{ns:Loc Register_Side}" Margin="0,0,0,3"/>
+                            <ComboBox Style="{StaticResource ComboBoxStyle}"
+                                      SelectedItem="{Binding SelectedParityType}"
+                                      Height="35"
+                                      Padding="5">
+                                <domain:ParityType>Even</domain:ParityType>
+                                <domain:ParityType>Odd</domain:ParityType>
+                                <domain:ParityType>Both</domain:ParityType>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumLocalizationConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
                             </ComboBox>
                         </StackPanel>
-                        <Button Content="Dodaj ulicu" 
-                                Grid.Column="3" 
-                                Style="{StaticResource SecondaryButtonStyle}"
-                                VerticalAlignment="Bottom" 
-                                Margin="5,0,0,0" 
+                        <Button Grid.Column="3"
+                                Content="{ns:Loc Register_AddButton}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                VerticalAlignment="Bottom"
+                                Height="35"
+                                Padding="15,0"
                                 Command="{Binding AddStreetSectionCommand}"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Row="4" 
+            <GroupBox Grid.Row="4"
                       Foreground="{DynamicResource PrimaryTextBrush}"
                       BorderBrush="{DynamicResource BorderBrush}"
-                      Margin="0,15,0,0" 
-                      Padding="5" 
-                      Height="150">
+                      Margin="0,15,0,0"
+                      Padding="5"
+                      Height="auto">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Dodate ulice" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Text="{ns:Loc Register_AddedStreets}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
                     </StackPanel>
                 </GroupBox.Header>
-                <ListBox x:Name="StreetSectionsListBox" 
-                         ItemsSource="{Binding AddedStreetSections}"
-                         Background="{DynamicResource PanelBackgroundBrush}"
-                         Foreground="{DynamicResource PrimaryTextBrush}"
-                         VerticalContentAlignment="Center"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                         Height="110">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="5,0,0,0">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}, br. {1} - {2} ({3})">
-                                                <Binding Path="Street.Name" />
-                                                <Binding Path="StartNumber" />
-                                                <Binding Path="EndNumber" />
-                                                <Binding Path="Side" Converter="{StaticResource ParityConverter}" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </StackPanel>
-                                <Button Grid.Column="1" 
-                                        Content="Ukloni" 
-                                        Style="{StaticResource SecondaryButtonStyle}"
-                                        Padding="8,0"
-                                        Command="{Binding DataContext.RemoveStreetSectionCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                        CommandParameter="{Binding}"
-                                        Margin="10,0,0,0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <StackPanel>
+                    <ListBox x:Name="StreetSectionsListBox"
+                             ItemsSource="{Binding AddedStreetSections}"
+                             Background="{DynamicResource PanelBackgroundBrush}"
+                             Foreground="{DynamicResource PrimaryTextBrush}"
+                             VerticalContentAlignment="Center"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             Height="110">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5,0,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}, {1} - {2} ({3})">
+                                                    <Binding Path="Street.Name"/>
+                                                    <Binding Path="StartNumber"/>
+                                                    <Binding Path="EndNumber"/>
+                                                    <Binding Path="Side" Converter="{StaticResource EnumLocalizationConverter}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Grid.Column="1"
+                                            Content="{ns:Loc Register_Remove}"
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Padding="8,0"
+                                            Command="{Binding DataContext.RemoveStreetSectionCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            Margin="10,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock Text="{Binding StreetSectionsError}"
+                               Foreground="#C43D5A"
+                               FontSize="11"
+                               Margin="0,4,0,0"
+                               Visibility="{Binding ShowStreetSectionsError, Converter={StaticResource BoolToVis}}"/>
+                </StackPanel>
             </GroupBox>
 
             <GroupBox Grid.Row="5"
@@ -223,28 +257,32 @@
                       Padding="10">
                 <GroupBox.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Slike kvarta" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Text="{ns:Loc Register_Images}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         <TextBlock Text=" *" Foreground="#C43D5A" FontWeight="Bold"/>
                     </StackPanel>
                 </GroupBox.Header>
                 <StackPanel>
-                    <Button Content="Odaberi slike..."
+                    <Button Content="{ns:Loc Register_SelectImages}"
                             Style="{StaticResource SecondaryButtonStyle}"
                             HorizontalAlignment="Left"
                             Padding="15,5"
-                            Margin="0,0,0,10"
+                            Margin="0,0,0,5"
                             Command="{Binding SelectImagesCommand}"/>
-
+                    <TextBlock Text="{Binding ImagesError}"
+                               Foreground="#C43D5A"
+                               FontSize="11"
+                               Margin="0,0,0,5"
+                               Visibility="{Binding ShowImagesError, Converter={StaticResource BoolToVis}}"/>
                     <Border BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             CornerRadius="6"
                             Background="{DynamicResource SurfaceBackgroundBrush}">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                                      VerticalScrollBarVisibility="Disabled" 
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
                                       Padding="5">
-                            <ListBox x:Name="ImagesListBox" 
+                            <ListBox x:Name="ImagesListBox"
                                      ItemsSource="{Binding SelectedImagePaths}"
-                                     BorderThickness="0" 
+                                     BorderThickness="0"
                                      Background="Transparent"
                                      MinHeight="160">
                                 <ListBox.ItemsPanel>
@@ -254,20 +292,20 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Margin="8" 
+                                        <Border Margin="8"
                                                 BorderBrush="{DynamicResource ItemBorderBrush}"
-                                                BorderThickness="1" 
-                                                CornerRadius="5" 
+                                                BorderThickness="1"
+                                                CornerRadius="5"
                                                 Background="{DynamicResource PanelBackgroundBrush}"
                                                 Width="140">
                                             <StackPanel Margin="5">
                                                 <Border CornerRadius="3" ClipToBounds="True" Margin="0,0,0,5">
-                                                    <Image Source="{Binding}" 
-                                                           Width="125" 
-                                                           Height="125" 
-                                                           Stretch="UniformToFill" />
+                                                    <Image Source="{Binding}"
+                                                           Width="125"
+                                                           Height="125"
+                                                           Stretch="UniformToFill"/>
                                                 </Border>
-                                                <Button Content="Ukloni"
+                                                <Button Content="{ns:Loc Register_Remove}"
                                                         Style="{StaticResource SecondaryButtonStyle}"
                                                         Command="{Binding DataContext.RemoveImageCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                         CommandParameter="{Binding}"
@@ -288,14 +326,15 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="0,10,0,0">
-                <Button Content="Odustani"
+                <Button Content="{ns:Loc Register_Cancel}"
                         Style="{StaticResource SecondaryButtonStyle}"
                         Command="{Binding CancelCommand}"
                         Margin="0,0,10,0"
                         Padding="20,10"/>
-                <Button Content="Registruj Kvart"
+                <Button Content="{ns:Loc Register_Submit}"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Command="{Binding RegisterCommand}"
+                        IsEnabled="{Binding CanRegister}"
                         Padding="25,10"
                         FontWeight="Bold"/>
             </StackPanel>

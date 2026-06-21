@@ -431,4 +431,45 @@
     <data name="Budget_ExpenseSuccess"><value>Trošak je uspešno evidentiran.</value></data>
     <data name="Budget_InsufficientFunds_Title"><value>Nedovoljno sredstava</value></data>
     <data name="Error_SelectCategory_Title"><value>Odaberite kategoriju</value></data>
+
+
+    <data name="Register_Title"><value>Registracija kvarta</value></data>
+    <data name="Register_Name"><value>Naziv kvarta:</value></data>
+    <data name="Register_Description"><value>Opis kvarta:</value></data>
+    <data name="Register_Location"><value>Lokacija</value></data>
+    <data name="Register_Country"><value>Država:</value></data>
+    <data name="Register_City"><value>Grad:</value></data>
+    <data name="Register_AddStreets"><value>Dodavanje ulica</value></data>
+    <data name="Register_Street"><value>Ulica:</value></data>
+    <data name="Register_StartNumber"><value>Od broja:</value></data>
+    <data name="Register_EndNumber"><value>Do broja:</value></data>
+    <data name="Register_Side"><value>Strana:</value></data>
+    <data name="Register_AddButton"><value>Dodaj</value></data>
+    <data name="Register_AddedStreets"><value>Dodate ulice</value></data>
+    <data name="Register_Remove"><value>Ukloni</value></data>
+    <data name="Register_Images"><value>Slike kvarta</value></data>
+    <data name="Register_SelectImages"><value>Odaberi slike...</value></data>
+    <data name="Register_Cancel"><value>Odustani</value></data>
+    <data name="Register_Submit"><value>Registruj Kvart</value></data>
+    <data name="Register_LocationLocked"><value>Ne možete menjati lokaciju dok ne obrišete sve dodate ulice.</value></data>
+    <data name="Register_ImageFilter"><value>Slike|*.jpg;*.jpeg;*.png</value></data>
+    <data name="Register_ValidationTitle"><value>Validacija</value></data>
+    <data name="Register_ValidationPrefix"><value>Molimo popunite sledeće nedostatke:\n\n{0}</value></data>
+    <data name="Register_SuccessMessage"><value>Kvart '{0}' je uspešno registrovan!</value></data>
+    <data name="Register_SelectStreet"><value>Izaberite ulicu.</value></data>
+    <data name="Register_InvalidNumbers"><value>Unesite ispravne brojeve.</value></data>
+    <data name="Register_PositiveNumbers"><value>Brojevi moraju biti veći od 0.</value></data>
+    <data name="Register_StartBeforeEnd"><value>Početni broj mora biti manji od krajnjeg.</value></data>
+    <data name="Register_ValName"><value>- Naziv kvarta nije unet.</value></data>
+    <data name="Register_ValDescription"><value>- Opis kvarta nije unet.</value></data>
+    <data name="Register_ValCountry"><value>- Država nije izabrana.</value></data>
+    <data name="Register_ValCity"><value>- Grad nije izabran.</value></data>
+    <data name="Register_ValStreets"><value>- Morate dodati bar jednu ulicu.</value></data>
+    <data name="Register_ValImages"><value>- Morate dodati bar jednu sliku.</value></data>
+    <data name="Register_ErrorName"><value>Naziv kvarta je obavezno polje.</value></data>
+    <data name="Register_ErrorDescription"><value>Opis kvarta je obavezno polje.</value></data>
+    <data name="Register_ErrorCountry"><value>Država je obavezno polje.</value></data>
+    <data name="Register_ErrorCity"><value>Grad je obavezno polje.</value></data>
+    <data name="Register_ErrorStreets"><value>Morate dodati bar jednu ulicu.</value></data>
+    <data name="Register_ErrorImages"><value>Morate dodati bar jednu sliku.</value></data>
 </root>
