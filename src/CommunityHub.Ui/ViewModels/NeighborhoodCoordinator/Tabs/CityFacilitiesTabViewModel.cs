@@ -1,13 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.CityFacilities;
+using CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -17,6 +23,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly CityFacilityService _facilityService = new();
         private readonly FacilityReservationService _reservationService = new();
         private readonly FacilityVoteService _voteService = new();
+        private readonly FacilityReservationsReportService _reportService = new();
         private long _coordinatorId;
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
@@ -26,38 +33,61 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public RelayCommand GenerateReportCommand { get; }
         public RelayCommand ReserveCommand { get; }
 
-        public DateTime MinDate => DateTime.Today.AddDays(1);
+        public DateTime ReservationMinDate => DateTime.Today.AddDays(1);
 
         private string _durationInput = string.Empty;
-        public string DurationInput 
-        { 
-            get => _durationInput; 
-            set 
-            { 
-                _durationInput = value; 
-                OnPropertyChanged(); 
-            } 
+        public string DurationInput
+        {
+            get => _durationInput;
+            set
+            {
+                _durationInput = value;
+                OnPropertyChanged();
+            }
         }
 
-        private DateTime? _startDate;
-        public DateTime? StartDate 
-        { 
-            get => _startDate; 
-            set 
-            { 
-                _startDate = value; 
-                OnPropertyChanged(); 
-            } 
+        private DateTime? _reservationStartDate;
+        public DateTime? ReservationStartDate
+        {
+            get => _reservationStartDate;
+            set
+            {
+                _reservationStartDate = value;
+                OnPropertyChanged();
+            }
         }
 
-        private DateTime? _endDate;
-        public DateTime? EndDate 
-        { 
-            get => _endDate; 
-            set 
-            { _endDate = value; 
-                OnPropertyChanged(); 
-            } 
+        private DateTime? _reservationEndDate;
+        public DateTime? ReservationEndDate
+        {
+            get => _reservationEndDate;
+            set
+            {
+                _reservationEndDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? _reportStartDate;
+        public DateTime? ReportStartDate
+        {
+            get => _reportStartDate;
+            set
+            {
+                _reportStartDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? _reportEndDate;
+        public DateTime? ReportEndDate
+        {
+            get => _reportEndDate;
+            set
+            {
+                _reportEndDate = value;
+                OnPropertyChanged();
+            }
         }
 
         private NeighborhoodDto? _selectedNeighborhood;
@@ -89,7 +119,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         }
 
         public bool IsNeighborhoodSelected => SelectedNeighborhood != null;
-        public string ReservationsTitle => $"Spisak rezervacija kvarta {SelectedNeighborhood?.Name}";
+        public string ReservationsTitle => TranslationSource.Instance.Format("Facilities_ReservationList_Format", SelectedNeighborhood?.Name);
 
         public CityFacilitiesTabViewModel()
         {
@@ -100,8 +130,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public void Initialize(long coordinatorId)
         {
             _coordinatorId = coordinatorId;
-            StartDate = MinDate;
-            EndDate = MinDate;
+            ReservationStartDate = ReservationMinDate;
+            ReservationEndDate = ReservationMinDate;
+            ReportStartDate = DateTime.Today.AddMonths(-1);
+            ReportEndDate = DateTime.Today;
             LoadNeighborhoods();
         }
 
@@ -157,7 +189,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
                 if (result is null || (result.Value.SlotInRange is null && result.Value.SlotsOutsideRange.Count == 0))
                 {
-                    new InfoDialog("Nema slobodnih termina", "Nije pronađen nijedan slobodan termin.", window).ShowDialog();
+                    new InfoDialog(TranslationSource.Instance["Facilities_NoSlots_Title"], TranslationSource.Instance["Facilities_NoSlots_Message"], window).ShowDialog();
                     return;
                 }
 
@@ -165,7 +197,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
             catch (ArgumentException ex)
             {
-                new InfoDialog("Greška", ex.Message, window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], ex.Message, window).ShowDialog();
             }
         }
 
@@ -173,19 +205,19 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             duration = 0; start = DateTime.MinValue; end = DateTime.MinValue;
 
-            if (SelectedFacility is null) return ShowError(win, "Greška", "Izaberite objekat.");
+            if (SelectedFacility is null) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectFacility"]);
 
             if (!int.TryParse(DurationInput?.Trim(), out duration) || duration <= 0)
-                return ShowError(win, "Greška", "Unesite ispravno trajanje u satima.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Facilities_InvalidDuration"]);
 
-            if (duration > 14) return ShowError(win, "Greška", "Nije moguće rezervisati termin duži od 14h.");
+            if (duration > 14) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Facilities_DurationTooLong"]);
 
-            if (StartDate is null || EndDate is null) return ShowError(win, "Greška", "Izaberite opseg datuma.");
+            if (ReservationStartDate is null || ReservationEndDate is null) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectDates"]);
 
-            start = StartDate.Value;
-            end = EndDate.Value.AddDays(1).AddSeconds(-1);
+            start = ReservationStartDate.Value;
+            end = ReservationEndDate.Value.AddDays(1).AddSeconds(-1);
 
-            return start < end || ShowError(win, "Greška", "Početni datum mora biti pre krajnjeg.");
+            return start < end || ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_DateOrder"]);
         }
 
         private void OpenBookingWindow(Window owner, (AvailableFacilitySlotDto? SlotInRange, List<AvailableFacilitySlotDto> SlotsOutsideRange) data)
@@ -218,7 +250,130 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return created;
         }
 
-        private void ExecuteGenerateReport() { }
+        private static FacilityReservationsReportLabels BuildReportLabels()
+        {
+            bool isEnglish = TranslationSource.Instance.CurrentCulture?.Name
+                .StartsWith("en", StringComparison.OrdinalIgnoreCase) ?? false;
+
+            return new FacilityReservationsReportLabels
+            {
+                Culture = TranslationSource.Instance.CurrentCulture ?? new CultureInfo("sr-Latn-RS"),
+                HeaderTitle = TranslationSource.Instance["Report_PDF_HeaderTitle"],
+                NeighborhoodLabel = TranslationSource.Instance["Report_PDF_NeighborhoodLabel"],
+                PeriodLabel = TranslationSource.Instance["Report_PDF_PeriodLabel"],
+                TotalReservationsLabel = TranslationSource.Instance["Report_PDF_TotalReservationsLabel"],
+                GeneratedAtLabel = TranslationSource.Instance["Report_PDF_GeneratedAtLabel"],
+                NoReservationsMessage = TranslationSource.Instance["Report_PDF_NoReservationsMessage"],
+                VisitCountLabel = TranslationSource.Instance["Report_PDF_VisitCountLabel"],
+                VisitDateLabel = TranslationSource.Instance["Report_PDF_VisitDateLabel"],
+                StartEndLabel = TranslationSource.Instance["Report_PDF_StartEndLabel"],
+                DurationLabel = TranslationSource.Instance["Report_PDF_DurationLabel"],
+                FooterBrand = "CommunityHub",
+                PageLabel = TranslationSource.Instance["Report_PDF_PageLabel"],
+                PageOfSeparator = " / ",
+                AtWord = TranslationSource.Instance["Service_At"],
+                DateFormat = isEnglish ? "MM/dd/yyyy" : "dd.MM.yyyy.",
+                TimeFormat = isEnglish ? "h:mm tt" : "HH:mm"
+            };
+        }
+
+        private void ExecuteGenerateReport()
+        {
+            var window = GetActiveWindow();
+
+            if (!TryValidateReportInputs(window, out DateTime from, out DateTime to))
+                return;
+
+            var savePath = ChooseSavePath(from, to, SelectedNeighborhood!.Name);
+            if (savePath is null) return;
+
+            try
+            {
+                QuestPDF.Settings.License = LicenseType.Community;
+                var pdfBytes = _reportService.GenerateBytes(
+                    SelectedNeighborhood!.Name,
+                    SelectedNeighborhood.Id,
+                    from,
+                    to,
+                    BuildReportLabels());
+
+                SaveReport(pdfBytes, savePath);
+                AskToOpenReport(window, savePath);
+            }
+            catch (Exception ex)
+            {
+                ShowError(window, TranslationSource.Instance["Report_Error_Title"],
+                    TranslationSource.Instance.Format("Report_Error_Message", ex.Message));
+            }
+        }
+
+        private bool TryValidateReportInputs(Window win, out DateTime from, out DateTime to)
+        {
+            from = DateTime.MinValue;
+            to = DateTime.MinValue;
+
+            if (SelectedNeighborhood is null)
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectNeighborhood"]);
+
+            if (ReportStartDate is null || ReportEndDate is null)
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectDates"]);
+
+            if (ReportStartDate > ReportEndDate)
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_DateOrder"]);
+
+            from = ReportStartDate.Value;
+            to = ReportEndDate.Value.AddDays(1).AddSeconds(-1);
+            return true;
+        }
+
+        private static string? ChooseSavePath(DateTime from, DateTime to, string neighborhoodName)
+        {
+            var fromStr = from.ToString("dd.MM.yyyy");
+            var toStr = to.ToString("dd.MM.yyyy");
+
+            var safeName = string.Concat(neighborhoodName
+                .ToLower()
+                .Replace(" ", "-")
+                .Where(c => char.IsLetterOrDigit(c) || c == '-'));
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = TranslationSource.Instance["Report_SaveTitle"],
+                Filter = TranslationSource.Instance["Report_SaveFilter"],
+                FileName = TranslationSource.Instance.Format("Report_FileName", neighborhoodName, fromStr, toStr),
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads"
+            };
+
+            return dialog.ShowDialog() == true ? dialog.FileName : null;
+        }
+
+        private static void SaveReport(byte[] pdfBytes, string savePath)
+        {
+            File.WriteAllBytes(savePath, pdfBytes);
+        }
+
+        private void AskToOpenReport(Window win, string savePath)
+        {
+            var confirm = new ConfirmDialog(
+                TranslationSource.Instance["Report_Success_Title"],
+                TranslationSource.Instance["Report_Success_Message"],
+                win);
+
+            if (confirm.ShowDialog() == true)
+                OpenPdf(savePath);
+        }
+
+        private static void OpenPdf(string filePath)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(filePath)
+            {
+                UseShellExecute = true
+            });
+        }
+
+        private Window GetActiveWindow() =>
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            ?? System.Windows.Application.Current.MainWindow;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)

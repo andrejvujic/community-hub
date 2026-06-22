@@ -5,31 +5,43 @@ using CommunityHub.Application.Domain.JobListings;
 using CommunityHub.Application.Services.Dtos.Services;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
-    public class BookingConfirmationWindowViewModel : INotifyPropertyChanged
+    public class ServiceBookingConfirmationWindowViewModel : INotifyPropertyChanged
     {
         private readonly JobListingDto _jobListing;
         private readonly AvailableJobSlotDto _availableJobSlot;
 
         public string Header =>
-            $"Sistem je pronašao prvi slobodan termin za uslugu: {_jobListing.ServiceName} " +
-            $"(Serviser: {_jobListing.Provider.Name} {_jobListing.Provider.Surname}).";
+            TranslationSource.Instance.Format("ServiceBooking_Header",
+                _jobListing.ServiceName,
+                _jobListing.Provider.Name,
+                _jobListing.Provider.Surname);
         public string SlotDateText => _availableJobSlot.Time.HasValue
-            ? $"Pronađeni termin: {_availableJobSlot.Date:dd.MM.yyyy.} u {_availableJobSlot.Time.Value:HH:mm}"
-            : $"Pronađeni termin: {_availableJobSlot.Date:dd.MM.yyyy.}";
+            ? TranslationSource.Instance.Format("ServiceBooking_SlotDateTime",
+                TranslationSource.Instance.FormatDate(_availableJobSlot.Date),
+                TranslationSource.Instance.FormatTime(_availableJobSlot.Time.Value))
+            : TranslationSource.Instance.Format("ServiceBooking_SlotDate",
+                TranslationSource.Instance.FormatDate(_availableJobSlot.Date));
 
-        public string DurationText => $"Trajanje: {_availableJobSlot.DurationHours} sata";
-        public string HourlyRateText => $"Cena po satu: {_availableJobSlot.Price:N2} RSD";
-        public string TotalAmountText => $"Ukupan iznos za uplatu: {_availableJobSlot.Price * _availableJobSlot.DurationHours:N2} RSD";
-        public string PerJobPriceText => $"Cena: {_availableJobSlot.Price:N2} RSD";
-        public string PriceChangeInfo => BuildPriceChangeInfo();
+        public string DurationText =>
+            TranslationSource.Instance.Format("ServiceBooking_Duration", _availableJobSlot.DurationHours);
+
+        public string HourlyRateText =>
+            TranslationSource.Instance.Format("ServiceBooking_HourlyRate", _availableJobSlot.Price);
+
+        public string TotalAmountText =>
+            TranslationSource.Instance.Format("ServiceBooking_Total",
+                _availableJobSlot.Price * _availableJobSlot.DurationHours);
+
+        public string PerJobPriceText =>
+            TranslationSource.Instance.Format("ServiceBooking_PerJobPrice", _availableJobSlot.Price);
 
         public string QuestionText => IsPriceChanged
-            ? "Da li želite da zakažete ovaj termin po ovoj ceni?"
-            : "Da li želite da zakažete ovaj termin?";
-
+            ? TranslationSource.Instance["ServiceBooking_QuestionPriceChanged"]
+            : TranslationSource.Instance["ServiceBooking_Question"];
         public bool IsPerHour => _jobListing.BillingType == BillingType.PerHour;
         public bool IsPerJob => !IsPerHour;
         public bool IsPriceChanged => _availableJobSlot.IsPriceChanged;
@@ -41,7 +53,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         public RelayCommand ConfirmCommand { get; }
         public RelayCommand CancelCommand { get; }
 
-        public BookingConfirmationWindowViewModel(JobListingDto jobListing, AvailableJobSlotDto availableJobSlot)
+        public ServiceBookingConfirmationWindowViewModel(JobListingDto jobListing, AvailableJobSlotDto availableJobSlot)
         {
             _jobListing = jobListing;
             _availableJobSlot = availableJobSlot;
@@ -56,11 +68,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
                 .OrderBy(p => p.ValidFrom)
                 .FirstOrDefault(p => p.IsActiveOn(_availableJobSlot.Date));
 
-            string validFrom = newEntry?.ValidFrom.ToString("dd.MM.yyyy.")
-                               ?? _availableJobSlot.Date.ToString("dd.MM.yyyy.");
+            string validFrom = TranslationSource.Instance.FormatDate(newEntry?.ValidFrom ?? _availableJobSlot.Date);
 
-            return $"Prvi slobodan termin nije u opsegu datuma za koji važi trenutna cena.\n" +
-                   $"Nova cena koja važi od {validFrom} iznosi {_availableJobSlot.Price:N2} RSD.";
+            return TranslationSource.Instance.Format("ServiceBooking_PriceChangeInfo", validFrom, _availableJobSlot.Price);
         }
 
         private void ExecuteConfirm() => CloseWindow(true);

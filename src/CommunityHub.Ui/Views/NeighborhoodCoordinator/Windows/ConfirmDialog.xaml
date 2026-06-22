@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
+        xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
         Background="Transparent"
         WindowStartupLocation="CenterOwner"
         SizeToContent="WidthAndHeight"
@@ -39,14 +40,14 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="NoButton"
-                        Content="Ne"
+                        Content="{ns:Loc Dialog_No}"
                         Style="{StaticResource SecondaryButtonStyle}"
                         Width="90" Height="36"
                         Margin="0,0,10,0"
                         Padding="0"
                         Command="{Binding NoCommand}"/>
                 <Button x:Name="YesButton"
-                        Content="Da"
+                        Content="{ns:Loc Dialog_Yes}"
                         Style="{StaticResource PrimaryButtonStyle}"
                         Width="90" Height="36"
                         Padding="0"

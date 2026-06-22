@@ -13,7 +13,7 @@ namespace CommunityHub.Application.Services.Dtos.ServiceBookings
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public decimal AverageRating => (QualityRating + CommunicationRating) / 2m;
+        public float AverageRating => (QualityRating + CommunicationRating) / 2f;
         public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
         public bool IsEditable(DateTime now) => (now - CreatedAt).TotalDays <= 3;
 

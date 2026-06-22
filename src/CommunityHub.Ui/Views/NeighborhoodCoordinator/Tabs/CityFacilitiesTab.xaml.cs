@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
+using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 
 namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
@@ -13,11 +14,18 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         public CityFacilitiesTab()
         {
             InitializeComponent();
-            Language = XmlLanguage.GetLanguage("sr-Latn-RS");
 
             _viewModel = new CityFacilitiesTabViewModel();
             DataContext = _viewModel;
             this.IsVisibleChanged += CityFacilitiesTab_IsVisibleChanged;
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                if (this.IsVisible)
+                {
+                    RefreshLanguageAndBindings();
+                }
+            };
         }
 
         public void Initialize(long coordinatorId)
@@ -41,8 +49,30 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs
         {
             if ((bool)e.NewValue)
             {
+                RefreshLanguageAndBindings();
                 _viewModel.LoadNeighborhoods();
             }
+        }
+
+        private void RefreshLanguageAndBindings()
+        {
+            var currentCultureName = TranslationSource.Instance.CurrentCulture?.Name ?? "sr-Latn-RS";
+            this.Language = XmlLanguage.GetLanguage(currentCultureName);
+
+            var tempReservationFrom = _viewModel.ReservationStartDate;
+            var tempReservationTo = _viewModel.ReservationEndDate;
+            var tempReportFrom = _viewModel.ReportStartDate;
+            var tempReportTo = _viewModel.ReportEndDate;
+
+            _viewModel.ReservationStartDate = null;
+            _viewModel.ReservationEndDate = null;
+            _viewModel.ReportStartDate = null;
+            _viewModel.ReportEndDate = null;
+
+            _viewModel.ReservationStartDate = tempReservationFrom;
+            _viewModel.ReservationEndDate = tempReservationTo;
+            _viewModel.ReportStartDate = tempReportFrom;
+            _viewModel.ReportEndDate = tempReportTo;
         }
     }
 }

@@ -9,6 +9,7 @@ using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -19,6 +20,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private readonly BudgetExpenseService _expenseService = new();
         private readonly BudgetDonationService _donationService = new();
         private long _coordinatorId;
+
 
         public ObservableCollection<NeighborhoodDto> Neighborhoods { get; } = new();
         public ObservableCollection<BudgetCategoryBalanceDto> BudgetCategories { get; } = new();
@@ -37,10 +39,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 OnPropertyChanged(nameof(BudgetPanelVisibility));
                 if (_selectedNeighborhood != null)
                 {
-                    BudgetTitleText = $"Detalji budžeta kvarta {_selectedNeighborhood.Name}";
+                    BudgetTitleText = TranslationSource.Instance.Format("Budget_TitleFormat", _selectedNeighborhood.Name);
                     LoadBudgetData();
                 }
-                SelectedCategoryBalance = null;
             }
         }
 
@@ -56,15 +57,15 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 OnPropertyChanged(nameof(CategoryDetailsPanelVisibility));
                 if (_selectedCategoryBalance != null)
                 {
-                    DonationsTitleText = $"Donacije: {_selectedCategoryBalance.Category.Name}";
-                    ExpensesTitleText = $"Troškovi: {_selectedCategoryBalance.Category.Name}";
+                    DonationsTitleText = TranslationSource.Instance.Format("Budget_DonationsTitle", _selectedCategoryBalance.Category.Name);
+                    ExpensesTitleText = TranslationSource.Instance.Format("Budget_ExpensesTitle", _selectedCategoryBalance.Category.Name);
                     LoadExpensesForSelectedCategory();
                     LoadDonationsForSelectedCategory();
                 }
             }
         }
 
-        private string _budgetTitleText = "Detalji budžeta kvarta";
+        private string _budgetTitleText = TranslationSource.Instance.Format("Budget_TitleFormat", "");
         public string BudgetTitleText
         {
             get => _budgetTitleText;
@@ -76,7 +77,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
         }
 
-        private string _donationsTitleText = "Donacije";
+        private string _donationsTitleText = TranslationSource.Instance.Format("Budget_DonationsTitle", "");
         public string DonationsTitleText
         {
             get => _donationsTitleText;
@@ -88,7 +89,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
         }
 
-        private string _expensesTitleText = "Troškovi";
+        private string _expensesTitleText = TranslationSource.Instance.Format("Budget_ExpensesTitle", "");
         public string ExpensesTitleText
         {
             get => _expensesTitleText;
@@ -132,6 +133,24 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public NeighborhoodBudgetViewModel()
         {
             RegisterExpenseCommand = new RelayCommand(ExecuteRegisterExpense);
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                UpdateDynamicTitles();
+            };
+        }
+
+        public void UpdateDynamicTitles()
+        {
+            if (SelectedCategoryBalance == null)
+            {
+                ExpensesTitleText = string.Empty;
+                DonationsTitleText = string.Empty;
+                return;
+            }
+
+            ExpensesTitleText = $"{TranslationSource.Instance.Format("Budget_ExpensesTitle", _selectedCategoryBalance.Category.Name)}";
+            DonationsTitleText = $"{TranslationSource.Instance.Format("Budget_DonationsTitle", _selectedCategoryBalance.Category.Name)}";
         }
 
         public void Initialize(long coordinatorId)
@@ -142,25 +161,31 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadNeighborhoods()
         {
-            var previously = SelectedNeighborhood;
-            var previousCategoryId = SelectedCategoryBalance?.Category.Id;
-            Neighborhoods.Clear();
+            var previousNeighborhoodId = SelectedNeighborhood?.Id;
 
+            Neighborhoods.Clear();
             var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
             foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
 
-            SelectedNeighborhood = previously != null
-                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+            var found = previousNeighborhoodId.HasValue
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previousNeighborhoodId.Value)
                 : null;
 
-            if (previousCategoryId.HasValue)
-                SelectedCategoryBalance = BudgetCategories.FirstOrDefault(b => b.Category.Id == previousCategoryId);
+            if (found != null)
+            {
+                SelectedNeighborhood = found;
+            }
+            else
+            {
+                SelectedNeighborhood = null;
+            }
         }
-            
+
         private void LoadBudgetData()
         {
             if (SelectedNeighborhood == null) return;
+            var previousCategoryId = SelectedCategoryBalance?.Category.Id;
 
             BudgetCategories.Clear();
             var allExpenses = _expenseService.GetByNeighborhood(SelectedNeighborhood.Id);
@@ -170,6 +195,11 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             {
                 BudgetCategories.Add(b);
             }
+
+            if (previousCategoryId.HasValue)
+                SelectedCategoryBalance = BudgetCategories.FirstOrDefault(b => b.Category.Id == previousCategoryId.Value);
+            else
+                SelectedCategoryBalance = null;
         }
 
         private void LoadExpensesForSelectedCategory()
@@ -190,7 +220,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedNeighborhood == null || SelectedCategoryBalance == null) return;
 
             var categoryDonations = _donationService.GetDonationsForCategory(
-                SelectedNeighborhood.Id, 
+                SelectedNeighborhood.Id,
                 SelectedCategoryBalance.Category.Id);
 
             foreach (var d in categoryDonations)
@@ -209,7 +239,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
             catch (InvalidOperationException ex)
             {
-                new InfoDialog("Nedovoljno sredstava", ex.Message, window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Budget_InsufficientFunds_Title"], ex.Message, window).ShowDialog();
             }
         }
 
@@ -219,13 +249,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             desc = (DescriptionInput ?? "").Trim();
 
             if (SelectedCategoryBalance is null)
-                return ShowError(win, "Odaberite kategoriju", "Greška");
+                return ShowError(win, TranslationSource.Instance["Error_SelectCategory_Title"], TranslationSource.Instance["Error_Title"]);
 
             if (string.IsNullOrEmpty(desc))
-                return ShowError(win, "Greška", "Unesite opis troška.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Budget_EnterDescription"]);
 
             if (!decimal.TryParse(AmountInput?.Trim(), out amount) || amount <= 0)
-                return ShowError(win, "Greška", "Unesite ispravan iznos.");
+                return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Budget_EnterAmount"]);
 
             return true;
         }
@@ -239,12 +269,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                 _expenseService.Create(SelectedCategoryBalance!, coordinator, amount, desc);
                 _balanceService.UpdateTotalAmount(SelectedCategoryBalance!, amount);
                 _neighborhoodService.DeductFromBudget(SelectedNeighborhood!, amount);
-                new InfoDialog("Uspeh", "Trošak je uspešno evidentiran.", window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Success_Title"], TranslationSource.Instance["Budget_ExpenseSuccess"], window).ShowDialog();
                 ResetAndRefreshForm();
             }
             catch (InvalidOperationException ex)
             {
-                new InfoDialog("Nedovoljno sredstava", ex.Message, window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Budget_InsufficientFunds_Title"], ex.Message, window).ShowDialog();
             }
         }
 

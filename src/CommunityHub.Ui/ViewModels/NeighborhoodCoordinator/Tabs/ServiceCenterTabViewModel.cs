@@ -14,6 +14,7 @@ using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -105,15 +106,17 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public Visibility DurationPanelVisibility => IsPerHour ? Visibility.Visible : Visibility.Collapsed;
 
         public bool IsPerHour => SelectedListing?.BillingType == BillingType.PerHour;
-
+        
         public string ServicesTitle => SelectedNeighborhood is null ? string.Empty :
-            $"Dostupne servisne usluge za kvart {SelectedNeighborhood.Name} (lokacija {SelectedNeighborhood.City.Name}, {SelectedNeighborhood.Country.Name})";
+            TranslationSource.Instance.Format("Service_ServicesTitle", SelectedNeighborhood.Name, SelectedNeighborhood.City.Name, SelectedNeighborhood.Country.Name);
 
         public string PriceText => SelectedListing?.CurrentPriceEntry is not null
-            ? $"Trenutna cena: {SelectedListing.CurrentPriceEntry.Amount:N2} RSD"
-            : "Cena nije dostupna";
+            ? TranslationSource.Instance.Format("Service_CurrentPrice", SelectedListing.CurrentPriceEntry.Amount)
+            : TranslationSource.Instance["Service_PriceUnavailable"];
 
-        public string BillingTypeText => IsPerHour ? "Plaćanje po satu" : "Plaćanje po usluzi";
+        public string BillingTypeText => IsPerHour
+            ? TranslationSource.Instance["PerHour"]
+            : TranslationSource.Instance["PerJob"];
 
         public BitmapImage? CurrentImage
         {
@@ -147,6 +150,13 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             LoadNeighborhoods();
         }
 
+        public void RefreshLocalizedStrings()
+        {
+            OnPropertyChanged(nameof(ServicesTitle));
+            OnPropertyChanged(nameof(PriceText));
+            OnPropertyChanged(nameof(BillingTypeText));
+        }
+
         private Window GetActiveWindow() =>
             System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
             ?? System.Windows.Application.Current.MainWindow;
@@ -164,7 +174,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
             catch (ArgumentException ex)
             {
-                ShowError(window, "Sistemska greška", ex.Message);
+                ShowError(window, TranslationSource.Instance["Error_Title"], ex.Message);
             }
         }
 
@@ -174,11 +184,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (!IsPerHour) return true;
 
             if (!int.TryParse(DurationHoursInput?.Trim(), out int hours) || hours <= 0)
-                return ShowError(window, "Nevažeći unos", "Molimo unesite ispravno trajanje usluge u satima.");
-
+                return ShowError(window, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Service_InvalidDuration"]);
             if (hours > 14)
-                return ShowError(window, "Greška", "Nije moguće rezervisati termin duži od 14h.");
-
+                return ShowError(window, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Service_DurationTooLong"]);
             durationHours = hours;
             return true;
         }
@@ -188,7 +196,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             var slot = _bookedJobService.FindFirstAvailableSlot(SelectedListing!, durationHours);
             if (slot is null)
             {
-                ShowError(window, "Nema slobodnih termina", "Nije pronađen slobodan termin u narednih 60 dana.");
+                ShowError(window, TranslationSource.Instance["Service_NoSlots_Title"], TranslationSource.Instance["Service_NoSlots_Message"]);
                 return;
             }
 
@@ -197,7 +205,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             {
                 var booked = _bookedJobService.Book(SelectedListing!, SelectedNeighborhood!, slot);
                 ScheduledServices.Add(booked);
-                new InfoDialog("Zakazano", $"Termin je uspešno zakazan za {booked.ScheduledDate:dd.MM.yyyy.}.", window).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Service_Booked_Title"], TranslationSource.Instance.Format("Service_Booked_Message", TranslationSource.Instance.FormatDate(booked.ScheduledDate)), window).ShowDialog();
             }
         }
 
@@ -211,7 +219,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             if (!CanReview)
             {
-                new InfoDialog("Ocenjivanje nije moguće", "Ova usluga ne može biti ocenjena.", GetActiveWindow()).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Service_CannotReview_Title"], TranslationSource.Instance["Service_CannotReview_Message"], GetActiveWindow()).ShowDialog();
                 return;
             }
             OpenReviewWindow(SelectedScheduledService!);
@@ -221,7 +229,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             if (!CanEditReview)
             {
-                new InfoDialog("Izmena nije dozvoljena", "Recenzija se može menjati samo u roku od 3 dana od kreiranja.", GetActiveWindow()).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Service_CannotEdit_Title"], TranslationSource.Instance["Service_CannotEdit_Message"], GetActiveWindow()).ShowDialog();
                 return;
             }
             OpenReviewWindow(SelectedScheduledService!);
@@ -249,36 +257,72 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 
         public void LoadNeighborhoods()
         {
-            var previously = SelectedNeighborhood;
-            Neighborhoods.Clear();
+            var previouslySelectedNeighborhoodId = SelectedNeighborhood?.Id;
+            var previouslySelectedListingId = SelectedListing?.Id;
+            var previouslySelectedServiceId = SelectedScheduledService?.Id;
 
-            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
-            foreach (var n in neighborhoods)
+            Neighborhoods.Clear();
+            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
                 Neighborhoods.Add(n);
 
-            SelectedNeighborhood = previously != null
-                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
-                : null;
+            if (previouslySelectedNeighborhoodId.HasValue)
+            {
+                var found = Neighborhoods.FirstOrDefault(n => n.Id == previouslySelectedNeighborhoodId.Value);
+                if (found != null)
+                {
+                    SelectedNeighborhood = found;
+                }
+            }
+            else
+            {
+                SelectedNeighborhood = Neighborhoods.FirstOrDefault();
+            }
+
+            if (previouslySelectedListingId.HasValue)
+            {
+                SelectedListing = JobListings.FirstOrDefault(l => l.Id == previouslySelectedListingId.Value);
+            }
+
+            if (previouslySelectedServiceId.HasValue)
+            {
+                SelectedScheduledService = ScheduledServices.FirstOrDefault(job => job.Id == previouslySelectedServiceId.Value);
+            }
         }
 
         public void LoadJobListings()
         {
+            var previouslySelectedId = SelectedListing?.Id;
+
             JobListings.Clear();
             SelectedListing = null;
             if (SelectedNeighborhood is null) return;
+
             foreach (var l in _jobListingService.GetByCityAndCountry(SelectedNeighborhood.City.Id, SelectedNeighborhood.Country.Id))
                 JobListings.Add(l);
+
+            if (previouslySelectedId.HasValue)
+            {
+                SelectedListing = JobListings.FirstOrDefault(l => l.Id == previouslySelectedId.Value);
+            }
         }
 
         public void LoadScheduledServices()
         {
+            var previouslySelectedId = SelectedScheduledService?.Id;
+
             ScheduledServices.Clear();
+            SelectedScheduledService = null;
             if (SelectedNeighborhood is null) return;
 
             var jobs = _bookedJobService.GetByNeighborhood(SelectedNeighborhood.Id);
             foreach (var job in jobs)
             {
                 ScheduledServices.Add(job);
+            }
+
+            if (previouslySelectedId.HasValue)
+            {
+                SelectedScheduledService = ScheduledServices.FirstOrDefault(job => job.Id == previouslySelectedId.Value);
             }
         }
 

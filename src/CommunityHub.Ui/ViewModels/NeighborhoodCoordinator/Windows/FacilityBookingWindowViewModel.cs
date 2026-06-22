@@ -7,6 +7,7 @@ using CommunityHub.Application.Services.Dtos.Neighborhoods.CityFacilities;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
@@ -42,8 +43,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         {
             _tabViewModel = tabViewModel;
             _confirmedSlot = slotInRange;
-            NeighborhoodText = $"Stanovnici kvarta: {neighborhood.Name}";
-            FacilityText = $"Objekat: {facility.Name}";
+            NeighborhoodText = TranslationSource.Instance.Format("FacilityBooking_Neighborhood", neighborhood.Name);
+            FacilityText = TranslationSource.Instance.Format("FacilityBooking_Facility", facility.Name);
             HasSlotInRange = slotInRange is not null;
 
             SetupStatusText(facility, neighborhood, slotInRange);
@@ -57,15 +58,23 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         {
             if (slot is not null)
             {
-                Title = "Potvrda rezervacije — Termin pronađen";
-                Status = $"Sistem je pronašao slobodan termin za posetu objekta {facility.Name} u zadatom opsegu za stanovnike kvarta {neighborhood.Name}.";
-                SlotText = $"Termin: {slot.DisplayText}";
+                Title = TranslationSource.Instance["FacilityBooking_TitleFound"];
+                Status = TranslationSource.Instance.Format("FacilityBooking_StatusFound", facility.Name, neighborhood.Name);
+                SlotText = TranslationSource.Instance.Format("FacilityBooking_SlotText", FormatSlot(slot));
             }
             else
             {
-                Title = "Potvrda rezervacije — Termin zauzet";
-                Status = "Nažalost, nema slobodnih termina u zadatom opsegu. Sistem je pronašao prve slobodne termine van opsega.";
+                Title = TranslationSource.Instance["FacilityBooking_TitleNotFound"];
+                Status = TranslationSource.Instance["FacilityBooking_StatusNotFound"];
             }
+        }
+
+        private static string FormatSlot(AvailableFacilitySlotDto slot)
+        {
+            var date = TranslationSource.Instance.FormatDate(slot.Start);
+            var time = TranslationSource.Instance.FormatTime(TimeOnly.FromDateTime(slot.Start));
+            var at = TranslationSource.Instance["Service_At"];
+            return $"{date} {at} {time} ({slot.DurationHours}h)";
         }
 
         private void SetupOutsideSlots(List<AvailableFacilitySlotDto> slotsOutsideRange)

@@ -6,12 +6,12 @@ namespace CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows
 {
     public partial class ServiceBookingConfirmationWindow : Window
     {
-        private readonly BookingConfirmationWindowViewModel _viewModel;
+        private readonly ServiceBookingConfirmationWindowViewModel _viewModel;
 
         public ServiceBookingConfirmationWindow(JobListingDto listing, AvailableJobSlotDto slot)
         {
             InitializeComponent();
-            _viewModel = new BookingConfirmationWindowViewModel(listing, slot);
+            _viewModel = new ServiceBookingConfirmationWindowViewModel(listing, slot);
             DataContext = _viewModel;
         }
     }

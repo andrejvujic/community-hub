@@ -7,6 +7,7 @@ using CommunityHub.Application.Services.Dtos.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.Resources.Localization;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
@@ -93,8 +94,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             var window = System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
                          ?? System.Windows.Application.Current.MainWindow;
 
-            var confirmMsg = $"Da li ste sigurni da želite da prihvatite zahtev korisnika {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} za pristup kvartu {SelectedRequest.Neighborhood.Name}?";
-            var confirmDialog = new ConfirmDialog("Potvrda prihvatanja", confirmMsg, window);
+            var confirmMsg = TranslationSource.Instance.Format("Requests_ConfirmAccept", SelectedRequest.Citizen.Name, SelectedRequest.Citizen.Surname, SelectedRequest.Neighborhood.Name);
+            var confirmDialog = new ConfirmDialog(TranslationSource.Instance["Requests_ConfirmAcceptTitle"], confirmMsg, window);
             if (confirmDialog.ShowDialog() != true) return;
 
             _neighborhoodAccessRequestService.Accept(SelectedRequest);
@@ -102,8 +103,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             _citizenService.UpdateMembership(SelectedRequest.Citizen.Id, membership.Id);
 
             UpdateLocalRequestList(NeighborhoodAccessRequestStatus.Accepted);
-            var infoMsg = $"Korisnik {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} je postao novi član kvarta {SelectedRequest.Neighborhood.Name}.";
-            new InfoDialog("Prihvaćen zahtev", infoMsg, window).ShowDialog();
+            var infoMsg = TranslationSource.Instance.Format("Requests_AcceptedInfo", SelectedRequest.Citizen.Name, SelectedRequest.Citizen.Surname, SelectedRequest.Neighborhood.Name);
+            new InfoDialog(TranslationSource.Instance["Requests_AcceptedTitle"], infoMsg, window).ShowDialog();
         }
 
         private void ExecuteReject()
@@ -118,8 +119,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             _neighborhoodAccessRequestService.Reject(SelectedRequest, dialog.Comment);
             UpdateLocalRequestList(NeighborhoodAccessRequestStatus.Rejected, dialog.Comment);
 
-            var infoMsg = $"Korisniku {SelectedRequest.Citizen.Name} {SelectedRequest.Citizen.Surname} je odbijen zahtev za pristup kvartu {SelectedRequest.Neighborhood.Name}.";
-            new InfoDialog("Odbijen zahtev", infoMsg, window).ShowDialog();
+            var infoMsg = TranslationSource.Instance.Format("Requests_RejectedInfo", SelectedRequest.Citizen.Name, SelectedRequest.Citizen.Surname, SelectedRequest.Neighborhood.Name);
+            new InfoDialog(TranslationSource.Instance["Requests_RejectedTitle"], infoMsg, window).ShowDialog();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
