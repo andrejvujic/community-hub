@@ -10,14 +10,12 @@
 
     <UserControl.Resources>
         <Style x:Key="NotificationFilterToggleStyle" TargetType="ToggleButton">
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="Padding" Value="12,4"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ItemBorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource ButtonBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
@@ -27,21 +25,32 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="8"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-                            </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBrush}"/>
                                 <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Foreground" Value="{DynamicResource AccentForegroundBrush}"/>
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.6"/>
-                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ButtonHoverBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryTextBrush}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentHoverBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}"/>
+                            </MultiTrigger>
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -68,7 +77,7 @@
 
                 <TextBlock Grid.Row="0"
                            Text="{ns:Loc Dashboard_Welcome}"
-                           FontSize="24"
+                           FontSize="32"
                            FontWeight="Bold"
                            Margin="20,20,20,15"/>
 
@@ -76,89 +85,98 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="1.3*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <Border Grid.Column="0"
+                    <TextBlock Grid.Column="0" Grid.Row="0"
+                               Text="{Binding PendingRequestsText}"
+                               FontSize="17"
+                               Margin="0,0,10,6"
+                               VerticalAlignment="Bottom"/>
+
+                    <TextBlock Grid.Column="1" Grid.Row="0"
+                               Text=" "
+                               FontSize="17"
+                               Margin="0,0,10,6"/>
+
+                    <Border Grid.Column="2" Grid.Row="0"
                             Background="{DynamicResource SurfaceBackgroundBrush}"
                             BorderBrush="{DynamicResource ItemBorderBrush}"
                             BorderThickness="1.5"
                             CornerRadius="8"
-                            Padding="15,12"
-                            Margin="0,0,10,0">
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="{Binding PendingRequestsText}"
-                                       FontSize="17"
-                                       Margin="0,0,0,10"/>
-                            <Button Content="{ns:Loc Dashboard_ViewRequests}"
-                                    Style="{StaticResource PrimaryButtonStyle}"
-                                    FontSize="15"
-                                    Padding="0"
-                                    Height="40"
-                                    Command="{Binding ViewRequestsCommand}"/>
-                        </StackPanel>
-                    </Border>
+                            Padding="12,10"
+                            Margin="0,0,0,6">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                    <Border Grid.Column="1"
-                            Background="{DynamicResource SurfaceBackgroundBrush}"
-                            BorderBrush="{DynamicResource ItemBorderBrush}"
-                            BorderThickness="1.5"
-                            CornerRadius="8"
-                            Padding="12">
-                        <StackPanel VerticalAlignment="Center">
-                            <Button Content="{ns:Loc Dashboard_RegisterNeighborhood}"
-                                    Style="{StaticResource PrimaryButtonStyle}"
-                                    VerticalAlignment="Center"
-                                    FontSize="15"
-                                    Padding="0"
-                                    Height="40"
-                                    Command="{Binding RegisterNeighborhoodCommand}"/>
-                        </StackPanel>
-                    </Border>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="{ns:Loc Neighborhood_Label}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <ComboBox ItemsSource="{Binding Neighborhoods}"
+                                          SelectedItem="{Binding SelectedReportNeighborhood}"
+                                          DisplayMemberPath="Name"
+                                          Style="{StaticResource ComboBoxStyle}"
+                                          Width="250"/>
+                            </StackPanel>
 
-                    <Border Grid.Column="2"
-                            Background="{DynamicResource SurfaceBackgroundBrush}"
-                            BorderBrush="{DynamicResource ItemBorderBrush}"
-                            BorderThickness="1.5"
-                            CornerRadius="8"
-                            Padding="12"
-                            Margin="0,0,10,0">
-                        <StackPanel>
-                            <Grid Margin="0,0,0,8">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,8">
-                                    <TextBlock Text="{ns:Loc Neighborhood_Label}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                    <ComboBox ItemsSource="{Binding Neighborhoods}"
-                                              SelectedItem="{Binding SelectedReportNeighborhood}"
-                                              DisplayMemberPath="Name"
-                                              Style="{StaticResource ComboBoxStyle}"
-                                              Width="240"
-                                              MinWidth="160"/>
-                                </StackPanel>
-
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0">
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center">
                                     <TextBlock Text="{ns:Loc Dashboard_DateFrom}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                     <DatePicker SelectedDate="{Binding ReportFrom}"
                                                 Style="{StaticResource DatePickerStyle}"
-                                                Width="140" Margin="0,0,12,0"/>
+                                                Width="120"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center">
                                     <TextBlock Text="{ns:Loc Dashboard_DateTo}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                     <DatePicker SelectedDate="{Binding ReportTo}"
                                                 Style="{StaticResource DatePickerStyle}"
-                                                Width="140"/>
+                                                Width="120"/>
                                 </StackPanel>
                             </Grid>
-                            <Button Content="{ns:Loc Dashboard_GenerateReport}"
-                                    Style="{StaticResource PrimaryButtonStyle}"
-                                    FontSize="15"
-                                    Padding="0"
-                                    Height="40"
-                                    Command="{Binding GenerateReportCommand}"/>
-                        </StackPanel>
+                        </Grid>
                     </Border>
+
+                    <Button Grid.Column="0" Grid.Row="1"
+                            Content="{ns:Loc Dashboard_ViewRequests}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            FontSize="15"
+                            Padding="0"
+                            Height="40"
+                            Margin="0,0,10,0"
+                            Command="{Binding ViewRequestsCommand}"/>
+
+                    <Button Grid.Column="1" Grid.Row="1"
+                            Content="{ns:Loc Dashboard_RegisterNeighborhood}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            FontSize="15"
+                            Padding="0"
+                            Height="40"
+                            Margin="0,0,10,0"
+                            Command="{Binding RegisterNeighborhoodCommand}"/>
+
+                    <Button Grid.Column="2" Grid.Row="1"
+                            Content="{ns:Loc Dashboard_GenerateReport}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            FontSize="15"
+                            Padding="0"
+                            Height="40"
+                            Command="{Binding GenerateReportCommand}"/>
                 </Grid>
 
                 <Border Grid.Row="2"
@@ -196,69 +214,69 @@
                                  BorderThickness="0"
                                  Background="Transparent"
                                  Cursor="Arrow">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="Margin" Value="0,0,0,8"/>
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="Cursor" Value="Arrow"/>
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    <Setter Property="Focusable" Value="False"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListBoxItem">
-                                                <Border x:Name="ItemBorder"
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Margin" Value="0,0,0,8"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Cursor" Value="Arrow"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Focusable" Value="False"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border x:Name="ItemBorder"
                                                         BorderBrush="{DynamicResource ItemBorderBrush}"
                                                         BorderThickness="2"
                                                         CornerRadius="8"
                                                         Background="{DynamicResource PanelBackgroundBrush}"
                                                         Padding="15,12">
-                                                    <ContentPresenter/>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                                <TextBlock Text="{Binding Icon}"
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                    <TextBlock Text="{Binding Icon}"
                                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                                            FontSize="17"
                                                            VerticalAlignment="Center"
                                                            Margin="0,0,8,0"
                                                            Foreground="{DynamicResource AccentBrush}"/>
-                                                <TextBlock Text="{Binding TypeLabel}"
+                                                    <TextBlock Text="{Binding TypeLabel}"
                                                            FontSize="17"
                                                            FontWeight="SemiBold"
                                                            VerticalAlignment="Center"
                                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                                <TextBlock Text="{Binding DateText}"
+                                                    <TextBlock Text="{Binding DateText}"
                                                            FontSize="15"
                                                            VerticalAlignment="Center"
                                                            Margin="16,0,0,0"
                                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                            </StackPanel>
-                                            <TextBlock Text="{Binding Description}"
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding Description}"
                                                        FontSize="15"
                                                        TextWrapping="Wrap"
                                                        Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                        </StackPanel>
+                                            </StackPanel>
 
-                                        <Button Grid.Column="1"
+                                            <Button Grid.Column="1"
                                                 Content="{Binding ActionLabel}"
                                                 Style="{StaticResource SecondaryButtonStyle}"
                                                 Width="160"
@@ -268,10 +286,10 @@
                                                 Margin="20,0,0,0"
                                                 Cursor="Hand"
                                                 Command="{Binding ActionCommand}"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>

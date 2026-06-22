@@ -220,6 +220,7 @@
                                          Height="25"
                                          FontSize="14"
                                          Padding="0"
+                                         TextAlignment="Right"
                                          PreviewTextInput="AmountTextBox_PreviewTextInput"
                                          PreviewKeyDown="AmountTextBox_PreviewKeyDown"/>
 

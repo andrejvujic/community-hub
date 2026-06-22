@@ -13,24 +13,24 @@
         <ns:EnumLocalizationConverter x:Key="EnumLocalizationConverter" />
         <conv:BookedJobStatusConverter x:Key="StatusConverter" />
         <ns:LocalizedDecimalConverter x:Key="DecimalConverter" />
-        
+
         <Style x:Key="JobListingItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border x:Name="ItemBorder"
-                                BorderBrush="{DynamicResource ItemBorderBrush}"
-                                BorderThickness="1.5"
-                                CornerRadius="8"
-                                Background="{TemplateBinding Background}"
-                                Padding="10"
-                                Width="270"
-                                Height="115">
+                            BorderBrush="{DynamicResource ItemBorderBrush}"
+                            BorderThickness="1.5"
+                            CornerRadius="8"
+                            Background="{TemplateBinding Background}"
+                            Padding="10"
+                            Width="270"
+                            Height="115">
                             <ContentPresenter/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -211,13 +211,12 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{ns:Loc Service_Images}" FontSize="16" Margin="0,0,10,0"/>
-                                            <Border Width="120" Height="120" CornerRadius="8" ClipToBounds="True">
-                                                <Image Source="{Binding CurrentImage}" Stretch="UniformToFill"/>
-                                            </Border>
-                                        </StackPanel>
+                                    <StackPanel Grid.Column="0" Margin="0,0,20,0"
+                                                HorizontalAlignment="Center">
+                                        <Border Width="150" Height="150" CornerRadius="8" ClipToBounds="True"
+                                                HorizontalAlignment="Center">
+                                            <Image Source="{Binding CurrentImage}" Stretch="UniformToFill"/>
+                                        </Border>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                                             <Button x:Name="PrevImageButton"
                                                     Style="{StaticResource IconButtonStyle}"
