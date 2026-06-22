@@ -133,6 +133,24 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public NeighborhoodBudgetViewModel()
         {
             RegisterExpenseCommand = new RelayCommand(ExecuteRegisterExpense);
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                UpdateDynamicTitles();
+            };
+        }
+
+        public void UpdateDynamicTitles()
+        {
+            if (SelectedCategoryBalance == null)
+            {
+                ExpensesTitleText = string.Empty;
+                DonationsTitleText = string.Empty;
+                return;
+            }
+
+            ExpensesTitleText = $"{TranslationSource.Instance.Format("Budget_ExpensesTitle", _selectedCategoryBalance.Category.Name)}";
+            DonationsTitleText = $"{TranslationSource.Instance.Format("Budget_DonationsTitle", _selectedCategoryBalance.Category.Name)}";
         }
 
         public void Initialize(long coordinatorId)
