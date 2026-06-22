@@ -29,6 +29,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/CitizenStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:SelectedTabToBrushConverter x:Key="SelectedTabToBrushConverter" />
+            <converters:TooltipVisibilityConverter x:Key="TooltipVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
 

@@ -1,9 +1,11 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
 using CommunityHub.Application.Domain.Events;
 using CommunityHub.Application.Services.Events;
+using CommunityHub.Ui.Helpers;
 using CommunityHub.Ui.Helpers.Commands;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Events
 {
@@ -21,14 +23,16 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         public ICommand SaveCommand { get; }
         public ICommand AddItemCommand { get; }
         public ICommand ToggleCalendarCommand { get; }
+        public ICommand RemoveItemCommand { get; }
 
         public OrganizeEventViewModel(long userId)
         {
             _userId = userId;
             _items = new ObservableCollection<string>();
-            CloseCommand = new RelayCommand<object>(_ => CloseRequested?.Invoke(this, EventArgs.Empty));
+            CloseCommand = new RelayCommand<object>(_ => HandleClose());
             SaveCommand = new RelayCommand<object>(_ => ConfirmRequested?.Invoke(this, EventArgs.Empty), _ => IsFormValid);
             AddItemCommand = new RelayCommand<object>(_ => AddItem());
+            RemoveItemCommand = new RelayCommand<object>(_ => RemoveItem(), _ => SelectedItem != null);
             ToggleCalendarCommand = new RelayCommand<object>(_ => ToggleCalendarRequested?.Invoke(this, EventArgs.Empty));
         }
 
@@ -42,6 +46,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _name = value;
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -55,6 +60,19 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _description = value;
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
+            }
+        }
+
+        private string? _selectedItem;
+        public string? SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                if (_selectedItem == value) return;
+                _selectedItem = value;
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -68,6 +86,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _selectedDate = value;
                 OnPropertyChanged(nameof(SelectedDate));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -84,6 +103,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _hour = value;
                 OnPropertyChanged(nameof(Hour));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -97,6 +117,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _minute = value;
                 OnPropertyChanged(nameof(Minute));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -110,6 +131,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _durationHour = value;
                 OnPropertyChanged(nameof(DurationHour));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -123,6 +145,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _durationMinute = value;
                 OnPropertyChanged(nameof(DurationMinute));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -136,6 +159,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 _volunteers = value;
                 OnPropertyChanged(nameof(Volunteers));
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -148,6 +172,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
                 if (_itemInput == value) return;
                 _itemInput = value;
                 OnPropertyChanged(nameof(ItemInput));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
@@ -163,6 +188,27 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             }
         }
 
+        public string SaveButtonTooltip
+        {
+            get
+            {
+                if (!TooltipState.IsEnabled || IsFormValid) return null;
+
+                var problemFields = new List<string>();
+
+                if (string.IsNullOrWhiteSpace(Name)) problemFields.Add("naziv");
+                if (string.IsNullOrWhiteSpace(Description)) problemFields.Add("opis");
+                if (SelectedDate == null) problemFields.Add("datum");
+                if (!CommunityEvent.TryParseEventStart(SelectedDate, Hour, Minute, out _)) problemFields.Add("vreme");
+                if (!CommunityEvent.TryParseDuration(DurationHour, DurationMinute, out var duration) || duration <= 0) problemFields.Add("trajanje");
+                if (!CommunityEvent.TryParseMinVolunteers(Volunteers, out var volunteers) || volunteers < 1) problemFields.Add("volontere");
+                if (Items.Count == 0) problemFields.Add("potrebne stvari");
+
+                if (problemFields.Count == 1) return $"Proverite: {problemFields[0]}";
+                else return $"Proverite: {string.Join(", ", problemFields)}";
+            }
+        }
+
         public bool IsFormValid =>
             !string.IsNullOrWhiteSpace(Name) &&
             !string.IsNullOrWhiteSpace(Description) &&
@@ -175,19 +221,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
         {
             var input = ItemInput.Trim();
             if (string.IsNullOrEmpty(input)) return;
+            var capitalizedInput = char.ToUpper(input[0]) + input.Substring(1).ToLower();
 
-            if (!Items.Contains(input))
+            if (!Items.Contains(capitalizedInput))
             {
-                Items.Add(input);
+                Items.Add(capitalizedInput);
                 ItemInput = string.Empty;
                 OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
             }
         }
 
-        public void RemoveItem(string item)
+        public void RemoveItem()
         {
-            Items.Remove(item);
-            OnPropertyChanged(nameof(IsFormValid));
+            if (SelectedItem != null)
+            {
+                Items.Remove(SelectedItem);
+                SelectedItem = null;
+                OnPropertyChanged(nameof(IsFormValid));
+                OnPropertyChanged(nameof(SaveButtonTooltip));
+            }
         }
 
         public void Submit()
@@ -234,6 +287,34 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Events
             }
         }
 
+        public bool HasData()
+        {
+            return !string.IsNullOrWhiteSpace(Name) ||
+                   !string.IsNullOrWhiteSpace(Description) ||
+                   SelectedDate != null ||
+                   !string.IsNullOrWhiteSpace(Hour) ||
+                   !string.IsNullOrWhiteSpace(Minute) ||
+                   !string.IsNullOrWhiteSpace(DurationHour) ||
+                   !string.IsNullOrWhiteSpace(DurationMinute) ||
+                   !string.IsNullOrWhiteSpace(Volunteers) ||
+                   Items.Count > 0;
+        }
+
+        private void HandleClose()
+        {
+            if (!HasData())
+            {
+                CloseRequested?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            var result = MessageBox.Show("Da li ste sigurni da želite da odbacite sve unete podatke?\n\nSvi podaci o novom događaju biće izgubljeni.","Potvrda odbacivanja", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                CloseRequested?.Invoke(this, EventArgs.Empty);
+            }
+        }
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

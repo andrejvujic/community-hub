@@ -4,6 +4,7 @@ using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using CommunityHub.Application.Domain.Neighborhoods;
@@ -60,7 +61,6 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public event EventHandler? CloseRequested;
-        public event EventHandler<DeleteRequestedEventArgs>? DeleteRequested;
 
         public ICommand CloseCommand { get; }
         public ICommand ToggleSortCommand { get; }
@@ -78,7 +78,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
             ToggleSortCommand = new RelayCommand<object>(_ => SelectedOrder = SelectedOrder == RequestOrder.CreationDateDescending ? RequestOrder.CreationDateAscending : RequestOrder.CreationDateDescending);
             ToggleFilterCommand = new RelayCommand<object>(_ => FilterByStatus = !FilterByStatus);
             DeleteCommand = new RelayCommand<NeighborhoodAccessRequestDto>(
-                request => DeleteRequested?.Invoke(this, new DeleteRequestedEventArgs(request)),
+                request => DeleteRequest(request),
                 request => request != null && request.Status == NeighborhoodAccessRequestStatus.Waiting
             );
 
@@ -97,6 +97,12 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         public void DeleteRequest(NeighborhoodAccessRequestDto request)
         {
+            if (request == null) return;
+
+            var result = MessageBox.Show("Da li ste sigurni da želite da obrišete ovaj zahtev?", "Potvrda brisanja", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes) return;
+
+            SelectedRequest = null;
             _accessRequestService.Delete(request.Citizen.Id, request.Neighborhood.Id);
             Requests.Remove(request);
         }
@@ -114,15 +120,5 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods
 
         protected virtual void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public class DeleteRequestedEventArgs : EventArgs
-    {
-        public NeighborhoodAccessRequestDto Request { get; }
-
-        public DeleteRequestedEventArgs(NeighborhoodAccessRequestDto request)
-        {
-            Request = request;
-        }
     }
 }

@@ -1,12 +1,13 @@
-using CommunityHub.Ui.Helpers.Commands;
-using CommunityHub.Application.Services.Users;
-using CommunityHub.Application.Services.TrustRecords;
-using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
 using CommunityHub.Application.Domain.TrustRecords;
+using CommunityHub.Application.Services.Dtos.Neighborhoods.CoordinatorReviews;
+using CommunityHub.Application.Services.Neighborhoods.CoordinatorReviews;
+using CommunityHub.Application.Services.TrustRecords;
+using CommunityHub.Application.Services.Users;
+using CommunityHub.Ui.Helpers;
+using CommunityHub.Ui.Helpers.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using CommunityHub.Application.Services.Neighborhoods.CoordinatorReviews;
 
 namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
 {
@@ -77,6 +78,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             }
         }
 
+        public string ReportDisabledReason
+        {
+            get
+            {
+                if (SelectedReview is not CoordinatorReviewDto review) return "Prvo morate izabrati recenziju";
+                if (review.Reviewer.Id == _userId) return "Ne možete prijaviti sopstvenu recenziju";
+                return "Već ste prijavili ovu recenziju";
+            }
+        }
+
+        public string ReportTooltip
+        {
+            get
+            {
+                if (!TooltipState.IsEnabled) return null;
+                if (!CanReportSelectedReview) return ReportDisabledReason;
+                return null;
+            }
+        }
+
         public bool CanWriteNewReview
         {
             get => _canWriteNewReview;
@@ -85,6 +106,26 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
                 if (_canWriteNewReview == value) return;
                 _canWriteNewReview = value;
                 OnPropertyChanged(nameof(CanWriteNewReview));
+            }
+        }
+
+        public string WriteReviewDisabledReason
+        {
+            get
+            {
+                int removedReviewCount = _reviewService.GetRemovedReviewCountByReviewerId(_neighborhoodId, _userId);
+                if (removedReviewCount >= 3)  return "Ne možete pisati recenzije jer vam je uklonjeno 3 ili više recenzija";
+                return "Već ste napisali recenziju ovog meseca. Možete pisati najviše jednu recenziju mesečno";
+            }
+        }
+
+        public string WriteReviewTooltip
+        {
+            get
+            {
+                if (!TooltipState.IsEnabled) return null;
+                if (!CanWriteNewReview) return WriteReviewDisabledReason;
+                return null;
             }
         }
 
@@ -101,6 +142,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             WriteNewReviewCommand = new RelayCommand<object>(_ => WriteNewReviewRequested?.Invoke(this, EventArgs.Empty), _ => CanWriteNewReview);
             ReportSelectedReviewCommand = new RelayCommand<object>(_ => ReportReviewRequested?.Invoke(this, EventArgs.Empty), _ => SelectedReview != null && CanReportSelectedReview);
 
+            TooltipState.OnPropertyChanged += (s, e) => { OnPropertyChanged(nameof(ReportTooltip)); OnPropertyChanged(nameof(WriteReviewTooltip));};
+
             LoadData(userId);
         }
 
@@ -115,6 +158,9 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             {
                 CanReportSelectedReview = false;
             }
+
+            OnPropertyChanged(nameof(ReportDisabledReason));
+            OnPropertyChanged(nameof(ReportTooltip));
             ((RelayCommand<object>)ReportSelectedReviewCommand).RaiseCanExecuteChanged();
         }
 
@@ -201,6 +247,8 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Neighborhoods.CoordinatorReviews
             var reviewer = _citizenService.GetCitizenById(_userId);
             CanWriteNewReview = reviewer!.CanWriteCoordinatorReview(removedReviewCount, userRecentReview != null);
 
+            OnPropertyChanged(nameof(WriteReviewDisabledReason));
+            OnPropertyChanged(nameof(WriteReviewTooltip));
             ((RelayCommand<object>)WriteNewReviewCommand).RaiseCanExecuteChanged();
         }
 

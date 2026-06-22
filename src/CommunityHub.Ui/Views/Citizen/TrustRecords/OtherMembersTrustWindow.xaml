@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:CommunityHub.Ui.Helpers.Converters"
         Height="505" Width="900"
-        WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Language="sr-Latn-RS">
     <Window.InputBindings>
         <KeyBinding Key="Esc" Command="{Binding CloseCommand}" />
     </Window.InputBindings>

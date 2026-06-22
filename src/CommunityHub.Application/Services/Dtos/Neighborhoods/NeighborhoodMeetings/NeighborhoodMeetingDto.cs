@@ -25,6 +25,11 @@ namespace CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodMeeti
                 ? ScheduledDate.Value.ToString("dd.MM.yyyy.")
                 : $"{DateRangeStart:dd.MM.yyyy.} - {DateRangeEnd:dd.MM.yyyy.}";
 
+        public string MeetingDateDisplay =>
+            Status == MeetingStatus.Scheduled && ScheduledDate.HasValue
+                ? ScheduledDate.Value.ToString("d.M.yyyy.")
+                : $"{DateRangeStart:d.M.yyyy} - {DateRangeEnd:d.M.yyyy.}";
+
         public bool IsScheduled => Status == MeetingStatus.Scheduled && ScheduledDate.HasValue;
         public DateTime MeetingTimeAsDateTime => DateTime.Today.Add(MeetingTime.ToTimeSpan());
         public DateTime? ScheduledDateAsDateTime => ScheduledDate?.ToDateTime(TimeOnly.MinValue);

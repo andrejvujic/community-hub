@@ -1,8 +1,10 @@
-using CommunityHub.Application.Services.Users;
-using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets;
+using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.ViewModels.Citizen.Help;
+using CommunityHub.Ui.Views.Citizen.Help;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -28,6 +30,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 
         public ICommand ViewExpenseHistoryCommand { get; }
         public ICommand MakeDonationCommand { get; }
+        public ICommand ShowHelpCommand { get; }
 
         public ObservableCollection<BudgetCategoryBalanceDto> Categories => _categories;
 
@@ -72,8 +75,25 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
 
             ViewExpenseHistoryCommand = new RelayCommand<object>(_ => ViewExpenseHistoryRequested?.Invoke(this, EventArgs.Empty));
             MakeDonationCommand = new RelayCommand<object>(_ => MakeDonationRequested?.Invoke(this, EventArgs.Empty));
+            ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
 
             LoadData();
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new QuickHelpWindow(
+                "Brza pomoć - Donacije",
+                "Pregledajte budžete po kategorijama u vašem kvartu. Možete donirati sredstva za odabrane kategorije i pregledati istoriju troškova.",
+                new List<KeyboardShortcut>
+                {
+                    new() { Keys = "F1-F7", Description = "Brza navigacija kroz kartice" },
+                    new() { Keys = "Ctrl+T", Description = "Uključi/isključi prikaz objašnjenja" },
+                    new() { Keys = "Ctrl+1", Description = "Prikaz istorije troškova kategorije" },
+                    new() { Keys = "Ctrl+2", Description = "Ostavi donaciju za kategoriju" }
+                }
+            );
+            helpWindow.ShowDialog();
         }
 
         private void LoadData()
