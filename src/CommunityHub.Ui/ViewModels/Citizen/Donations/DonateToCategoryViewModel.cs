@@ -20,7 +20,7 @@ namespace CommunityHub.Ui.ViewModels.Citizen.Donations
         public string CategoryName => _category?.Category.Name ?? "";
         public string CategoryBudgetDisplay => $"{_category?.TotalAmount:N2} RSD";
         public string CitizenName => $"{_citizen?.Name} {_citizen?.Surname}";
-        public string CurrentDate => DateTime.Today.ToString("dd.MM.yyyy.");
+        public string CurrentDate => DateTime.Today.ToString("d.M.yyyy.");
 
         public decimal DonationAmount
         {

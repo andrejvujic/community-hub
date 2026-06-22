@@ -10,6 +10,7 @@ using CommunityHub.Application.Services.Neighborhoods;
 using CommunityHub.Application.Services.Neighborhoods.NeighborhoodMeetings;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
 {
@@ -17,7 +18,6 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
     {
         private readonly NeighborhoodService _neighborhoodService = new();
         private readonly NeighborhoodMeetingService _meetingService = new();
-        private readonly MeetingDateVoteService _voteService = new();
         private readonly NeighborhoodMembershipService _membershipService = new();
         private long _coordinatorId;
 
@@ -137,7 +137,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         private string FormatPercent(int count)
         {
             double pct = TotalCitizens > 0 ? Math.Round((double)count / TotalCitizens * 100, 1) : 0;
-            return $"({pct}%)";
+            string formattedPct = string.Format(TranslationSource.Instance.CurrentCulture ?? System.Globalization.CultureInfo.CurrentCulture, "{0:F2}", pct);
+            return $"({formattedPct}%)";
         }
 
         private bool _showWelcomeRecommendation;
@@ -169,12 +170,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public bool ShowAnyRecommendation => ShowWelcomeRecommendation || ShowMotivationRecommendation;
 
         public string WelcomeRecommendationText =>
-            $"U kvartu {SelectedNeighborhood?.Name} je primećeno da je najveći broj novih građana.\n" +
-            $"Predlažemo vam da zakažete sastanak dobrodošlice.";
+            TranslationSource.Instance.Format("Statistics_WelcomeRecommendation", SelectedNeighborhood?.Name);
 
         public string MotivationRecommendationText =>
-            $"U kvartu {SelectedNeighborhood?.Name} je primećeno da je najveći broj neaktivnih građana.\n" +
-            $"Predlažemo vam da zakažete sastanak motivacije.";
+            TranslationSource.Instance.Format("Statistics_MotivationRecommendation", SelectedNeighborhood?.Name);
 
         private NeighborhoodMeetingDto? _selectedMeeting;
         public NeighborhoodMeetingDto? SelectedMeeting
@@ -192,8 +191,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         new InfoDialog(
-                            "Izjednačeni termini",
-                            "Postoji izjednačen broj glasova. Odaberite jedan od termina.",
+                            TranslationSource.Instance["Meetings_TiedTitle"],
+                            TranslationSource.Instance["Meetings_TiedMessage"],
                             GetActiveWindow()
                         ).ShowDialog();
                     });
@@ -223,6 +222,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             ScheduleWelcomeCommand = new RelayCommand(() => OpenScheduleWindow(MeetingTheme.Welcome));
             ScheduleMotivationCommand = new RelayCommand(() => OpenScheduleWindow(MeetingTheme.Motivation));
             ConfirmTiedDateCommand = new RelayCommand(ExecuteConfirmTiedDate, () => CanConfirmTiedDate);
+
+            TranslationSource.Instance.PropertyChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(WelcomeRecommendationText));
+                OnPropertyChanged(nameof(MotivationRecommendationText));
+            };
         }
 
         public void Initialize(long coordinatorId)
@@ -235,14 +240,27 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
             ?? System.Windows.Application.Current.MainWindow;
 
+        public void SelectNeighborhood(long neighborhoodId)
+        {
+            var neighborhood = Neighborhoods.FirstOrDefault(n => n.Id == neighborhoodId);
+            if (neighborhood != null)
+                SelectedNeighborhood = neighborhood;
+        }
         public void LoadNeighborhoods()
         {
+            var previously = SelectedNeighborhood;
             Neighborhoods.Clear();
-            foreach (var n in _neighborhoodService.GetByCoordinator(_coordinatorId))
+
+            var neighborhoods = _neighborhoodService.GetByCoordinator(_coordinatorId);
+            foreach (var n in neighborhoods)
                 Neighborhoods.Add(n);
+
+            SelectedNeighborhood = previously != null
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previously.Id)
+                : null;
         }
 
-        private void LoadMeetingsAndStatistics()
+        public void LoadMeetingsAndStatistics()
         {
             if (SelectedNeighborhood is null) return;
             LoadMeetings();
@@ -253,14 +271,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         {
             if (SelectedNeighborhood is null) return;
 
-            var meetings = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
-            var voteCounts = meetings.ToDictionary(m => m.Id, m => _voteService.GetVoteCountsForMeeting(m.Id));
-            _meetingService.ProcessPendingMeetings(SelectedNeighborhood.Id, voteCounts);
-
-            var updated = _meetingService.GetByNeighborhood(SelectedNeighborhood.Id);
             Meetings.Clear();
             SelectedMeeting = null;
-            foreach (var m in updated)
+
+            foreach (var m in _meetingService.GetByNeighborhood(SelectedNeighborhood.Id))
                 Meetings.Add(m);
         }
 
@@ -291,11 +305,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedMeeting.Status != MeetingStatus.InPreparation) return;
             if (!SelectedMeeting.IsTied) return;
 
-            var voteCounts = _voteService.GetVoteCountsForMeeting(SelectedMeeting.Id);
-            if (!NeighborhoodMeeting.HasTiedDates(voteCounts)) return;
-
-
-            foreach (var d in NeighborhoodMeeting.GetTiedDates(voteCounts))
+            foreach (var d in _meetingService.GetTiedDatesForMeeting(SelectedMeeting.Id))
                 TiedDateOptions.Add(d);
 
             OnPropertyChanged(nameof(HasTiedDates));
@@ -315,7 +325,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (window.ShowDialog() == true)
             {
                 LoadMeetings();
-                new InfoDialog("Uspeh", "Glasanje za novi sastanak je pokrenuto.", owner).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Success_Title"], TranslationSource.Instance["Meeting_ScheduleSuccess"], owner).ShowDialog();
             }
 
         }
@@ -325,10 +335,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedMeeting is null || SelectedTiedDateOption is null) return;
 
             var owner = GetActiveWindow();
-
             var confirmDialog = new ConfirmDialog(
-                "Potvrda termina",
-                "Da li ste sigurni da želite da potvrdite ovaj termin?",
+                TranslationSource.Instance["Meetings_ConfirmTitle"],
+                TranslationSource.Instance["Meetings_ConfirmMessage"],
                 owner);
 
             if (confirmDialog.ShowDialog() != true) return;
@@ -337,7 +346,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             _meetingService.UpdateStatus(SelectedMeeting.Id, MeetingStatus.Scheduled);
             LoadMeetings();
 
-            new InfoDialog("Uspeh", "Termin je uspešno zakazan.", owner).ShowDialog();
+            new InfoDialog(TranslationSource.Instance["Success_Title"], TranslationSource.Instance["Meetings_ConfirmedSuccess"], owner).ShowDialog();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

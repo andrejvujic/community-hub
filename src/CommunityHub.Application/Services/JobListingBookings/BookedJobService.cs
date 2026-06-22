@@ -59,5 +59,20 @@ namespace CommunityHub.Application.Services.JobListingBookings
             var created = _bookedJobRepository.Create(job);
             return _bookedJobMapper.MapToDto(created);
         }
+
+        private List<BookedJob> GetAllFinishedByCoordinator(long coordinatorId)
+            => _bookedJobRepository.GetAllFinishedByCoordinatorId(coordinatorId);
+
+        public List<BookedJobDto> GetRecentUnreviewedByCoordinator(long coordinatorId)
+            => GetAllFinishedByCoordinator(coordinatorId)
+                .Where(j => j.CanReviewBeCreated(DateTime.Now))
+                .Select(_bookedJobMapper.MapToDto)
+                .ToList();
+
+        public List<BookedJobDto> GetEditableByCoordinator(long coordinatorId)
+            => GetAllFinishedByCoordinator(coordinatorId)
+                .Where(j => j.CanReviewBeEdited(DateTime.Now))
+                .Select(_bookedJobMapper.MapToDto)
+                .ToList();
     }
 }

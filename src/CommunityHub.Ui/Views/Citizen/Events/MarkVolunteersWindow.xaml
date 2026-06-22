@@ -61,7 +61,7 @@
                     </Viewbox>
 
                     <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Event.Name}" FontSize="20" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                        <TextBlock Text="{Binding Event.Name}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextBrush}" />
                         <TextBlock Text="{Binding Event.Status, Converter={StaticResource EventStatusToString}}" FontSize="16" Foreground="{StaticResource TextBrush}" />
                     </StackPanel>
 
@@ -70,7 +70,7 @@
                             <Viewbox Width="20" Height="20" Margin="0,0,6,0">
                                 <Path Data="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" Fill="{StaticResource TextBrush}"/>
                             </Viewbox>
-                            <TextBlock Text="{Binding Event.EventStart, StringFormat=dd/MM/yyyy}" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Event.EventStart, StringFormat=d}" FontSize="16" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Viewbox Width="20" Height="20" Margin="0,0,6,0">

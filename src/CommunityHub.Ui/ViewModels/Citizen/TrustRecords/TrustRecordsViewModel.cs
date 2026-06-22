@@ -3,6 +3,8 @@ using CommunityHub.Application.Services.Dtos.TrustRecords;
 using CommunityHub.Application.Services.TrustRecords;
 using CommunityHub.Application.Services.Users;
 using CommunityHub.Ui.Helpers.Commands;
+using CommunityHub.Ui.ViewModels.Citizen.Help;
+using CommunityHub.Ui.Views.Citizen.Help;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -43,12 +45,31 @@ namespace CommunityHub.Ui.ViewModels.Citizen.TrustRecords
         }
 
         public ICommand ShowOtherMembersTrustCommand { get; }
+        public ICommand ShowHelpCommand { get; }
 
         public TrustRecordsViewModel(long userId)
         {
             _userId = userId;
             ShowOtherMembersTrustCommand = new RelayCommand<object>(_ => ShowOtherMembersTrustRequested?.Invoke(this, EventArgs.Empty));
+            ShowHelpCommand = new RelayCommand<object>(_ => ShowHelp());
+
             LoadData();
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new QuickHelpWindow(
+                "Brza pomoć - Evidencije poverenja",
+                "Pregledajte svoju evidenciju poverenja u kvartu. Vidite informacije o svojem angažovanju u kvartu i status koji imate. " +
+                "Možete videti i evidencije poverenja ostalih članova kvarta.",
+                new List<KeyboardShortcut>
+                {
+                    new() { Keys = "F1-F7", Description = "Brza navigacija kroz kartice" },
+                    new() { Keys = "Ctrl+T", Description = "Uključi/isključi prikaz objašnjenja" },
+                    new() { Keys = "Ctrl+1", Description = "Evidencije poverenja ostalih članova kvarta" },
+                }
+            );
+            helpWindow.ShowDialog();
         }
 
         private void LoadData()

@@ -190,12 +190,14 @@
                                                Background="Transparent"
                                                BorderThickness="0" 
                                                Foreground="{TemplateBinding Foreground}"
+                                               Cursor="Arrow"
                                                IsReadOnly="True"/>
                             <Button x:Name="PART_Button" 
                                     Grid.Column="1"
                                     Background="Transparent" 
                                     BorderThickness="0" 
-                                    Focusable="False">
+                                    Focusable="False"
+                                    Cursor="Hand">
                                 <TextBlock Text="&#xf073;" 
                                            FontFamily="/Resources/Fonts/Icons.otf#Font Awesome 7 Free"
                                            Foreground="{DynamicResource SecondaryTextBrush}" 

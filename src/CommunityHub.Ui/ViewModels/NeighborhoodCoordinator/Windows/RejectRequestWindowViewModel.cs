@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
@@ -26,7 +27,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 
         public RejectRequestWindowViewModel(string ime, string prezime, string kvart)
         {
-            MessageText = $"Napišite razlog odbijanja zahteva korisnika {ime} {prezime} za pristup kvartu {kvart}:";
+            MessageText = TranslationSource.Instance.Format("Reject_Message", ime, prezime, kvart);
             ConfirmCommand = new RelayCommand(ExecuteConfirm);
             CancelCommand = new RelayCommand(ExecuteCancel);
         }

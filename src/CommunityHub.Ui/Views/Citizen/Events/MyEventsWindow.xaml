@@ -150,8 +150,8 @@
                                             </StackPanel>
 
                                             <StackPanel Grid.Column="2" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0,0,0">
-                                                <TextBlock Text="{Binding EventStart, StringFormat=d}" HorizontalAlignment="Right" FontSize="16" Foreground="{StaticResource TextBrush}" />
-                                                <TextBlock Text="{Binding EventStart, StringFormat=t}" HorizontalAlignment="Right" FontSize="16" Foreground="{StaticResource TextBrush}" Margin="0,2,0,0" />
+                                                <TextBlock Text="{Binding EventStart, StringFormat=d}" HorizontalAlignment="Center" FontSize="16" Foreground="{StaticResource TextBrush}" />
+                                                <TextBlock Text="{Binding EventStart, StringFormat=t}" HorizontalAlignment="Center" FontSize="16" Foreground="{StaticResource TextBrush}" Margin="0,2,0,0" />
                                             </StackPanel>
                                         </Grid>
                                     </Border>

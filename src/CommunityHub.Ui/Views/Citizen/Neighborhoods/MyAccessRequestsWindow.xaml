@@ -199,7 +199,7 @@
                                         </StackPanel>
 
                                         <Button Grid.Column="1" Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
-                                                Visibility="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToVisibilityConverter}}" ToolTip="Brisanje zahteva (Del)"
+                                                Visibility="{Binding Status, Converter={StaticResource NeighborhoodAccessRequestStatusToVisibilityConverter}}" ToolTip="Brisanje zahteva (Ctrl + X)"
                                                 Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}" Cursor="Hand">
                                             <TextBlock Text="✕" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" />
                                         </Button>

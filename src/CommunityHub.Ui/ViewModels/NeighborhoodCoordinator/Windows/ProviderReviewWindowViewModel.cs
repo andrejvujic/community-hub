@@ -6,6 +6,7 @@ using CommunityHub.Application.Services.Dtos.Users;
 using CommunityHub.Application.Services.JobListingBookings;
 using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 {
@@ -16,8 +17,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
         private readonly UserDto _coordinator;
 
         public string Title => _bookedJob.Review == null
-            ? $"Ocenite uslugu: {_bookedJob.Listing.ServiceName}"
-            : $"Izmenite recenziju: {_bookedJob.Listing.ServiceName}";
+            ? TranslationSource.Instance.Format("Review_TitleNew", _bookedJob.Listing.ServiceName)
+            : TranslationSource.Instance.Format("Review_TitleEdit", _bookedJob.Listing.ServiceName);
 
         public bool IsEditing => _bookedJob.Review != null;
 
@@ -105,7 +106,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
             }
             catch (InvalidOperationException ex)
             {
-                new InfoDialog("Greška", ex.Message, GetActiveWindow()).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Error_Title"], ex.Message, GetActiveWindow()).ShowDialog();
             }
         }
 
@@ -115,19 +116,19 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Windows
 
             if (SelectedQualityIndex < 0)
             {
-                new InfoDialog("Nepotpuni podaci", "Molimo Vas da izaberete ocenu za kvalitet izvršene usluge.", activeWindow).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Review_IncompleteTitle"], TranslationSource.Instance["Review_MissingQuality"], activeWindow).ShowDialog();
                 return false;
             }
 
             if (SelectedCommunicationIndex < 0)
             {
-                new InfoDialog("Nepotpuni podaci", "Molimo Vas da izaberete ocenu za komunikaciju sa serviserom.", activeWindow).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Review_IncompleteTitle"], TranslationSource.Instance["Review_MissingCommunication"], activeWindow).ShowDialog();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(Comment))
             {
-                new InfoDialog("Nepotpuni podaci", "Molimo Vas da unesete komentar. Obrazloženje recenzije je obavezno.", activeWindow).ShowDialog();
+                new InfoDialog(TranslationSource.Instance["Review_IncompleteTitle"], TranslationSource.Instance["Review_MissingComment"], activeWindow).ShowDialog();
                 return false;
             }
 

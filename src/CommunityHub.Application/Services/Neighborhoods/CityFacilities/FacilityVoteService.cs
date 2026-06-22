@@ -15,9 +15,9 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
 
         public FacilityVoteService() : base(mapper: new FacilityVoteMapper()) { }
 
-        public int GetVoteCountByFacilityId(long facilityId)
+        public int GetVoteCountByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId)
         {
-            return _voteRepository.GetVoteCountByFacilityId(facilityId);
+            return _voteRepository.GetVoteCountByFacilityAndNeighborhoodId(facilityId, neighborhoodId);
         }
 
         public FacilityVoteDto? GetByFacilityIdAndCitizenId(long facilityId, long citizenId)
@@ -44,7 +44,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities
             }
         }
 
-        public void DeleteAllByFacilityId(long facilityId)
-            => _voteRepository.DeleteAllByFacilityId(facilityId);
+        public void DeleteAllByFacilityAndNeighborhoodId(long facilityId, long neighborhoodId)
+            => _voteRepository.DeleteAllByFacilityAndNeighborhoodId(facilityId, neighborhoodId);
     }
 }

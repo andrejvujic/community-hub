@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows"
+        xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -37,7 +38,7 @@
                        TextWrapping="Wrap"
                        Margin="0,0,0,24"/>
 
-            <Button Content="U redu"
+            <Button Content="{ns:Loc Dialog_Ok}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Width="90" Height="36"
                     HorizontalAlignment="Right"

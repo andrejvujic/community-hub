@@ -1,7 +1,7 @@
+using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.Domain.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods;
 using CommunityHub.Application.Domain.RepositoryInterfaces.Neighborhoods.NeighborhoodBudgets;
-using CommunityHub.Application.Domain.Neighborhoods;
 using CommunityHub.Application.MappersDto.Neighborhoods.NeighborhoodBudgets;
 using CommunityHub.Application.Services.Dtos.Neighborhoods.NeighborhoodBudgets;
 
@@ -48,5 +48,11 @@ namespace CommunityHub.Application.Services.Neighborhoods.NeighborhoodBudgets
             var newNeighborhoodBudget = neighborhood.Budget + amount;
             _neighborhoodRepository.UpdateBudget(neighborhood.Id, newNeighborhoodBudget);
         }
+
+        public List<BudgetDonationDto> GetRecentByCoordinator(long coordinatorId)
+            => _donationRepository.GetRecentByCoordinatorId(coordinatorId)
+                .Select(_donationMapper.MapToDto)
+                .ToList();
+
     }
 }

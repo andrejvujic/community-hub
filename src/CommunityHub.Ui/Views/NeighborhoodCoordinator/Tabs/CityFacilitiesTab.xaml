@@ -4,11 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
+             xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <ns:LocalizedDateConverter x:Key="LocalizedDateConverter"/>
+        <ns:LocalizedTimeConverter x:Key="LocalizedTimeConverter"/>
     </UserControl.Resources>
     
     <Grid Background="{DynamicResource WindowBackgroundBrush}"
@@ -33,7 +36,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Margin="15,15,15,10">
-                    <TextBlock Text="Moji kvartovi" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{ns:Loc Neighborhoods_MyNeighborhoods}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
                 </Grid>
 
                 <ListBox x:Name="NeighborhoodsListBox"
@@ -70,12 +73,12 @@
                         Margin="10"
                         Padding="10">
                     <StackPanel>
-                        <TextBlock Text="Rezervacija za kvart:" FontSize="32" HorizontalAlignment="Center" />
+                        <TextBlock Text="{ns:Loc Facilities_ReservationFor}" FontSize="24" HorizontalAlignment="Center" />
                         <TextBlock x:Name="NeighborhoodNameTextBlock"
                                    Text="{Binding SelectedNeighborhood.Name}"
                                    FontSize="32" Margin="0,5,0,50" HorizontalAlignment="Center"/>
 
-                        <TextBlock Text="Izaberite objekat:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{ns:Loc Facilities_SelectFacility}" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                         <ComboBox x:Name="FacilitiesComboBox"
                                   Style="{StaticResource ComboBoxStyle}"
                                   Height="50"
@@ -104,7 +107,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Trajanje posete (h):" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Grid.Column="0" Text="{ns:Loc Facilities_Duration}" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBox x:Name="DurationTextBox"
                                      Text="{Binding DurationInput, UpdateSourceTrigger=PropertyChanged}"
                                      Grid.Column="1"
@@ -118,7 +121,7 @@
                                      PreviewKeyDown="NumberTextBox_PreviewKeyDown"/>
                         </Grid>
 
-                        <TextBlock Text="Opseg datuma:" FontSize="24" Margin="0,30,0,10" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{ns:Loc Facilities_DateRange}" FontSize="24" Margin="0,30,0,10" HorizontalAlignment="Center"/>
                         <Grid Margin="0,10,0,30">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -127,21 +130,21 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="Od:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{ns:Loc Dashboard_DateFrom}" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                                 <DatePicker x:Name="StartDatePicker"
-                                            SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedDate="{Binding ReservationStartDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
-                                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
+                                            DisplayDateStart="{Binding ReservationMinDate, Mode=OneWay}"
                                             Height="35"
                                             FontSize="22"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="Do:" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{ns:Loc Dashboard_DateTo}" FontSize="24" Margin="0,0,0,5" HorizontalAlignment="Center"/>
                                 <DatePicker x:Name="EndDatePicker"
-                                            SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedDate="{Binding ReservationEndDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
-                                            DisplayDateStart="{Binding MinDate, Mode=OneWay}"
+                                            DisplayDateStart="{Binding ReservationMinDate, Mode=OneWay}"
                                             Height="35"
                                             FontSize="22"/>
                             </StackPanel>
@@ -149,7 +152,7 @@
 
                         <Button x:Name="ReserveButton"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                Content="Proveri dostupnost i rezerviši"
+                                Content="{ns:Loc Facilities_CheckAndReserve}"
                                 Height="60"
                                 Width="320"
                                 FontSize="20"
@@ -179,7 +182,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" FontSize="20" Margin="0,0,0,15">
-                                <Run Text="Spisak rezervacija kvarta "/>
+                                <Run Text="{ns:Loc Facilities_ReservationList}"/>
                                 <Run Text="{Binding SelectedNeighborhood.Name}"/>
                             </TextBlock>
 
@@ -190,12 +193,19 @@
                                       ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                                       RowStyle="{StaticResource DataGridRowStyle}"
                                       CellStyle="{StaticResource DataGridCellStyle}"
-                                      FontSize="18">
+                                      FontSize="16">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Objekat" Binding="{Binding Facility.Name}" CanUserSort="False" Width="*"/>
-                                    <DataGridTextColumn Header="Datum" Binding="{Binding StartDatetime, StringFormat='{}{0:dd.MM.yyyy.}'}" CanUserSort="False" Width="100"/>
-                                    <DataGridTextColumn Header="Početak" Binding="{Binding StartDatetime, StringFormat='{}{0:HH:mm}'}" CanUserSort="False" Width="80"/>
-                                    <DataGridTextColumn Header="Kraj" Binding="{Binding EndDatetime, StringFormat='{}{0:HH:mm}'}" CanUserSort="False" Width="80"/>
+                                    <DataGridTextColumn Header="{ns:Loc Facilities_ColFacility}" Binding="{Binding Facility.Name}" CanUserSort="False" Width="*"/>
+                                    <DataGridTextColumn Header="{ns:Loc Facilities_ColDate}" 
+                                                        Binding="{Binding StartDatetime, Converter={StaticResource LocalizedDateConverter}, Mode=OneWay}" 
+                                                        CanUserSort="False" Width="90"/>
+                                    <DataGridTextColumn Header="{ns:Loc Facilities_ColStart}" 
+                                                        Binding="{Binding StartDatetime, Converter={StaticResource LocalizedTimeConverter}, Mode=OneWay}" 
+                                                        CanUserSort="False" Width="80"/>
+                                    <DataGridTextColumn Header="{ns:Loc Facilities_ColEnd}" 
+                                                        Binding="{Binding EndDatetime, Converter={StaticResource LocalizedTimeConverter}, Mode=OneWay}" 
+                                                        CanUserSort="False" Width="80"/>
+
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -209,29 +219,33 @@
                             Padding="8"
                             Margin="0,10,0,0">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Generisanje izveštaja" FontSize="30" Margin="0,0,0,5" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Generiši izveštaj o svim rezervacijama gradskih objekata" FontSize="16" Margin="0,0,0,15" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{ns:Loc Facilities_ReportTitle}" FontSize="30" Margin="0,0,0,5" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{ns:Loc Facilities_ReportSubtitle}" FontSize="16" Margin="0,0,0,15" TextWrapping="Wrap" HorizontalAlignment="Center"/>
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
-                                <TextBlock Text="od:" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <DatePicker x:Name="ReportStartDatePicker"
-                                            Style="{StaticResource DatePickerStyle}"
-                                            FontSize="20" 
-                                            Width="160" 
-                                            Height="30" 
-                                            Margin="0,0,15,0"/>
+                            <Grid Margin="0,0,0,15" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="do:" FontSize="16" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <DatePicker x:Name="ReportEndDatePicker"
-                                            Style="{StaticResource DatePickerStyle}"
-                                            FontSize="20" 
-                                            Width="160" 
-                                            Height="30"/>
-                            </StackPanel>
+                                <TextBlock Grid.Column="0" Text="{ns:Loc Dashboard_DateFrom}" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker Grid.Column="1" 
+                                            SelectedDate="{Binding ReportStartDate, UpdateSourceTrigger=PropertyChanged}" 
+                                            Style="{StaticResource DatePickerStyle}" 
+                                            FontSize="20" Width="160" Height="30" Margin="0,0,15,0"/>
+
+                                <TextBlock Grid.Column="2" Text="{ns:Loc Dashboard_DateTo}" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <DatePicker Grid.Column="3" 
+                                            SelectedDate="{Binding ReportEndDate, UpdateSourceTrigger=PropertyChanged}" 
+                                            Style="{StaticResource DatePickerStyle}" 
+                                            FontSize="20" Width="160" Height="30"/>
+                            </Grid>
 
                             <Button x:Name="GenerateReportButton"
                                     Style="{StaticResource PrimaryButtonStyle}"
-                                    Content="Generiši izveštaj"
+                                    Content="{ns:Loc Facilities_GenerateReport}"
                                     Height="35"
                                     Width="250"
                                     HorizontalAlignment="Center"

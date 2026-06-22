@@ -1,0 +1,563 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Dashboard_Welcome" xml:space="preserve">
+    <value>Welcome back to the application!</value>
+  </data>
+  <data name="Dashboard_ViewRequests" xml:space="preserve">
+    <value>View requests (Ctrl+2)</value>
+  </data>
+  <data name="Dashboard_RegisterNeighborhood" xml:space="preserve">
+    <value>Register new neighborhood (Ctrl+N)</value>
+  </data>
+  <data name="Dashboard_GenerateReport" xml:space="preserve">
+    <value>Generate reservations report (Ctrl+I)</value>
+  </data>
+  <data name="Dashboard_FilterServices" xml:space="preserve">
+    <value>Services (Ctrl+S)</value>
+  </data>
+  <data name="Dashboard_FilterMeetings" xml:space="preserve">
+    <value>Meetings (Ctrl+M)</value>
+  </data>
+  <data name="Dashboard_FilterDonations" xml:space="preserve">
+    <value>Donations (Ctrl+D)</value>
+  </data>
+  <data name="Dashboard_DateFrom" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="Dashboard_DateTo" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="Dashboard_Neighborhood" xml:space="preserve">
+    <value>Neighborhood: {0}</value>
+  </data>
+  <data name="PendingRequests_Text" xml:space="preserve">
+    <value>Pending requests - {0}</value>
+  </data>
+  <data name="Notification_TiedVoting_Type" xml:space="preserve">
+    <value>Tied vote</value>
+  </data>
+  <data name="Notification_TiedVoting_Deadline" xml:space="preserve">
+    <value>Selection deadline: {0}</value>
+  </data>
+  <data name="Notification_TiedVoting_Description" xml:space="preserve">
+    <value>The vote for the "{0}" meeting in neighborhood {1} is tied. Time remaining: {2}.\nTied dates: {3}.</value>
+  </data>
+  <data name="Notification_TiedVoting_Action" xml:space="preserve">
+    <value>Select date</value>
+  </data>
+  <data name="Notification_Recommendation_Type" xml:space="preserve">
+    <value>System recommendation</value>
+  </data>
+  <data name="Notification_Recommendation_Action" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="Notification_Recommendation_Welcome" xml:space="preserve">
+    <value>Neighborhood {0} has the most new residents ({1} of {2}, {3}%).\nSuggestion: Schedule a welcome meeting.</value>
+  </data>
+  <data name="Notification_Recommendation_Motivation" xml:space="preserve">
+    <value>Neighborhood {0} has the most inactive residents ({1} of {2}, {3}%).\nSuggestion: Schedule a motivation meeting.</value>
+  </data>
+  <data name="Notification_Scheduled_Type" xml:space="preserve">
+    <value>Meeting scheduled</value>
+  </data>
+  <data name="Notification_Scheduled_Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="Notification_Scheduled_Description" xml:space="preserve">
+    <value>The vote for the "{0}" meeting in neighborhood {1} has ended.\nFinal date: {2} at {3}.</value>
+  </data>
+  <data name="Notification_Scheduled_Action" xml:space="preserve">
+    <value>View meetings</value>
+  </data>
+  <data name="Notification_Service_Type" xml:space="preserve">
+    <value>Service booking</value>
+  </data>
+  <data name="Notification_Service_Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="Notification_Service_Description" xml:space="preserve">
+    <value>Provider '{0}' completed service "{1}". Cost: {2} RSD.\nYou can rate it for another {3}.</value>
+  </data>
+  <data name="Notification_Service_Action" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Notification_EditReview_Type" xml:space="preserve">
+    <value>Edit review</value>
+  </data>
+  <data name="Notification_EditReview_Date" xml:space="preserve">
+    <value>Service date: {0}</value>
+  </data>
+  <data name="Notification_EditReview_Description" xml:space="preserve">
+    <value>Review for service "{0}" by '{1}' can be edited for another {2}.\nCurrent rating: quality {3}/5, communication {4}/5 (average {5}/5).</value>
+  </data>
+  <data name="Notification_EditReview_Action" xml:space="preserve">
+    <value>Edit review</value>
+  </data>
+  <data name="Notification_Donation_Type" xml:space="preserve">
+    <value>Citizen donation</value>
+  </data>
+  <data name="Notification_Donation_Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="Notification_Donation_Description" xml:space="preserve">
+    <value>A payment of {0} RSD was made to neighborhood {1} budget (category: {2}).</value>
+  </data>
+  <data name="Notification_Donation_Action" xml:space="preserve">
+    <value>Budget details</value>
+  </data>
+  <data name="MeetingTheme_Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="MeetingTheme_Motivation" xml:space="preserve">
+    <value>Motivation</value>
+  </data>
+  <data name="Report_SaveTitle" xml:space="preserve">
+    <value>Save report</value>
+  </data>
+  <data name="Report_SaveFilter" xml:space="preserve">
+    <value>PDF files (*.pdf)|*.pdf</value>
+  </data>
+  <data name="Report_FileName" xml:space="preserve">
+    <value>reservations-report-{0}-{1}-{2}.pdf</value>
+  </data>
+  <data name="Report_Success_Title" xml:space="preserve">
+    <value>Report generated</value>
+  </data>
+  <data name="Report_Success_Message" xml:space="preserve">
+    <value>Report saved successfully. Would you like to open it?</value>
+  </data>
+  <data name="Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Error_SelectNeighborhood" xml:space="preserve">
+    <value>Please select a neighborhood for the report.</value>
+  </data>
+  <data name="Error_SelectDates" xml:space="preserve">
+    <value>Please select a date range for the report.</value>
+  </data>
+  <data name="Error_DateOrder" xml:space="preserve">
+    <value>Start date must be before end date.</value>
+  </data>
+  <data name="Error_Generate" xml:space="preserve">
+    <value>Error generating report: {0}</value>
+  </data>
+  <data name="Success_Title" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Review_EditSuccess" xml:space="preserve">
+    <value>Review updated successfully.</value>
+  </data>
+  <data name="Review_RateSuccess" xml:space="preserve">
+    <value>Service rated successfully.</value>
+  </data>
+  <data name="Meeting_ScheduleSuccess" xml:space="preserve">
+    <value>Voting for a new meeting has started.</value>
+  </data>
+  <data name="Neighborhood_Label" xml:space="preserve">
+    <value>Neighborhood: </value>
+  </data>
+  <data name="Neighborhoods_MyNeighborhoods"><value>My neighborhoods</value></data>
+    <data name="Neighborhoods_Description"><value>Neighborhood description</value></data>
+    <data name="Neighborhoods_Gallery"><value>Photo gallery</value></data>
+    <data name="Neighborhoods_StreetList"><value>Street list</value></data>
+    <data name="Neighborhoods_StreetName"><value>Street name</value></data>
+    <data name="Neighborhoods_StartNumber"><value>Start number</value></data>
+    <data name="Neighborhoods_EndNumber"><value>End number</value></data>
+    <data name="Neighborhoods_Side"><value>Side</value></data>
+    <data name="Neighborhoods_MemberList"><value>Member list</value></data>
+    <data name="Neighborhoods_AccessDate"><value>Access date</value></data>
+    <data name="Common_Name"><value>Name</value></data>
+    <data name="Common_Surname"><value>Surname</value></data>
+    <data name="Common_Address"><value>Address</value></data>
+    <data name="Even"><value>Even numbers</value></data>
+    <data name="Odd"><value>Odd numbers</value></data>
+    <data name="Both"><value>All numbers</value></data>
+
+    <data name="Profile_Welcome"><value>Welcome to your profile page</value></data>
+    <data name="Profile_PersonalInfo"><value>Personal info</value></data>
+    <data name="Profile_Job"><value>Job</value></data>
+    <data name="Profile_CoordinatorRole"><value>Neighborhood coordinator</value></data>
+    <data name="Profile_CitizenCount"><value>Neighborhood citizen count</value></data>
+    <data name="Profile_NeighborhoodCount"><value>Neighborhood count</value></data>
+    <data name="Profile_RequestCount"><value>Request count</value></data>
+    <data name="Profile_Accepted"><value>Accepted: </value></data>
+    <data name="Profile_Rejected"><value>Rejected: </value></data>
+    <data name="Profile_Pending"><value>Pending: </value></data>
+    <data name="Profile_AverageRating"><value>Average rating</value></data>
+    <data name="Profile_Reviews"><value>Reviews</value></data>
+    <data name="Profile_Rating"><value>Rating</value></data>
+    <data name="Profile_Comment"><value>Comment</value></data>
+    <data name="Profile_TotalAverageRating"><value>Total average rating: </value></data>
+    <data name="Profile_AverageRatingLastYear"><value>Average rating in the last year: </value></data>
+
+    <data name="Requests_Title"><value>Requests:</value></data>
+    <data name="Requests_FilterAll"><value>All</value></data>
+    <data name="Requests_Neighborhood"><value>Neighborhood</value></data>
+    <data name="Requests_Date"><value>Date</value></data>
+    <data name="Requests_Status"><value>Status</value></data>
+    <data name="Requests_RejectButton"><value>Reject request</value></data>
+    <data name="Requests_AcceptButton"><value>Accept request</value></data>
+    <data name="Requests_ConfirmAcceptTitle"><value>Confirm acceptance</value></data>
+    <data name="Requests_ConfirmAccept"><value>Are you sure you want to accept the request from {0} {1} for access to neighborhood {2}?</value></data>
+    <data name="Requests_AcceptedTitle"><value>Request accepted</value></data>
+    <data name="Requests_AcceptedInfo"><value>User {0} {1} is now a member of neighborhood {2}.</value></data>
+    <data name="Requests_RejectedTitle"><value>Request rejected</value></data>
+    <data name="Requests_RejectedInfo"><value>The request from {0} {1} for access to neighborhood {2} was rejected.</value></data>
+
+    <data name="Waiting"><value>Pending</value></data>
+    <data name="Accepted"><value>Accepted</value></data>
+    <data name="Rejected"><value>Rejected</value></data>
+
+    <data name="Statistics_Title"><value>Statistics</value></data>
+    <data name="Statistics_TotalCitizens"><value>Total citizens: </value></data>
+    <data name="Statistics_NewCitizens"><value>New citizens: </value></data>
+    <data name="Statistics_InactiveCitizens"><value>Inactive citizens: </value></data>
+    <data name="Statistics_ActiveCitizens"><value>Active citizens: </value></data>
+    <data name="Statistics_ProminentCitizens"><value>Prominent citizens: </value></data>
+    <data name="Statistics_TrustworthyCitizens"><value>Trustworthy citizens: </value></data>
+    <data name="Statistics_SystemRecommendation"><value>System recommendation</value></data>
+    <data name="Statistics_ScheduleWelcome"><value>Schedule welcome meeting</value></data>
+    <data name="Statistics_ScheduleMotivation"><value>Schedule motivation meeting</value></data>
+    <data name="Statistics_WelcomeRecommendation"><value>Neighborhood {0} has the highest number of new citizens.\nWe suggest scheduling a welcome meeting.</value></data>
+    <data name="Statistics_MotivationRecommendation"><value>Neighborhood {0} has the highest number of inactive citizens.\nWe suggest scheduling a motivation meeting.</value></data>
+
+    <data name="Meetings_Title"><value>Meetings</value></data>
+    <data name="Meetings_ScheduleNew"><value>Schedule new meeting (Ctrl + N)</value></data>
+    <data name="Meetings_Theme"><value>Theme</value></data>
+    <data name="Meetings_Time"><value>Time</value></data>
+    <data name="Meetings_DateRange"><value>Date range</value></data>
+    <data name="Meetings_Status"><value>Status</value></data>
+    <data name="Meetings_TiedTooltip"><value>Tied vote count! Final date selection required.</value></data>
+    <data name="Meetings_SelectFinalDate"><value>Select final date</value></data>
+    <data name="Meetings_ConfirmFinalDate"><value>Confirm final date</value></data>
+    <data name="Meetings_TiedTitle"><value>Tied dates</value></data>
+    <data name="Meetings_TiedMessage"><value>There is a tied vote count. Please select one of the dates.</value></data>
+    <data name="Meetings_ConfirmTitle"><value>Confirm date</value></data>
+    <data name="Meetings_ConfirmMessage"><value>Are you sure you want to confirm this date?</value></data>
+    <data name="Meetings_ConfirmedSuccess"><value>Date successfully scheduled.</value></data>
+
+    <data name="Welcome"><value>Welcome</value></data>
+    <data name="Motivation"><value>Motivation</value></data>
+    <data name="InPreparation"><value>In Preparation</value></data>
+    <data name="Scheduled"><value>Scheduled</value></data>
+    <data name="Cancelled"><value>Cancelled</value></data>
+
+
+    <data name="Service_ServicesTitle"><value>Available services for neighborhood {0} (location {1}, {2})</value></data>
+    <data name="Service_CurrentPrice"><value>Current price: {0:N2} RSD</value></data>
+    <data name="Service_PriceUnavailable"><value>Price unavailable</value></data>
+    <data name="Service_Images"><value>Images:</value></data>
+    <data name="Service_Duration"><value>Service duration (h):</value></data>
+    <data name="Service_FindSlot"><value>Find first available slot</value></data>
+    <data name="Service_ColService"><value>Service</value></data>
+    <data name="Service_ColProvider"><value>Provider</value></data>
+    <data name="Service_ColDateTime"><value>Date and time</value></data>
+    <data name="Service_ColPrice"><value>Price</value></data>
+    <data name="Service_ColStatus"><value>Status</value></data>
+    <data name="Service_ColRating"><value>Rating</value></data>
+    <data name="Service_EditReview"><value>Edit review</value></data>
+    <data name="Service_Rate"><value>Rate service</value></data>
+    <data name="Service_InvalidDuration"><value>Please enter a valid service duration in hours.</value></data>
+    <data name="Service_DurationTooLong"><value>Cannot book a slot longer than 14 hours.</value></data>
+    <data name="Service_NoSlots_Title"><value>No available slots</value></data>
+    <data name="Service_NoSlots_Message"><value>No available slot found in the next 60 days.</value></data>
+    <data name="Service_Booked_Title"><value>Booked</value></data>
+    <data name="Service_Booked_Message"><value>Appointment successfully booked for {0}.</value></data>
+    <data name="Service_CannotReview_Title"><value>Rating not possible</value></data>
+    <data name="Service_CannotReview_Message"><value>This service cannot be rated.</value></data>
+    <data name="Service_CannotEdit_Title"><value>Edit not allowed</value></data>
+    <data name="Service_CannotEdit_Message"><value>Reviews can only be edited within 3 days of creation.</value></data>
+    <data name="Service_Description"><value>Service description:</value></data>
+    <data name="Service_At"><value>at</value></data>
+    <data name="BookedJobStatus_Izvršeno"><value>Completed</value></data>
+    <data name="BookedJobStatus_Zakazano"><value>Scheduled</value></data>
+
+    <data name="PerHour"><value>Billing per hour</value></data>
+    <data name="PerJob"><value>Billing per service</value></data>
+
+    <data name="Facilities_ReservationFor"><value>Reservation for neighborhood:</value></data>
+    <data name="Facilities_SelectFacility"><value>Select facility:</value></data>
+    <data name="Facilities_Duration"><value>Visit duration (h):</value></data>
+    <data name="Facilities_DateRange"><value>Date range:</value></data>
+    <data name="Facilities_CheckAndReserve"><value>Check availability and reserve</value></data>
+    <data name="Facilities_ReservationList"><value>Reservations for neighborhood</value></data>
+    <data name="Facilities_ReservationList_Format"><value>Reservations for neighborhood {0}</value></data>
+    <data name="Facilities_ColFacility"><value>Facility</value></data>
+    <data name="Facilities_ColDate"><value>Date</value></data>
+    <data name="Facilities_ColStart"><value>Start</value></data>
+    <data name="Facilities_ColEnd"><value>End</value></data>
+    <data name="Facilities_ReportTitle"><value>Generate report</value></data>
+    <data name="Facilities_ReportSubtitle"><value>Generate a report of all city facility reservations</value></data>
+    <data name="Facilities_GenerateReport"><value>Generate report</value></data>
+    <data name="Facilities_InvalidDuration"><value>Please enter a valid duration in hours.</value></data>
+    <data name="Facilities_DurationTooLong"><value>Cannot reserve a slot longer than 14 hours.</value></data>
+    <data name="Facilities_NoSlots_Title"><value>No available slots</value></data>
+    <data name="Facilities_NoSlots_Message"><value>No available slot found.</value></data>
+    <data name="Error_SelectFacility"><value>Please select a facility.</value></data>
+
+    <data name="Budget_TitleFormat"><value>Budget details for neighborhood {0}</value></data>
+    <data name="Budget_DonationsTitle"><value>Donations: {0}</value></data>
+    <data name="Budget_ExpensesTitle"><value>Expenses: {0}</value></data>
+    <data name="Budget_ColCategory"><value>Category</value></data>
+    <data name="Budget_ColTotalDonations"><value>Total donations</value></data>
+    <data name="Budget_ColSpent"><value>Spent</value></data>
+    <data name="Budget_ColAvailable"><value>Available</value></data>
+    <data name="Budget_ColAmount"><value>Amount</value></data>
+    <data name="Budget_ColDate"><value>Date</value></data>
+    <data name="Budget_ColDescription"><value>Description</value></data>
+    <data name="Budget_NewExpense"><value>Register new expense</value></data>
+    <data name="Budget_Description"><value>Description:</value></data>
+    <data name="Budget_Amount"><value>Amount (RSD):</value></data>
+    <data name="Budget_Date"><value>Date:</value></data>
+    <data name="Budget_RegisterExpense"><value>Register expense</value></data>
+    <data name="Budget_EnterDescription"><value>Please enter an expense description.</value></data>
+    <data name="Budget_EnterAmount"><value>Please enter a valid amount.</value></data>
+    <data name="Budget_ExpenseSuccess"><value>Expense successfully registered.</value></data>
+    <data name="Budget_InsufficientFunds_Title"><value>Insufficient funds</value></data>
+    <data name="Error_SelectCategory_Title"><value>Select a category</value></data>
+
+    <data name="Register_Title"><value>Neighborhood registration</value></data>
+    <data name="Register_Name"><value>Neighborhood name:</value></data>
+    <data name="Register_Description"><value>Description:</value></data>
+    <data name="Register_Location"><value>Location</value></data>
+    <data name="Register_Country"><value>Country:</value></data>
+    <data name="Register_City"><value>City:</value></data>
+    <data name="Register_AddStreets"><value>Add streets</value></data>
+    <data name="Register_Street"><value>Street:</value></data>
+    <data name="Register_StartNumber"><value>From number:</value></data>
+    <data name="Register_EndNumber"><value>To number:</value></data>
+    <data name="Register_Side"><value>Side:</value></data>
+    <data name="Register_AddButton"><value>Add</value></data>
+    <data name="Register_AddedStreets"><value>Added streets</value></data>
+    <data name="Register_Remove"><value>Remove</value></data>
+    <data name="Register_Images"><value>Neighborhood images</value></data>
+    <data name="Register_SelectImages"><value>Select images...</value></data>
+    <data name="Register_Cancel"><value>Cancel</value></data>
+    <data name="Register_Submit"><value>Register Neighborhood</value></data>
+    <data name="Register_LocationLocked"><value>You cannot change the location while streets are added.</value></data>
+    <data name="Register_ImageFilter"><value>Images|*.jpg;*.jpeg;*.png</value></data>
+    <data name="Register_ValidationTitle"><value>Validation</value></data>
+    <data name="Register_ValidationPrefix"><value>Please fill in the following:\n\n{0}</value></data>
+    <data name="Register_SuccessMessage"><value>Neighborhood '{0}' successfully registered!</value></data>
+    <data name="Register_SelectStreet"><value>Please select a street.</value></data>
+    <data name="Register_InvalidNumbers"><value>Please enter valid numbers.</value></data>
+    <data name="Register_PositiveNumbers"><value>Numbers must be greater than 0.</value></data>
+    <data name="Register_StartBeforeEnd"><value>Start number must be less than end number.</value></data>
+    <data name="Register_ValName"><value>- Neighborhood name is required.</value></data>
+    <data name="Register_ValDescription"><value>- Description is required.</value></data>
+    <data name="Register_ValCountry"><value>- Country is required.</value></data>
+    <data name="Register_ValCity"><value>- City is required.</value></data>
+    <data name="Register_ValStreets"><value>- You must add at least one street.</value></data>
+    <data name="Register_ValImages"><value>- You must add at least one image.</value></data>
+    <data name="Register_ErrorName"><value>Neighborhood name is required.</value></data>
+    <data name="Register_ErrorDescription"><value>Description is required.</value></data>
+    <data name="Register_ErrorCountry"><value>Country is required.</value></data>
+    <data name="Register_ErrorCity"><value>City is required.</value></data>
+    <data name="Register_ErrorStreets"><value>At least one street must be added.</value></data>
+    <data name="Register_ErrorImages"><value>At least one image must be added.</value></data>
+
+
+    <data name="Dialog_Ok"><value>OK</value></data>
+    <data name="Dialog_Yes"><value>Yes</value></data>
+    <data name="Dialog_No"><value>No</value></data>
+    <data name="Dialog_Cancel"><value>Cancel</value></data>
+    <data name="Dialog_Confirm"><value>Confirm</value></data>
+
+    <data name="Reject_Title"><value>Reject request</value></data>
+    <data name="Reject_Message"><value>Write the reason for rejecting the request from {0} {1} for access to neighborhood {2}:</value></data>
+
+    <data name="Review_WindowTitle"><value>Rate provider</value></data>
+    <data name="Review_TitleNew"><value>Rate service: {0}</value></data>
+    <data name="Review_TitleEdit"><value>Edit review: {0}</value></data>
+    <data name="Review_Quality"><value>Quality of service (1-5):</value></data>
+    <data name="Review_Communication"><value>Communication and professionalism (1-5):</value></data>
+    <data name="Review_Comment"><value>Comment:</value></data>
+    <data name="Review_IncompleteTitle"><value>Incomplete data</value></data>
+    <data name="Review_MissingQuality"><value>Please select a rating for the quality of the service.</value></data>
+    <data name="Review_MissingCommunication"><value>Please select a rating for communication with the provider.</value></data>
+    <data name="Review_MissingComment"><value>Please enter a comment. A review explanation is required.</value></data>
+
+    <data name="FacilityBooking_WindowTitle"><value>Slot confirmation</value></data>
+    <data name="FacilityBooking_Details"><value>Details:</value></data>
+    <data name="FacilityBooking_SelectSlot"><value>Select a slot:</value></data>
+    <data name="FacilityBooking_Confirm"><value>Confirm reservation</value></data>
+    <data name="FacilityBooking_Neighborhood"><value>Neighborhood residents: {0}</value></data>
+    <data name="FacilityBooking_Facility"><value>Facility: {0}</value></data>
+    <data name="FacilityBooking_TitleFound"><value>Reservation confirmation — Slot found</value></data>
+    <data name="FacilityBooking_TitleNotFound"><value>Reservation confirmation — Slot unavailable</value></data>
+    <data name="FacilityBooking_StatusFound"><value>The system found an available slot for facility {0} within the selected range for residents of neighborhood {1}.</value></data>
+    <data name="FacilityBooking_StatusNotFound"><value>Unfortunately, no slots are available in the selected range. The system found the first available slots outside the range.</value></data>
+    <data name="FacilityBooking_SlotText"><value>Slot: {0}</value></data>
+
+    <data name="ServiceBooking_WindowTitle"><value>Booking confirmation</value></data>
+    <data name="ServiceBooking_ImportantNotice"><value>Important notice</value></data>
+    <data name="ServiceBooking_Header"><value>The system found the first available slot for service: {0} (Provider: {1} {2}).</value></data>
+    <data name="ServiceBooking_SlotDateTime"><value>Found slot: {0} at {1}</value></data>
+    <data name="ServiceBooking_SlotDate"><value>Found slot: {0}</value></data>
+    <data name="ServiceBooking_Duration"><value>Duration: {0}h</value></data>
+    <data name="ServiceBooking_HourlyRate"><value>Hourly rate: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_Total"><value>Total amount: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_PerJobPrice"><value>Price: {0:N2} RSD</value></data>
+    <data name="ServiceBooking_Question"><value>Would you like to book this slot?</value></data>
+    <data name="ServiceBooking_QuestionPriceChanged"><value>Would you like to book this slot at this price?</value></data>
+    <data name="ServiceBooking_PriceChangeInfo"><value>The first available slot is outside the date range for the current price.\nThe new price valid from {0} is {1:N2} RSD.</value></data>
+
+    <data name="Schedule_Title"><value>Schedule meeting</value></data>
+    <data name="Schedule_Theme"><value>Meeting theme: </value></data>
+    <data name="Schedule_Time"><value>Meeting time: </value></data>
+    <data name="Schedule_DateRange"><value>Meeting date range:</value></data>
+    <data name="Schedule_StartVoting"><value>Start voting</value></data>
+    <data name="Schedule_InvalidTime"><value>Invalid time (00-23h : 00-59m).</value></data>
+    <data name="Schedule_DateOrderError"><value>Start date must be before end date.</value></data>
+    <data name="Schedule_InvalidHour12"><value>Invalid time (1-12h : 00-59m).</value></data>
+
+    <data name="Home_WindowTitle"><value>Neighborhood Coordinator App</value></data>
+    <data name="Home_LanguageLabel"><value>Language: (Ctrl + L)</value></data>
+    <data name="Home_ThemeLabel"><value>Theme: (Ctrl + T)</value></data>
+    <data name="Home_ThemeLight"><value>Light</value></data>
+    <data name="Home_ThemeDark"><value>Dark</value></data>
+    <data name="Home_LogoutButton"><value>Log out (Ctrl + Q)</value></data>
+    <data name="Home_Tab_Dashboard"><value>Dashboard (Ctrl+1)</value></data>
+    <data name="Home_Tab_Neighborhoods"><value>Neighborhoods &amp;\nMemberships (Ctrl+2)</value></data>
+    <data name="Home_Tab_Requests"><value>Access Requests (Ctrl+3)</value></data>
+    <data name="Home_Tab_StatisticsAndMeetings"><value>Statistics &amp;\nMeetings (Ctrl+4)</value></data>
+    <data name="Home_Tab_ServiceCenter"><value>Service Center (Ctrl+5)</value></data>
+    <data name="Home_Tab_CityFacilities"><value>City Facilities (Ctrl+6)</value></data>
+    <data name="Home_Tab_Budget"><value>Budget (Ctrl+7)</value></data>
+    <data name="Home_Tab_Profile"><value>Profile (Ctrl+8)</value></data>
+    <data name="Home_UserDisplay"><value>{0} {1} - Neighborhood Coordinator</value></data>
+    <data name="Home_LogoutConfirmTitle"><value>Confirm Logout</value></data>
+    <data name="Home_LogoutConfirmMessage"><value>Are you sure you want to log out?</value></data>
+
+
+    <data name="Report_PDF_HeaderTitle"><value>City Facility Reservations Report</value></data>
+    <data name="Report_PDF_NeighborhoodLabel"><value>Neighborhood: </value></data>
+    <data name="Report_PDF_PeriodLabel"><value>Period: </value></data>
+    <data name="Report_PDF_TotalReservationsLabel"><value>Total reservations: </value></data>
+    <data name="Report_PDF_GeneratedAtLabel"><value>Generated: </value></data>
+    <data name="Report_PDF_NoReservationsMessage"><value>There are no city facility reservations for the selected period.</value></data>
+    <data name="Report_PDF_VisitCountLabel"><value>Number of visits: </value></data>
+    <data name="Report_PDF_VisitDateLabel"><value>Visit date</value></data>
+    <data name="Report_PDF_StartEndLabel"><value>Start / End</value></data>
+    <data name="Report_PDF_DurationLabel"><value>Duration</value></data>
+    <data name="Report_PDF_PageLabel"><value>Page </value></data>
+    <data name="Report_Error_Title"><value>Error</value></data>
+    <data name="Report_Error_Message"><value>Error generating report: {0}</value></data>
+</root>

@@ -19,7 +19,7 @@ namespace CommunityHub.Application.Domain.Neighborhoods.NeighborhoodMeetings
 
         public bool IsExpired
             => Status == MeetingStatus.InPreparation &&
-               DateTime.Now >= DateRangeStart.ToDateTime(MeetingTime);
+               DateTime.Now >= DateRangeStart.ToDateTime(MeetingTime).AddHours(-3);
 
         public MeetingOutcome DetermineOutcome(Dictionary<DateOnly, int> voteCounts)
         {

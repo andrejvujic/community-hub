@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator"
         xmlns:tabs="clr-namespace:CommunityHub.Ui.Views.NeighborhoodCoordinator.Tabs"
+        xmlns:ns="clr-namespace:CommunityHub.Ui.Resources.Localization"
         mc:Ignorable="d"
-        Title="Neighborhood Coordinator App"
+        Title="{ns:Loc Home_WindowTitle}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Background="{DynamicResource WindowBackgroundBrush}"
         KeyDown="Window_KeyDown">
     <Grid>
         <!-- Icons: https://fontawesome.com/search?ip=classic&ic=free-collection -->
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
@@ -42,12 +43,12 @@
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource TabItemForegroundBrush}"
                                HorizontalAlignment="Left"
-                               Text="{Binding UserDisplayName}"/>    
+                               Text="{Binding UserDisplayName}"/>
                 </StackPanel>
-                
+
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
 
-                    <TextBlock Text="Jezik: (Ctrl + L)"
+                    <TextBlock Text="{ns:Loc Home_LanguageLabel}"
                                VerticalAlignment="Center"
                                Margin="0,0,10,0"
                                FontSize="20"
@@ -59,12 +60,12 @@
                               Style="{StaticResource ComboBoxStyle}"
                               SelectedIndex="{Binding SelectedLanguageIndex}"
                               Margin="0,0,15,0"
-                              FontSize="16">    
+                              FontSize="16">
                         <ComboBoxItem Content="SRP" Tag="sr"/>
                         <ComboBoxItem Content="ENG" Tag="en"/>
                     </ComboBox>
 
-                    <TextBlock Text="Tema: (Ctrl + T)"
+                    <TextBlock Text="{ns:Loc Home_ThemeLabel}"
                                VerticalAlignment="Center"
                                Margin="20,0,10,0"
                                FontSize="20"
@@ -77,11 +78,11 @@
                               SelectedIndex="{Binding SelectedThemeIndex}"
                               FontSize="16"
                               Margin="0,0,20,0">
-                        <ComboBoxItem Content="Svetla"/>
-                        <ComboBoxItem Content="Tamna"/>
+                        <ComboBoxItem Content="{ns:Loc Home_ThemeLight}"/>
+                        <ComboBoxItem Content="{ns:Loc Home_ThemeDark}"/>
                     </ComboBox>
 
-                    <Button Content="Odjavi se (Ctrl + Q)"
+                    <Button Content="{ns:Loc Home_LogoutButton}"
                             Style="{StaticResource SecondaryButtonStyle}"
                             Command="{Binding LogoutCommand}"
                             Margin="20,0,20,0"
@@ -96,44 +97,44 @@
         <TabControl Grid.Row="1" 
                     x:Name="MainTabControl"
                     Style="{StaticResource SidebarTabControlStyle}"
-                    FontSize="20">
+                    FontSize="18">
 
-            <TabItem Header="Početna (Ctrl+1)"
+            <TabItem Header="{ns:Loc Home_Tab_Dashboard}"
                      Style="{StaticResource SidebarTabItemStyle}">
-                <Grid/>
+                <tabs:DashboardTab x:Name="DashboardTab" />
             </TabItem>
 
-            <TabItem Header="Kvartovi i članstva (Ctrl+2)"
+            <TabItem Header="{ns:Loc Home_Tab_Neighborhoods}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:NeighborhoodsTab x:Name="NeighborhoodsTab" />
             </TabItem>
 
-            <TabItem Header="Zahtevi za pristup (Ctrl+3)"
+            <TabItem Header="{ns:Loc Home_Tab_Requests}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:RequestsTab x:Name="RequestsTab" />
             </TabItem>
 
-            <TabItem Header="Statistika i sastanci (Ctrl+4)"
+            <TabItem Header="{ns:Loc Home_Tab_StatisticsAndMeetings}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:StatisticsAndMeetingsTab x:Name="StatisticsAndMeetingsTab" />
             </TabItem>
 
-            <TabItem Header="Servisni centar (Ctrl+5)"
+            <TabItem Header="{ns:Loc Home_Tab_ServiceCenter}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:ServiceCenterTab x:Name="ServiceCenterTab" />
             </TabItem>
 
-            <TabItem Header="Gradski objekti (Ctrl+6)"
+            <TabItem Header="{ns:Loc Home_Tab_CityFacilities}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:CityFacilitiesTab x:Name="CityFacilitiesTab" />
             </TabItem>
 
-            <TabItem Header="Budžet (Ctrl+7)"
+            <TabItem Header="{ns:Loc Home_Tab_Budget}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:NeighborhoodBudgetTab x:Name="NeighborhoodBudgetTab" />
             </TabItem>
 
-            <TabItem Header="Profil (Ctrl+8)"
+            <TabItem Header="{ns:Loc Home_Tab_Profile}"
                      Style="{StaticResource SidebarTabItemStyle}">
                 <tabs:ProfileTab x:Name="ProfileTab"/>
             </TabItem>
