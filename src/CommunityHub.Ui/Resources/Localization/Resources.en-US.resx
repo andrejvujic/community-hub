@@ -527,4 +527,22 @@
     <data name="Schedule_InvalidTime"><value>Invalid time (00-23h : 00-59m).</value></data>
     <data name="Schedule_DateOrderError"><value>Start date must be before end date.</value></data>
     <data name="Schedule_InvalidHour12"><value>Invalid time (1-12h : 00-59m).</value></data>
+
+    <data name="Home_WindowTitle"><value>Neighborhood Coordinator App</value></data>
+    <data name="Home_LanguageLabel"><value>Language: (Ctrl + L)</value></data>
+    <data name="Home_ThemeLabel"><value>Theme: (Ctrl + T)</value></data>
+    <data name="Home_ThemeLight"><value>Light</value></data>
+    <data name="Home_ThemeDark"><value>Dark</value></data>
+    <data name="Home_LogoutButton"><value>Log out (Ctrl + Q)</value></data>
+    <data name="Home_Tab_Dashboard"><value>Dashboard (Ctrl+1)</value></data>
+    <data name="Home_Tab_Neighborhoods"><value>Neighborhoods &amp;\nMemberships (Ctrl+2)</value></data>
+    <data name="Home_Tab_Requests"><value>Access Requests (Ctrl+3)</value></data>
+    <data name="Home_Tab_StatisticsAndMeetings"><value>Statistics &amp;\nMeetings (Ctrl+4)</value></data>
+    <data name="Home_Tab_ServiceCenter"><value>Service Center (Ctrl+5)</value></data>
+    <data name="Home_Tab_CityFacilities"><value>City Facilities (Ctrl+6)</value></data>
+    <data name="Home_Tab_Budget"><value>Budget (Ctrl+7)</value></data>
+    <data name="Home_Tab_Profile"><value>Profile (Ctrl+8)</value></data>
+    <data name="Home_UserDisplay"><value>{0} {1} - Neighborhood Coordinator</value></data>
+    <data name="Home_LogoutConfirmTitle"><value>Confirm Logout</value></data>
+    <data name="Home_LogoutConfirmMessage"><value>Are you sure you want to log out?</value></data>
 </root>

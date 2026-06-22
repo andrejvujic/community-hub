@@ -6,21 +6,23 @@ using CommunityHub.Ui.Helpers.Commands;
 using CommunityHub.Ui.Views;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator;
 using CommunityHub.Ui.Views.NeighborhoodCoordinator.Windows;
+using CommunityHub.Ui.Resources.Localization;
 
 namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
 {
     public class HomeWindowViewModel : INotifyPropertyChanged
     {
         private readonly UserService _userService = new();
+        private long _userId;
 
         private string _userDisplayName = string.Empty;
         public string UserDisplayName
         {
             get => _userDisplayName;
-            private set 
-            { 
-                _userDisplayName = value; 
-                OnPropertyChanged(); 
+            private set
+            {
+                _userDisplayName = value;
+                OnPropertyChanged();
             }
         }
 
@@ -54,9 +56,12 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
 
         public HomeWindowViewModel(long userId)
         {
+            _userId = userId;
             LogoutCommand = new RelayCommand(ExecuteLogout);
             LoadUser(userId);
             ((App)System.Windows.Application.Current).ChangeLanguage("sr-RS");
+
+            TranslationSource.Instance.PropertyChanged += (s, e) => LoadUser(_userId);
         }
 
         public bool LoadUser(long userId)
@@ -64,7 +69,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
             var user = _userService.Get(userId);
             if (user is null) return false;
 
-            UserDisplayName = $"{user.Name} {user.Surname} - Koordinator kvarta";
+            UserDisplayName = TranslationSource.Instance.Format("Home_UserDisplay", user.Name, user.Surname);
             return true;
         }
 
@@ -80,9 +85,9 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
                 ? "/Resources/Themes/DarkTheme.xaml"
                 : "/Resources/Themes/LightTheme.xaml";
 
-            var themeDict = new ResourceDictionary 
-            { 
-                Source = new Uri(themePath, UriKind.Relative) 
+            var themeDict = new ResourceDictionary
+            {
+                Source = new Uri(themePath, UriKind.Relative)
             };
             System.Windows.Application.Current.Resources.MergedDictionaries[0] = themeDict;
         }
@@ -93,8 +98,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator
                          ?? System.Windows.Application.Current.MainWindow;
 
             var confirmDialog = new ConfirmDialog(
-                "Potvrda odjave",
-                "Da li ste sigurni da želite da se odjavite?",
+                TranslationSource.Instance["Home_LogoutConfirmTitle"],
+                TranslationSource.Instance["Home_LogoutConfirmMessage"],
                 window);
 
             if (confirmDialog.ShowDialog() != true) return;

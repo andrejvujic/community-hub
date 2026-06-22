@@ -21,13 +21,13 @@ namespace CommunityHub.Ui.Resources.Localization
             get
             {
                 string retVal = this.resourceManager.GetString(key, this.currentCulture);
-                return retVal ?? $"[{key}]";
+                return (retVal ?? $"[{key}]").Replace("\\n", "\n");
             }
         }
 
         public string Format(string key, params object[] args)
         {
-            var template = this[key].Replace("\\n", "\n");
+            var template = this[key];
             return string.Format(template, args);
         }
 

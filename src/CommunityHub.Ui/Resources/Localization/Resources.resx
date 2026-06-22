@@ -526,4 +526,23 @@
     <data name="Schedule_StartVoting"><value>Pokreni glasanje</value></data>
     <data name="Schedule_InvalidTime"><value>Neispravno vreme (00-23h : 00-59m).</value></data>
     <data name="Schedule_DateOrderError"><value>Početni datum mora biti pre završnog.</value></data>
+
+
+    <data name="Home_WindowTitle"><value>Neighborhood Coordinator App</value></data>
+    <data name="Home_LanguageLabel"><value>Jezik: (Ctrl + L)</value></data>
+    <data name="Home_ThemeLabel"><value>Tema: (Ctrl + T)</value></data>
+    <data name="Home_ThemeLight"><value>Svetla</value></data>
+    <data name="Home_ThemeDark"><value>Tamna</value></data>
+    <data name="Home_LogoutButton"><value>Odjavi se (Ctrl + Q)</value></data>
+    <data name="Home_Tab_Dashboard"><value>Početna (Ctrl+1)</value></data>
+    <data name="Home_Tab_Neighborhoods"><value>Kvartovi i članstva (Ctrl+2)</value></data>
+    <data name="Home_Tab_Requests"><value>Zahtevi za pristup (Ctrl+3)</value></data>
+    <data name="Home_Tab_StatisticsAndMeetings"><value>Statistika i sastanci (Ctrl+4)</value></data>
+    <data name="Home_Tab_ServiceCenter"><value>Servisni centar (Ctrl+5)</value></data>
+    <data name="Home_Tab_CityFacilities"><value>Gradski objekti (Ctrl+6)</value></data>
+    <data name="Home_Tab_Budget"><value>Budžet (Ctrl+7)</value></data>
+    <data name="Home_Tab_Profile"><value>Profil (Ctrl+8)</value></data>
+    <data name="Home_UserDisplay"><value>{0} {1} - Koordinator kvarta</value></data>
+    <data name="Home_LogoutConfirmTitle"><value>Potvrda odjave</value></data>
+    <data name="Home_LogoutConfirmMessage"><value>Da li ste sigurni da želite da se odjavite?</value></data>
 </root>

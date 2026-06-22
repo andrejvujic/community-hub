@@ -772,6 +772,159 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jezik: (Ctrl + L).
+        /// </summary>
+        internal static string Home_LanguageLabel {
+            get {
+                return ResourceManager.GetString("Home_LanguageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Odjavi se (Ctrl + Q).
+        /// </summary>
+        internal static string Home_LogoutButton {
+            get {
+                return ResourceManager.GetString("Home_LogoutButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Da li ste sigurni da želite da se odjavite?.
+        /// </summary>
+        internal static string Home_LogoutConfirmMessage {
+            get {
+                return ResourceManager.GetString("Home_LogoutConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Potvrda odjave.
+        /// </summary>
+        internal static string Home_LogoutConfirmTitle {
+            get {
+                return ResourceManager.GetString("Home_LogoutConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Budžet (Ctrl+7).
+        /// </summary>
+        internal static string Home_Tab_Budget {
+            get {
+                return ResourceManager.GetString("Home_Tab_Budget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gradski objekti (Ctrl+6).
+        /// </summary>
+        internal static string Home_Tab_CityFacilities {
+            get {
+                return ResourceManager.GetString("Home_Tab_CityFacilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Početna (Ctrl+1).
+        /// </summary>
+        internal static string Home_Tab_Dashboard {
+            get {
+                return ResourceManager.GetString("Home_Tab_Dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvartovi i članstva (Ctrl+2).
+        /// </summary>
+        internal static string Home_Tab_Neighborhoods {
+            get {
+                return ResourceManager.GetString("Home_Tab_Neighborhoods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profil (Ctrl+8).
+        /// </summary>
+        internal static string Home_Tab_Profile {
+            get {
+                return ResourceManager.GetString("Home_Tab_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zahtevi za pristup (Ctrl+3).
+        /// </summary>
+        internal static string Home_Tab_Requests {
+            get {
+                return ResourceManager.GetString("Home_Tab_Requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Servisni centar (Ctrl+5).
+        /// </summary>
+        internal static string Home_Tab_ServiceCenter {
+            get {
+                return ResourceManager.GetString("Home_Tab_ServiceCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistika i sastanci (Ctrl+4).
+        /// </summary>
+        internal static string Home_Tab_StatisticsAndMeetings {
+            get {
+                return ResourceManager.GetString("Home_Tab_StatisticsAndMeetings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tamna.
+        /// </summary>
+        internal static string Home_ThemeDark {
+            get {
+                return ResourceManager.GetString("Home_ThemeDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tema: (Ctrl + T).
+        /// </summary>
+        internal static string Home_ThemeLabel {
+            get {
+                return ResourceManager.GetString("Home_ThemeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Svetla.
+        /// </summary>
+        internal static string Home_ThemeLight {
+            get {
+                return ResourceManager.GetString("Home_ThemeLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} - Koordinator kvarta.
+        /// </summary>
+        internal static string Home_UserDisplay {
+            get {
+                return ResourceManager.GetString("Home_UserDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neighborhood Coordinator App.
+        /// </summary>
+        internal static string Home_WindowTitle {
+            get {
+                return ResourceManager.GetString("Home_WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to U pripremi.
         /// </summary>
         internal static string InPreparation {
