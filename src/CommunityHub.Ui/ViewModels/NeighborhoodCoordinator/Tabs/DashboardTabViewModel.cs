@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -51,11 +52,11 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public bool ShowServiceFilter
         {
             get => _showServiceFilter;
-            set 
-            { 
-                _showServiceFilter = value; 
-                OnPropertyChanged(); 
-                ApplyFilter(); 
+            set
+            {
+                _showServiceFilter = value;
+                OnPropertyChanged();
+                ApplyFilter();
             }
         }
 
@@ -63,11 +64,11 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public bool ShowMeetingsFilter
         {
             get => _showMeetingsFilter;
-            set 
-            { 
-                _showMeetingsFilter = value; 
-                OnPropertyChanged(); 
-                ApplyFilter(); 
+            set
+            {
+                _showMeetingsFilter = value;
+                OnPropertyChanged();
+                ApplyFilter();
             }
         }
 
@@ -75,11 +76,11 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public bool ShowDonationsFilter
         {
             get => _showDonationsFilter;
-            set 
-            { 
-                _showDonationsFilter = value; 
-                OnPropertyChanged(); 
-                ApplyFilter(); 
+            set
+            {
+                _showDonationsFilter = value;
+                OnPropertyChanged();
+                ApplyFilter();
             }
         }
 
@@ -88,14 +89,14 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public int PendingRequestsCount
         {
             get => _pendingRequestsCount;
-            private set 
-            { 
-                _pendingRequestsCount = value; 
-                OnPropertyChanged(); 
-                OnPropertyChanged(nameof(PendingRequestsText)); 
+            private set
+            {
+                _pendingRequestsCount = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PendingRequestsText));
             }
         }
-        
+
         public string PendingRequestsText => TranslationSource.Instance.Format("PendingRequests_Text", PendingRequestsCount);
 
 
@@ -125,10 +126,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public NeighborhoodDto? SelectedReportNeighborhood
         {
             get => _selectedReportNeighborhood;
-            set 
-            { 
-                _selectedReportNeighborhood = value; 
-                OnPropertyChanged(); 
+            set
+            {
+                _selectedReportNeighborhood = value;
+                OnPropertyChanged();
             }
         }
 
@@ -173,7 +174,8 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     SelectedReportNeighborhood!.Name,
                     SelectedReportNeighborhood.Id,
                     from,
-                    to);
+                    to,
+                    BuildReportLabels());
 
                 File.WriteAllBytes(savePath, pdfBytes);
                 AskToOpenReport(window, savePath);
@@ -184,6 +186,33 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             }
         }
 
+        private static FacilityReservationsReportLabels BuildReportLabels()
+        {
+            bool isEnglish = TranslationSource.Instance.CurrentCulture?.Name
+                .StartsWith("en", StringComparison.OrdinalIgnoreCase) ?? false;
+
+            return new FacilityReservationsReportLabels
+            {
+                Culture = TranslationSource.Instance.CurrentCulture ?? new CultureInfo("sr-Latn-RS"),
+                HeaderTitle = TranslationSource.Instance["Report_PDF_HeaderTitle"],
+                NeighborhoodLabel = TranslationSource.Instance["Report_PDF_NeighborhoodLabel"],
+                PeriodLabel = TranslationSource.Instance["Report_PDF_PeriodLabel"],
+                TotalReservationsLabel = TranslationSource.Instance["Report_PDF_TotalReservationsLabel"],
+                GeneratedAtLabel = TranslationSource.Instance["Report_PDF_GeneratedAtLabel"],
+                NoReservationsMessage = TranslationSource.Instance["Report_PDF_NoReservationsMessage"],
+                VisitCountLabel = TranslationSource.Instance["Report_PDF_VisitCountLabel"],
+                VisitDateLabel = TranslationSource.Instance["Report_PDF_VisitDateLabel"],
+                StartEndLabel = TranslationSource.Instance["Report_PDF_StartEndLabel"],
+                DurationLabel = TranslationSource.Instance["Report_PDF_DurationLabel"],
+                FooterBrand = "CommunityHub",
+                PageLabel = TranslationSource.Instance["Report_PDF_PageLabel"],
+                PageOfSeparator = " / ",
+                AtWord = TranslationSource.Instance["Service_At"],
+                DateFormat = isEnglish ? "MM/dd/yyyy" : "dd.MM.yyyy.",
+                TimeFormat = isEnglish ? "h:mm tt" : "HH:mm"
+            };
+        }
+
         private bool TryValidateReportInputs(Window window, out DateTime from, out DateTime to)
         {
             from = DateTime.MinValue;
@@ -192,7 +221,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             if (SelectedReportNeighborhood is null)
             {
                 new InfoDialog(TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectNeighborhood"], window).ShowDialog();
-                
+
                 return false;
             }
 
@@ -269,14 +298,19 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             LoadNeighborhoodsForReports();
             LoadPendingRequests();
             LoadNotifications();
-            LoadNeighborhoodsForReports();
         }
 
         private void LoadNeighborhoodsForReports()
         {
+            var previouslySelectedId = SelectedReportNeighborhood?.Id;
+
             Neighborhoods.Clear();
             var list = _neighborhoodService.GetByCoordinator(_coordinatorId);
             foreach (var n in list) Neighborhoods.Add(n);
+
+            SelectedReportNeighborhood = previouslySelectedId.HasValue
+                ? Neighborhoods.FirstOrDefault(n => n.Id == previouslySelectedId.Value)
+                : null;
         }
 
         private void LoadPendingRequests()
@@ -561,7 +595,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         };
 
         private Window GetActiveWindow() =>
-            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive) 
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
             ?? System.Windows.Application.Current.MainWindow;
 
         private void OpenReviewWindow(BookedJobDto job, bool isEdit)

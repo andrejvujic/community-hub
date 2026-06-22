@@ -1969,11 +1969,128 @@ namespace CommunityHub.Ui.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Greška pri generisanju izveštaja: {0}.
+        /// </summary>
+        internal static string Report_Error_Message {
+            get {
+                return ResourceManager.GetString("Report_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greška.
+        /// </summary>
+        internal static string Report_Error_Title {
+            get {
+                return ResourceManager.GetString("Report_Error_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to izvestaj-rezervacije-{0}-{1}-{2}.pdf.
         /// </summary>
         internal static string Report_FileName {
             get {
                 return ResourceManager.GetString("Report_FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trajanje.
+        /// </summary>
+        internal static string Report_PDF_DurationLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_DurationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generisano: .
+        /// </summary>
+        internal static string Report_PDF_GeneratedAtLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_GeneratedAtLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izveštaj o rezervacijama gradskih objekata.
+        /// </summary>
+        internal static string Report_PDF_HeaderTitle {
+            get {
+                return ResourceManager.GetString("Report_PDF_HeaderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kvart: .
+        /// </summary>
+        internal static string Report_PDF_NeighborhoodLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_NeighborhoodLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nema rezervacija gradskih objekata za izabrani period..
+        /// </summary>
+        internal static string Report_PDF_NoReservationsMessage {
+            get {
+                return ResourceManager.GetString("Report_PDF_NoReservationsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strana .
+        /// </summary>
+        internal static string Report_PDF_PageLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_PageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period: .
+        /// </summary>
+        internal static string Report_PDF_PeriodLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_PeriodLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Početak / Kraj.
+        /// </summary>
+        internal static string Report_PDF_StartEndLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_StartEndLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ukupno rezervacija: .
+        /// </summary>
+        internal static string Report_PDF_TotalReservationsLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_TotalReservationsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broj poseta: .
+        /// </summary>
+        internal static string Report_PDF_VisitCountLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_VisitCountLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum posete.
+        /// </summary>
+        internal static string Report_PDF_VisitDateLabel {
+            get {
+                return ResourceManager.GetString("Report_PDF_VisitDateLabel", resourceCulture);
             }
         }
         

@@ -15,18 +15,22 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
         private readonly DateTime _fromDate;
         private readonly DateTime _toDate;
         private readonly List<FacilityReservationDto> _reservations;
-        private readonly FacilityReservationsReportFormatter _formatter = new();
+        private readonly FacilityReservationsReportLabels _labels;
+        private readonly FacilityReservationsReportFormatter _formatter;
 
         public FacilityReservationsReportPdfDocument(
             string neighborhoodName,
             DateTime fromDate,
             DateTime toDate,
-            List<FacilityReservationDto> reservations)
+            List<FacilityReservationDto> reservations,
+            FacilityReservationsReportLabels? labels = null)
         {
             _neighborhoodName = neighborhoodName;
             _fromDate = fromDate;
             _toDate = toDate;
             _reservations = reservations;
+            _labels = labels ?? new FacilityReservationsReportLabels();
+            _formatter = new FacilityReservationsReportFormatter(_labels);
         }
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
@@ -67,7 +71,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                     column.Spacing(4);
 
                     column.Item()
-                        .Text("Izveštaj o rezervacijama gradskih objekata")
+                        .Text(_labels.HeaderTitle)
                         .FontSize(17)
                         .Bold()
                         .FontColor(Colors.White);
@@ -77,24 +81,24 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                     column.Item().Text(text =>
                     {
                         text.DefaultTextStyle(x => x.FontSize(10).FontColor("#a8c4e0"));
-                        text.Span("Kvart: ");
+                        text.Span(_labels.NeighborhoodLabel);
                         text.Span(_neighborhoodName).Bold().FontColor(Colors.White);
                     });
 
                     column.Item().Text(text =>
                     {
                         text.DefaultTextStyle(x => x.FontSize(10).FontColor("#a8c4e0"));
-                        text.Span("Period: ");
+                        text.Span(_labels.PeriodLabel);
                         text.Span(_formatter.FormatDateRange(_fromDate, _toDate)).Bold().FontColor(Colors.White);
                     });
 
                     column.Item().Text(text =>
                     {
                         text.DefaultTextStyle(x => x.FontSize(10).FontColor("#a8c4e0"));
-                        text.Span("Ukupno rezervacija: ");
+                        text.Span(_labels.TotalReservationsLabel);
                         text.Span(_reservations.Count.ToString()).Bold().FontColor(Colors.White);
                         text.Span("   |   ").FontColor("#a8c4e0");
-                        text.Span("Generisano: ");
+                        text.Span(_labels.GeneratedAtLabel);
                         text.Span(_formatter.FormatGeneratedAt()).Bold().FontColor(Colors.White);
                     });
                 });
@@ -110,7 +114,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                 {
                     column.Item()
                         .PaddingTop(12)
-                        .Text("Nema rezervacija gradskih objekata za izabrani period.")
+                        .Text(_labels.NoReservationsMessage)
                         .FontColor(Colors.Grey.Darken1);
                     return;
                 }
@@ -147,7 +151,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                     .Text(text =>
                     {
                         text.DefaultTextStyle(x => x.FontSize(10).FontColor(Colors.Grey.Medium));
-                        text.Span("Broj poseta: ");
+                        text.Span(_labels.VisitCountLabel);
                         text.Span(reservations.Count.ToString());
                     });
 
@@ -170,10 +174,10 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                 {
                     column.Spacing(2);
 
-                    AddRow(column, "Datum posete", _formatter.FormatDate(reservation.StartDatetime));
-                    AddRow(column, "Početak / Kraj",
+                    AddRow(column, _labels.VisitDateLabel, _formatter.FormatDate(reservation.StartDatetime));
+                    AddRow(column, _labels.StartEndLabel,
                         $"{_formatter.FormatTime(reservation.StartDatetime)} – {_formatter.FormatTime(reservation.EndDatetime)}");
-                    AddRow(column, "Trajanje", _formatter.FormatDuration(reservation.StartDatetime, reservation.EndDatetime));
+                    AddRow(column, _labels.DurationLabel, _formatter.FormatDuration(reservation.StartDatetime, reservation.EndDatetime));
                 });
         }
 
@@ -197,7 +201,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                 {
                     row.RelativeItem()
                         .AlignLeft()
-                        .Text("CommunityHub")
+                        .Text(_labels.FooterBrand)
                         .FontSize(10)
                         .FontColor(Colors.Grey.Medium);
 
@@ -206,9 +210,9 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                         .Text(text =>
                         {
                             text.DefaultTextStyle(x => x.FontSize(10).Bold().FontColor(DarkBlue));
-                            text.Span("Strana ");
+                            text.Span(_labels.PageLabel);
                             text.CurrentPageNumber();
-                            text.Span(" / ");
+                            text.Span(_labels.PageOfSeparator);
                             text.TotalPages();
                         });
                 });

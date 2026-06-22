@@ -545,4 +545,19 @@
     <data name="Home_UserDisplay"><value>{0} {1} - Koordinator kvarta</value></data>
     <data name="Home_LogoutConfirmTitle"><value>Potvrda odjave</value></data>
     <data name="Home_LogoutConfirmMessage"><value>Da li ste sigurni da želite da se odjavite?</value></data>
+
+
+    <data name="Report_PDF_HeaderTitle"><value>Izveštaj o rezervacijama gradskih objekata</value></data>
+    <data name="Report_PDF_NeighborhoodLabel"><value>Kvart: </value></data>
+    <data name="Report_PDF_PeriodLabel"><value>Period: </value></data>
+    <data name="Report_PDF_TotalReservationsLabel"><value>Ukupno rezervacija: </value></data>
+    <data name="Report_PDF_GeneratedAtLabel"><value>Generisano: </value></data>
+    <data name="Report_PDF_NoReservationsMessage"><value>Nema rezervacija gradskih objekata za izabrani period.</value></data>
+    <data name="Report_PDF_VisitCountLabel"><value>Broj poseta: </value></data>
+    <data name="Report_PDF_VisitDateLabel"><value>Datum posete</value></data>
+    <data name="Report_PDF_StartEndLabel"><value>Početak / Kraj</value></data>
+    <data name="Report_PDF_DurationLabel"><value>Trajanje</value></data>
+    <data name="Report_PDF_PageLabel"><value>Strana </value></data>
+    <data name="Report_Error_Title"><value>Greška</value></data>
+    <data name="Report_Error_Message"><value>Greška pri generisanju izveštaja: {0}</value></data>
 </root>

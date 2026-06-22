@@ -44,7 +44,8 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
             string neighborhoodName,
             long neighborhoodId,
             DateTime from,
-            DateTime to)
+            DateTime to,
+            FacilityReservationsReportLabels? labels = null)
         {
             var reservations = _reservationRepository
                 .GetByNeighborhoodId(neighborhoodId)
@@ -53,7 +54,7 @@ namespace CommunityHub.Application.Services.Neighborhoods.CityFacilities.Reports
                 .ToList();
 
             var document = new FacilityReservationsReportPdfDocument(
-                neighborhoodName, from, to, reservations);
+                neighborhoodName, from, to, reservations, labels);
 
             return document.GeneratePdf();
         }

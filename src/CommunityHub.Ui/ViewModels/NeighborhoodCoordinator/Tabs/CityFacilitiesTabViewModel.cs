@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -35,45 +36,46 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public DateTime ReservationMinDate => DateTime.Today.AddDays(1);
 
         private string _durationInput = string.Empty;
-        public string DurationInput 
-        { 
-            get => _durationInput; 
-            set 
-            { 
-                _durationInput = value; 
-                OnPropertyChanged(); 
-            } 
+        public string DurationInput
+        {
+            get => _durationInput;
+            set
+            {
+                _durationInput = value;
+                OnPropertyChanged();
+            }
         }
 
         private DateTime? _reservationStartDate;
-        public DateTime? ReservationStartDate 
-        { 
-            get => _reservationStartDate; 
-            set 
-            { 
-                _reservationStartDate = value; 
-                OnPropertyChanged(); 
-            } 
+        public DateTime? ReservationStartDate
+        {
+            get => _reservationStartDate;
+            set
+            {
+                _reservationStartDate = value;
+                OnPropertyChanged();
+            }
         }
 
         private DateTime? _reservationEndDate;
-        public DateTime? ReservationEndDate 
-        { 
-            get => _reservationEndDate; 
-            set 
-            { _reservationEndDate = value; 
-                OnPropertyChanged(); 
-            } 
+        public DateTime? ReservationEndDate
+        {
+            get => _reservationEndDate;
+            set
+            {
+                _reservationEndDate = value;
+                OnPropertyChanged();
+            }
         }
 
         private DateTime? _reportStartDate;
         public DateTime? ReportStartDate
         {
             get => _reportStartDate;
-            set 
-            { 
-                _reportStartDate = value; 
-                OnPropertyChanged(); 
+            set
+            {
+                _reportStartDate = value;
+                OnPropertyChanged();
             }
         }
 
@@ -81,10 +83,10 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         public DateTime? ReportEndDate
         {
             get => _reportEndDate;
-            set 
-            { 
-                _reportEndDate = value; 
-                OnPropertyChanged(); 
+            set
+            {
+                _reportEndDate = value;
+                OnPropertyChanged();
             }
         }
 
@@ -200,7 +202,7 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
         }
 
         private bool TryValidateInputs(Window win, out int duration, out DateTime start, out DateTime end)
-        { 
+        {
             duration = 0; start = DateTime.MinValue; end = DateTime.MinValue;
 
             if (SelectedFacility is null) return ShowError(win, TranslationSource.Instance["Error_Title"], TranslationSource.Instance["Error_SelectFacility"]);
@@ -248,6 +250,33 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
             return created;
         }
 
+        private static FacilityReservationsReportLabels BuildReportLabels()
+        {
+            bool isEnglish = TranslationSource.Instance.CurrentCulture?.Name
+                .StartsWith("en", StringComparison.OrdinalIgnoreCase) ?? false;
+
+            return new FacilityReservationsReportLabels
+            {
+                Culture = TranslationSource.Instance.CurrentCulture ?? new CultureInfo("sr-Latn-RS"),
+                HeaderTitle = TranslationSource.Instance["Report_PDF_HeaderTitle"],
+                NeighborhoodLabel = TranslationSource.Instance["Report_PDF_NeighborhoodLabel"],
+                PeriodLabel = TranslationSource.Instance["Report_PDF_PeriodLabel"],
+                TotalReservationsLabel = TranslationSource.Instance["Report_PDF_TotalReservationsLabel"],
+                GeneratedAtLabel = TranslationSource.Instance["Report_PDF_GeneratedAtLabel"],
+                NoReservationsMessage = TranslationSource.Instance["Report_PDF_NoReservationsMessage"],
+                VisitCountLabel = TranslationSource.Instance["Report_PDF_VisitCountLabel"],
+                VisitDateLabel = TranslationSource.Instance["Report_PDF_VisitDateLabel"],
+                StartEndLabel = TranslationSource.Instance["Report_PDF_StartEndLabel"],
+                DurationLabel = TranslationSource.Instance["Report_PDF_DurationLabel"],
+                FooterBrand = "CommunityHub",
+                PageLabel = TranslationSource.Instance["Report_PDF_PageLabel"],
+                PageOfSeparator = " / ",
+                AtWord = TranslationSource.Instance["Service_At"],
+                DateFormat = isEnglish ? "MM/dd/yyyy" : "dd.MM.yyyy.",
+                TimeFormat = isEnglish ? "h:mm tt" : "HH:mm"
+            };
+        }
+
         private void ExecuteGenerateReport()
         {
             var window = GetActiveWindow();
@@ -265,14 +294,16 @@ namespace CommunityHub.Ui.ViewModels.NeighborhoodCoordinator.Tabs
                     SelectedNeighborhood!.Name,
                     SelectedNeighborhood.Id,
                     from,
-                    to);
+                    to,
+                    BuildReportLabels());
 
                 SaveReport(pdfBytes, savePath);
                 AskToOpenReport(window, savePath);
             }
             catch (Exception ex)
             {
-                ShowError(window, "Greška", $"Greška pri generisanju izveštaja: {ex.Message}");
+                ShowError(window, TranslationSource.Instance["Report_Error_Title"],
+                    TranslationSource.Instance.Format("Report_Error_Message", ex.Message));
             }
         }
 
