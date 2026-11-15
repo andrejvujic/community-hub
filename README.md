@@ -52,7 +52,24 @@ The domain layer defines repository interfaces, while the database layer supplie
 
 ## My contributions
 
-The Git history records my work under the names **Andrej Vujic**, **Andrej Vujić**, and **Andrej**. My contributions span the full application stack, with most of my work centered on the building-resident part of the system.
+The Git history records my work under the names **Andrej Vujic**, **Andrej Vujić**, and **Andrej**. My contributions span the full application stack, with most of my feature work centered on the building-resident part of the system. Several technical components I introduced became shared infrastructure used by the rest of the team.
+
+### Technical foundations
+
+- Designed the database access layer around `DatabaseConnection`, an `IDisposable` wrapper over Npgsql that manages connection lifetime, transactions, PostgreSQL enum registration, reader callbacks, scalar queries, and non-query commands in one place.
+- Created `DatabaseQuery`, a small parameterized-query builder that turns SQL and named parameters into `IDbCommand` instances. This keeps command construction consistent and prevents repositories from duplicating parameter-binding code.
+- Designed a lightweight object-relational mapping system. The generic `EntityMapper<T>` contract maps `IDataReader` rows to domain entities and maps entities back to query-parameter dictionaries. I also added prefix-aware data readers so mappers can safely compose nested objects from joined result sets.
+- Built the first entity mappers and migrated repositories to the shared query and mapping infrastructure. The team then used the same approach across the rest of the data model; the current codebase uses `DatabaseConnection` and `DatabaseQuery` in more than 40 repositories.
+- Created the generic `BaseService<TEntity, TDto>` mapping layer to keep domain entities inside the application layer while exposing DTOs to the UI. It now provides shared entity-to-DTO and DTO-to-entity conversion for 20 application services.
+- Created a custom stack-based navigation system for the resident interface. It supports `Push`, `PushReplacement`, `Pop`, and `PopAll`; a page can return a value when it is popped, and the caller receives it through an `onPop` callback after WPF finishes navigating back.
+- Introduced `IMainNavigationConsumer` so view models depend on a navigation abstraction instead of a concrete WPF page, keeping navigation testable and consistent with DIP.
+- Created `BaseViewModel` for the resident UI, centralizing `INotifyPropertyChanged`, navigation, and alert access. Resident view models reuse it instead of implementing that plumbing independently.
+- Designed a reusable host/consumer alert system with typed alerts, dynamic action buttons, and callbacks. Resident pages use it for confirmations, validation failures, warnings, and success feedback.
+- Created the project injector and repository contracts that map abstractions to concrete persistence implementations. This infrastructure is used throughout services and view models, including features developed by other team members.
+- Designed the extensible notification-details model and shared notification repository flow, allowing a notification to carry a typed detail payload while keeping common notification storage and behavior in one place.
+- Refactored database access and application code to improve separation of concerns, move behavior into the correct layer, and apply Clean Architecture, DIP, and SOLID principles more consistently.
+
+### Features and user experience
 
 - Built and evolved the PostgreSQL schema, seed data, domain entities, DTOs, mappers, repositories, and services for users, buildings, apartments, memberships, and access requests.
 - Implemented resident building search and browsing, apartment-access workflows, and role-based login and navigation.
@@ -62,7 +79,6 @@ The Git history records my work under the names **Andrej Vujic**, **Andrej Vuji�
 - Added notification pages and notification-detail flows for resident activity.
 - Created the in-app tutorial section and video player, including playback controls, loading states, progress tracking, seeking, and tutorial videos.
 - Contributed reusable UI behavior, validation, dialogs, converters, styling, and usability fixes across resident screens.
-- Refactored database access and application code to improve separation of concerns, move behavior into the correct layer, introduce repository abstractions, and apply DIP and SOLID principles more consistently.
 
 ## Getting started
 
