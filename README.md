@@ -1,122 +1,112 @@
-Ovaj repozitorijum sadrži početni projekat za izradu desktop aplikacije sa pristupom bazi podataka. Projekat koristi .NET 10 i WPF (Windows Presentation Foundation) za korisnički interfejs i PostgreSQL za skladištenje podataka.
+# CommunityHub
 
-## Struktura Projekta
+CommunityHub is a desktop application for managing residential buildings and local communities. It brings building residents, building managers, citizens, and neighborhood coordinators into one system for handling everyday community tasks: apartment access, shared-room reservations, resident assemblies, neighborhood events, facility bookings, donations, budgets, and service requests.
 
-Projekat je organizovan u dva glavna dela:
+The project was developed as university coursework for **Software Specification and Modeling** and **Human-Computer Interaction**. It is a layered monolith built around Clean Architecture, the Dependency Inversion Principle (DIP), and SOLID design principles. The HCI part of the project focuses on role-specific workflows, clear feedback, validation, contextual help, localization, and consistent navigation.
 
-```
+## Main features
+
+After signing in, each user is taken to an interface for their role.
+
+- **Building residents** can request apartment access, browse buildings, reserve common rooms, create and match community ads, manage time slots, follow notifications, report issues, take part in resident assemblies, and use in-app video tutorials.
+- **Building managers** can manage buildings, apartments, memberships, access requests, common rooms, reported issues, notice-board content, and resident assemblies.
+- **Citizens** can join neighborhoods, attend meetings, organize and volunteer for events, donate to neighborhood budgets, reserve or vote for local facilities, review coordinators, and view trust records.
+- **Neighborhood coordinators** can process access requests, manage neighborhood budgets and expenses, schedule meetings, coordinate facilities and service providers, review statistics, and generate reports.
+
+The application also includes Serbian and English localization, light and dark themes, tooltips, quick-help dialogs, a guided help wizard, confirmation dialogs, input validation, charts, and PDF reports.
+
+## Architecture
+
+CommunityHub is deployed as a single application, with responsibilities separated into layers:
+
+```text
 CommunityHub/
 ├── src/
-│   ├── CommunityHub.Application/ # Poslovna logika i pristup bazi
-│   └── CommunityHub.Ui/          # Korisnički interfejs (WPF)
+│   ├── CommunityHub.Application/
+│   │   ├── Domain/                 # Entities, domain rules, and repository contracts
+│   │   ├── Services/               # Application use cases and orchestration
+│   │   ├── MappersDto/             # DTOs and mappings between layers
+│   │   └── Database/               # PostgreSQL access, repository implementations, and scripts
+│   └── CommunityHub.Ui/
+│       ├── Views/                  # WPF windows and pages
+│       ├── ViewModels/             # Presentation logic and commands
+│       ├── Helpers/                # Navigation, alerts, converters, and tooltips
+│       └── Resources/              # Themes, styles, localization, images, fonts, and videos
 └── CommunityHub.slnx
 ```
 
-### CommunityHub.Application
+The domain layer defines repository interfaces, while the database layer supplies their PostgreSQL implementations. Application services depend on those abstractions through the project injector. This keeps business rules separate from persistence and UI code and applies DIP within the monolith. The WPF application follows MVVM for most presentation flows, using view models, commands, bindings, and reusable services for navigation and dialogs.
 
-Projekat koji sadrži domenski model, poslovnu logiku i klase za pristup bazi podataka.
+## Technologies
 
-#### Database/
-- **PostgresConnection.cs** - Statička klasa za kreiranje konekcije na bazu
-  - Čita konekcioni string za pristup bazi podataka iz `appsettings.json`
-  - Metoda `CreateConnection()` se poziva od strane repozitorijumskih klasa i vraća otvoren IDbConnection
-  - Ovu klasu ne treba menjati
+- **C# and .NET 10** for the application and domain logic
+- **WPF and XAML** for the Windows desktop interface
+- **PostgreSQL** for relational data storage
+- **Npgsql** for PostgreSQL access from .NET
+- **MVVM** for presentation structure and data binding
+- **MaterialDesignThemes** and **Extended WPF Toolkit** for UI components and styling
+- **LiveCharts2** for charts and statistics
+- **PDFsharp/MigraDoc** and **QuestPDF** for report generation
+- **RESX resources** for Serbian and English localization
+- **Git and GitHub** for version control and team collaboration
 
-#### Database/Repositories/
-Repozitorijumske klase koje interaguju sa bazom podatka.
+## My contributions
 
-- **UserDbRepository.cs** - Primer repozitorijuma za dobavljanje podataka o korisnicima.
-  - `GetIdByCredentials(username, password)` - Vraća ID korisnika ili -1 ako ne postoji
-  - `GetWithPosts(userId)` - Učitava korisnika sa svim njegovim objavama koristeći SQL JOIN
+The Git history records my work under the names **Andrej Vujic**, **Andrej Vujić**, and **Andrej**. My contributions span the full application stack, with most of my work centered on the building-resident part of the system.
 
-#### Database/Scripts/
-Skripte za definisanje šeme baze podataka i početnih torki radi jednostavnijeg testiranja softvera.
+- Built and evolved the PostgreSQL schema, seed data, domain entities, DTOs, mappers, repositories, and services for users, buildings, apartments, memberships, and access requests.
+- Implemented resident building search and browsing, apartment-access workflows, and role-based login and navigation.
+- Developed the community ads workflow, including ad creation, matching, time slots, reservations, subscriptions, and related notifications.
+- Implemented common-room browsing and rental requests, along with date validation and PDF reports for rental-request data.
+- Developed resident assemblies, attendance registration, automatic status updates, accepted and suggested topics, and topic-management screens.
+- Added notification pages and notification-detail flows for resident activity.
+- Created the in-app tutorial section and video player, including playback controls, loading states, progress tracking, seeking, and tutorial videos.
+- Contributed reusable UI behavior, validation, dialogs, converters, styling, and usability fixes across resident screens.
+- Refactored database access and application code to improve separation of concerns, move behavior into the correct layer, introduce repository abstractions, and apply DIP and SOLID principles more consistently.
 
-- **database.sql** - SQL skripta za kreiranje tabela
-  - Tabela `users` - Korisnički podaci
-  - Tabela `posts` - Objave korisnika
-  - **Pokrenuti pre prvog startovanja aplikacije!**
+## Getting started
 
-- **seed.sql** - SQL skripta za popunjavanje testnim podacima
-  - 8 testnih korisnika (marko/marko123, ana/ana123, itd.)
-  - 20 testnih objava raspoređenih između korisnika
-  - **Pokrenuti nakon database.sql!**
+### Prerequisites
 
-#### Domain/
-Model podataka i poslovne logike koja radi nad tim podacima.
+- Windows 10 or later
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- PostgreSQL
+- Visual Studio with the .NET desktop development workload, or another environment that can build WPF projects
 
-- **User.cs** - Domenski model korisnika
-  - Svojstva: Id, Username, Password, Name, Surname, BirthDay, Posts
-  - Metoda `AddPost(post)` - Povezuje objavu sa korisnikom
-  - **Obratiti pažnju:** Sva svojstva imaju `private set` za kontrolu pristupa
+### Database setup
 
-- **Post.cs** - Domenski model objave
-  - Svojstva: Id, Title, Content, CreatedAt, User
-  - **Obratiti pažnju:** `User` je referenca na vlasnika objave
+1. Create a PostgreSQL database named `communityhub`.
+2. Run [`create_all.sql`](src/CommunityHub.Application/Database/Scripts/create_all.sql) against that database.
+3. Run [`seed.sql`](src/CommunityHub.Application/Database/Scripts/seed.sql) to add development data.
+4. If your PostgreSQL credentials differ from the defaults, update the connection string in [`appsettings.json`](src/CommunityHub.Application/appsettings.json).
 
-#### appsettings.json
-Konfiguracioni fajl sa podacima za pristup bazi.
+The default configuration expects PostgreSQL at `localhost:5432`, with the username and password both set to `postgres`.
 
-### CommunityHub.Ui
+### Run the application
 
-WPF projekat koji sadrži sve prozore i korisničku interakciju.
+From the repository root:
 
-#### App.xaml / App.xaml.cs
-- Ulazna tačka aplikacije
-- `StartupUri="/Views/LogInForm.xaml"` - Prvi prozor koji se otvara
+```powershell
+dotnet restore CommunityHub.slnx
+dotnet build CommunityHub.slnx
+dotnet run --project src/CommunityHub.Ui/CommunityHub.Ui.csproj
+```
 
-#### Views/
-- **LogInForm.xaml** - Forma za prijavu korisnika
-- **LogInForm.xaml.cs** - Code-behind logika
-  - Poziva `UserDbRepository.GetIdByCredentials()` pri kliku na dugme
-  - Ako korisnik postoji, otvara `HomeWindow` i zatvara login formu
-  - Ako ne postoji, prikazuje poruku o grešci
+You can also open `CommunityHub.slnx` in Visual Studio, set `CommunityHub.Ui` as the startup project, and run it with `F5`.
 
-- **HomeWindow.xaml** - Početna stranica nakon prijave
-- **HomeWindow.xaml.cs** - Code-behind logika
-  - **Obratiti pažnju:** Prima `userId` u konstruktoru
-  - Dugme "Profil" otvara ProfileWindow
-  - Dugme "Odjavi se" vraća na LogInForm
+### Sample accounts
 
-- **ProfileWindow.xaml** - Profil korisnika sa objavama
-  - **Obratiti pažnju:** Koristi ItemsControl sa DataTemplate za prikaz objava
-- **ProfileWindow.xaml.cs** - Code-behind logika
-  - Poziva `UserDbRepository.GetWithPosts()` da učita podatke
-  - Povezuje Posts listu sa ItemsControl kroz ItemsSource
+The seed script creates accounts for each implemented role. All sample accounts below use the password `123`.
 
-## Pokretanje Projekta
+| Role | Username |
+| --- | --- |
+| Building manager | `milan.jovanovic` |
+| Building resident | `stefan.matic` |
+| Neighborhood coordinator | `aleksandar.savic` |
+| Citizen | `petar.simic` |
 
-### Preduslovi
+## Database scripts
 
-1. **.NET 10 SDK** instaliran
-2. **PostgreSQL** instaliran i pokrenut na localhost:5432
-3. **Kreirana baza podataka** sa imenom `communityhub`
-4. **Definisanje šeme i početnih podataka** kroz pgAdmin alat puštanjem `database.sql` i `seed.sql` skripti.
-
-Za korake 2-4 instaliracij PostgreSQL i upoznaj se sa pgAdmin alatom. Za instalaciju je potrebno:
-
-1. Preuzeti instalaciju najnovije verzije sa <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads" target="_blank">sledećeg linka</a>, gde biraš instalaciju za svoj operativni sistem (npr. Windows x86-64).
-2. Pokrenuti i kompletirati proces instalacije. Preporuka je da korisničko ime i lozinka budu `postgres`, a port `5432`.
-
-Uz PostgresSQL bazu podataka dobijaš i **pgAdmin** aplikaciju kroz koju možeš da formiraš i sprovodiš SQL naredbe. <a href="https://youtu.be/Q3yDPIEV1R4" target="_blank"><b>Sledeći video</b></a> demonstrira kako se kreira baza podataka i tabele i izvršavaju SQL naredbe.
-
-### Pokretanje Aplikacije
-
-1. Otvorite `CommunityHub.slnx` u Visual Studio
-2. Postavite `CommunityHub.Ui` kao StartUp project
-3. Pokrenite aplikaciju (F5)
-4. Prijavite se sa nekim od korisnika (npr. "ana", "ana123")
-
-## Česte Greške i Rešenja
-
-### Greška: "Connection refused"
-- **Uzrok:** PostgreSQL nije pokrenut ili ne radi na localhost:5432
-- **Rešenje:** Pokrenite PostgreSQL servis ili proverite port u appsettings.json
-
-### Greška: "Relation 'users' does not exist"
-- **Uzrok:** Database skripta nije pokrenuta
-- **Rešenje:** Pokrenite `database.sql` koristeći pgAdmin
-
-### Greška: "Invalid username or password"
-- **Uzrok:** Seed skripta nije pokrenuta ili korisnički podaci ne postoje
-- **Rešenje:** Pokrenite `seed.sql` koristeći pgAdmin
+- [`create_all.sql`](src/CommunityHub.Application/Database/Scripts/create_all.sql) creates the PostgreSQL types, tables, constraints, and relationships.
+- [`seed.sql`](src/CommunityHub.Application/Database/Scripts/seed.sql) inserts sample users and community data for development and demonstrations.
+- [`drop_all.sql`](src/CommunityHub.Application/Database/Scripts/drop_all.sql) removes the project schema. It is intended only for resetting a local development database.
